@@ -1,0 +1,782 @@
+body {
+	background: #EEEEEE;
+	font-family: "Calibri", "Helvetica Neue", "Helvetica", sans-serif;
+	font-size: 100%;
+	font-weight: 300;
+	line-height: 1.5;
+	margin: 0;
+	padding: 0;
+}
+
+#footer {
+	background: #EEEEEE;
+	color: #666666;
+	text-align: center;
+	font-size: 90%;
+}
+
+#top_banner {
+	position: absolute;
+	z-index: -1;
+	width: 100%;
+	height: 35px;
+	background: #5D94D7;
+	background-image: linear-gradient(to bottom, #4892EB, #5D94D7);
+	margin: 0;
+}
+
+#menu_banner {
+	position: absolute;
+	top: 35px;
+	z-index: -1;
+	width: 100%;
+	height: 35px;
+	background: #1F497D;
+	background-image: linear-gradient(to bottom, #0F478C, #1F497D);
+	border-top: 1px solid #376092;
+	border-bottom: 1px solid #376092;
+}
+
+#container {
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	background: #FFFFFF;
+	padding: 0;
+}
+
+#header {
+	height: 35px;
+	background-color: #5D94D7;	
+	background-image: linear-gradient(to bottom, #4892EB, #5D94D7);
+	color: #FFFFFF;
+}
+
+#portfolio_link {
+	float: right;
+	text-align: right;
+	padding: 4px 5px;
+}
+
+#portfolio_link a {
+	color: #FFFFFF;
+}
+
+#menu {
+	height: 35px;
+	border: 1px solid #376092;
+	background-color: #1F497D;
+	background-image: linear-gradient(to bottom, #0F478C, #1F497D);
+	color: #FFFFFF;
+	padding: 0;
+}
+
+#menu_home {
+	display: block;
+	float: left;
+	height: 100%;
+}
+
+#menu_main {
+	display: block;
+	float: right;
+	height: 100%;
+}
+
+#menu ul {
+	padding: 0;
+	margin: 0;
+}
+
+#menu li {
+	list-style-type: none;
+	display: inline-block;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	vertical-align: middle;	
+	font-size: 18px;
+	font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+#menu li.active {
+	background-color: #FFFFFF;
+	color: #000000;
+	padding: 4px 10px;
+	height: 27px;
+}
+
+#menu li a {
+	display: block;
+	color: inherit;
+	margin: 0;
+	padding: 4px 10px;
+	height: 27px;
+	border: none;
+	text-decoration: none;
+}
+
+#menu li a:hover {
+	background-color: #99CCFF;
+	color: #000000;
+}
+
+#menu li a.active {
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+#menu li a.active:hover {
+	background-color: #99CCFF;
+	color: #000000;
+}
+
+#breadcrumbs {
+	-webkit-text-size-adjust:100%;
+	padding: 2px 10px;
+	border-left: 1px solid #DDDDDD;
+	border-right: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+#body {
+	padding: 10px;
+	border-left: 1px solid #DDDDDD;
+	border-right: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+#login_info {
+	padding: 2px 10px;
+	border-left: 1px solid #DDDDDD;
+	border-right: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+	background-color: #EEFFEE;
+	color: #336633;
+}
+
+#admin_actions {
+	float: right;
+	text-align: right;
+	font-size: 100%;
+}
+
+#chart_div {
+	text-align: center;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.center {
+	text-align: center;
+}
+
+.clear {
+	clear: both;
+}
+
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}
+
+.iata_mono {
+	font-family: 'Inconsolata', monospace;
+}
+
+a {
+	text-decoration: none;
+	color: #1E90FF;
+}
+
+a:visited {
+	color: #9932CC;
+}
+
+a:hover {
+	color: #E47911;
+}
+
+a.home_link {
+	padding: 5px 10px;
+	box-shadow: 1px 1px 2px #385D8A;
+	background-color: #5D94D7;
+	border: 1px solid #376092;
+	color: #FFFFFF;
+	font-size: 150%;
+	text-decoration: none;
+}
+
+a.home_link:hover {
+	background-color: #4892EB;
+	text-decoration: none;
+}
+
+a.home_link:visited {
+	color: #FFFFFF;
+}
+
+a.sort {
+	color: #1F497D;
+}
+
+a.sort:hover {
+	color: #8D4600;
+	text-decoration: none;
+}
+
+a.warning {
+	color: #FF0000 !important;
+}
+
+
+div.alert {
+	background: #FFFFDD;
+	border: 1px solid #FFDD99;
+	padding: 5px;
+}
+
+div.column {
+	display: inline-block;
+}
+
+div.cover {
+	float: right;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+div.error {
+	background: #FFDDDD;
+	border: 1px solid #DD9999;
+	padding: 5px;
+}
+
+div.field_with_errors {
+	display: inline;
+	margin-left: 10px;
+}
+
+div.field_with_errors input {
+	border: 1px solid #CC0000;
+}
+
+div.field_with_errors label {
+	color: #CC0000;
+}
+
+div.hidden_marker {
+	float: right;
+	background: #FFFF00;
+	border: 1px solid #000000;
+	padding: 1px 4px;
+	margin-top: 1px;
+	margin-left: 8px;
+	font-size: 80%;
+	font-weight: bold;
+}
+
+div.hidden_trip {
+	background: #FFFF00;
+	border: 1px solid #000000;
+	padding: 5px;
+}
+
+
+div.intro_box {
+	padding: 10px;
+	margin: 2px;
+	text-align: center;
+}
+
+div.intro_box h2 {
+	margin: 0;
+}
+
+div.intro_box p {
+	margin: 0;
+	text-align: center;
+	font-weight: bold;
+}
+
+div.intro_box table {
+	margin: 3px 0;
+}
+
+div.page_navigation {
+	padding: 0;
+	margin-top: -15px;
+	margin-bottom: 10px;
+	margin-left: 5px;
+	margin-right: 5px;
+	text-align: left;
+	border-bottom: 1px solid #EEEEEE;
+}
+
+div.page_navigation ul {
+	padding: 0;
+	margin: 0;
+}
+
+div.page_navigation li {
+	list-style-type: none;
+	display: inline-block;
+	height: 100%;
+	margin: 0 -5px;
+	padding: 3px 10px;
+	vertical-align: middle;
+}
+
+div.tab {
+	display: inline-block;
+	border: 1px solid #385D8A;
+	margin-bottom: -1px;
+	margin-right: -1px;
+	margin-left: 0;
+	padding: 5px;
+	width: 300px;
+	background-color: #5D94D7;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+a.tab {
+	display: inline-block;
+	border: 1px solid #385D8A;
+	margin-bottom: -1px;
+	margin-right: -1px;
+	margin-left: 0;
+	padding: 5px;
+	width: 300px;
+	background-color: #DDDDDD;
+	font-size: 120%;
+}
+
+a.tab:hover {
+	background-color: #E47911;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	line-height: 1.2;
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+h1 {
+	font-size: 200%;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+h2 { font-size: 160%; }
+h3 { font-size: 140%; }
+h4 { font-size: 120%; }
+h5 { font-size: 100%; }
+h6 { font-size: 90%; }
+
+img.airline_icon {
+	width: 48px;
+	height: 24px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-right: 0.3em;
+	vertical-align: top;
+	border: none;
+}
+
+img.country_flag {
+	width: 32px;
+	height: 22px;
+	margin: 1px 3px;
+	vertical-align: top;
+	border: none;
+}
+
+img.logo {
+	border: none;
+	width: 242px;
+	height: 35px;
+}
+
+img.photo_gallery {
+	border: 1px solid #385D8A;
+}
+
+p {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+p.active_trips {
+	background-color: #EEFFDD;
+	border: 1px solid #CCFF99;
+	padding: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+p.active_trips a {
+	font-weight: bold;
+}
+
+p.country {
+	font-weight: bold;
+	background-color: #EEEEEE;
+	padding: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	-webkit-text-size-adjust:100%
+}
+
+p.distance {
+	text-align: center;
+	margin-top: 0;
+	font-weight: bold;
+}
+
+p.home_link {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+p.note {
+	text-align: center;
+}
+
+p.total {
+	-webkit-text-size-adjust:100%
+}
+
+p.pre_footer {
+	border-top: 1px solid #DDDDDD;
+	padding-top: 10px;
+	text-align: center;
+}
+
+pre.debug_dump {
+	background-color: inherit;
+	color: inherit;
+	border: none;
+}
+
+span.breadcrumb_title {
+	
+}
+
+span.disabled {
+	color: #A7A7A7;
+}
+
+span.distance_secondary {
+	color: #7F7F7F;
+	font-weight: normal;
+}
+
+span.distance_unit {
+	color: #7F7F7F;
+}
+
+span.flight_aircraft_variant {
+	color: #7F7F7F;
+}
+
+span.flight_city {
+	color: #7F7F7F;
+}
+
+span.flight_iata_code {
+	font-size: 150%;
+	font-weight: bold;
+}
+
+span.flight_route_distance {
+	color: #7F7F7F;
+}
+
+span.flight_section_route {
+	color: #7F7F7F;
+	font-size: 85%;
+}
+
+span.sort_symbol {
+	font-size: 70%;
+}
+
+table.flightlog {
+	border: 1px double #385D8A; /* double so it always takes priority */
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+
+table.flightlog a {
+	text-decoration: none;
+}
+
+
+
+table.flightlog td {
+	padding: 0.2em 0.4em;
+	border-top: 1px solid #DDDDDD;
+	white-space: nowrap;
+}
+
+table.flightlog th {
+	padding: 0.2em 0.4em;
+	background-color: #9EC7F3;
+	border-bottom: 1px solid #385D8A;
+}
+
+table.no_border {
+	border: none;
+	outline: none;
+}
+
+table.no_border td {
+	border: none;
+}
+
+td {
+	-webkit-text-size-adjust:100%
+	text-shadow: 0px 1px 0px #FFFFFF;
+	background-color: #FCFCFC;
+}
+
+td a {
+	text-shadow: 0px 1px 0px #FFFFFF;
+}
+
+td.aircraft_family {
+	width:300px;
+}
+
+th.aircraft_family {
+	text-align: left;
+}
+
+td.aircraft_flights, th.aircraft_flights {
+	text-align: center;
+}
+
+td.airline_airline {
+	width:300px;
+}
+
+th.airline_airline {
+	text-align: left;
+}
+
+td.airline_flights, th.airline_flights {
+	text-align: center;
+}
+
+td.airport_city, th.airport_city {
+	text-align: left;
+}
+
+td.airport_country {
+	text-align: center;
+	vertical-align: middle;
+}
+
+th.airport_country {
+	text-align: center;
+}
+
+td.airport_flights, th.airport_flights {
+	text-align: center;
+}
+
+td.airport_iata_code {
+	text-align: center;
+}
+
+td.airport_distance, th.airport_distance {
+	text-align: right;
+}
+
+td.airport_route, th.airport_route {
+	text-align: left;
+}
+
+td.airport_visits {
+	text-align: center;
+}
+
+td.class_class {
+	width:150px;
+}
+
+th.class_class {
+	text-align: left;
+}
+
+td.class_flights, th.class_flights {
+	text-align: center;
+}
+
+td.flight_aircraft, th.flight_aircraft {
+	text-align: center;
+}
+
+td.flight_date {
+	text-align: right;
+}
+
+td.flight_flight {
+	padding-left: 0;
+}
+
+td.flight_tail, th.flight_tail {
+	text-align: center;
+}
+
+td.flight_airplane_icon {
+	font-size: 200%;
+	color: #3F3F3F;
+	background: #FFFFFF;
+}
+
+td.flight_route {
+	text-align: center;
+	width: 6em;
+}
+
+td.flight_section {
+	border-right: 1px solid #385D8A;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 1.2;
+}
+
+td.flight_show_airline img {
+	margin-left: 0.3em;
+	margin-right: 0;
+}
+
+td.flight_show_airport {
+	width: 250px;
+	line-height: 1.2;
+	vertical-align: top;
+	background: #FFFFFF;
+}
+
+td.flight_show_label {
+	background-color: #9EC7F3;
+	border-right: 1px solid #385D8A;
+	border-top: 1px solid #88B9EC !important;
+	font-weight: bold;
+	vertical-align: middle;	
+}
+
+td.flight_trip_title {
+	background-color: #9EC7F3;
+	border-bottom: 1px solid #385D8A !important;
+	border-top: 1px solid #385D8A !important;
+	font-weight: bold;
+	text-align: center;
+}
+
+td.flightlog_total {
+	-webkit-text-size-adjust:100%;
+	background-color: #9EC7F3;
+	border-top: 1px solid #385D8A !important;
+	text-align: center;
+	font-weight: bold;
+}
+
+td.flightlog_total span.total_percent {
+	font-weight: normal;
+}
+
+td.graph {
+	background-image:url('/images/flight_log/graph-pixel.png');
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
+td.hidden_trip {
+	
+}
+
+td.new {
+	font-weight: bold;
+}
+
+td.route_distance, th.route_distance {
+	text-align: right;
+}
+
+td.route_flights, th.route_flights {
+	text-align: center;
+}
+
+td.route_route, th.route_route {
+	text-align: left;
+}
+
+td.superlative_label {
+	background-color: #9EC7F3;
+	border-right: 1px solid #385D8A;
+	border-top: 1px solid #88B9EC !important;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;	
+}
+
+td.tail_flights, th.tail_flights {
+	text-align: center;
+}
+
+td.tail_aircraft {
+	color: #999999;
+	text-align: center;
+}
+
+td.tail_airline, th.tail_airline {
+	text-align: center;
+}
+
+td.tail_number {
+	width:150px;
+}
+
+td.top_border {
+	border-top: 1px solid #385D8A !important;
+}
+
+th.tail_number {
+	text-align: left;
+}
+
+th.flight_date {
+	text-align: right;
+}
+
+th.flight_flight {
+	text-align: left;
+}
+
+th.flight_route {
+	text-align: center;
+}
+
+th.flight_section {
+	text-align: center;
+}
+
+th.trip_name {
+	text-align: left;
+}

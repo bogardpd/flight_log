@@ -1,0 +1,158 @@
+<h1><%= @title %></h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("Airports", "#airports", :title => "Airports Visited in " + @in_text) %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft Flown in " + @in_text) %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines Flown in " + @in_text) %></li>
+		<li><%= link_to("Classes", "#classes", :title => "Classes Flown in " + @in_text) %></li>
+		<li><%= link_to("Superlatives", "#superlatives", :title => @superlatives_title) %></li>
+		<li><%= link_to("Flight List", "#flights", :title => @flight_list_title) %></li>
+  </ul>
+</div>
+
+<%= render "flight_year_links" %>
+
+<% if @flights.any? %>
+
+<p>I have been on <%= pluralize(@flights.length, 'commercial flight') %> in <%= @in_text %>.</p>
+
+<div class="intro_box">
+  <% if params[:region] == "world" %>
+    <% if params[:year]%>
+			<%= link_to("Contiguous United States", show_year_path(params[:year]), :class => "tab") %><div class="tab active">World</div>
+		<% else %>
+			<%= link_to("Contiguous United States", show_date_range_path(:start_date => params[:start_date], :end_date => params[:end_date]), :class => "tab") %><div class="tab active">World</div>
+		<% end %>
+    <%= gcmap_embed(route_string(@flights)) %>
+  <% else %>
+    <% if params[:year] %>
+			<div class="tab">Contiguous United States</div><%= link_to("World", show_year_region_path(:year => params[:year], :region => "world"), :class => "tab") %>
+		<% else %>
+			<div class="tab">Contiguous United States</div><%= link_to("World", show_date_range_region_path(:start_date => params[:start_date], :end_date => params[:end_date], :region => "world"), :class => "tab") %>
+		<% end %>
+    <%= gcmap_embed(route_string(@flights, "conus")) %>
+  <% end %>
+	<%= distance_block(@total_distance, "total") %>
+</div>
+
+
+
+<a name="airports"></a>
+<h2>Airports Visited <%= @date_range_text %></h2>
+
+<table class="flightlog">
+  <tr class="">
+    <th class="">City</th>
+    <th class="">Code</th>
+    <th class="">Visits</th>
+	<th class="airport_country">Country</th>
+  </tr>
+<% @airport_array.each do |airport| %>
+  <tr>
+    <% if @date_range.include?(Flight.airport_first_visit(airport[:id])) %>
+			<% @new_airport_flag = true %>
+			<td class="airport_city graph new" style="background-size: <%= (airport[:frequency]*200/@airport_maximum) %>px 100%;"><%= link_to(airport[:city] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+			<td class="airport_iata_code new"><%= link_to(airport[:iata_code] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+		<% else %>
+			<td class="airport_city graph" style="background-size: <%= (airport[:frequency]*200/@airport_maximum) %>px 100%;"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+			<td class="airport_iata_code"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+		<% end %>
+		
+    
+    <td class="airport_visits"><%= airport[:frequency] %></td>
+	<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+  </tr>
+<% end %>
+  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
+</table>
+<% if @new_airport_flag %>
+	<p class="note">* Airport first visited in <%= @in_text %></p>
+<% end %>
+
+<a name="aircraft"></a>
+<h2>Aircraft Flown <%= @date_range_text %></h2>
+
+<% if @aircraft_frequency_sorted.count == 0 %>
+
+<p>All flights have unknown aircraft families.</p>
+
+<% else %>
+
+<table class="flightlog">
+  <tr>
+    <th class="aircraft_family">Aircraft Family</th>
+    <th class="aircraft_flights">Flights</th>
+  </tr>
+<% @aircraft_frequency_sorted.each do |aircraft, frequency| %>
+  <% unless aircraft.nil? %>
+  <tr>
+    <% if @date_range.include?(Flight.aircraft_first_flight(aircraft)) %>
+			<% @new_aircraft_flag = true %>
+    	<td class="aircraft_family graph new" style="background-size: <%= (frequency*300/@aircraft_frequency_maximum) %>px 100%;"><%= link_to(aircraft + "*", show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
+		<% else %>
+			<td class="aircraft_family graph" style="background-size: <%= (frequency*300/@aircraft_frequency_maximum) %>px 100%;"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
+		<% end %>
+    <td class="aircraft_flights"><%= frequency %></td>
+  </tr>
+  <% end %>
+<% end %>
+  <tr><td colspan="2" class="flightlog_total"><%= pluralize(@aircraft_frequency_sorted.count, 'aircraft family') %></td></tr>
+</table>
+
+<% if @unknown_aircraft_flights > 1 %>
+<p class="center"><%= @unknown_aircraft_flights %> flights with unknown aircraft families are not included in this table.</p>
+<% elsif @unknown_aircraft_flights > 0 %>
+<p class="center">1 flight with an unknown aircraft family is not included in this table.</p>
+<% end %>
+
+<% if @new_aircraft_flag %>
+	<p class="note">* Aircraft family first flown in <%= @in_text %></p>
+<% end %>
+
+<% end %>
+
+<a name="airlines"></a>
+<h2>Airlines Flown <%= @date_range_text %></h2>
+
+<table class="flightlog">
+  <tr>
+    <th class="airline_airline">Airline</th>
+    <th class="airline_flights">Flights</th>
+  </tr>
+<% @airline_frequency_sorted.each do |airline, frequency| %>
+  <tr>
+    <% if @date_range.include?(Flight.airline_first_flight(airline)) %>
+			<% @new_airline_flag = true %>
+			<td class="airline_airline graph new" style="background-size: <%= (frequency*300/@airline_frequency_maximum) %>px 100%;"><%= link_to(image_tag(Flight.new(:airline => airline).airline_icon_path, :alt => airline, :class => 'airline_icon') + airline + "*", show_airline_path(airline.gsub(" ", "_")), :title => "View all flights on #{airline}") %></td>
+		<% else %>
+			<td class="airline_airline graph" style="background-size: <%= (frequency*300/@airline_frequency_maximum) %>px 100%;"><%= link_to(image_tag(Flight.new(:airline => airline).airline_icon_path, :alt => airline, :class => 'airline_icon') + airline, show_airline_path(airline.gsub(" ", "_")), :title => "View all flights on #{airline}") %></td>
+		<% end %>
+    <td class="airline_flights"><%= frequency %></td>
+  </tr>
+<% end %>
+  <tr><td colspan="2" class="flightlog_total"><%= pluralize(@airline_frequency_sorted.count, 'airline') %></td></tr>
+</table>
+
+<% if @new_airline_flag %>
+	<p class="note">* Airline first flown in <%= @in_text %></p>
+<% end %>
+
+<a name="classes"></a>
+<h2>Classes Flown <%= @date_range_text %></h2>
+
+<%= render "summary_travel_class_table" %>
+
+<a name="superlatives"></a>
+<h2><%= @superlatives_title %></h2>
+
+<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
+
+<a name="flights"></a>
+<h2><%= @flight_list_title %></h2>
+
+<%= render 'flight_table' %>
+
+<% else %>
+	<p>There are no flights in <%= @in_text %>!</p>
+<% end %>

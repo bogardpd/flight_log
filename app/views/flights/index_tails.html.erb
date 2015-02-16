@@ -1,0 +1,21 @@
+<h1>Tail Numbers</h1>
+
+<p>Each plane has a <%= link_to("registration", 'http://en.wikipedia.org/wiki/Aircraft_registration') %> number, and I use it to keep track of which particular planes I've flown on the most often.</p>
+<p>I have flown on <%= pluralize(@tails_array.count, 'unique tail number') %>.</p>
+
+<table class="flightlog">
+  <tr>
+    <th class="tail_number">Tail Number</th>
+    <th class="tail_flights">Flights</th>
+    <th class="tail_aircraft">Aircraft</th>
+    <th class="tail_airline">Airline</th>
+<% @tails_array.each do |tail| %>
+  <tr>
+    <td class="tail_number graph" style="background-size: <%= (tail[:count]*150/@tails_maximum) %>px 100%;"><%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
+    <td class="tail_flights"><%= tail[:count] %></td>
+    <td class="tail_aircraft"><%= @tails_aircraft_hash[tail[:tail_number]] %></td>
+    <td class="tail_airline"><%= image_tag(Flight.new(:airline => @tails_airline_hash[tail[:tail_number]]).airline_icon_path, :title => @tails_airline_hash[tail[:tail_number]], :alt => @tails_airline_hash[tail[:tail_number]], :class => 'airline_icon') %></td>
+  </tr>
+<% end %>
+  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@tails_array.count, 'unique tail number') %></td></tr>
+</table>

@@ -1,0 +1,6 @@
+<% if logged_in? %>
+<div id="login_info">
+  <span class="bold"><%= current_user.name %></span> (<%= link_to "Log out", logout_path, :method => :delete %>)
+  
+</div>
+<% end %>

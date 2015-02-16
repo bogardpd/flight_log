@@ -1,0 +1,28 @@
+<% if @class_frequency_sorted.count == 0 %>
+
+<p>All flights have unknown travel classes.</p>
+
+<% else %>
+
+<table class="flightlog">
+  <tr>
+    <th class="class_class">Travel Class</th>
+    <th class="class_flights">Flights</th>
+  </tr>
+<% @class_frequency_sorted.each do |travel_class, frequency| %>
+  <% unless travel_class.nil? %>
+  <tr>
+    <td class="class_class graph" style="background-size: <%= (frequency*150/@class_frequency_maximum) %>px 100%;"><%= link_to("#{travel_class} class", show_class_path(travel_class), :title => "View #{travel_class.downcase} class flights") %></td>
+    <td class="class_flights"><%= frequency %></td>
+  </tr>
+  <% end %>
+<% end %>
+</table>
+
+<% if @unknown_class_flights > 1 %>
+<p class="center"><%= @unknown_class_flights %> flights with unknown classes are not included in this table.</p>
+<% elsif @unknown_class_flights > 0 %>
+<p class="center">1 flight with an unknown class is not included in this table.</p>
+<% end %>
+
+<% end %>

@@ -1,0 +1,79 @@
+<h1>Garmin GPS Logging</h1>
+
+<p>While automotive GPS devices are useful for giving turn-by-turn directions, it's not their only trick.  It's relatively trivial to use the device to show other people where you've been in software such as <%= link_to("Google Earth", 'http://www.google.com/earth/index.html') %>.</p>
+
+<%= photo_gallery_image("gps_logging_garmin/Savannah-To-Charleston.png", "Screenshot of Google Earth") %>
+
+<%= download_link "Savannah to Charleston.kmz", 'files/gps_logging_garmin/Savannah to Charleston.kmz' %>
+
+<p>In May of 2012, I was taking a trip to Charleston, South Carolina.  However, my flight into Charleston International Airport was cancelled; in order to arrive on the same day, I had to change my itinerary to fly into Savannah, Georgia instead &mdash; about two hours away by car.  This trip from Savannah to Charleston and back will act as my demonstration for how to record and display your automotive GPS data.</p>
+
+<h2>Equipment and Software</h2>
+
+<p>At the time of this writing, I own a Garmin nüvi 2455, and will use it to demonstrate the procedure. However, I've had success using the same steps with other variations of the Garmin nüvi.</p>
+
+<p>You will need <%= link_to("Google Earth", 'http://www.google.com/earth/index.html') %> to view the resulting maps.</p>
+
+<p>I'll be performing this demonstration with Windows 7, but the steps are largely the same on OS X and on other versions of Windows.</p>
+
+<h2>Extracting the Route History</h2>
+
+<p>The nüvi keeps track of route history (and saved places) in .gpx files on its internal memory.  To extract them, we need to hook up the nüvi to a computer via USB &mdash; the same way you'd hook it up to install map updates.  The nüvi should have come with its own USB cable, but any standard USB cable should work &mdash; plug it into the same slot into which you'd normally connect the power cord.  The nüvi 2455 takes a USB Mini cable.</p>
+
+<%= photo_gallery_image("gps_logging_garmin/Garmin.jpg", "Garmin nüvi 2455 connected to a PC via USB") %>
+
+<p>Your computer should recognize the nüvi as a USB storage device and mount it.  On Windows, it will be listed under Computer.</p>
+
+<%= photo_gallery_image("gps_logging_garmin/Explorer.png", "Screenshot of Windows Explorer", false) %>
+
+<p>Navigate to the nüvi's <code>/GPX</code> folder.</p>
+
+<%= photo_gallery_image("gps_logging_garmin/GPX-Folder.png", "Screenshot of Windows Explorer", false) %>
+
+<p><code>Current.gpx</code> contains the most recent route history tracks, as well as all locations you've saved in the device.  The device will try to keep the file to about 2 MB; if it goes above that, the oldest tracks are placed into .gpx files in the <code>/GPX/Archive</code> folder.  Using the GPS daily, 2 MB equated to approximately two weeks of driving under normal use.  Longer road trips fill it up quicker, so if you don't want to deal with the archives, I'd recommend copying the <code>Cuurent.gpx</code> file to a computer at the end of each day of driving.</p>
+
+<p>Copy the <code>Current.gpx</code> file to somewhere on your PC.  <strong>Make sure you use copy instead of cut, and do not delete or modify this file (or any other file) on the device.</strong>  The nüvi is very particular about the integrity of its internal files, even if you later copy them back onto the device &mdash; I've lost my favorites on more than one occasion from this.  Copying files is fine, but to be safe, treat the nüvi like it's read only and don't change anything on the device.</p>
+
+<p>Once the .gpx file is saved to your computer, it's time to convert it to a format Google Earth understands.</p>
+
+<h2>Converting GPX to KML</h2>
+
+<p>Google Earth uses <%= link_to("Keyhole Markup Language", 'http://en.wikipedia.org/wiki/Keyhole_Markup_Language') %> (.kml or .kmz files) to show map annotations; it can't use .gpx directly.  Fortunately, free converters exist; I use <%= link_to("GPS Visualizer", 'http://www.gpsvisualizer.com/') %>.</p>
+
+<%= photo_gallery_image("gps_logging_garmin/GPS-Vis-01.png", "Screenshot of GPS Visualizer") %>
+
+<p>On the right side of the page, click the "Google Earth KML" link. This brings you to the following form:</p>
+
+<%= photo_gallery_image("gps_logging_garmin/GPS-Vis-02.png", "Screenshot of GPS Visualizer") %>
+
+<p>On the upper right, browse to where you saved your <code>Current.gpx</code> file.  Generally, I change the "Colorize by:" option to "None" so that all tracks end up the same color.  The defaults for the rest of the options work well.</p>
+
+<p>When you're done, click the "Create KML file" button. This will create a .kmz file which you can download to your computer.</p>
+
+<h2>Editing the Tracks in Google Earth</h2>
+
+<p>Open the .kmz file you just downloaded with <%= link_to("Google Earth", 'http://www.google.com/earth/index.html') %>:</p>
+
+<%= photo_gallery_image("gps_logging_garmin/Google-Earth-01.png", "Screenshot of Google Earth", false) %>
+
+<p>As you can see, my trip's tracks show up clearly.  (The Savannah/Hilton Head International Airport is located northwest of Savannah, where the red line originates.)  Also, note that my Charleston hotel shows up as a white square on the map &mdash; any saved favorites located near the track are included in the .kmz file.</p>
+  
+<p>However, there are a number of extra tracks listed &mdash; remember how the <code>Current.gpx</code> file shows the last few megabytes of data?  We need to delete all these extra irrelevant tracks.  My trip started on 2 May 2012, so I right-clicked on each track older than that and selected the "Delete" option:</p>
+
+<%= photo_gallery_image("gps_logging_garmin/Google-Earth-02.png", "Screenshot of Google Earth", false) %>
+
+<p>When that's done, the list of tracks looks much cleaner:</p>
+
+<%= photo_gallery_image("gps_logging_garmin/Google-Earth-03.png", "Screenshot of Google Earth", false) %>
+
+<p>At this point, you can zoom in to see more detail.  (The gap in my tracks were caused by the nüvi taking a few blocks to reacquire the GPS signal upon leaving my hotel's parking garage; obviously, if the nüvi doesn't know where it is, it can't log the route.)</p>
+
+<p>In order to save your changes to the .kmz file, right-click on the "Current" heading under Places, and select "Save Place As..."</p>
+
+<%= photo_gallery_image("gps_logging_garmin/Google-Earth-04.png", "Screenshot of Google Earth", false) %>
+
+<p>And that's it!  You now have a log of your trip.</p>
+
+<p>If you would like to download my demonstration .kmz file, you can find it here:</p>
+
+<%= download_link "Savannah to Charleston.kmz", 'files/gps_logging_garmin/Savannah to Charleston.kmz' %>

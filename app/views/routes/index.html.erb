@@ -1,0 +1,21 @@
+<h1>Routes</h1>
+
+<p>I have had commercial flights on <%= pluralize(@route_table.count, 'route') %>.</p>
+
+<p>Each route listed includes flights going both directions.</p>
+
+<table class="flightlog">
+  <tr>
+    <th class="route_route">Route</th>
+		<th class="route_distance"><%= link_to(["Distance",@category_sort_symbol[:distance]].join(" ").html_safe, sort_routes_path("distance", @sort_cat == :distance && @sort_dir == :desc ? "asc" : "desc"), :class => "sort") %></th>
+    <th class="route_flights"><%= link_to(["Flights",@category_sort_symbol[:flights]].join(" ").html_safe, sort_routes_path("flights", @sort_cat == :flights && @sort_dir == :desc ? "asc" : "desc"), :class => "sort") %></th>
+  </tr>
+<% @route_table.each do |row| %>
+  <tr>
+    <td class="route_route"><%= link_to(iata_mono(row[:route].sub('-',"</span> &#x21C4; <span class=\"iata_mono\">")), route_path(row[:route]), :title => "View flights between #{row[:route].split('-')[0]} and #{row[:route].split('-')[1]}") %></td>
+    <td class="route_distance"><% if row[:distance_mi] >= 0 %><%= number_with_delimiter(row[:distance_mi], :delimiter => ',') %> <span class="distance_unit">mi</class><% end %></td>
+		<td class="route_flights"><%= row[:total_flights] %></td>
+  </tr>
+<% end %>
+  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@route_table.count, 'route') %></td></tr>
+</table>

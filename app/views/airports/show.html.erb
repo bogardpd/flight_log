@@ -1,0 +1,108 @@
+<h1><%= @airport.city %></h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("Flights", "#flights", :title => "Flights using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Airports", "#airports", :title => "Origin and destination airports for #{@airport.iata_code}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Classes", "#classes", :title => "Classes flown to or from #{@airport.iata_code}") %></li>
+		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Trips", "#trips", :title => "Trips using #{@airport.iata_code}") %></li>
+  </ul>
+</div>
+
+<% if @airport.country %>
+<p class="country"><%= image_tag(@airport.country_flag_path, :title => @airport.country, :class => 'country_flag') %> <%= @airport.country %></p>
+<% end %>
+
+<p>I have visited <span class="bold"><acronym title="<%= @airport.city %>"><%= @airport.iata_code %></span> <%= pluralize(@airport_frequency[@airport.id], "time") %>.</p>
+
+<% unless @flights.length == 0 %>
+
+<a name="flights"></a>
+<h2>Flights Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h1>
+
+<p>These are my flights that took off from or landed at <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+
+<%= gcmap_embed(airport_highlight(@airport.iata_code) + route_string(@flights)) %>
+
+<table class="flightlog">
+<%= render :partial => "flights/flight_header_row" %>
+<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
+<tr><td colspan="3" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency[@airport.id], "visit") %></td></tr>
+</table>
+
+<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
+
+<a name="airports"></a>
+<h2>Direct Flight Airports for <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+
+<p>These are the airports with which I've had a direct flight from or to <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+
+<table class="flightlog">
+  <tr>
+    <th class="airport_city"><%= sort_link_city_pair(:city, "city", :asc) %></th>
+    <th class="airport_iata_code"><%= sort_link_city_pair(:code, "code", :asc) %></th>
+    <th class="airport_flights"><%= sort_link_city_pair(:flights, "flights", :desc) %></th>
+		<th class="airport_distance"><%= sort_link_city_pair(:distance, "distance", :desc) %></th>
+    <th class="airport_route">Route</th>
+	<th class="airport_country">Country</th>
+  </tr>
+
+	<% @direct_flight_airports.each do |code,count,city| %>
+	  <tr>
+    
+	    <td class="airport_city"><%= link_to(city, airport_path(code)) %></td>
+	    <td class="airport_iata_code iata_mono"><%= link_to(code, airport_path(code)) %></td>
+	    <td class="airport_flights"><%= count %></td>
+			<td class="airport_distance"><% if @pair_distances[code] >= 0 %><%= number_with_delimiter(@pair_distances[code], :delimiter => ',') %> <span class="distance_unit">mi</class><% end %></td>
+	    <td class="airport_route"><%= link_to("#{iata_mono(@airport.iata_code)} &#x21C4; #{iata_mono(code)}".html_safe, route_path("#{@airport.iata_code}-#{code}")) %></td>
+		<td class="airport_country"><%= image_tag(Airport.new(:country => @pair_countries[code]).country_flag_path, :title => @pair_countries[code], :class => 'country_flag') %></td>
+	  </tr>
+	<% end %>
+  <tr><td colspan="6" class="flightlog_total"><%= pluralize(@pair_totals.count, 'direct flight airport') %></td></tr>
+</table>
+
+<a name="airlines"></a>
+<h2>Airlines Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+
+<%= render "flights/summary_airline_table" %>
+
+<a name="aircraft"></a>
+<h2>Aircraft Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+
+<%= render "flights/summary_aircraft_table" %>
+
+<a name="classes"></a>
+<h2>Classes Flown to or from <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+
+<%= render "flights/summary_travel_class_table" %>
+
+<a name="sections"></a>
+<h2>Trip Sections Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+
+<p>This map shows the flights of all of my trip sections that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+
+<%= gcmap_embed(airport_highlight(@airport.iata_code) + route_string(@sections_using_airport_flights)) %>
+
+<%= render 'trips/section_table' %>
+
+<a name="trips"></a>
+<h2>Trips Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+
+<p>This map shows the flights of all of my trips that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+
+<%= gcmap_embed(airport_highlight(@airport.iata_code) + route_string(@trips_using_airport_flights)) %>
+
+<%= render "trips/trip_table" %>
+
+<% end %>
+
+
+<% content_for :admin_actions do %>
+  <% if @flights.length == 0 %>
+    <%= link_to("Delete Airport", :airport, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@airport.iata_code}?"}, :class => 'warning') %> &emsp; 
+  <% end %>
+  <%= link_to("Edit Airport", edit_airport_path(@airport)) %>
+<% end %>

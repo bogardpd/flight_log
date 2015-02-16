@@ -1,0 +1,28 @@
+<h1><%= @title %></h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("Flights", "#flights", :title => "Flights flown in #{@title.downcase}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{@title.downcase} flights") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft with #{@title.downcase} flights") %></li>
+  </ul>
+</div>
+
+<a name="flights"></a>
+<p>I have flown in <span class="bold"><%= @title.downcase %></span> <%= pluralize(@flights.length, 'time') %>.</p>
+
+<%= gcmap_embed(route_string(@flights)) %>
+
+<%= distance_block(@total_distance, 'total') %>
+
+<%= render "flight_table" %>
+
+<a name="airlines"></a>
+<h2>Airlines with <%= @title %> Flights</h2>
+
+<%= render "summary_airline_table" %>
+
+<a name="aircraft"></a>
+<h2>Aircraft with <%= @title %> Flights</h2>
+
+<%= render "summary_aircraft_table" %>

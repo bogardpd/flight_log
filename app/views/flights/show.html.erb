@@ -1,0 +1,80 @@
+<% if @flight.trip.hidden %>
+<div class="hidden_trip">This flight is part of a <%= link_to("hidden trip", trip_path(@flight.trip)) %>!</div>
+<% end %>
+<h1><%= @flight.airline %> <%= @flight.flight_number %></h1>
+
+<% if @flight.comment %>
+<p><%= @flight.comment %></p>
+<% end %>
+
+<%= gcmap_embed(@flight.origin_airport.iata_code + "-" + @flight.destination_airport.iata_code, 'labels') %>
+
+<table class="flightlog no_border">
+  <tr>
+    <td class="flight_show_airport right">
+      <span class="flight_iata_code"><%= link_to(@flight.origin_airport.iata_code, airport_path(@flight.origin_airport.iata_code), :title => "View airport details for " + @flight.origin_airport.city) %></span><br />
+      <span class="flight_city"><%= @flight.origin_airport.city %></span>
+    </td>
+    <td class="flight_airplane_icon">&#x2708;</td>
+    <td class="flight_show_airport">
+      <span class="flight_iata_code"><%= link_to(@flight.destination_airport.iata_code, airport_path(@flight.destination_airport.iata_code), :title => "View airport details for " + @flight.destination_airport.city) %></span><br />
+      <span class="flight_city"><%= @flight.destination_airport.city %></span>
+    </td>
+  </tr>
+</table>
+
+<table class="flightlog">
+  
+  <tr>
+    <td class="flight_show_label">Departure Date</td>
+    <td><%= format_date(@flight.departure_date) %></td>
+  </tr>
+  <tr>
+    <td class="flight_show_label">Trip</td>
+    <td class="flight_show_trip<%= " hidden_trip" if @flight.trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
+  </tr>
+  <tr>
+    <td class="flight_show_label">Route</td>
+    <td class="flight_show_route"><%= link_to("#{@flight.origin_airport.iata_code} &#x21C4; #{@flight.destination_airport.iata_code}".html_safe, route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %><% if @route_distance %>&emsp;<span class="flight_route_distance"><%= number_with_delimiter(@route_distance, :delimiter => ',') %> mi / <%= number_with_delimiter((@route_distance*1.60934).to_i, :delimiter => ',') %> km</span><% end %></td>
+  </tr>
+  <tr>
+    <td class="flight_show_label">Airline</td>
+    <td class="flight_show_airline"><%= link_to((image_tag(@flight.airline_icon_path, :alt => @flight.airline, :class => 'airline_icon') + " " + @flight.airline).html_safe, show_airline_path(@flight.airline.gsub(" ", "_")), :title => "View flights on " + @flight.airline) %></td>
+  </tr>
+  <% if @flight.operator %>
+  <tr>
+    <td class="flight_show_label">Operated By</td>
+    <td class="flight_show_airline"><%= link_to(image_tag(Flight.new(:airline => @flight.operator).airline_icon_path, :alt => @flight.operator, :class => 'airline_icon') + ' ' + @flight.operator, show_operator_path(@flight.operator.gsub(" ", "_")), :title => "View flights operated by " + @flight.operator) %><% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.gsub(" ", "_"), @flight.fleet_number), :title => "View flights on #{@flight.operator} aircraft ##{@flight.fleet_number}") %>)<% end %></td>
+  </tr>
+  <% end %>
+  <% if @flight.codeshare_airline %>
+  <tr>
+    <td class="flight_show_label">Codeshare</td>
+    <td class="flight_show_airline"><%= image_tag(Flight.new(:airline => @flight.codeshare_airline).airline_icon_path, :alt => @flight.codeshare_airline, :class => 'airline_icon') %> <%= @flight.codeshare_airline %> <%= @flight.codeshare_flight_number %></td>
+  </tr>
+  <% end %>
+  <% if @flight.travel_class %>
+  <tr>
+    <td class="flight_show_label">Travel Class</td>
+    <td><%= link_to(@flight.travel_class.titlecase + " class", show_class_path(@flight.travel_class.titlecase), :title => "View #{@flight.travel_class.downcase} class flights") %></td>
+  </tr>
+  <% end %>
+  <% if @flight.aircraft_family %>
+  <tr>
+    <td class="flight_show_label">Aircraft</td>
+    <td>
+      <%= link_to(@flight.aircraft_family, show_aircraft_path(@flight.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flight.aircraft_family} aircraft") %><% if @flight.aircraft_variant %>&emsp;<span class="flight_aircraft_variant"><%= @flight.aircraft_variant %></span><% end %>
+    </td>
+  </tr>
+  <% end %>
+  <% if @flight.tail_number %>
+  <tr>
+    <td class="flight_show_label">Tail Number</td>
+    <td><%= link_to(@flight.tail_number, show_tail_path(@flight.tail_number), :title => "View flights on tail number #{@flight.tail_number}") %></td>
+  </tr>
+  <% end %>
+</table>
+
+<% content_for :admin_actions do %>
+  <%= link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => 'warning') %> &emsp; <%= link_to("Edit Flight", edit_flight_path(@flight)) %>
+<% end %>

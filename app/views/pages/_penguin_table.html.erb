@@ -1,0 +1,14 @@
+<table>
+	<% @penguins.each do |penguin| %>
+		<tr>
+			<td>
+				<%= link_to(image_tag("tulsa_penguins/thumb/#{penguin[0]}.jpg", :alt => penguin[1]),"images/tulsa_penguins/full/#{penguin[0]}.jpg") %>
+			</td>
+			<td>
+				<p class="penguin penguin_title"><%= penguin[1] %></p>
+				<p class="penguin penguin_loc"><%= penguin[2] %>, <%= penguin[3] %></p>
+				<p class="penguin penguin_date">Photographed <%= format_date(Date.parse(penguin[4])) %>
+			</td>
+		</tr>
+	<% end %>
+</table>

@@ -1,0 +1,13 @@
+<h1>Edit <%= @flight.airline %> <%= @flight.flight_number %></acronym></h1>
+
+<%= form_for(@flight) do |f| %>
+
+  <%= render 'error_messages' %>
+  
+  <%= render :partial => 'form_fields', :locals => { :f => f } %>
+  
+  <p>
+    <%= f.submit "Update Flight" %>
+  </p>
+
+<% end %>

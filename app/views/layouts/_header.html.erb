@@ -1,0 +1,14 @@
+<header>
+  <% logo = image_tag("Portfolio-Logo.png", :alt => "Paul Bogard", :class => "logo", :width => "318", :height => "36") %>
+  <%= link_to logo, root_path %>
+  <nav>
+    <ul>
+      <li><%= link_to "Home", root_path %></li>  
+      <li><%= link_to "Projects", projects_path %></li>
+      <li><%= link_to "Résumé", resume_path %></li>
+      <li><%= link_to "About", about_path %></li>
+      <li><%= link_to "Blog", "http://blog.pbogard.com/" %></li>
+      <li><%= link_to "Flight Log", flightlog_path %></li>
+    </ul>
+  </nav>
+</header>

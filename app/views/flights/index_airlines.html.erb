@@ -1,0 +1,34 @@
+<h1>Airlines</h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines") %></li>
+		<li><%= link_to("Operators", "#operators", :title => "Operators") %></li>
+  </ul>
+</div>
+
+<a name="airlines"></a>
+<p>I have flown on <%= pluralize(@airlines_array.count, 'airline') %>.</p>
+
+<table class="flightlog">
+  <tr>
+    <th class="airline_airline">Airline</th>
+    <th class="airline_flights">Flights</th>
+  </tr>
+<% @airlines_array.each do |airline| %>
+  <tr>
+    <td class="airline_airline graph" style="background-size: <%= (airline[:count]*300/@airlines_maximum) %>px 100%;">
+    <%= link_to(image_tag(Flight.new(:airline => airline[:airline]).airline_icon_path, :alt => airline[:airline], :class => 'airline_icon') + airline[:airline], show_airline_path(airline[:airline].gsub(" ", "_")), :title => "View flights on #{airline[:airline]}") %></td>
+    <td class="airline_flights"><%= airline[:count] %></td>
+  </tr>
+<% end %>
+  <tr><td colspan="2" class="flightlog_total"><%= pluralize(@airlines_array.count, 'airline') %></td></tr>
+</table>
+
+<a name="operators"></a>
+<h2>Operators</h2>
+
+
+<p>In many cases, an airline subcontracts another airline to operate flights for them. This happens especially often with small regional flights. This is a list of the airlines that actually operated my flights.</p>
+
+<%= render "operator_table" %>

@@ -1,0 +1,19 @@
+<h1>Edit <%= params[:airport1]%> - <%= params[:airport2] %></h1>
+
+<%= form_for(@route) do |f| %>
+
+  <%= render 'error_messages' %>
+  
+	<p>
+	  <%= f.label :distance_mi, "Distance" %><br />
+	  <%= f.text_field :distance_mi, :size => 6 %> statute miles
+	</p>
+	
+	<%= f.hidden_field :airport1_id, :value => @airport_ids[0] %>
+	<%= f.hidden_field :airport2_id, :value => @airport_ids[1] %>
+  
+  <p>
+    <%= f.submit "Submit" %>
+  </p>
+
+<% end %>

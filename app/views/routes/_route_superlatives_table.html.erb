@@ -1,0 +1,47 @@
+<% if superlatives %>
+<table class="flightlog">
+	<% if superlatives[:max].length > 0 %>
+	<tr>
+		<td class="superlative_label" rowspan="<%= superlatives[:max].length %>">Longest Route</td>
+		<%= render "routes/route_comparison_cells", :route => superlatives[:max].first %>
+	</tr>
+	<% if superlatives[:max].length > 1 %>
+	<% superlatives[:max].except(superlatives[:max].first[0]).each do |route| %>
+	<tr>
+		<%= render "routes/route_comparison_cells", :route => route %>
+	</tr>
+	<% end %>
+	<% end %>
+	<% end %>
+	
+	<% if superlatives[:min].length > 0 %>
+	<tr>
+		<td class="superlative_label" rowspan="<%= superlatives[:min].length %>">Shortest Route</td>
+		<%= render "routes/route_comparison_cells", :route => superlatives[:min].first %>
+	</tr>
+	<% if superlatives[:min].length > 1 %>
+	<% superlatives[:min].except(superlatives[:min].first[0]).each do |route| %>
+	<tr>
+		<%= render "routes/route_comparison_cells", :route => route %>
+	</tr>
+	<% end %>
+	<% end %>
+	<% end %>
+	
+	<% if superlatives[:zero].length > 0 %>
+	<tr>
+		<td class="superlative_label" rowspan="<%= superlatives[:zero].length %>">Shortest Net Distance</td>
+		<%= render "routes/route_comparison_cells", :route => superlatives[:zero].first %>
+	</tr>
+	<% if superlatives[:zero].length > 1 %>
+	<% superlatives[:zero].except(superlatives[:zero].first[0]).each do |route| %>
+	<tr>
+		<%= render "routes/route_comparison_cells", :route => route %>
+	</tr>
+	<% end %>
+	<% end %>
+	<% end %>
+</table>
+<% else %>
+<p>No superlatives are available, because none of these flight routes have a known length.</p>
+<% end %>

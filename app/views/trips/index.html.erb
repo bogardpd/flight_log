@@ -1,0 +1,20 @@
+<h1>Trips</h1>
+
+<p>I have taken <%= pluralize(@trips.length, 'trip') %> by air.</p>
+
+<%= render :partial => "trips/trip_table" %>
+
+<% if (logged_in? && @trips_with_no_flights.any?) %>
+<h2>Trips with No Flights</h2>
+<table class="flightlog">
+<% @trips_with_no_flights.each do |trip| %>
+  <tr>
+    <td class="trip_name<%= " hidden_trip" if trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+
+<% content_for :admin_actions do %>
+  <%= link_to("Add New Trip", new_trip_path) %>
+<% end %>

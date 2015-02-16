@@ -1,0 +1,47 @@
+<h1><%= @operator %> #<%= @fleet_number %></h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("Flights", "#flights", :title => "Flights on #{@operator} ##{@fleet_number}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator} ##{@fleet_number}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft operated by #{@operator} ##{@fleet_number}") %></li>
+		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@operator} ##{@fleet_number}") %></li>
+  </ul>
+</div>
+
+<a name="flights"></a>
+<p><span class="bold"><%= link_to((image_tag(Flight.new(:airline => @operator).airline_icon_path, :alt => @operator, :class => 'airline_icon') + " " + @operator).html_safe, show_operator_path(@operator), :title => "View flights operated by #{@operator}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
+
+<%= gcmap_embed(route_string(@flights)) %>
+<%= distance_block(@total_distance, 'total') %>
+<table class="flightlog">
+	<tr>
+	  <th class="flight_flight">Flight</td>
+	  <th class="flight_route">Route</td>
+	  <th class="flight_date">Departure</td>
+	  <th class="flight_aircraft">Aircraft</td>
+		<th class="flight_tail">Tail Number</td>
+	</tr>
+	<% @flights.each do |flight| %>
+		<tr>
+		  <%= render "flights/flight_cell_flight", :flight => flight %>		  
+			<%= render "flights/flight_cell_route", :flight => flight %>
+			<%= render "flights/flight_cell_departure", :flight => flight %>
+			<%= render "flights/flight_cell_aircraft", :flight => flight %>
+			<%= render "flights/flight_cell_tail", :flight => flight %>
+		</tr>
+	<% end %>
+	<tr><td colspan="5" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %></td></tr>
+</table>
+
+<a name="airlines"></a>
+<h2>Airlines with Flights Operated as <%= @operator %> #<%= @fleet_number %></h2>
+<%= render "flights/summary_airline_table" %>
+
+<a name="aircraft"></a>
+<h2>Aircraft Operated as <%= @operator %> #<%= @fleet_number %></h2>
+<%= render "summary_aircraft_table" %>
+
+<a name="classes"></a>
+<h2>Classes Flown on <%= @operator %> #<%= @fleet_number %></h2>
+<%= render "summary_travel_class_table" %>

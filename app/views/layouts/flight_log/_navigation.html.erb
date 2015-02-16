@@ -1,0 +1,82 @@
+<nav>
+  <div id="menu">
+    <div id="menu_home">
+      <ul>
+        <% if (params[:controller] == "pages" && params[:action] == "flightlog") %>
+          <li class="active">Home</li>
+        <% else %>
+          <li><%= link_to("Home", flightlog_path, :title => "View the home page of Paul Bogard's Flight Log") %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div id="menu_main">
+      <ul>
+        
+        <% if (params[:controller] == "flights" && params[:action] == "index" && params[:year].blank? && params[:start_date].blank? && params[:end_date].blank?) %>
+          <li class="active">Flights</li>
+        <% elsif (params[:controller] == "flights" && (params[:action] == "show" || params[:year].present? || params[:start_date].present? || params[:end_date].present?)) %>
+          <li><%= link_to("Flights", flights_path, :title => "View a list of Paul's flights", :class => "active")%></li>
+        <% else %>
+          <li><%= link_to("Flights", flights_path, :title => "View a list of Paul's flights")%></li>
+        <% end %>
+
+        <% if (params[:controller] == "flights" && params[:action] == "index_routes") %>
+          <li class="active">Routes</li>
+        <% elsif (params[:controller] == "flights" && params[:action] == "show_route") %>
+          <li><%= link_to("Routes", routes_path, :title => "View a list of the routes Paul has flown", :class => "active")%></li>
+        <% else %>
+          <li><%= link_to("Routes", routes_path, :title => "View a list of the routes Paul has flown")%></li>
+        <% end %>
+        
+        <% if (params[:controller] == "airports" && params[:action] == "index") %>
+          <li class="active">Airports</li>
+        <% elsif (params[:controller] == "airports" && params[:action] == "show") %>
+          <li><%= link_to("Airports", airports_path, :title => "View a list of airports Paul has visited", :class => "active")%></li>
+        <% else %>
+          <li><%= link_to("Airports", airports_path, :title => "View a list of airports Paul has visited")%></li>
+        <% end %>
+        
+        <% if (params[:controller] == "flights" && params[:action] == "index_aircraft") %>
+        <li class="active">Aircraft</li>
+        <% elsif (params[:controller] == "flights" && params[:action] == "show_aircraft") %>
+        <li><%= link_to("Aircraft", aircraft_path, :title => "View a list of the types of planes on which Paul has flown", :class => "active")%></li>
+        <% else %>
+        <li><%= link_to("Aircraft", aircraft_path, :title => "View a list of the types of planes on which Paul has flown")%></li>
+        <% end %>
+        
+        <% if (params[:controller] == "flights" && params[:action] == "index_airlines") %>
+        <li class="active">Airlines</li>
+        <% elsif (params[:controller] == "flights" && params[:action] == "show_airline") %>
+        <li><%= link_to("Airlines", airlines_path, :title => "View a list of the airlines on which Paul has flown", :class => "active")%></li>
+        <% else %>
+        <li><%= link_to("Airlines", airlines_path, :title => "View a list of the airlines on which Paul has flown")%></li>
+        <% end %>
+        
+        <% if (params[:controller] == "flights" && params[:action] == "index_tails") %>
+        <li class="active">Tails</li>
+        <% elsif (params[:controller] == "flights" && params[:action] == "show_tail") %>
+        <li><%= link_to("Tails", tails_path, :title => "View how many flights Paul has flown on each individual airplane", :class => "active")%></li>
+        <% else %>
+        <li><%= link_to("Tails", tails_path, :title => "View how many flights Paul has flown on each individual airplane")%></li>
+        <% end %>
+        
+        <% if (params[:controller] == "flights" && params[:action] == "index_classes") %>
+        <li class="active">Classes</li>
+        <% elsif (params[:controller] == "flights" && params[:action] == "show_class") %>
+        <li><%= link_to("Classes", classes_path, :title => "View how many flights Paul has flown in each class", :class => "active")%></li>
+        <% else %>
+        <li><%= link_to("Classes", classes_path, :title => "View how many flights Paul has flown in each class")%></li>
+        <% end %>
+        
+        <% if (params[:controller] == "trips" && params[:action] == "index") %>
+        <li class="active">Trips</li>
+        <% elsif (params[:controller] == "trips" && (params[:action] == "show" || params[:action] = "show_section")) %>
+        <li><%= link_to("Trips", trips_path, :title => "View a list of trips Paul has taken", :class => "active")%></li>
+        <% else %>
+        <li><%= link_to("Trips", trips_path, :title => "View a list of trips Paul has taken")%></li>
+        <% end %>
+
+      </ul>
+    </div>
+  </div>
+</nav>

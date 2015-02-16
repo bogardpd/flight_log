@@ -1,0 +1,23 @@
+<% if @operators_array.length > 0 %>
+
+<table class="flightlog">
+  <tr>
+    <th class="airline_airline">Operator</th>
+    <th class="airline_flights">Flights</th>
+  </tr>
+
+<% @operators_array.each do |operator| %>
+  <tr>
+    <td class="airline_airline graph" style="background-size: <%= (operator[:count]*300/@operators_maximum) %>px 100%;">
+    <%= link_to(image_tag(Flight.new(:airline => operator[:operator]).airline_icon_path, :alt => operator[:operator], :class => 'airline_icon') + operator[:operator], show_operator_path(operator[:operator].gsub(" ", "_")), :title => "View flights operated by #{operator[:operator]}") %></td>
+    <td class="airline_flights"><%= operator[:count] %></td>
+  </tr>
+<% end %>
+	<tr><td colspan="2" class="flightlog_total"><%= pluralize(@operators_array.count, 'operator') %></td></tr>
+</table>
+
+<% else %>
+
+<p>All flights have unknown operators.</p>
+
+<% end %>

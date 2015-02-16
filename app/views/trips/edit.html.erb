@@ -1,0 +1,13 @@
+<h1>Edit <%= @trip.name %></acronym></h1>
+
+<%= form_for(@trip) do |f| %>
+
+  <%= render 'error_messages' %>
+  
+  <%= render :partial => 'form_fields', :locals => { :f => f } %>
+  
+  <p>
+    <%= f.submit "Update Trip" %>
+  </p>
+
+<% end %>

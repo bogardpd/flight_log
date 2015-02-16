@@ -1,0 +1,13 @@
+<% if (!(params[:controller] == "pages" && params[:action] == "flightlog") && (@breadcrumbs || content_for?(:admin_actions))) %>
+<div id="breadcrumbs">
+  <% @breadcrumbs[0..-2].uniq.each do |txt, path| %>
+    <%= link_to(h(txt), path) %> &gt;
+  <% end %>
+  <span class="breadcrumb_title"><%= h(@breadcrumbs.last.first) %></span>
+	<% if (logged_in? && content_for?(:admin_actions)) %>
+  <div id="admin_actions">
+    <%= yield :admin_actions %>
+  </div>
+  <% end %>
+</div>
+<% end %>

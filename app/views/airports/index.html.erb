@@ -1,0 +1,75 @@
+<h1>Airports</h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("CONUS Airports", "#conus_airports", :title => "CONUS Airports") %></li>
+		<li><%= link_to("World Airports", "#world_airports", :title => "World Airports") %></li>
+		<li><%= link_to("CONUS Frequency", "#conus_frequency", :title => "CONUS Airport Frequency") %></li>
+		<li><%= link_to("World Frequency", "#world_frequency", :title => "World Airport Frequency") %></li>
+  </ul>
+</div>
+
+<p>I have visited <%= pluralize(@airport_array.count, 'airport') %>.</p>
+
+<a name="conus_airports"></a>
+<h2>CONUS Airports</h2>
+<p>This map shows all airports I've visited within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %>:</p>
+
+<%= gcmap_airport_embed(@airport_conus_array) %>
+
+<a name="world_airports"></a>
+<h2>World Airports</h2>
+<p>This map shows <em>all</em> airports I've visited worldwide:</p>
+
+<%= gcmap_airport_embed(@airport_array) %>
+
+<p>A layover counts as one single visit to a given airport, even though two flights use it.</p>
+
+<table class="flightlog">
+  <tr class="">
+    <th class="">City</th>
+    <th class="">Code</th>
+    <th class="">Visits</th>
+	<th class="airport_country">Country</th>
+  </tr>
+<% @airport_array.each do |airport| %>
+  <tr>
+    <td class="airport_city graph" style="background-size: <%= (airport[:frequency]*200/@airport_maximum) %>px 100%;"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+    <td class="airport_iata_code iata_mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+    <td class="airport_visits"><%= airport[:frequency] %></td>
+	<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+  </tr>
+<% end %>
+  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
+</table>
+
+<% if (logged_in? && @airports_with_no_flights.any?) %>
+<h2>Airports with No Flights</h2>
+<table class="flightlog">
+<% @airports_with_no_flights.each do |airport| %>
+  <tr>
+    <td class="airport_city"><%= link_to(airport.city, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
+    <td class="airport_iata_code iata_mono"><%= link_to(airport.iata_code, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
+	<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+
+<a name="conus_frequency"></a>
+<h2>CONUS Airport Frequency</h2>
+
+<p>This map shows how often I've visited each of the airports within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %>. Red circles represent airports, and the area of the black rings centered on the airports represents the number of times I've visited each airport.</p>
+
+<%= gcmap_airport_frequency_embed(@airport_conus_array) %>
+
+<a name="world_frequency"></a>
+<h2>World Airport Frequency</h2>
+
+<p>This map works the same way as the map above, but with all airports I've visited worldwide.</p>
+
+<%= gcmap_airport_frequency_embed(@airport_array) %>
+
+<% content_for :admin_actions do %>
+  <%= link_to("Add New Airport", new_airport_path) %>
+<% end %>

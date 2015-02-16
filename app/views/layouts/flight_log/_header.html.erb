@@ -1,0 +1,9 @@
+<header>
+  <div id="header">
+    <% logo = image_tag("Flight-Log-Logo.png", :class => "logo", :alt => "Paul Bogard's Flight Log") %>
+    <%= link_to logo, flightlog_path %>
+    <div id="portfolio_link">
+      <%= link_to("Blog", "http://blog.pbogard.com/", :title => "Paul Bogard's Blog")%> &middot; <%= link_to("Portfolio", root_path, :title => "Paul Bogard's Portfolio")%>
+    </div>
+  </div>
+</header>

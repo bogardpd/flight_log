@@ -1,0 +1,36 @@
+<h1><%= params[:tail_number] %></h1>
+
+<div class="page_navigation">
+	<ul>
+		<li><%= link_to("Flights", "#flights", :title => "Flights flown on #{params[:tail_number]}") %></li>
+		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{params[:tail_number]}") %></li>
+		<li><%= link_to("Operators", "#operators", :title => "Operators using #{params[:tail_number]}") %></li>
+		<li><%= link_to("Tracking", "#tracking", :title => "Tracking") %></li>
+  </ul>
+</div>
+
+<a name="flights"></a>
+<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family, show_aircraft_path(@flights.last.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flights.last.aircraft_family} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span> <%= pluralize(@flights.length, 'time') %>.</p>
+
+<%= gcmap_embed(route_string(@flights)) %>
+
+<%= distance_block(@total_distance, 'total') %>
+
+<%= render "flight_table" %>
+
+<a name="classes"></a>
+<h2>Classes Flown on <%= params[:tail_number] %></h2>
+
+<%= render "summary_travel_class_table" %>
+
+<a name="operators"></a>
+<h2>Operators Using <%= params[:tail_number] %></h2>
+
+<%= render "operator_table" %>
+
+<a name="tracking"></a>
+<h2>Tracking</h2>
+
+<ul>
+  <li>FlightAware: <%= link_to(params[:tail_number], "http://flightaware.com/live/flight/#{params[:tail_number]}", :title => "Track #{params[:tail_number]} on FlightAware")%></li>
+</ul>

@@ -1,0 +1,27 @@
+<h1>Hotel Internet Quality</h1>
+
+<p>Anybody who's stayed at more than a few hotels in the United States has likely noticed that the provided internet access is rarely any good.  Remote desktop software is difficult to use, Netflix and YouTube are often effectively worthless, and even browsing relatively simple websites is often an exercise in frustration.</p>
+  
+<p><%= link_to("I travel frequently", flightlog_path)%>, and after staying at a hotel with a particularly poor connection in 2010, I kept a log of bandwidth and latency at hotels I visited. I gathered data using <%= link_to("Speedtest.net", 'http://speedtest.net/') %>.</p>
+
+<h2>Bandwidth and Time of Day</h2>
+
+<p>Understanding that the root cause of the problem was likely an inadequate connection for the number of concurrent users the hotel was expecting, I theorized that the local time of day would affect the available bandwidth &mdash; peak times of day (evenings) would perform worse than off-peak times.</p>
+
+<%= photo_gallery_image("hotel_internet_quality/Bandwidth-By-Local-Time-Of-Day-Hotels.png", "Scatter plot with local time of day on the x-axis and bandwidth on the y-axis", false) %>
+
+<p>Looking at the data, it appears this theory was not quite correct &mdash; most hotels never seem to get a downstream bandwidth much above 1.0 Mbps regardless of the time of day, indicating some sort of throttling is likely at play.  However, the absolute worst data points (less than 0.1 Mbps) do tend to occur after about 17:00 (5:00 PM) daily. Even with the throttling, the hotels are still clearly overloaded at peak hours.</p>
+
+<h2>Bandwidth and Internet Fees</h2>
+
+<p>If that's the case, a hotel with fewer users ought to perform better, right?</p>
+
+<p>Some hotels still feel the need to charge separately for internet access, so those hotels would presumably have fewer internet users (some people that may have used free internet access may not be willing to pay).  Thus, there should be fewer people competing for bandwidth, and the hotel should be able to set its throttle higher.</p>
+
+<p>Again, however, this isn't quite true:</p>
+
+<%= photo_gallery_image("hotel_internet_quality/Average-Bandwidth-By-Internet-Access-Cost-Hotels.png", "Column plot with internet access cost per night on the x-axis and bandwidth on the y-axis", false) %>
+
+<p>While hotels charging for internet access tended to have marginally better upstream bandwidth, they actually performed <em>worse</em> than hotels with free access for downstream bandwidth.</p>
+
+<p>This particular data should be used with caution; I have substantially more data from free-access hotels than paid-access hotels, so the quality at a particular paid-access hotel has much more impact on the average than any particular free-access hotel.</p>

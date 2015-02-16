@@ -1,0 +1,63 @@
+<h1><%= @airports[0] %> &#x21C4; <%= @airports[1] %></h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("Flights", "#flights", :title => "Flights using #{@airports[0]} - #{@airports[1]}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airports[0]} - #{@airports[1]}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airports[0]} - #{@airports[1]}") %></li>
+		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@airports[0]} - #{@airports[1]}") %></li>
+		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections with a #{@airports[0]} - #{@airports[1]} flight") %></li>
+		<li><%= link_to("Trips", "#trips", :title => "Trips with a #{@airports[0]} - #{@airports[1]} flight") %></li>
+  </ul>
+</div>
+
+<a name="flights"></a>
+<p>I have flown between <span class="bold"><%= link_to(@airports_city[0], airport_path(@airports[0])) %></span> and <span class="bold"><%= link_to(@airports_city[1], airport_path(@airports[1])) %></span> <%= pluralize(@flights.length, 'time') %>.</p>
+
+<%= gcmap_embed(@airports[0] + "-" + @airports[1], 'labels') %>
+
+<% if @pair_distance %>
+<p class="distance">
+	<%= distance_string(@pair_distance, "per-flight") %><br/>
+	<%= distance_string(@pair_distance*@flights.length, "total") %>
+</p>
+<% end %>
+
+<%= render "flights/flight_table" %>
+
+<a name="airlines"></a>
+<h2>Airlines Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
+
+<%= render "flights/summary_airline_table" %>
+
+<a name="aircraft"></a>
+<h2>Aircraft Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
+
+<%= render "flights/summary_aircraft_table" %>
+
+<a name="classes"></a>
+<h2>Classes Flown on <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
+
+<%= render "flights/summary_travel_class_table" %>
+
+<a name="sections"></a>
+<h2>Trip Sections with a <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight</h2>
+
+<p>This map shows the flights of all of my trip sections with a segment from <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> to <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> or from <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> to <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym>.</p>
+  
+<%= gcmap_embed(route_highlight(route_string(@city_pair_section_flights),"#{@airports[0]}-#{@airports[1]}")) %>
+
+<%= render 'trips/section_table' %>
+
+<a name="trips"></a>
+<h2>Trips with a <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight</h2>
+
+<p>This map shows the flights of all of my trips with a segment from from <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> to <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> or from <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> to <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym>.</p>
+
+<%= gcmap_embed(route_highlight(route_string(@city_pair_trip_flights),"#{@airports[0]}-#{@airports[1]}")) %>
+
+<%= render 'trips/trip_table' %>
+
+<% content_for :admin_actions do %>
+  <%= link_to("Edit Route", edit_route_path(@airports[0],@airports[1])) %>
+<% end %>

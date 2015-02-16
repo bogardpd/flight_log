@@ -1,0 +1,36 @@
+<h1><%= @title %></h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("CONUS Flights", "#conus_flights", :title => "CONUS Flights") %></li>
+		<li><%= link_to("World Flights", "#world_flights", :title => "World Flights") %></li>
+  </ul>
+</div>
+
+<%= render "flight_year_links" %>
+
+<% if @flights.any? %>
+
+<p>I have been on <%= pluralize(@flights.length, 'commercial flight') %>.</p>
+
+<a name="conus_flights"></a>
+<h2>CONUS Flights</h2>
+
+<p>This map shows all commercial flights I've taken within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %> since age 18.</p>
+
+<%= gcmap_embed(route_string(@flights, "conus")) %>
+
+<a name="world_flights"></a>
+<h2>World Flights</h2>
+
+<p>This map and table show all commercial flights I've taken worldwide since age 18.</p>
+
+<%= gcmap_embed(route_string(@flights))%>
+
+<%= distance_block(@total_distance, "total") %>
+
+<%= render "flight_table" %>
+
+<% else %>
+	<p>There are no flights!</p>
+<% end %>

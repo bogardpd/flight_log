@@ -1,0 +1,9 @@
+<% if @route.errors.any? %>
+  <div class="error">
+    <ul>
+      <% @route.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
