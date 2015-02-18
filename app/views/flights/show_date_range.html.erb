@@ -53,10 +53,10 @@
     <% if @date_range.include?(Flight.airport_first_visit(airport[:id])) %>
 			<% @new_airport_flag = true %>
 			<td class="airport_city graph new" style="background-size: <%= (airport[:frequency]*200/@airport_maximum) %>px 100%;"><%= link_to(airport[:city] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-			<td class="airport_iata_code new"><%= link_to(airport[:iata_code] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+			<td class="airport_iata_code new"><%= link_to(iata_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 		<% else %>
 			<td class="airport_city graph" style="background-size: <%= (airport[:frequency]*200/@airport_maximum) %>px 100%;"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-			<td class="airport_iata_code"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+			<td class="airport_iata_code"><%= link_to(iata_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 		<% end %>
 		
     
