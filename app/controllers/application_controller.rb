@@ -120,5 +120,15 @@ protected
     route_superlatives[:zero] = route_distances.select{|k,v| v == 0}
     return route_superlatives
   end
+  
+  def superlatives(flights)
+    # This function takes a collection of flights and returns a superlatives collection.
+    route_distances = Hash.new()
+    flights.each do |flight|
+      airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
+      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1]) if route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1])
+    end
+    return superlatives_collection(route_distances)
+  end
 
 end

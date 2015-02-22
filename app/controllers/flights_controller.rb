@@ -81,7 +81,8 @@ class FlightsController < ApplicationController
       add_breadcrumb params[:year], "flights_path(:year => #{params[:year]})"
       @date_range_text = "in #{params[:year]}"
       @flight_list_title = params[:year] + " Flight List"
-      @superlatives_title = params[:year] + " Superlatives"
+      @superlatives_title = params[:year] + " Longest and Shortest Routes"
+      @superlatives_title_nav = @superlatives_title.downcase
       @title = "Flights in #{params[:year]}"
     elsif (params[:start_date].present? && params[:end_date].present?)
       if (params[:start_date] > params[:end_date])
@@ -92,7 +93,8 @@ class FlightsController < ApplicationController
       add_breadcrumb "#{format_date(params[:start_date].to_date)} - #{format_date(params[:end_date].to_date)}", "flights_path(:start_date => '#{params[:start_date]}', :end_date => '#{params[:end_date]}')"
       @date_range_text = "from #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
       @flight_list_title = "Flight List for #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
-      @superlatives_title = "Superlatives for #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
+      @superlatives_title = "Longest and Shortest Routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
+      @superlatives_title_nav = "Longest and shortest routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
       @title = "Flights: #{format_date(params[:start_date].to_date)} - #{format_date(params[:end_date].to_date)}"
     else
       raise ArgumentError.new('No date parameters were given for a date range')
@@ -119,18 +121,13 @@ class FlightsController < ApplicationController
     @airport_array = Airport.frequency_array(@flights)
     @airport_maximum = @airport_array.first[:frequency]
       
-        # Create comparitive lists of airlines and classes:
+    # Create comparitive lists of airlines and classes:
     airline_frequency(@flights)
     aircraft_frequency(@flights)
     class_frequency(@flights)
     
     # Create superlatives:
-    route_distances = Hash.new()
-    @flights.each do |flight|
-      airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
-      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1]) if route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1])
-    end
-    @route_superlatives = superlatives_collection(route_distances)
+    @route_superlatives = superlatives(@flights)
     
   rescue ArgumentError
     redirect_to flights_path
@@ -175,6 +172,9 @@ class FlightsController < ApplicationController
     # Create comparitive lists of airlines and classes:
     airline_frequency(@flights)
     class_frequency(@flights)
+    
+    # Create superlatives:
+    @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldn't find any flights on #{@aircraft_family} aircraft. Instead, we'll give you a list of aircraft."
@@ -228,6 +228,9 @@ class FlightsController < ApplicationController
     aircraft_frequency(@flights)
     class_frequency(@flights)
     
+    # Create superlatives:
+    @route_superlatives = superlatives(@flights)
+    
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldn't find any flights on #{@airline}. Instead, we'll give you a list of airlines."
     redirect_to airlines_path
@@ -250,6 +253,9 @@ class FlightsController < ApplicationController
     airline_frequency(@flights)
     aircraft_frequency(@flights)
     class_frequency(@flights)
+    
+    # Create superlatives:
+    @route_superlatives = superlatives(@flights)
     
     # Create list of fleet numbers and aircraft families:
     @fleet_family = Hash.new
@@ -286,6 +292,9 @@ class FlightsController < ApplicationController
     airline_frequency(@flights)
     aircraft_frequency(@flights)
     class_frequency(@flights)
+    
+    # Create superlatives:
+    @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldn't find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, we'll give you a list of airlines and operators."
@@ -324,6 +333,9 @@ class FlightsController < ApplicationController
     # Create comparitive lists of airlines and aircraft:
     airline_frequency(@flights)
     aircraft_frequency(@flights)
+    
+    # Create superlatives:
+    @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldn't find any flights in #{@title}. Instead, we'll give you a list of travel classes."
@@ -374,6 +386,9 @@ class FlightsController < ApplicationController
     
     # Create comparitive list of classes:
     class_frequency(@flights)
+    
+    # Create superlatives:
+    @route_superlatives = superlatives(@flights)
     
     # Create list of fleet numbers used by this tail:
     @operators_array = Array.new

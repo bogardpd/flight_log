@@ -712,7 +712,7 @@ td.hidden_trip {
 }
 
 td.new {
-	font-weight: bold;
+	font-weight: 700;
 }
 
 td.route_distance, th.route_distance {
