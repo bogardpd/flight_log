@@ -74,6 +74,38 @@ protected
     end
   end
   
+  def superlatives_collection(route_distances)
+    # accept a hash of distances in format distances[[airport1,airport2]] = distance and return a hash of hashes of superlative distances
+    return false if route_distances.length == 0
+    route_max = route_distances.max_by{|k,v| v}[1]
+    route_non_zero = route_distances.select{|k,v| v > 0}
+    route_min = route_non_zero.length > 0 ? route_non_zero.min_by{|k,v| v}[1] : route_max
+    route_superlatives = Hash.new
+    route_superlatives[:max] = route_distances.select{|k,v| v == route_max}
+    route_superlatives[:min] = route_distances.select{|k,v| v == route_min}
+    route_superlatives[:zero] = route_distances.select{|k,v| v == 0}
+    return route_superlatives
+  end
+  
+  def superlatives(flights)
+    # This function takes a collection of flights and returns a superlatives collection.
+    route_distances = Hash.new()
+    flights.each do |flight|
+      airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
+      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1]) if route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1])
+    end
+    return superlatives_collection(route_distances)
+  end
+  
+  def sort_symbol(dir)
+    if dir == :asc
+      symbol = "<span class=\"sort_symbol\">&#x25B2;</span>" # Up Triangle
+    elsif dir == :desc
+      symbol = "<span class=\"sort_symbol\">&#x25BC;</span>" # Down Triangle
+    end
+    symbol
+  end
+  
   def total_distance(flights)
     
     # Get set of airports used in flights and select all routes with at least one of those airports
@@ -108,27 +140,6 @@ protected
     
   end
   
-  def superlatives_collection(route_distances)
-    # accept a hash of distances in format distances[[airport1,airport2]] = distance and return a hash of hashes of superlative distances
-    return false if route_distances.length == 0
-    route_max = route_distances.max_by{|k,v| v}[1]
-    route_non_zero = route_distances.select{|k,v| v > 0}
-    route_min = route_non_zero.length > 0 ? route_non_zero.min_by{|k,v| v}[1] : route_max
-    route_superlatives = Hash.new
-    route_superlatives[:max] = route_distances.select{|k,v| v == route_max}
-    route_superlatives[:min] = route_distances.select{|k,v| v == route_min}
-    route_superlatives[:zero] = route_distances.select{|k,v| v == 0}
-    return route_superlatives
-  end
   
-  def superlatives(flights)
-    # This function takes a collection of flights and returns a superlatives collection.
-    route_distances = Hash.new()
-    flights.each do |flight|
-      airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
-      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1]) if route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1])
-    end
-    return superlatives_collection(route_distances)
-  end
-
+  
 end

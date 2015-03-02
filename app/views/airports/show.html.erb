@@ -38,30 +38,27 @@
 <a name="airports"></a>
 <h2>Direct Flight Airports for <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
 
-<p>These are the airports with which I've had a direct flight from or to <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+<p>These are the airports with which I've had a direct flight from or to <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
 
 <table class="flightlog">
   <tr>
-    <th class="airport_city"><%= sort_link_city_pair(:city, "city", :asc) %></th>
-    <th class="airport_iata_code"><%= sort_link_city_pair(:code, "code", :asc) %></th>
-    <th class="airport_flights"><%= sort_link_city_pair(:flights, "flights", :desc) %></th>
-		<th class="airport_distance"><%= sort_link_city_pair(:distance, "distance", :desc) %></th>
-    <th class="airport_route">Route</th>
-	<th class="airport_country">Country</th>
+    <th class="airport_country">Country</th>
+		<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports") %></th>
+    <th class="airport_iata_code"><%= sort_link("Code", :code, "code", :asc, "airports") %></th>
+		<th class="airport_distance"><%= sort_link("Distance", :distance, "distance", :desc, "airports") %></th>
+    <th class="airport_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airports") %></th>
   </tr>
 
-	<% @direct_flight_airports.each do |code,count,city| %>
+	<% @direct_flight_airports.each do |row| %>
 	  <tr>
-    
-	    <td class="airport_city"><%= link_to(city, airport_path(code)) %></td>
-	    <td class="airport_iata_code iata_mono"><%= link_to(code, airport_path(code)) %></td>
-	    <td class="airport_flights"><%= count %></td>
-			<td class="airport_distance"><% if @pair_distances[code] >= 0 %><%= number_with_delimiter(@pair_distances[code], :delimiter => ',') %> <span class="distance_unit">mi</class><% end %></td>
-	    <td class="airport_route"><%= link_to("#{iata_mono(@airport.iata_code)} &#x21C4; #{iata_mono(code)}".html_safe, route_path("#{@airport.iata_code}-#{code}")) %></td>
-		<td class="airport_country"><%= image_tag(Airport.new(:country => @pair_countries[code]).country_flag_path, :title => @pair_countries[code], :class => 'country_flag') %></td>
+    	<td class="airport_country"><%= image_tag(Airport.new(:country => row[:country]).country_flag_path, :title => row[:country], :class => 'country_flag') %></td>
+	    <td class="airport_city"><%= link_to(row[:city], airport_path(row[:iata_code])) %></td>
+	    <td class="airport_iata_code iata_mono"><%= link_to(row[:iata_code], airport_path(row[:iata_code])) %></td>
+			<td class="airport_distance"><% if row[:distance_mi] >= 0 %><%= graph_div(row[:distance_mi], @distance_maximum, @sort_cat == :distance)%><%= number_with_delimiter(row[:distance_mi], :delimiter => ',') %> <span class="distance_unit">mi</span></div><% end %></td>
+	    <td class="airport_flights"><%= graph_div(row[:total_flights], @flights_maximum, @sort_cat == :flights)%><%= link_to(row[:total_flights], route_path("#{@airport.iata_code}-#{row[:iata_code]}")) %></div></td>
 	  </tr>
 	<% end %>
-  <tr><td colspan="6" class="flightlog_total"><%= pluralize(@pair_totals.count, 'direct flight airport') %></td></tr>
+  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
 </table>
 
 <a name="airlines"></a>

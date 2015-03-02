@@ -5,8 +5,8 @@
   </tr>
 <% @airline_frequency_sorted.each do |airline, frequency| %>
   <tr>
-    <td class="airline_airline graph" style="background-size: <%= (frequency*300/@airline_frequency_maximum) %>px 100%;"><%= link_to(image_tag(Flight.new(:airline => airline).airline_icon_path, :alt => airline, :class => 'airline_icon') + airline, show_airline_path(airline.gsub(" ", "_")), :title => "View all flights on #{airline}") %></td>
-    <td class="airline_flights"><%= frequency %></td>
+    <td class="airline_airline"><%= link_to(image_tag(Flight.new(:airline => airline).airline_icon_path, :alt => airline, :class => 'airline_icon') + airline, show_airline_path(airline.gsub(" ", "_")), :title => "View all flights on #{airline}") %></td>
+    <td class="airline_flights"><%= graph_div(frequency, @airline_frequency_maximum, true) %><%= frequency %></div></td>
   </tr>
 <% end %>
   <tr><td colspan="2" class="flightlog_total"><%= pluralize(@airline_frequency_sorted.count, 'airline') %></td></tr>

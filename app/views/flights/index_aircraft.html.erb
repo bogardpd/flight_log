@@ -6,13 +6,13 @@
 
 <table class="flightlog">
   <tr>
-    <th class="aircraft_family">Aircraft Family</th>
-    <th class="aircraft_flights">Flights</th>
+    <th class="aircraft_family"><%= sort_link("Aircraft Family", :aircraft, "aircraft", :asc, nil) %></th>
+    <th class="aircraft_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
   </tr>
 <% @aircraft_array.each do |aircraft| %>
   <tr>
-    <td class="aircraft_family graph" style="background-size: <%= (aircraft[:count]*300/@aircraft_maximum) %>px 100%;"><%= link_to(aircraft[:aircraft], show_aircraft_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
-    <td class="aircraft_flights"><%= aircraft[:count] %></td>
+    <td class="aircraft_family"><%= link_to(aircraft[:aircraft], show_aircraft_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
+    <td class="aircraft_flights"><%= graph_div(aircraft[:count], @aircraft_maximum, true) %><%= aircraft[:count] %></div></td>
   </tr>
 <% end %>
   <tr><td colspan="2" class="flightlog_total"><%= pluralize(@aircraft_array.count, 'aircraft family') %></td></tr>

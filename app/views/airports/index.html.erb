@@ -2,8 +2,9 @@
 
 <div class="page_navigation">
   <ul>
-		<li><%= link_to("CONUS Airports", "#conus_airports", :title => "CONUS Airports") %></li>
-		<li><%= link_to("World Airports", "#world_airports", :title => "World Airports") %></li>
+		<li><%= link_to("CONUS Airports Map", "#conus_airports", :title => "CONUS Airports Map") %></li>
+		<li><%= link_to("World Airports Map", "#world_airports", :title => "World Airports Map") %></li>
+		<li><%= link_to("List of Airports", "#airports_list", :title => "List of Airports") %></li>
 		<li><%= link_to("CONUS Frequency", "#conus_frequency", :title => "CONUS Airport Frequency") %></li>
 		<li><%= link_to("World Frequency", "#world_frequency", :title => "World Airport Frequency") %></li>
   </ul>
@@ -12,32 +13,36 @@
 <p>I have visited <%= pluralize(@airport_array.count, 'airport') %>.</p>
 
 <a name="conus_airports"></a>
-<h2>CONUS Airports</h2>
+<h2>CONUS Airports Map</h2>
 <p>This map shows all airports I've visited within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %>:</p>
 
 <%= gcmap_airport_embed(@airport_conus_array) %>
 
 <a name="world_airports"></a>
-<h2>World Airports</h2>
+<h2>World Airports Map</h2>
 <p>This map shows <em>all</em> airports I've visited worldwide:</p>
 
 <%= gcmap_airport_embed(@airport_array) %>
 
 <p>A layover counts as one single visit to a given airport, even though two flights use it.</p>
 
+<a name="airports_list"></a>
+<h2>List of Airports</h2>
+
 <table class="flightlog">
   <tr class="">
-    <th class="">City</th>
-    <th class="">Code</th>
-    <th class="">Visits</th>
-	<th class="airport_country">Country</th>
+    <th class="airport_country"><%= sort_link("Country", :country, "country", :asc, "airports_list") %></th>
+		<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports_list") %></th>
+    <th class="airport_iata_code"><%= sort_link("Code", :code, "code", :asc, "airports_list") %></th>
+    <th class="airport_visits"><%= sort_link("Visits", :visits, "visits", :desc, "airports_list") %></th>	
   </tr>
 <% @airport_array.each do |airport| %>
   <tr>
-    <td class="airport_city graph" style="background-size: <%= (airport[:frequency]*200/@airport_maximum) %>px 100%;"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+    <td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+		<td class="airport_city"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
     <td class="airport_iata_code iata_mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-    <td class="airport_visits"><%= airport[:frequency] %></td>
-	<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+    <td class="airport_visits"><%= graph_div(airport[:frequency], @visits_maximum, @sort_cat == :visits) %><%= airport[:frequency] %></div></td>
+	
   </tr>
 <% end %>
   <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>

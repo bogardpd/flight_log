@@ -11,6 +11,32 @@ class TripsController < ApplicationController
     @trips_with_no_flights = Trip.where('id not in (?)',@trips)
     @title = "Trips"
     @meta_description = "A list of airplane trips Paul Bogard has taken."
+    
+    # Define sort symbols:
+    sort_symbol = Hash.new()
+    sort_symbol[:asc] = sort_symbol(:asc)
+    sort_symbol[:desc] = sort_symbol(:desc)
+    @category_sort_symbol = Hash.new()
+    
+    # Set values for sort:
+    case params[:sort_category]
+    when "departure"
+      @sort_cat = :departure
+    else
+      @sort_cat = :departure
+    end
+    
+    case params[:sort_direction]
+    when "asc"
+      @sort_dir = :asc
+    when "desc"
+      @sort_dir = :desc
+    else
+      @sort_dir = :desc
+    end
+    
+    @category_sort_symbol[:departure] = sort_symbol[@sort_dir]
+    @trips.reverse! if @sort_dir == :desc
   end
 
   

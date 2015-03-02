@@ -18,18 +18,28 @@
 
 <p>This map shows all commercial flights I've taken within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %> since age 18.</p>
 
-<%= gcmap_embed(route_string(@flights, "conus")) %>
+<%= gcmap_embed(route_string(@flights_unsorted, "conus")) %>
 
 <a name="world_flights"></a>
 <h2>World Flights</h2>
 
 <p>This map and table show all commercial flights I've taken worldwide since age 18.</p>
 
-<%= gcmap_embed(route_string(@flights))%>
+<%= gcmap_embed(route_string(@flights_unsorted))%>
 
 <%= distance_block(@total_distance, "total") %>
 
-<%= render "flight_table" %>
+<a name="flight_list"></a>
+
+<table class="flightlog">
+<tr>
+  <th class="flight_flight">Flight</td>
+  <th class="flight_route">Route</td>
+  <th class="flight_date"><%= sort_link("Departure", :departure, "departure", :asc, "flight_list") %></td>
+</tr>
+<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
+<%= render :partial => "flights/flight_total_row" %>
+</table>
 
 <% else %>
 	<p>There are no flights!</p>

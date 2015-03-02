@@ -270,6 +270,16 @@ div.field_with_errors label {
 	color: #CC0000;
 }
 
+div.graph {
+	width: 90px;
+	margin: 0 -3px;
+	border: 1px solid #CCCCCC;
+	padding: 0 5px;
+	background-image:url('/images/flight_log/graph-pixel.png');
+	background-position:left center;
+	background-repeat:no-repeat;
+}
+
 div.hidden_marker {
 	float: right;
 	background: #FFFF00;
@@ -558,11 +568,7 @@ td a {
 	text-shadow: 0px 1px 0px #FFFFFF;
 }
 
-td.aircraft_family {
-	width:300px;
-}
-
-th.aircraft_family {
+td.aircraft_family, th.aircraft_family {
 	text-align: left;
 }
 
@@ -570,11 +576,7 @@ td.aircraft_flights, th.aircraft_flights {
 	text-align: center;
 }
 
-td.airline_airline {
-	width:300px;
-}
-
-th.airline_airline {
+td.airline_airline, th.airline_airline {
 	text-align: left;
 }
 
@@ -615,11 +617,7 @@ td.airport_visits {
 	text-align: center;
 }
 
-td.class_class {
-	width:150px;
-}
-
-th.class_class {
+td.class_class, th.class_class {
 	text-align: left;
 }
 
@@ -701,16 +699,6 @@ td.flightlog_total span.total_percent {
 	font-weight: normal;
 }
 
-td.graph {
-	background-image:url('/images/flight_log/graph-pixel.png');
-	background-position:left center;
-	background-repeat:no-repeat;
-}
-
-td.hidden_trip {
-	
-}
-
 td.new {
 	font-weight: 700;
 }
@@ -749,16 +737,12 @@ td.tail_airline, th.tail_airline {
 	text-align: center;
 }
 
-td.tail_number {
-	width:150px;
+td.tail_number, th.tail_number {
+	text-align: left;
 }
 
 td.top_border {
 	border-top: 1px solid #385D8A !important;
-}
-
-th.tail_number {
-	text-align: left;
 }
 
 th.flight_date {

@@ -3,11 +3,6 @@
     <th class="trip_name">Trip</th>
     <th class="flight_date">Departure</th>
   </tr>
-<% @trips.each do |trip| %>
-  <tr>
-    <td class="trip_name<%= " hidden_trip" if trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for " + trip.name) %></td></td>
-    <td class="flight_date"><%= format_date(trip.flights.first.departure_date) %></td>
-  </tr>
-<% end %>
+	<%= render :partial => "trips/trip_table_body" %>
   <tr><td colspan="2" class="flightlog_total"><%= pluralize(@trips.length, 'trip') %></td></tr>
 </table>

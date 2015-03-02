@@ -12,8 +12,8 @@
 <% @aircraft_frequency_sorted.each do |aircraft, frequency| %>
   <% unless aircraft.nil? %>
   <tr>
-    <td class="aircraft_family graph" style="background-size: <%= (frequency*300/@aircraft_frequency_maximum) %>px 100%;"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
-    <td class="aircraft_flights"><%= frequency %></td>
+    <td class="aircraft_family"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
+    <td class="aircraft_flights"><%= graph_div(frequency, @aircraft_frequency_maximum, true) %><%= frequency %></div></td>
   </tr>
   <% end %>
 <% end %>

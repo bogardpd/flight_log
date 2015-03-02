@@ -13,9 +13,43 @@ class AirportsController < ApplicationController
       @flights = Flight.visitor
     end
     airport_frequency = frequency_array(@flights)
+    
+    # Set values for sort:
+    case params[:sort_category]
+    when "country"
+      @sort_cat = :country
+    when "city"
+      @sort_cat = :city
+    when "code"
+      @sort_cat = :code
+    when "visits"
+      @sort_cat = :visits
+    else
+      @sort_cat = :visits
+    end
+    
+    case params[:sort_direction]
+    when "asc"
+      @sort_dir = :asc
+    when "desc"
+      @sort_dir = :desc
+    else
+      @sort_dir = :desc
+    end
+    
+    sort_mult = (@sort_dir == :asc ? 1 : -1)
+    
+    # Define sort symbols:
+    sort_symbol = Hash.new()
+    sort_symbol[:asc] = sort_symbol(:asc)
+    sort_symbol[:desc] = sort_symbol(:desc)
+    @category_sort_symbol = Hash.new()
+    
     # Select all airports in the database with at least one flight:
     @airports = Airport.find(airport_frequency.keys)
     @airports_with_no_flights = Airport.where('id not in (?)',airport_frequency.keys)
+    
+    # Create arrays of airports:
     @airports.each do |airport|
       # Create world airport array:
       @airport_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})
@@ -24,8 +58,36 @@ class AirportsController < ApplicationController
         @airport_conus_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :frequency => airport_frequency[airport.id]})
       end
     end
-    @airport_array = @airport_array.sort_by { |airport| [-airport[:frequency], airport[:city]] }
-    @airport_maximum = @airport_array.first[:frequency]
+    
+    # Find maxima for graph scaling:
+    @visits_maximum = @airport_array.max_by{|i| i[:frequency]}[:frequency]
+    
+    # Sort route table:
+    @category_sort_symbol[:country] = ""
+    @category_sort_symbol[:city] = ""
+    @category_sort_symbol[:code] = ""
+    @category_sort_symbol[:visits] = ""
+    case @sort_cat
+    when :country
+      if @sort_dir == :asc
+        @airport_array = @airport_array.sort_by {|airport| [airport[:country], airport[:city]]}
+      else
+        @airport_array = @airport_array.sort {|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
+      end
+      @category_sort_symbol[:country] = sort_symbol[@sort_dir]
+    when :city
+      @airport_array = @airport_array.sort_by {|airport| airport[:city]}
+      @airport_array.reverse! if @sort_dir == :desc
+      @category_sort_symbol[:city] = sort_symbol[@sort_dir]
+    when :code
+      @airport_array = @airport_array.sort_by {|airport| airport[:iata_code]}
+      @airport_array.reverse! if @sort_dir == :desc
+      @category_sort_symbol[:code] = sort_symbol[@sort_dir]
+    when :visits
+      @airport_array = @airport_array.sort_by { |airport| [sort_mult*airport[:frequency], airport[:city]] }
+      @category_sort_symbol[:visits] = sort_symbol[@sort_dir]
+    end
+    
   end
   
   
@@ -64,8 +126,8 @@ class AirportsController < ApplicationController
     
     # Define sort symbols:
     sort_symbol = Hash.new()
-    sort_symbol[:asc] = "<span class=\"sort_symbol\">&#x25B2;</span>" # Up Triangle
-    sort_symbol[:desc] = "<span class=\"sort_symbol\">&#x25BC;</span>" # Down Triangle
+    sort_symbol[:asc] = sort_symbol(:asc)
+    sort_symbol[:desc] = sort_symbol(:desc)
     @category_sort_symbol = Hash.new()    
     
     @flights = @airport.all_flights(logged_in?)
@@ -73,10 +135,10 @@ class AirportsController < ApplicationController
     trip_array = Array.new
     @sections = Array.new
     section_where_array = Array.new
-    @pair_totals = Hash.new(0)
-    @pair_cities = Hash.new
-    @pair_countries = Hash.new
-    @pair_distances = Hash.new
+    pair_totals = Hash.new(0)
+    pair_cities = Hash.new
+    pair_countries = Hash.new
+    pair_distances = Hash.new
     @direct_flight_airports = Array.new
     prev_trip_id = nil
     prev_section_id = nil
@@ -91,15 +153,15 @@ class AirportsController < ApplicationController
       
       # Create hash of the other airports on flights to/from this airport and their counts
       if (flight.origin_airport.iata_code == @airport.iata_code)
-        @pair_totals[flight.destination_airport.iata_code] += 1
-        @pair_cities[flight.destination_airport.iata_code] = flight.destination_airport.city
-        @pair_countries[flight.destination_airport.iata_code] = flight.destination_airport.country
-        @pair_distances[flight.destination_airport.iata_code] = route_distance_by_iata(flight.origin_airport.iata_code,flight.destination_airport.iata_code) || -1
+        pair_totals[flight.destination_airport.iata_code] += 1
+        pair_cities[flight.destination_airport.iata_code] = flight.destination_airport.city
+        pair_countries[flight.destination_airport.iata_code] = flight.destination_airport.country
+        pair_distances[flight.destination_airport.iata_code] = route_distance_by_iata(flight.origin_airport.iata_code,flight.destination_airport.iata_code) || -1
       else
-        @pair_totals[flight.origin_airport.iata_code] += 1
-        @pair_cities[flight.origin_airport.iata_code] = flight.origin_airport.city
-        @pair_countries[flight.origin_airport.iata_code] = flight.origin_airport.country
-        @pair_distances[flight.origin_airport.iata_code] = route_distance_by_iata(flight.origin_airport.iata_code,flight.destination_airport.iata_code) || -1
+        pair_totals[flight.origin_airport.iata_code] += 1
+        pair_cities[flight.origin_airport.iata_code] = flight.origin_airport.city
+        pair_countries[flight.origin_airport.iata_code] = flight.origin_airport.country
+        pair_distances[flight.origin_airport.iata_code] = route_distance_by_iata(flight.origin_airport.iata_code,flight.destination_airport.iata_code) || -1
       end
     end
     trip_array = trip_array.uniq.sort
@@ -108,12 +170,16 @@ class AirportsController < ApplicationController
     @trips_using_airport_flights = Flight.where(:trip_id => trip_array)
     @sections_using_airport_flights = Flight.where(section_where_array.join(' OR '))
     @airport_frequency = frequency_array(@trips_using_airport_flights)
-    @pair_maximum = @pair_totals.length > 0 ? @pair_totals.values.max : 1
+    @pair_maximum = pair_totals.length > 0 ? pair_totals.values.max : 1
     
     # Create direct flight airport array sorted by count descending, city ascending:
-    @pair_totals.each do |airport, count|
-      @direct_flight_airports << [airport, count, @pair_cities[airport], @pair_distances[airport]]
+    pair_totals.each do |airport, count|
+      @direct_flight_airports << {:iata_code => airport, :total_flights => count, :city => pair_cities[airport], :distance_mi => pair_distances[airport], :country => pair_countries[airport]}
     end
+    
+    # Find maxima for graph scaling:
+    @flights_maximum = @direct_flight_airports.max_by{|i| i[:total_flights].to_i}[:total_flights]
+    @distance_maximum = @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
     
     # Sort city pair table:
     @category_sort_symbol[:city] = ""
@@ -122,18 +188,18 @@ class AirportsController < ApplicationController
     @category_sort_symbol[:flights] = ""
     case @sort_cat
     when :city
-      @direct_flight_airports = @direct_flight_airports.sort_by {|code,count,city,distance| city}
+      @direct_flight_airports = @direct_flight_airports.sort_by {|value| value[:city]}
       @direct_flight_airports.reverse! if @sort_dir == :desc
       @category_sort_symbol[:city] = sort_symbol[@sort_dir]
     when :code
-      @direct_flight_airports = @direct_flight_airports.sort_by {|code,count,city,distance| code}
+      @direct_flight_airports = @direct_flight_airports.sort_by {|value| value[:iata_code]}
       @direct_flight_airports.reverse! if @sort_dir == :desc
       @category_sort_symbol[:code] = sort_symbol[@sort_dir]
     when :flights
-      @direct_flight_airports = @direct_flight_airports.sort_by {|code,count,city,distance| [sort_mult*count,city]}
+      @direct_flight_airports = @direct_flight_airports.sort_by {|value| [sort_mult*value[:total_flights],value[:city]]}
       @category_sort_symbol[:flights] = sort_symbol[@sort_dir]
     when :distance
-      @direct_flight_airports = @direct_flight_airports.sort_by {|code,count,city,distance| [sort_mult*distance,city]}
+      @direct_flight_airports = @direct_flight_airports.sort_by {|value| [sort_mult*value[:distance_mi],value[:city]]}
       @category_sort_symbol[:distance] = sort_symbol[@sort_dir]
     end
     

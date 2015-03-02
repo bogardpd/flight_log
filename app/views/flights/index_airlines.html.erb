@@ -12,14 +12,14 @@
 
 <table class="flightlog">
   <tr>
-    <th class="airline_airline">Airline</th>
-    <th class="airline_flights">Flights</th>
+    <th class="airline_airline"><%= sort_link("Airline", :airline, "airline", :asc, "airlines") %></th>
+    <th class="airline_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airlines") %></th>
   </tr>
 <% @airlines_array.each do |airline| %>
   <tr>
-    <td class="airline_airline graph" style="background-size: <%= (airline[:count]*300/@airlines_maximum) %>px 100%;">
+    <td class="airline_airline">
     <%= link_to(image_tag(Flight.new(:airline => airline[:airline]).airline_icon_path, :alt => airline[:airline], :class => 'airline_icon') + airline[:airline], show_airline_path(airline[:airline].gsub(" ", "_")), :title => "View flights on #{airline[:airline]}") %></td>
-    <td class="airline_flights"><%= airline[:count] %></td>
+    <td class="airline_flights"><%= graph_div(airline[:count], @airlines_maximum, @sort_cat == :flights) %><%= airline[:count] %></div></td>
   </tr>
 <% end %>
   <tr><td colspan="2" class="flightlog_total"><%= pluralize(@airlines_array.count, 'airline') %></td></tr>
@@ -31,4 +31,25 @@
 
 <p>In many cases, an airline subcontracts another airline to operate flights for them. This happens especially often with small regional flights. This is a list of the airlines that actually operated my flights.</p>
 
-<%= render "operator_table" %>
+<% if @operators_array.length > 0 %>
+
+<table class="flightlog">
+  <tr>
+    <th class="airline_airline"><%= sort_link("Operator", :airline, "airline", :asc, "operators") %></th>
+    <th class="airline_flights"><%= sort_link("Flights", :flights, "flights", :desc, "operators") %></th>
+  </tr>
+<% @operators_array.each do |operator| %>
+  <tr>
+    <td class="airline_airline">
+    <%= link_to(image_tag(Flight.new(:airline => operator[:operator]).airline_icon_path, :alt => operator[:operator], :class => 'airline_icon') + operator[:operator], show_operator_path(operator[:operator].gsub(" ", "_")), :title => "View flights operated by #{operator[:operator]}") %></td>
+    <td class="airline_flights"><%= graph_div(operator[:count], @operators_maximum, @sort_cat == :flights) %><%= operator[:count] %></div></td>
+  </tr>
+<% end %>
+	<tr><td colspan="2" class="flightlog_total"><%= pluralize(@operators_array.count, 'operator') %></td></tr>
+</table>
+
+<% else %>
+
+<p>All flights have unknown operators.</p>
+
+<% end %>

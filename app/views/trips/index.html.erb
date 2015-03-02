@@ -2,7 +2,14 @@
 
 <p>I have taken <%= pluralize(@trips.length, 'trip') %> by air.</p>
 
-<%= render :partial => "trips/trip_table" %>
+<table class="flightlog">
+  <tr>
+    <th class="trip_name">Trip</th>
+    <th class="flight_date"><%= sort_link("Departure", :departure, "departure", :desc, nil) %></th>
+  </tr>
+	<%= render :partial => "trips/trip_table_body" %>
+  <tr><td colspan="2" class="flightlog_total"><%= pluralize(@trips.length, 'trip') %></td></tr>
+</table>
 
 <% if (logged_in? && @trips_with_no_flights.any?) %>
 <h2>Trips with No Flights</h2>

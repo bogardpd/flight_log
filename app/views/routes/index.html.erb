@@ -7,14 +7,14 @@
 <table class="flightlog">
   <tr>
     <th class="route_route">Route</th>
-		<th class="route_distance"><%= link_to(["Distance",@category_sort_symbol[:distance]].join(" ").html_safe, sort_routes_path("distance", @sort_cat == :distance && @sort_dir == :desc ? "asc" : "desc"), :class => "sort") %></th>
-    <th class="route_flights"><%= link_to(["Flights",@category_sort_symbol[:flights]].join(" ").html_safe, sort_routes_path("flights", @sort_cat == :flights && @sort_dir == :desc ? "asc" : "desc"), :class => "sort") %></th>
+		<th class="route_distance"><%= sort_link("Distance", :distance, "distance", :desc, nil) %></th>
+    <th class="route_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
   </tr>
 <% @route_table.each do |row| %>
   <tr>
     <td class="route_route"><%= link_to(iata_mono(row[:route].sub('-',"</span> &#x21C4; <span class=\"iata_mono\">")), route_path(row[:route]), :title => "View flights between #{row[:route].split('-')[0]} and #{row[:route].split('-')[1]}") %></td>
-    <td class="route_distance"><% if row[:distance_mi] >= 0 %><%= number_with_delimiter(row[:distance_mi], :delimiter => ',') %> <span class="distance_unit">mi</class><% end %></td>
-		<td class="route_flights"><%= row[:total_flights] %></td>
+    <td class="route_distance"><% if row[:distance_mi] >= 0 %><%= graph_div(row[:distance_mi], @distance_maximum, @sort_cat == :distance) %><%= number_with_delimiter(row[:distance_mi], :delimiter => ',') %> <span class="distance_unit">mi</class></div><% end %></td>
+		<td class="route_flights"><%= graph_div(row[:total_flights], @flights_maximum, @sort_cat == :flights) %><%= row[:total_flights] %></div></td>
   </tr>
 <% end %>
   <tr><td colspan="3" class="flightlog_total"><%= pluralize(@route_table.count, 'route') %></td></tr>

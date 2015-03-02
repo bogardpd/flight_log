@@ -52,6 +52,15 @@ module ApplicationHelper
     html.html_safe
   end
   
+  def graph_div(value, max_value, enabled)
+    if enabled
+      html = "<div class=\"graph\" style=\"background-size: #{value*100/max_value}px 100%;\">"
+    else
+      html = "<div>"
+    end
+    html.html_safe
+  end
+  
   def iata_mono(code)
     html = "<span class=\"iata_mono\">" + code + "</span>"
     html.html_safe
@@ -87,5 +96,15 @@ module ApplicationHelper
   
   def format_date(input_date) # Also see method in application controller
     input_date.strftime("%e %b %Y")
+  end
+  
+  def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
+    case default_dir
+    when :asc
+      sort_dir_string = ['desc','asc']
+    else
+      sort_dir_string = ['asc','desc']
+    end
+    link_to([title_string,@category_sort_symbol[sort_symbol]].join(" ").html_safe, url_for(:sort_category => sort_string, :sort_direction => (@sort_cat == sort_symbol && @sort_dir == default_dir ? sort_dir_string[0] : sort_dir_string[1]), :anchor => page_anchor), :class => "sort")
   end
 end

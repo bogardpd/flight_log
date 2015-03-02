@@ -15,27 +15,29 @@ class RoutesController < ApplicationController
     
     # Set values for sort:
     case params[:sort_category]
-      when "flights"
-        @sort_cat = :flights
-      when "distance"
-        @sort_cat = :distance
-      else
-        @sort_cat = :flights
+    when "flights"
+      @sort_cat = :flights
+    when "distance"
+      @sort_cat = :distance
+    else
+      @sort_cat = :flights
     end
+    
     case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :desc
+    when "asc"
+      @sort_dir = :asc
+    when "desc"
+      @sort_dir = :desc
+    else
+      @sort_dir = :desc
     end
+    
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
     # Define sort symbols:
     sort_symbol = Hash.new()
-    sort_symbol[:asc] = "<span class=\"sort_symbol\">&#x25B2;</span>" # Up Triangle
-    sort_symbol[:desc] = "<span class=\"sort_symbol\">&#x25BC;</span>" # Down Triangle
+    sort_symbol[:asc] = sort_symbol(:asc)
+    sort_symbol[:desc] = sort_symbol(:desc)
     @category_sort_symbol = Hash.new()
     
     # Build hash of distances:
@@ -64,6 +66,10 @@ class RoutesController < ApplicationController
     route_totals.each do |flight_route, count|
       @route_table << {:route => flight_route, :distance_mi => distances[flight_route] || -1, :total_flights => count} # Make nil distances negative so we can sort
     end
+    
+    # Find maxima for graph scaling:
+    @flights_maximum = @route_table.max_by{|i| i[:total_flights].to_i}[:total_flights]
+    @distance_maximum = @route_table.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
     
     # Sort route table:
     if @sort_cat == :flights

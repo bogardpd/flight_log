@@ -64,14 +64,6 @@ module AirportsHelper
     html.html_safe
   end
   
-  def sort_link_city_pair(sort_symbol, sort_string, default_dir)
-    case default_dir
-    when :asc
-      sort_dir_string = ['desc','asc']
-    else
-      sort_dir_string = ['asc','desc']
-    end    
-    link_to([sort_string.capitalize,@category_sort_symbol[sort_symbol]].join(" ").html_safe, sort_airport_path(@airport.iata_code, sort_string.downcase, @sort_cat == sort_symbol && @sort_dir == default_dir ? sort_dir_string[0] : sort_dir_string[1], :anchor => "airports"), :class => "sort")
-  end
+  
   
 end

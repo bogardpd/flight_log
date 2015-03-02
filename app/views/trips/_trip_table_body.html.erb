@@ -1,0 +1,6 @@
+<% @trips.each do |trip| %>
+  <tr>
+    <td class="trip_name<%= " hidden_trip" if trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for " + trip.name) %></td></td>
+    <td class="flight_date"><%= format_date(trip.flights.first.departure_date) %></td>
+  </tr>
+<% end %>
