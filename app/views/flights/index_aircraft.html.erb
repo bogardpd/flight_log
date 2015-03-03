@@ -12,7 +12,7 @@
 <% @aircraft_array.each do |aircraft| %>
   <tr>
     <td class="aircraft_family"><%= link_to(aircraft[:aircraft], show_aircraft_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
-    <td class="aircraft_flights"><%= graph_div(aircraft[:count], @aircraft_maximum, true) %><%= aircraft[:count] %></div></td>
+    <td class="aircraft_flights"><%= graph_div(aircraft[:count], @aircraft_maximum, @sort_cat == :flights) %><%= aircraft[:count] %></div></td>
   </tr>
 <% end %>
   <tr><td colspan="2" class="flightlog_total"><%= pluralize(@aircraft_array.count, 'aircraft family') %></td></tr>

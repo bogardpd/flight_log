@@ -39,12 +39,6 @@ class AirportsController < ApplicationController
     
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    # Define sort symbols:
-    sort_symbol = Hash.new()
-    sort_symbol[:asc] = sort_symbol(:asc)
-    sort_symbol[:desc] = sort_symbol(:desc)
-    @category_sort_symbol = Hash.new()
-    
     # Select all airports in the database with at least one flight:
     @airports = Airport.find(airport_frequency.keys)
     @airports_with_no_flights = Airport.where('id not in (?)',airport_frequency.keys)
@@ -63,10 +57,6 @@ class AirportsController < ApplicationController
     @visits_maximum = @airport_array.max_by{|i| i[:frequency]}[:frequency]
     
     # Sort route table:
-    @category_sort_symbol[:country] = ""
-    @category_sort_symbol[:city] = ""
-    @category_sort_symbol[:code] = ""
-    @category_sort_symbol[:visits] = ""
     case @sort_cat
     when :country
       if @sort_dir == :asc
@@ -74,18 +64,14 @@ class AirportsController < ApplicationController
       else
         @airport_array = @airport_array.sort {|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
       end
-      @category_sort_symbol[:country] = sort_symbol[@sort_dir]
     when :city
       @airport_array = @airport_array.sort_by {|airport| airport[:city]}
       @airport_array.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:city] = sort_symbol[@sort_dir]
     when :code
       @airport_array = @airport_array.sort_by {|airport| airport[:iata_code]}
       @airport_array.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:code] = sort_symbol[@sort_dir]
     when :visits
       @airport_array = @airport_array.sort_by { |airport| [sort_mult*airport[:frequency], airport[:city]] }
-      @category_sort_symbol[:visits] = sort_symbol[@sort_dir]
     end
     
   end
@@ -123,12 +109,6 @@ class AirportsController < ApplicationController
       @sort_dir = :desc
     end
     sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
-    # Define sort symbols:
-    sort_symbol = Hash.new()
-    sort_symbol[:asc] = sort_symbol(:asc)
-    sort_symbol[:desc] = sort_symbol(:desc)
-    @category_sort_symbol = Hash.new()    
     
     @flights = @airport.all_flights(logged_in?)
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
@@ -182,25 +162,17 @@ class AirportsController < ApplicationController
     @distance_maximum = @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
     
     # Sort city pair table:
-    @category_sort_symbol[:city] = ""
-    @category_sort_symbol[:code] = ""
-    @category_sort_symbol[:distance] = ""
-    @category_sort_symbol[:flights] = ""
     case @sort_cat
     when :city
       @direct_flight_airports = @direct_flight_airports.sort_by {|value| value[:city]}
       @direct_flight_airports.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:city] = sort_symbol[@sort_dir]
     when :code
       @direct_flight_airports = @direct_flight_airports.sort_by {|value| value[:iata_code]}
       @direct_flight_airports.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:code] = sort_symbol[@sort_dir]
     when :flights
       @direct_flight_airports = @direct_flight_airports.sort_by {|value| [sort_mult*value[:total_flights],value[:city]]}
-      @category_sort_symbol[:flights] = sort_symbol[@sort_dir]
     when :distance
       @direct_flight_airports = @direct_flight_airports.sort_by {|value| [sort_mult*value[:distance_mi],value[:city]]}
-      @category_sort_symbol[:distance] = sort_symbol[@sort_dir]
     end
     
     # Create comparitive lists of airlines, aircraft, and classes:

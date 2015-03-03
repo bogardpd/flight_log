@@ -34,12 +34,6 @@ class RoutesController < ApplicationController
     
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    # Define sort symbols:
-    sort_symbol = Hash.new()
-    sort_symbol[:asc] = sort_symbol(:asc)
-    sort_symbol[:desc] = sort_symbol(:desc)
-    @category_sort_symbol = Hash.new()
-    
     # Build hash of distances:
     distances = Hash.new(nil)
     dist_airport_alphabetize = Array.new()
@@ -74,12 +68,8 @@ class RoutesController < ApplicationController
     # Sort route table:
     if @sort_cat == :flights
       @route_table = @route_table.sort_by {|value| [sort_mult*value[:total_flights], -value[:distance_mi]]}
-      @category_sort_symbol[:flights] = sort_symbol[@sort_dir]
-      @category_sort_symbol[:distance] = ""
     elsif @sort_cat == :distance
       @route_table = @route_table.sort_by {|value| [sort_mult*value[:distance_mi], -value[:total_flights]]}
-      @category_sort_symbol[:distance] = sort_symbol[@sort_dir]
-      @category_sort_symbol[:flights] = ""
     end
    
   end

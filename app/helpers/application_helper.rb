@@ -99,12 +99,23 @@ module ApplicationHelper
   end
   
   def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
+        
+    if @sort_cat == sort_symbol
+      if @sort_dir == :asc
+        category_sort_symbol = "<span class=\"sort_symbol\">&#x25B2;</span>" # Up Triangle
+      elsif @sort_dir == :desc
+        category_sort_symbol = "<span class=\"sort_symbol\">&#x25BC;</span>" # Down Triangle
+      end
+    else
+      category_sort_symbol = ""
+    end
+    
     case default_dir
     when :asc
       sort_dir_string = ['desc','asc']
     else
       sort_dir_string = ['asc','desc']
     end
-    link_to([title_string,@category_sort_symbol[sort_symbol]].join(" ").html_safe, url_for(:sort_category => sort_string, :sort_direction => (@sort_cat == sort_symbol && @sort_dir == default_dir ? sort_dir_string[0] : sort_dir_string[1]), :anchor => page_anchor), :class => "sort")
+    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(:sort_category => sort_string, :sort_direction => ((@sort_cat == sort_symbol && @sort_dir == default_dir) ? sort_dir_string[0] : sort_dir_string[1]), :anchor => page_anchor), :class => "sort")
   end
 end

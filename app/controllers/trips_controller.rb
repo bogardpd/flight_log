@@ -12,12 +12,6 @@ class TripsController < ApplicationController
     @title = "Trips"
     @meta_description = "A list of airplane trips Paul Bogard has taken."
     
-    # Define sort symbols:
-    sort_symbol = Hash.new()
-    sort_symbol[:asc] = sort_symbol(:asc)
-    sort_symbol[:desc] = sort_symbol(:desc)
-    @category_sort_symbol = Hash.new()
-    
     # Set values for sort:
     case params[:sort_category]
     when "departure"
@@ -35,7 +29,6 @@ class TripsController < ApplicationController
       @sort_dir = :desc
     end
     
-    @category_sort_symbol[:departure] = sort_symbol[@sort_dir]
     @trips.reverse! if @sort_dir == :desc
   end
 

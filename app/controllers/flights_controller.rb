@@ -47,16 +47,8 @@ class FlightsController < ApplicationController
     
     @flights_unsorted = @flights
     
-    # Define sort symbols:
-    sort_symbol = Hash.new()
-    sort_symbol[:asc] = sort_symbol(:asc)
-    sort_symbol[:desc] = sort_symbol(:desc)
-    @category_sort_symbol = Hash.new()
-    
     # Sort flight table:
-    @category_sort_symbol[:departure] = ""
     @flights.reverse! if @sort_dir == :desc
-    @category_sort_symbol[:departure] = sort_symbol[@sort_dir]
     
   end
   
@@ -202,12 +194,6 @@ class FlightsController < ApplicationController
     
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    # Define sort symbols:
-    sort_symbol = Hash.new()
-    sort_symbol[:asc] = sort_symbol(:asc)
-    sort_symbol[:desc] = sort_symbol(:desc)
-    @category_sort_symbol = Hash.new()
-    
     @aircraft_array = Array.new
     @flight_aircraft.each do |aircraft, count| 
       @aircraft_array.push({:aircraft => aircraft, :count => count})
@@ -217,16 +203,12 @@ class FlightsController < ApplicationController
     @aircraft_maximum = @aircraft_array.max_by{|i| i[:count]}[:count]
     
     # Sort aircraft table:
-    @category_sort_symbol[:aircraft] = ""
-    @category_sort_symbol[:flights] = ""
     case @sort_cat
     when :aircraft
       @aircraft_array = @aircraft_array.sort_by { |aircraft| aircraft[:aircraft] }
       @aircraft_array.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:aircraft] = sort_symbol[@sort_dir]
     when :flights
       @aircraft_array = @aircraft_array.sort_by { |aircraft| [sort_mult*aircraft[:count], aircraft[:aircraft]] }
-      @category_sort_symbol[:flights] = sort_symbol[@sort_dir]
     end
      
   end
@@ -290,12 +272,6 @@ class FlightsController < ApplicationController
     
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    # Define sort symbols:
-    sort_symbol = Hash.new()
-    sort_symbol[:asc] = sort_symbol(:asc)
-    sort_symbol[:desc] = sort_symbol(:desc)
-    @category_sort_symbol = Hash.new()
-    
     # Prepare airline list:
     @airlines_array = Array.new
     @flight_airlines.each do |airline, count| 
@@ -313,19 +289,15 @@ class FlightsController < ApplicationController
     @operators_maximum = @operators_array.max_by{|i| i[:count]}[:count]
     
     # Sort airline and operator tables:
-    @category_sort_symbol[:airline] = ""
-    @category_sort_symbol[:flights] = ""
     case @sort_cat
     when :airline
       @airlines_array = @airlines_array.sort_by { |airline| airline[:airline] }
       @operators_array = @operators_array.sort_by { |operator| operator[:operator] }
       @airlines_array.reverse! if @sort_dir == :desc
       @operators_array.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:airline] = sort_symbol[@sort_dir]
     when :flights
       @airlines_array = @airlines_array.sort_by { |airline| [sort_mult*airline[:count], airline[:airline]] }
       @operators_array = @operators_array.sort_by { |operator| [sort_mult*operator[:count], operator[:operator]] }
-      @category_sort_symbol[:visits] = sort_symbol[@sort_dir]
     end
   end
     
@@ -497,12 +469,6 @@ class FlightsController < ApplicationController
     
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    # Define sort symbols:
-    sort_symbol = Hash.new()
-    sort_symbol[:asc] = sort_symbol(:asc)
-    sort_symbol[:desc] = sort_symbol(:desc)
-    @category_sort_symbol = Hash.new()
-    
     # Create tail number count array    
     tails_count = Array.new
     @flight_tail_numbers.each do |tail_number, count| 
@@ -527,26 +493,18 @@ class FlightsController < ApplicationController
     @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
     
     # Sort tails table:
-    @category_sort_symbol[:tail] = ""
-    @category_sort_symbol[:flights] = ""
-    @category_sort_symbol[:aircraft] = ""
-    @category_sort_symbol[:airline] = ""
     case @sort_cat
     when :tail
       @tail_numbers_table = @tail_numbers_table.sort_by {|tail| tail[:tail_number]}
       @tail_numbers_table.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:tail] = sort_symbol[@sort_dir]
     when :flights
       @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [sort_mult*tail[:count], tail[:tail_number]]}
-      @category_sort_symbol[:flights] = sort_symbol[@sort_dir]
     when :aircraft
       @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:aircraft], tail[:airline]]}
       @tail_numbers_table.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:aircraft] = sort_symbol[@sort_dir]
     when :airline
       @tail_numbers_table = @tail_numbers_table.sort_by { |tail| [tail[:airline], tail[:aircraft]]}
       @tail_numbers_table.reverse! if @sort_dir == :desc
-      @category_sort_symbol[:airline] = sort_symbol[@sort_dir]
     end
     
     

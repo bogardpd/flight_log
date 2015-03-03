@@ -97,15 +97,6 @@ protected
     return superlatives_collection(route_distances)
   end
   
-  def sort_symbol(dir)
-    if dir == :asc
-      symbol = "<span class=\"sort_symbol\">&#x25B2;</span>" # Up Triangle
-    elsif dir == :desc
-      symbol = "<span class=\"sort_symbol\">&#x25BC;</span>" # Down Triangle
-    end
-    symbol
-  end
-  
   def total_distance(flights)
     
     # Get set of airports used in flights and select all routes with at least one of those airports
