@@ -60,7 +60,7 @@
 		<% end %>
 		
     
-    <td class="airport_visits"><%= graph_div(airport[:frequency], @airport_maximum, true) %><%= airport[:frequency] %></div></td>
+    <td class="airport_visits"><%= render "graph_block", :value => airport[:frequency], :maximum => @airport_maximum %></td>
 	<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
   </tr>
 <% end %>
@@ -93,7 +93,7 @@
 		<% else %>
 			<td class="aircraft_family"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
 		<% end %>
-    <td class="aircraft_flights"><%= graph_div(frequency, @aircraft_frequency_maximum, true) %><%= frequency %></div></td>
+    <td class="aircraft_flights"><%= render "graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
   </tr>
   <% end %>
 <% end %>
@@ -128,7 +128,7 @@
 		<% else %>
 			<td class="airline_airline"><%= link_to(image_tag(Flight.new(:airline => airline).airline_icon_path, :alt => airline, :class => 'airline_icon') + airline, show_airline_path(airline.gsub(" ", "_")), :title => "View all flights on #{airline}") %></td>
 		<% end %>
-    <td class="airline_flights"><%= graph_div(frequency, @airline_frequency_maximum, true) %><%= frequency %></div></td>
+    <td class="airline_flights"><%= render "graph_block", :value => frequency, :maximum => @airline_frequency_maximum %></td>
   </tr>
 <% end %>
   <tr><td colspan="2" class="flightlog_total"><%= pluralize(@airline_frequency_sorted.count, 'airline') %></td></tr>
