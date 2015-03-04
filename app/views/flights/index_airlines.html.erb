@@ -19,7 +19,7 @@
   <tr>
     <td class="airline_airline">
     <%= link_to(image_tag(Flight.new(:airline => airline[:airline]).airline_icon_path, :alt => airline[:airline], :class => 'airline_icon') + airline[:airline], show_airline_path(airline[:airline].gsub(" ", "_")), :title => "View flights on #{airline[:airline]}") %></td>
-    <td class="airline_flights"><%= graph_div(airline[:count], @airlines_maximum, @sort_cat == :flights) %><%= airline[:count] %></div></td>
+    <td class="airline_flights"><%= render "graph_block", :value => airline[:count], :maximum => @airlines_maximum %></td>
   </tr>
 <% end %>
   <tr><td colspan="2" class="flightlog_total"><%= pluralize(@airlines_array.count, 'airline') %></td></tr>
@@ -42,7 +42,7 @@
   <tr>
     <td class="airline_airline">
     <%= link_to(image_tag(Flight.new(:airline => operator[:operator]).airline_icon_path, :alt => operator[:operator], :class => 'airline_icon') + operator[:operator], show_operator_path(operator[:operator].gsub(" ", "_")), :title => "View flights operated by #{operator[:operator]}") %></td>
-    <td class="airline_flights"><%= graph_div(operator[:count], @operators_maximum, @sort_cat == :flights) %><%= operator[:count] %></div></td>
+    <td class="airline_flights"><%= render "graph_block", :value => operator[:count], :maximum => @operators_maximum %></td>
   </tr>
 <% end %>
 	<tr><td colspan="2" class="flightlog_total"><%= pluralize(@operators_array.count, 'operator') %></td></tr>

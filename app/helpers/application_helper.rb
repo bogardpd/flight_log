@@ -52,15 +52,6 @@ module ApplicationHelper
     html.html_safe
   end
   
-  def graph_div(value, max_value, enabled)
-    if enabled
-      html = "<div class=\"graph\" style=\"background-size: #{value*100/max_value}px 100%;\">"
-    else
-      html = "<div>"
-    end
-    html.html_safe
-  end
-  
   def iata_mono(code)
     html = "<span class=\"iata_mono\">" + code + "</span>"
     html.html_safe

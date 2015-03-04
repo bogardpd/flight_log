@@ -12,7 +12,7 @@
 <% @tail_numbers_table.each do |tail| %>
   <tr>
     <td class="tail_number"><%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
-    <td class="tail_flights"><%= graph_div(tail[:count], @flights_maximum, @sort_cat == :flights) %><%= tail[:count] %></div></td>
+    <td class="tail_flights"><%= render "graph_block", :value => tail[:count], :maximum => @flights_maximum %></td>
     <td class="tail_aircraft"><%= tail[:aircraft] %></td>
     <td class="tail_airline"><%= image_tag(Flight.new(:airline => tail[:airline]).airline_icon_path, :title => tail[:airline], :alt => tail[:airline], :class => 'airline_icon') %></td>
   </tr>

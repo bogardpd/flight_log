@@ -491,7 +491,7 @@ span.distance_secondary {
 	font-weight: normal;
 }
 
-span.distance_unit {
+span.measurement_unit {
 	color: #7F7F7F;
 }
 
@@ -605,8 +605,12 @@ td.airport_iata_code {
 	text-align: center;
 }
 
-td.airport_distance, th.airport_distance {
+td.airport_distance {
 	text-align: right;
+}
+
+th.airport_distance {
+	text-align: center;
 }
 
 td.airport_route, th.airport_route {
@@ -703,9 +707,14 @@ td.new {
 	font-weight: 700;
 }
 
-td.route_distance, th.route_distance {
+td.route_distance {
 	text-align: right;
 }
+
+th.route_distance {
+	text-align: center;
+}
+
 
 td.route_flights, th.route_flights {
 	text-align: center;

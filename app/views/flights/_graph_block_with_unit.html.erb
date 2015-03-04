@@ -1,0 +1,3 @@
+<% if value >= 0 %>
+	<div class="graph" style="background-size: <%= value*100/maximum %>px 100%;"><%= number_with_delimiter(value, :delimiter => ',') %> <span class="measurement_unit"><%= unit %></span></div>
+<% end %>

@@ -13,7 +13,7 @@
   <% unless aircraft.nil? %>
   <tr>
     <td class="aircraft_family"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
-    <td class="aircraft_flights"><%= graph_div(frequency, @aircraft_frequency_maximum, true) %><%= frequency %></div></td>
+    <td class="aircraft_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
   </tr>
   <% end %>
 <% end %>

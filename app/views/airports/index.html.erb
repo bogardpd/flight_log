@@ -41,7 +41,7 @@
     <td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
 		<td class="airport_city"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
     <td class="airport_iata_code iata_mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-    <td class="airport_visits"><%= graph_div(airport[:frequency], @visits_maximum, @sort_cat == :visits) %><%= airport[:frequency] %></div></td>
+    <td class="airport_visits"><%= render "flights/graph_block", :value => airport[:frequency], :maximum => @visits_maximum %></td>
 	
   </tr>
 <% end %>
