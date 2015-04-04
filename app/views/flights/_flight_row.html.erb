@@ -1,7 +1,14 @@
+<% if flight.trip_section == @previous_section && flight.trip_id == @previous_trip %>
+	<% @top_row_style = " weak_top_border"%>
+<% else %>
+	<% @top_row_style = "" %>
+<% end %>
 <tr>
   <%= render "flights/flight_cell_flight", :flight => flight %>
   <%= render "flights/flight_cell_route", :flight => flight %>
 	<%= render "flights/flight_cell_departure", :flight => flight %>
 </tr>
+<% @previous_trip = flight.trip_id %>
+<% @previous_section = flight.trip_section %>
 
     

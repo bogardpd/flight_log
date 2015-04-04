@@ -1,1 +1,1 @@
-<td class="flight_aircraft"><% if flight.aircraft_family %><%= link_to(flight.aircraft_family, show_aircraft_path(flight.aircraft_family), :title => "View flights on #{flight.aircraft_family} aircraft") %><% end %></td>
+<td class="flight_aircraft<%= @top_row_style %>"><% if flight.aircraft_family %><%= link_to(flight.aircraft_family, show_aircraft_path(flight.aircraft_family), :title => "View flights on #{flight.aircraft_family} aircraft") %><% end %></td>

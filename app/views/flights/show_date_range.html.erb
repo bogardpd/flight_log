@@ -43,14 +43,15 @@
 
 <table class="flightlog">
   <tr class="">
-    <th class="">City</th>
+    <th class="airport_country">Country</th>
+		<th class="airport_city">City</th>
     <th class="">Code</th>
     <th class="">Visits</th>
-	<th class="airport_country">Country</th>
-  </tr>
+	</tr>
 <% @airport_array.each do |airport| %>
   <tr>
-    <% if @date_range.include?(Flight.airport_first_visit(airport[:id])) %>
+    <td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+		<% if @date_range.include?(Flight.airport_first_visit(airport[:id])) %>
 			<% @new_airport_flag = true %>
 			<td class="airport_city new"><%= link_to(airport[:city] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 			<td class="airport_iata_code new"><%= link_to(iata_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
@@ -61,7 +62,7 @@
 		
     
     <td class="airport_visits"><%= render "graph_block", :value => airport[:frequency], :maximum => @airport_maximum %></td>
-	<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+	
   </tr>
 <% end %>
   <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>

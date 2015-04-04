@@ -754,6 +754,10 @@ td.top_border {
 	border-top: 1px solid #385D8A !important;
 }
 
+td.weak_top_border {
+	border-top: none !important;
+}
+
 th.flight_date {
 	text-align: right;
 }

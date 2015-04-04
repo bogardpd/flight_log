@@ -1,3 +1,3 @@
-<td class="flight_route">
+<td class="flight_route<%= @top_row_style %>">
 	<%= (params[:controller] == "airports" && params[:action] == "show" && @airport == flight.origin_airport) ? iata_mono(flight.origin_airport.iata_code) : link_to(iata_mono(flight.origin_airport.iata_code), airport_path(flight.origin_airport.iata_code), :title => "View airport details for " + flight.origin_airport.city) %> &ndash; <%= (params[:controller] == "airports" && params[:action] == "show" && @airport == flight.destination_airport) ? iata_mono(flight.destination_airport.iata_code) : link_to(iata_mono(flight.destination_airport.iata_code), airport_path(flight.destination_airport.iata_code), :title => "View airport details for " + flight.destination_airport.city) %>
 </td>

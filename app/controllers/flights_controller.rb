@@ -11,9 +11,11 @@ class FlightsController < ApplicationController
         
     if logged_in?
       @flights = Flight.all
+      @flights_unsorted = Flight.all
       @year_range = Flight.first.departure_date.year..Flight.last.departure_date.year
     else
       @flights = Flight.visitor
+      @flights_unsorted = Flight.visitor
       @year_range = Flight.visitor.first.departure_date.year..Flight.visitor.last.departure_date.year
     end
     
@@ -42,13 +44,9 @@ class FlightsController < ApplicationController
     else
       @sort_dir = :asc
     end
-    
-    sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
-    @flights_unsorted = @flights
-    
+          
     # Sort flight table:
-    @flights.reverse! if @sort_dir == :desc
+    @flights = @flights.reverse! if @sort_dir == :desc
     
   end
   
