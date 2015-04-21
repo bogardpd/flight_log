@@ -750,10 +750,6 @@ td.tail_number, th.tail_number {
 	text-align: left;
 }
 
-td.top_border {
-	border-top: 1px solid #385D8A !important;
-}
-
 td.weak_top_border {
 	border-top: none !important;
 }

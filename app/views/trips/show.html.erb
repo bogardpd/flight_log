@@ -20,11 +20,11 @@
   </tr>
 <% previous_section = nil %>
 <% @flights.each_with_index do |flight, index| %>
-  <% top_row_style = "" %>
+  <% top_row_style = " weak_top_border" %>
   <tr>
     <% if flight.trip_section != previous_section %>
-      <% top_row_style = " top_border"%>
-      <td rowspan="<%= @section_count[flight.trip_section] %>" class="flight_section top_border">
+      <% top_row_style = ""%>
+      <td rowspan="<%= @section_count[flight.trip_section] %>" class="flight_section">
         <%= link_to("Section #{flight.trip_section}", show_section_path(flight.trip, flight.trip_section), :class => 'bold') %><% if @section_count[flight.trip_section] > 1 %><br /><span class="flight_section_route"><%= flight.origin_airport.iata_code %> - <%= @section_final_destination[flight.trip_section] %></span><% end %>
       </td>
     <% end %>
