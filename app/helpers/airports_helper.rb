@@ -1,9 +1,10 @@
 module AirportsHelper
   
-  def gcmap_airport_embed(airport_array)
+  def gcmap_airport_embed(airport_array, *args)
     # Accept an array with :iata_code, and embed a map of airports.
     @gcmap_used = true
-
+    map_center = args[0] == "world" ? "&MC=DAY" : ""
+    
     # Sort airports:
     airport_array = airport_array.sort_by { |airport| airport[:city] }
 
@@ -17,15 +18,16 @@ module AirportsHelper
     # Embed map:
 
     html = "<div class=\"center\">"
-    html += link_to(image_tag("http://www.gcmap.com/map?P=#{query}&MS=wls2&PM=b:disc5:black", :alt => "Map of airport frequencies", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=b:disc5:black&MS=wls2&P=#{query}")
+    html += link_to(image_tag("http://www.gcmap.com/map?P=#{query}&MS=wls2&PM=b:disc5:black#{map_center}", :alt => "Map of airport frequencies", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=b:disc5:black&MS=wls2#{map_center}&P=#{query}")
     html += "</div>"
     html.html_safe
   end
 
-  def gcmap_airport_frequency_embed(airport_array)
+  def gcmap_airport_frequency_embed(airport_array, *args)
     # Accept an array with :iata_code and :frequency, and embed a map of airport frequencies
     @gcmap_used = true
-
+    map_center = args[0] == "world" ? "&MC=DAY" : ""
+    
     # Sort airports by descending frequency value:
     airport_array = airport_array.sort_by { |airport| [-airport[:frequency], airport[:city]] }
   
@@ -59,7 +61,7 @@ module AirportsHelper
     # Embed map:
 
     html = "<div class=\"center\">"
-    html += link_to(image_tag("http://www.gcmap.com/map?P=#{query}&MS=wls2&PM=b:disc5:black", :alt => "Map of airport frequencies", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=b:disc5:black&MS=wls2&P=#{query}")
+    html += link_to(image_tag("http://www.gcmap.com/map?P=#{query}&MS=wls2&PM=b:disc5:black#{map_center}", :alt => "Map of airport frequencies", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=b:disc5:black&MS=wls2#{map_center}&P=#{query}")
     html += "</div>"
     html.html_safe
   end

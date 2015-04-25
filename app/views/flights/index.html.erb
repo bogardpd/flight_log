@@ -18,14 +18,14 @@
 
 <p>This map shows all commercial flights I've taken within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %> since age 18.</p>
 
-<%= gcmap_embed(route_string(@flights_unsorted, "conus")) %>
+<%= gcmap_embed(route_string(@flights, "conus")) %>
 
 <a name="world_flights"></a>
 <h2>World Flights</h2>
 
 <p>This map and table show all commercial flights I've taken worldwide since age 18.</p>
 
-<%= gcmap_embed(route_string(@flights_unsorted))%>
+<%= gcmap_embed(route_string(@flights), nil, "world")%>
 
 <%= distance_block(@total_distance, "total") %>
 
@@ -33,7 +33,8 @@
 
 <table class="flightlog">
 <tr>
-  <th class="flight_flight">Flight</td>
+  <th class="counter">#</th>
+	<th class="flight_flight">Flight</td>
   <th class="flight_route">Route</td>
   <th class="flight_date"><%= sort_link("Departure", :departure, "departure", :asc, "flight_list") %></td>
 </tr>

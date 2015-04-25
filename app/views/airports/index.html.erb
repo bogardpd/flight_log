@@ -22,7 +22,7 @@
 <h2>World Airports Map</h2>
 <p>This map shows <em>all</em> airports I've visited worldwide:</p>
 
-<%= gcmap_airport_embed(@airport_array) %>
+<%= gcmap_airport_embed(@airport_array, "world") %>
 
 <p>A layover counts as one single visit to a given airport, even though two flights use it.</p>
 
@@ -31,21 +31,23 @@
 
 <table class="flightlog">
   <tr class="">
-    <th class="airport_country"><%= sort_link("Country", :country, "country", :asc, "airports_list") %></th>
+    <th class="counter">#</th>
+		<th class="airport_country"><%= sort_link("Country", :country, "country", :asc, "airports_list") %></th>
 		<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports_list") %></th>
     <th class="airport_iata_code"><%= sort_link("Code", :code, "code", :asc, "airports_list") %></th>
     <th class="airport_visits"><%= sort_link("Visits", :visits, "visits", :desc, "airports_list") %></th>	
   </tr>
-<% @airport_array.each do |airport| %>
+<% @airport_array.each_with_index do |airport, index| %>
   <tr>
-    <td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+    <td class="counter"><%= index + 1 %></td>
+		<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
 		<td class="airport_city"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
     <td class="airport_iata_code iata_mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
     <td class="airport_visits"><%= render "flights/graph_block", :value => airport[:frequency], :maximum => @visits_maximum %></td>
 	
   </tr>
 <% end %>
-  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
+  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
 </table>
 
 <% if (logged_in? && @airports_with_no_flights.any?) %>
@@ -73,7 +75,7 @@
 
 <p>This map works the same way as the map above, but with all airports I've visited worldwide.</p>
 
-<%= gcmap_airport_frequency_embed(@airport_array) %>
+<%= gcmap_airport_frequency_embed(@airport_array, "world") %>
 
 <% content_for :admin_actions do %>
   <%= link_to("Add New Airport", new_airport_path) %>

@@ -11,11 +11,9 @@ class FlightsController < ApplicationController
         
     if logged_in?
       @flights = Flight.all
-      @flights_unsorted = Flight.all
       @year_range = Flight.first.departure_date.year..Flight.last.departure_date.year
     else
       @flights = Flight.visitor
-      @flights_unsorted = Flight.visitor
       @year_range = Flight.visitor.first.departure_date.year..Flight.visitor.last.departure_date.year
     end
     

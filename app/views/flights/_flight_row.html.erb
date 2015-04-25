@@ -4,7 +4,8 @@
 	<% @top_row_style = "" %>
 <% end %>
 <tr>
-  <%= render "flights/flight_cell_flight", :flight => flight %>
+  <td class="counter<%= @top_row_style %>"><%= flight_counter + 1 %></td>
+	<%= render "flights/flight_cell_flight", :flight => flight %>
   <%= render "flights/flight_cell_route", :flight => flight %>
 	<%= render "flights/flight_cell_departure", :flight => flight %>
 </tr>

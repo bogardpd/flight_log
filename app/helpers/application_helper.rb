@@ -74,13 +74,14 @@ module ApplicationHelper
   
   def gcmap_embed(route_string, *args)
     @gcmap_used = true
+    map_center = args[1] == "world" ? "&MC=DAY" : ""
     if args[0] == "labels"
       query_pm = "*"
     else
       query_pm = "b:disc5:black"
     end
     html = "<div class=\"center\">"
-    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{query_pm}&MP=r&MS=wls2&P=#{route_string}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{query_pm}&MP=r&MS=wls2&P=#{route_string}")
+    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{query_pm}&MP=r&MS=wls2#{map_center}&P=#{route_string}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{query_pm}&MP=r&MS=wls2#{map_center}&P=#{route_string}")
     html += "</div>"
     html.html_safe
   end

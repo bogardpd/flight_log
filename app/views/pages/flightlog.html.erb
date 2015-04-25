@@ -11,7 +11,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 <div class="intro_box">
   <% if params[:region] == "world" %>
     <%= link_to("Contiguous United States", flightlog_path, :class => "tab") %><div class="tab active">World</div>
-    <%= gcmap_embed(route_string(@flights)) %>
+    <%= gcmap_embed(route_string(@flights), nil, "world") %>
   <% else %>
     <div class="tab">Contiguous United States</div><%= link_to("World", show_flightlog_region_path(:region => "world"), :class => "tab") %>
     <%= gcmap_embed(route_string(@flights, "conus")) %>

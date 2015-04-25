@@ -6,18 +6,20 @@
 
 <table class="flightlog">
   <tr>
-    <th class="aircraft_family">Aircraft Family</th>
+    <th class="counter">#</th>
+		<th class="aircraft_family">Aircraft Family</th>
     <th class="aircraft_flights">Flights</th>
   </tr>
-<% @aircraft_frequency_sorted.each do |aircraft, frequency| %>
+<% @aircraft_frequency_sorted.each_with_index do |(aircraft, frequency), index| %>
   <% unless aircraft.nil? %>
   <tr>
-    <td class="aircraft_family"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
+    <td class="counter"><%= index + 1 %></td>
+		<td class="aircraft_family"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
     <td class="aircraft_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
   </tr>
   <% end %>
 <% end %>
-  <tr><td colspan="2" class="flightlog_total"><%= pluralize(@aircraft_frequency_sorted.count, 'aircraft family') %></td></tr>
+  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@aircraft_frequency_sorted.count, 'aircraft family') %></td></tr>
 </table>
 
 <% if @unknown_aircraft_flights > 1 %>

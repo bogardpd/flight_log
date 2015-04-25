@@ -629,6 +629,15 @@ td.class_flights, th.class_flights {
 	text-align: center;
 }
 
+td.counter {
+	color: #BBBBBB;
+	text-align: right;
+}
+
+th.counter {
+	text-align: right;
+}
+
 td.flight_aircraft, th.flight_aircraft {
 	text-align: center;
 }

@@ -1,6 +1,7 @@
-<% @trips.each do |trip| %>
+<% @trips.each_with_index do |trip, index| %>
   <tr>
-    <td class="trip_name<%= " hidden_trip" if trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for " + trip.name) %></td></td>
+    <td class="counter"><%= index + 1 %></td>
+		<td class="trip_name<%= " hidden_trip" if trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for " + trip.name) %></td></td>
     <td class="flight_date"><%= format_date(trip.flights.first.departure_date) %></td>
   </tr>
 <% end %>

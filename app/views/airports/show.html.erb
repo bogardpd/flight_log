@@ -30,7 +30,7 @@
 <table class="flightlog">
 <%= render :partial => "flights/flight_header_row" %>
 <%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
-<tr><td colspan="3" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency[@airport.id], "visit") %></td></tr>
+<tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency[@airport.id], "visit") %></td></tr>
 </table>
 
 <p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
@@ -42,23 +42,25 @@
 
 <table class="flightlog">
   <tr>
-    <th class="airport_country">Country</th>
+    <th class="counter">#</th>
+		<th class="airport_country">Country</th>
 		<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports") %></th>
     <th class="airport_iata_code"><%= sort_link("Code", :code, "code", :asc, "airports") %></th>
 		<th class="airport_distance"><%= sort_link("Distance", :distance, "distance", :desc, "airports") %></th>
     <th class="airport_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airports") %></th>
   </tr>
 
-	<% @direct_flight_airports.each do |row| %>
+	<% @direct_flight_airports.each_with_index do |row, index| %>
 	  <tr>
-    	<td class="airport_country"><%= image_tag(Airport.new(:country => row[:country]).country_flag_path, :title => row[:country], :class => 'country_flag') %></td>
+    	<td class="counter"><%= index + 1 %></td>
+			<td class="airport_country"><%= image_tag(Airport.new(:country => row[:country]).country_flag_path, :title => row[:country], :class => 'country_flag') %></td>
 	    <td class="airport_city"><%= link_to(row[:city], airport_path(row[:iata_code])) %></td>
 	    <td class="airport_iata_code iata_mono"><%= link_to(row[:iata_code], airport_path(row[:iata_code])) %></td>
 			<td class="airport_distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
 	    <td class="airport_flights"><div class="graph" style="background-size: <%= row[:total_flights]*100/@flights_maximum %>px 100%;"><%= link_to(row[:total_flights], route_path("#{@airport.iata_code}-#{row[:iata_code]}")) %></div></td>
 	  </tr>
 	<% end %>
-  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
+  <tr><td colspan="6" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
 </table>
 
 <a name="airlines"></a>

@@ -6,13 +6,15 @@
 
 <table class="flightlog">
   <tr>
-    <th class="class_class">Travel Class</th>
+    <th class="counter">#</th>
+		<th class="class_class">Travel Class</th>
     <th class="class_flights">Flights</th>
   </tr>
-<% @class_frequency_sorted.each do |travel_class, frequency| %>
+<% @class_frequency_sorted.each_with_index do |(travel_class, frequency), index| %>
   <% unless travel_class.nil? %>
   <tr>
-    <td class="class_class"><%= link_to("#{travel_class} class", show_class_path(travel_class), :title => "View #{travel_class.downcase} class flights") %></td>
+    <td class="counter"><%= index + 1 %></td>
+		<td class="class_class"><%= link_to("#{travel_class} class", show_class_path(travel_class), :title => "View #{travel_class.downcase} class flights") %></td>
     <td class="class_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @class_frequency_maximum %></td>
   </tr>
   <% end %>

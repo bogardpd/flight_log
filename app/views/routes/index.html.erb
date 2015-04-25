@@ -6,16 +6,18 @@
 
 <table class="flightlog">
   <tr>
-    <th class="route_route">Route</th>
+    <th class="counter">#</th>
+		<th class="route_route">Route</th>
 		<th class="route_distance"><%= sort_link("Distance", :distance, "distance", :desc, nil) %></th>
     <th class="route_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
   </tr>
-<% @route_table.each do |row| %>
+<% @route_table.each_with_index do |row, index| %>
   <tr>
-    <td class="route_route"><%= link_to(iata_mono(row[:route].sub('-',"</span> &#x21C4; <span class=\"iata_mono\">")), route_path(row[:route]), :title => "View flights between #{row[:route].split('-')[0]} and #{row[:route].split('-')[1]}") %></td>
+    <td class="counter"><%= index + 1 %></td>
+		<td class="route_route"><%= link_to(iata_mono(row[:route].sub('-',"</span> &#x21C4; <span class=\"iata_mono\">")), route_path(row[:route]), :title => "View flights between #{row[:route].split('-')[0]} and #{row[:route].split('-')[1]}") %></td>
     <td class="route_distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
 		<td class="route_flights"><%= render "flights/graph_block", :value => row[:total_flights], :maximum => @flights_maximum %></td>
   </tr>
 <% end %>
-  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@route_table.count, 'route') %></td></tr>
+  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@route_table.count, 'route') %></td></tr>
 </table>

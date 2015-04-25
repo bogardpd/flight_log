@@ -24,7 +24,7 @@
 		<% else %>
 			<%= link_to("Contiguous United States", show_date_range_path(:start_date => params[:start_date], :end_date => params[:end_date]), :class => "tab") %><div class="tab active">World</div>
 		<% end %>
-    <%= gcmap_embed(route_string(@flights)) %>
+    <%= gcmap_embed(route_string(@flights), nil, "world") %>
   <% else %>
     <% if params[:year] %>
 			<div class="tab">Contiguous United States</div><%= link_to("World", show_year_region_path(:year => params[:year], :region => "world"), :class => "tab") %>
