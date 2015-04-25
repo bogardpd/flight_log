@@ -74,7 +74,7 @@ module ApplicationHelper
   
   def gcmap_embed(route_string, *args)
     @gcmap_used = true
-    map_center = args[1] == "world" ? "&MC=DAY" : ""
+    map_center = args[1] == "world" ? "" : ""
     if args[0] == "labels"
       query_pm = "*"
     else

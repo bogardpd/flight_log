@@ -3,7 +3,7 @@ module AirportsHelper
   def gcmap_airport_embed(airport_array, *args)
     # Accept an array with :iata_code, and embed a map of airports.
     @gcmap_used = true
-    map_center = args[0] == "world" ? "&MC=DAY" : ""
+    map_center = args[0] == "world" ? "" : ""
     
     # Sort airports:
     airport_array = airport_array.sort_by { |airport| airport[:city] }
@@ -26,7 +26,7 @@ module AirportsHelper
   def gcmap_airport_frequency_embed(airport_array, *args)
     # Accept an array with :iata_code and :frequency, and embed a map of airport frequencies
     @gcmap_used = true
-    map_center = args[0] == "world" ? "&MC=DAY" : ""
+    map_center = args[0] == "world" ? "" : ""
     
     # Sort airports by descending frequency value:
     airport_array = airport_array.sort_by { |airport| [-airport[:frequency], airport[:city]] }
