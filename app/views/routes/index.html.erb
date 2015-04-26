@@ -11,13 +11,23 @@
 		<th class="route_distance"><%= sort_link("Distance", :distance, "distance", :desc, nil) %></th>
     <th class="route_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
   </tr>
+<% previous_count = nil %>
 <% @route_table.each_with_index do |row, index| %>
   <tr>
-    <td class="counter"><%= index + 1 %></td>
+    <td class="counter">
+			<% if @sort_cat == :flights %>
+				<%= (@sort_cat == :flights && row[:total_flights] == previous_count) ? "⋮" : index + 1 %>
+			<% elsif @sort_cat == :distance %>
+				<%= (@sort_cat == :distance && row[:distance_mi] == previous_count) ? "⋮" : index + 1 %>
+			<% else %>
+				<%= index + 1 %>
+			<% end %>
+		</td>
 		<td class="route_route"><%= link_to(iata_mono(row[:route].sub('-',"</span> &#x21C4; <span class=\"iata_mono\">")), route_path(row[:route]), :title => "View flights between #{row[:route].split('-')[0]} and #{row[:route].split('-')[1]}") %></td>
     <td class="route_distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
 		<td class="route_flights"><%= render "flights/graph_block", :value => row[:total_flights], :maximum => @flights_maximum %></td>
   </tr>
+	<% previous_count = @sort_cat == :flights ? row[:total_flights] : row[:distance_mi] %>
 <% end %>
   <tr><td colspan="4" class="flightlog_total"><%= pluralize(@route_table.count, 'route') %></td></tr>
 </table>

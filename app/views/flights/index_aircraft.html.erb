@@ -10,12 +10,14 @@
 		<th class="aircraft_family"><%= sort_link("Aircraft Family", :aircraft, "aircraft", :asc, nil) %></th>
     <th class="aircraft_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
   </tr>
+<% previous_count = nil %>
 <% @aircraft_array.each_with_index do |aircraft, index| %>
   <tr>
-    <td class="counter"><%= index + 1 %></td>
+    <td class="counter"><%= (@sort_cat == :flights && aircraft[:count] == previous_count) ? "⋮" : index + 1 %></td>
 		<td class="aircraft_family"><%= link_to(aircraft[:aircraft], show_aircraft_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
     <td class="aircraft_flights"><%= render "graph_block", :value => aircraft[:count], :maximum => @aircraft_maximum %></td>
   </tr>
+	<% previous_count = aircraft[:count] %>
 <% end %>
   <tr><td colspan="3" class="flightlog_total"><%= pluralize(@aircraft_array.count, 'aircraft family') %></td></tr>
   

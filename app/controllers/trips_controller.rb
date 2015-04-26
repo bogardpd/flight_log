@@ -26,7 +26,7 @@ class TripsController < ApplicationController
     when "desc"
       @sort_dir = :desc
     else
-      @sort_dir = :asc
+      @sort_dir = :desc
     end
     
     @trips.reverse! if @sort_dir == :desc

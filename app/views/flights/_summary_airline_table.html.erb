@@ -4,12 +4,14 @@
     <th class="airline_airline">Airline</th>
     <th class="airline_flights">Flights</th>
   </tr>
+<% previous_count = nil %>
 <% @airline_frequency_sorted.each_with_index do |(airline, frequency), index| %>
   <tr>
-    <td class="counter"><%= index + 1 %></td>
+    <td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
 		<td class="airline_airline"><%= link_to(image_tag(Flight.new(:airline => airline).airline_icon_path, :alt => airline, :class => 'airline_icon') + airline, show_airline_path(airline.gsub(" ", "_")), :title => "View all flights on #{airline}") %></td>
     <td class="airline_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @airline_frequency_maximum %></td>
   </tr>
+	<% previous_count = frequency %>
 <% end %>
   <tr><td colspan="3" class="flightlog_total"><%= pluralize(@airline_frequency_sorted.count, 'airline') %></td></tr>
 </table>

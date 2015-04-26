@@ -37,15 +37,17 @@
     <th class="airport_iata_code"><%= sort_link("Code", :code, "code", :asc, "airports_list") %></th>
     <th class="airport_visits"><%= sort_link("Visits", :visits, "visits", :desc, "airports_list") %></th>	
   </tr>
+<% previous_count = nil %>
 <% @airport_array.each_with_index do |airport, index| %>
   <tr>
-    <td class="counter"><%= index + 1 %></td>
+    <td class="counter"><%= (@sort_cat == :visits && airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
 		<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
 		<td class="airport_city"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
     <td class="airport_iata_code iata_mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
     <td class="airport_visits"><%= render "flights/graph_block", :value => airport[:frequency], :maximum => @visits_maximum %></td>
 	
   </tr>
+	<% previous_count = airport[:frequency] %>
 <% end %>
   <tr><td colspan="5" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
 </table>

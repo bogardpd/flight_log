@@ -17,22 +17,24 @@
 <%= distance_block(@total_distance, 'total') %>
 <table class="flightlog">
 	<tr>
-	  <th class="flight_flight">Flight</td>
+	  <th class="counter">#</th>
+		<th class="flight_flight">Flight</td>
 	  <th class="flight_route">Route</td>
 	  <th class="flight_date">Departure</td>
 	  <th class="flight_aircraft">Aircraft</td>
 		<th class="flight_tail">Tail Number</td>
 	</tr>
-	<% @flights.each do |flight| %>
+	<% @flights.each_with_index do |flight, index| %>
 		<tr>
-		  <%= render "flights/flight_cell_flight", :flight => flight %>		  
+		  <td class="counter"><%= index + 1 %></th>
+			<%= render "flights/flight_cell_flight", :flight => flight %>		  
 			<%= render "flights/flight_cell_route", :flight => flight %>
 			<%= render "flights/flight_cell_departure", :flight => flight %>
 			<%= render "flights/flight_cell_aircraft", :flight => flight %>
 			<%= render "flights/flight_cell_tail", :flight => flight %>
 		</tr>
 	<% end %>
-	<tr><td colspan="5" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %></td></tr>
+	<tr><td colspan="6" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %></td></tr>
 </table>
 
 <a name="airlines"></a>

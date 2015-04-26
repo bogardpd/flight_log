@@ -43,14 +43,17 @@
 
 <table class="flightlog">
   <tr class="">
-    <th class="airport_country">Country</th>
+    <th class="counter">#</th>
+		<th class="airport_country">Country</th>
 		<th class="airport_city">City</th>
     <th class="">Code</th>
     <th class="">Visits</th>
 	</tr>
-<% @airport_array.each do |airport| %>
+<% previous_count = nil %>
+<% @airport_array.each_with_index do |airport, index| %>
   <tr>
-    <td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+    <td class="counter"><%= (airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
+		<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
 		<% if @date_range.include?(Flight.airport_first_visit(airport[:id])) %>
 			<% @new_airport_flag = true %>
 			<td class="airport_city new"><%= link_to(airport[:city] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
@@ -64,8 +67,9 @@
     <td class="airport_visits"><%= render "graph_block", :value => airport[:frequency], :maximum => @airport_maximum %></td>
 	
   </tr>
+	<% previous_count = airport[:frequency] %>
 <% end %>
-  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
+  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
 </table>
 <% if @new_airport_flag %>
 	<p class="note">* Airport first visited in <%= @in_text %></p>
@@ -82,23 +86,27 @@
 
 <table class="flightlog">
   <tr>
-    <th class="aircraft_family">Aircraft Family</th>
+    <th class="counter">#</th>
+		<th class="aircraft_family">Aircraft Family</th>
     <th class="aircraft_flights">Flights</th>
   </tr>
-<% @aircraft_frequency_sorted.each do |aircraft, frequency| %>
+<% previous_count = nil %>
+<% @aircraft_frequency_sorted.each_with_index do |(aircraft, frequency), index| %>
   <% unless aircraft.nil? %>
   <tr>
+		<td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
     <% if @date_range.include?(Flight.aircraft_first_flight(aircraft)) %>
 			<% @new_aircraft_flag = true %>
-    	<td class="aircraft_family new"><%= link_to(aircraft + "*", show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
+			<td class="aircraft_family new"><%= link_to(aircraft + "*", show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
 		<% else %>
 			<td class="aircraft_family"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
 		<% end %>
     <td class="aircraft_flights"><%= render "graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
   </tr>
+		<% previous_count = frequency %>
   <% end %>
 <% end %>
-  <tr><td colspan="2" class="flightlog_total"><%= pluralize(@aircraft_frequency_sorted.count, 'aircraft family') %></td></tr>
+  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@aircraft_frequency_sorted.count, 'aircraft family') %></td></tr>
 </table>
 
 <% if @unknown_aircraft_flights > 1 %>
@@ -118,12 +126,15 @@
 
 <table class="flightlog">
   <tr>
-    <th class="airline_airline">Airline</th>
+    <th class="counter">#</th>
+		<th class="airline_airline">Airline</th>
     <th class="airline_flights">Flights</th>
   </tr>
-<% @airline_frequency_sorted.each do |airline, frequency| %>
+<% previous_count = nil %>
+<% @airline_frequency_sorted.each_with_index do |(airline, frequency), index| %>
   <tr>
-    <% if @date_range.include?(Flight.airline_first_flight(airline)) %>
+    <td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
+		<% if @date_range.include?(Flight.airline_first_flight(airline)) %>
 			<% @new_airline_flag = true %>
 			<td class="airline_airline new"><%= link_to(image_tag(Flight.new(:airline => airline).airline_icon_path, :alt => airline, :class => 'airline_icon') + airline + "*", show_airline_path(airline.gsub(" ", "_")), :title => "View all flights on #{airline}") %></td>
 		<% else %>
@@ -131,8 +142,9 @@
 		<% end %>
     <td class="airline_flights"><%= render "graph_block", :value => frequency, :maximum => @airline_frequency_maximum %></td>
   </tr>
+	<% previous_count = frequency %>
 <% end %>
-  <tr><td colspan="2" class="flightlog_total"><%= pluralize(@airline_frequency_sorted.count, 'airline') %></td></tr>
+  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@airline_frequency_sorted.count, 'airline') %></td></tr>
 </table>
 
 <% if @new_airline_flag %>
