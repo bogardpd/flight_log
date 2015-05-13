@@ -1,6 +1,6 @@
 body {
 	background: #EEEEEE;
-	font-family: "Calibri", "Helvetica Neue", "Helvetica", sans-serif;
+	font-family: "Roboto", "Calibri", "Helvetica Neue", "Helvetica", sans-serif;
 	font-size: 100%;
 	font-weight: 300;
 	line-height: 1.5;
@@ -96,7 +96,8 @@ body {
 	padding: 0;
 	vertical-align: middle;	
 	font-size: 18px;
-	font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	font-weight: 300;
 }
 
 #menu li.active {
@@ -311,7 +312,7 @@ div.intro_box h2 {
 div.intro_box p {
 	margin: 0;
 	text-align: center;
-	font-weight: bold;
+	font-weight: 700;
 }
 
 div.intro_box table {
@@ -488,7 +489,7 @@ span.disabled {
 
 span.distance_secondary {
 	color: #7F7F7F;
-	font-weight: normal;
+	font-weight: 300;
 }
 
 span.measurement_unit {
@@ -541,6 +542,7 @@ table.flightlog td {
 	padding: 0.2em 0.4em;
 	border-top: 1px solid #DDDDDD;
 	white-space: nowrap;
+	height: 28px;
 }
 
 table.flightlog th {
@@ -559,8 +561,7 @@ table.no_border td {
 }
 
 td {
-	-webkit-text-size-adjust:100%
-	text-shadow: 0px 1px 0px #FFFFFF;
+	-webkit-text-size-adjust:100%;
 	background-color: #FCFCFC;
 }
 
