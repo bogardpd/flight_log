@@ -41,7 +41,7 @@
 <% @airport_array.each_with_index do |airport, index| %>
   <tr>
     <td class="counter"><%= (@sort_cat == :visits && airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
-		<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+		<td class="airport_country"><%= country_flag(airport[:country]) %></td>
 		<td class="airport_city"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
     <td class="airport_iata_code iata_mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
     <td class="airport_visits"><%= render "flights/graph_block", :value => airport[:frequency], :maximum => @visits_maximum %></td>
@@ -57,9 +57,10 @@
 <table class="flightlog">
 <% @airports_with_no_flights.each do |airport| %>
   <tr>
+		<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
     <td class="airport_city"><%= link_to(airport.city, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
     <td class="airport_iata_code iata_mono"><%= link_to(airport.iata_code, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
-	<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
+	
   </tr>
 <% end %>
 </table>

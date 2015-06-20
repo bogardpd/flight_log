@@ -158,8 +158,8 @@ class AirportsController < ApplicationController
     end
     
     # Find maxima for graph scaling:
-    @flights_maximum = @direct_flight_airports.max_by{|i| i[:total_flights].to_i}[:total_flights]
-    @distance_maximum = @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
+    @flights_maximum = @flights.length == 0 ? 0 : @direct_flight_airports.max_by{|i| i[:total_flights].to_i}[:total_flights]
+    @distance_maximum = @flights.length == 0 ? 0 : @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
     
     # Sort city pair table:
     case @sort_cat
@@ -237,7 +237,11 @@ class AirportsController < ApplicationController
       flash[:error] = "This airport still has flights and could not be deleted. Please delete all of this airport's flights first."
       redirect_to airport_path(params[:id])
     else
-      Airport.find(params[:id]).destroy
+      if (Airport.exists?(params[:id]))
+        Airport.find(params[:id]).destroy
+      else
+        Airport.where(:iata_code => params[:id]).first.destroy
+      end
       flash[:success] = "Airport destroyed."
       redirect_to airports_path
     end

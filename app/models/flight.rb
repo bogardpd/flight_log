@@ -31,6 +31,60 @@ class Flight < ActiveRecord::Base
     end
   end
   
+  def self.tail_country(tail_number)
+    tail = tail_number.upcase
+    
+    if tail.start_with?('N')
+      return "United States"
+    elsif tail.start_with?('4X-')
+      return "Israel"
+    elsif tail.start_with?('9G-')
+      return "Ghana"
+    elsif tail.start_with?('9M-')
+      return "Malaysia"
+    elsif tail.start_with?('9V-')
+      return "Singapore"
+    elsif tail.start_with?('A6-')
+      return "United Arab Emirates"
+    elsif tail.start_with?('B-')
+      if tail.start_with?('B-H','B-K','B-L')
+        return "Hong Kong"
+      elsif tail.length == 6
+        return "China"
+      elsif tail.length == 7
+        return "Taiwan"
+      else
+        return nil
+      end
+    elsif tail.start_with?('C-')
+      return "Canada"
+    elsif tail.start_with?('D-')
+      return "Germany"
+    elsif tail.start_with?('F-')
+      return "France"
+    elsif tail.start_with?('G-')
+      return "United Kingdom"
+    elsif tail.start_with?('HS-')
+      return "Thailand"
+    elsif tail.start_with?('JA')
+      return "Japan"
+    elsif tail.start_with?('JY-')
+      return "Jordan"
+    elsif tail.start_with?('PH-')
+      return "The Netherlands"
+    elsif tail.start_with?('UR-')
+      return "Ukraine"
+    elsif tail.start_with?('VH-')
+      return "Australia"
+    elsif tail.start_with?('VT-')
+      return "India"
+    elsif tail.start_with?('ZK-','ZL-','ZM-')
+      return "New Zealand"
+    else
+      return nil
+    end
+  end
+  
   protected
   
   def nil_if_blank

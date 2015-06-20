@@ -307,6 +307,7 @@ div.intro_box {
 
 div.intro_box h2 {
 	margin: 0;
+	font-size: 140%;
 }
 
 div.intro_box p {
@@ -652,7 +653,7 @@ td.flight_flight {
 }
 
 td.flight_tail, th.flight_tail {
-	text-align: center;
+	text-align: left;
 }
 
 td.flight_airplane_icon {
@@ -740,7 +741,7 @@ td.superlative_label {
 	border-top: 1px solid #88B9EC !important;
 	font-weight: bold;
 	text-align: left;
-	vertical-align: top;	
+	vertical-align: middle;	
 }
 
 td.tail_flights, th.tail_flights {

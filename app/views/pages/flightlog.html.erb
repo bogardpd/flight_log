@@ -49,7 +49,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
     </tr>
   <% @airport_array.first(5).each do |airport| %>
     <tr>
-      <td class="left"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+      <td class="left"><%= country_flag(airport[:country]) %> <%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
       <td class="center iata_mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
       <td class="center"><%= airport[:frequency] %></td>
     </tr>
@@ -102,7 +102,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
       <th class="center">Flights</th>
   <% @tails_array.first(5).each do |tail| %>
     <tr>
-      <td class="left"><%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
+      <td class="left"><%= tail_number_country_flag(tail[:tail_number]) %> <%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
       <td class="center"><%= tail[:count] %></td>
     </tr>
   <% end %>

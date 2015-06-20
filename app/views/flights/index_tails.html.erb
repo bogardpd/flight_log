@@ -6,15 +6,15 @@
 <table class="flightlog">
   <tr>
     <th class="tail_number"><%= sort_link("Tail Number", :tail, "tail", :asc, nil) %></th>
-    <th class="tail_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
     <th class="tail_aircraft"><%= sort_link("Aircraft", :aircraft, "aircraft", :asc, nil) %></th>
     <th class="tail_airline"><%= sort_link("Airline", :airline, "airline", :asc, nil) %></th>
+    <th class="tail_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
 <% @tail_numbers_table.each do |tail| %>
   <tr>
-    <td class="tail_number"><%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
-    <td class="tail_flights"><%= render "graph_block", :value => tail[:count], :maximum => @flights_maximum %></td>
+    <td class="tail_number"><%= tail_number_country_flag(tail[:tail_number]) %> <%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
     <td class="tail_aircraft"><%= tail[:aircraft] %></td>
     <td class="tail_airline"><%= image_tag(Flight.new(:airline => tail[:airline]).airline_icon_path, :title => tail[:airline], :alt => tail[:airline], :class => 'airline_icon') %></td>
+		<td class="tail_flights"><%= render "graph_block", :value => tail[:count], :maximum => @flights_maximum %></td>
   </tr>
 <% end %>
   <tr><td colspan="4" class="flightlog_total"><%= pluralize(@tail_numbers_table.count, 'unique tail number') %></td></tr>

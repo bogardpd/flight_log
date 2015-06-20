@@ -17,8 +17,7 @@ module ApplicationHelper
     else
       "#{@title} - #{base_title}"
     end
-  end
-  
+  end  
   
   def meta_description
     if @meta_description.nil?
@@ -27,15 +26,13 @@ module ApplicationHelper
       "<meta name=\"description\" content=\"#{@meta_description}\" />".html_safe
     end
   end
-
-  def photo_gallery_image(path, alt, border = true)
-    base_class = "photo_gallery"
-    unless border
-      base_class += " white_border"
-    end
-    html = "<p class='center image'>#{image_tag(path, :alt => alt, :class => base_class)}</p>"
-    html.html_safe
+  
+  
+  
+  def country_flag(country)
+    image_tag(Airport.new(:country => country).country_flag_path, :title => country, :class => 'country_flag')
   end
+  
   
   def download_link(title, path)
     html = "<ul><li>Download: " + link_to(title, path) + "</li></ul>"
@@ -52,24 +49,8 @@ module ApplicationHelper
     html.html_safe
   end
   
-  def iata_mono(code)
-    html = "<span class=\"iata_mono\">" + code + "</span>"
-    html.html_safe
-  end
-  
-  def project_tile(title, path, image_path)
-    banner = image_tag(image_path, :alt => title, :title => title, :class => "project_tile", :size => "265x170")
-    html = "<li class=\"project_tile\">"
-    html += link_to banner, path
-    html += "<h2 class=\"project_tile\">#{link_to(title, path)}</h2>"
-    html += "</li>"
-    html.html_safe
-  end
-  
-  def youtube_embed(video_id)
-    html = "<div class=\"center\">
-    <embed class=\"photo_gallery\" src=\"http://www.youtube.com/v/#{video_id}\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></div>"
-    html.html_safe
+  def format_date(input_date) # Also see method in application controller
+    input_date.strftime("%e %b %Y")
   end
   
   def gcmap_embed(route_string, *args)
@@ -86,8 +67,27 @@ module ApplicationHelper
     html.html_safe
   end
   
-  def format_date(input_date) # Also see method in application controller
-    input_date.strftime("%e %b %Y")
+  def iata_mono(code)
+    html = "<span class=\"iata_mono\">" + code + "</span>"
+    html.html_safe
+  end
+  
+  def photo_gallery_image(path, alt, border = true)
+    base_class = "photo_gallery"
+    unless border
+      base_class += " white_border"
+    end
+    html = "<p class='center image'>#{image_tag(path, :alt => alt, :class => base_class)}</p>"
+    html.html_safe
+  end
+  
+  def project_tile(title, path, image_path)
+    banner = image_tag(image_path, :alt => title, :title => title, :class => "project_tile", :size => "265x170")
+    html = "<li class=\"project_tile\">"
+    html += link_to banner, path
+    html += "<h2 class=\"project_tile\">#{link_to(title, path)}</h2>"
+    html += "</li>"
+    html.html_safe
   end
   
   def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
@@ -110,4 +110,15 @@ module ApplicationHelper
     end
     link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(:sort_category => sort_string, :sort_direction => ((@sort_cat == sort_symbol && @sort_dir == default_dir) ? sort_dir_string[0] : sort_dir_string[1]), :anchor => page_anchor), :class => "sort")
   end
+  
+  def tail_number_country_flag(tail_number)
+    country_flag(Flight.tail_country(tail_number))
+  end
+  
+  def youtube_embed(video_id)
+    html = "<div class=\"center\">
+    <embed class=\"photo_gallery\" src=\"http://www.youtube.com/v/#{video_id}\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></div>"
+    html.html_safe
+  end
+  
 end
