@@ -11,7 +11,7 @@
 		<li><%= link_to("Trips", "#trips", :title => "Trips using #{@airport.iata_code}") %></li>
   </ul>
 </div>
- 
+
 <% if @airport.country %>
 <p class="country"><%= image_tag(@airport.country_flag_path, :title => @airport.country, :class => 'country_flag') %> <%= @airport.country %></p>
 <% end %>
