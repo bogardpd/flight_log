@@ -1,8 +1,9 @@
 body {
 	background: #EEEEEE;
 	font-family: "Open Sans", "Calibri", "Helvetica Neue", "Helvetica", sans-serif;
+	color: #222222;
 	font-size: 100%;
-	font-weight: 300;
+	font-weight: 400;
 	line-height: 1.5;
 	margin: 0;
 	padding: 0;
@@ -56,6 +57,7 @@ body {
 	float: right;
 	text-align: right;
 	padding: 4px 5px;
+	font-weight: 300;
 }
 
 #portfolio_link a {
@@ -96,13 +98,13 @@ body {
 	padding: 0;
 	vertical-align: middle;	
 	font-size: 18px;
-	font-family: "Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 	font-weight: 300;
 }
 
 #menu li.active {
 	background-color: #FFFFFF;
-	color: #000000;
+	color: #222222;
 	padding: 4px 10px;
 	height: 27px;
 }
@@ -119,17 +121,17 @@ body {
 
 #menu li a:hover {
 	background-color: #99CCFF;
-	color: #000000;
+	color: #222222;
 }
 
 #menu li a.active {
 	background-color: #FFFFFF;
-	color: #000000;
+	color: #222222;
 }
 
 #menu li a.active:hover {
 	background-color: #99CCFF;
-	color: #000000;
+	color: #222222;
 }
 
 #breadcrumbs {
@@ -138,6 +140,7 @@ body {
 	border-left: 1px solid #DDDDDD;
 	border-right: 1px solid #DDDDDD;
 	border-bottom: 1px solid #DDDDDD;
+	font-weight: 300;
 }
 
 #body {
@@ -188,7 +191,6 @@ body {
 
 .iata_mono {
 	font-family: 'Source Code Pro', monospace;
-	font-size: 100%;
 }
 
 a {
@@ -285,7 +287,7 @@ div.graph {
 div.hidden_marker {
 	float: right;
 	background: #FFFF00;
-	border: 1px solid #000000;
+	border: 1px solid #222222;
 	padding: 1px 4px;
 	margin-top: 1px;
 	margin-left: 8px;
@@ -295,7 +297,7 @@ div.hidden_marker {
 
 div.hidden_trip {
 	background: #FFFF00;
-	border: 1px solid #000000;
+	border: 1px solid #222222;
 	padding: 5px;
 }
 
@@ -314,7 +316,7 @@ div.intro_box h2 {
 div.intro_box p {
 	margin: 0;
 	text-align: center;
-	font-weight: 700;
+	font-weight: 400;
 }
 
 div.intro_box table {
@@ -355,7 +357,7 @@ div.tab {
 	width: 300px;
 	background-color: #5D94D7;
 	color: #FFFFFF;
-	font-weight: bold;
+	font-weight: 300;
 	font-size: 120%;
 }
 
@@ -381,6 +383,7 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.2;
 	margin-top: 15px;
 	margin-bottom: 10px;
+	font-weight: 700;
 }
 
 h1 {
@@ -496,23 +499,27 @@ span.distance_secondary {
 
 span.measurement_unit {
 	color: #7F7F7F;
+	font-weight: 300;
 }
 
 span.flight_aircraft_variant {
 	color: #7F7F7F;
+	font-weight: 300;
 }
 
 span.flight_city {
 	color: #7F7F7F;
+	font-weight: 300;
 }
 
 span.flight_iata_code {
 	font-size: 150%;
-	font-weight: bold;
+	font-weight: 700;
 }
 
 span.flight_route_distance {
 	color: #7F7F7F;
+	font-weight: 300;
 }
 
 span.flight_section_route {
@@ -522,6 +529,10 @@ span.flight_section_route {
 
 span.sort_symbol {
 	font-size: 70%;
+}
+
+span.summary_total {
+	font-weight: 700;
 }
 
 table.flightlog {

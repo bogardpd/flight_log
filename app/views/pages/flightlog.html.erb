@@ -36,7 +36,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all #{pluralize(@route_totals.length, 'route')}", routes_path)%></p>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@route_totals.length, 'route')}</span>".html_safe, routes_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -55,7 +55,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all #{pluralize(@airport_array.count, 'airport')}", airports_path)%></p>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@airport_array.count, 'airport')}</span>".html_safe, airports_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -73,7 +73,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all #{pluralize(@aircraft_array.count, 'aircraft family')}", aircraft_path)%></p>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@aircraft_array.count, 'aircraft family')}</span>".html_safe, aircraft_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -91,7 +91,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all #{pluralize(@airlines_array.count, 'airline')}", airlines_path)%></p>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@airlines_array.count, 'airline')}</span>".html_safe, airlines_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -107,7 +107,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all #{pluralize(@tails_array.count, 'tail number')}", tails_path)%></p>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@tails_array.count, 'tail number')}</span>".html_safe, tails_path)%></p>
 </div>
 
 </div>
