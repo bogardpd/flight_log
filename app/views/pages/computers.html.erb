@@ -9,7 +9,7 @@
 	<tr>
 		<th class="blank"></th>
 		<th>Pancake</th>
-		<th>Chili Dog</th>
+		<th>Frites Liberté</th>
 	</tr>
 	<tr>
 		<td class="component_title">Model</td>
@@ -25,8 +25,8 @@
 			<ul class="component">
 				<li>
 					<p class="component">Apple MacBook Pro</p>
-					<p class="supplemental">15" Notebook &middot; Late 2008</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-04-15"} %>
+					<p class="supplemental">13" Notebook &middot; Mid 2012 (9,2) &middot; <span class="unpictured">Not Pictured</span></p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 			</ul>
 	</tr>
@@ -36,7 +36,6 @@
 			<%= link_to(image_tag("computers/Pancake 2014-07-31 - Thumbnail.jpg", :class => "photo_gallery", :alt => "Photo of the inside of Pancake's case"), 'images/computers/Pancake 2014-07-31.jpg') %>
 		</td>
 		<td class="component_photo">
-			<%= link_to(image_tag("computers/Chili Dog 2014-07-31 - Thumbnail.jpg", :class => "photo_gallery", :alt => "Photo of the laptop Chili Dog"), 'images/computers/Chili Dog 2014-07-31.jpg') %>
 		</td>
 	</tr>
 	<tr>
@@ -54,13 +53,8 @@
 			<ul class="component">
 				<li>
 					<p class="component">Mac OS X Yosemite</p>
-					<p class="supplemental">10.10.2</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-02-14"} %>
-				</li> 
-				<li>
-					<p class="component">Microsoft Windows 7 Home Premium</p>
-					<p class="supplemental">64-bit &middot; Service Pack 1</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-11-13"} %>
+					<p class="supplemental">10.10.3</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 			</ul>
 		</td>
@@ -79,9 +73,9 @@
 		<td class="component">
 			<ul class="component">
 				<li>
-					<p class="component">Intel Core 2 Duo</p>
-					<p class="supplemental">2.66 GHz &middot; 6 MB L2 Cache</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-04-15"} %>
+					<p class="component">Intel Core i5</p>
+					<p class="supplemental">2.5 GHz &middot; Dual-Core</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 			</ul>
 		</td>
@@ -105,7 +99,7 @@
 			<ul class="component">
 				<li>
 					<p class="component">EVGA GeForce GTX670</p>
-					<p class="supplemental">2048 MB GDDR5 256 bit</p>
+					<p class="supplemental">2 GB GDDR5 256 bit</p>
 					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2012-09-04"} %>
 				</li>
 			</ul>
@@ -113,14 +107,9 @@
 		<td class="component">
 			<ul class="component">
 				<li>
-					<p class="component">NVIDIA GeForce 9600M GT</p>
-					<p class="supplemental">512 MB</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-04-15"} %>
-				</li>
-				<li>
-					<p class="component">NVIDIA GeForce 9400M</p>
-					<p class="supplemental">Integrated</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-04-15"} %>
+					<p class="component">Intel HD Graphics 4000</p>
+					<p class="supplemental">1 GB</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 			</ul>
 		</td>
@@ -140,8 +129,8 @@
 			<ul class="component">
 				<li>
 					<p class="component">4 GB</p>
-					<p class="supplemental">DDR3-1066</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-04-15"} %>
+					<p class="supplemental">DDR3-1600</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 			</ul>
 		</td>
@@ -165,9 +154,9 @@
 		<td class="component">
 			<ul class="component">
 				<li>
-					<p class="component">500 GB Western Digital Black</p>
-					<p class="supplemental">2.5" HDD &middot; 7200 RPM</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-02-14"} %>
+					<p class="component">500 GB</p>
+					<p class="supplemental">HDD &middot; 5400 RPM</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 				<li>
 					<p class="component">2 TB Western Digital My Passport</p>
@@ -192,13 +181,8 @@
 			<ul class="component">
 				<li>
 					<p class="component">SuperDrive DVD±R DL</p>
-					<p class="supplemental">8X &middot; DVD±RW &middot; CD-RW &middot; <span class="inoperative">Inoperative</span></p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-04-15"} %>
-				</li>
-				<li>
-					<p class="component">LG Ultra Slim Portable DVD Writer</p>
-					<p class="supplemental">8X &middot; DVD±RW &middot; CD-RW &middot; External (USB)</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2014-04-28"} %>
+					<p class="supplemental">8X &middot; DVD±RW &middot; CD-RW</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 			</ul>
 		</td>
@@ -209,12 +193,20 @@
 			<ul class="component">
 				<li>
 					<p class="component">nMediaPC 3.5" Bay Card Reader</p>
-					<p class="supplemental">CF &middot; MS &middot; MD &middot; SD &middot; MMC &middot; XD &middot; SM &middot; USB</p>
+					<p class="supplemental">Built-in</p>
 					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2008-05-02"} %>
 				</li>
 			</ul>
 		</td>
-		<td class="component"></td>
+		<td class="component">
+			<ul class="component">
+				<li>
+					<p class="component">SDXC Card Slot</p>
+					<p class="supplemental">CF &middot; MS &middot; MD &middot; SD &middot; MMC &middot; XD &middot; SM &middot; USB</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
+				</li>
+			</ul>
+		</td>
 	</tr>
 	<tr>
 		<td class="component_title">Power Supply</td>
@@ -274,9 +266,9 @@
 		<td class="component">
 			<ul class="component">
 				<li>
-					<p class="component">15.4" Integrated LCD</p>
-					<p class="supplemental">LED backlight &middot; 1440×900</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-04-15"} %>
+					<p class="component">13.3" Integrated LCD</p>
+					<p class="supplemental">LED backlight &middot; 1280×800</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 				<li>
 					<p class="component">20.1" Viewsonic VX2035wm LCD</p>
@@ -381,9 +373,9 @@
 		<td class="component">
 			<ul class="component">
 				<li>
-					<p class="component">iSight Camera</p>
-					<p class="supplemental">Built-in &middot; 1280×1024</p>
-					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2009-04-15"} %>
+					<p class="component">FaceTime HD Camera</p>
+					<p class="supplemental">Built-in &middot; 720p</p>
+					<%= render :partial => "computers_purchased", :locals => {:purchase_date => "2015-06-27"} %>
 				</li>
 			</ul>
 		</td>
