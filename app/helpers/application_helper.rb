@@ -40,12 +40,12 @@ module ApplicationHelper
   end
   
   def distance_block(distance, adjective = nil)
-    html = "<p class=\"distance\"><span class=\"distance_primary\">" + distance_string(distance, adjective) + "</span></p>"
+    html = "<p class=\"distance\">" + distance_string(distance, adjective) + "</p>"
     html.html_safe
   end
   
   def distance_string(distance, adjective = nil)
-    html = pluralize(number_with_delimiter(distance, :delimiter => ','), [adjective,'mile'].join(' ')) + " <span class=\"distance_secondary\">(" + number_with_delimiter((distance*1.60934).to_i, :delimiter => ',') + " km)</span>"
+    html = pluralize("<span class=\"distance_primary\">" + number_with_delimiter(distance, :delimiter => ','), [adjective,'mile'].join(' ')) + "</span> <span class=\"distance_secondary\">(" + number_with_delimiter((distance*1.60934).to_i, :delimiter => ',') + " km)</span>"
     html.html_safe
   end
   
