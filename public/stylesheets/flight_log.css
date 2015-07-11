@@ -773,7 +773,12 @@ td.tail_airline, th.tail_airline {
 	text-align: center;
 }
 
-td.tail_number, th.tail_number {
+td.tail_number {
+	text-align: left;
+	font-family: "Source Code Pro", monospace;
+}
+
+th.tail_number {
 	text-align: left;
 }
 

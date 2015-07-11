@@ -102,7 +102,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
       <th class="center">Flights</th>
   <% @tails_array.first(5).each do |tail| %>
     <tr>
-      <td class="left"><%= tail_number_country_flag(tail[:tail_number]) %> <%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
+      <td class="left tail_number"><%= tail_number_country_flag(tail[:tail_number]) %> <%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
       <td class="center"><%= tail[:count] %></td>
     </tr>
   <% end %>
