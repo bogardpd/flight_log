@@ -40,7 +40,7 @@ module ApplicationHelper
   end
   
   def distance_block(distance, adjective = nil)
-    html = "<p class=\"distance\">" + distance_string(distance, adjective) + "</p>"
+    html = "<p class=\"distance\"><span class=\"distance_primary\">" + distance_string(distance, adjective) + "</span></p>"
     html.html_safe
   end
   

@@ -44,7 +44,6 @@
 <table class="flightlog">
   <tr class="">
     <th class="counter">#</th>
-		<th class="airport_country">Country</th>
 		<th class="airport_city">City</th>
     <th class="">Code</th>
     <th class="">Visits</th>
@@ -53,13 +52,12 @@
 <% @airport_array.each_with_index do |airport, index| %>
   <tr>
     <td class="counter"><%= (airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
-		<td class="airport_country"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %></td>
 		<% if @date_range.include?(Flight.airport_first_visit(airport[:id])) %>
 			<% @new_airport_flag = true %>
-			<td class="airport_city new"><%= link_to(airport[:city] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+			<td class="airport_city new"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %> <%= link_to(airport[:city] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 			<td class="airport_iata_code new"><%= link_to(iata_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 		<% else %>
-			<td class="airport_city"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+			<td class="airport_city"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %> <%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 			<td class="airport_iata_code"><%= link_to(iata_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 		<% end %>
 		
@@ -69,7 +67,7 @@
   </tr>
 	<% previous_count = airport[:frequency] %>
 <% end %>
-  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
+  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
 </table>
 <% if @new_airport_flag %>
 	<p class="note">* Airport first visited in <%= @in_text %></p>

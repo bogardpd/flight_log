@@ -455,7 +455,6 @@ p.country {
 p.distance {
 	text-align: center;
 	margin-top: 0;
-	font-weight: bold;
 }
 
 p.home_link {
@@ -490,6 +489,10 @@ span.breadcrumb_title {
 
 span.disabled {
 	color: #A7A7A7;
+}
+
+span.distance_primary {
+	font-weight: 700;
 }
 
 span.distance_secondary {

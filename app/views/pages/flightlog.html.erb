@@ -16,7 +16,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
     <div class="tab">Contiguous United States</div><%= link_to("World", show_flightlog_region_path(:region => "world"), :class => "tab") %>
     <%= gcmap_embed(route_string(@flights, "conus")) %>
   <% end %>
-  <p class="total"><%= distance_string(@total_distance, "total") %> &middot; <%= link_to("See all #{pluralize(@flights.length, 'flight')}", flights_path)%></p>
+  <p class="total"><span class="distance_primary"><%= distance_string(@total_distance) %></span> &middot; <%= link_to("See all <span class=\"summary_total\">#{pluralize(@flights.length, 'flight')}</span>".html_safe, flights_path)%></p>
 </div>
 
 <div class="center">
