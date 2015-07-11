@@ -68,7 +68,7 @@
 	  </tr>
 		<% previous_count = @sort_cat == :flights ? row[:total_flights] : row[:distance_mi] %>
 	<% end %>
-  <tr><td colspan="6" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
+  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
 </table>
 
 <a name="airlines"></a>
