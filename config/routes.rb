@@ -32,6 +32,7 @@ Portfolio::Application.routes.draw do
   match '/gps_logging_garmin', :to => 'pages#gps_logging_garmin'
   match '/gps_logging_iphone', :to => 'pages#gps_logging_iphone'
   match '/hotel_internet_quality', :to => 'pages#hotel_internet_quality'
+  match '/itinerary/', :to => 'pages#itinerary'
   match '/modeling/', :to => 'pages#modeling'
   match '/stephenvlog/', :to => 'pages#stephenvlog'
   match '/tulsa_penguins', :to => 'pages#tulsa_penguins'

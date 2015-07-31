@@ -115,6 +115,10 @@ class PagesController < ApplicationController
     @title = "Hotel Internet Quality"
   end
   
+  def itinerary
+    render :layout => false
+  end
+  
   def modeling
     @title = "CAD 3D Models"
   end
