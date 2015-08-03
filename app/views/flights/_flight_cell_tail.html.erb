@@ -1,1 +1,1 @@
-<td class="flight_tail<%= @top_row_style %>"><% if flight.tail_number %><%= tail_number_country_flag(flight.tail_number) %> <%= link_to(flight.tail_number, show_tail_path(flight.tail_number), :title => "View flights on tail number #{flight.tail_number}") %><% end %></td>
+<td class="flight_tail<%= @top_row_style %>"><% if flight.tail_number %><%= tail_number_country_flag(flight.tail_number) %> <%= link_to(iata_mono(flight.tail_number), show_tail_path(flight.tail_number), :title => "View flights on tail number #{flight.tail_number}") %><% end %></td>

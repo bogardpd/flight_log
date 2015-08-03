@@ -555,8 +555,7 @@ table.flightlog a {
 
 
 table.flightlog td {
-	/*padding: 0.2em 0.4em;*/
-	padding: 0.3em 0.6em;
+	padding: 0.5em 0.6em;
 	border-top: 1px solid #DDDDDD;
 	white-space: nowrap;
 	height: 28px;
