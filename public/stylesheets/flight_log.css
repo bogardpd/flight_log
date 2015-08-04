@@ -567,6 +567,10 @@ table.flightlog th {
 	border-bottom: 1px solid #385D8A;
 }
 
+tr.th {
+	background-color: #9EC7F3;
+}
+
 table.no_border {
 	border: none;
 	outline: none;

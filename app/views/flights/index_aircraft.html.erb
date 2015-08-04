@@ -5,7 +5,7 @@
 <p>I have flown on <%= pluralize(@aircraft_array.count, 'aircraft family') %>.</p>
 
 <table class="flightlog">
-  <tr>
+  <tr class="th">
     <th class="counter">#</th>
 		<th class="aircraft_family"><%= sort_link("Aircraft Family", :aircraft, "aircraft", :asc, nil) %></th>
     <th class="aircraft_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>

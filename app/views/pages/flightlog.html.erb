@@ -25,7 +25,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
   <h2>Top Routes</h2>
   
   <table class="flightlog">
-    <tr>
+    <tr class="th">
       <th class="left">Route</th>
       <th class="center">Flights</th>
     </tr>
@@ -42,7 +42,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 <div class="intro_box column">
   <h2>Top Airports</h2>
   <table class="flightlog">
-    <tr class="">
+    <tr class="th">
       <th class="left">City</th>
       <th class="center">Code</th>
       <th class="center">Visits</th>
@@ -62,7 +62,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
   <h2>Top Aircraft</h2>
   
   <table class="flightlog">
-    <tr>
+    <tr class="th">
       <th class="left">Aircraft Family</th>
       <th class="center">Flights</th>
     </tr>
@@ -79,7 +79,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 <div class="intro_box column">
   <h2>Top Airlines</h2>
   <table class="flightlog">
-    <tr>
+    <tr class="th">
       <th class="left">Airline</th>
       <th class="center">Flights</th>
     </tr>
@@ -97,7 +97,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 <div class="intro_box column">
   <h2>Top Tails</h2>
   <table class="flightlog">
-    <tr>
+    <tr class="th">
       <th class="left">Tail Number</th>
       <th class="center">Flights</th>
   <% @tails_array.first(5).each do |tail| %>

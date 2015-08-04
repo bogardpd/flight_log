@@ -3,7 +3,7 @@
 <p>I have taken <%= pluralize(@trips.length, 'trip') %> by air.</p>
 
 <table class="flightlog">
-  <tr>
+  <tr class="th">
     <th class="counter">#</th>
 		<th class="trip_name">Trip</th>
     <th class="flight_date"><%= sort_link("Departure", :departure, "departure", :desc, nil) %></th>

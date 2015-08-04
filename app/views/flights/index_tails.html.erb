@@ -4,7 +4,7 @@
 <p>I have flown on <%= pluralize(@tail_numbers_table.count, 'unique tail number') %>.</p>
 
 <table class="flightlog">
-  <tr>
+  <tr class="th">
     <th class="tail_number"><%= sort_link("Tail Number", :tail, "tail", :asc, nil) %></th>
     <th class="tail_aircraft"><%= sort_link("Aircraft", :aircraft, "aircraft", :asc, nil) %></th>
     <th class="tail_airline"><%= sort_link("Airline", :airline, "airline", :asc, nil) %></th>
