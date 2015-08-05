@@ -1,10 +1,10 @@
 <% if flight.trip_section == @previous_section && flight.trip_id == @previous_trip %>
-	<% @top_row_style = " weak_top_border"%>
+	<% @tr_style = "no_top_border" %>
 <% else %>
-	<% @top_row_style = "" %>
+	<% @tr_style = "" %>
 <% end %>
-<tr>
-  <td class="counter<%= @top_row_style %>"><%= (@sort_cat == :departure && @sort_dir == :desc) ? @flights.length - flight_counter : flight_counter + 1 %></td>
+<tr class="<%= @tr_style %>">
+  <td class="counter"><%= (@sort_cat == :departure && @sort_dir == :desc) ? @flights.length - flight_counter : flight_counter + 1 %></td>
 	<%= render "flights/flight_cell_flight", :flight => flight %>
   <%= render "flights/flight_cell_route", :flight => flight %>
 	<%= render "flights/flight_cell_departure", :flight => flight %>

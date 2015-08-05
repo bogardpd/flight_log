@@ -539,36 +539,57 @@ span.summary_total {
 }
 
 table.flightlog {
-	border: 1px double #385D8A; /* double so it always takes priority */
+	/* border: 1px double #385D8A; /* double so it always takes priority */
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 1em;
 	margin-bottom: 1em;
 	border-spacing: 0;
 	border-collapse: collapse;
+	border-bottom: 1px solid #DDDDDD;
 }
 
 table.flightlog a {
 	text-decoration: none;
 }
 
+table.flightlog tr {
+	border-top: 1px solid #DDDDDD;
+	background-color: #FCFCFC;
+}
 
+table.flightlog tr.no_top_border {
+	border-top: none !important;
+}
 
 table.flightlog td {
 	padding: 0.5em 0.6em;
-	border-top: 1px solid #DDDDDD;
 	white-space: nowrap;
 	height: 28px;
 }
 
 table.flightlog th {
 	padding: 0.5em 0.6em;
-	background-color: #9EC7F3;
-	border-bottom: 1px solid #385D8A;
+	background-color: #F9F9F9;
+	border-bottom: 2px solid #9EC7F3;
+	height: 28px;
 }
 
+td.flightlog_total {
+	-webkit-text-size-adjust:100%;
+	background-color: #F9F9F9;
+	border-top: 2px solid #9EC7F3;
+	text-align: center;
+	font-weight: bold;
+}
+
+td.flightlog_total span.total_percent {
+	font-weight: normal;
+}
+
+
 tr.th {
-	background-color: #9EC7F3;
+	background-color: #F9F9F9;
 }
 
 table.no_border {
@@ -582,7 +603,6 @@ table.no_border td {
 
 td {
 	-webkit-text-size-adjust:100%;
-	background-color: #FCFCFC;
 }
 
 td a {
@@ -721,17 +741,6 @@ td.flight_trip_title {
 	text-align: center;
 }
 
-td.flightlog_total {
-	-webkit-text-size-adjust:100%;
-	background-color: #9EC7F3;
-	border-top: 1px solid #385D8A !important;
-	text-align: center;
-	font-weight: bold;
-}
-
-td.flightlog_total span.total_percent {
-	font-weight: normal;
-}
 
 td.new {
 	font-weight: 700;
