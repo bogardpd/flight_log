@@ -18,21 +18,23 @@
 <p>I have been on <%= pluralize(@flights.length, 'commercial flight') %> in <%= @in_text %>.</p>
 
 <div class="intro_box">
-  <% if params[:region] == "world" %>
-    <% if params[:year]%>
-			<%= link_to("Contiguous United States", show_year_path(params[:year]), :class => "tab") %><div class="tab active">World</div>
-		<% else %>
-			<%= link_to("Contiguous United States", show_date_range_path(:start_date => params[:start_date], :end_date => params[:end_date]), :class => "tab") %><div class="tab active">World</div>
-		<% end %>
-    <%= gcmap_embed(route_string(@flights), nil, "world") %>
-  <% else %>
-    <% if params[:year] %>
-			<div class="tab">Contiguous United States</div><%= link_to("World", show_year_region_path(:year => params[:year], :region => "world"), :class => "tab") %>
-		<% else %>
-			<div class="tab">Contiguous United States</div><%= link_to("World", show_date_range_region_path(:start_date => params[:start_date], :end_date => params[:end_date], :region => "world"), :class => "tab") %>
-		<% end %>
-    <%= gcmap_embed(route_string(@flights, "conus")) %>
-  <% end %>
+	<% if params[:region] == "world" %>
+	<div class="region_select">
+		<ul class="region_select">
+			<li><%= link_to("Contiguous United States", @date_path) %></li>
+			<li class="selected">World</li>
+		</ul>
+	</div>
+	<%= gcmap_embed(route_string(@flights), "world") %>
+	<% else %>
+	<div class="region_select">
+		<ul class="region_select">
+			<li class="selected">Contiguous United States</li>
+			<li><%= link_to("World", @date_path) %></li>
+		</ul>
+	</div>
+	<%= gcmap_embed(route_string(@flights, "conus")) %>
+	<% end %>
 	<%= distance_block(@total_distance, "total") %>
 </div>
 

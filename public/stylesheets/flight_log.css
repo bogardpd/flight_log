@@ -347,36 +347,32 @@ div.page_navigation li {
 	vertical-align: middle;
 }
 
-div.tab {
-	display: inline-block;
-	border: 1px solid #385D8A;
+div.region_select {
+	text-align: center;
 	margin-bottom: -1px;
-	margin-right: -1px;
-	margin-left: 0;
-	padding: 5px;
-	width: 300px;
-	background-color: #5D94D7;
-	color: #FFFFFF;
+}
+
+div.region_select ul {
+	padding: 0;
+	margin: 0;
+	font-size: 115%;
+}
+
+div.region_select li {
+	list-style-type: none;
+	display: inline-block;
+	height: 100%;
+	margin: 0;
+	padding: 3px 10px;
+	vertical-align: middle;
+}
+
+div.region_select li.selected {
+	font-weight: 700;
+}
+
+div.region_select a {
 	font-weight: 300;
-	font-size: 120%;
-}
-
-a.tab {
-	display: inline-block;
-	border: 1px solid #385D8A;
-	margin-bottom: -1px;
-	margin-right: -1px;
-	margin-left: 0;
-	padding: 5px;
-	width: 300px;
-	background-color: #DDDDDD;
-	font-size: 120%;
-}
-
-a.tab:hover {
-	background-color: #E47911;
-	color: #FFFFFF;
-	text-decoration: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -423,7 +419,7 @@ img.logo {
 }
 
 img.photo_gallery {
-	border: 1px solid #385D8A;
+	border: 1px solid #9EC7F3;
 }
 
 p {
@@ -539,14 +535,13 @@ span.summary_total {
 }
 
 table.flightlog {
-	/* border: 1px double #385D8A; /* double so it always takes priority */
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 1em;
 	margin-bottom: 1em;
 	border-spacing: 0;
 	border-collapse: collapse;
-	border-bottom: 1px solid #DDDDDD;
+	border-bottom: 1px solid #CCCCCC;
 }
 
 table.flightlog a {
@@ -554,7 +549,7 @@ table.flightlog a {
 }
 
 table.flightlog tr {
-	border-top: 1px solid #DDDDDD;
+	border-top: 1px solid #CCCCCC;
 	background-color: #FCFCFC;
 }
 
@@ -699,6 +694,7 @@ td.flight_airplane_icon {
 	font-size: 200%;
 	color: #3F3F3F;
 	background: #FFFFFF;
+	vertical-align: middle;
 }
 
 td.flight_route {
@@ -707,7 +703,7 @@ td.flight_route {
 }
 
 td.flight_section {
-	border-right: 1px solid #385D8A;
+	border-right: 2px solid #9EC7F3;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 1.2;
@@ -721,15 +717,15 @@ td.flight_show_airline img {
 td.flight_show_airport {
 	width: 250px;
 	line-height: 1.2;
-	vertical-align: top;
+	vertical-align: middle;
 	background: #FFFFFF;
 }
 
 td.flight_show_label {
-	background-color: #9EC7F3;
-	border-right: 1px solid #385D8A;
-	border-top: 1px solid #88B9EC !important;
-	font-weight: bold;
+	background-color: #FCFCFC;
+	border-right: 2px solid #9EC7F3;
+	font-weight: 700;
+	text-align: right;
 	vertical-align: middle;	
 }
 
@@ -764,11 +760,10 @@ td.route_route, th.route_route {
 }
 
 td.superlative_label {
-	background-color: #9EC7F3;
-	border-right: 1px solid #385D8A;
-	border-top: 1px solid #88B9EC !important;
+	background-color: #F9F9F9;
+	border-right: 2px solid #9EC7F3;
 	font-weight: bold;
-	text-align: left;
+	text-align: right;
 	vertical-align: middle;	
 }
 

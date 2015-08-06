@@ -20,17 +20,18 @@
   </tr>
 <% previous_section = nil %>
 <% @flights.each_with_index do |flight, index| %>
-  <% top_row_style = " weak_top_border" %>
-  <tr>
-    <% if flight.trip_section != previous_section %>
-      <% top_row_style = ""%>
-      <td rowspan="<%= @section_count[flight.trip_section] %>" class="flight_section">
-        <%= link_to("Section #{flight.trip_section}", show_section_path(flight.trip, flight.trip_section), :class => 'bold') %><% if @section_count[flight.trip_section] > 1 %><br /><span class="flight_section_route"><%= flight.origin_airport.iata_code %> - <%= @section_final_destination[flight.trip_section] %></span><% end %>
-      </td>
-    <% end %>
-    <td class="flight_flight<%= top_row_style %><%= " hidden_trip" if flight.trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if flight.trip.hidden %><%= link_to(image_tag(flight.airline_icon_path, :alt => flight.airline, :class => 'airline_icon') + flight.airline + " " + flight.flight_number.to_s, flight_path(flight), :title => "View flight details for " + flight.airline + " " + flight.flight_number.to_s) %></td>
-    <td class="flight_route<%= top_row_style %>"><%= link_to(iata_mono(flight.origin_airport.iata_code), airport_path(flight.origin_airport.iata_code), :title => "View airport details for " + flight.origin_airport.city) %> &ndash; <%= link_to(iata_mono(flight.destination_airport.iata_code), airport_path(flight.destination_airport.iata_code), :title => "View airport details for " + flight.destination_airport.city) %></td>
-    <td class="flight_date<%= top_row_style %>"><%= format_date(flight.departure_date) %></td>
+  
+<% if flight.trip_section != previous_section %>
+	<tr>
+    <td rowspan="<%= @section_count[flight.trip_section] %>" class="flight_section">
+      <%= link_to("Section #{flight.trip_section}", show_section_path(flight.trip, flight.trip_section), :class => 'bold') %><% if @section_count[flight.trip_section] > 1 %><br /><span class="flight_section_route"><%= flight.origin_airport.iata_code %> - <%= @section_final_destination[flight.trip_section] %></span><% end %>
+    </td>
+<% else %>
+	<tr class="no_top_border">
+<% end %>
+    <td class="flight_flight<%= " hidden_trip" if flight.trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if flight.trip.hidden %><%= link_to(image_tag(flight.airline_icon_path, :alt => flight.airline, :class => 'airline_icon') + flight.airline + " " + flight.flight_number.to_s, flight_path(flight), :title => "View flight details for " + flight.airline + " " + flight.flight_number.to_s) %></td>
+    <td class="flight_route"><%= link_to(iata_mono(flight.origin_airport.iata_code), airport_path(flight.origin_airport.iata_code), :title => "View airport details for " + flight.origin_airport.city) %> &ndash; <%= link_to(iata_mono(flight.destination_airport.iata_code), airport_path(flight.destination_airport.iata_code), :title => "View airport details for " + flight.destination_airport.city) %></td>
+    <td class="flight_date"><%= format_date(flight.departure_date) %></td>
   </tr>
   <% previous_section = flight.trip_section %>
 <% end %>

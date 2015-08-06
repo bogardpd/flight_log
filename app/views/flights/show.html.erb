@@ -10,7 +10,7 @@
 <%= gcmap_embed(@flight.origin_airport.iata_code + "-" + @flight.destination_airport.iata_code, 'labels') %>
 
 <table class="flightlog no_border">
-  <tr>
+  <tr class="no_top_border">
     <td class="flight_show_airport right">
       <span class="flight_iata_code"><%= link_to(@flight.origin_airport.iata_code, airport_path(@flight.origin_airport.iata_code), :title => "View airport details for " + @flight.origin_airport.city) %></span><br />
       <span class="flight_city"><%= @flight.origin_airport.city %></span>

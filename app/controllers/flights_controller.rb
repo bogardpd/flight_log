@@ -105,6 +105,11 @@ class FlightsController < ApplicationController
       @superlatives_title = params[:year] + " Longest and Shortest Routes"
       @superlatives_title_nav = @superlatives_title.downcase
       @title = "Flights in #{params[:year]}"
+      if params[:region] == "world"
+        @date_path = show_year_path(params[:year])
+      else
+        @date_path = show_year_region_path(:year => params[:year], :region => "world")
+      end
     elsif (params[:start_date].present? && params[:end_date].present?)
       if (params[:start_date] > params[:end_date])
         raise ArgumentError.new('Start date cannot be later than end date')
@@ -117,6 +122,11 @@ class FlightsController < ApplicationController
       @superlatives_title = "Longest and Shortest Routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
       @superlatives_title_nav = "Longest and shortest routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
       @title = "Flights: #{format_date(params[:start_date].to_date)} - #{format_date(params[:end_date].to_date)}"
+      if params[:region] == "world"
+        @date_path = show_date_range_path(:start_date => params[:start_date], :end_date => params[:end_date])
+      else
+        @date_path = show_date_range_region_path(:start_date => params[:start_date], :end_date => params[:end_date], :region => "world")
+      end
     else
       raise ArgumentError.new('No date parameters were given for a date range')
     end
