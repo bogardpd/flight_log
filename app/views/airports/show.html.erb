@@ -1,4 +1,16 @@
+<% if File.exist?("#{Rails.root}/public/images/flight_log/terminals/#{@airport.iata_code.upcase}.svg") %>
+<div style="background: url(../images/flight_log/terminals/<%= @airport.iata_code.upcase %>.svg); background-position: right top; background-size: auto 225px; background-repeat: no-repeat">
+<% else %>
+<div>
+<% end %>
+
 <h1><%= @airport.city %></h1>
+<p class="airport_info">
+	<span class="iata"><%= @airport.iata_code %></span>
+<% if @airport.country %>
+&middot; <span class="country"><%= @airport.country %> <%= image_tag(@airport.country_flag_path, :title => @airport.country, :class => 'country_flag') %></span>
+<% end %>
+</p>
 
 <div class="page_navigation">
   <ul>
@@ -12,9 +24,7 @@
   </ul>
 </div>
 
-<% if @airport.country %>
-<p class="country"><%= image_tag(@airport.country_flag_path, :title => @airport.country, :class => 'country_flag') %> <%= @airport.country %></p>
-<% end %>
+
 
 <p>I have visited <span class="bold"><acronym title="<%= @airport.city %>"><%= @airport.iata_code %></span> <%= pluralize(@airport_frequency[@airport.id], "time") %>.</p>
 
@@ -23,7 +33,7 @@
 <a name="flights"></a>
 <h2>Flights Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h1>
 
-<p>These are my flights that took off from or landed at <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+<p>These are my flights that took off from or landed at <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
 
 <%= gcmap_embed(airport_highlight(@airport.iata_code) + route_string(@flights)) %>
 
@@ -106,6 +116,7 @@
 
 <% end %>
 
+</div>
 
 <% content_for :admin_actions do %>
   <% if @flights.length == 0 %>

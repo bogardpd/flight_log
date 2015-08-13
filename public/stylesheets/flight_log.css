@@ -439,13 +439,19 @@ p.active_trips a {
 	font-weight: bold;
 }
 
-p.country {
-	font-weight: bold;
-	background-color: #EEEEEE;
-	padding: 5px;
-	margin-top: 10px;
-	margin-bottom: 10px;
+p.airport_info {
+	margin-top: -10px;
+	margin-bottom: 30px;
+	width: 50%;
 	-webkit-text-size-adjust:100%
+}
+
+p.airport_info span.iata {
+	font-weight: 700;
+}
+
+p.airport_info span.country {
+	font-weight: 300;
 }
 
 p.distance {
