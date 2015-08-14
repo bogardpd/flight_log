@@ -375,6 +375,22 @@ div.region_select a {
 	font-weight: 300;
 }
 
+div.terminal {
+	float: right;
+	width: 275px;
+	height: 225px;
+	background-color: #FFFFFF;
+	padding: 0px;
+}
+
+div.terminal img {
+	width: 275px;
+	height: 225px;
+	margin: 0px;
+	opacity: 0.15;
+	filter: alpha(opacity=15); /* For IE8 and earlier */
+}
+
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1.2;
 	margin-top: 15px;
