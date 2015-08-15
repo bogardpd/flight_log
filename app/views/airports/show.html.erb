@@ -1,14 +1,8 @@
-<% if false && File.exist?("#{Rails.root}/public/images/flight_log/terminals/#{@airport.iata_code.upcase}.png") #Hide until we've created all terminal silhouettes %>
-<div class="terminal">
-	<%= image_tag("flight_log/terminals/#{@airport.iata_code.upcase}.png", :title => "Terminal at #{@airport.iata_code.upcase}") %>
-</div>
+<% if @airport.country %>
+<div class="airport_info"><span class="country"><%= @airport.country %> <%= image_tag(@airport.country_flag_path, :title => @airport.country, :class => 'country_flag') %></span></div>
 <% end %>
 
 <h1><%= @airport.city %></h1>
-
-<% if @airport.country %>
-<p class="airport_info"><span class="country"><%= @airport.country %> <%= image_tag(@airport.country_flag_path, :title => @airport.country, :class => 'country_flag') %></span></p>
-<% end %>
 
 <div class="page_navigation">
   <ul>
@@ -112,6 +106,14 @@
 
 <%= render "trips/trip_table" %>
 
+<% end %>
+
+<% if false && File.exist?("#{Rails.root}/public/images/flight_log/terminals/#{@airport.iata_code.upcase}.png") #Hide until we've created all terminal silhouettes %>
+<a name="terminal">
+<h2>Terminal</h2>
+<div class="terminal">
+	<%= image_tag("flight_log/terminals/#{@airport.iata_code.upcase}.png", :title => "Terminal at #{@airport.iata_code.upcase}") %>
+</div>
 <% end %>
 
 <% content_for :admin_actions do %>

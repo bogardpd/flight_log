@@ -239,6 +239,16 @@ a.warning {
 }
 
 
+div.airport_info {
+	float: right;
+	padding-top: 6px;
+	-webkit-text-size-adjust:100%
+}
+
+div.airport_info span.country {
+	font-weight: 300;
+}
+
 div.alert {
 	background: #FFFFDD;
 	border: 1px solid #FFDD99;
@@ -453,21 +463,6 @@ p.active_trips {
 
 p.active_trips a {
 	font-weight: bold;
-}
-
-p.airport_info {
-	margin-top: -10px;
-	margin-bottom: 30px;
-	width: 50%;
-	-webkit-text-size-adjust:100%
-}
-
-p.airport_info span.iata {
-	font-weight: 700;
-}
-
-p.airport_info span.country {
-	font-weight: 300;
 }
 
 p.distance {
