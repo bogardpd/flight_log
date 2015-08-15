@@ -1,4 +1,4 @@
-<% if false || File.exist?("#{Rails.root}/public/images/flight_log/terminals/#{@airport.iata_code.upcase}.png") #Hide until we've created all terminal silhouettes %>
+<% if false && File.exist?("#{Rails.root}/public/images/flight_log/terminals/#{@airport.iata_code.upcase}.png") #Hide until we've created all terminal silhouettes %>
 <div class="terminal">
 	<%= image_tag("flight_log/terminals/#{@airport.iata_code.upcase}.png", :title => "Terminal at #{@airport.iata_code.upcase}") %>
 </div>
