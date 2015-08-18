@@ -20,7 +20,7 @@ body {
 	position: absolute;
 	z-index: -1;
 	width: 100%;
-	height: 35px;
+	height: 36px;
 	background: #5D94D7;
 	background-image: linear-gradient(to bottom, #4892EB, #5D94D7);
 	margin: 0;
@@ -28,10 +28,10 @@ body {
 
 #menu_banner {
 	position: absolute;
-	top: 35px;
+	top: 36px;
 	z-index: -1;
 	width: 100%;
-	height: 35px;
+	height: 36px;
 	background: #1F497D;
 	background-image: linear-gradient(to bottom, #0F478C, #1F497D);
 	border-top: 1px solid #376092;
@@ -47,7 +47,7 @@ body {
 }
 
 #header {
-	height: 35px;
+	height: 36px;
 	background-color: #5D94D7;	
 	background-image: linear-gradient(to bottom, #4892EB, #5D94D7);
 	color: #FFFFFF;
@@ -65,7 +65,7 @@ body {
 }
 
 #menu {
-	height: 35px;
+	height: 36px;
 	border: 1px solid #376092;
 	background-color: #1F497D;
 	background-image: linear-gradient(to bottom, #0F478C, #1F497D);
@@ -106,7 +106,7 @@ body {
 	background-color: #FFFFFF;
 	color: #222222;
 	padding: 4px 10px;
-	height: 27px;
+	height: 28px;
 }
 
 #menu li a {
@@ -114,7 +114,7 @@ body {
 	color: inherit;
 	margin: 0;
 	padding: 4px 10px;
-	height: 27px;
+	height: 28px;
 	border: none;
 	text-decoration: none;
 }
@@ -440,8 +440,8 @@ img.country_flag {
 
 img.logo {
 	border: none;
-	width: 242px;
-	height: 35px;
+	width: 283px;
+	height: 36px;
 }
 
 img.photo_gallery {
