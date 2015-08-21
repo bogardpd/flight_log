@@ -132,6 +132,11 @@ body {
 #menu li a.active {
 	background-color: #FFFFFF;
 	color: #222222;
+	padding: 3px 10px 5px 10px;
+	height: 28px;
+	position: relative;
+	top: 1px;
+	z-index: 1;
 }
 
 #menu li a.active:hover {
@@ -617,6 +622,10 @@ table.no_border {
 
 table.no_border td {
 	border: none;
+}
+
+table.flight_large_route {
+	margin-top: 0px;
 }
 
 td {
