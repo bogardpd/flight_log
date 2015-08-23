@@ -9,7 +9,7 @@
 <% @classes_array.each_with_index do |travel_class, index| %>
   <tr>
 		<td class="counter"><%= (travel_class[:count] == previous_count) ? "⋮" : index + 1 %></td>
-    <td class="class_class"><%= link_to("#{travel_class[:travel_class]} class", show_class_path(travel_class[:travel_class]), :title => "View #{travel_class[:travel_class].downcase} class flights") %></td>
+    <td class="class_class"><%= link_to(travel_class[:travel_class], show_class_path(travel_class[:travel_class]), :title => "View #{travel_class[:travel_class].downcase} class flights") %></td>
     <td class="class_flights"><%= render "graph_block", :value => travel_class[:count], :maximum => @classes_maximum %></td>
   </tr>
 	<% previous_count = travel_class[:count] %>

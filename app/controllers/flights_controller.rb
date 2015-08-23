@@ -422,7 +422,7 @@ class FlightsController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogard's #{params[:travel_class].downcase} class flights."
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb 'Travel Classes', 'classes_path'
-    add_breadcrumb @title, show_class_path(params[:travel_class])
+    add_breadcrumb params[:travel_class].titlecase, show_class_path(params[:travel_class])
     
     @total_distance = total_distance(@flights)
     

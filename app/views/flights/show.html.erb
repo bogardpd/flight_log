@@ -56,7 +56,7 @@
   <% if @flight.travel_class %>
   <tr>
     <td class="flight_show_label">Travel Class</td>
-    <td><%= link_to(@flight.travel_class.titlecase + " class", show_class_path(@flight.travel_class.titlecase), :title => "View #{@flight.travel_class.downcase} class flights") %></td>
+    <td><%= link_to(@flight.travel_class.titlecase, show_class_path(@flight.travel_class.titlecase), :title => "View #{@flight.travel_class.downcase} class flights") %></td>
   </tr>
   <% end %>
   <% if @flight.aircraft_family %>
