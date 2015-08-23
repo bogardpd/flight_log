@@ -1,3 +1,5 @@
+<div class="title_info"><%= image_tag(Flight.new(:airline => @operator).airline_icon_path, :title => @operator, :class => 'airline_icon') %></div>
+
 <h1><%= @operator %> #<%= @fleet_number %></h1>
 
 <div class="page_navigation">
@@ -11,7 +13,7 @@
 </div>
 
 <a name="flights"></a>
-<p><span class="bold"><%= link_to((image_tag(Flight.new(:airline => @operator).airline_icon_path, :alt => @operator, :class => 'airline_icon') + " " + @operator).html_safe, show_operator_path(@operator), :title => "View flights operated by #{@operator}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
+<p><span class="bold"><%= link_to(@operator, show_operator_path(@operator), :title => "View flights operated by #{@operator}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
 
 <%= gcmap_embed(route_string(@flights)) %>
 <%= distance_block(@total_distance, 'total') %>

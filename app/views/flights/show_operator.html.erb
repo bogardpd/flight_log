@@ -1,3 +1,5 @@
+<div class="title_info"><%= image_tag(@operator_icon_path, :title => @operator, :class => 'airline_icon') %></div>
+
 <h1>Flights Operated by <%= @operator %></h1>
 
 <div class="page_navigation">
@@ -12,7 +14,7 @@
 </div>
 
 <a name="flights"></a>
-<p><%= image_tag(@operator_icon_path, :alt => @operator, :class => 'airline_icon') %> <span class="bold"><%= @operator %></span> has operated <%= @flights.length %> of my flights.</p>
+<p><span class="bold"><%= @operator %></span> has operated <%= @flights.length %> of my flights.</p>
 <%= gcmap_embed(route_string(@flights)) %>
 <%= distance_block(@total_distance, 'total') %>
 <%= render "flight_table" %>

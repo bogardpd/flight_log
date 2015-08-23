@@ -238,17 +238,6 @@ a.warning {
 	color: #FF0000 !important;
 }
 
-
-div.airport_info {
-	float: right;
-	padding-top: 6px;
-	-webkit-text-size-adjust:100%
-}
-
-div.airport_info span.country {
-	font-weight: 300;
-}
-
 div.alert {
 	background: #FFFFDD;
 	border: 1px solid #FFDD99;
@@ -385,20 +374,11 @@ div.region_select a {
 	font-weight: 300;
 }
 
-div.terminal {
+div.title_info {
 	float: right;
-	width: 275px;
-	height: 225px;
-	background-color: #FFFFFF;
-	padding: 0px;
-}
-
-div.terminal img {
-	width: 275px;
-	height: 225px;
-	margin: 0px;
-	opacity: 0.15;
-	filter: alpha(opacity=15); /* For IE8 and earlier */
+	padding-top: 6px;
+	font-weight: 300;
+	-webkit-text-size-adjust:100%
 }
 
 h1, h2, h3, h4, h5, h6 {

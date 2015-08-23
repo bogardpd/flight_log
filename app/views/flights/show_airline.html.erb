@@ -1,3 +1,5 @@
+<div class="title_info"><%= image_tag(Flight.new(:airline => @airline).airline_icon_path, :title => @airline, :class => 'airline_icon')%></div>
+
 <h1><%= @airline %></h1>
 
 <div class="page_navigation">
@@ -10,7 +12,7 @@
 </div>
 
 <a name="flights"></a>
-<p><%= image_tag(Flight.new(:airline => @airline).airline_icon_path, :alt => @airline, :class => 'airline_icon')%> I have flown <%= pluralize(@flights.length, 'flight') %> on <span class="bold"><%= @airline %></span>.</p>
+<p>I have flown <%= pluralize(@flights.length, 'flight') %> on <span class="bold"><%= @airline %></span>.</p>
 
 <%= gcmap_embed(route_string(@flights)) %>
 

@@ -1,3 +1,7 @@
+<% if Flight.tail_country(params[:tail_number]) %>
+<div class="title_info"><%= Flight.tail_country(params[:tail_number]) %> <%= tail_number_country_flag(params[:tail_number]) %></div>
+<% end %>
+
 <h1><%= params[:tail_number] %></h1>
 
 <div class="page_navigation">
@@ -11,7 +15,7 @@
 </div>
 
 <a name="flights"></a>
-<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family, show_aircraft_path(@flights.last.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flights.last.aircraft_family} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span><% if Flight.tail_country(params[:tail_number]) %> <%= tail_number_country_flag(params[:tail_number]) %><% end %> <%= pluralize(@flights.length, 'time') %>.</p>
+<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family, show_aircraft_path(@flights.last.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flights.last.aircraft_family} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
 <%= gcmap_embed(route_string(@flights)) %>
 
