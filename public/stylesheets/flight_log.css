@@ -93,33 +93,29 @@ body {
 #menu li {
 	list-style-type: none;
 	display: inline-block;
-	padding: 4px 10px;
+	position: relative;
+	top: 1px;
+	z-index: 1;
+	height: 37px;
 	margin: 0;
 	padding: 0;
 	vertical-align: middle;	
 	font-size: 18px;
 	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 	font-weight: 300;
-	border-bottom: 1px double #376092;
 }
 
 #menu li.active {
 	background-color: #FFFFFF;
 	color: #222222;
-	padding: 3px 10px 5px 10px;
-	height: 28px;
-	position: relative;
-	top: 1px;
-	z-index: 1;
-	border-bottom: 1px double #FFFFFF;
 }
 
 #menu li a {
 	display: block;
 	color: inherit;
+	height: 28px;
 	margin: 0;
 	padding: 4px 10px;
-	height: 28px;
 	border: none;
 	text-decoration: none;
 }
@@ -130,13 +126,7 @@ body {
 }
 
 #menu li a.active {
-	background-color: #FFFFFF;
 	color: #222222;
-	padding: 3px 10px 5px 10px;
-	height: 28px;
-	position: relative;
-	top: 1px;
-	z-index: 1;
 }
 
 #menu li a.active:hover {
