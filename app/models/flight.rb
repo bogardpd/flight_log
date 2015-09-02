@@ -32,8 +32,60 @@ class Flight < ActiveRecord::Base
   end
   
   def self.tail_country(tail_number)
-    tail = tail_number.upcase
+    case tail_number.upcase
+    when /^N(([1-9]\d{0,2}[A-HJ-NP-Z]{0,2})|([1-9]\d{0,3}[A-HJ-NP-Z]{0,1})|([1-9]\d{0,4}))$/
+      return "United States"
+    when /^VH-[A-Z]{3}$/
+      return "Australia"
+    when /^C-[FGI][A-Z]{3}$/
+      return "Canada"
+    when /^B-((1[5-9]\d{2})|([2-9]\d{3}))$/
+      return "China"
+    when /^F-[A-Z]{4}$/
+      return "France"
+    when /^D-(([A-CE-IK-O][A-Z]{3})|(\d{4}))$/
+      return "Germany"
+    when /^9G-[A-Z]{3}$/
+      return "Ghana"
+    when /^SX-[A-Z]{3}$/
+      return "Greece"
+    when /^B-[HKL][A-Z]{2}$/
+      return "Hong Kong"
+    when /^TF-(([A-Z]{3})|([1-9]\d{2}))$/
+      return "Iceland"
+    when /^VT-[A-Z]{3}$/
+      return "India"
+    when /^4X-[A-Z]{3}$/
+      return "Israel"
+    when /^JA((\d{4})|(\d{3}[A-Z])|(\d{2}[A-Z]{2})|(A\d{3}))$/
+      return "Japan"
+    when /^JY-[A-Z]{3}$/
+      return "Jordan"
+    when /^9M-[A-Z]{3}$/
+      return "Malaysia"
+    when /^PH-(([A-Z]{3})|(1[A-Z]{2})|(\d[A-Z]\d)|([1-9]\d{2,3}))$/
+      return "Netherlands"
+    when /^ZK-[A-Z]{3}$/
+      return "New Zealand"
+    when /^9V-[A-Z]{3}$/
+      return "Singapore"
+    when /^B-((\d(0\d{3}|1[0-4]\d{2}))|([1-9]\d{4}))$/
+      return "Taiwan"
+    when /^HS-[A-Z]{3}$/
+      return "Thailand"
+    when /^UR-(([A-Z]{3,4})|([1-9]\d{4}))$/
+      return "Ukraine"
+    when /^A6-[A-Z]{3}$/
+      return "United Arab Emirates"
+    when /^G-(([A-Z]{4})|(\d{1,2}-\d{1,2}))$/
+      return "United Kingdom"
+    else
+      return nil
+    end
     
+=begin    
+    tail = tail_number.upcase
+        
     if tail.start_with?('N')
       return "United States"
     elsif tail.start_with?('4X-')
@@ -83,6 +135,8 @@ class Flight < ActiveRecord::Base
     else
       return nil
     end
+=end      
+      
   end
   
   protected
