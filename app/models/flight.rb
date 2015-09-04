@@ -33,7 +33,7 @@ class Flight < ActiveRecord::Base
   
   def self.tail_country(tail_number)
     case tail_number.upcase
-    when /^N(([1-9]\d{0,2}[A-HJ-NP-Z]{0,2})|([1-9]\d{0,3}[A-HJ-NP-Z]{0,1})|([1-9]\d{0,4}))$/
+    when /^N[1-9]((\d{0,4})|(\d{0,3}[A-HJ-NP-Z])|(\d{0,2}[A-HJ-NP-Z]{2}))$/
       return "United States"
     when /^VH-[A-Z]{3}$/
       return "Australia"

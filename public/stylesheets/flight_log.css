@@ -66,11 +66,13 @@ body {
 
 #menu {
 	height: 36px;
-	border: 1px solid #376092;
+	margin: 0 -1px;
+	padding: 0 2px;
+	border-top: 1px solid #376092;
+	border-bottom: 1px solid #376092;
 	background-color: #1F497D;
 	background-image: linear-gradient(to bottom, #0F478C, #1F497D);
 	color: #FFFFFF;
-	padding: 0;
 }
 
 #menu_home {
