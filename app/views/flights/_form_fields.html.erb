@@ -16,12 +16,12 @@
 
 <p>
   <%= f.label :departure_date, "Departure Date (Local)" %><br />
-  <%= f.date_select :departure_date, :start_year => 2002 %>
+  <%= f.date_select :departure_date, :start_year => 2000 %>
 </p>
 
 <p>
   <%= f.label :departure_utc, "UTC Departure (for sorting flights)" %> &mdash; Current time: <strong><%= Time.now.utc %></strong><br />
-  <%= f.datetime_select :departure_utc, :start_year => 2002, :minute_step => 5 %>
+  <%= f.datetime_select :departure_utc, :start_year => 2000, :minute_step => 5 %>
 </p>
 
 <p>
