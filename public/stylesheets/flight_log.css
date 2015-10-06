@@ -374,7 +374,7 @@ div.region_select li {
 }
 
 div.region_select li.selected {
-	font-weight: 700;
+	font-weight: 600;
 }
 
 div.region_select a {
@@ -392,7 +392,7 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.2;
 	margin-top: 15px;
 	margin-bottom: 10px;
-	font-weight: 700;
+	font-weight: 600;
 }
 
 h1 {
@@ -493,7 +493,7 @@ span.disabled {
 }
 
 span.distance_primary {
-	font-weight: 700;
+	font-weight: 600;
 }
 
 span.distance_secondary {
@@ -518,7 +518,7 @@ span.flight_city {
 
 span.flight_iata_code {
 	font-size: 150%;
-	font-weight: 700;
+	font-weight: 600;
 }
 
 span.flight_route_distance {
@@ -536,7 +536,7 @@ span.sort_symbol {
 }
 
 span.summary_total {
-	font-weight: 700;
+	font-weight: 600;
 }
 
 table.flightlog {
@@ -733,7 +733,7 @@ td.flight_show_airport {
 td.flight_show_label {
 	background-color: #FCFCFC;
 	border-right: 2px solid #9EC7F3;
-	font-weight: 700;
+	font-weight: 600;
 	text-align: right;
 	vertical-align: middle;	
 }
@@ -748,7 +748,7 @@ td.flight_trip_title {
 
 
 td.new {
-	font-weight: 700;
+	font-weight: 600;
 }
 
 td.route_distance {
