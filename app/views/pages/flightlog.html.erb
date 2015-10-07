@@ -32,24 +32,6 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 <div class="center">
 
 <div class="intro_box column">
-  <h2>Top Routes</h2>
-  
-  <table class="flightlog">
-    <tr class="th">
-      <th class="left">Route</th>
-      <th class="center">Flights</th>
-    </tr>
-  <% @route_totals.first(5).each do |flight_route, count| %>
-    <tr>
-      <td class="left"><%= link_to((iata_mono(flight_route.sub('-',"</span> &#x21C4; <span class=\"iata_mono\">"))), route_path(flight_route), :title => "View flights between #{flight_route.split('-')[0]} and #{flight_route.split('-')[1]}") %></td>
-      <td class="center"><%= count %></td>
-    </tr>
-  <% end %>
-  </table>
-  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@route_totals.length, 'route')}</span>".html_safe, routes_path)%></p>
-</div>
-
-<div class="intro_box column">
   <h2>Top Airports</h2>
   <table class="flightlog">
     <tr class="th">
@@ -69,24 +51,6 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 </div>
 
 <div class="intro_box column">
-  <h2>Top Aircraft</h2>
-  
-  <table class="flightlog">
-    <tr class="th">
-      <th class="left">Aircraft Family</th>
-      <th class="center">Flights</th>
-    </tr>
-  <% @aircraft_array.first(5).each do |aircraft| %>
-    <tr>
-      <td class="left"><%= link_to(aircraft[:aircraft], show_aircraft_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
-      <td class="center"><%= aircraft[:count] %></td>
-    </tr>
-  <% end %>
-  </table>
-  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@aircraft_array.count, 'aircraft family')}</span>".html_safe, aircraft_path)%></p>
-</div>
-
-<div class="intro_box column">
   <h2>Top Airlines</h2>
   <table class="flightlog">
     <tr class="th">
@@ -102,6 +66,42 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
   <% end %>
   </table>
   <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@airlines_array.count, 'airline')}</span>".html_safe, airlines_path)%></p>
+</div>
+
+<div class="intro_box column">
+  <h2>Top Routes</h2>
+  
+  <table class="flightlog">
+    <tr class="th">
+      <th class="left">Route</th>
+      <th class="center">Flights</th>
+    </tr>
+  <% @route_totals.first(5).each do |flight_route, count| %>
+    <tr>
+      <td class="left"><%= link_to((iata_mono(flight_route.sub('-',"</span> &#x21C4; <span class=\"iata_mono\">"))), route_path(flight_route), :title => "View flights between #{flight_route.split('-')[0]} and #{flight_route.split('-')[1]}") %></td>
+      <td class="center"><%= count %></td>
+    </tr>
+  <% end %>
+  </table>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@route_totals.length, 'route')}</span>".html_safe, routes_path)%></p>
+</div>
+
+<div class="intro_box column">
+  <h2>Top Aircraft</h2>
+  
+  <table class="flightlog">
+    <tr class="th">
+      <th class="left">Aircraft Family</th>
+      <th class="center">Flights</th>
+    </tr>
+  <% @aircraft_array.first(5).each do |aircraft| %>
+    <tr>
+      <td class="left"><%= link_to(aircraft[:aircraft], show_aircraft_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
+      <td class="center"><%= aircraft[:count] %></td>
+    </tr>
+  <% end %>
+  </table>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@aircraft_array.count, 'aircraft family')}</span>".html_safe, aircraft_path)%></p>
 </div>
 
 <div class="intro_box column">
