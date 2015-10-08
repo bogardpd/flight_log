@@ -177,7 +177,7 @@ body {
 }
 
 .bold {
-	font-weight: bold;
+	font-weight: 600;
 }
 
 .center {
@@ -290,6 +290,10 @@ div.graph {
 	background-repeat:no-repeat;
 }
 
+div.graph_background {
+	background-color: #FCFCFD;
+}
+
 div.hidden_marker {
 	float: right;
 	background: #FFFF00;
@@ -298,7 +302,7 @@ div.hidden_marker {
 	margin-top: 1px;
 	margin-left: 8px;
 	font-size: 80%;
-	font-weight: bold;
+	font-weight: 600;
 }
 
 div.hidden_trip {
@@ -450,7 +454,7 @@ p.active_trips {
 }
 
 p.active_trips a {
-	font-weight: bold;
+	font-weight: 600;
 }
 
 p.distance {
@@ -462,6 +466,10 @@ p.home_link {
 	text-align: center;
 	margin-top: 20px;
 	margin-bottom: 20px;
+}
+
+p.new {
+	text-shadow: 0 0 3px #FFBB56;
 }
 
 p.note {
@@ -580,7 +588,7 @@ td.flightlog_total {
 	background-color: #F9F9FB;
 	border-top: 2px solid #9EC7F3;
 	text-align: center;
-	font-weight: bold;
+	font-weight: 600;
 }
 
 td.flightlog_total span.total_percent {
@@ -742,13 +750,13 @@ td.flight_trip_title {
 	background-color: #9EC7F3;
 	border-bottom: 1px solid #385D8A !important;
 	border-top: 1px solid #385D8A !important;
-	font-weight: bold;
+	font-weight: 600;
 	text-align: center;
 }
 
 
 td.new {
-	font-weight: 600;
+	background-color: #FFF5E6;
 }
 
 td.route_distance {
@@ -771,7 +779,7 @@ td.route_route, th.route_route {
 td.superlative_label {
 	background-color: #F9F9FB;
 	border-right: 2px solid #9EC7F3;
-	font-weight: bold;
+	font-weight: 600;
 	text-align: right;
 	vertical-align: middle;	
 }
