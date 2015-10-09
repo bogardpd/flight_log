@@ -810,6 +810,10 @@ td.weak_top_border {
 	border-top: none !important;
 }
 
+th {
+	font-weight: 600;
+}
+
 th.flight_date {
 	text-align: right;
 }
