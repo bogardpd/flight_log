@@ -44,7 +44,7 @@
   <% if @flight.operator %>
   <tr>
     <td class="flight_show_label">Operated By</td>
-    <td class="flight_show_airline"><%= link_to(image_tag(Flight.new(:airline => @flight.operator).airline_icon_path, :alt => @flight.operator, :class => 'airline_icon') + ' ' + @flight.operator, show_operator_path(@flight.operator.gsub(" ", "_")), :title => "View flights operated by " + @flight.operator) %><% if @flight.fleet_number %> (<%= link_to(iata_mono("#" + @flight.fleet_number), show_fleet_number_path(@flight.operator.gsub(" ", "_"), @flight.fleet_number), :title => "View flights on #{@flight.operator} aircraft ##{@flight.fleet_number}") %>)<% end %></td>
+    <td class="flight_show_airline"><%= link_to(image_tag(Flight.new(:airline => @flight.operator).airline_icon_path, :alt => @flight.operator, :class => 'airline_icon') + ' ' + @flight.operator, show_operator_path(@flight.operator.gsub(" ", "_")), :title => "View flights operated by " + @flight.operator) %><% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.gsub(" ", "_"), @flight.fleet_number), :title => "View flights on #{@flight.operator} aircraft ##{@flight.fleet_number}") %>)<% end %></td>
   </tr>
   <% end %>
   <% if @flight.codeshare_airline %>

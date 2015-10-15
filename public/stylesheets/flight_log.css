@@ -327,6 +327,7 @@ div.intro_box p {
 	margin: 0;
 	text-align: center;
 	font-weight: 400;
+	-webkit-text-size-adjust:100%;
 }
 
 div.intro_box table {
@@ -799,7 +800,6 @@ td.tail_airline, th.tail_airline {
 
 td.tail_number {
 	text-align: left;
-	font-family: "Source Code Pro", monospace;
 }
 
 th.tail_number {
