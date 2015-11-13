@@ -26,6 +26,10 @@ class PagesController < ApplicationController
     @title = "Computers"
   end
   
+  def computer_history
+    @title = "Computer History"
+  end
+  
   def cooking
     @title = "Experiments in Cooking"
   end

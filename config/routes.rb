@@ -24,6 +24,7 @@ Portfolio::Application.routes.draw do
   match '/logout', :to => 'sessions#destroy', :via => :delete
   
   match '/computers', :to => 'pages#computers'
+  match '/computer_history', :to => 'pages#computer_history'
   match '/cooking', :to => 'pages#cooking'
   match '/current_home', :to => 'pages#current_home'
   match '/ebdb', :to => 'pages#ebdb'

@@ -188,6 +188,10 @@ iframe {
 	box-shadow: 1px 1px 2px #CCCCCC;
 }
 
+img.computer_history {
+	float: left;
+}
+
 img.logo {
 	border: 0;
 }
@@ -358,6 +362,11 @@ pre.debug_dump {
 	font-size: 12pt;
 }
 
+span.attrib {
+	font-size: 60%;
+	color: #999999;
+}
+
 span.bold {
 	font-weight: bold;
 }
@@ -425,6 +434,12 @@ td.component_photo {
 
 td.component_title {
 	font-weight: bold;
+}
+
+td.computer_history_image {
+	width: 275px;
+	font-size: 60%;
+	color: #999999;
 }
 
 td.console {

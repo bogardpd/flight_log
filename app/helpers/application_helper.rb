@@ -81,6 +81,19 @@ module ApplicationHelper
     html.html_safe
   end
   
+  def computer_attributed_image(path, alt, author, license)
+    case license
+    when "CC BY-SA 3.0"
+      link = link_to(license,"http://creativecommons.org/licenses/by-sa/3.0/")
+    when "Public Domain"
+      link = license
+    else
+      link = nil
+    end
+    html = "#{image_tag(path, :alt => alt, :class => 'computer_history')} #{author}<br/>#{link}"
+    html.html_safe
+  end
+  
   def project_tile(title, path, image_path)
     banner = image_tag(image_path, :alt => title, :title => title, :class => "project_tile", :size => "265x170")
     html = "<li class=\"project_tile\">"
