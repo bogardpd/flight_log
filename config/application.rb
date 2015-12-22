@@ -40,6 +40,7 @@ module Portfolio
     config.filter_parameters += [:password]
     
     # Ensure that Rails throws errors on invalid mass assignment.
-    config.active_record.whitelist_attributes = true
+    # REMOVED DUE TO UPGRADE TO 4.0
+    # config.active_record.whitelist_attributes = true
   end
 end

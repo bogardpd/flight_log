@@ -202,7 +202,7 @@ class AirportsController < ApplicationController
   
   
   def create
-    @airport = Airport.new(params[:airport])
+    @airport = Airport.new(airport_params)
     if @airport.save
       flash[:success] = "Successfully added #{params[:airport][:iata_code]}!"
       redirect_to @airport
@@ -222,7 +222,7 @@ class AirportsController < ApplicationController
   
   def update
     @airport = Airport.find(params[:id])
-    if @airport.update_attributes(params[:airport])
+    if @airport.update_attributes(airport_params)
       flash[:success] = "Successfully updated airport."
       redirect_to @airport
     else
@@ -250,6 +250,9 @@ class AirportsController < ApplicationController
   
   private
   
+    def airport_params
+      params.require(:airport).permit(:city, :iata_code, :country, :region_conus)
+    end
   
     def logged_in_user
       redirect_to flightlog_path unless logged_in?

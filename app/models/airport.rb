@@ -1,5 +1,4 @@
 class Airport < ActiveRecord::Base
-  attr_accessible :city, :iata_code, :country, :region_conus
   has_many :originating_flights, :class_name => 'Flight', :foreign_key => 'originating_airport_id'
   has_many :arriving_flights, :class_name => 'Flight', :foreign_key => 'destination_airport_id'
   has_many :first_routes, :class_name => 'Route', :foreign_key => 'airport1_id'

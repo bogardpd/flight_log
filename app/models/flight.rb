@@ -1,5 +1,4 @@
 class Flight < ActiveRecord::Base
-  attr_accessible :aircraft_family, :aircraft_variant, :airline, :codeshare_airline, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section
   belongs_to :trip
   belongs_to :origin_airport, :class_name => 'Airport'
   belongs_to :destination_airport, :class_name => 'Airport'
@@ -19,8 +18,11 @@ class Flight < ActiveRecord::Base
   validates :airline, :presence => true
   validates :travel_class, :inclusion => { :in => %w(Economy Business First), :message => "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
-  default_scope :order => 'flights.departure_utc' # New flight default origin depends on this sort
-  scope :visitor, joins(:trip).where("hidden = FALSE")
+  default_scope { order('flights.departure_utc') } # New flight default origin depends on this sort
+  scope :visitor, -> {
+    joins(:trip).
+    where('hidden = FALSE')
+  }
   
   def airline_icon_path
     image_location = "flight_log/airline_icons/" + self.airline.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_-]/, '').squeeze('-') + ".png"

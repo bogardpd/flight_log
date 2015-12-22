@@ -29,6 +29,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 	<p class="total"><span class="distance_primary"><%= distance_string(@total_distance) %></span> &middot; <%= link_to("See all <span class=\"summary_total\">#{pluralize(@flights.length, 'flight')}</span>".html_safe, flights_path)%></p>
 </div>
 
+<% if @flights.any? %>
 <div class="center">
 
 <div class="intro_box column">
@@ -132,5 +133,11 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 
 </div>
 
+<% else %>
+
+<p class="center">There are no flights! Please create a <%= link_to "trip", trips_path %> and add one.</p>
+
+<% end %>
+
 <p class="center">Flights from trips in progress are not shown until the trip is complete.</p>
-<p class="pre_footer"><%= link_to("How I made the flight log", flight_log_path)%></p>
+<p class="pre_footer"><%= link_to("How I made the flight log", "http://pbogard.com/flight_log")%></p>

@@ -1,1 +1,0 @@
-<p class="purchased<% if(Date.parse(purchase_date) > Time.now.to_date-1.year) %> recent<% end %>" title="Since <%= format_date(Date.parse(purchase_date)) %>">Since <%= time_ago_in_words(purchase_date)%> ago</p>

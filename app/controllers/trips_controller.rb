@@ -90,7 +90,7 @@ class TripsController < ApplicationController
   
   
   def create
-    @trip = Trip.new(params[:trip])
+    @trip = Trip.new(trip_params)
     if @trip.save
       flash[:success] = "Successfully added #{params[:trip][:name]}!"
       redirect_to @trip
@@ -110,7 +110,7 @@ class TripsController < ApplicationController
   
   def update
     @trip = Trip.find(params[:id])
-    if @trip.update_attributes(params[:trip])
+    if @trip.update_attributes(trip_params)
       flash[:success] = "Successfully updated trip."
       redirect_to @trip
     else
@@ -134,6 +134,10 @@ class TripsController < ApplicationController
   
   private
   
+    def trip_params
+      params.require(:trip).permit(:comment, :hidden, :name)
+    end
+    
     def logged_in_user
       redirect_to flightlog_path unless logged_in?
     end

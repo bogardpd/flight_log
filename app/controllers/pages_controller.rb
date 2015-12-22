@@ -54,14 +54,18 @@ class PagesController < ApplicationController
     
     if logged_in?
       @flights = Flight.all
-      @flight_aircraft = Flight.where("aircraft_family IS NOT NULL").group("aircraft_family").count
-      @flight_airlines = Flight.where("airline IS NOT NULL").group("airline").count
-      @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
+      if @flights.any?
+        @flight_aircraft = Flight.where("aircraft_family IS NOT NULL").group("aircraft_family").count
+        @flight_airlines = Flight.where("airline IS NOT NULL").group("airline").count
+        @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
+      end
     else # Filter out hidden trips for visitors
       @flights = Flight.visitor
-      @flight_aircraft = Flight.visitor.where("aircraft_family IS NOT NULL").group("aircraft_family").count
-      @flight_airlines = Flight.visitor.where("airline IS NOT NULL").group("airline").count
-      @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
+      if @flights.any?
+        @flight_aircraft = Flight.visitor.where("aircraft_family IS NOT NULL").group("aircraft_family").count
+        @flight_airlines = Flight.visitor.where("airline IS NOT NULL").group("airline").count
+        @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
+      end
     end
     
     @total_distance = total_distance(@flights)
@@ -82,23 +86,25 @@ class PagesController < ApplicationController
     
     @route_superlatives = superlatives_collection(route_distances)
     
-    @aircraft_array = Array.new
-    @flight_aircraft.each do |aircraft, count| 
-      @aircraft_array.push({:aircraft => aircraft, :count => count})
-    end
-    @aircraft_array = @aircraft_array.sort_by { |aircraft| [-aircraft[:count], aircraft[:aircraft]] }
+    if @flights.any?
+      @aircraft_array = Array.new
+      @flight_aircraft.each do |aircraft, count| 
+        @aircraft_array.push({:aircraft => aircraft, :count => count})
+      end
+      @aircraft_array = @aircraft_array.sort_by { |aircraft| [-aircraft[:count], aircraft[:aircraft]] }
     
-    @airlines_array = Array.new
-    @flight_airlines.each do |airline, count| 
-      @airlines_array.push({:airline => airline, :count => count})
-    end
-    @airlines_array = @airlines_array.sort_by { |airline| [-airline[:count], airline[:airline]] }
+      @airlines_array = Array.new
+      @flight_airlines.each do |airline, count| 
+        @airlines_array.push({:airline => airline, :count => count})
+      end
+      @airlines_array = @airlines_array.sort_by { |airline| [-airline[:count], airline[:airline]] }
     
-    @tails_array = Array.new
-    @flight_tail_numbers.each do |tail_number, count| 
-      @tails_array.push({:tail_number => tail_number, :count => count})
+      @tails_array = Array.new
+      @flight_tail_numbers.each do |tail_number, count| 
+        @tails_array.push({:tail_number => tail_number, :count => count})
+      end
+      @tails_array = @tails_array.sort_by { |tail| [-tail[:count], tail[:tail_number]] }
     end
-    @tails_array = @tails_array.sort_by { |tail| [-tail[:count], tail[:tail_number]] }
     
     render :layout => 'layouts/flight_log/flight_log'
   end
@@ -151,26 +157,6 @@ class PagesController < ApplicationController
   
   private
   
-=begin
-  def frequency_array(flight_array)
-    airport_frequency = Hash.new(0) # All airports start with 0 flights
-    @airport_array = Array.new
-    @airport_conus_array = Array.new
-    previous_trip_id = nil;
-    previous_trip_section = nil;
-    previous_destination_airport_iata_code = nil;
-    flight_array.each do |flight|
-      unless (flight.trip.id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_airport.iata_code == previous_destination_airport_iata_code)
-        # This is not a layover, so count this origin airport
-        airport_frequency[flight.origin_airport_id] += 1
-      end
-      airport_frequency[flight.destination_airport_id] += 1
-      previous_trip_id = flight.trip.id
-      previous_trip_section = flight.trip_section
-      previous_destination_airport_iata_code = flight.destination_airport.iata_code
-    end
-    return airport_frequency
-  end
-=end
+
 
 end

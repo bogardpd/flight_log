@@ -1,5 +1,4 @@
 class Trip < ActiveRecord::Base
-  attr_accessible :comment, :hidden, :name
   has_many :flights, :dependent => :destroy
   
   NULL_ATTRS = %w( comment )
@@ -7,7 +6,7 @@ class Trip < ActiveRecord::Base
   
   validates :name, :presence => true
   
-  scope :visitor, where("hidden = false")
+  scope :visitor, -> { where('hidden = FALSE') }
   
   protected
   

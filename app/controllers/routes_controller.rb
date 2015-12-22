@@ -178,7 +178,7 @@ class RoutesController < ApplicationController
   end
   
   def create
-    @route = Route.new(params[:route])
+    @route = Route.new(route_params)
     if @route.save
       flash[:success] = "Successfully added distance to route!"
       redirect_to routes_path
@@ -189,7 +189,7 @@ class RoutesController < ApplicationController
   
   def update
     @route = Route.find(params[:id])
-    if @route.update_attributes(params[:route])
+    if @route.update_attributes(route_params)
       flash[:success] = "Successfully updated route distance."
       redirect_to routes_path
     else
@@ -199,6 +199,10 @@ class RoutesController < ApplicationController
   
   private
   
+    def route_params
+      params.require(:route).permit(:airport1_id, :airport2_id, :distance_mi)
+    end
+    
     def logged_in_user
       redirect_to flightlog_path unless logged_in?
     end

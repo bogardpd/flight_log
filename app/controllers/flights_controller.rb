@@ -560,7 +560,7 @@ class FlightsController < ApplicationController
   end
     
   def create
-    @flight = Trip.find(params[:flight][:trip_id]).flights.new(params[:flight])
+    @flight = Trip.find(params[:flight][:trip_id]).flights.new(flight_params)
     if @flight.save
       flash[:success] = "Successfully added #{params[:flight][:airline]} #{params[:flight][:flight_number]}."
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
@@ -581,7 +581,7 @@ class FlightsController < ApplicationController
     
   def update
     @flight = Flight.find(params[:id])
-    if @flight.update_attributes(params[:flight])
+    if @flight.update_attributes(flight_params)
       flash[:success] = "Successfully updated flight."
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
         flash[:success] += " You've had prior flights on this tail!"
@@ -600,6 +600,10 @@ class FlightsController < ApplicationController
     
   private
   
+    def flight_params
+      params.require(:flight).permit(:aircraft_family, :aircraft_variant, :airline, :codeshare_airline, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
+    end
+    
     def logged_in_user
       redirect_to flightlog_path unless logged_in?
     end

@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   
   def create
     redirect_to root_path if !logged_in?
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     if @user.save
       flash[:success] = ("User <strong>" + @user.name + "</strong> was successfully created!").html_safe
       redirect_to root_path
@@ -27,4 +27,10 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  private
+  
+    def user_params
+      params.require(:user).permit(:name, :password, :password_confirmation)
+    end
+    
 end
