@@ -106,7 +106,7 @@ class PagesController < ApplicationController
       @tails_array = @tails_array.sort_by { |tail| [-tail[:count], tail[:tail_number]] }
     end
     
-    render :layout => 'layouts/flight_log/flight_log'
+    #render :layout => 'layouts/flight_log/flight_log'
   end
   
   def gps_log

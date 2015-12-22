@@ -1,14 +1,9 @@
 <header>
-  <% logo = image_tag("Portfolio-Logo.png", :alt => "Paul Bogard", :class => "logo", :width => "318", :height => "36") %>
-  <%= link_to logo, root_path %>
-  <nav>
-    <ul>
-      <li><%= link_to "Home", root_path %></li>  
-      <li><%= link_to "Projects", projects_path %></li>
-      <li><%= link_to "Résumé", resume_path %></li>
-      <li><%= link_to "About", about_path %></li>
-      <li><%= link_to "Blog", "http://onehundredairports.com/" %></li>
-      <li><%= link_to "Flight Log", flightlog_path %></li>
-    </ul>
-  </nav>
+  <div id="header">
+    <% logo = image_tag("Flight-Log-Logo.png", :class => "logo", :alt => "Paul Bogard's Flight Log") %>
+    <%= link_to logo, root_path %>
+    <div id="portfolio_link">
+      <%= link_to("Blog", "http://onehundredairports.com/", :title => "Paul Bogard's Blog")%> &middot; <%= link_to("Portfolio", root_path, :title => "Paul Bogard's Portfolio")%>
+    </div>
+  </div>
 </header>
