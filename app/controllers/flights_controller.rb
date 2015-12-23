@@ -16,35 +16,39 @@ class FlightsController < ApplicationController
       @year_range = @flights.any? ? Flight.visitor.first.departure_date.year..Flight.visitor.last.departure_date.year : nil
     end
     
-    @total_distance = total_distance(@flights)
+    if @flights.any?
     
-    # Determine which years have flights:
-    @years_with_flights = Hash.new(false)
-    @flights.each do |flight|
-      @years_with_flights[flight.departure_date.year] = true
-    end
-    @meta_description = "Maps and lists of all of Paul Bogard's flights."
+      @total_distance = total_distance(@flights)
     
-    # Set values for sort:
-    case params[:sort_category]
-    when "departure"
-      @sort_cat = :departure
-    else
-      @sort_cat = :departure
-    end
+      # Determine which years have flights:
+      @years_with_flights = Hash.new(false)
+      @flights.each do |flight|
+        @years_with_flights[flight.departure_date.year] = true
+      end
+      @meta_description = "Maps and lists of all of Paul Bogard's flights."
     
-    case params[:sort_direction]
-    when "asc"
-      @sort_dir = :asc
-    when "desc"
-      @sort_dir = :desc
-    else
-      @sort_dir = :asc
-    end
+      # Set values for sort:
+      case params[:sort_category]
+      when "departure"
+        @sort_cat = :departure
+      else
+        @sort_cat = :departure
+      end
+    
+      case params[:sort_direction]
+      when "asc"
+        @sort_dir = :asc
+      when "desc"
+        @sort_dir = :desc
+      else
+        @sort_dir = :asc
+      end
           
-    # Sort flight table:
-    @flights = @flights.reverse! if @sort_dir == :desc
+      # Sort flight table:
+      @flights = @flights.reverse! if @sort_dir == :desc
     
+    end
+  
   end
   
   def show

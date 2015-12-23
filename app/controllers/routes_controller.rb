@@ -12,68 +12,68 @@ class RoutesController < ApplicationController
       flights = Flight.visitor
     end
     
-    # Set values for sort:
-    case params[:sort_category]
-    when "flights"
-      @sort_cat = :flights
-    when "distance"
-      @sort_cat = :distance
-    else
-      @sort_cat = :flights
-    end
+    @route_table = Array.new
     
-    case params[:sort_direction]
-    when "asc"
-      @sort_dir = :asc
-    when "desc"
-      @sort_dir = :desc
-    else
-      @sort_dir = :desc
-    end
+    if flights.any?
     
-    sort_mult = (@sort_dir == :asc ? 1 : -1)
+      # Set values for sort:
+      case params[:sort_category]
+      when "flights"
+        @sort_cat = :flights
+      when "distance"
+        @sort_cat = :distance
+      else
+        @sort_cat = :flights
+      end
     
-    # Build hash of distances:
-    distances = Hash.new(nil)
-    dist_airport_alphabetize = Array.new()
-    routes = Route.where("distance_mi IS NOT NULL")
-    routes.each do |route|
-      dist_airport_alphabetize[0] = route.airport1.iata_code
-      dist_airport_alphabetize[1] = route.airport2.iata_code
-      dist_airport_alphabetize.sort!
-      distances["#{dist_airport_alphabetize[0]}-#{dist_airport_alphabetize[1]}"] = route.distance_mi
-    end
+      case params[:sort_direction]
+      when "asc"
+        @sort_dir = :asc
+      when "desc"
+        @sort_dir = :desc
+      else
+        @sort_dir = :desc
+      end
     
-    # Build hash of routes and number of flights
-    route_totals = Hash.new(0)
-    airport_alphabetize = Array.new()
-    flights.each do |flight|
-      airport_alphabetize[0] = flight.origin_airport.iata_code
-      airport_alphabetize[1] = flight.destination_airport.iata_code
-      airport_alphabetize.sort!
-      route_totals["#{airport_alphabetize[0]}-#{airport_alphabetize[1]}"] += 1
-    end
+      sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    # Build array of routes, distances, and number of flights:
-    @route_table = Array.new()
-    route_totals.each do |flight_route, count|
-      @route_table << {:route => flight_route, :distance_mi => distances[flight_route] || -1, :total_flights => count} # Make nil distances negative so we can sort
-    end
+      # Build hash of distances:
+      distances = Hash.new(nil)
+      dist_airport_alphabetize = Array.new()
+      routes = Route.where("distance_mi IS NOT NULL")
+      routes.each do |route|
+        dist_airport_alphabetize[0] = route.airport1.iata_code
+        dist_airport_alphabetize[1] = route.airport2.iata_code
+        dist_airport_alphabetize.sort!
+        distances["#{dist_airport_alphabetize[0]}-#{dist_airport_alphabetize[1]}"] = route.distance_mi
+      end
     
-    # Find maxima for graph scaling:
-    if @route_table.any?
+      # Build hash of routes and number of flights
+      route_totals = Hash.new(0)
+      airport_alphabetize = Array.new()
+      flights.each do |flight|
+        airport_alphabetize[0] = flight.origin_airport.iata_code
+        airport_alphabetize[1] = flight.destination_airport.iata_code
+        airport_alphabetize.sort!
+        route_totals["#{airport_alphabetize[0]}-#{airport_alphabetize[1]}"] += 1
+      end
+    
+      # Build array of routes, distances, and number of flights:
+      route_totals.each do |flight_route, count|
+        @route_table << {:route => flight_route, :distance_mi => distances[flight_route] || -1, :total_flights => count} # Make nil distances negative so we can sort
+      end
+    
+      # Find maxima for graph scaling:
       @flights_maximum = @route_table.max_by{|i| i[:total_flights].to_i}[:total_flights]
       @distance_maximum = @route_table.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
-    else
-      @flights_maximum = 0
-      @distance_maximum = 0
-    end
     
-    # Sort route table:
-    if @sort_cat == :flights
-      @route_table = @route_table.sort_by {|value| [sort_mult*value[:total_flights], -value[:distance_mi]]}
-    elsif @sort_cat == :distance
-      @route_table = @route_table.sort_by {|value| [sort_mult*value[:distance_mi], -value[:total_flights]]}
+      # Sort route table:
+      if @sort_cat == :flights
+        @route_table = @route_table.sort_by {|value| [sort_mult*value[:total_flights], -value[:distance_mi]]}
+      elsif @sort_cat == :distance
+        @route_table = @route_table.sort_by {|value| [sort_mult*value[:distance_mi], -value[:total_flights]]}
+      end
+      
     end
    
   end

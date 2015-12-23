@@ -70,23 +70,23 @@ class PagesController < ApplicationController
     
     @total_distance = total_distance(@flights)
     
-    @hidden_trips = Trip.where(:hidden => true)
-    
-    @airport_array = Airport.frequency_array(@flights)
-
-    @route_totals = Hash.new(0)
-    route_distances = Hash.new()
-    
-    @flights.each do |flight|
-      airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
-      @route_totals["#{airport_alphabetize[0]}-#{airport_alphabetize[1]}"] += 1
-      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1]) if route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1])
-    end
-    @route_totals = @route_totals.sort_by {|key, value| [-value, key]}
-    
-    @route_superlatives = superlatives_collection(route_distances)
-    
     if @flights.any?
+      @hidden_trips = Trip.where(:hidden => true)
+    
+      @airport_array = Airport.frequency_array(@flights)
+
+      @route_totals = Hash.new(0)
+      route_distances = Hash.new()
+    
+      @flights.each do |flight|
+        airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
+        @route_totals["#{airport_alphabetize[0]}-#{airport_alphabetize[1]}"] += 1
+        route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1]) if route_distance_by_iata(airport_alphabetize[0],airport_alphabetize[1])
+      end
+      @route_totals = @route_totals.sort_by {|key, value| [-value, key]}
+    
+      @route_superlatives = superlatives_collection(route_distances)
+  
       @aircraft_array = Array.new
       @flight_aircraft.each do |aircraft, count| 
         @aircraft_array.push({:aircraft => aircraft, :count => count})
@@ -106,7 +106,6 @@ class PagesController < ApplicationController
       @tails_array = @tails_array.sort_by { |tail| [-tail[:count], tail[:tail_number]] }
     end
     
-    #render :layout => 'layouts/flight_log/flight_log'
   end
   
   def gps_log

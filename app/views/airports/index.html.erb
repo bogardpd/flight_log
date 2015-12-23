@@ -1,5 +1,7 @@
 <h1>Airports</h1>
 
+<% if @flights.any? %>
+
 <div class="page_navigation">
   <ul>
 		<li><%= link_to("CONUS Airports Map", "#conus_airports", :title => "CONUS Airports Map") %></li>
@@ -10,7 +12,11 @@
   </ul>
 </div>
 
+<% end %>
+
 <p>I have visited <%= pluralize(@airport_array.count, 'airport') %>.</p>
+
+<% if @flights.any? %>
 
 <a name="conus_airports"></a>
 <h2>CONUS Airports Map</h2>
@@ -78,6 +84,12 @@
 <p>This map works the same way as the map above, but with all airports I've visited worldwide.</p>
 
 <%= gcmap_airport_frequency_embed(@airport_array, "world") %>
+
+<% else %>
+
+<%= render 'flights/error_no_flights' %>
+
+<% end %>
 
 <% content_for :admin_actions do %>
   <%= link_to("Add New Airport", new_airport_path) %>

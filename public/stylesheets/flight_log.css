@@ -248,7 +248,7 @@ a.warning {
 div.alert {
 	background: #FFFFDD;
 	border: 1px solid #FFDD99;
-	padding: 5px;
+	padding: 5px 10px;
 }
 
 div.column {
@@ -264,7 +264,7 @@ div.cover {
 div.error {
 	background: #FFDDDD;
 	border: 1px solid #DD9999;
-	padding: 5px;
+	padding: 5px 10px;
 }
 
 div.field_with_errors {

@@ -1,5 +1,7 @@
 <h1><%= @title %></h1>
 
+<% if @flights.any? %>
+
 <div class="page_navigation">
   <ul>
 		<li><%= link_to("CONUS Flights", "#conus_flights", :title => "CONUS Flights") %></li>
@@ -9,9 +11,11 @@
 
 <%= render "flight_year_links" %>
 
-<% if @flights.any? %>
+<% end %>
 
 <p>I have been on <%= pluralize(@flights.length, 'commercial flight') %>.</p>
+
+<% if @flights.any? %>
 
 <a name="conus_flights"></a>
 <h2>CONUS Flights</h2>

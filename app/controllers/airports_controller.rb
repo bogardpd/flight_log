@@ -1,7 +1,6 @@
 class AirportsController < ApplicationController
   before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  layout "flight_log/flight_log"
-  add_breadcrumb 'Home', 'flightlog_path'
+  add_breadcrumb 'Home', 'root_path'
   
   def index
     add_breadcrumb 'Airports', 'airports_path'
@@ -12,66 +11,73 @@ class AirportsController < ApplicationController
     else
       @flights = Flight.visitor
     end
-    airport_frequency = frequency_array(@flights)
     
-    # Set values for sort:
-    case params[:sort_category]
-    when "country"
-      @sort_cat = :country
-    when "city"
-      @sort_cat = :city
-    when "code"
-      @sort_cat = :code
-    when "visits"
-      @sort_cat = :visits
-    else
-      @sort_cat = :visits
-    end
+    @airport_array = Array.new
     
-    case params[:sort_direction]
-    when "asc"
-      @sort_dir = :asc
-    when "desc"
-      @sort_dir = :desc
-    else
-      @sort_dir = :desc
-    end
+    if @flights.any?
+      
+      airport_frequency = frequency_array(@flights)
     
-    sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
-    # Select all airports in the database with at least one flight:
-    @airports = Airport.find(airport_frequency.keys)
-    @airports_with_no_flights = Airport.where('id not in (?)',airport_frequency.keys)
-    
-    # Create arrays of airports:
-    @airports.each do |airport|
-      # Create world airport array:
-      @airport_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})
-      # Create CONUS airport array:
-      if (airport.region_conus) then
-        @airport_conus_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :frequency => airport_frequency[airport.id]})
-      end
-    end
-    
-    # Find maxima for graph scaling:
-    @visits_maximum = @airport_array.max_by{|i| i[:frequency]}[:frequency]
-    
-    # Sort route table:
-    case @sort_cat
-    when :country
-      if @sort_dir == :asc
-        @airport_array = @airport_array.sort_by {|airport| [airport[:country], airport[:city]]}
+      # Set values for sort:
+      case params[:sort_category]
+      when "country"
+        @sort_cat = :country
+      when "city"
+        @sort_cat = :city
+      when "code"
+        @sort_cat = :code
+      when "visits"
+        @sort_cat = :visits
       else
-        @airport_array = @airport_array.sort {|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
+        @sort_cat = :visits
       end
-    when :city
-      @airport_array = @airport_array.sort_by {|airport| airport[:city]}
-      @airport_array.reverse! if @sort_dir == :desc
-    when :code
-      @airport_array = @airport_array.sort_by {|airport| airport[:iata_code]}
-      @airport_array.reverse! if @sort_dir == :desc
-    when :visits
-      @airport_array = @airport_array.sort_by { |airport| [sort_mult*airport[:frequency], airport[:city]] }
+    
+      case params[:sort_direction]
+      when "asc"
+        @sort_dir = :asc
+      when "desc"
+        @sort_dir = :desc
+      else
+        @sort_dir = :desc
+      end
+    
+      sort_mult = (@sort_dir == :asc ? 1 : -1)
+    
+      # Select all airports in the database with at least one flight:
+      @airports = Airport.find(airport_frequency.keys)
+      @airports_with_no_flights = Airport.where('id not in (?)',airport_frequency.keys)
+    
+      # Create arrays of airports:
+      @airports.each do |airport|
+        # Create world airport array:
+        @airport_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})
+        # Create CONUS airport array:
+        if (airport.region_conus) then
+          @airport_conus_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :frequency => airport_frequency[airport.id]})
+        end
+      end
+    
+      # Find maxima for graph scaling:
+      @visits_maximum = @airport_array.max_by{|i| i[:frequency]}[:frequency]
+    
+      # Sort route table:
+      case @sort_cat
+      when :country
+        if @sort_dir == :asc
+          @airport_array = @airport_array.sort_by {|airport| [airport[:country], airport[:city]]}
+        else
+          @airport_array = @airport_array.sort {|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
+        end
+      when :city
+        @airport_array = @airport_array.sort_by {|airport| airport[:city]}
+        @airport_array.reverse! if @sort_dir == :desc
+      when :code
+        @airport_array = @airport_array.sort_by {|airport| airport[:iata_code]}
+        @airport_array.reverse! if @sort_dir == :desc
+      when :visits
+        @airport_array = @airport_array.sort_by { |airport| [sort_mult*airport[:frequency], airport[:city]] }
+      end
+    
     end
     
   end
