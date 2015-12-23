@@ -10,6 +10,14 @@
 <a name="airlines"></a>
 <p>I have flown on <%= pluralize(@airlines_array.count, 'airline') %>.</p>
 
+<% if @flight_airlines.empty? %>
+	<% if (logged_in? && Flight.empty?) || (!logged_in? && Flight.visitor.empty?) %>
+		<%= render 'error_no_flights' %>
+	<% else %>
+		<div class="alert">There are no flights in the flight log that include an airline!</p>
+	<% end %>
+<% else %>
+
 <table class="flightlog">
   <tr class="th">
     <th class="counter">#</th>
@@ -29,13 +37,15 @@
   <tr><td colspan="3" class="flightlog_total"><%= pluralize(@airlines_array.count, 'airline') %></td></tr>
 </table>
 
+<% end %>
+
 <a name="operators"></a>
 <h2>Operators</h2>
 
 
 <p>In many cases, an airline subcontracts another airline to operate flights for them. This happens especially often with small regional flights. This is a list of the airlines that actually operated my flights.</p>
 
-<% if @operators_array.length > 0 %>
+<% if @operators_array.any? %>
 
 <table class="flightlog">
   <tr class="th">

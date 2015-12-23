@@ -267,53 +267,58 @@ class FlightsController < ApplicationController
     @title = "Airlines"
     @meta_description = "A list of the airlines on which Paul Bogard has flown, and how often he's flown on each."
     
-    # Set values for sort:
-    case params[:sort_category]
-    when "airline"
-      @sort_cat = :airline
-    when "flights"
-      @sort_cat = :flights
-    else
-      @sort_cat = :flights
-    end
-    
-    case params[:sort_direction]
-    when "asc"
-      @sort_dir = :asc
-    when "desc"
-      @sort_dir = :desc
-    else
-      @sort_dir = :desc
-    end
-    
-    sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
-    # Prepare airline list:
     @airlines_array = Array.new
-    @flight_airlines.each do |airline, count| 
-      @airlines_array.push({:airline => airline, :count => count})
-    end
-    
-    # Prepare operator list:
     @operators_array = Array.new
-    @flight_operators.each do |operator, count|
-      @operators_array.push({:operator => operator, :count => count})
-    end
     
-    # Find maxima for graph scaling:
-    @airlines_maximum = @airlines_array.max_by{|i| i[:count]}[:count]
-    @operators_maximum = @operators_array.max_by{|i| i[:count]}[:count]
+    if (@flight_airlines.any? || @flight_operators.any?)
     
-    # Sort airline and operator tables:
-    case @sort_cat
-    when :airline
-      @airlines_array = @airlines_array.sort_by { |airline| airline[:airline] }
-      @operators_array = @operators_array.sort_by { |operator| operator[:operator] }
-      @airlines_array.reverse! if @sort_dir == :desc
-      @operators_array.reverse! if @sort_dir == :desc
-    when :flights
-      @airlines_array = @airlines_array.sort_by { |airline| [sort_mult*airline[:count], airline[:airline]] }
-      @operators_array = @operators_array.sort_by { |operator| [sort_mult*operator[:count], operator[:operator]] }
+      # Set values for sort:
+      case params[:sort_category]
+      when "airline"
+        @sort_cat = :airline
+      when "flights"
+        @sort_cat = :flights
+      else
+        @sort_cat = :flights
+      end
+    
+      case params[:sort_direction]
+      when "asc"
+        @sort_dir = :asc
+      when "desc"
+        @sort_dir = :desc
+      else
+        @sort_dir = :desc
+      end
+    
+      sort_mult = (@sort_dir == :asc ? 1 : -1)
+    
+      # Prepare airline list:
+      @flight_airlines.each do |airline, count| 
+        @airlines_array.push({:airline => airline, :count => count})
+      end
+    
+      # Prepare operator list:
+      @flight_operators.each do |operator, count|
+        @operators_array.push({:operator => operator, :count => count})
+      end
+    
+      # Find maxima for graph scaling:
+      @airlines_maximum = @airlines_array.any? ? @airlines_array.max_by{|i| i[:count]}[:count] : 0
+      @operators_maximum = @operators_array.any? ? @operators_array.max_by{|i| i[:count]}[:count] : 0
+    
+      # Sort airline and operator tables:
+      case @sort_cat
+      when :airline
+        @airlines_array = @airlines_array.sort_by { |airline| airline[:airline] }
+        @operators_array = @operators_array.sort_by { |operator| operator[:operator] }
+        @airlines_array.reverse! if @sort_dir == :desc
+        @operators_array.reverse! if @sort_dir == :desc
+      when :flights
+        @airlines_array = @airlines_array.sort_by { |airline| [sort_mult*airline[:count], airline[:airline]] }
+        @operators_array = @operators_array.sort_by { |operator| [sort_mult*operator[:count], operator[:operator]] }
+      end
+    
     end
   end
     
