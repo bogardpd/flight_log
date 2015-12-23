@@ -2,6 +2,7 @@
 
 <p>I have taken <%= pluralize(@trips.length, 'trip') %> by air.</p>
 
+<% if @trips.any? %>
 <table class="flightlog">
   <tr class="th">
     <th class="counter">#</th>
@@ -11,6 +12,7 @@
 	<%= render :partial => "trips/trip_table_body" %>
   <tr><td colspan="3" class="flightlog_total"><%= pluralize(@trips.length, 'trip') %></td></tr>
 </table>
+<% end %>
 
 <% if (logged_in? && @trips_with_no_flights.any?) %>
 <h2>Trips with No Flights</h2>
@@ -21,6 +23,12 @@
   </tr>
 <% end %>
 </table>
+<% end %>
+
+<% if logged_in? && @trips.empty? && @trips_with_no_flights.empty %>
+	<div class="alert">There are no trips in the flight log! Please <%= link_to "create a trip", new_trip_path %>.</div>
+<% elsif !logged_in? && @trips.empty? %>
+	<div class="alert">There are no trips in the flight log!</div>
 <% end %>
 
 <% content_for :admin_actions do %>

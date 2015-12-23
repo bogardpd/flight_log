@@ -1,35 +1,38 @@
 class TripsController < ApplicationController
   before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  layout "flight_log/flight_log"
-  add_breadcrumb 'Home', 'flightlog_path'
+  add_breadcrumb 'Home', 'root_path'
 
   
   def index
     add_breadcrumb 'Trips', 'trips_path'
-    @trips = Trip.uniq.joins(:flights).order("flights.departure_date")
+    @trips = Trip.uniq.joins(:flights).select("name, flights.departure_date").order("flights.departure_date")
     @trips = @trips.visitor if !logged_in? # Filter out hidden trips for visitors
     @trips_with_no_flights = Trip.where('id not in (?)',@trips)
     @title = "Trips"
     @meta_description = "A list of airplane trips Paul Bogard has taken."
     
-    # Set values for sort:
-    case params[:sort_category]
-    when "departure"
-      @sort_cat = :departure
-    else
-      @sort_cat = :departure
-    end
+    if @trips.any?
     
-    case params[:sort_direction]
-    when "asc"
-      @sort_dir = :asc
-    when "desc"
-      @sort_dir = :desc
-    else
-      @sort_dir = :desc
-    end
+      # Set values for sort:
+      case params[:sort_category]
+      when "departure"
+        @sort_cat = :departure
+      else
+        @sort_cat = :departure
+      end
     
-    @trips.reverse! if @sort_dir == :desc
+      case params[:sort_direction]
+      when "asc"
+        @sort_dir = :asc
+      when "desc"
+        @sort_dir = :desc
+      else
+        @sort_dir = :desc
+      end
+    
+      @trips.reverse! if @sort_dir == :desc
+    
+    end
   end
 
   
