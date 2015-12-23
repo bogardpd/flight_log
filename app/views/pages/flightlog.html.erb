@@ -8,6 +8,10 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 
 <p>In 2009, I started traveling frequently for work. Not long after that, I began to document <%= link_to("every commercial flight", flights_path) %> I'd taken since my sixteenth birthday. This flight log takes all of that data, and makes maps and tables out of it.</p>
 
+<% if @flights.empty? %>
+<%= render 'flights/error_no_flights' %>
+<% end %>
+
 <div class="intro_box">
 	<% if params[:region] == "world" %>
 	<div class="region_select">
@@ -132,10 +136,6 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 </div>
 
 </div>
-
-<% else %>
-
-<%= render 'flights/error_no_flights' %>
 
 <% end %>
 

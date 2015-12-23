@@ -2,6 +2,8 @@
 
 <p>I have had commercial flights on <%= pluralize(@route_table.count, 'route') %>.</p>
 
+<% if @route_table.any? %>
+
 <p>Each route listed includes flights going both directions.</p>
 
 <table class="flightlog">
@@ -31,3 +33,9 @@
 <% end %>
   <tr><td colspan="4" class="flightlog_total"><%= pluralize(@route_table.count, 'route') %></td></tr>
 </table>
+
+<% else %>
+
+<%= render 'flights/error_no_flights' %>
+
+<% end %>

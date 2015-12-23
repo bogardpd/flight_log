@@ -1,8 +1,6 @@
 Portfolio::Application.routes.draw do
   get "trips/new"
-
   get "airports/new"
-
   get "flights/new"
 
   resources :users
@@ -18,9 +16,7 @@ Portfolio::Application.routes.draw do
   match '/login', :to => 'sessions#new', :via => [:get]
   match '/logout', :to => 'sessions#destroy', :via => :delete
 
-  
- # match '/flightlog', :to => 'pages#flightlog', :via => [:get]
-  match '/:region', :to => 'pages#flightlog', :as => :show_flightlog_region, :via => [:get]
+  match '/region/:region', :to => 'pages#flightlog', :as => :show_flightlog_region, :via => [:get]
   match '/flights/sort/:sort_category/:sort_direction' => 'flights#index', :as => :sort_flights, :via => [:get]
   match '/flights/from/:start_date/to/:end_date', :to => 'flights#show_date_range', :as => :show_date_range, :via => [:get]
   match '/flights/from/:start_date/to/:end_date/:region', :to => 'flights#show_date_range', :as => :show_date_range_region, :via => [:get]
@@ -42,7 +38,8 @@ Portfolio::Application.routes.draw do
   match '/tails' => 'flights#index_tails', :via => [:get]
   match '/tails/sort/:sort_category/:sort_direction' => 'flights#index_tails', :as => :sort_tails, :via => [:get]
   match '/tails/:tail_number' => 'flights#show_tail', :as => :show_tail, :via => [:get]
-  match '/routes/edit/:airport1/:airport2' => 'routes#edit', :as => :edit_route, :via => [:get]
+  match '/routes' => 'routes#index', via: :get
+  match '/routes/edit/:airport1/:airport2' => 'routes#edit', as: :edit_route, via: :get
   match '/routes/sort/:sort_category/:sort_direction' => 'routes#index', :as => :sort_routes, :via => [:get]
   match '/trips/sort/:sort_category/:sort_direction' => 'trips#index', :as => :sort_trips, :via => [:get]
 end

@@ -1,7 +1,6 @@
 class RoutesController < ApplicationController
   before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  layout "flight_log/flight_log"
-  add_breadcrumb 'Home', 'flightlog_path'
+  add_breadcrumb 'Home', 'root_path'
   
   def index
     add_breadcrumb 'Routes', 'routes_path'
@@ -62,8 +61,13 @@ class RoutesController < ApplicationController
     end
     
     # Find maxima for graph scaling:
-    @flights_maximum = @route_table.max_by{|i| i[:total_flights].to_i}[:total_flights]
-    @distance_maximum = @route_table.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
+    if @route_table.any?
+      @flights_maximum = @route_table.max_by{|i| i[:total_flights].to_i}[:total_flights]
+      @distance_maximum = @route_table.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
+    else
+      @flights_maximum = 0
+      @distance_maximum = 0
+    end
     
     # Sort route table:
     if @sort_cat == :flights

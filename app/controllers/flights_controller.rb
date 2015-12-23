@@ -1,7 +1,6 @@
 class FlightsController < ApplicationController
   before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   add_breadcrumb 'Home', 'root_path'
-  #layout "flight_log/flight_log"
   
   def index
     add_breadcrumb 'Flights', 'flights_path'
