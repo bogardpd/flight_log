@@ -10,7 +10,7 @@
   <% if params[:id] %>
 		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, :include_blank => true) %>
 	<% else %>
-		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, :include_blank => true, :selected => Flight.last.destination_airport_id) %>
+		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, :include_blank => true, :selected => Flight.chronological.last.destination_airport_id) %>
 	<% end %> - <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, :include_blank => true) %>
 </p>
 

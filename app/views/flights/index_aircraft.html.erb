@@ -4,6 +4,14 @@
 
 <p>I have flown on <%= pluralize(@aircraft_array.count, 'aircraft family') %>.</p>
 
+<% if @flight_aircraft.empty? %>
+	<% if (logged_in? && Flight.empty?) || (!logged_in? && Flight.visitor.empty?) %>
+		<%= render 'error_no_flights' %>
+	<% else %>
+		<div class="alert">There are no flights in the flight log that include an aircraft type!</p>
+	<% end %>
+<% else %>
+
 <table class="flightlog">
   <tr class="th">
     <th class="counter">#</th>
@@ -23,3 +31,4 @@
   
 </table>
 
+<% end %>

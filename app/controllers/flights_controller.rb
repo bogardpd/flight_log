@@ -176,48 +176,55 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Aircraft Families', 'aircraft_path'
     if logged_in?
       @flight_aircraft = Flight.where("aircraft_family IS NOT NULL").group("aircraft_family").count
+      #@flight_aircraft = Flight.where("aircraft_family IS NOT NULL").group("aircraft_family").select("aircraft_family, COUNT(aircraft_family) as aircraft_count")
     else # Filter out hidden trips for visitors
       @flight_aircraft = Flight.visitor.where("aircraft_family IS NOT NULL").group("aircraft_family").count
+      #@flight_aircraft = Flight.visitor.where("aircraft_family IS NOT NULL").group("aircraft_family").select("aircraft_family, COUNT(aircraft_family) as aircraft_count")
     end
     @title = "Aircraft"
     @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often he's flown on each."
     
-    # Set values for sort:
-    case params[:sort_category]
-    when "aircraft"
-      @sort_cat = :aircraft
-    when "flights"
-      @sort_cat = :flights
-    else
-      @sort_cat = :flights
-    end
-    
-    case params[:sort_direction]
-    when "asc"
-      @sort_dir = :asc
-    when "desc"
-      @sort_dir = :desc
-    else
-      @sort_dir = :desc
-    end
-    
-    sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
     @aircraft_array = Array.new
-    @flight_aircraft.each do |aircraft, count| 
-      @aircraft_array.push({:aircraft => aircraft, :count => count})
-    end
-          
-    # Find maxima for graph scaling:
-    @aircraft_maximum = @aircraft_array.max_by{|i| i[:count]}[:count]
     
-    # Sort aircraft table:
-    case @sort_cat
-    when :aircraft
-      @aircraft_array = @aircraft_array.sort_by { |aircraft| aircraft[:aircraft] }
-      @aircraft_array.reverse! if @sort_dir == :desc
-    when :flights
-      @aircraft_array = @aircraft_array.sort_by { |aircraft| [sort_mult*aircraft[:count], aircraft[:aircraft]] }
+    if @flight_aircraft.any?
+    
+      # Set values for sort:
+      case params[:sort_category]
+      when "aircraft"
+        @sort_cat = :aircraft
+      when "flights"
+        @sort_cat = :flights
+      else
+        @sort_cat = :flights
+      end
+    
+      case params[:sort_direction]
+      when "asc"
+        @sort_dir = :asc
+      when "desc"
+        @sort_dir = :desc
+      else
+        @sort_dir = :desc
+      end
+    
+      sort_mult = (@sort_dir == :asc ? 1 : -1)
+    
+      @flight_aircraft.each do |aircraft, count| 
+        @aircraft_array.push({:aircraft => aircraft, :count => count})
+      end
+          
+      # Find maxima for graph scaling:
+      @aircraft_maximum = @aircraft_array.max_by{|i| i[:count]}[:count]
+    
+      # Sort aircraft table:
+      case @sort_cat
+      when :aircraft
+        @aircraft_array = @aircraft_array.sort_by { |aircraft| aircraft[:aircraft] }
+        @aircraft_array.reverse! if @sort_dir == :desc
+      when :flights
+        @aircraft_array = @aircraft_array.sort_by { |aircraft| [sort_mult*aircraft[:count], aircraft[:aircraft]] }
+      end
+    
     end
      
   end

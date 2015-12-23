@@ -18,7 +18,10 @@ class Flight < ActiveRecord::Base
   validates :airline, :presence => true
   validates :travel_class, :inclusion => { :in => %w(Economy Business First), :message => "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
-  default_scope { order('flights.departure_utc') } # New flight default origin depends on this sort
+  #default_scope { order('flights.departure_utc') } # New flight default origin depends on this sort
+  scope :chronological, -> {
+    order('flights.departure_utc')
+  }
   scope :visitor, -> {
     joins(:trip).
     where('hidden = FALSE')
