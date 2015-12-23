@@ -1,7 +1,7 @@
 class FlightsController < ApplicationController
   before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb 'Home', 'flightlog_path'
-  layout "flight_log/flight_log"
+  add_breadcrumb 'Home', 'root_path'
+  #layout "flight_log/flight_log"
   
   def index
     add_breadcrumb 'Flights', 'flights_path'
@@ -11,10 +11,10 @@ class FlightsController < ApplicationController
         
     if logged_in?
       @flights = Flight.all
-      @year_range = Flight.first.departure_date.year..Flight.last.departure_date.year
+      @year_range = @flights.any? ? Flight.first.departure_date.year..Flight.last.departure_date.year : nil
     else
       @flights = Flight.visitor
-      @year_range = Flight.visitor.first.departure_date.year..Flight.visitor.last.departure_date.year
+      @year_range = @flights.any? ? Flight.visitor.first.departure_date.year..Flight.visitor.last.departure_date.year : nil
     end
     
     @total_distance = total_distance(@flights)

@@ -135,7 +135,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 
 <% else %>
 
-<p class="center">There are no flights! Please create a <%= link_to "trip", trips_path %> and add one.</p>
+<%= render 'flights/error_no_flights' %>
 
 <% end %>
 
