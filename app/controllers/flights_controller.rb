@@ -422,11 +422,14 @@ class FlightsController < ApplicationController
     @title = "Travel Classes"
     @meta_description = "A count of how many times Paul Bogard has flown in each class."
     @classes_array = Array.new
-    @flight_classes.each do |travel_class, count| 
-      @classes_array.push({:travel_class => travel_class, :count => count})
+    
+    if @flight_classes.any?
+      @flight_classes.each do |travel_class, count| 
+        @classes_array.push({:travel_class => travel_class, :count => count})
+      end
+      @classes_array = @classes_array.sort_by { |travel_class| [-travel_class[:count], travel_class[:travel_class]] }
+      @classes_maximum = @classes_array.first[:count]
     end
-    @classes_array = @classes_array.sort_by { |travel_class| [-travel_class[:count], travel_class[:travel_class]] }
-    @classes_maximum = @classes_array.first[:count]
   end
   
   def show_class
