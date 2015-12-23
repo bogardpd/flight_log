@@ -465,70 +465,72 @@ class FlightsController < ApplicationController
     @title = "Tail Numbers"
     @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often he's flown on each."
     
-    # Set values for sort:
-    case params[:sort_category]
-    when "tail"
-      @sort_cat = :tail
-    when "flights"
-      @sort_cat = :flights
-    when "aircraft"
-      @sort_cat = :aircraft
-    when "airline"
-      @sort_cat = :airline
-    else
-      @sort_cat = :flights
-    end
-    
-    case params[:sort_direction]
-    when "asc"
-      @sort_dir = :asc
-    when "desc"
-      @sort_dir = :desc
-    else
-      @sort_dir = :desc
-    end
-    
-    sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
-    # Create tail number count array    
-    tails_count = Array.new
-    @flight_tail_numbers.each do |tail_number, count| 
-      tails_count.push({:tail_number => tail_number, :count => count})
-    end
-    
-    # Create details array, using the latest flight for each tail number.
-    tails_airline_hash = Hash.new
-    tails_aircraft_hash = Hash.new
-    @flight_tail_details.each do |tail|
-      tails_airline_hash[tail.tail_number] = tail.airline
-      tails_aircraft_hash[tail.tail_number] = tail.aircraft_family
-    end
-    
-    # Create table array
     @tail_numbers_table = Array.new
-    tails_count.each do |tail|
-      @tail_numbers_table.push({:tail_number => tail[:tail_number], :count => tail[:count], :aircraft => tails_aircraft_hash[tail[:tail_number]] || "", :airline => tails_airline_hash[tail[:tail_number]] || ""})
+    
+    if @flight_tail_numbers.any?
+    
+      # Set values for sort:
+      case params[:sort_category]
+      when "tail"
+        @sort_cat = :tail
+      when "flights"
+        @sort_cat = :flights
+      when "aircraft"
+        @sort_cat = :aircraft
+      when "airline"
+        @sort_cat = :airline
+      else
+        @sort_cat = :flights
+      end
+    
+      case params[:sort_direction]
+      when "asc"
+        @sort_dir = :asc
+      when "desc"
+        @sort_dir = :desc
+      else
+        @sort_dir = :desc
+      end
+    
+      sort_mult = (@sort_dir == :asc ? 1 : -1)
+    
+      # Create tail number count array    
+      tails_count = Array.new
+      @flight_tail_numbers.each do |tail_number, count| 
+        tails_count.push({:tail_number => tail_number, :count => count})
+      end
+    
+      # Create details array, using the latest flight for each tail number.
+      tails_airline_hash = Hash.new
+      tails_aircraft_hash = Hash.new
+      @flight_tail_details.each do |tail|
+        tails_airline_hash[tail.tail_number] = tail.airline
+        tails_aircraft_hash[tail.tail_number] = tail.aircraft_family
+      end
+    
+      # Create table array
+      tails_count.each do |tail|
+        @tail_numbers_table.push({:tail_number => tail[:tail_number], :count => tail[:count], :aircraft => tails_aircraft_hash[tail[:tail_number]] || "", :airline => tails_airline_hash[tail[:tail_number]] || ""})
+      end
+    
+      # Find maxima for graph scaling:
+      @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
+    
+      # Sort tails table:
+      case @sort_cat
+      when :tail
+        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| tail[:tail_number]}
+        @tail_numbers_table.reverse! if @sort_dir == :desc
+      when :flights
+        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [sort_mult*tail[:count], tail[:tail_number]]}
+      when :aircraft
+        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:aircraft], tail[:airline]]}
+        @tail_numbers_table.reverse! if @sort_dir == :desc
+      when :airline
+        @tail_numbers_table = @tail_numbers_table.sort_by { |tail| [tail[:airline], tail[:aircraft]]}
+        @tail_numbers_table.reverse! if @sort_dir == :desc
+      end
     end
-    
-    # Find maxima for graph scaling:
-    @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
-    
-    # Sort tails table:
-    case @sort_cat
-    when :tail
-      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| tail[:tail_number]}
-      @tail_numbers_table.reverse! if @sort_dir == :desc
-    when :flights
-      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [sort_mult*tail[:count], tail[:tail_number]]}
-    when :aircraft
-      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:aircraft], tail[:airline]]}
-      @tail_numbers_table.reverse! if @sort_dir == :desc
-    when :airline
-      @tail_numbers_table = @tail_numbers_table.sort_by { |tail| [tail[:airline], tail[:aircraft]]}
-      @tail_numbers_table.reverse! if @sort_dir == :desc
-    end
-    
-    
   end
   
   def show_tail
