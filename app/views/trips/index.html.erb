@@ -25,7 +25,7 @@
 </table>
 <% end %>
 
-<% if logged_in? && @trips.empty? && @trips_with_no_flights.empty %>
+<% if logged_in? && @trips.empty? && @trips_with_no_flights.empty? %>
 	<div class="alert">There are no trips in the flight log! Please <%= link_to "create a trip", new_trip_path %>.</div>
 <% elsif !logged_in? && @trips.empty? %>
 	<div class="alert">There are no trips in the flight log!</div>

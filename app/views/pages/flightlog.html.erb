@@ -128,12 +128,14 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 </div>
 
 <div class="center">
-	
+
+<% if @route_superlatives || logged_in? %>	
 <div class="intro_box column">
   <h2>Superlatives</h2>
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 	
 </div>
+<% end %>
 
 </div>
 

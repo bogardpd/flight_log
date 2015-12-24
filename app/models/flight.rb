@@ -101,15 +101,15 @@ class Flight < ActiveRecord::Base
   end
   
   def self.aircraft_first_flight(aircraft_family)
-    return Flight.where(:aircraft_family => aircraft_family).first(:order => 'departure_date ASC').departure_date
+    return Flight.where(:aircraft_family => aircraft_family).order(departure_date: :asc).first.departure_date
   end
   
   def self.airline_first_flight(airline)
-    return Flight.where(:airline => airline).first(:order => 'departure_date ASC').departure_date
+    return Flight.where(:airline => airline).order(departure_date: :asc).first.departure_date
   end
   
   def self.airport_first_visit(airport_id)
-    return Flight.where("origin_airport_id = ? OR destination_airport_id = ?", airport_id, airport_id).first(:order => 'departure_date ASC').departure_date
+    return Flight.where("origin_airport_id = ? OR destination_airport_id = ?", airport_id, airport_id).order(departure_date: :asc).first.departure_date
   end
   
 end

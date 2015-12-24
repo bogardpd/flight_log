@@ -316,6 +316,7 @@ div.intro_box {
 	padding: 10px;
 	margin: 2px;
 	text-align: center;
+	vertical-align: top;
 }
 
 div.intro_box h2 {
@@ -439,6 +440,12 @@ img.logo {
 
 img.photo_gallery {
 	border: 1px solid #9EC7F3;
+}
+
+input, select {
+	font-family: "Source Sans Pro", "Calibri", "Helvetica Neue", "Helvetica", sans-serif;
+	font-size: 95%;
+	padding: 2px 4px;
 }
 
 p {

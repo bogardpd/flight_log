@@ -53,6 +53,7 @@
 <% previous_count = nil %>
 <% @airport_array.each_with_index do |airport, index| %>
   <tr>
+		
 		<% if @date_range.include?(Flight.airport_first_visit(airport[:id])) %>
 			<% @new_airport_flag = true %>
 			<td class="counter new"><%= (airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
@@ -65,9 +66,6 @@
 			<td class="airport_iata_code"><%= link_to(iata_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 			<td class="airport_visits"><%= render "graph_block", :value => airport[:frequency], :maximum => @airport_maximum %></td>
 		<% end %>
-		
-    
-    
 	
   </tr>
 	<% previous_count = airport[:frequency] %>

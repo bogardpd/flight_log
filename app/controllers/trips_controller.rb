@@ -5,9 +5,13 @@ class TripsController < ApplicationController
   
   def index
     add_breadcrumb 'Trips', 'trips_path'
-    @trips = Trip.uniq.joins(:flights).select("name, flights.departure_date").order("flights.departure_date")
-    @trips = @trips.visitor if !logged_in? # Filter out hidden trips for visitors
-    @trips_with_no_flights = Trip.where('id not in (?)',@trips)
+    if logged_in?
+      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS earliest_departure FROM flights JOIN trips ON flights.trip_id = trips.id GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY earliest_departure")
+    else
+      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS earliest_departure FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY earliest_departure")
+    end
+
+    @trips_with_no_flights = Trip.where('id not in (?)',Trip.uniq.joins(:flights).select("trips.id"))
     @title = "Trips"
     @meta_description = "A list of airplane trips Paul Bogard has taken."
     

@@ -9,10 +9,10 @@ class FlightsController < ApplicationController
     @title = "Flights"
         
     if logged_in?
-      @flights = Flight.all
+      @flights = Flight.chronological
       @year_range = @flights.any? ? Flight.first.departure_date.year..Flight.last.departure_date.year : nil
     else
-      @flights = Flight.visitor
+      @flights = Flight.visitor.chronological
       @year_range = @flights.any? ? Flight.visitor.first.departure_date.year..Flight.visitor.last.departure_date.year : nil
     end
     
@@ -45,7 +45,7 @@ class FlightsController < ApplicationController
       end
           
       # Sort flight table:
-      @flights = @flights.reverse! if @sort_dir == :desc
+      @flights = @flights.reverse_order if @sort_dir == :desc
     
     end
   

@@ -1,7 +1,7 @@
 <h1>Travel Classes</h1>
 
 <% if @flight_classes.empty? %>
-	<% if (logged_in? && Flight.empty?) || (!logged_in? && Flight.visitor.empty?) %>
+	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
 		<%= render 'error_no_flights' %>
 	<% else %>
 		<div class="alert">There are no flights in the flight log that include class!</p>

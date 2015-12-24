@@ -65,9 +65,9 @@ class PagesController < ApplicationController
     end
     
     @total_distance = total_distance(@flights)
+    @hidden_trips = Trip.where(:hidden => true)
     
     if @flights.any?
-      @hidden_trips = Trip.where(:hidden => true)
     
       @airport_array = Airport.frequency_array(@flights)
 

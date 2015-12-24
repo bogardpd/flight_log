@@ -8,7 +8,7 @@ Portfolio::Application.routes.draw do
   resources :flights
   resources :airports
   resources :trips
-  resources :routes, :only => [:new, :create, :update]
+  resources :routes, :only => [:new, :show, :create, :update]
 
   root 'pages#flightlog'
   

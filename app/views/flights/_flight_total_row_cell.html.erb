@@ -1,7 +1,7 @@
 <%= pluralize(@flights.length, 'flight') %> <span class="total_percent">
-<% if logged_in? %>
+<% if logged_in? && Flight.all.length > 0 %>
 (<%= ((@flights.length.to_f/Flight.all.length.to_f)*1000).round/10.0 %>% of all flights)
-<% else %>
+<% elsif !logged_in? && Flight.visitor.length > 0 %>
 (<%= ((@flights.length.to_f/Flight.visitor.length.to_f)*1000).round/10.0 %>% of all flights)
 <% end %>
 </span>

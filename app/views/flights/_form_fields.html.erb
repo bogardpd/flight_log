@@ -2,16 +2,16 @@
 
 <p>
   <%= f.label :trip_section, "Trip Section" %><br />
-  <%= f.telephone_field :trip_section, :size => 5 %>
+  <%= f.telephone_field :trip_section, :size => 2 %>
 </p>
 
 <p>
   <%= f.label :origin_airport_id, "Origin" %> - <%= f.label :destination_airport_id, "Destination" %><br />
-  <% if params[:id] %>
-		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, :include_blank => true) %>
+  <% if params[:id] || Flight.chronological.empty? %>
+		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}, {class: "iata_mono"}) %>
 	<% else %>
-		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, :include_blank => true, :selected => Flight.chronological.last.destination_airport_id) %>
-	<% end %> - <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, :include_blank => true) %>
+		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, :selected => Flight.chronological.last.destination_airport_id}, {class: "iata_mono"}) %>
+	<% end %> &ndash; <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {:include_blank => true}, {class: "iata_mono"}) %>
 </p>
 
 <p>

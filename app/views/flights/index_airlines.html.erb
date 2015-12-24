@@ -11,7 +11,7 @@
 <p>I have flown on <%= pluralize(@airlines_array.count, 'airline') %>.</p>
 
 <% if @flight_airlines.empty? %>
-	<% if (logged_in? && Flight.empty?) || (!logged_in? && Flight.visitor.empty?) %>
+	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
 		<%= render 'error_no_flights' %>
 	<% else %>
 		<div class="alert">There are no flights in the flight log that include an airline!</p>
@@ -67,7 +67,10 @@
 </table>
 
 <% else %>
-
-<p>All flights have unknown operators.</p>
+	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
+		<%= render 'error_no_flights' %>
+	<% else %>
+		<div class="alert">All flights have unknown operators!</p>
+	<% end %>
 
 <% end %>
