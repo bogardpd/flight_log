@@ -176,10 +176,8 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Aircraft Families', 'aircraft_path'
     if logged_in?
       @flight_aircraft = Flight.where("aircraft_family IS NOT NULL").group("aircraft_family").count
-      #@flight_aircraft = Flight.where("aircraft_family IS NOT NULL").group("aircraft_family").select("aircraft_family, COUNT(aircraft_family) as aircraft_count")
     else # Filter out hidden trips for visitors
       @flight_aircraft = Flight.visitor.where("aircraft_family IS NOT NULL").group("aircraft_family").count
-      #@flight_aircraft = Flight.visitor.where("aircraft_family IS NOT NULL").group("aircraft_family").select("aircraft_family, COUNT(aircraft_family) as aircraft_count")
     end
     @title = "Aircraft"
     @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often he's flown on each."
@@ -234,7 +232,7 @@ class FlightsController < ApplicationController
     @aircraft_family = params[:aircraft_family].gsub("_", " ")
     @title = @aircraft_family
     @meta_description = "Maps and lists of Paul Bogard's flights on #{@aircraft_family} aircraft."
-    @flights = Flight.where(:aircraft_family => @aircraft_family)
+    @flights = Flight.where(:aircraft_family => @aircraft_family).chronological
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb 'Aircraft Families', 'aircraft_path'
@@ -327,7 +325,7 @@ class FlightsController < ApplicationController
     @airline = params[:airline].gsub("_", " ")
     @title = @airline
     @meta_description = "Maps and lists of Paul Bogard's flights on #{@airline}."
-    @flights = Flight.where(:airline => @airline)
+    @flights = Flight.where(:airline => @airline).chronological
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb 'Airlines', 'airlines_path'
@@ -352,7 +350,7 @@ class FlightsController < ApplicationController
     @operator = params[:operator].gsub("_", " ")
     @title = @operator
     @meta_description = "Maps and lists of Paul Bogard's flights operated by #{@operator}."
-    @flights = Flight.where(:operator => @operator)
+    @flights = Flight.where(:operator => @operator).chronological
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb 'Airlines', 'airlines_path'
@@ -390,7 +388,7 @@ class FlightsController < ApplicationController
     @fleet_number = params[:fleet_number]
     @title = @operator + " #" + @fleet_number
     @meta_description = "Maps and lists of Paul Bogard's flights operated on #{@operator} ##{@fleet_number}."
-    @flights = Flight.where(:operator => @operator, :fleet_number => @fleet_number)
+    @flights = Flight.where(:operator => @operator, :fleet_number => @fleet_number).chronological
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb 'Airlines', 'airlines_path'
@@ -434,7 +432,7 @@ class FlightsController < ApplicationController
   
   def show_class
     @logo_used = true
-    @flights = Flight.where(:travel_class => params[:travel_class])
+    @flights = Flight.where(:travel_class => params[:travel_class]).chronological
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     @title = params[:travel_class].titlecase + " Class"
     @meta_description = "Maps and lists of Paul Bogard's #{params[:travel_class].downcase} class flights."
@@ -538,7 +536,7 @@ class FlightsController < ApplicationController
   
   def show_tail
     @logo_used = true
-    @flights = Flight.where(:tail_number => params[:tail_number])
+    @flights = Flight.where(:tail_number => params[:tail_number]).chronological
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     @flight_operators = @flights.where("operator IS NOT NULL").group("operator").count
     

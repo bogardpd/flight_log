@@ -116,7 +116,7 @@ class AirportsController < ApplicationController
     end
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    @flights = @airport.all_flights(logged_in?)
+    @flights = @airport.all_flights(logged_in?).chronological
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     trip_array = Array.new
     @sections = Array.new

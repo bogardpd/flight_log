@@ -126,7 +126,9 @@ class RoutesController < ApplicationController
       @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date, :trip_hidden => flight.trip.hidden} )
       section_where_array.push("(trip_id = #{flight.trip_id.to_i} AND trip_section = #{flight.trip_section.to_i})")
     end
-    trip_array = trip_array.uniq
+    trip_array.uniq!
+    @sections.uniq!
+    section_where_array.uniq!
     
     # Create list of trips sorted by first flight:
     if logged_in?
