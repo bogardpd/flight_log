@@ -45,7 +45,6 @@ class Airport < ActiveRecord::Base
       "flight_log/flags/unknown-country.png"
     else
       image_location = "flight_log/flags/" + self.country.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_-]/, '').squeeze('-') + ".png"
-      #if File.exist?("#{Rails.root}/public/images/#{image_location}")
       if Rails.application.assets.find_asset(image_location)
         image_location
       else
