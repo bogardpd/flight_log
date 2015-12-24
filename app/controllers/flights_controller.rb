@@ -536,9 +536,11 @@ class FlightsController < ApplicationController
   
   def show_tail
     @logo_used = true
-    @flights = Flight.where(:tail_number => params[:tail_number]).chronological
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @flights = Flight.where(:tail_number => params[:tail_number])
     @flight_operators = @flights.where("operator IS NOT NULL").group("operator").count
+    @flights = @flights.chronological
+    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     @title = params[:tail_number]
