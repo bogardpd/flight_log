@@ -16,7 +16,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 	<% if params[:region] == "world" %>
 	<div class="region_select">
 		<ul class="region_select">
-			<li><%= link_to("Contiguous United States", flightlog_path) %></li>
+			<li><%= link_to("Contiguous United States", root_path) %></li>
 			<li class="selected">World</li>
 		</ul>
 	</div>
