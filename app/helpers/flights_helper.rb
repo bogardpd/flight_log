@@ -1,27 +1,5 @@
 module FlightsHelper
   
-  def route_string_old(flight_list, *args)
-    route = "";
-    previous_trip_id = nil
-    previous_destination_airport_iata_code = nil
-    new_section_next_flight = false
-    flight_list.each do |flight|
-      if (args[0] == "conus" && (!flight.origin_airport.region_conus || !flight.destination_airport.region_conus))
-        route += "o:noext," + flight.origin_airport.iata_code + "-" + flight.destination_airport.iata_code + ","
-        new_section_next_flight = true;
-      elsif (flight.trip.id == previous_trip_id && flight.origin_airport.iata_code == previous_destination_airport_iata_code && !new_section_next_flight)
-        route = route.chomp(",") + "-" + flight.destination_airport.iata_code + ","
-        new_section_next_flight = false
-      else
-        route += flight.origin_airport.iata_code + "-" + flight.destination_airport.iata_code + ","
-        new_section_next_flight = false
-      end
-      previous_trip_id = flight.trip.id
-      previous_destination_airport_iata_code = flight.destination_airport.iata_code
-    end
-    route = route.chomp(",")
-  end
-  
   def route_string(flight_list, *args)
     route_inside_region = ""
     route_outside_region = ""
@@ -64,6 +42,8 @@ module FlightsHelper
     
     if pairs_outside_region.length > 0
       route = "c:%23FF7777#{route_outside_region},c:red#{route_inside_region}"
+    elsif args[0] == :uncolored
+      route = route_inside_region
     else
       route = "c:red#{route_inside_region}"
     end
@@ -75,7 +55,7 @@ module FlightsHelper
   end
   
   def route_highlight(route,highlight)
-    return "c:purple,#{route},c:red,w:2,#{highlight}"
+    return "c:%23FF7777,#{route},c:red,w:2,#{highlight}"
   end
   
 end

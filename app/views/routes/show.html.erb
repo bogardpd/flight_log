@@ -45,7 +45,7 @@
 
 <p>This map shows the flights of all of my trip sections with a segment from <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> to <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> or from <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> to <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym>.</p>
   
-<%= gcmap_embed(route_highlight(route_string(@city_pair_section_flights),"#{@airports[0]}-#{@airports[1]}")) %>
+<%= gcmap_embed(route_highlight(route_string(@city_pair_section_flights, :uncolored), "#{@airports[0]}-#{@airports[1]}")) %>
 
 <%= render 'trips/section_table' %>
 
@@ -54,7 +54,7 @@
 
 <p>This map shows the flights of all of my trips with a segment from from <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> to <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> or from <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> to <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym>.</p>
 
-<%= gcmap_embed(route_highlight(route_string(@city_pair_trip_flights),"#{@airports[0]}-#{@airports[1]}")) %>
+<%= gcmap_embed(route_highlight(route_string(@city_pair_trip_flights, :uncolored),"#{@airports[0]}-#{@airports[1]}")) %>
 
 <%= render 'trips/trip_table' %>
 
