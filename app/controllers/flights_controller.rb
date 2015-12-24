@@ -10,10 +10,10 @@ class FlightsController < ApplicationController
         
     if logged_in?
       @flights = Flight.chronological
-      @year_range = @flights.any? ? Flight.first.departure_date.year..Flight.last.departure_date.year : nil
+      @year_range = @flights.any? ? Flight.chronological.first.departure_date.year..Flight.chronological.last.departure_date.year : nil
     else
       @flights = Flight.visitor.chronological
-      @year_range = @flights.any? ? Flight.visitor.first.departure_date.year..Flight.visitor.last.departure_date.year : nil
+      @year_range = @flights.any? ? Flight.visitor.chronological.first.departure_date.year..Flight.visitor.chronological.last.departure_date.year : nil
     end
     
     if @flights.any?
@@ -632,9 +632,9 @@ class FlightsController < ApplicationController
     
     def years_with_flights
       if logged_in?
-        flights = Flight.all
+        flights = Flight.chronological
       else
-        flights = Flight.visitor
+        flights = Flight.visitor.chronological
       end
     
       # Determine which years have flights:
@@ -647,9 +647,9 @@ class FlightsController < ApplicationController
     
     def years_with_flights_range
       if logged_in?
-        return Flight.first.departure_date.year..Flight.last.departure_date.year
+        return Flight.chronological.first.departure_date.year..Flight.last.departure_date.year
       else
-        return Flight.visitor.first.departure_date.year..Flight.visitor.last.departure_date.year
+        return Flight.visitor.chronological.first.departure_date.year..Flight.visitor.last.departure_date.year
       end
       return false      
     end
