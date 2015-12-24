@@ -53,12 +53,12 @@ class PagesController < ApplicationController
     @logo_used = true
     
     if logged_in?
-      @flights = Flight.all
+      @flights = Flight.chronological
       @flight_aircraft = Flight.where("aircraft_family IS NOT NULL").group("aircraft_family").count
       @flight_airlines = Flight.where("airline IS NOT NULL").group("airline").count
       @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
     else # Filter out hidden trips for visitors
-      @flights = Flight.visitor
+      @flights = Flight.visitor.chronological
       @flight_aircraft = Flight.visitor.where("aircraft_family IS NOT NULL").group("aircraft_family").count
       @flight_airlines = Flight.visitor.where("airline IS NOT NULL").group("airline").count
       @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count

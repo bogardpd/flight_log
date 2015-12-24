@@ -7,9 +7,9 @@ class AirportsController < ApplicationController
     @title = "Airports"
     @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often he's visited them."
     if logged_in?
-      @flights = Flight.all
+      @flights = Flight.chronological
     else
-      @flights = Flight.visitor
+      @flights = Flight.visitor.chronological
     end
     
     @airport_array = Array.new
@@ -116,7 +116,7 @@ class AirportsController < ApplicationController
     end
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    @flights = @airport.all_flights(logged_in?).chronological
+    @flights = @airport.all_flights(logged_in?)
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     trip_array = Array.new
     @sections = Array.new
@@ -153,7 +153,7 @@ class AirportsController < ApplicationController
     trip_array = trip_array.uniq.sort
     @sections.uniq!
     @trips = Trip.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
-    @trips_using_airport_flights = Flight.where(:trip_id => trip_array)
+    @trips_using_airport_flights = Flight.chronological.where(:trip_id => trip_array)
     @sections_using_airport_flights = Flight.where(section_where_array.join(' OR '))
     @airport_frequency = frequency_array(@trips_using_airport_flights)
     @pair_maximum = pair_totals.length > 0 ? pair_totals.values.max : 1
@@ -266,6 +266,7 @@ class AirportsController < ApplicationController
     
     
     def frequency_array(flight_array)
+      flight_array = flight_array.chronological
       airport_frequency = Hash.new(0) # All airports start with 0 flights
       @airport_array = Array.new
       @airport_conus_array = Array.new

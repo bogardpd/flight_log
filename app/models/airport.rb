@@ -13,9 +13,9 @@ class Airport < ActiveRecord::Base
   def all_flights(logged_in)
     # Returns a collection of Flights that have this airport as an origin or destination.
     if logged_in
-      flights = Flight.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => self})
+      flights = Flight.chronological.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => self})
     else
-      flights = Flight.visitor.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => self})
+      flights = Flight.visitor.chronological.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => self})
     end
     return flights
   end
@@ -54,6 +54,7 @@ class Airport < ActiveRecord::Base
   end
   
   def self.frequency_array(flight_array)
+    flight_array = flight_array.chronological
     airport_frequency = Hash.new(0) # All airports start with 0 flights
     @airport_array = Array.new
     @airport_conus_array = Array.new

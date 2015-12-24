@@ -143,9 +143,9 @@ class FlightsController < ApplicationController
     @year_range = years_with_flights_range
         
     if logged_in?
-      @flights = Flight.where(:departure_date => @date_range)
+      @flights = Flight.chronological.where(:departure_date => @date_range)
     else
-      @flights = Flight.visitor.where(:departure_date => @date_range)
+      @flights = Flight.visitor.chronological.where(:departure_date => @date_range)
     end
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
