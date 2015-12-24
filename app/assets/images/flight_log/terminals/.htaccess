@@ -1,4 +1,0 @@
-PassengerEnabled off
-Options +Indexes
-IndexOptions +FancyIndexing
-IndexIgnore .DS_Store

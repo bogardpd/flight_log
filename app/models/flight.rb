@@ -29,7 +29,8 @@ class Flight < ActiveRecord::Base
   
   def airline_icon_path
     image_location = "flight_log/airline_icons/" + self.airline.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_-]/, '').squeeze('-') + ".png"
-    if File.exist?("#{Rails.root}/public/images/#{image_location}")
+    #if File.exist?("#{Rails.root}/public/images/#{image_location}")
+    if Rails.application.assets.find_asset(image_location)
       image_location
     else
       "flight_log/airline_icons/unknown-airline.png"
