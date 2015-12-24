@@ -1,6 +1,9 @@
+$font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
+$font-stack-monospace: 'Source Code Pro', monospace;
+
 body {
 	background: #E6EAEF;
-	font-family: "Source Sans Pro", "Calibri", "Helvetica Neue", "Helvetica", sans-serif;
+	font-family: $font-stack-sans-serif;
 	color: #202830;
 	font-size: 105%;
 	font-weight: 400;
@@ -103,7 +106,7 @@ body {
 	padding: 0;
 	vertical-align: middle;	
 	font-size: 18px;
-	font-family: "Source Sans Pro", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	font-family: $font-stack-sans-serif;
 	font-weight: 300;
 }
 
@@ -197,7 +200,7 @@ body {
 }
 
 .iata_mono {
-	font-family: 'Source Code Pro', monospace;
+	font-family: $font-stack-monospace;
 }
 
 a {
@@ -443,7 +446,7 @@ img.photo_gallery {
 }
 
 input, select {
-	font-family: "Source Sans Pro", "Calibri", "Helvetica Neue", "Helvetica", sans-serif;
+	font-family: $font-stack-sans-serif;
 	font-size: 95%;
 	padding: 2px 4px;
 }
@@ -635,6 +638,15 @@ td.aircraft_family, th.aircraft_family {
 
 td.aircraft_flights, th.aircraft_flights {
 	text-align: center;
+}
+
+td.aircraft_name {
+	text-align: left;
+	font-style: italic;
+}
+
+span.aircraft_name {
+	font-style: italic;
 }
 
 td.airline_airline, th.airline_airline {

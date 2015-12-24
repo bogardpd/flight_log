@@ -67,6 +67,12 @@
     </td>
   </tr>
   <% end %>
+  <% if @flight.aircraft_name %>
+  <tr>
+    <td class="flight_show_label">Aircraft Name</td>
+    <td class="aircraft_name"><%= @flight.aircraft_name %></td>
+  </tr>
+  <% end %>
   <% if @flight.tail_number %>
   <tr>
     <td class="flight_show_label">Tail Number</td>

@@ -368,9 +368,11 @@ class FlightsController < ApplicationController
     
     # Create list of fleet numbers and aircraft families:
     @fleet_family = Hash.new
+    @fleet_name = Hash.new
     @flights.each do |flight|
       if flight.fleet_number
         @fleet_family[flight.fleet_number] = flight.aircraft_family
+        @fleet_name[flight.fleet_number] = flight.aircraft_name
       end
     end
     @fleet_family = @fleet_family.sort_by{ |key, value| key }
@@ -458,10 +460,10 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Tail Numbers', 'tails_path'
     if logged_in?
       @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
-      @flight_tail_details = Flight.where("tail_number IS NOT NULL").order("departure_utc ASC")
+      @flight_tail_details = Flight.chronological.where("tail_number IS NOT NULL").order("departure_utc ASC")
     else # Filter out hidden trips for visitors
       @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
-      @flight_tail_details = Flight.visitor.where("tail_number IS NOT NULL").order("departure_utc ASC")
+      @flight_tail_details = Flight.visitor.chronological.where("tail_number IS NOT NULL").order("departure_utc ASC")
     end
     @title = "Tail Numbers"
     @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often he's flown on each."
@@ -621,7 +623,7 @@ class FlightsController < ApplicationController
   private
   
     def flight_params
-      params.require(:flight).permit(:aircraft_family, :aircraft_variant, :airline, :codeshare_airline, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
+      params.require(:flight).permit(:aircraft_family, :aircraft_name, :aircraft_variant, :airline, :codeshare_airline, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
     end
     
     def logged_in_user
