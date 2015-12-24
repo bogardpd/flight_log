@@ -20,14 +20,14 @@
 <a name="conus_flights"></a>
 <h2>CONUS Flights</h2>
 
-<p>This map shows all commercial flights I've taken within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %> since age 18.</p>
+<p>This map shows all commercial flights I've taken within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %> since age 16.</p>
 
 <%= gcmap_embed(route_string(@flights, "conus")) %>
 
 <a name="world_flights"></a>
 <h2>World Flights</h2>
 
-<p>This map and table show all commercial flights I've taken worldwide since age 18.</p>
+<p>This map and table show all commercial flights I've taken worldwide since age 16.</p>
 
 <%= gcmap_embed(route_string(@flights), nil, "world")%>
 
