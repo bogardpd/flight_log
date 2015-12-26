@@ -217,7 +217,7 @@ class FlightsController < ApplicationController
       # Sort aircraft table:
       case @sort_cat
       when :aircraft
-        @aircraft_array = @aircraft_array.sort_by { |aircraft| aircraft[:aircraft] }
+        @aircraft_array = @aircraft_array.sort_by { |aircraft| aircraft[:aircraft].downcase }
         @aircraft_array.reverse! if @sort_dir == :desc
       when :flights
         @aircraft_array = @aircraft_array.sort_by { |aircraft| [sort_mult*aircraft[:count], aircraft[:aircraft]] }

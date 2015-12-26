@@ -179,6 +179,17 @@ body {
 	text-align: center;
 }
 
+#title_info {
+	float: right;
+	padding-top: 6px;
+	font-weight: 300;
+	-webkit-text-size-adjust:100%;
+	
+	img {
+		margin-left: 0.3em;
+	}
+}
+
 .bold {
 	font-weight: 600;
 }
@@ -390,12 +401,7 @@ div.region_select a {
 	font-weight: 300;
 }
 
-div.title_info {
-	float: right;
-	padding-top: 6px;
-	font-weight: 300;
-	-webkit-text-size-adjust:100%
-}
+
 
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1.2;
@@ -422,7 +428,7 @@ img.airline_icon {
 	margin-bottom: 0;
 	margin-left: 0;
 	margin-right: 0.3em;
-	vertical-align: top;
+	vertical-align: middle;
 	border: none;
 }
 
@@ -430,7 +436,7 @@ img.country_flag {
 	width: 32px;
 	height: 22px;
 	margin: 1px 3px;
-	vertical-align: top;
+	vertical-align: middle;
 	border: none;
 }
 

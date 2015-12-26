@@ -25,18 +25,20 @@ class AirlinesController < ApplicationController
     
     if (@flight_airlines.any? || @flight_operators.any?)
       
-      @airline_details = Airline.select("id, iata_airline_code, airline_name").find(used_airline_ids)
-      @airline_names = Hash.new
-      @airline_iata_codes = Hash.new
-      @airline_details.each do |airline|
-        @airline_names[airline.id] = airline.airline_name
-        @airline_iata_codes[airline.id] = airline.iata_airline_code 
+      airline_details = Airline.select("id, iata_airline_code, airline_name").find(used_airline_ids)
+      airline_names = Hash.new
+      airline_iata_codes = Hash.new
+      airline_details.each do |airline|
+        airline_names[airline.id] = airline.airline_name
+        airline_iata_codes[airline.id] = airline.iata_airline_code 
       end
       
       # Set values for sort:
       case params[:sort_category]
       when "airline"
         @sort_cat = :airline
+      when "code"
+        @sort_cat = :code
       when "flights"
         @sort_cat = :flights
       else
@@ -56,12 +58,12 @@ class AirlinesController < ApplicationController
       
       # Prepare airline list:
       @flight_airlines.each do |airline, count| 
-        @airlines_array.push({:airline => airline, :count => count})
+        @airlines_array.push({name: airline_names[airline], iata_code: airline_iata_codes[airline], count: count})
       end
     
       # Prepare operator list:
       @flight_operators.each do |operator, count|
-        @operators_array.push({:operator => operator, :count => count})
+        @operators_array.push({name: airline_names[operator], iata_code: airline_iata_codes[operator], :count => count})
       end
       
       # Find maxima for graph scaling:
@@ -71,8 +73,13 @@ class AirlinesController < ApplicationController
       # Sort airline and operator tables:
       case @sort_cat
       when :airline
-        @airlines_array = @airlines_array.sort_by { |airline| airline[:airline] }
-        @operators_array = @operators_array.sort_by { |operator| operator[:operator] }
+        @airlines_array = @airlines_array.sort_by { |airline| airline[:name].downcase }
+        @operators_array = @operators_array.sort_by { |operator| operator[:name].downcase }
+        @airlines_array.reverse! if @sort_dir == :desc
+        @operators_array.reverse! if @sort_dir == :desc
+      when :code
+        @airlines_array = @airlines_array.sort_by { |airline| airline[:iata_code].downcase }
+        @operators_array = @operators_array.sort_by { |operator| operator[:iata_code].downcase }
         @airlines_array.reverse! if @sort_dir == :desc
         @operators_array.reverse! if @sort_dir == :desc
       when :flights

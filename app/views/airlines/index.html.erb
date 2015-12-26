@@ -23,7 +23,7 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="airline_airline"><%= sort_link("Airline", :airline, "airline", :asc, "airlines") %></th>
-		<th class="airline_iata_code"><%= sort_link("Code", :iata, "code", :asc, "code") %></th>
+		<th class="airline_iata_code"><%= sort_link("Code", :code, "code", :asc, "airlines") %></th>
     <th class="airline_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airlines") %></th>
   </tr>
 <% previous_count = nil %>
@@ -31,9 +31,9 @@
   <tr>
 		<td class="counter"><%= (@sort_cat == :flights && airline[:count] == previous_count) ? "⋮" : index + 1 %></td>
     <td class="airline_airline">
-    	<%= link_to(image_tag(airline_icon_path(@airline_iata_codes[airline[:airline]]), :title => @airline_names[airline[:airline]], :class => 'airline_icon') + ' ' + @airline_names[airline[:airline]], airline_path(@airline_iata_codes[airline[:airline]])) %>
+    	<%= link_to(image_tag(airline_icon_path(airline[:iata_code]), title: airline[:name], class: 'airline_icon') + ' ' + airline[:name], airline_path(airline[:iata_code])) %>
 		</td>
-		<td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(@airline_iata_codes[airline[:airline]]), airline_path(@airline_iata_codes[airline[:airline]])) %></td>
+		<td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(airline[:iata_code]), airline_path(airline[:iata_code])) %></td>
     <td class="airline_flights"><%= render "flights/graph_block", :value => airline[:count], :maximum => @airlines_maximum %></td>
   </tr>
 	<% previous_count = airline[:count] %>
@@ -46,11 +46,45 @@
 <a name="operators"></a>
 <h2>Operators</h2>
 
+<p>In many cases, an airline subcontracts another airline to operate flights for them. This happens especially often with small regional flights. This is a list of the airlines that actually operated my flights.</p>
 
+<% if @operators_array.any? %>
+
+<table class="flightlog">
+  <tr class="th">
+    <th class="counter">#</th>
+		<th class="airline_airline"><%= sort_link("Operator", :airline, "airline", :asc, "operators") %></th>
+		<th class="airline_code"><%= sort_link("Code", :code, "code", :asc, "operators") %></th>
+    <th class="airline_flights"><%= sort_link("Flights", :flights, "flights", :desc, "operators") %></th>
+  </tr>
+<% previous_count = nil %>
+<% @operators_array.each_with_index do |operator, index| %>
+  <tr>
+		<td class="counter"><%= (@sort_cat == :flights && operator[:count] == previous_count) ? "⋮" : index + 1 %></td>
+    <td class="airline_airline">
+    <%= link_to(image_tag(airline_icon_path(operator[:iata_code]), title: operator[:name], class: 'airline_icon') + ' ' + operator[:name], show_operator_path(operator[:iata_code])) %></td>
+		<td class="airline_iata_code iata_mono">
+			<%= link_to(iata_airline_code_display(operator[:iata_code]), show_operator_path(operator[:iata_code])) %>
+		</td>
+    <td class="airline_flights"><%= render "flights/graph_block", :value => operator[:count], :maximum => @operators_maximum %></td>
+  </tr>
+	<% previous_count = operator[:count] %>
+<% end %>
+	<tr><td colspan="4" class="flightlog_total"><%= pluralize(@operators_array.count, 'operator') %></td></tr>
+</table>
+
+<% else %>
+	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
+		<%= render 'error_no_flights' %>
+	<% else %>
+		<div class="alert">All flights have unknown operators!</p>
+	<% end %>
+
+<% end %>
 
 
 <% if (logged_in? && @airlines_with_no_flights.any?) %>
-	<h2>Airlines with No Flights</h2>
+	<h2>Airlines/Operators with No Flights</h2>
 	<table class="flightlog">
 		<tr class="th">
 			<th class="airline_airline">Airline</th>

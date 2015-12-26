@@ -27,13 +27,17 @@ Portfolio::Application.routes.draw do
   match '/aircraft' => 'flights#index_aircraft', :via => [:get]
   match '/aircraft/sort/:sort_category/:sort_direction' => 'flights#index_aircraft', :as => :sort_aircraft, :via => [:get]
   match '/aircraft/:aircraft_family' => 'flights#show_aircraft', :as => :show_aircraft, :via => [:get]
-  #match '/airlines' => 'flights#index_airlines', :via => [:get]
+
   #match '/airlines/sort/:sort_category/:sort_direction' => 'flights#index_airlines', :as => :sort_airlines, :via => [:get]
-  #match '/airlines/:airline' => 'flights#show_airline', :as => :show_airline, :via => [:get]
+  
+  match '/operators/:operator' => 'airlines#show_operator', as: :show_operator, via: [:get]
+  match '/operators/:operator/:fleet_number' => 'airlines#show_fleet_number', as: :show_fleet_number, via: [:get]
+
   match '/airports/sort/:sort_category/:sort_direction' => 'airports#index', :as => :sort_airports, :via => [:get]
   match '/airports/:id/sort/:sort_category/:sort_direction' => 'airports#show', :as => :sort_airport, :via => [:get]
-  match '/operators/:operator' => 'flights#show_operator', :as => :show_operator, :via => [:get]
-  match '/operators/:operator/:fleet_number' => 'flights#show_fleet_number', :as => :show_fleet_number, :via => [:get]
+  
+  
+  
   match '/classes' => 'flights#index_classes', :via => [:get]
   match '/classes/:travel_class' => 'flights#show_class', :as => :show_class, :via => [:get]
   match '/tails' => 'flights#index_tails', :via => [:get]
