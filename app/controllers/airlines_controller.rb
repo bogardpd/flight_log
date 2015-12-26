@@ -9,8 +9,8 @@ class AirlinesController < ApplicationController
       @flight_airlines = Flight.where("airline_id IS NOT NULL").group("airline_id").count
       @flight_operators = Flight.where("operator_id IS NOT NULL").group("operator_id").count
     else # Filter out hidden trips for visitors
-      @flight_airlines = Flight.visitor.where("airline IS NOT NULL").group("airline").count
-      @flight_operators = Flight.visitor.where("operator IS NOT NULL").group("operator").count
+      @flight_airlines = Flight.visitor.where("airline_id IS NOT NULL").group("airline_id").count
+      @flight_operators = Flight.visitor.where("operator_id IS NOT NULL").group("operator_id").count
     end
     used_airline_ids = (@flight_airlines.keys + @flight_operators.keys).uniq
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) #UPDATE
@@ -85,7 +85,7 @@ class AirlinesController < ApplicationController
   end
   
   def show
-    if params[:id].to_i > 0
+    if params[:id].match(/\A\d+\z/) # ID contains only digits
       @airline = Airline.find(params[:id])
     else
       @airline = Airline.where(:iata_airline_code => params[:id]).first

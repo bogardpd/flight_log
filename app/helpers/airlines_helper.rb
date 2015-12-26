@@ -1,11 +1,11 @@
 module AirlinesHelper
   
   def airline_icon_path(iata_airline_code)
-    image_location = "flight_log/airline_icons/" + iata_airline_code + ".png"
+    image_location = "airline_icons/" + iata_airline_code + ".png"
     if Rails.application.assets.find_asset(image_location)
       image_location
     else
-      "flight_log/airline_icons/unknown-airline.png"
+      "airline_icons/unknown-airline.png"
     end
   end
   
