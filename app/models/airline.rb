@@ -1,7 +1,7 @@
 class Airline < ActiveRecord::Base
-  has_many :sold_flights, :class_name => 'Flight', :foreign_key => 'airline_id'
+  has_many :flights
   has_many :operated_flights, :class_name => 'Flight', :foreign_key => 'operator_id'
-  
+    
   validates :iata_airline_code, :presence => true, :length => { :minimum => 2 }, :uniqueness => { :case_sensitive => false }
   validates :airline_name, :presence => true
   
@@ -13,6 +13,10 @@ class Airline < ActiveRecord::Base
       flights = Flight.visitor.chronological.where("airline_id = :airline_id", {:airline_id => self})
     end
     return flights
+  end
+  
+  def format_name
+    return "#{self.airline_name}".html_safe
   end
   
 end

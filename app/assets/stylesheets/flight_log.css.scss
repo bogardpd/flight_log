@@ -1,6 +1,8 @@
 $font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
 $font-stack-monospace: 'Source Code Pro', monospace;
 
+$margin-icon-to-text: 0.5em;
+
 body {
 	background: #E6EAEF;
 	font-family: $font-stack-sans-serif;
@@ -76,6 +78,60 @@ body {
 	background-color: #1F497D;
 	background-image: linear-gradient(to bottom, #0F478C, #1F497D);
 	color: #FFFFFF;
+	
+	ul {
+		padding: 0;
+		margin: 0;
+	}
+	
+	li {
+		list-style-type: none;
+		display: inline-block;
+		position: relative;
+		top: 1px;
+		z-index: 1;
+		height: 37px;
+		margin: 0;
+		padding: 0;
+		vertical-align: middle;	
+		font-size: 18px;
+		font-family: $font-stack-sans-serif;
+		font-weight: 300;
+	
+		a {
+			display: block;
+			color: inherit;
+			height: 28px;
+			margin: 0;
+			padding: 4px 10px;
+			border: none;
+			text-decoration: none;
+		}
+		
+		a:hover {
+			background-color: #99CCFF;
+			color: #202830;
+		}
+		
+		a.active {
+			color: #202830;
+		}
+
+		a.active:hover {
+			background-color: #99CCFF;
+			color: #202830;
+		}
+
+		a.active_non_link:hover {
+			background-color: #FFFFFF;
+			color: #202830;
+		}
+	}
+	
+	li.active {
+		background-color: #FFFFFF;
+		color: #202830;
+	}
 }
 
 #menu_home {
@@ -90,59 +146,6 @@ body {
 	height: 100%;
 }
 
-#menu ul {
-	padding: 0;
-	margin: 0;
-}
-
-#menu li {
-	list-style-type: none;
-	display: inline-block;
-	position: relative;
-	top: 1px;
-	z-index: 1;
-	height: 37px;
-	margin: 0;
-	padding: 0;
-	vertical-align: middle;	
-	font-size: 18px;
-	font-family: $font-stack-sans-serif;
-	font-weight: 300;
-}
-
-#menu li.active {
-	background-color: #FFFFFF;
-	color: #202830;
-}
-
-#menu li a {
-	display: block;
-	color: inherit;
-	height: 28px;
-	margin: 0;
-	padding: 4px 10px;
-	border: none;
-	text-decoration: none;
-}
-
-#menu li a:hover {
-	background-color: #99CCFF;
-	color: #202830;
-}
-
-#menu li a.active {
-	color: #202830;
-}
-
-#menu li a.active:hover {
-	background-color: #99CCFF;
-	color: #202830;
-}
-
-#menu li a.active_non_link:hover {
-	background-color: #FFFFFF;
-	color: #202830;
-}
 
 #breadcrumbs {
 	-webkit-text-size-adjust:100%;
@@ -186,7 +189,7 @@ body {
 	-webkit-text-size-adjust:100%;
 	
 	img {
-		margin-left: 0.3em;
+		margin-left: $margin-icon-to-text;
 	}
 }
 
@@ -427,9 +430,13 @@ img.airline_icon {
 	margin-top: 0;
 	margin-bottom: 0;
 	margin-left: 0;
-	margin-right: 0.3em;
+	margin-right: $margin-icon-to-text;
 	vertical-align: middle;
 	border: none;
+}
+
+img.icon_no_text {
+	margin: 0;
 }
 
 img.country_flag {

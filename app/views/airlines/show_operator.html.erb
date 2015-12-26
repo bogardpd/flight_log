@@ -1,0 +1,77 @@
+<div id="title_info"><%= iata_airline_code_display(@operator.iata_airline_code) %><%= image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: 'airline_icon') %></div>
+
+<h1>Flights Operated by <%= @operator.airline_name %></h1>
+
+<% if @flights.any? %>
+
+	<div class="page_navigation">
+	  <ul>
+			<li><%= link_to("Flights", "#flights", :title => "Flights operated by #{@operator}") %></li>
+			<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator}") %></li>
+			<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft operated by #{@operator}") %></li>
+			<li><%= link_to("Classes", "#classes", :title => "Classes flown on flights operated by #{@operator}") %></li>
+			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@operator}") %></li>
+			<li><%= link_to("Fleet", "#fleet", :title => "#{@operator}'s Fleet") %></li>
+	  </ul>
+	</div>
+
+<% end %>
+
+<a name="flights"></a>
+<p><span class="bold"><%= @operator.airline_name %></span> has operated <%= @flights.length %> of my flights.</p>
+
+<% if @flights.any? %>
+
+	<%= gcmap_embed(route_string(@flights)) %>
+	<%= distance_block(@total_distance, 'total') %>
+	<%= render "flights/flight_table" %>
+
+	<a name="airlines"></a>
+	<h2>Airlines with Flights Operated by <%= @operator.airline_name %></h2>
+	<%= render "flights/summary_airline_table" %>
+
+	<a name="aircraft"></a>
+	<h2>Aircraft Operated by <%= @operator.airline_name %></h2>
+	<%= render "flights/summary_aircraft_table" %>
+
+	<a name="classes"></a>
+	<h2>Classes Flown on Flights Operated by <%= @operator.airline_name %></h2>
+	<%= render "flights/summary_travel_class_table" %>
+
+	<a name="superlatives"></a>
+	<h2>Longest and Shortest Routes Operated by <%= @operator.airline_name %></h2>
+
+	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
+
+	<a name="fleet"></a>
+	<h2><%= @operator.airline_name %>’s Fleet</h2>
+
+	<% if @fleet_family.length > 0 %>
+
+	<table class="flightlog">
+		<tr class="th">
+			<th>Fleet Number</th>
+			<th class="tail_aircraft">Aircraft Family</th>
+		</tr>
+	<% @fleet_family.each do |fleet_number, family| %>
+		<tr>
+			<td><%= link_to(image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: 'airline_icon') + "#" + fleet_number, show_fleet_number_path(@operator.iata_airline_code, fleet_number), :title => "View flights on #{@operator} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft_name"><%= @fleet_name[fleet_number] %><% end %></span></td>
+			<td class="tail_aircraft"><%= family %></td>
+		</tr>
+	<% end %>
+	</table>
+
+	<% else %>
+
+	<p>None of my flights operated by <%= @operator.airline_name %> have recorded fleet numbers.</p>
+
+	<% end %>
+
+<% end %>
+
+<% content_for :admin_actions do %>
+  <% if @flights.length == 0 %>
+    <%= link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: 'warning') %> &emsp; 
+  <% end %>
+  <%= link_to("Edit Airline", edit_airline_path(@operator)) %>
+<% end %>

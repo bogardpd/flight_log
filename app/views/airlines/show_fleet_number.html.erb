@@ -1,6 +1,6 @@
-<div class="title_info"><%= image_tag(Flight.new(:airline => @operator).airline_icon_path, :title => @operator, :class => 'airline_icon') %></div>
+<div id="title_info"><%= iata_airline_code_display(@operator.iata_airline_code) %><%= image_tag(airline_icon_path(@operator.iata_airline_code), :title => @operator.airline_name, :class => 'airline_icon')%></div>
 
-<h1><%= @operator %> #<%= @fleet_number %></h1>
+<h1><%= @operator.airline_name %> #<%= @fleet_number %></h1>
 
 <div class="page_navigation">
   <ul>
@@ -13,7 +13,7 @@
 </div>
 
 <a name="flights"></a>
-<p><span class="bold"><%= link_to(@operator, show_operator_path(@operator), :title => "View flights operated by #{@operator}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
+<p><span class="bold"><%= link_to(@operator.airline_name, show_operator_path(@operator.iata_airline_code), :title => "View flights operated by #{@operator.airline_name}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
 
 <%= gcmap_embed(route_string(@flights)) %>
 <%= distance_block(@total_distance, 'total') %>
@@ -40,18 +40,18 @@
 </table>
 
 <a name="airlines"></a>
-<h2>Airlines with Flights Operated as <%= @operator %> #<%= @fleet_number %></h2>
+<h2>Airlines with Flights Operated as <acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %></h2>
 <%= render "flights/summary_airline_table" %>
 
 <a name="aircraft"></a>
-<h2>Aircraft Operated as <%= @operator %> #<%= @fleet_number %></h2>
-<%= render "summary_aircraft_table" %>
+<h2>Aircraft Operated as <acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %></h2>
+<%= render "flights/summary_aircraft_table" %>
 
 <a name="classes"></a>
-<h2>Classes Flown on <%= @operator %> #<%= @fleet_number %></h2>
-<%= render "summary_travel_class_table" %>
+<h2>Classes Flown on <acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %></h2>
+<%= render "flights/summary_travel_class_table" %>
 
 <a name="superlatives"></a>
-<h2>Longest and Shortest Routes Flown on <%= @operator %> #<%= @fleet_number %></h2>
+<h2>Longest and Shortest Routes Flown on <acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %></h2>
 
 <%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>

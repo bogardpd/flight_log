@@ -285,6 +285,8 @@ class AirportsController < ApplicationController
       end
       return airport_frequency
     end
+ 
+=begin
     
     def aircraft_frequency(flights)
       # Creates global variables containing the aircraft of a list of flights, and how many flights involving this list each aircraft has.
@@ -317,5 +319,7 @@ class AirportsController < ApplicationController
       @class_frequency_maximum = class_frequency_hash.values.max
       @unknown_class_flights = flights.count - flights.where("travel_class IS NOT NULL").count
     end
+
+=end
     
 end

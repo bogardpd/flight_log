@@ -83,7 +83,7 @@ class FlightsController < ApplicationController
     @city_pair_trip_flights = Flight.where(:trip_id => trip_array)
     @city_pair_section_flights = Flight.where(section_where_array.join(' OR '))
     
-    @title = @flight.airline + " " + @flight.flight_number.to_s
+    @title = @flight.airline.airline_name + " " + @flight.flight_number.to_s
     @meta_description = "Details for Paul Bogard's #{@flight.airline} #{@flight.flight_number} flight on #{format_date(@flight.departure_date)}."
     
     @route_distance = route_distance_by_airport_id(@flight.origin_airport, @flight.destination_airport)
@@ -345,72 +345,7 @@ class FlightsController < ApplicationController
     redirect_to airlines_path
   end
   
-  def show_operator
-    @logo_used = true
-    @operator = params[:operator].gsub("_", " ")
-    @title = @operator
-    @meta_description = "Maps and lists of Paul Bogard's flights operated by #{@operator}."
-    @flights = Flight.where(:operator => @operator).chronological
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
-    raise ActiveRecord::RecordNotFound if @flights.length == 0
-    add_breadcrumb 'Airlines', 'airlines_path'
-    add_breadcrumb 'Flights Operated by ' + @operator, show_operator_path(@operator.gsub(" ", "_"))
-    
-    @total_distance = total_distance(@flights)
-    
-    # Create comparitive lists of airlines, aircraft and classes:
-    airline_frequency(@flights)
-    aircraft_frequency(@flights)
-    class_frequency(@flights)
-    
-    # Create superlatives:
-    @route_superlatives = superlatives(@flights)
-    
-    # Create list of fleet numbers and aircraft families:
-    @fleet_family = Hash.new
-    @fleet_name = Hash.new
-    @flights.each do |flight|
-      if flight.fleet_number
-        @fleet_family[flight.fleet_number] = flight.aircraft_family
-        @fleet_name[flight.fleet_number] = flight.aircraft_name
-      end
-    end
-    @fleet_family = @fleet_family.sort_by{ |key, value| key }
-    
-    @operator_icon_path = Flight.new(:airline => @operator).airline_icon_path
-    
-  rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights operated by #{@operator}. Instead, we'll give you a list of airlines and operators."
-    redirect_to airlines_path
-  end
   
-  def show_fleet_number
-    @logo_used = true
-    @operator = params[:operator].gsub("_", " ")
-    @fleet_number = params[:fleet_number]
-    @title = @operator + " #" + @fleet_number
-    @meta_description = "Maps and lists of Paul Bogard's flights operated on #{@operator} ##{@fleet_number}."
-    @flights = Flight.where(:operator => @operator, :fleet_number => @fleet_number).chronological
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
-    raise ActiveRecord::RecordNotFound if @flights.length == 0
-    add_breadcrumb 'Airlines', 'airlines_path'
-    add_breadcrumb 'Flights Operated by ' + @operator, show_operator_path(@operator.gsub(" ", "_"))
-    add_breadcrumb '#' + @fleet_number, show_fleet_number_path(@operator, @fleet_number)
-    
-    @total_distance = total_distance(@flights)
-    
-    # Create comparitive lists of airlines, aircraft and classes:
-    airline_frequency(@flights)
-    aircraft_frequency(@flights)
-    class_frequency(@flights)
-    
-    # Create superlatives:
-    @route_superlatives = superlatives(@flights)
-    
-  rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, we'll give you a list of airlines and operators."
-    redirect_to airlines_path
-  end
     
   def index_classes
     add_breadcrumb 'Travel Classes', 'classes_path'
@@ -539,7 +474,7 @@ class FlightsController < ApplicationController
   def show_tail
     @logo_used = true
     @flights = Flight.where(:tail_number => params[:tail_number])
-    @flight_operators = @flights.where("operator IS NOT NULL").group("operator").count
+    @flight_operators = @flights.where("operator_id IS NOT NULL").group("operator").count
     @flights = @flights.chronological
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
@@ -561,7 +496,7 @@ class FlightsController < ApplicationController
     # Create list of fleet numbers used by this tail:
     @operators_array = Array.new
     @flight_operators.each do |operator, count|
-      @operators_array.push({:operator => operator, :count => count})
+      @operators_array.push({name: operator.airline_name, iata_code: operator.iata_airline_code, count: count})
     end
     @operators_array = @operators_array.sort_by { |operator| [-operator[:count], operator[:operator]] }
     @operators_maximum = @flight_operators.length > 0 ? @operators_array.first[:count] : 1

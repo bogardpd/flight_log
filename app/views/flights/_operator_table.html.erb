@@ -9,7 +9,7 @@
 <% @operators_array.each do |operator| %>
   <tr>
     <td class="airline_airline">
-    <%= link_to(image_tag(Flight.new(:airline => operator[:operator]).airline_icon_path, :alt => operator[:operator], :class => 'airline_icon') + operator[:operator], show_operator_path(operator[:operator].gsub(" ", "_")), :title => "View flights operated by #{operator[:operator]}") %></td>
+    <%= link_to(image_tag(airline_icon_path(operator[:iata_code]), alt: operator[:name], class: 'airline_icon') + operator[:name], show_operator_path(operator[:iata_code]), title: "View flights operated by #{operator[:name]}") %></td>
     <td class="airline_flights"><%= render "flights/graph_block", :value => operator[:count], :maximum => @operators_maximum %></td>
   </tr>
 <% end %>

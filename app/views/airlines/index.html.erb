@@ -31,7 +31,7 @@
   <tr>
 		<td class="counter"><%= (@sort_cat == :flights && airline[:count] == previous_count) ? "⋮" : index + 1 %></td>
     <td class="airline_airline">
-    	<%= link_to(image_tag(airline_icon_path(airline[:iata_code]), title: airline[:name], class: 'airline_icon') + ' ' + airline[:name], airline_path(airline[:iata_code])) %>
+    	<%= link_to(image_tag(airline_icon_path(airline[:iata_code]), title: airline[:name], class: 'airline_icon') + airline[:name], airline_path(airline[:iata_code])) %>
 		</td>
 		<td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(airline[:iata_code]), airline_path(airline[:iata_code])) %></td>
     <td class="airline_flights"><%= render "flights/graph_block", :value => airline[:count], :maximum => @airlines_maximum %></td>
@@ -62,7 +62,7 @@
   <tr>
 		<td class="counter"><%= (@sort_cat == :flights && operator[:count] == previous_count) ? "⋮" : index + 1 %></td>
     <td class="airline_airline">
-    <%= link_to(image_tag(airline_icon_path(operator[:iata_code]), title: operator[:name], class: 'airline_icon') + ' ' + operator[:name], show_operator_path(operator[:iata_code])) %></td>
+    <%= link_to(image_tag(airline_icon_path(operator[:iata_code]), title: operator[:name], class: 'airline_icon') + operator[:name], show_operator_path(operator[:iata_code])) %></td>
 		<td class="airline_iata_code iata_mono">
 			<%= link_to(iata_airline_code_display(operator[:iata_code]), show_operator_path(operator[:iata_code])) %>
 		</td>

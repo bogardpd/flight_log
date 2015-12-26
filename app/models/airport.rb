@@ -42,13 +42,13 @@ class Airport < ActiveRecord::Base
   
   def country_flag_path
     if self.country == nil
-      "flight_log/flags/unknown-country.png"
+      "flags/unknown-country.png"
     else
-      image_location = "flight_log/flags/" + self.country.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_-]/, '').squeeze('-') + ".png"
+      image_location = "flags/" + self.country.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_-]/, '').squeeze('-') + ".png"
       if Rails.application.assets.find_asset(image_location)
         image_location
       else
-        "flight_log/flags/unknown-country.png"
+        "flags/unknown-country.png"
       end
     end
   end

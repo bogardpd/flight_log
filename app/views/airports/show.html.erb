@@ -1,5 +1,5 @@
 <% if @airport.country %>
-<div class="title_info"><%= @airport.country %> <%= image_tag(@airport.country_flag_path, :title => @airport.country, :class => 'country_flag') %></div>
+<div id="title_info"><%= @airport.country %><%= image_tag(@airport.country_flag_path, title: @airport.country, class: 'country_flag') %></div>
 <% end %>
 
 <h1><%= @airport.city %></h1>

@@ -55,7 +55,7 @@ class PagesController < ApplicationController
     if logged_in?
       @flights = Flight.chronological
       @flight_aircraft = Flight.where("aircraft_family IS NOT NULL").group("aircraft_family").count
-      @flight_airlines = Flight.where("airline IS NOT NULL").group("airline").count
+      @flight_airlines = Flight.where("airline_id IS NOT NULL").group("airline").count
       @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
     else # Filter out hidden trips for visitors
       @flights = Flight.visitor.chronological
@@ -91,9 +91,9 @@ class PagesController < ApplicationController
     
       @airlines_array = Array.new
       @flight_airlines.each do |airline, count| 
-        @airlines_array.push({:airline => airline, :count => count})
+        @airlines_array.push({name: airline.airline_name, iata_code: airline.iata_airline_code, count: count})
       end
-      @airlines_array = @airlines_array.sort_by { |airline| [-airline[:count], airline[:airline]] }
+      @airlines_array = @airlines_array.sort_by { |airline| [-airline[:count], airline[:name]] }
     
       @tails_array = Array.new
       @flight_tail_numbers.each do |tail_number, count| 

@@ -45,8 +45,8 @@
 </p>
 
 <p>
-  <%= f.label :operator %> / <%= f.label :fleet_number, "Fleet Number" %><br />
-  <%= f.text_field :operator %> <%= f.text_field :fleet_number, :size => 8 %>
+  <%= f.label :operator_id, "Operator" %> / <%= f.label :fleet_number, "Fleet Number" %><br />
+  <%= f.collection_select(:operator_id, Airline.order(:airline_name), :id, :format_name, {include_blank: true,}) %> <%= f.text_field :fleet_number, :size => 8 %>
 </p>
 
 <p>

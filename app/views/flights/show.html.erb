@@ -1,7 +1,7 @@
 <% if @flight.trip.hidden %>
 <div class="hidden_trip">This flight is part of a <%= link_to("hidden trip", trip_path(@flight.trip)) %>!</div>
 <% end %>
-<h1><%= @flight.airline %> <%= @flight.flight_number %></h1>
+<h1><%= @flight.airline.airline_name %> <%= @flight.flight_number %></h1>
 
 <% if @flight.comment %>
 <p><%= @flight.comment %></p>
@@ -39,12 +39,12 @@
   </tr>
   <tr>
     <td class="flight_show_label">Airline</td>
-    <td class="flight_show_airline"><%= link_to((image_tag(@flight.airline_icon_path, :alt => @flight.airline, :class => 'airline_icon') + " " + @flight.airline).html_safe, show_airline_path(@flight.airline.gsub(" ", "_")), :title => "View flights on " + @flight.airline) %></td>
+    <td class="flight_show_airline"><%= link_to((image_tag(airline_icon_path(@flight.airline.iata_airline_code), alt: @flight.airline.airline_name, class: 'airline_icon') + " " + @flight.airline.airline_name).html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %></td>
   </tr>
   <% if @flight.operator %>
   <tr>
     <td class="flight_show_label">Operated By</td>
-    <td class="flight_show_airline"><%= link_to(image_tag(Flight.new(:airline => @flight.operator).airline_icon_path, :alt => @flight.operator, :class => 'airline_icon') + ' ' + @flight.operator, show_operator_path(@flight.operator.gsub(" ", "_")), :title => "View flights operated by " + @flight.operator) %><% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.gsub(" ", "_"), @flight.fleet_number), :title => "View flights on #{@flight.operator} aircraft ##{@flight.fleet_number}") %>)<% end %></td>
+    <td class="flight_show_airline"><%= link_to(image_tag(airline_icon_path(@flight.operator.iata_airline_code), alt: @flight.operator.airline_name, class: 'airline_icon') + ' ' + @flight.operator.airline_name, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %><% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.iata_airline_code, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %></td>
   </tr>
   <% end %>
   <% if @flight.codeshare_airline %>

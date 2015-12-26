@@ -27,7 +27,18 @@ module ApplicationHelper
     end
   end
   
+  def airline_icon_path(iata_airline_code)
+    image_location = "airline_icons/" + iata_airline_code + ".png"
+    if Rails.application.assets.find_asset(image_location)
+      image_location
+    else
+      "airline_icons/unknown-airline.png"
+    end
+  end
   
+  def iata_airline_code_display(iata_airline_code)
+    iata_airline_code.split('-').first
+  end
   
   def country_flag(country)
     image_tag(Airport.new(:country => country).country_flag_path, :title => country, :class => 'country_flag')
@@ -78,28 +89,6 @@ module ApplicationHelper
       base_class += " white_border"
     end
     html = "<p class='center image'>#{image_tag(path, :alt => alt, :class => base_class)}</p>"
-    html.html_safe
-  end
-  
-  def computer_attributed_image(path, alt, author, license)
-    case license
-    when "CC BY-SA 3.0"
-      link = link_to(license,"http://creativecommons.org/licenses/by-sa/3.0/")
-    when "Public Domain"
-      link = license
-    else
-      link = nil
-    end
-    html = "#{image_tag(path, :alt => alt, :class => 'computer_history')} #{author}<br/>#{link}"
-    html.html_safe
-  end
-  
-  def project_tile(title, path, image_path)
-    banner = image_tag(image_path, :alt => title, :title => title, :class => "project_tile", :size => "265x170")
-    html = "<li class=\"project_tile\">"
-    html += link_to banner, path
-    html += "<h2 class=\"project_tile\">#{link_to(title, path)}</h2>"
-    html += "</li>"
     html.html_safe
   end
   
