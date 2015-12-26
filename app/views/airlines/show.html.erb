@@ -1,0 +1,10 @@
+<div class="title_info"><%= iata_airline_code_display(@airline.iata_airline_code) %> <%= image_tag(airline_icon_path(@airline.iata_airline_code), :title => @airline.airline_name, :class => 'airline_icon')%></div>
+
+<h1><%= @airline.airline_name %></h1>
+
+<% content_for :admin_actions do %>
+  <% if @flights.length == 0 %>
+    <%= link_to("Delete Airline", @airline, method: :delete, data: {:confirm => "Are you sure you want to delete #{@airline.airline_name}?"}, class: 'warning') %> &emsp; 
+  <% end %>
+  <%= link_to("Edit Airline", edit_airline_path(@airline)) %>
+<% end %>

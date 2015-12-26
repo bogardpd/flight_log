@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151224195816) do
+ActiveRecord::Schema.define(version: 20151225210911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "airlines", force: :cascade do |t|
+    t.string   "iata_airline_code", null: false
+    t.string   "airline_name",      null: false
+    t.boolean  "is_only_operator"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "airports", force: :cascade do |t|
     t.string   "iata_code"
@@ -48,6 +56,8 @@ ActiveRecord::Schema.define(version: 20151224195816) do
     t.string   "operator"
     t.string   "fleet_number"
     t.string   "aircraft_name"
+    t.integer  "airline_id"
+    t.integer  "operator_id"
   end
 
   create_table "routes", force: :cascade do |t|

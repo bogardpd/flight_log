@@ -65,7 +65,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
   <% @airlines_array.first(5).each do |airline| %>
     <tr>
       <td class="left">
-      <%= link_to(image_tag(Flight.new(:airline => airline[:airline]).airline_icon_path, :alt => airline[:airline], :class => 'airline_icon') + airline[:airline], show_airline_path(airline[:airline].gsub(" ", "_")), :title => "View flights on #{airline[:airline]}") %></td>
+      <%= link_to(image_tag(Flight.new(:airline => airline[:airline]).airline_icon_path, :alt => airline[:airline], :class => 'airline_icon') + airline[:airline], airline_path(airline[:airline].gsub(" ", "_")), :title => "View flights on #{airline[:airline]}") %></td>
       <td class="center"><%= airline[:count] %></td>
     </tr>
   <% end %>

@@ -108,17 +108,11 @@
 
 <% end %>
 
-<% if false && File.exist?("#{Rails.root}/public/images/flight_log/terminals/#{@airport.iata_code.upcase}.png") #Hide until we've created all terminal silhouettes %>
-<a name="terminal">
-<h2>Terminal</h2>
-<div class="terminal">
-	<%= image_tag("flight_log/terminals/#{@airport.iata_code.upcase}.png", :title => "Terminal at #{@airport.iata_code.upcase}") %>
-</div>
-<% end %>
+
 
 <% content_for :admin_actions do %>
   <% if @flights.length == 0 %>
-    <%= link_to("Delete Airport", :airport, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@airport.iata_code}?"}, :class => 'warning') %> &emsp; 
+    <%= link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => 'warning') %> &emsp; 
   <% end %>
   <%= link_to("Edit Airport", edit_airport_path(@airport)) %>
 <% end %>

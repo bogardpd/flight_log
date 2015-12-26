@@ -7,6 +7,7 @@ Portfolio::Application.routes.draw do
   resources :sessions, :only => [:new, :create, :destroy]
   resources :flights
   resources :airports
+  resources :airlines
   resources :trips
   resources :routes, :only => [:new, :show, :create, :update]
 
@@ -26,9 +27,9 @@ Portfolio::Application.routes.draw do
   match '/aircraft' => 'flights#index_aircraft', :via => [:get]
   match '/aircraft/sort/:sort_category/:sort_direction' => 'flights#index_aircraft', :as => :sort_aircraft, :via => [:get]
   match '/aircraft/:aircraft_family' => 'flights#show_aircraft', :as => :show_aircraft, :via => [:get]
-  match '/airlines' => 'flights#index_airlines', :via => [:get]
-  match '/airlines/sort/:sort_category/:sort_direction' => 'flights#index_airlines', :as => :sort_airlines, :via => [:get]
-  match '/airlines/:airline' => 'flights#show_airline', :as => :show_airline, :via => [:get]
+  #match '/airlines' => 'flights#index_airlines', :via => [:get]
+  #match '/airlines/sort/:sort_category/:sort_direction' => 'flights#index_airlines', :as => :sort_airlines, :via => [:get]
+  #match '/airlines/:airline' => 'flights#show_airline', :as => :show_airline, :via => [:get]
   match '/airports/sort/:sort_category/:sort_direction' => 'airports#index', :as => :sort_airports, :via => [:get]
   match '/airports/:id/sort/:sort_category/:sort_direction' => 'airports#show', :as => :sort_airport, :via => [:get]
   match '/operators/:operator' => 'flights#show_operator', :as => :show_operator, :via => [:get]

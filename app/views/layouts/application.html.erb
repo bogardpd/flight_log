@@ -6,10 +6,11 @@
   <link rel="icon" href="/favicon.ico" />
 	<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600&text=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,300,600' rel='stylesheet' type='text/css'>
-  <%= csrf_meta_tag %>
-  <%= render 'layouts/stylesheets' %>
+	<%= stylesheet_link_tag 'flight_log', :media => 'all', 'data-turbolinks-track' => true %>
   <meta name="viewport" content="width=820, user-scalable:yes" />
-  <%= javascript_include_tag :all %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+	<%= render 'layouts/shim' %>
   <meta name="author" content="Paul Bogard" />
   <%= meta_description %>
   <%= yield :head_includes %>

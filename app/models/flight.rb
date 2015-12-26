@@ -2,6 +2,8 @@ class Flight < ActiveRecord::Base
   belongs_to :trip
   belongs_to :origin_airport, :class_name => 'Airport'
   belongs_to :destination_airport, :class_name => 'Airport'
+  belongs_to :sold_by_airline, :class_name => 'Airline'
+  belongs_to :operated_by_airline, :class_name => 'Airline'
   
   NULL_ATTRS = %w( flight_number aircraft_family aircraft_variant tail_number travel_class comment operator fleet_number codeshare_airline )
   STRIP_ATTRS = %w( airline codeshare_airline operator fleet_number aircraft_family aircraft_variant tail_number )
@@ -18,7 +20,6 @@ class Flight < ActiveRecord::Base
   validates :airline, :presence => true
   validates :travel_class, :inclusion => { :in => %w(Economy Business First), :message => "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
-  #default_scope { order('flights.departure_utc') } # New flight default origin depends on this sort
   scope :chronological, -> {
     order('flights.departure_utc')
   }
@@ -27,14 +28,14 @@ class Flight < ActiveRecord::Base
     where('hidden = FALSE')
   }
   
-  def airline_icon_path
-    image_location = "flight_log/airline_icons/" + self.airline.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_-]/, '').squeeze('-') + ".png"
-    if Rails.application.assets.find_asset(image_location)
-      image_location
-    else
-      "flight_log/airline_icons/unknown-airline.png"
-    end
-  end
+#  def airline_icon_path
+#    image_location = "flight_log/airline_icons/" + self.airline.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_-]/, '').squeeze('-') + ".png"
+#    if Rails.application.assets.find_asset(image_location)
+#      image_location
+#    else
+#      "flight_log/airline_icons/unknown-airline.png"
+#    end
+#  end
   
   def self.tail_country(tail_number)
     case tail_number.upcase

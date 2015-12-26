@@ -1,0 +1,9 @@
+<% if @airline.errors.any? %>
+  <div class="error">
+    <ul>
+      <% @airline.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

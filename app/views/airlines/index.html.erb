@@ -1,0 +1,38 @@
+<h1>Airlines</h1>
+
+<div class="page_navigation">
+  <ul>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines") %></li>
+		<li><%= link_to("Operators", "#operators", :title => "Operators") %></li>
+  </ul>
+</div>
+
+<a name="airlines"></a>
+
+
+
+<a name="operators"></a>
+<h2>Operators</h2>
+
+
+
+
+<% if (logged_in? && @airlines_with_no_flights.any?) %>
+	<h2>Airlines with No Flights</h2>
+	<table class="flightlog">
+		<tr class="th">
+			<th>Airline</th>
+			<th>Code</th>
+		</tr>
+	<% @airlines_with_no_flights.each do |airline| %>
+	  <tr>
+	    <td class="airline_airline"><%= image_tag(airline_icon_path(airline.iata_airline_code), :title => airline.airline_name, :class => 'airline_icon')%> <%= link_to(airline.airline_name, airline_path(airline.iata_airline_code), :title => "View airline details for #{airline.airline_name}") %></td>
+	    <td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(airline.iata_airline_code), airline_path(airline.iata_airline_code), :title => "View airport details for #{airline.airline_name}") %></td>
+		</tr>
+	<% end %>
+	</table>
+<% end %>
+		
+<% content_for :admin_actions do %>
+  <%= link_to("Add New Airline", new_airline_path) %>
+<% end %>
