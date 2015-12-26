@@ -9,7 +9,39 @@
 
 <a name="airlines"></a>
 
+<p>I have flown on <%= pluralize(@airlines_array.count, 'airline') %>.</p>
 
+<% if @flight_airlines.empty? %>
+	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
+		<%= render 'error_no_flights' %>
+	<% else %>
+		<div class="alert">There are no flights in the flight log that include an airline!</p>
+	<% end %>
+<% else %>
+
+<table class="flightlog">
+  <tr class="th">
+    <th class="counter">#</th>
+		<th class="airline_airline"><%= sort_link("Airline", :airline, "airline", :asc, "airlines") %></th>
+		<th class="airline_iata_code"><%= sort_link("Code", :iata, "code", :asc, "code") %></th>
+    <th class="airline_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airlines") %></th>
+  </tr>
+<% previous_count = nil %>
+<% @airlines_array.each_with_index do |airline, index| %>
+  <tr>
+		<td class="counter"><%= (@sort_cat == :flights && airline[:count] == previous_count) ? "⋮" : index + 1 %></td>
+    <td class="airline_airline">
+    	<%= link_to(image_tag(airline_icon_path(@airline_iata_codes[airline[:airline]]), :title => @airline_names[airline[:airline]], :class => 'airline_icon') + ' ' + @airline_names[airline[:airline]], airline_path(@airline_iata_codes[airline[:airline]])) %>
+		</td>
+		<td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(@airline_iata_codes[airline[:airline]]), airline_path(@airline_iata_codes[airline[:airline]])) %></td>
+    <td class="airline_flights"><%= render "flights/graph_block", :value => airline[:count], :maximum => @airlines_maximum %></td>
+  </tr>
+	<% previous_count = airline[:count] %>
+<% end %>
+  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airlines_array.count, 'airline') %></td></tr>
+</table>
+
+<% end %>
 
 <a name="operators"></a>
 <h2>Operators</h2>
@@ -21,8 +53,8 @@
 	<h2>Airlines with No Flights</h2>
 	<table class="flightlog">
 		<tr class="th">
-			<th>Airline</th>
-			<th>Code</th>
+			<th class="airline_airline">Airline</th>
+			<th class="airline_iata_code">Code</th>
 		</tr>
 	<% @airlines_with_no_flights.each do |airline| %>
 	  <tr>
