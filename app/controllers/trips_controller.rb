@@ -45,7 +45,7 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:id])
     # Filter out hidden trips for visitors:
     raise ActiveRecord::RecordNotFound if (!logged_in? && @trip.hidden)
-    @flights = @trip.flights
+    @flights = @trip.flights.chronological
     @title = @trip.name
     @meta_description = "Maps and lists of flights on Paul Bogard's #{@trip.name} trip."
     add_breadcrumb 'Trips', 'trips_path'
@@ -78,7 +78,7 @@ class TripsController < ApplicationController
   def show_section
     @logo_used = true
     @trip = Trip.find(params[:trip])
-    @flights = @trip.flights.where(:trip_section => params[:section])
+    @flights = @trip.flights.where(:trip_section => params[:section]).chronological
     @section_distance = total_distance(@flights)
     @meta_description = "Maps and lists of flights on section #{params[:section]} Paul Bogard's #{@trip.name} trip."
     @title = "#{@trip.name} (Section #{params[:section]})"
