@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151226190814) do
+ActiveRecord::Schema.define(version: 20151227061235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 20151226190814) do
     t.integer  "destination_airport_id"
     t.integer  "trip_id"
     t.date     "departure_date"
-    t.string   "old_air_name"
     t.integer  "flight_number"
     t.string   "aircraft_family"
     t.string   "aircraft_variant"
@@ -51,13 +50,12 @@ ActiveRecord::Schema.define(version: 20151226190814) do
     t.datetime "updated_at",              null: false
     t.integer  "trip_section"
     t.datetime "departure_utc"
-    t.string   "codeshare_airline"
     t.integer  "codeshare_flight_number"
-    t.string   "old_op_name"
     t.string   "fleet_number"
     t.string   "aircraft_name"
     t.integer  "airline_id"
     t.integer  "operator_id"
+    t.integer  "codeshare_airline_id"
   end
 
   create_table "routes", force: :cascade do |t|

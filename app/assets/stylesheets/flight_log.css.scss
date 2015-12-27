@@ -209,6 +209,10 @@ body {
 	text-align: left;
 }
 
+.light {
+	font-weight: 300;
+}
+
 .right {
 	text-align: right;
 }
@@ -433,6 +437,11 @@ img.airline_icon {
 	margin-right: $margin-icon-to-text;
 	vertical-align: middle;
 	border: none;
+}
+
+img.icon_between_text {
+	margin-left: $margin-icon-to-text;
+	margin-right: $margin-icon-to-text;
 }
 
 img.icon_no_text {
@@ -761,11 +770,6 @@ td.flight_section {
 	text-align: center;
 	vertical-align: middle;
 	line-height: 1.2;
-}
-
-td.flight_show_airline img {
-	margin-left: 0.3em;
-	margin-right: 0;
 }
 
 td.flight_show_airport {

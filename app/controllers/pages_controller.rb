@@ -60,7 +60,7 @@ class PagesController < ApplicationController
     else # Filter out hidden trips for visitors
       @flights = Flight.visitor.chronological
       @flight_aircraft = Flight.visitor.where("aircraft_family IS NOT NULL").group("aircraft_family").count
-      @flight_airlines = Flight.visitor.where("airline IS NOT NULL").group("airline").count
+      @flight_airlines = Flight.visitor.where("airline_id IS NOT NULL").group("airline").count
       @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
     end
     

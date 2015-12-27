@@ -251,100 +251,6 @@ class FlightsController < ApplicationController
     flash[:record_not_found] = "We couldn't find any flights on #{@aircraft_family} aircraft. Instead, we'll give you a list of aircraft."
     redirect_to aircraft_path
   end
-    
-  def index_airlines
-    @logo_used = true
-    add_breadcrumb 'Airlines', 'airlines_path'
-    if logged_in?
-      @flight_airlines = Flight.where("airline IS NOT NULL").group("airline").count
-      @flight_operators = Flight.where("operator IS NOT NULL").group("operator").count
-    else # Filter out hidden trips for visitors
-      @flight_airlines = Flight.visitor.where("airline IS NOT NULL").group("airline").count
-      @flight_operators = Flight.visitor.where("operator IS NOT NULL").group("operator").count
-    end
-    @title = "Airlines"
-    @meta_description = "A list of the airlines on which Paul Bogard has flown, and how often he's flown on each."
-    
-    @airlines_array = Array.new
-    @operators_array = Array.new
-    
-    if (@flight_airlines.any? || @flight_operators.any?)
-    
-      # Set values for sort:
-      case params[:sort_category]
-      when "airline"
-        @sort_cat = :airline
-      when "flights"
-        @sort_cat = :flights
-      else
-        @sort_cat = :flights
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :desc
-      end
-    
-      sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
-      # Prepare airline list:
-      @flight_airlines.each do |airline, count| 
-        @airlines_array.push({:airline => airline, :count => count})
-      end
-    
-      # Prepare operator list:
-      @flight_operators.each do |operator, count|
-        @operators_array.push({:operator => operator, :count => count})
-      end
-    
-      # Find maxima for graph scaling:
-      @airlines_maximum = @airlines_array.any? ? @airlines_array.max_by{|i| i[:count]}[:count] : 0
-      @operators_maximum = @operators_array.any? ? @operators_array.max_by{|i| i[:count]}[:count] : 0
-    
-      # Sort airline and operator tables:
-      case @sort_cat
-      when :airline
-        @airlines_array = @airlines_array.sort_by { |airline| airline[:airline] }
-        @operators_array = @operators_array.sort_by { |operator| operator[:operator] }
-        @airlines_array.reverse! if @sort_dir == :desc
-        @operators_array.reverse! if @sort_dir == :desc
-      when :flights
-        @airlines_array = @airlines_array.sort_by { |airline| [sort_mult*airline[:count], airline[:airline]] }
-        @operators_array = @operators_array.sort_by { |operator| [sort_mult*operator[:count], operator[:operator]] }
-      end
-    
-    end
-  end
-    
-  def show_airline
-    @logo_used = true
-    @airline = params[:airline].gsub("_", " ")
-    @title = @airline
-    @meta_description = "Maps and lists of Paul Bogard's flights on #{@airline}."
-    @flights = Flight.where(:airline => @airline).chronological
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
-    raise ActiveRecord::RecordNotFound if @flights.length == 0
-    add_breadcrumb 'Airlines', 'airlines_path'
-    add_breadcrumb @airline, show_airline_path(@airline.gsub(" ", "_"))
-    
-    @total_distance = total_distance(@flights)
-    
-    # Create comparitive lists of aircraft and classes:
-    aircraft_frequency(@flights)
-    class_frequency(@flights)
-    
-    # Create superlatives:
-    @route_superlatives = superlatives(@flights)
-    
-  rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights on #{@airline}. Instead, we'll give you a list of airlines."
-    redirect_to airlines_path
-  end
-  
   
     
   def index_classes
@@ -532,8 +438,9 @@ class FlightsController < ApplicationController
   def edit
     @flight = Flight.find(params[:id])
     add_breadcrumb 'Flights', 'flights_path'
-    add_breadcrumb "#{@flight.airline} #{@flight.flight_number}", 'flight_path(@flight)'
+    add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", 'flight_path(@flight)'
     add_breadcrumb 'Edit Flight', 'edit_flight_path(@flight)'
+    @title = "Edit Flight"
   end
     
   def update
@@ -558,7 +465,7 @@ class FlightsController < ApplicationController
   private
   
     def flight_params
-      params.require(:flight).permit(:aircraft_family, :aircraft_name, :aircraft_variant, :airline, :codeshare_airline, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
+      params.require(:flight).permit(:aircraft_family, :aircraft_name, :aircraft_variant, :airline_id, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
     end
     
     def logged_in_user

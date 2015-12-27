@@ -39,18 +39,18 @@
   </tr>
   <tr>
     <td class="flight_show_label">Airline</td>
-    <td class="flight_show_airline"><%= link_to((image_tag(airline_icon_path(@flight.airline.iata_airline_code), alt: @flight.airline.airline_name, class: 'airline_icon') + " " + @flight.airline.airline_name).html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %></td>
+    <td class="flight_show_airline"><%= link_to("#{image_tag(airline_icon_path(@flight.airline.iata_airline_code), alt: @flight.airline.airline_name, class: 'airline_icon')}<span class=\"iata_mono light\">#{iata_airline_code_display(@flight.airline.iata_airline_code)}</span> / #{@flight.airline.airline_name}".html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %></td>
   </tr>
   <% if @flight.operator %>
   <tr>
     <td class="flight_show_label">Operated By</td>
-    <td class="flight_show_airline"><%= link_to(image_tag(airline_icon_path(@flight.operator.iata_airline_code), alt: @flight.operator.airline_name, class: 'airline_icon') + ' ' + @flight.operator.airline_name, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %><% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.iata_airline_code, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %></td>
+    <td class="flight_show_airline"><%= link_to("#{image_tag(airline_icon_path(@flight.operator.iata_airline_code), alt: @flight.operator.airline_name, class: 'airline_icon')}<span class=\"iata_mono light\">#{iata_airline_code_display(@flight.operator.iata_airline_code)}</span> / #{@flight.operator.airline_name}".html_safe, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %><% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.iata_airline_code, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %></td>
   </tr>
   <% end %>
   <% if @flight.codeshare_airline %>
   <tr>
     <td class="flight_show_label">Codeshare</td>
-    <td class="flight_show_airline"><%= image_tag(Flight.new(:airline => @flight.codeshare_airline).airline_icon_path, :alt => @flight.codeshare_airline, :class => 'airline_icon') %> <%= @flight.codeshare_airline %> <%= @flight.codeshare_flight_number %></td>
+    <td class="flight_show_airline"><%= image_tag(airline_icon_path(@flight.codeshare_airline.iata_airline_code), alt: @flight.codeshare_airline.airline_name, class: 'airline_icon') %><span class="iata_mono light"><%= @flight.codeshare_airline.iata_airline_code %></span> / <%= @flight.codeshare_airline.airline_name %> <%= @flight.codeshare_flight_number %></td>
   </tr>
   <% end %>
   <% if @flight.travel_class %>

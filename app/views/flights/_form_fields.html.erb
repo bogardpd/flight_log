@@ -25,13 +25,13 @@
 </p>
 
 <p>
-  <%= f.label :airline %> / <%= f.label :flight_number, "Flight Number" %><br />
-  <%= f.text_field :airline %> <%= f.telephone_field :flight_number, :size => 6 %>
+  <%= f.label :airline_id %> / <%= f.label :flight_number, "Flight Number" %><br />
+  <%= f.collection_select(:airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.telephone_field :flight_number, :size => 6 %>
 </p>
 
 <p>
-  <%= f.label :codeshare_airline, "Codeshare Airline" %> / <%= f.label :codeshare_flight_number, "Codeshare Flight Number" %><br />
-  <%= f.text_field :codeshare_airline %> <%= f.telephone_field :codeshare_flight_number, :size => 6 %>
+  <%= f.label :codeshare_airline_id, "Codeshare Airline" %> / <%= f.label :codeshare_flight_number, "Codeshare Flight Number" %><br />
+  <%= f.collection_select(:codeshare_airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.telephone_field :codeshare_flight_number, :size => 6 %>
 </p>
 
 <p>
@@ -46,7 +46,7 @@
 
 <p>
   <%= f.label :operator_id, "Operator" %> / <%= f.label :fleet_number, "Fleet Number" %><br />
-  <%= f.collection_select(:operator_id, Airline.order(:airline_name), :id, :format_name, {include_blank: true,}) %> <%= f.text_field :fleet_number, :size => 8 %>
+  <%= f.collection_select(:operator_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.text_field :fleet_number, :size => 8 %>
 </p>
 
 <p>

@@ -4,9 +4,10 @@ class Flight < ActiveRecord::Base
   belongs_to :destination_airport, :class_name => 'Airport'
   belongs_to :airline
   belongs_to :operator, :class_name => 'Airline'
+  belongs_to :codeshare_airline, :class_name => 'Airline'
     
-  NULL_ATTRS = %w( flight_number aircraft_family aircraft_variant tail_number travel_class comment operator fleet_number codeshare_airline )
-  STRIP_ATTRS = %w( airline codeshare_airline operator fleet_number aircraft_family aircraft_variant tail_number )
+  NULL_ATTRS = %w( flight_number aircraft_family aircraft_variant aircraft_name tail_number travel_class comment fleet_number )
+  STRIP_ATTRS = %w( operator fleet_number aircraft_family aircraft_variant aircraft_name tail_number )
   
   before_save :nil_if_blank
   before_save :strip_blanks
@@ -17,7 +18,6 @@ class Flight < ActiveRecord::Base
   validates :trip_section, :presence => true
   validates :departure_date, :presence => true
   validates :departure_utc, :presence => true
-  #validates :airline, :presence => true
   validates :airline_id, presence: true
   validates :travel_class, :inclusion => { :in => %w(Economy Business First), :message => "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
