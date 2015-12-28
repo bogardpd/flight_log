@@ -54,25 +54,10 @@ module ApplicationHelper
     input_date.strftime("%e %b %Y")
   end
   
-  def gcmap_embed(route_string, *args)
-    @gcmap_used = true
-    map_center = args[1] == "world" ? "" : ""
-    if args[0] == "labels"
-      query_pm = "*"
-    else
-      query_pm = "b:disc5:black"
-    end
-    html = "<div class=\"center\">"
-    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{query_pm}&MP=r&MS=wls2#{map_center}&P=#{route_string}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{query_pm}&MP=r&MS=wls2#{map_center}&P=#{route_string}")
-    html += "</div>"
-    html.html_safe
-  end
-  
   def iata_mono(code)
     html = "<span class=\"iata_mono\">" + code + "</span>"
     html.html_safe
   end
-
   
   def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
         

@@ -93,7 +93,7 @@
 
 <p>This map shows the flights of all of my trip sections that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
 
-<%= gcmap_embed(airport_highlight(@airport.iata_code) + route_string(@sections_using_airport_flights)) %>
+<%= embed_gcmap_airport_highlight(@sections_using_airport_flights, [@airport.iata_code]) %>
 
 <%= render 'trips/section_table' %>
 
@@ -102,7 +102,7 @@
 
 <p>This map shows the flights of all of my trips that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
 
-<%= gcmap_embed(airport_highlight(@airport.iata_code) + route_string(@trips_using_airport_flights)) %>
+<%= embed_gcmap_airport_highlight(@trips_using_airport_flights, [@airport.iata_code]) %>
 
 <%= render "trips/trip_table" %>
 
