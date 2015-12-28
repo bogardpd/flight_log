@@ -14,7 +14,7 @@
 <a name="flights"></a>
 <p>I have flown between <span class="bold"><%= link_to(@airports_city[0], airport_path(@airports[0])) %></span> and <span class="bold"><%= link_to(@airports_city[1], airport_path(@airports[1])) %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
-<%= gcmap_embed(@airports[0] + "-" + @airports[1], 'labels') %>
+<%= gcmap_single_flight(@airports) %>
 
 <% if @pair_distance %>
 <p class="distance">

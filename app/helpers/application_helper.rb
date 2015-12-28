@@ -139,11 +139,20 @@ module ApplicationHelper
       html += "</ul></div>"
     end
     
-    html += "<div class=\"center\">"
-    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}")
-    html += "</div>"
-    html.html_safe
+    html += gcmap_map_link(route_string, airport_options, map_center)
+    return html.html_safe
   end
+  
+  # Take an array of two airports and return HTML for a hyperlinked Great Circle Mapper map image
+  # Params:
+  # +flight_route+:: array of two airport IATA codes. If more than two codes are used, any codes beyond the first two will be ignored.
+  def gcmap_single_flight(flight_route)
+    airport_options = "*"
+    map_center = ""
+    route_string = flight_route[0..1].join("-")
+    return gcmap_map_link(route_string, airport_options, map_center).html_safe
+  end
+  
   
   
   # Take a collection of flights and return a string of routes formatted for use in the Great Circle Mapper.
@@ -194,6 +203,20 @@ module ApplicationHelper
     else
       route = "c:red#{route_inside_region}"
     end
+  end
+  
+  # Take a collection of flights and return a string of routes formatted for use in the Great Circle Mapper.
+  # Params:
+  # +route_string+:: string in Great Circle Mapper path format
+  # +airport_options+:: string of Great Circle Mapper airport point formatting options
+  # +map_center+:: IATA code of the airport to center the map on (leave blank if centering is not desired)
+  def gcmap_map_link(route_string, airport_options, map_center)
+    if map_center
+      map_center = "&MC=#{map_center}"
+    end
+    html = "<div class=\"center\">"
+    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}")
+    html += "</div>"
   end
   
 end
