@@ -17,13 +17,10 @@ Portfolio::Application.routes.draw do
   match '/login', :to => 'sessions#new', :via => [:get]
   match '/logout', :to => 'sessions#destroy', :via => :delete
 
-  match '/region/:region', :to => 'pages#flightlog', :as => :show_flightlog_region, :via => [:get]
   
   match '/flights/sort/:sort_category/:sort_direction' => 'flights#index', :as => :sort_flights, :via => [:get]
   match '/flights/from/:start_date/to/:end_date', :to => 'flights#show_date_range', :as => :show_date_range, :via => [:get]
-  match '/flights/from/:start_date/to/:end_date/:region', :to => 'flights#show_date_range', :as => :show_date_range_region, :via => [:get]
   match '/flights/year/:year', :to => 'flights#show_date_range', :as => :show_year, :via => [:get]
-  match '/flights/year/:year/:region', :to => 'flights#show_date_range', :as => :show_year_region, :via => [:get]
   
   match '/trips/:trip/section/:section' => 'trips#show_section', :as => :show_section, :via => [:get]
   match '/trips/sort/:sort_category/:sort_direction' => 'trips#index', :as => :sort_trips, :via => [:get]
@@ -31,6 +28,8 @@ Portfolio::Application.routes.draw do
   match '/aircraft' => 'flights#index_aircraft', :via => [:get]
   match '/aircraft/sort/:sort_category/:sort_direction' => 'flights#index_aircraft', :as => :sort_aircraft, :via => [:get]
   match '/aircraft/:aircraft_family' => 'flights#show_aircraft', :as => :show_aircraft, :via => [:get]
+  
+  match '/airlines/sort/:sort_category/:sort_direction' => 'airlines#index', :as => :sort_airlines, :via => [:get]
 
   match '/operators/:operator' => 'airlines#show_operator', as: :show_operator, via: [:get]
   match '/operators/:operator/:fleet_number' => 'airlines#show_fleet_number', as: :show_fleet_number, via: [:get]

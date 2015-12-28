@@ -1,15 +1,5 @@
 module ApplicationHelper
   
-  # Return a title on a per-page basis.
-  def title
-    base_title = "Paul Bogard"
-    if @title.nil?
-      base_title
-    else
-      "#{@title} - #{base_title}"
-    end
-  end
-  
   def title_flight_log
     base_title = "Paul Bogard's Flight Log"
     if @title.nil?
@@ -82,15 +72,7 @@ module ApplicationHelper
     html = "<span class=\"iata_mono\">" + code + "</span>"
     html.html_safe
   end
-  
-  def photo_gallery_image(path, alt, border = true)
-    base_class = "photo_gallery"
-    unless border
-      base_class += " white_border"
-    end
-    html = "<p class='center image'>#{image_tag(path, :alt => alt, :class => base_class)}</p>"
-    html.html_safe
-  end
+
   
   def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
         
@@ -117,10 +99,101 @@ module ApplicationHelper
     country_flag(Flight.tail_country(tail_number))
   end
   
-  def youtube_embed(video_id)
-    html = "<div class=\"center\">
-    <embed class=\"photo_gallery\" src=\"http://www.youtube.com/v/#{video_id}\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></div>"
+  # GREAT CIRCLE MAPPER HELPER FUNCTIONS
+  
+  # Take a collection of flights and return HTML for a hyperlinked Great Circle Mapper map image
+  # Params:
+  # +flight_collection+:: collection of Flight objects to be mapped
+  # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
+  # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
+  def gcmap_flights(flight_collection, use_regions: true)
+    if use_regions == false
+      region = :world
+    elsif params[:region]
+      region = params[:region].to_sym
+    elsif @default_region
+      region = @default_region
+    else
+      region = :world
+    end
+    
+    airport_options = "b:disc5:black"
+    map_center = ""
+    
+    route_string = gcmap_route_string(flight_collection, region)
+    
+    html = ""
+    
+    if use_regions
+      html += "<div class=\"region_select\">"
+      html += "<ul class=\"region_select\">"
+      if region == :conus
+      	html += "<li>"
+        html +=	link_to("World", url_for(region: :world))
+        html += "</li><li class=\"selected\">Contiguous United States</li>"
+      else
+      	html += "<li class=\"selected\">World</li><li>"
+        html += link_to("Contiguous United States", url_for(region: :conus))
+        html += "</li>"      	
+      end
+      html += "</ul></div>"
+    end
+    
+    html += "<div class=\"center\">"
+    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}")
+    html += "</div>"
     html.html_safe
+  end
+  
+  
+  # Take a collection of flights and return a string of routes formatted for use in the Great Circle Mapper.
+  # Params:
+  # +flight_collection+:: collection of Flight objects to be mapped
+  # +region+:: The region to focus on, or :world for all
+  def gcmap_route_string (flight_collection, region)
+    route_inside_region = ""
+    route_outside_region = ""
+    
+    pairs_inside_region = Array.new
+    pairs_outside_region = Array.new
+    
+    flight_collection.each do |flight|
+      # Build array of city pairs
+      if (region == :conus && (!flight.origin_airport.region_conus || !flight.destination_airport.region_conus))
+        pairs_outside_region.push([flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort)
+      else
+        pairs_inside_region.push([flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort)
+      end  
+    end
+    
+    pairs_inside_region = pairs_inside_region.uniq.sort_by{|k| [k[0],k[1]]}
+    pairs_outside_region = pairs_outside_region.uniq.sort_by{|k| [k[0],k[1]]}
+
+    previous_pair0 = nil
+    pairs_inside_region.each do |pair|
+      if pair[0] == previous_pair0
+        route_inside_region += "/#{pair[1]}"
+      else
+        route_inside_region += ",#{pair[0]}-#{pair[1]}"
+      end
+      previous_pair0 = pair[0]
+    end  
+    
+    previous_pair0 = nil
+    pairs_outside_region.each do |pair|
+      if pair[0] == previous_pair0
+        route_outside_region += "/#{pair[1]}"
+      else
+        route_outside_region += ",o:noext,#{pair[0]}-#{pair[1]}"
+      end
+      previous_pair0 = pair[0]
+    end   
+    
+    if pairs_outside_region.length > 0
+      route = "c:%23FF7777#{route_outside_region},c:red#{route_inside_region}"
+    else
+      route = "c:red#{route_inside_region}"
+    end
   end
   
 end

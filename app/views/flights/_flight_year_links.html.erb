@@ -9,11 +9,7 @@
 	    <% if (i == params[:year].to_i) %>
 	      <span class="bold"><%= i %></span>
 	    <% elsif @years_with_flights[i] %>
-	      <% if (params[:region] == 'world') %>
-					<%= link_to(i, show_year_region_path(:year => i, :region => 'world'), :title => "Only show flights from #{i}" ) %>
-				<% else %>
-					<%= link_to(i, show_year_path(i), :title => "Only show flights from #{i}" ) %>
-				<% end %>
+	      <%= link_to(i, show_year_path(i), :title => "Only show flights from #{i}" ) %>
 	    <% else %>
 	      <span class="disabled" title="There are no flights in <%= i %>"><%= i %></span>
 	    <% end %>

@@ -51,6 +51,7 @@ class PagesController < ApplicationController
     # Flight Log Index
     @meta_description = "Paul Bogard's Flight Log shows maps and tables for various breakdowns of Paul's flight history."
     @logo_used = true
+    @default_region = :conus
     
     if logged_in?
       @flights = Flight.chronological

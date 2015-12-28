@@ -22,7 +22,7 @@
 
 <% if @flights.any? %>
 
-	<%= gcmap_embed(route_string(@flights)) %>
+	<%= gcmap_flights(@flights) %>
 	<%= distance_block(@total_distance, 'total') %>
 	<%= render "flights/flight_table" %>
 

@@ -29,7 +29,7 @@ protected
     end
     @aircraft_frequency_sorted = aircraft_frequency_hash.sort_by { |aircraft, frequency| [-frequency, aircraft] }
     @aircraft_frequency_maximum = aircraft_frequency_hash.values.max
-    @unknown_aircraft_flights = flights.count - flights.where("aircraft_family IS NOT NULL").count
+    @unknown_aircraft_flights = flights.length - flights.where("aircraft_family IS NOT NULL").length
   end
   
   def airline_frequency(flights)
@@ -50,7 +50,7 @@ protected
     end
     @class_frequency_sorted = class_frequency_hash.sort_by { |travel_class, frequency| [-frequency, travel_class] }
     @class_frequency_maximum = class_frequency_hash.values.max
-    @unknown_class_flights = flights.count - flights.where("travel_class IS NOT NULL").count
+    @unknown_class_flights = flights.length - flights.where("travel_class IS NOT NULL").length
   end
   
   def route_distance_by_iata(iata1, iata2)

@@ -18,23 +18,7 @@
 <p>I have been on <%= pluralize(@flights.length, 'commercial flight') %> in <%= @in_text %>.</p>
 
 <div class="intro_box">
-	<% if params[:region] == "world" %>
-	<div class="region_select">
-		<ul class="region_select">
-			<li><%= link_to("Contiguous United States", @date_path) %></li>
-			<li class="selected">World</li>
-		</ul>
-	</div>
-	<%= gcmap_embed(route_string(@flights), "world") %>
-	<% else %>
-	<div class="region_select">
-		<ul class="region_select">
-			<li class="selected">Contiguous United States</li>
-			<li><%= link_to("World", @date_path) %></li>
-		</ul>
-	</div>
-	<%= gcmap_embed(route_string(@flights, "conus")) %>
-	<% end %>
+	<%= gcmap_flights(@flights) %>
 	<%= distance_block(@total_distance, "total") %>
 </div>
 
