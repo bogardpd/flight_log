@@ -17,6 +17,7 @@ class AirportsController < ApplicationController
     if @flights.any?
       
       airport_frequency = frequency_array(@flights)
+      @airport_frequency = airport_frequency
     
       # Set values for sort:
       case params[:sort_category]
@@ -49,6 +50,7 @@ class AirportsController < ApplicationController
     
       # Create arrays of airports:
       
+      @airport_iata_frequency = Hash.new
       @airports.each do |airport|
         # Create world airport array:
         @airport_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})

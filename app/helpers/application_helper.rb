@@ -106,7 +106,7 @@ module ApplicationHelper
   # +flight_collection+:: collection of Flight objects to be mapped
   # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
   # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
-  def embed_gcmap_airports(airport_collection)
+  def embed_gcmap_airports(airport_collection, anchor: nil)
     if params[:region]
       region = params[:region].to_sym
     elsif @default_region
@@ -124,8 +124,67 @@ module ApplicationHelper
       airport_codes = Airport.where(id: airport_collection).order(:iata_code).pluck(:iata_code)
     end
       
-    html = gcmap_region_select_links(region) + gcmap_map_link(airport_codes.join(","), airport_options, map_center)
+    html = gcmap_region_select_links(region, anchor: anchor) + gcmap_map_link(airport_codes.join(","), airport_options, map_center)
     return html.html_safe
+  end
+  
+  
+  # Return HTML for a hyperlinked Great Circle Mapper map image of airports with rings proportional in area to the airport visit frequencies
+  # Params:
+  # +airport_frequency_hash+:: Hash with airport id as the key and frequency as the value
+  def embed_gcmap_airport_frequency(airport_frequency_hash, anchor: nil)
+    if params[:region]
+      region = params[:region].to_sym
+    elsif @default_region
+      region = @default_region
+    else
+      region = :world
+    end
+    
+    airport_options = "b:disc5:black"
+    map_center = ""
+    
+    if region == :conus
+      airport_code_freq = Airport.where(id: airport_frequency_hash.keys).where(region_conus: true).order(:iata_code).select(:id, :iata_code)
+    else
+      airport_code_freq = Airport.where(id: airport_frequency_hash.keys).order(:iata_code).select(:id, :iata_code)
+    end
+    
+    max_gcmap_ring = 99 # Define the maximum ring size gcmap will allow
+    
+    # Create airport array and sort by frequency descending
+    airport_array = Array.new
+    airport_code_freq.each do |airport|
+      airport_array.push(iata_code: airport.iata_code, frequency: airport_frequency_hash[airport.id])
+    end
+    airport_array = airport_array.sort_by { |airport| -airport[:frequency] }
+    
+    # Generate airport location markers:
+    query = "m:p:disc5:red,"
+    query += airport_code_freq.map{|i| i.iata_code}.join(",") + ","
+    
+    # Generate airport frequency circles:
+    previous_airport_value = ""
+    frequency_max = 1.0
+    frequency_scaled = 0
+    airport_array.each_with_index do |airport, index|
+      if index == 0
+        # This is the first circle, so define its color:
+        query += "m:p:ring#{max_gcmap_ring}:black,#{airport[:iata_code]},"
+        frequency_max = airport[:frequency].to_f
+      elsif airport[:frequency] == previous_airport_value
+        # Value is the same as previous, so no need to define circle size:
+        query += "#{airport[:iata_code]},"
+      else
+        frequency_scaled = Math.sqrt((airport[:frequency].to_f / frequency_max)*(max_gcmap_ring**2)).ceil.to_i # Scale frequency range from 1..max_gcmap_ring
+        query += "m:p:ring#{frequency_scaled},#{airport[:iata_code]},"
+      end
+      previous_airport_value = airport[:frequency]
+    end
+    query.chomp!(",")
+    
+    html = gcmap_region_select_links(region, anchor: anchor) + gcmap_map_link(query, airport_options, map_center)
+    html.html_safe
   end
 
   
@@ -203,7 +262,6 @@ module ApplicationHelper
   end
   
   
-  
   # GREAT CIRCLE MAPPER STRING HELPERS:
   
   # Take a collection of flights and return a string of routes formatted for use in the Great Circle Mapper.
@@ -276,16 +334,16 @@ module ApplicationHelper
   
   # Return a menu allowing the user to switch between regions on a map
   # +region+:: The currently active region
-  def gcmap_region_select_links(region)
+  def gcmap_region_select_links(region, anchor: nil)
     html = "<div class=\"region_select\">"
     html += "<ul class=\"region_select\">"
     if region == :conus
     	html += "<li>"
-      html +=	link_to("World", url_for(region: :world))
+      html +=	link_to("World", url_for(region: :world, anchor: anchor))
       html += "</li><li class=\"selected\">Contiguous United States</li>"
     else
     	html += "<li class=\"selected\">World</li><li>"
-      html += link_to("Contiguous United States", url_for(region: :conus))
+      html += link_to("Contiguous United States", url_for(region: :conus, anchor: anchor))
       html += "</li>"      	
     end
     html += "</ul></div>"
