@@ -265,20 +265,23 @@ class FlightsController < ApplicationController
   
   def show_class
     @logo_used = true
-    @flights = Flight.where(:travel_class => params[:travel_class]).chronological
+    
+    @flights = Flight.flights_table.where(:travel_class => params[:travel_class])
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    
     @title = params[:travel_class].titlecase + " Class"
     @meta_description = "Maps and lists of Paul Bogard's #{params[:travel_class].downcase} class flights."
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb 'Travel Classes', 'classes_path'
     add_breadcrumb params[:travel_class].titlecase, show_class_path(params[:travel_class])
-    
+
     @total_distance = total_distance(@flights)
-    
+
     # Create comparitive lists of airlines and aircraft:
+
     airline_frequency(@flights)
     aircraft_frequency(@flights)
-    
+
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
     

@@ -29,6 +29,12 @@ class Flight < ActiveRecord::Base
     where('hidden = FALSE')
   }
   
+  scope :flights_table, -> {
+    select("flights.id, flights.flight_number, flights.departure_date, flights.origin_airport_id, flights.destination_airport_id, flights.trip_section, flights.trip_id, flights.aircraft_family, airlines.airline_name, airlines.iata_airline_code, airports.iata_code AS origin_iata_code, airports.id AS origin_airport_id, airports.city AS origin_city, destination_airports_flights.iata_code AS destination_iata_code, destination_airports_flights.id AS destination_airport_id, destination_airports_flights.city AS destination_city, trips.hidden").
+    joins(:airline, :origin_airport, :destination_airport, :trip).
+    order(:departure_utc)
+  }
+  
   def self.tail_country(tail_number)
     case tail_number.upcase
     when /^N[1-9]((\d{0,4})|(\d{0,3}[A-HJ-NP-Z])|(\d{0,2}[A-HJ-NP-Z]{2}))$/

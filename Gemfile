@@ -21,7 +21,9 @@ gem 'jbuilder', '2.2.3'
 
 group :development do
   #gem 'rspec-rails', '2.10.0'
-  gem 'webrick'
+  #gem 'webrick'
+  gem 'puma', '2.11.1'
+  gem 'sql_queries_count'
 end
 
 group :test do

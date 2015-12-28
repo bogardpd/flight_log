@@ -261,12 +261,15 @@ module ApplicationHelper
     pairs_inside_region = Array.new
     pairs_outside_region = Array.new
     
+    conus_airports = Airport.where(region_conus: true).pluck(:iata_code)
+    
     flight_collection.each do |flight|
       # Build array of city pairs
-      if (region == :conus && (!flight.origin_airport.region_conus || !flight.destination_airport.region_conus))
-        pairs_outside_region.push([flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort)
+      #if (region == :conus && (!flight.origin_airport.region_conus || !flight.destination_airport.region_conus))
+      if (region == :conus && (!conus_airports.include?(flight.origin_iata_code) || !conus_airports.include?(flight.destination_iata_code)))
+        pairs_outside_region.push([flight.origin_iata_code, flight.destination_iata_code].sort)
       else
-        pairs_inside_region.push([flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort)
+        pairs_inside_region.push([flight.origin_iata_code, flight.destination_iata_code].sort)
       end  
     end
     
