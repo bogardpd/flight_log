@@ -18,7 +18,7 @@
 <p>I have been on <%= pluralize(@flights.length, 'commercial flight') %> in <%= @in_text %>.</p>
 
 <div class="intro_box">
-	<%= gcmap_flights(@flights) %>
+	<%= embed_gcmap_flights(@flights) %>
 	<%= distance_block(@total_distance, "total") %>
 </div>
 

@@ -13,7 +13,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 <% end %>
 
 <div class="intro_box">
-	<%= gcmap_flights(@flights) %>
+	<%= embed_gcmap_flights(@flights) %>
 	<p class="total"><span class="distance_primary"><%= distance_string(@total_distance) %></span> &middot; <%= link_to("See all <span class=\"summary_total\">#{pluralize(@flights.length, 'flight')}</span>".html_safe, flights_path)%></p>
 </div>
 

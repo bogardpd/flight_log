@@ -12,7 +12,7 @@
 <a name="flights"></a>
 <p>I have flown on <span class="bold"><%= @aircraft_family %></span> aircraft <%= pluralize(@flights.length, 'time') %>.</p>
 
-<%= gcmap_flights(@flights) %>
+<%= embed_gcmap_flights(@flights) %>
 <%= distance_block(@total_distance, 'total') %>
 
 <%= render "flight_table" %>

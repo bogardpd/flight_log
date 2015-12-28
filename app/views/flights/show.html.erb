@@ -7,7 +7,7 @@
 <p><%= @flight.comment %></p>
 <% end %>
 
-<%= gcmap_single_flight([@flight.origin_airport.iata_code, @flight.destination_airport.iata_code]) %>
+<%= embed_gcmap_single_flight([@flight.origin_airport.iata_code, @flight.destination_airport.iata_code]) %>
 
 <table class="flightlog no_border flight_large_route">
   <tr class="no_top_border">

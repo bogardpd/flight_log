@@ -5,7 +5,7 @@
 
 <p class="center">Part of the <%= link_to(@trip.name, @trip, :class => 'bold') %> trip.</p>
 
-<%= gcmap_flights(@flights, use_regions: false) %>
+<%= embed_gcmap_flights(@flights, use_regions: false) %>
 <%= distance_block(@section_distance, 'section') %>
 
 <table class="flightlog">

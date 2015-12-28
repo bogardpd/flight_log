@@ -17,7 +17,7 @@
 <a name="flights"></a>
 <p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family, show_aircraft_path(@flights.last.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flights.last.aircraft_family} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
-<%= gcmap_flights(@flights) %>
+<%= embed_gcmap_flights(@flights) %>
 <%= distance_block(@total_distance, 'total') %>
 
 <%= render "flight_table" %>

@@ -101,12 +101,12 @@ module ApplicationHelper
   
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
   
-  # Take a collection of flights and return HTML for a hyperlinked Great Circle Mapper map image
+  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
   # Params:
   # +flight_collection+:: collection of Flight objects to be mapped
   # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
   # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
-  def gcmap_flights(flight_collection, use_regions: true)
+  def embed_gcmap_flights(flight_collection, use_regions: true)
     if use_regions == false
       region = :world
     elsif params[:region]
@@ -143,10 +143,11 @@ module ApplicationHelper
     return html.html_safe
   end
   
-  # Take an array of two airports and return HTML for a hyperlinked Great Circle Mapper map image
+  
+  # Return HTML for a hyperlinked Great Circle Mapper map image of a single flight
   # Params:
   # +flight_route+:: array of two airport IATA codes. If more than two codes are used, any codes beyond the first two will be ignored.
-  def gcmap_single_flight(flight_route)
+  def embed_gcmap_single_flight(flight_route)
     airport_options = "*"
     map_center = ""
     route_string = flight_route[0..1].join("-")
@@ -154,12 +155,27 @@ module ApplicationHelper
   end
   
   
+  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights with a highlighted route
+  # Params:
+  # +flight_collection+:: collection of Flight objects to be mapped
+  # +highlighted_route+:: array of two airport IATA codes whose path between them should be highlighted. If more than two codes are used, any codes beyond the first two will be ignored.
+  def embed_gcmap_route_highlight(flight_collection, highlighted_route)
+    airport_options = "b:disc5:black"
+    map_center = ""
+    
+    route_string = "c:%23FF7777,#{gcmap_route_string(flight_collection, :world, uncolored: true)},c:red,w:2,#{highlighted_route[0..1].join("-")}"
+    return gcmap_map_link(route_string, airport_options, map_center).html_safe
+  end
+  
+  
+  # GREAT CIRCLE MAPPER STRING HELPERS:
   
   # Take a collection of flights and return a string of routes formatted for use in the Great Circle Mapper.
   # Params:
   # +flight_collection+:: collection of Flight objects to be mapped
   # +region+:: The region to focus on, or :world for all
-  def gcmap_route_string (flight_collection, region)
+  # +uncolored+:: Set to true to prevent automatic coloring of the route string
+  def gcmap_route_string (flight_collection, region, uncolored: false)
     route_inside_region = ""
     route_outside_region = ""
     
@@ -200,6 +216,8 @@ module ApplicationHelper
     
     if pairs_outside_region.length > 0
       route = "c:%23FF7777#{route_outside_region},c:red#{route_inside_region}"
+    elsif uncolored
+      route = route_inside_region
     else
       route = "c:red#{route_inside_region}"
     end
