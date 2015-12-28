@@ -27,7 +27,7 @@
 
 <p>These are my flights that took off from or landed at <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
 
-<%= gcmap_embed(airport_highlight(@airport.iata_code) + route_string(@flights)) %>
+<%= embed_gcmap_airport_highlight(@flights, [@airport.iata_code]) %>
 
 <table class="flightlog">
 <%= render :partial => "flights/flight_header_row" %>

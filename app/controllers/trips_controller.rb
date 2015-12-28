@@ -68,7 +68,7 @@ class TripsController < ApplicationController
     end
     stops_array.push(@flights.last.destination_airport.iata_code) unless @flights.empty?
     stops_array.uniq!
-    @stops = stops_array.join(',')
+    @stops = stops_array
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldn't find a trip with an ID of #{params[:id]}. Instead, we'll give you a list of trips."
     redirect_to trips_path

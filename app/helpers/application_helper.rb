@@ -106,6 +106,53 @@ module ApplicationHelper
   # +flight_collection+:: collection of Flight objects to be mapped
   # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
   # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
+  def embed_gcmap_airports(airport_array)
+    if params[:region]
+      region = params[:region].to_sym
+    elsif @default_region
+      region = @default_region
+    else
+      region = :world
+    end
+    
+    airport_options = "b:disc5:black"
+    map_center = ""
+    
+=begin    
+    
+    html = ""
+    
+    if use_regions
+      html += "<div class=\"region_select\">"
+      html += "<ul class=\"region_select\">"
+      if region == :conus
+      	html += "<li>"
+        html +=	link_to("World", url_for(region: :world))
+        html += "</li><li class=\"selected\">Contiguous United States</li>"
+      else
+      	html += "<li class=\"selected\">World</li><li>"
+        html += link_to("Contiguous United States", url_for(region: :conus))
+        html += "</li>"      	
+      end
+      html += "</ul></div>"
+    end
+
+=end
+    
+    html += gcmap_map_link(route_string, airport_options, map_center)
+    return html.html_safe
+
+
+  end
+
+end
+  
+  
+  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
+  # Params:
+  # +flight_collection+:: collection of Flight objects to be mapped
+  # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
+  # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
   def embed_gcmap_flights(flight_collection, use_regions: true)
     if use_regions == false
       region = :world
@@ -167,6 +214,25 @@ module ApplicationHelper
     return gcmap_map_link(route_string, airport_options, map_center).html_safe
   end
   
+  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights with highlighted airports
+  # Params:
+  # +flight_collection+:: Collection of Flight objects to be mapped
+  # +highlighted_airports+:: Array of airport IATA codes whose airports should be highlighted
+  def embed_gcmap_airport_highlight(flight_collection, highlighted_airports)
+    airport_options = "b:disc5:black"
+    map_center = ""
+    
+    if highlighted_airports.any?
+      airport_highlight_string = "m:p:ring11:black,#{highlighted_airports.join(",")},"
+    else
+      airport_highlight_string = ""
+    end
+    
+    route_string = airport_highlight_string + gcmap_route_string(flight_collection, :world)
+    return gcmap_map_link(route_string, airport_options, map_center).html_safe
+  end
+  
+  
   
   # GREAT CIRCLE MAPPER STRING HELPERS:
   
@@ -223,13 +289,14 @@ module ApplicationHelper
     end
   end
   
+  
   # Take a collection of flights and return a string of routes formatted for use in the Great Circle Mapper.
   # Params:
   # +route_string+:: string in Great Circle Mapper path format
   # +airport_options+:: string of Great Circle Mapper airport point formatting options
   # +map_center+:: IATA code of the airport to center the map on (leave blank if centering is not desired)
   def gcmap_map_link(route_string, airport_options, map_center)
-    if map_center
+    if map_center.length > 0
       map_center = "&MC=#{map_center}"
     end
     html = "<div class=\"center\">"

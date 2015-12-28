@@ -7,8 +7,7 @@
 <p><%= @trip.comment %></p>
 <% end %>
 
-<%= gcmap_embed(airport_highlight(@stops) + route_string(@flights)) %>
-
+<%= embed_gcmap_airport_highlight(@flights, @stops) %>
 <%= distance_block(@trip_distance, "total") %>
 
 <table class="flightlog">
