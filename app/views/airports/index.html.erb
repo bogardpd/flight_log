@@ -4,8 +4,7 @@
 
 <div class="page_navigation">
   <ul>
-		<li><%= link_to("CONUS Airports Map", "#conus_airports", :title => "CONUS Airports Map") %></li>
-		<li><%= link_to("World Airports Map", "#world_airports", :title => "World Airports Map") %></li>
+		<li><%= link_to("Airports Map", "#airports_map", :title => "Airports Map") %></li>
 		<li><%= link_to("List of Airports", "#airports_list", :title => "List of Airports") %></li>
 		<li><%= link_to("CONUS Frequency", "#conus_frequency", :title => "CONUS Airport Frequency") %></li>
 		<li><%= link_to("World Frequency", "#world_frequency", :title => "World Airport Frequency") %></li>
@@ -18,22 +17,12 @@
 
 <% if @flights.any? %>
 
-<a name="conus_airports"></a>
-<h2>CONUS Airports Map</h2>
-<p>This map shows all airports I've visited within the <%= link_to("contiguous United States", "http://en.wikipedia.org/wiki/CONUS") %>:</p>
-
-<%= gcmap_airport_embed(@airport_conus_array) %>
-
-<a name="world_airports"></a>
-<h2>World Airports Map</h2>
-<p>This map shows <em>all</em> airports I've visited worldwide:</p>
-
-<%= gcmap_airport_embed(@airport_array, "world") %>
-
-<p>A layover counts as one single visit to a given airport, even though two flights use it.</p>
+<a name="airports_map"></a>
+<%= embed_gcmap_airports(@airports) %>
 
 <a name="airports_list"></a>
-<h2>List of Airports</h2>
+
+<p class="center">A layover counts as one single visit to a given airport, even though two flights use it.</p>
 
 <table class="flightlog">
   <tr class="th">

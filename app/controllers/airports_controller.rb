@@ -48,6 +48,7 @@ class AirportsController < ApplicationController
       @airports_with_no_flights = Airport.where('id not in (?)',airport_frequency.keys)
     
       # Create arrays of airports:
+      
       @airports.each do |airport|
         # Create world airport array:
         @airport_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})

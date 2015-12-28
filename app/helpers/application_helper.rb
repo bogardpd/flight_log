@@ -106,7 +106,7 @@ module ApplicationHelper
   # +flight_collection+:: collection of Flight objects to be mapped
   # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
   # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
-  def embed_gcmap_airports(airport_array)
+  def embed_gcmap_airports(airport_collection)
     if params[:region]
       region = params[:region].to_sym
     elsif @default_region
@@ -118,35 +118,16 @@ module ApplicationHelper
     airport_options = "b:disc5:black"
     map_center = ""
     
-=begin    
-    
-    html = ""
-    
-    if use_regions
-      html += "<div class=\"region_select\">"
-      html += "<ul class=\"region_select\">"
-      if region == :conus
-      	html += "<li>"
-        html +=	link_to("World", url_for(region: :world))
-        html += "</li><li class=\"selected\">Contiguous United States</li>"
-      else
-      	html += "<li class=\"selected\">World</li><li>"
-        html += link_to("Contiguous United States", url_for(region: :conus))
-        html += "</li>"      	
-      end
-      html += "</ul></div>"
+    if region == :conus
+      airport_codes = Airport.where(id: airport_collection).where(region_conus: true).order(:iata_code).pluck(:iata_code)
+    else
+      airport_codes = Airport.where(id: airport_collection).order(:iata_code).pluck(:iata_code)
     end
-
-=end
-    
-    html += gcmap_map_link(route_string, airport_options, map_center)
+      
+    html = gcmap_region_select_links(region) + gcmap_map_link(airport_codes.join(","), airport_options, map_center)
     return html.html_safe
-
-
   end
 
-end
-  
   
   # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
   # Params:
@@ -172,18 +153,7 @@ end
     html = ""
     
     if use_regions
-      html += "<div class=\"region_select\">"
-      html += "<ul class=\"region_select\">"
-      if region == :conus
-      	html += "<li>"
-        html +=	link_to("World", url_for(region: :world))
-        html += "</li><li class=\"selected\">Contiguous United States</li>"
-      else
-      	html += "<li class=\"selected\">World</li><li>"
-        html += link_to("Contiguous United States", url_for(region: :conus))
-        html += "</li>"      	
-      end
-      html += "</ul></div>"
+      html += gcmap_region_select_links(region)
     end
     
     html += gcmap_map_link(route_string, airport_options, map_center)
@@ -290,7 +260,7 @@ end
   end
   
   
-  # Take a collection of flights and return a string of routes formatted for use in the Great Circle Mapper.
+  # Return a string of routes formatted for use in the Great Circle Mapper.
   # Params:
   # +route_string+:: string in Great Circle Mapper path format
   # +airport_options+:: string of Great Circle Mapper airport point formatting options
@@ -302,6 +272,23 @@ end
     html = "<div class=\"center\">"
     html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}")
     html += "</div>"
+  end
+  
+  # Return a menu allowing the user to switch between regions on a map
+  # +region+:: The currently active region
+  def gcmap_region_select_links(region)
+    html = "<div class=\"region_select\">"
+    html += "<ul class=\"region_select\">"
+    if region == :conus
+    	html += "<li>"
+      html +=	link_to("World", url_for(region: :world))
+      html += "</li><li class=\"selected\">Contiguous United States</li>"
+    else
+    	html += "<li class=\"selected\">World</li><li>"
+      html += link_to("Contiguous United States", url_for(region: :conus))
+      html += "</li>"      	
+    end
+    html += "</ul></div>"
   end
   
 end
