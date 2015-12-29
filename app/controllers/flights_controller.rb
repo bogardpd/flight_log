@@ -5,14 +5,14 @@ class FlightsController < ApplicationController
   def index
     add_breadcrumb 'Flights', 'flights_path'
     @logo_used = true
-    
     @title = "Flights"
         
     if logged_in?
-      @flights = Flight.chronological
+      #@flights = Flight.chronological
+      @flights = Flight.flights_table
       @year_range = @flights.any? ? Flight.chronological.first.departure_date.year..Flight.chronological.last.departure_date.year : nil
     else
-      @flights = Flight.visitor.chronological
+      @flights = Flight.flights_table.visitor
       @year_range = @flights.any? ? Flight.visitor.chronological.first.departure_date.year..Flight.visitor.chronological.last.departure_date.year : nil
     end
     
@@ -133,9 +133,9 @@ class FlightsController < ApplicationController
     @year_range = years_with_flights_range
         
     if logged_in?
-      @flights = Flight.chronological.where(:departure_date => @date_range)
+      @flights = Flight.flights_table.where(:departure_date => @date_range)
     else
-      @flights = Flight.visitor.chronological.where(:departure_date => @date_range)
+      @flights = Flight.visitor.flights_table.where(:departure_date => @date_range)
     end
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
@@ -222,7 +222,7 @@ class FlightsController < ApplicationController
     @aircraft_family = params[:aircraft_family].gsub("_", " ")
     @title = @aircraft_family
     @meta_description = "Maps and lists of Paul Bogard's flights on #{@aircraft_family} aircraft."
-    @flights = Flight.where(:aircraft_family => @aircraft_family).chronological
+    @flights = Flight.flights_table.where(:aircraft_family => @aircraft_family)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb 'Aircraft Families', 'aircraft_path'
@@ -278,7 +278,6 @@ class FlightsController < ApplicationController
     @total_distance = total_distance(@flights)
 
     # Create comparitive lists of airlines and aircraft:
-
     airline_frequency(@flights)
     aircraft_frequency(@flights)
 
@@ -294,10 +293,10 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Tail Numbers', 'tails_path'
     if logged_in?
       @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
-      @flight_tail_details = Flight.chronological.where("tail_number IS NOT NULL").order("departure_utc ASC")
+      @flight_tail_details = Flight.select(:tail_number, :aircraft_family, :airline_name, :iata_airline_code).joins(:airline).chronological.where("tail_number IS NOT NULL")
     else # Filter out hidden trips for visitors
       @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
-      @flight_tail_details = Flight.visitor.chronological.where("tail_number IS NOT NULL").order("departure_utc ASC")
+      @flight_tail_details = Flight.visitor.select(:tail_number, :aircraft_family, :airline_name, :iata_airline_code).joins(:airline).chronological.where("tail_number IS NOT NULL")
     end
     @title = "Tail Numbers"
     @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often he's flown on each."
@@ -338,16 +337,18 @@ class FlightsController < ApplicationController
       end
     
       # Create details array, using the latest flight for each tail number.
-      tails_airline_hash = Hash.new
+      tails_airline_name_hash = Hash.new
+      tails_airline_iata_hash = Hash.new
       tails_aircraft_hash = Hash.new
       @flight_tail_details.each do |tail|
-        tails_airline_hash[tail.tail_number] = tail.airline
+        tails_airline_name_hash[tail.tail_number] = tail.airline_name
+        tails_airline_iata_hash[tail.tail_number] = tail.iata_airline_code
         tails_aircraft_hash[tail.tail_number] = tail.aircraft_family
       end
     
       # Create table array
       tails_count.each do |tail|
-        @tail_numbers_table.push({:tail_number => tail[:tail_number], :count => tail[:count], :aircraft => tails_aircraft_hash[tail[:tail_number]] || "", :airline => tails_airline_hash[tail[:tail_number]] || ""})
+        @tail_numbers_table.push({:tail_number => tail[:tail_number], :count => tail[:count], :aircraft => tails_aircraft_hash[tail[:tail_number]] || "", :airline_name => tails_airline_name_hash[tail[:tail_number]] || "", airline_iata: tails_airline_iata_hash[tail[:tail_number]] || ""})
       end
     
       # Find maxima for graph scaling:
@@ -374,7 +375,7 @@ class FlightsController < ApplicationController
     @logo_used = true
     @flights = Flight.where(:tail_number => params[:tail_number])
     @flight_operators = @flights.where("operator_id IS NOT NULL").group("operator").count
-    @flights = @flights.chronological
+    @flights = @flights.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
     

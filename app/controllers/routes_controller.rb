@@ -6,11 +6,9 @@ class RoutesController < ApplicationController
     add_breadcrumb 'Routes', 'routes_path'
     @title = "Routes"
     @meta_description = "A list of the routes Paul Bogard has flown on, and how often he's flown on each."
-    if logged_in?
-      flights = Flight.all
-    else # Filter out hidden trips for visitors
-      flights = Flight.visitor
-    end
+        
+    flights = Flight.flights_table
+    flights = flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
     @route_table = Array.new
     
@@ -38,30 +36,23 @@ class RoutesController < ApplicationController
       sort_mult = (@sort_dir == :asc ? 1 : -1)
     
       # Build hash of distances:
-      distances = Hash.new(nil)
-      dist_airport_alphabetize = Array.new()
-      routes = Route.where("distance_mi IS NOT NULL")
-      routes.each do |route|
-        dist_airport_alphabetize[0] = route.airport1.iata_code
-        dist_airport_alphabetize[1] = route.airport2.iata_code
-        dist_airport_alphabetize.sort!
-        distances["#{dist_airport_alphabetize[0]}-#{dist_airport_alphabetize[1]}"] = route.distance_mi
-      end
-    
-      # Build hash of routes and number of flights
       route_totals = Hash.new(0)
-      airport_alphabetize = Array.new()
+      route_distances = Hash.new(nil)
+      route_hash = Hash.new()
+      Route.find_by_sql("SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_hash[[x.iata1,x.iata2]] = x.distance_mi }
       flights.each do |flight|
-        airport_alphabetize[0] = flight.origin_airport.iata_code
-        airport_alphabetize[1] = flight.destination_airport.iata_code
-        airport_alphabetize.sort!
-        route_totals["#{airport_alphabetize[0]}-#{airport_alphabetize[1]}"] += 1
+        airport_alphabetize = [flight.origin_iata_code,flight.destination_iata_code].sort
+        route_totals[[airport_alphabetize[0],airport_alphabetize[1]]] += 1
+        route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_hash[[airport_alphabetize[0],airport_alphabetize[1]]] || route_hash[[airport_alphabetize[1],airport_alphabetize[0]]] || -1
       end
-    
+      route_totals = route_totals.sort_by {|key, value| [-value, key]}
+
+  
       # Build array of routes, distances, and number of flights:
       route_totals.each do |flight_route, count|
-        @route_table << {:route => flight_route, :distance_mi => distances[flight_route] || -1, :total_flights => count} # Make nil distances negative so we can sort
+        @route_table << {:route => flight_route, :distance_mi => route_distances[flight_route] || -1, :total_flights => count} # Make nil distances negative so we can sort
       end
+
     
       # Find maxima for graph scaling:
       @flights_maximum = @route_table.max_by{|i| i[:total_flights].to_i}[:total_flights]
@@ -108,9 +99,9 @@ class RoutesController < ApplicationController
     @logo_used = true
     
     if logged_in?
-      @flights = Flight.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
+      @flights = Flight.flights_table.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
     else
-      @flights = Flight.visitor.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
+      @flights = Flight.flights_table.visitor.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
     end
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
@@ -131,10 +122,16 @@ class RoutesController < ApplicationController
     section_where_array.uniq!
     
     # Create list of trips sorted by first flight:
+#    if logged_in?
+#      @trips = Trip.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
+#    else
+#      @trips = Trip.visitor.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
+#    end
+    
     if logged_in?
-      @trips = Trip.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
+      @trips = Flight.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", trip_array])
     else
-      @trips = Trip.visitor.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
+      @trips = Flight.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE flights.trip_id IN (?) AND trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", trip_array])
     end
     
     # Create comparitive lists of airlines, aircraft, and classes:
@@ -143,8 +140,8 @@ class RoutesController < ApplicationController
     class_frequency(@flights)
     
     # Create flight arrays for maps of trips and sections:
-    @city_pair_trip_flights = Flight.where(:trip_id => trip_array)
-    @city_pair_section_flights = Flight.where(section_where_array.join(' OR '))
+    @city_pair_trip_flights = Flight.flights_table.where(:trip_id => trip_array)
+    @city_pair_section_flights = Flight.flights_table.where(section_where_array.join(' OR '))
     
     rescue ActiveRecord::RecordNotFound
       flash[:record_not_found] = "We couldn't find any flights with the route #{params[:id]}. Instead, we'll give you a list of routes."

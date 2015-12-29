@@ -128,19 +128,19 @@
 			<% @new_airline_flag = true %>
 			<td class="counter new"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="airline_airline new">
-				<%= link_to(image_tag(airline_icon_path(airline.iata_airline_code), :alt => airline.airline_name, class: 'airline_icon') + airline.airline_name + "*", airline_path(airline.iata_airline_code), title: "View all flights on #{airline.airline_name}") %>
+				<%= link_to(image_tag(airline_icon_path(airline), :alt => @airline_names[airline], class: 'airline_icon') + @airline_names[airline] + "*", airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
 			</td>
 			<td class="airline_iata_code iata_mono new">
-				<%= link_to(airline.iata_airline_code, airline_path(airline.iata_airline_code), title: "View all flights on #{airline.airline_name}") %>
+				<%= link_to(airline, airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
 			</td>
 			<td class="airline_flights new"><%= render "graph_block", value: frequency, maximum: @airline_frequency_maximum %></td>
 		<% else %>
 			<td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="airline_airline">
-				<%= link_to(image_tag(airline_icon_path(airline.iata_airline_code), :alt => airline.airline_name, class: 'airline_icon') + airline.airline_name, airline_path(airline.iata_airline_code), title: "View all flights on #{airline.airline_name}") %>
+				<%= link_to(image_tag(airline_icon_path(airline), :alt => @airline_names[airline], class: 'airline_icon') + @airline_names[airline], airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
 			</td>
 			<td class="airline_iata_code iata_mono">
-				<%= link_to(airline.iata_airline_code, airline_path(airline.iata_airline_code), title: "View all flights on #{airline.airline_name}") %>
+				<%= link_to(airline, airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
 			</td>
 			<td class="airline_flights"><%= render "graph_block", value: frequency, maximum: @airline_frequency_maximum %></td>
 		<% end %>

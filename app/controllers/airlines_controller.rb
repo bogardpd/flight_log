@@ -94,7 +94,10 @@ class AirlinesController < ApplicationController
   def show
     @airline = Airline.where(:iata_airline_code => params[:id]).first
     raise ActiveRecord::RecordNotFound if (@airline.nil?) #all_flights will fail if code does not exist, so check here.    
-    @flights = @airline.all_flights(logged_in?)
+    @flights = Flight.flights_table.where(airline_id: @airline.id)
+    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    
+    #@flights = @airline.all_flights(logged_in?)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     @title = @airline.airline_name

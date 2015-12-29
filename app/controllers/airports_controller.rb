@@ -6,11 +6,9 @@ class AirportsController < ApplicationController
     add_breadcrumb 'Airports', 'airports_path'
     @title = "Airports"
     @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often he's visited them."
-    if logged_in?
-      @flights = Flight.chronological
-    else
-      @flights = Flight.visitor.chronological
-    end
+    @flights = Flight.flights_table
+    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+
     
     @airport_array = Array.new
     
@@ -119,7 +117,9 @@ class AirportsController < ApplicationController
     end
     sort_mult = (@sort_dir == :asc ? 1 : -1)
     
-    @flights = @airport.all_flights(logged_in?)
+    @flights = Flight.flights_table.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id)
+    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     trip_array = Array.new
     @sections = Array.new
@@ -131,36 +131,49 @@ class AirportsController < ApplicationController
     @direct_flight_airports = Array.new
     prev_trip_id = nil
     prev_section_id = nil
+    
+    # Calculate distances to direct flight airports:
+    direct_flight_airports = @flights.pluck(:origin_airport_id).concat(@flights.pluck(:destination_airport_id)).uniq
+    route_hash = Hash.new()
+    Route.find_by_sql(["SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id WHERE routes.airport1_id = ? OR routes.airport2_id = ?", @airport.id, @airport.id]).map{|x| route_hash[[x.iata1,x.iata2]] = x.distance_mi }
+  
     @flights.each do |flight|
       trip_array.push(flight.trip_id)
       unless (flight.trip_id == prev_trip_id && flight.trip_section == prev_section_id)
-        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date} )
+        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip_name, :trip_section => flight.trip_section, :departure => flight.departure_date} )
       end
       prev_trip_id = flight.trip_id
       prev_section_id = flight.trip_section
       section_where_array.push("(trip_id = #{flight.trip_id.to_i} AND trip_section = #{flight.trip_section.to_i})")
       
       # Create hash of the other airports on flights to/from this airport and their counts
-      if (flight.origin_airport.iata_code == @airport.iata_code)
-        pair_totals[flight.destination_airport.iata_code] += 1
-        pair_cities[flight.destination_airport.iata_code] = flight.destination_airport.city
-        pair_countries[flight.destination_airport.iata_code] = flight.destination_airport.country
-        pair_distances[flight.destination_airport.iata_code] = route_distance_by_iata(flight.origin_airport.iata_code,flight.destination_airport.iata_code) || -1
+      if (flight.origin_iata_code == @airport.iata_code)
+        pair_totals[flight.destination_iata_code] += 1
+        pair_cities[flight.destination_iata_code] = flight.destination_city
+        pair_countries[flight.destination_iata_code] = flight.destination_country
+        pair_distances[flight.destination_iata_code] = route_hash[[flight.origin_iata_code,flight.destination_iata_code]] || route_hash[[flight.destination_iata_code,flight.origin_iata_code]] || -1
       else
-        pair_totals[flight.origin_airport.iata_code] += 1
-        pair_cities[flight.origin_airport.iata_code] = flight.origin_airport.city
-        pair_countries[flight.origin_airport.iata_code] = flight.origin_airport.country
-        pair_distances[flight.origin_airport.iata_code] = route_distance_by_iata(flight.origin_airport.iata_code,flight.destination_airport.iata_code) || -1
+        pair_totals[flight.origin_iata_code] += 1
+        pair_cities[flight.origin_iata_code] = flight.origin_city
+        pair_countries[flight.origin_iata_code] = flight.origin_country
+        pair_distances[flight.origin_iata_code] = route_hash[[flight.origin_iata_code,flight.destination_iata_code]] || route_hash[[flight.destination_iata_code,flight.origin_iata_code]] || -1
       end
     end
+    
     trip_array = trip_array.uniq.sort
     @sections.uniq!
-    @trips = Trip.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
-    @trips_using_airport_flights = Flight.chronological.where(:trip_id => trip_array)
-    @sections_using_airport_flights = Flight.where(section_where_array.join(' OR '))
-    @airport_frequency = frequency_array(@trips_using_airport_flights)
-    @pair_maximum = pair_totals.length > 0 ? pair_totals.values.max : 1
+
+    #@trips = Trip.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
     
+    @trips = Flight.find_by_sql(["SELECT flights.trip_id AS id, MIN(flights.departure_date) AS departure_date, name, hidden FROM flights INNER JOIN trips on trips.id = flights.trip_id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, name, hidden ORDER BY departure_date", trip_array])
+    
+    @trips_using_airport_flights = Flight.flights_table.where(:trip_id => trip_array)
+    @sections_using_airport_flights = Flight.flights_table.where(section_where_array.join(' OR '))
+
+    @airport_frequency = frequency_array(@trips_using_airport_flights)
+   
+    @pair_maximum = pair_totals.length > 0 ? pair_totals.values.max : 1
+ 
     # Create direct flight airport array sorted by count descending, city ascending:
     pair_totals.each do |airport, count|
       @direct_flight_airports << {:iata_code => airport, :total_flights => count, :city => pair_cities[airport], :distance_mi => pair_distances[airport], :country => pair_countries[airport]}
@@ -269,7 +282,6 @@ class AirportsController < ApplicationController
     
     
     def frequency_array(flight_array)
-      flight_array = flight_array.chronological
       airport_frequency = Hash.new(0) # All airports start with 0 flights
       @airport_array = Array.new
       @airport_conus_array = Array.new
@@ -277,52 +289,17 @@ class AirportsController < ApplicationController
       previous_trip_section = nil;
       previous_destination_airport_iata_code = nil;
       flight_array.each do |flight|
-        unless (flight.trip.id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_airport.iata_code == previous_destination_airport_iata_code)
+        unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_iata_code == previous_destination_airport_iata_code)
           # This is not a layover, so count this origin airport
           airport_frequency[flight.origin_airport_id] += 1
         end
         airport_frequency[flight.destination_airport_id] += 1
-        previous_trip_id = flight.trip.id
+        previous_trip_id = flight.trip_id
         previous_trip_section = flight.trip_section
-        previous_destination_airport_iata_code = flight.destination_airport.iata_code
+        previous_destination_airport_iata_code = flight.destination_iata_code
       end
       return airport_frequency
     end
  
-=begin
-    
-    def aircraft_frequency(flights)
-      # Creates global variables containing the aircraft of a list of flights, and how many flights involving this list each aircraft has.
-      aircraft_frequency_hash = Hash.new(0) # All aircraft start with 0 flights
-      flights.where("aircraft_family IS NOT NULL").each do |flight|
-        aircraft_frequency_hash[flight.aircraft_family] += 1
-      end
-      @aircraft_frequency_sorted = aircraft_frequency_hash.sort_by { |aircraft, frequency| [-frequency, aircraft] }
-      @aircraft_frequency_maximum = aircraft_frequency_hash.values.max
-      @unknown_aircraft_flights = flights.count - flights.where("aircraft_family IS NOT NULL").count
-    end
-    
-    def airline_frequency(flights)
-      # Creates global variables containing the airlines of a list of flights, and how many flights involving this list each airline has.
-      airline_frequency_hash = Hash.new(0) # All airlines start with 0 flights
-      flights.each do |flight|
-        airline_frequency_hash[flight.airline] += 1
-      end
-      @airline_frequency_sorted = airline_frequency_hash.sort_by { |airline, frequency| [-frequency, airline] }
-      @airline_frequency_maximum = airline_frequency_hash.values.max
-    end
-    
-    def class_frequency(flights)
-      # Creates global variables containing the classes of a list of flights, and how many flights involving this list each class has.
-      class_frequency_hash = Hash.new(0) # All classes start with 0 flights
-      flights.where("travel_class IS NOT NULL").each do |flight|
-        class_frequency_hash[flight.travel_class] += 1
-      end
-      @class_frequency_sorted = class_frequency_hash.sort_by { |travel_class, frequency| [-frequency, travel_class] }
-      @class_frequency_maximum = class_frequency_hash.values.max
-      @unknown_class_flights = flights.count - flights.where("travel_class IS NOT NULL").count
-    end
-
-=end
-    
+  
 end

@@ -6,9 +6,9 @@ class TripsController < ApplicationController
   def index
     add_breadcrumb 'Trips', 'trips_path'
     if logged_in?
-      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS earliest_departure FROM flights JOIN trips ON flights.trip_id = trips.id GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY earliest_departure")
+      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date")
     else
-      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS earliest_departure FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY earliest_departure")
+      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date")
     end
 
     @trips_with_no_flights = Trip.where('id not in (?)',Trip.uniq.joins(:flights).select("trips.id"))
@@ -45,7 +45,7 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:id])
     # Filter out hidden trips for visitors:
     raise ActiveRecord::RecordNotFound if (!logged_in? && @trip.hidden)
-    @flights = @trip.flights.chronological
+    @flights = Flight.flights_table.where(trip_id: @trip)
     @title = @trip.name
     @meta_description = "Maps and lists of flights on Paul Bogard's #{@trip.name} trip."
     add_breadcrumb 'Trips', 'trips_path'
@@ -58,15 +58,15 @@ class TripsController < ApplicationController
     previous_destination = nil
     @flights.each do |flight|
       @section_count[flight.trip_section] += 1
-      @section_final_destination[flight.trip_section] = flight.destination_airport.iata_code
+      @section_final_destination[flight.trip_section] = flight.destination_iata_code
       unless flight.trip_section == previous_section  
         stops_array.push(previous_destination) unless previous_destination.nil?
-        stops_array.push(flight.origin_airport.iata_code)
+        stops_array.push(flight.origin_iata_code)
       end
       previous_section = flight.trip_section
-      previous_destination = flight.destination_airport.iata_code
+      previous_destination = flight.destination_iata_code
     end
-    stops_array.push(@flights.last.destination_airport.iata_code) unless @flights.empty?
+    stops_array.push(@flights.last.destination_iata_code) unless @flights.empty?
     stops_array.uniq!
     @stops = stops_array
   rescue ActiveRecord::RecordNotFound
@@ -78,7 +78,9 @@ class TripsController < ApplicationController
   def show_section
     @logo_used = true
     @trip = Trip.find(params[:trip])
-    @flights = @trip.flights.where(:trip_section => params[:section]).chronological
+    #@flights = @trip.flights.where(:trip_section => params[:section]).chronological
+
+    @flights = Flight.flights_table.where(trip_id: @trip, trip_section: params[:section])
     @section_distance = total_distance(@flights)
     @meta_description = "Maps and lists of flights on section #{params[:section]} Paul Bogard's #{@trip.name} trip."
     @title = "#{@trip.name} (Section #{params[:section]})"

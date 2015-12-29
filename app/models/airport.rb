@@ -54,7 +54,7 @@ class Airport < ActiveRecord::Base
   end
   
   def self.frequency_array(flight_array)
-    flight_array = flight_array.chronological
+    flight_array = flight_array
     airport_frequency = Hash.new(0) # All airports start with 0 flights
     @airport_array = Array.new
     @airport_conus_array = Array.new
@@ -62,16 +62,15 @@ class Airport < ActiveRecord::Base
     previous_trip_section = nil;
     previous_destination_airport_iata_code = nil;
     flight_array.each do |flight|
-      unless (flight.trip.id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_airport.iata_code == previous_destination_airport_iata_code)
+      unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_iata_code == previous_destination_airport_iata_code)
         # This is not a layover, so count this origin airport
         airport_frequency[flight.origin_airport_id] += 1
       end
       airport_frequency[flight.destination_airport_id] += 1
-      previous_trip_id = flight.trip.id
+      previous_trip_id = flight.trip_id
       previous_trip_section = flight.trip_section
-      previous_destination_airport_iata_code = flight.destination_airport.iata_code
+      previous_destination_airport_iata_code = flight.destination_iata_code
     end
-    #return airport_frequency
     
     airports = Airport.find(airport_frequency.keys)
     airport_array = Array.new

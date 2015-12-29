@@ -34,7 +34,6 @@ module ApplicationHelper
     image_tag(Airport.new(:country => country).country_flag_path, :title => country, :class => 'country_flag')
   end
   
-  
   def download_link(title, path)
     html = "<ul><li>Download: " + link_to(title, path) + "</li></ul>"
     html.html_safe
@@ -254,7 +253,7 @@ module ApplicationHelper
   # +flight_collection+:: collection of Flight objects to be mapped
   # +region+:: The region to focus on, or :world for all
   # +uncolored+:: Set to true to prevent automatic coloring of the route string
-  def gcmap_route_string (flight_collection, region, uncolored: false)
+  def gcmap_route_string(flight_collection, region, uncolored: false)
     route_inside_region = ""
     route_outside_region = ""
     

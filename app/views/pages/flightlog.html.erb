@@ -46,15 +46,15 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
       <th class="left">Airline</th>
       <th class="center">Flights</th>
     </tr>
-  <% @airlines_array.first(5).each do |airline| %>
+  <% @flight_airlines.first(5).each do |airline| %>
     <tr>
       <td class="left">
-      <%= link_to(image_tag(airline_icon_path(airline[:iata_code]), alt: airline[:name], class: 'airline_icon') + airline[:name], airline_path(airline[:iata_code]), :title => "View flights on #{airline[:name]}") %></td>
-      <td class="center"><%= airline[:count] %></td>
+      <%= link_to(image_tag(airline_icon_path(airline.iata_airline_code), alt: airline.airline_name, class: 'airline_icon') + airline.airline_name, airline_path(airline.iata_airline_code), :title => "View flights on #{airline.airline_name}") %></td>
+      <td class="center"><%= airline.flight_count %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@airlines_array.count, 'airline')}</span>".html_safe, airlines_path)%></p>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@flight_airlines.length, 'airline')}</span>".html_safe, airlines_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -65,10 +65,10 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
       <th class="left">Route</th>
       <th class="center">Flights</th>
     </tr>
-  <% @route_totals.first(5).each do |flight_route, count| %>
+  <% @route_totals.first(5).each do |flight_route, value| %>
     <tr>
-      <td class="left"><%= link_to((iata_mono(flight_route.sub('-',"</span> &#x21C4; <span class=\"iata_mono\">"))), route_path(flight_route), :title => "View flights between #{flight_route.split('-')[0]} and #{flight_route.split('-')[1]}") %></td>
-      <td class="center"><%= count %></td>
+      <td class="left"><%= link_to("<span class=\"iata_mono\">#{flight_route[0]}</span> &#x21C4; <span class=\"iata_mono\">#{flight_route[1]}</span>".html_safe, route_path(flight_route.join("-")), :title => "View flights between #{flight_route[0]} and #{flight_route[1]}") %></td>
+      <td class="center"><%= value %></td>
     </tr>
   <% end %>
   </table>

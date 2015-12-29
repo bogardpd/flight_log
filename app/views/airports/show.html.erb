@@ -22,91 +22,92 @@
 
 <% unless @flights.length == 0 %>
 
-<a name="flights"></a>
-<h2>Flights Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h1>
+	<a name="flights"></a>
+	<h2>Flights Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h1>
 
-<p>These are my flights that took off from or landed at <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
+	<p>These are my flights that took off from or landed at <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
 
-<%= embed_gcmap_airport_highlight(@flights, [@airport.iata_code]) %>
-
-<table class="flightlog">
-<%= render :partial => "flights/flight_header_row" %>
-<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
-<tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency[@airport.id], "visit") %></td></tr>
-</table>
-
-<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
-
-<a name="airports"></a>
-<h2>Direct Flight Airports for <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
-
-<p>These are the airports with which I've had a direct flight from or to <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
-
-<table class="flightlog">
-  <tr class="th">
-    <th class="counter">#</th>
-		<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports") %></th>
-    <th class="airport_iata_code"><%= sort_link("Code", :code, "code", :asc, "airports") %></th>
-		<th class="airport_distance"><%= sort_link("Distance", :distance, "distance", :desc, "airports") %></th>
-    <th class="airport_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airports") %></th>
-  </tr>
+	<%= embed_gcmap_airport_highlight(@flights, [@airport.iata_code]) %>
 	
-	<% previous_count = nil %>
-	<% @direct_flight_airports.each_with_index do |row, index| %>
-	  <tr>
-    	<td class="counter">
-				<% if @sort_cat == :flights %>
-					<%= (@sort_cat == :flights && row[:total_flights] == previous_count) ? "⋮" : index + 1 %>
-				<% elsif @sort_cat == :distance %>
-					<%= (@sort_cat == :distance && row[:distance_mi] == previous_count) ? "⋮" : index + 1 %>
-				<% else %>
-					<%= index + 1 %>
-				<% end %>
-    	</td>
-	    <td class="airport_city"><%= image_tag(Airport.new(:country => row[:country]).country_flag_path, :title => row[:country], :class => 'country_flag') %> <%= link_to(row[:city], airport_path(row[:iata_code])) %></td>
-	    <td class="airport_iata_code iata_mono"><%= link_to(row[:iata_code], airport_path(row[:iata_code])) %></td>
-			<td class="airport_distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
-	    <td class="airport_flights"><div class="graph" style="background-size: <%= row[:total_flights]*100/@flights_maximum %>% 100%;"><%= link_to(row[:total_flights], route_path("#{@airport.iata_code}-#{row[:iata_code]}")) %></div></td>
+	
+	<table class="flightlog">
+	<%= render :partial => "flights/flight_header_row" %>
+	<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
+	<tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency[@airport.id], "visit") %></td></tr>
+	</table>
+
+	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
+
+
+	<a name="airports"></a>
+	<h2>Direct Flight Airports for <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+
+	<p>These are the airports with which I've had a direct flight from or to <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
+
+	<table class="flightlog">
+	  <tr class="th">
+	    <th class="counter">#</th>
+			<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports") %></th>
+	    <th class="airport_iata_code"><%= sort_link("Code", :code, "code", :asc, "airports") %></th>
+			<th class="airport_distance"><%= sort_link("Distance", :distance, "distance", :desc, "airports") %></th>
+	    <th class="airport_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airports") %></th>
 	  </tr>
-		<% previous_count = @sort_cat == :flights ? row[:total_flights] : row[:distance_mi] %>
-	<% end %>
-  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
-</table>
+	
+		<% previous_count = nil %>
+		<% @direct_flight_airports.each_with_index do |row, index| %>
+		  <tr>
+	    	<td class="counter">
+					<% if @sort_cat == :flights %>
+						<%= (@sort_cat == :flights && row[:total_flights] == previous_count) ? "⋮" : index + 1 %>
+					<% elsif @sort_cat == :distance %>
+						<%= (@sort_cat == :distance && row[:distance_mi] == previous_count) ? "⋮" : index + 1 %>
+					<% else %>
+						<%= index + 1 %>
+					<% end %>
+	    	</td>
+		    <td class="airport_city"><%= image_tag(Airport.new(:country => row[:country]).country_flag_path, :title => row[:country], :class => 'country_flag') %> <%= link_to(row[:city], airport_path(row[:iata_code])) %></td>
+		    <td class="airport_iata_code iata_mono"><%= link_to(row[:iata_code], airport_path(row[:iata_code])) %></td>
+				<td class="airport_distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
+		    <td class="airport_flights"><div class="graph" style="background-size: <%= row[:total_flights]*100/@flights_maximum %>% 100%;"><%= link_to(row[:total_flights], route_path("#{@airport.iata_code}-#{row[:iata_code]}")) %></div></td>
+		  </tr>
+			<% previous_count = @sort_cat == :flights ? row[:total_flights] : row[:distance_mi] %>
+		<% end %>
+	  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
+	</table>
 
-<a name="airlines"></a>
-<h2>Airlines Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<a name="airlines"></a>
+	<h2>Airlines Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
 
-<%= render "flights/summary_airline_table" %>
+	<%= render "flights/summary_airline_table" %>
 
-<a name="aircraft"></a>
-<h2>Aircraft Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<a name="aircraft"></a>
+	<h2>Aircraft Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
 
-<%= render "flights/summary_aircraft_table" %>
+	<%= render "flights/summary_aircraft_table" %>
 
-<a name="classes"></a>
-<h2>Classes Flown to or from <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<a name="classes"></a>
+	<h2>Classes Flown to or from <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
 
-<%= render "flights/summary_travel_class_table" %>
+	<%= render "flights/summary_travel_class_table" %>
 
-<a name="sections"></a>
-<h2>Trip Sections Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
 
-<p>This map shows the flights of all of my trip sections that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+	<a name="sections"></a>
+	<h2>Trip Sections Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<p>This map shows the flights of all of my trip sections that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+	<%= embed_gcmap_airport_highlight(@sections_using_airport_flights, [@airport.iata_code]) %>
+	<%= render 'trips/section_table' %>
 
-<%= embed_gcmap_airport_highlight(@sections_using_airport_flights, [@airport.iata_code]) %>
 
-<%= render 'trips/section_table' %>
 
-<a name="trips"></a>
-<h2>Trips Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
-
-<p>This map shows the flights of all of my trips that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
-
-<%= embed_gcmap_airport_highlight(@trips_using_airport_flights, [@airport.iata_code]) %>
-
-<%= render "trips/trip_table" %>
+	<a name="trips"></a>
+	<h2>Trips Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<p>This map shows the flights of all of my trips that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+	<%= embed_gcmap_airport_highlight(@trips_using_airport_flights, [@airport.iata_code]) %>
+	<%= render "trips/trip_table" %>
+	
 
 <% end %>
+
 
 
 

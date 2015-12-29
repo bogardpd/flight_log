@@ -55,7 +55,7 @@ protected
     @unknown_class_flights = flights.length - flights.where("travel_class IS NOT NULL").length
   end
 
-=begin  
+  # This calls an SQL query, and should not be used in a loop.
   def route_distance_by_iata(iata1, iata2)
     airport_ids = Array.new
     airport_ids[0] = Airport.where(:iata_code => iata1).first.try(:id)
@@ -67,8 +67,8 @@ protected
       return false
     end
   end
-=end
   
+  # This calls an SQL query, and should not be used in a loop.
   def route_distance_by_airport_id(airport1_id, airport2_id)
     current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport1_id, airport2_id, airport2_id, airport1_id)
     if current_route.present?
@@ -77,7 +77,7 @@ protected
       return false
     end
   end
-  
+    
   def superlatives_collection(route_distances)
     # accept a hash of distances in format distances[[airport1,airport2]] = distance and return a hash of hashes of superlative distances
     return false if route_distances.length == 0
