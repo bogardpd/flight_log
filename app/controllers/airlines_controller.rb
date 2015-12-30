@@ -124,7 +124,7 @@ class AirlinesController < ApplicationController
   def show_operator
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     raise ActiveRecord::RecordNotFound if (@operator.nil?) #all_flights will fail if code does not exist, so check here.
-    @flights = Flight.where(:operator_id => @operator.id).chronological
+    @flights = Flight.flights_table.select(:fleet_number, :aircraft_name).where(:operator_id => @operator.id)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  
@@ -164,7 +164,7 @@ class AirlinesController < ApplicationController
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     @fleet_number = params[:fleet_number]
     
-    @flights = Flight.where(:operator_id => @operator.id, :fleet_number => @fleet_number).chronological
+    @flights = Flight.flights_table.select(:tail_number).where(:operator_id => @operator.id, :fleet_number => @fleet_number)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
