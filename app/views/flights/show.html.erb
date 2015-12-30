@@ -81,6 +81,13 @@
   <% end %>
 </table>
 
+<% if logged_in? && @flight.boarding_pass_data %>
+<h2>Boarding Pass Data</h2>
+<div class="code">
+	<code><%= @flight.boarding_pass_data %></code>
+</div>
+<% end %>
+
 <% content_for :admin_actions do %>
   <%= link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => 'warning') %> &emsp; <%= link_to("Edit Flight", edit_flight_path(@flight)) %>
 <% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151227061235) do
+ActiveRecord::Schema.define(version: 20151230162055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20151227061235) do
     t.integer  "airline_id"
     t.integer  "operator_id"
     t.integer  "codeshare_airline_id"
+    t.text     "boarding_pass_data"
   end
 
   create_table "routes", force: :cascade do |t|

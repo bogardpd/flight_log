@@ -1,7 +1,11 @@
 $font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
 $font-stack-monospace: 'Source Code Pro', monospace;
 
+$color-table-background: #FCFCFD;
+$color-table-border: rgb(190, 212, 234);
+
 $margin-icon-to-text: 0.5em;
+$margin-paragraph: 10px;
 
 body {
 	background: #E6EAEF;
@@ -266,10 +270,28 @@ a.warning {
 	color: #FF0000 !important;
 }
 
+code {
+	font-family: $font-stack-monospace;
+	font-size: 90%;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	
+}
+
 div.alert {
 	background: #FFFFDD;
 	border: 1px solid #FFDD99;
 	padding: 5px 10px;
+}
+
+div.code {
+	background-color: $color-table-background;
+	border: 1px solid $color-table-border;
+	margin: $margin-paragraph;
+	padding: 10px;
+	line-height: 120%;
 }
 
 div.column {
@@ -474,8 +496,8 @@ input, select {
 }
 
 p {
-	margin-left: 10px;
-	margin-right: 10px;
+	margin-left: $margin-paragraph;
+	margin-right: $margin-paragraph;
 }
 
 p.active_trips {
@@ -596,7 +618,7 @@ table.flightlog a {
 
 table.flightlog tr {
 	border-top: 1px solid #BED4EA;
-	background-color: #FCFCFD;
+	background-color: $color-table-background;
 }
 
 table.flightlog tr.no_top_border {
