@@ -2,6 +2,7 @@
 
 <div class="page_navigation">
   <ul>
+		<li><%= link_to("Map", "#map", :title => "Map of flights visited in " + @in_text) %></li>
 		<li><%= link_to("Airports", "#airports", :title => "Airports visited in " + @in_text) %></li>
 		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft flown in " + @in_text) %></li>
 		<li><%= link_to("Airlines", "#airlines", :title => "Airlines flown in " + @in_text) %></li>
@@ -17,6 +18,7 @@
 
 <p>I have been on <%= pluralize(@flights.length, 'commercial flight') %> in <%= @in_text %>.</p>
 
+<a name="map"></a>
 <div class="intro_box">
 	<%= embed_gcmap_flights(@flights) %>
 	<%= distance_block(@total_distance, "total") %>

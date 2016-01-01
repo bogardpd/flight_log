@@ -2,18 +2,19 @@
 
 <div class="page_navigation">
   <ul>
-		<li><%= link_to("Flights", "#flights", :title => "Flights using #{@airports[0]} - #{@airports[1]}") %></li>
+		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airports[0]} - #{@airports[1]}") %></li>
 		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airports[0]} - #{@airports[1]}") %></li>
 		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airports[0]} - #{@airports[1]}") %></li>
 		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@airports[0]} - #{@airports[1]}") %></li>
 		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections with a #{@airports[0]} - #{@airports[1]} flight") %></li>
 		<li><%= link_to("Trips", "#trips", :title => "Trips with a #{@airports[0]} - #{@airports[1]} flight") %></li>
+		<li><%= link_to("Flight List", "#flights", :title => "Flights using #{@airports[0]} - #{@airports[1]}") %></li>
   </ul>
 </div>
 
-<a name="flights"></a>
 <p>I have flown between <span class="bold"><%= link_to(@airports_city[0], airport_path(@airports[0])) %></span> and <span class="bold"><%= link_to(@airports_city[1], airport_path(@airports[1])) %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
+<a name="map">
 <%= embed_gcmap_single_flight(@airports) %>
 
 <% if @pair_distance %>
@@ -22,8 +23,6 @@
 	<%= distance_string(@pair_distance*@flights.length, "total") %>
 </p>
 <% end %>
-
-<%= render "flights/flight_table" %>
 
 <a name="airlines"></a>
 <h2>Airlines Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
@@ -57,6 +56,10 @@
 <%= embed_gcmap_route_highlight(@city_pair_trip_flights, @airports) %>
 
 <%= render 'trips/trip_table' %>
+
+<a name="flights"></a>
+<h2><acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight List</h2>
+<%= render "flights/flight_table" %>
 
 <% content_for :admin_actions do %>
   <%= link_to("Edit Route", edit_route_path(@airports[0],@airports[1])) %>

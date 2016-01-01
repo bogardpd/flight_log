@@ -6,13 +6,14 @@
 
 <div class="page_navigation">
   <ul>
-		<li><%= link_to("Flights", "#flights", :title => "Flights using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Airports", "#airports", :title => "Origin and destination airports for #{@airport.iata_code}") %></li>
 		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Classes", "#classes", :title => "Classes flown to or from #{@airport.iata_code}") %></li>
 		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Trips", "#trips", :title => "Trips using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Flight List", "#flights", :title => "Flights using #{@airport.iata_code}") %></li>
   </ul>
 </div>
 
@@ -22,21 +23,9 @@
 
 <% unless @flights.length == 0 %>
 
-	<a name="flights"></a>
-	<h2>Flights Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h1>
-
-	<p>These are my flights that took off from or landed at <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
+	<a name="map"></a>
 
 	<%= embed_gcmap_airport_highlight(@flights, [@airport.iata_code]) %>
-	
-	
-	<table class="flightlog">
-	<%= render :partial => "flights/flight_header_row" %>
-	<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
-	<tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency[@airport.id], "visit") %></td></tr>
-	</table>
-
-	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
 
 
 	<a name="airports"></a>
@@ -105,6 +94,16 @@
 	<%= embed_gcmap_airport_highlight(@trips_using_airport_flights, [@airport.iata_code]) %>
 	<%= render "trips/trip_table" %>
 	
+	
+	<a name="flights"></a>
+	<h2><acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym> Flight List</h2>
+	<table class="flightlog">
+	<%= render :partial => "flights/flight_header_row" %>
+	<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
+	<tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency[@airport.id], "visit") %></td></tr>
+	</table>
+
+	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
 
 <% end %>
 

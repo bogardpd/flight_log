@@ -5,23 +5,23 @@
 <% if @flights.any? %>
 	<div class="page_navigation">
 	  <ul>
-			<li><%= link_to("Flights", "#flights", :title => "Flights flown on #{@airline}") %></li>
+			<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@airline}") %></li>
 			<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft flown on #{@airline}") %></li>
 			<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@airline}") %></li>
-			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@airline}") %></li>
+			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@airline}") %></li><li><%= link_to("Flight List", "#flights", :title => "Flights flown on #{@airline}") %></li>
+			
 	  </ul>
 	</div>
 <% end %>
 
-<a name="flights"></a>
+
 <p>I have flown <%= pluralize(@flights.length, 'flight') %> on <span class="bold"><%= @airline.airline_name %></span>.</p>
 
 <% if @flights.any? %>
 
+	<a name="map"></a>
 	<%= embed_gcmap_flights(@flights) %>
 	<%= distance_block(@total_distance, 'total') %>
-	
-	<%= render "flights/flight_table" %>
 	
 	<a name="aircraft"></a>
 	<h2>Aircraft Flown on <%= @airline.airline_name %></h2>
@@ -37,6 +37,10 @@
 	<h2>Longest and Shortest Routes Flown on <%= @airline.airline_name %></h2>
 
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
+	
+	<a name="flights"></a>
+	<h2><%= @airline.airline_name %> Flight List</h2>
+	<%= render "flights/flight_table" %>
 
 <% end %>
 
