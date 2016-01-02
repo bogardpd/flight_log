@@ -132,6 +132,8 @@ class AirportsController < ApplicationController
     prev_trip_id = nil
     prev_section_id = nil
     
+    @total_distance = total_distance(@flights)
+    
     # Calculate distances to direct flight airports:
     direct_flight_airports = @flights.pluck(:origin_airport_id).concat(@flights.pluck(:destination_airport_id)).uniq
     route_hash = Hash.new()
@@ -163,8 +165,6 @@ class AirportsController < ApplicationController
     trip_array = trip_array.uniq.sort
     @sections.uniq!
 
-    #@trips = Trip.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
-    
     @trips = Flight.find_by_sql(["SELECT flights.trip_id AS id, MIN(flights.departure_date) AS departure_date, name, hidden FROM flights INNER JOIN trips on trips.id = flights.trip_id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, name, hidden ORDER BY departure_date", trip_array])
     
     @trips_using_airport_flights = Flight.flights_table.where(:trip_id => trip_array)

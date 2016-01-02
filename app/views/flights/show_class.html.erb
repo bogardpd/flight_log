@@ -14,7 +14,7 @@
 
 <p>I have flown in <span class="bold"><%= @title.downcase %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
-<a name="map">
+<a name="map"></a>
 <%= embed_gcmap_flights(@flights) %>
 <%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 
