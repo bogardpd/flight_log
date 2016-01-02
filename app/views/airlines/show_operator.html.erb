@@ -6,25 +6,26 @@
 
 	<div class="page_navigation">
 	  <ul>
-			<li><%= link_to("Flights", "#flights", :title => "Flights operated by #{@operator}") %></li>
+			<li><%= link_to("Map", "#map", :title => "Map of flights operated by #{@operator}") %></li>
 			<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator}") %></li>
 			<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft operated by #{@operator}") %></li>
 			<li><%= link_to("Classes", "#classes", :title => "Classes flown on flights operated by #{@operator}") %></li>
 			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@operator}") %></li>
 			<li><%= link_to("Fleet", "#fleet", :title => "#{@operator}'s Fleet") %></li>
+			<li><%= link_to("Flight List", "#flights", :title => "Flights operated by #{@operator}") %></li>
 	  </ul>
 	</div>
 
 <% end %>
 
-<a name="flights"></a>
+
 <p><span class="bold"><%= @operator.airline_name %></span> has operated <%= @flights.length %> of my flights.</p>
 
 <% if @flights.any? %>
 
+	<a name="map"></a>
 	<%= embed_gcmap_flights(@flights) %>
-	<%= distance_block(@total_distance, 'total') %>
-	<%= render "flights/flight_table" %>
+	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 
 	<a name="airlines"></a>
 	<h2>Airlines with Flights Operated by <%= @operator.airline_name %></h2>
@@ -66,8 +67,13 @@
 	<p>None of my flights operated by <%= @operator.airline_name %> have recorded fleet numbers.</p>
 
 	<% end %>
+	
+	<a name="flights"></a>
+	<h2>List of Flights Operated by <%= @operator.airline_name %></h2>
+	<%= render "flights/flight_table" %>
 
 <% end %>
+
 
 <% content_for :admin_actions do %>
   <% if @flights.length == 0 %>

@@ -39,8 +39,12 @@ module ApplicationHelper
     html.html_safe
   end
   
-  def distance_block(distance, adjective = nil)
-    html = "<p class=\"distance\">" + distance_string(distance, adjective) + "</p>"
+  def distance_block(distance, adjective: nil, flight_link: nil)
+    html = "<p class=\"distance\">" + distance_string(distance, adjective)
+    if flight_link
+      html += " &middot; " + link_to('See a list of these flights', '#flights')
+    end
+    html += "</p>"
     html.html_safe
   end
   

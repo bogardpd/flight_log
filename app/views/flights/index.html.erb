@@ -11,7 +11,7 @@
 <% if @flights.any? %>
 
 <%= embed_gcmap_flights(@flights) %>
-<%= distance_block(@total_distance, "total") %>
+<%= distance_block(@total_distance, adjective: "total") %>
 
 <a name="flight_list"></a>
 

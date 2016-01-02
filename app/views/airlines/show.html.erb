@@ -21,7 +21,7 @@
 
 	<a name="map"></a>
 	<%= embed_gcmap_flights(@flights) %>
-	<%= distance_block(@total_distance, 'total') %>
+	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 	
 	<a name="aircraft"></a>
 	<h2>Aircraft Flown on <%= @airline.airline_name %></h2>
