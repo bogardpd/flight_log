@@ -85,12 +85,12 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
     </tr>
   <% @aircraft_array.first(5).each do |aircraft| %>
     <tr>
-      <td class="left"><%= link_to(aircraft[:aircraft], show_aircraft_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
+      <td class="left"><%= link_to(aircraft[:aircraft], aircraft_families_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
       <td class="center"><%= aircraft[:count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@aircraft_array.count, 'aircraft family')}</span>".html_safe, aircraft_path)%></p>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@aircraft_array.count, 'aircraft family')}</span>".html_safe, aircraft_families_path)%></p>
 </div>
 
 <div class="intro_box column">

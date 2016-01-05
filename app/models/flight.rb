@@ -3,6 +3,7 @@ class Flight < ActiveRecord::Base
   belongs_to :origin_airport, :class_name => 'Airport'
   belongs_to :destination_airport, :class_name => 'Airport'
   belongs_to :airline
+  belongs_to :aircraft_family
   belongs_to :operator, :class_name => 'Airline'
   belongs_to :codeshare_airline, :class_name => 'Airline'
     

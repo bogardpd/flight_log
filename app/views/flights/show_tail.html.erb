@@ -16,7 +16,7 @@
 </div>
 
 
-<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family, show_aircraft_path(@flights.last.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flights.last.aircraft_family} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span> <%= pluralize(@flights.length, 'time') %>.</p>
+<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family, aircraft_families_path(@flights.last.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flights.last.aircraft_family} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
 <a name="map"></a>
 <%= embed_gcmap_flights(@flights) %>

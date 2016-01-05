@@ -85,11 +85,11 @@
     <% if @date_range.include?(Flight.aircraft_first_flight(aircraft)) %>
 			<td class="counter new"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
 			<% @new_aircraft_flag = true %>
-			<td class="aircraft_family new"><%= link_to(aircraft + "*", show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
+			<td class="aircraft_family new"><%= link_to(aircraft + "*", aircraft_families_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
 			<td class="aircraft_flights new"><%= render "graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
 		<% else %>
 			<td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
-			<td class="aircraft_family"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
+			<td class="aircraft_family"><%= link_to(aircraft, aircraft_families_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
 			<td class="aircraft_flights"><%= render "graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
 		<% end %>
     

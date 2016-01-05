@@ -172,8 +172,8 @@ class FlightsController < ApplicationController
     @flights = Flight.flights_table.where(:aircraft_family => @aircraft_family)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if @flights.length == 0
-    add_breadcrumb 'Aircraft Families', 'aircraft_path'
-    add_breadcrumb @aircraft_family, show_aircraft_path(@aircraft_family.gsub(" ", "_"))
+    add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
+    add_breadcrumb @aircraft_family, aircraft_families_path(@aircraft_family.gsub(" ", "_"))
     
     @total_distance = total_distance(@flights)
     
@@ -186,7 +186,7 @@ class FlightsController < ApplicationController
     
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldn't find any flights on #{@aircraft_family} aircraft. Instead, we'll give you a list of aircraft."
-    redirect_to aircraft_path
+    redirect_to aircraft_families_path
   end
   
     
@@ -406,7 +406,7 @@ class FlightsController < ApplicationController
   private
   
     def flight_params
-      params.require(:flight).permit(:aircraft_family, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
+      params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
     end
     
     def logged_in_user

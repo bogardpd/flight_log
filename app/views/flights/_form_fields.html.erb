@@ -35,8 +35,8 @@
 </p>
 
 <p>
-  <%= f.label :aircraft_family, "Aircraft Family" %> / <%= f.label :aircraft_variant, "Variant" %><br />
-  <%= f.text_field :aircraft_family %> <%= f.text_field :aircraft_variant %>
+  <%= f.label :aircraft_family_id, "Aircraft Family" %> / <%= f.label :aircraft_variant, "Variant" %><br />
+  <%= f.collection_select(:aircraft_family_id, AircraftFamily.order("LOWER(family_name)"), :id, :format_name, {include_blank: true}) %> <%= f.text_field :aircraft_variant %>
 </p>
 
 <p>

@@ -63,7 +63,7 @@
   <tr>
     <td class="flight_show_label">Aircraft</td>
     <td>
-      <%= link_to(@flight.aircraft_family, show_aircraft_path(@flight.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flight.aircraft_family} aircraft") %><% if @flight.aircraft_variant %>&emsp;<span class="flight_aircraft_variant"><%= @flight.aircraft_variant %></span><% end %>
+      <%= link_to(@flight.aircraft_family, aircraft_families_path(@flight.aircraft_family.gsub(" ", "_")), :title => "View flights on #{@flight.aircraft_family} aircraft") %><% if @flight.aircraft_variant %>&emsp;<span class="flight_aircraft_variant"><%= @flight.aircraft_variant %></span><% end %>
     </td>
   </tr>
   <% end %>

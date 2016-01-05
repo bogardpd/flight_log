@@ -15,7 +15,7 @@
   <% unless aircraft.nil? %>
   <tr>
     <td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
-		<td class="aircraft_family"><%= link_to(aircraft, show_aircraft_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
+		<td class="aircraft_family"><%= link_to(aircraft, aircraft_families_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
     <td class="aircraft_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
   </tr>
 		<% previous_count = frequency %>

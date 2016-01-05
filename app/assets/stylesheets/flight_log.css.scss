@@ -569,6 +569,10 @@ span.measurement_unit {
 	font-weight: 300;
 }
 
+span.aircraft_manufacturer {
+	font-weight: 300;
+}
+
 span.flight_aircraft_variant {
 	color: #54697F;
 	font-weight: 300;
@@ -676,11 +680,19 @@ td a {
 	text-shadow: 0px 1px 0px #FFFFFF;
 }
 
+td.aircraft_category, th.aircraft_category {
+	text-align: left;
+}
+
 td.aircraft_family, th.aircraft_family {
 	text-align: left;
 }
 
 td.aircraft_flights, th.aircraft_flights {
+	text-align: center;
+}
+
+td.aircraft_iata_code, th.aircraft_iata_code {
 	text-align: center;
 }
 

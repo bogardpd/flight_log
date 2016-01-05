@@ -4,11 +4,11 @@
 
 <p>I have flown on <%= pluralize(@aircraft_array.count, 'aircraft family') %>.</p>
 
-<% if @flight_aircraft.empty? %>
+<% if @flight_aircraft_families.empty? %>
 	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
 		<%= render 'error_no_flights' %>
 	<% else %>
-		<div class="alert">There are no flights in the flight log that include an aircraft type!</p>
+		<div class="alert">There are no flights in the flight log that include an aircraft type!</div>
 	<% end %>
 <% else %>
 
@@ -16,19 +16,47 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="aircraft_family"><%= sort_link("Aircraft Family", :aircraft, "aircraft", :asc, nil) %></th>
+		<th class="aircraft_iata_code"><%= sort_link("Code", :code, "code", :asc, nil) %></th>
+		<th class="aircraft_category">Category</th>
     <th class="aircraft_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
   </tr>
 <% previous_count = nil %>
-<% @aircraft_array.each_with_index do |aircraft, index| %>
+
+<% @aircraft_array.each_with_index do |aircraft_family, index| %>
   <tr>
-    <td class="counter"><%= (@sort_cat == :flights && aircraft[:count] == previous_count) ? "⋮" : index + 1 %></td>
-		<td class="aircraft_family"><%= link_to(aircraft[:aircraft], aircraft_family_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
-    <td class="aircraft_flights"><%= render "flights/graph_block", :value => aircraft[:count], :maximum => @aircraft_maximum %></td>
+    <td class="counter"><%= (@sort_cat == :flights && aircraft_family[:count] == previous_count) ? "⋮" : index + 1 %></td>
+		<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:name]}".html_safe, aircraft_family_path(aircraft_family[:iata_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:name]} aircraft") %></td>
+		<td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family[:iata_code], aircraft_family_path(aircraft_family[:iata_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:name]} aircraft") %></td>
+		<td class="aircraft_category"><%= AircraftFamily.categories_list[aircraft_family[:category]] %></td>
+    <td class="aircraft_flights"><%= render "flights/graph_block", :value => aircraft_family[:count], :maximum => @aircraft_maximum %></td>
   </tr>
-	<% previous_count = aircraft[:count] %>
+	<% previous_count = aircraft_family[:count] %>
 <% end %>
-  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@aircraft_array.count, 'aircraft family') %></td></tr>
+
+  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@aircraft_array.count, 'aircraft family') %></td></tr>
   
 </table>
 
+<% end %>
+
+<% if (logged_in? && @aircraft_families_with_no_flights.any?) %>
+	<h2>Aircraft Families with No Flights</h2>
+	<table class="flightlog">
+		<tr class="th">
+			<th class="aircraft_family">Aircraft Family</th>
+			<th class="aircraft_iata_code">Code</th>
+			<th class="aircraft_category">Category</th>
+		</tr>
+	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
+	  <tr>
+	    <td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family.manufacturer}</span> #{aircraft_family.family_name}".html_safe, aircraft_family_path(aircraft_family.iata_aircraft_code), :title => "View aircraft family details for #{aircraft_family.manufacturer} #{aircraft_family.family_name}") %></td>
+	    <td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family.iata_aircraft_code, aircraft_family_path(aircraft_family.iata_aircraft_code), :title => "View aircraft family details for #{aircraft_family.manufacturer} #{aircraft_family.family_name}") %></td>
+			<td class="aircraft_category"><%= AircraftFamily.categories_list[aircraft_family.category] %></td>
+		</tr>
+	<% end %>
+	</table>
+<% end %>
+
+<% content_for :admin_actions do %>
+  <%= link_to("Add New Aircraft Family", new_aircraft_family_path) %>
 <% end %>

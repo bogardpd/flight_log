@@ -1,0 +1,13 @@
+<h1>New Aircraft Family</h1>
+
+<%= form_for(@aircraft_family) do |f| %>
+
+  <%= render 'error_messages' %>
+  
+  <%= render :partial => 'form_fields', :locals => { :f => f } %>
+  
+  <p>
+    <%= f.submit "Add Aircraft Family" %>
+  </p>
+
+<% end %>

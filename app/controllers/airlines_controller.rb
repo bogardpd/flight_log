@@ -13,7 +13,7 @@ class AirlinesController < ApplicationController
       @flight_operators = Flight.visitor.where("operator_id IS NOT NULL").group("operator_id").count
     end
     used_airline_ids = (@flight_airlines.keys + @flight_operators.keys).uniq
-    @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) #UPDATE
+    @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name)
     
     
     
