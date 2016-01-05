@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  family_name: MyString
+  iata_aircraft_code: MyString
+  manufacturer: MyString
+  category: MyString
+
+two:
+  family_name: MyString
+  iata_aircraft_code: MyString
+  manufacturer: MyString
+  category: MyString

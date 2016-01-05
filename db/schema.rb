@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151230162055) do
+ActiveRecord::Schema.define(version: 20160105020319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "aircraft_families", force: :cascade do |t|
+    t.string   "family_name"
+    t.string   "iata_aircraft_code"
+    t.string   "manufacturer"
+    t.string   "category"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
 
   create_table "airlines", force: :cascade do |t|
     t.string   "iata_airline_code", null: false

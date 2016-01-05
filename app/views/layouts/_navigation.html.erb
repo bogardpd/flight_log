@@ -36,12 +36,12 @@
           <li><%= link_to("Airports", airports_path, :title => "View a list of airports Paul has visited")%></li>
         <% end %>
         
-        <% if (params[:controller] == "flights" && params[:action] == "index_aircraft") %>
-        <li class="active"><a class="active_non_link">Aircraft</a></li>
-        <% elsif (params[:controller] == "flights" && params[:action] == "show_aircraft") %>
-        <li class="active"><%= link_to("Aircraft", aircraft_path, :title => "View a list of the types of planes on which Paul has flown", :class => "active")%></li>
+        <% if (params[:controller] == "aircraft_families" && params[:action] == "index") %>
+        	<li class="active"><a class="active_non_link">Aircraft</a></li>
+        <% elsif (params[:controller] == "aircraft_families" && params[:action] == "show") %>
+        	<li class="active"><%= link_to("Aircraft", aircraft_families_path, :title => "View a list of the types of planes on which Paul has flown", :class => "active")%></li>
         <% else %>
-        <li><%= link_to("Aircraft", aircraft_path, :title => "View a list of the types of planes on which Paul has flown")%></li>
+        	<li><%= link_to("Aircraft", aircraft_families_path, :title => "View a list of the types of planes on which Paul has flown")%></li>
         <% end %>
         
         <% if (params[:controller] == "airlines" && params[:action] == "index") %>

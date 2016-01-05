@@ -8,6 +8,7 @@ Portfolio::Application.routes.draw do
   resources :flights
   resources :airports
   resources :airlines
+  resources :aircraft_families, path: :aircraft
   resources :trips
   resources :routes, :only => [:new, :show, :create, :update]
 
@@ -25,9 +26,9 @@ Portfolio::Application.routes.draw do
   match '/trips/:trip/section/:section' => 'trips#show_section', :as => :show_section, :via => [:get]
   match '/trips/sort/:sort_category/:sort_direction' => 'trips#index', :as => :sort_trips, :via => [:get]
   
-  match '/aircraft' => 'flights#index_aircraft', :via => [:get]
-  match '/aircraft/sort/:sort_category/:sort_direction' => 'flights#index_aircraft', :as => :sort_aircraft, :via => [:get]
-  match '/aircraft/:aircraft_family' => 'flights#show_aircraft', :as => :show_aircraft, :via => [:get]
+  #match '/aircraft' => 'flights#index_aircraft', :via => [:get]
+  #match '/aircraft/sort/:sort_category/:sort_direction' => 'flights#index_aircraft', :as => :sort_aircraft, :via => [:get]
+  #match '/aircraft/:aircraft_family' => 'flights#show_aircraft', :as => :show_aircraft, :via => [:get]
   
   match '/airlines/sort/:sort_category/:sort_direction' => 'airlines#index', :as => :sort_airlines, :via => [:get]
 

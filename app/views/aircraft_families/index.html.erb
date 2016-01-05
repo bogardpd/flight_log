@@ -1,0 +1,34 @@
+<h1>Aircraft Families</h1>
+
+<p>This listing shows how often I've flown on each particular type (family) of airplane. Each type of airplane may have several variants, but all of those variants have been included in each family's total.</p>
+
+<p>I have flown on <%= pluralize(@aircraft_array.count, 'aircraft family') %>.</p>
+
+<% if @flight_aircraft.empty? %>
+	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
+		<%= render 'error_no_flights' %>
+	<% else %>
+		<div class="alert">There are no flights in the flight log that include an aircraft type!</p>
+	<% end %>
+<% else %>
+
+<table class="flightlog">
+  <tr class="th">
+    <th class="counter">#</th>
+		<th class="aircraft_family"><%= sort_link("Aircraft Family", :aircraft, "aircraft", :asc, nil) %></th>
+    <th class="aircraft_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
+  </tr>
+<% previous_count = nil %>
+<% @aircraft_array.each_with_index do |aircraft, index| %>
+  <tr>
+    <td class="counter"><%= (@sort_cat == :flights && aircraft[:count] == previous_count) ? "⋮" : index + 1 %></td>
+		<td class="aircraft_family"><%= link_to(aircraft[:aircraft], aircraft_family_path(aircraft[:aircraft].gsub(" ", "_")), :title => "View flights on #{aircraft[:aircraft]} aircraft") %></td>
+    <td class="aircraft_flights"><%= render "flights/graph_block", :value => aircraft[:count], :maximum => @aircraft_maximum %></td>
+  </tr>
+	<% previous_count = aircraft[:count] %>
+<% end %>
+  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@aircraft_array.count, 'aircraft family') %></td></tr>
+  
+</table>
+
+<% end %>
