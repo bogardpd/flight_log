@@ -26,8 +26,8 @@ class Flight < ActiveRecord::Base
     order('flights.departure_utc')
   }
   scope :flights_table, -> {
-    select("flights.id, flights.flight_number, flights.departure_date, flights.origin_airport_id, flights.destination_airport_id, flights.trip_section, flights.trip_id, flights.aircraft_family, flights.travel_class, flights.airline_id, airlines.airline_name, airlines.iata_airline_code, airports.iata_code AS origin_iata_code, airports.id AS origin_airport_id, airports.city AS origin_city, airports.country AS origin_country, destination_airports_flights.iata_code AS destination_iata_code, destination_airports_flights.id AS destination_airport_id, destination_airports_flights.city AS destination_city, destination_airports_flights.country AS destination_country, trips.hidden, trips.name AS trip_name").
-    joins(:airline, :origin_airport, :destination_airport, :trip).
+    select("flights.id, flights.flight_number, flights.departure_date, flights.origin_airport_id, flights.destination_airport_id, flights.trip_section, flights.trip_id, flights.aircraft_family_id, flights.travel_class, flights.airline_id, airlines.airline_name, airlines.iata_airline_code, aircraft_families.family_name, aircraft_families.iata_aircraft_code, aircraft_families.manufacturer, airports.iata_code AS origin_iata_code, airports.id AS origin_airport_id, airports.city AS origin_city, airports.country AS origin_country, destination_airports_flights.iata_code AS destination_iata_code, destination_airports_flights.id AS destination_airport_id, destination_airports_flights.city AS destination_city, destination_airports_flights.country AS destination_country, trips.hidden, trips.name AS trip_name").
+    joins(:airline, :aircraft_family, :origin_airport, :destination_airport, :trip).
     order(:departure_utc)
   }  
   scope :visitor, -> {
@@ -102,7 +102,8 @@ class Flight < ActiveRecord::Base
   end
   
   def self.aircraft_first_flight(aircraft_family)
-    return Flight.where(:aircraft_family => aircraft_family).order(departure_date: :asc).first.departure_date
+    #return Flight.where(:aircraft_family => aircraft_family).order(departure_date: :asc).first.departure_date
+    return Flight.select("aircraft_families.iata_aircraft_code, flights.departure_date").joins(:aircraft_family).where("aircraft_families.iata_aircraft_code = ?", aircraft_family).order(departure_date: :asc).first.departure_date
   end
   
   def self.airline_first_flight(airline)

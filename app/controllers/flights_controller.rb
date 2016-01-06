@@ -240,10 +240,10 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Tail Numbers', 'tails_path'
     if logged_in?
       @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
-      @flight_tail_details = Flight.select(:tail_number, :aircraft_family, :airline_name, :iata_airline_code).joins(:airline).chronological.where("tail_number IS NOT NULL")
+      @flight_tail_details = Flight.select(:tail_number, :iata_aircraft_code, :airline_name, :iata_airline_code, :family_name, :manufacturer).joins(:airline, :aircraft_family).chronological.where("tail_number IS NOT NULL")
     else # Filter out hidden trips for visitors
       @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
-      @flight_tail_details = Flight.visitor.select(:tail_number, :aircraft_family, :airline_name, :iata_airline_code).joins(:airline).chronological.where("tail_number IS NOT NULL")
+      @flight_tail_details = Flight.visitor.select(:tail_number, :iata_aircraft_code, :airline_name, :iata_airline_code, :family_name, :manufacturer).joins(:airline, :aircraft_family).chronological.where("tail_number IS NOT NULL")
     end
     @title = "Tail Numbers"
     @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often he's flown on each."
@@ -287,15 +287,19 @@ class FlightsController < ApplicationController
       tails_airline_name_hash = Hash.new
       tails_airline_iata_hash = Hash.new
       tails_aircraft_hash = Hash.new
+      tails_manufacturer_hash = Hash.new
+      tails_aircraft_name_hash = Hash.new
       @flight_tail_details.each do |tail|
         tails_airline_name_hash[tail.tail_number] = tail.airline_name
         tails_airline_iata_hash[tail.tail_number] = tail.iata_airline_code
-        tails_aircraft_hash[tail.tail_number] = tail.aircraft_family
+        tails_aircraft_hash[tail.tail_number] = tail.iata_aircraft_code
+        tails_manufacturer_hash[tail.tail_number] = tail.manufacturer
+        tails_aircraft_name_hash[tail.tail_number] = tail.family_name
       end
     
       # Create table array
       tails_count.each do |tail|
-        @tail_numbers_table.push({:tail_number => tail[:tail_number], :count => tail[:count], :aircraft => tails_aircraft_hash[tail[:tail_number]] || "", :airline_name => tails_airline_name_hash[tail[:tail_number]] || "", airline_iata: tails_airline_iata_hash[tail[:tail_number]] || ""})
+        @tail_numbers_table.push({:tail_number => tail[:tail_number], :count => tail[:count], :aircraft => tails_aircraft_hash[tail[:tail_number]] || "", :airline_name => tails_airline_name_hash[tail[:tail_number]] || "", airline_iata: tails_airline_iata_hash[tail[:tail_number]] || "", manufacturer: tails_manufacturer_hash[tail[:tail_number]] || "", family_name: tails_aircraft_name_hash[tail[:tail_number]] || ""})
       end
     
       # Find maxima for graph scaling:

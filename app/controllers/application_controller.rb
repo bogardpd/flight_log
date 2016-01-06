@@ -24,12 +24,16 @@ protected
   def aircraft_frequency(flights)
     # Creates global variables containing the aircraft of a list of flights, and how many flights involving this list each aircraft has.
     aircraft_frequency_hash = Hash.new(0) # All aircraft start with 0 flights
-    flights.where("aircraft_family IS NOT NULL").each do |flight|
-      aircraft_frequency_hash[flight.aircraft_family] += 1
+    @aircraft_family_names = Hash.new
+    @aircraft_family_manufacturers = Hash.new
+    flights.where("aircraft_family_id IS NOT NULL").each do |flight|
+      aircraft_frequency_hash[flight.iata_aircraft_code] += 1
+      @aircraft_family_names[flight.iata_aircraft_code] ||= flight.family_name
+      @aircraft_family_manufacturers[flight.iata_aircraft_code] ||= flight.manufacturer
     end
     @aircraft_frequency_sorted = aircraft_frequency_hash.sort_by { |aircraft, frequency| [-frequency, aircraft] }
     @aircraft_frequency_maximum = aircraft_frequency_hash.values.max
-    @unknown_aircraft_flights = flights.length - flights.where("aircraft_family IS NOT NULL").length
+    @unknown_aircraft_flights = flights.length - flights.where("aircraft_family_id IS NOT NULL").length
   end
   
   def airline_frequency(flights)

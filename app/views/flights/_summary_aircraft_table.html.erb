@@ -8,20 +8,22 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="aircraft_family">Aircraft Family</th>
+		<th class="aircraft_iata_code">Code</th>
     <th class="aircraft_flights">Flights</th>
   </tr>
 <% previous_count = nil %>
 <% @aircraft_frequency_sorted.each_with_index do |(aircraft, frequency), index| %>
   <% unless aircraft.nil? %>
   <tr>
-    <td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
-		<td class="aircraft_family"><%= link_to(aircraft, aircraft_families_path(aircraft.gsub(" ", "_")), :title => "View all flights on #{aircraft} aircraft") %></td>
-    <td class="aircraft_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
+		<td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
+		<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{@aircraft_family_manufacturers[aircraft]}</span> #{@aircraft_family_names[aircraft]}".html_safe, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
+		<td class="aircraft_iata_code iata_mono"><%= link_to(aircraft, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
+		<td class="aircraft_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
   </tr>
 		<% previous_count = frequency %>
   <% end %>
 <% end %>
-  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@aircraft_frequency_sorted.count, 'aircraft family') %></td></tr>
+  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@aircraft_frequency_sorted.count, 'aircraft family') %></td></tr>
 </table>
 
 <% if @unknown_aircraft_flights > 1 %>
