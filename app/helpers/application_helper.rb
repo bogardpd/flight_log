@@ -17,6 +17,15 @@ module ApplicationHelper
     end
   end
   
+  def aircraft_icon_path(iata_aircraft_code)
+    image_location = "aircraft_icons/" + iata_aircraft_code + ".png"
+    if Rails.application.assets.find_asset(image_location)
+      image_location
+    else
+      "aircraft_icons/unknown-aircraft.png"
+    end
+  end
+  
   def airline_icon_path(iata_airline_code)
     image_location = "airline_icons/" + iata_airline_code + ".png"
     if Rails.application.assets.find_asset(image_location)

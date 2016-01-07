@@ -70,7 +70,7 @@ class AircraftFamiliesController < ApplicationController
       # Sort aircraft table:
       case @sort_cat
       when :aircraft
-        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| aircraft_family[:name].downcase }
+        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| [aircraft_family[:manufacturer].downcase, aircraft_family[:name].downcase] }
         @aircraft_array.reverse! if @sort_dir == :desc
       when :code
         @aircraft_array = @aircraft_array.sort_by { |aircraft_family| aircraft_family[:iata_code] }
