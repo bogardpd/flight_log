@@ -18,5 +18,9 @@ class AircraftFamily < ActiveRecord::Base
   def format_name
     return self.family_name
   end
+  
+  def full_name
+    return self.manufacturer + " " + self.family_name
+  end
 
 end

@@ -149,7 +149,7 @@ class AirlinesController < ApplicationController
     @fleet_name = Hash.new
     @flights.each do |flight|
       if flight.fleet_number
-        @fleet_family[flight.fleet_number] = flight.aircraft_family
+        @fleet_family[flight.fleet_number] = flight.family_name
         @fleet_name[flight.fleet_number] = flight.aircraft_name
       end
     end
@@ -233,13 +233,8 @@ class AirlinesController < ApplicationController
   end
   
   def destroy
-    if (Airline.exists?(params[:id]))
-      @airline = Airline.find(params[:id])
-    else
-      @airline = Airline.where(:iata_airport_code => params[:id]).first
-    end
-    @flights = @airline.all_flights(true)
-    if @flights.any?
+    @airline = Airline.find(params[:id])
+    if @airline.flights.any?
       flash[:error] = "This airline still has flights and could not be deleted. Please delete all of this airline's flights first."
       redirect_to airline_path(params[:id])
     else

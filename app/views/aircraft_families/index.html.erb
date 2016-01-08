@@ -24,7 +24,7 @@
 <% @aircraft_array.each_with_index do |aircraft_family, index| %>
   <tr>
     <td class="counter"><%= (@sort_cat == :flights && aircraft_family[:count] == previous_count) ? "⋮" : index + 1 %></td>
-		<td class="aircraft_family"><%= link_to("#{image_tag(aircraft_icon_path(aircraft_family[:iata_code]), alt: aircraft_family[:name], class: 'aircraft_icon')}<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:name]}".html_safe, aircraft_family_path(aircraft_family[:iata_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:name]} aircraft") %></td>
+		<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:name]}".html_safe, aircraft_family_path(aircraft_family[:iata_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:name]} aircraft") %></td>
 		<td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family[:iata_code], aircraft_family_path(aircraft_family[:iata_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:name]} aircraft") %></td>
     <td class="aircraft_flights"><%= render "flights/graph_block", :value => aircraft_family[:count], :maximum => @aircraft_maximum %></td>
   </tr>

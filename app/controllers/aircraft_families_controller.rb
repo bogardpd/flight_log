@@ -86,12 +86,28 @@ class AircraftFamiliesController < ApplicationController
   def show
     @aircraft_family = AircraftFamily.where(iata_aircraft_code: params[:id]).first
     raise ActiveRecord::RecordNotFound if (@aircraft_family.nil?) #all_flights will fail if code does not exist, so check here.    
-    #@flights = Flight.flights_table.where(airline_id: @airline.id)
-    #@flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
-  rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find an aircraft family with an IATA code of #{params[:id]}. Instead, we'll give you a list of aircraft families."
-    redirect_to aircraft_families_path
+    @logo_used = true
+    @title = @aircraft_family.full_name
+    @meta_description = "Maps and lists of Paul Bogard's flights on #{@aircraft_family} aircraft."
+    @flights = Flight.flights_table.where(:aircraft_family_id => @aircraft_family)
+    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
+    add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
+    add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family.iata_aircraft_code)
+    
+    @total_distance = total_distance(@flights)
+    
+    # Create comparitive lists of airlines and classes:
+    airline_frequency(@flights)
+    class_frequency(@flights)
+    
+    # Create superlatives:
+    @route_superlatives = superlatives(@flights)
+    
+    rescue ActiveRecord::RecordNotFound
+      flash[:record_not_found] = "We couldn't find an aircraft family with an IATA code of #{params[:id]}. Instead, we'll give you a list of aircraft families."
+      redirect_to aircraft_families_path
   end
   
   def new
@@ -108,6 +124,35 @@ class AircraftFamiliesController < ApplicationController
       redirect_to aircraft_family_path(@aircraft_family.iata_aircraft_code)
     else
       render 'new'
+    end
+  end
+  
+  def edit
+    @aircraft_family = AircraftFamily.find(params[:id])
+    add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
+    add_breadcrumb @aircraft_family.full_name, 'aircraft_family_path(@aircraft_family.iata_aircraft_code)'
+    add_breadcrumb 'Edit Aircraft Family', 'edit_aircraft_family_path(@aircraft_family)'
+  end
+  
+  def update
+    @aircraft_family = AircraftFamily.find(params[:id])
+    if @aircraft_family.update_attributes(aircraft_family_params)
+      flash[:success] = "Successfully updated aircraft family."
+      redirect_to aircraft_family_path(@aircraft_family.iata_aircraft_code)
+    else
+      render 'edit'
+    end
+  end
+  
+  def destroy
+    @aircraft_family = AircraftFamily.find(params[:id])
+    if @aircraft_family.flights.any?
+      flash[:error] = "This aircraft family still has flights and could not be deleted. Please delete all of this aircraft family's flights first."
+      redirect_to aircraft_family_path(@aircraft_family.iata_aircraft_code)
+    else
+      @aircraft_family.destroy
+      flash[:success] = "Aircraft family deleted."
+      redirect_to aircraft_families_path
     end
   end
   
