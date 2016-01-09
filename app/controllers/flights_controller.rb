@@ -164,32 +164,6 @@ class FlightsController < ApplicationController
     
   
     
-  def show_aircraft
-    @logo_used = true
-    @aircraft_family = params[:aircraft_family].gsub("_", " ")
-    @title = @aircraft_family
-    @meta_description = "Maps and lists of Paul Bogard's flights on #{@aircraft_family} aircraft."
-    @flights = Flight.flights_table.where(:aircraft_family => @aircraft_family)
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
-    raise ActiveRecord::RecordNotFound if @flights.length == 0
-    add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
-    add_breadcrumb @aircraft_family, aircraft_families_path(@aircraft_family.gsub(" ", "_"))
-    
-    @total_distance = total_distance(@flights)
-    
-    # Create comparitive lists of airlines and classes:
-    airline_frequency(@flights)
-    class_frequency(@flights)
-    
-    # Create superlatives:
-    @route_superlatives = superlatives(@flights)
-    
-  rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights on #{@aircraft_family} aircraft. Instead, we'll give you a list of aircraft."
-    redirect_to aircraft_families_path
-  end
-  
-    
   def index_classes
     add_breadcrumb 'Travel Classes', 'classes_path'
     if logged_in?
