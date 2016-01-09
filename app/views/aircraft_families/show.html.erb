@@ -1,4 +1,4 @@
-<div id="title_info"><%= iata_airline_code_display(@aircraft_family.iata_aircraft_code) %></div>
+<div id="title_info"><%= @aircraft_family.iata_aircraft_code %></div>
 
 <h1><%= @aircraft_family.full_name %></h1>
 
@@ -16,13 +16,15 @@
 
 <% end %>
 
+<%= aircraft_illustration(@aircraft_family.iata_aircraft_code) %>
+
 <p>I have flown on <span class="bold"><%= @aircraft_family.full_name %></span> aircraft <%= pluralize(@flights.length, 'time') %>.</p>
 
 <% if @flights.any? %>
 
 	<a name="map"></a>
 
-	<%= embed_gcmap_flights(@flights) %>
+	<%= embed_gcmap_flights(@flights, anchor: 'map') %>
 	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 
 	<a name="airlines"></a>

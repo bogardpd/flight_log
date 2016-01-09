@@ -3,6 +3,7 @@ $font-stack-monospace: 'Source Code Pro', monospace;
 
 $color-table-background: #FCFCFD;
 $color-table-border: rgb(190, 212, 234);
+$color-text-secondary: rgb(84, 105, 127);
 
 $margin-icon-to-text: 0.5em;
 $margin-paragraph: 10px;
@@ -354,6 +355,25 @@ div.hidden_trip {
 	padding: 5px;
 }
 
+div.illustration_container {
+	text-align: center;
+	margin: 5px;
+	
+	img {
+		max-width: 720px;
+		height: auto;
+	}
+}
+
+div.illustration_credit {
+	color: $color-text-secondary;
+	font-size: 55%;
+	font-weight: 600;
+	text-transform: uppercase;
+	text-align: center;
+	margin: 5px;
+	opacity: 0.6;
+}
 
 div.intro_box {
 	padding: 10px;
@@ -597,6 +617,8 @@ span.flight_section_route {
 	color: #54697F;
 	font-size: 85%;
 }
+
+
 
 span.sort_symbol {
 	font-size: 70%;
@@ -864,7 +886,7 @@ td.tail_flights, th.tail_flights {
 }
 
 td.tail_aircraft {
-	color: #999999;
+	color: $color-text-secondary;
 	text-align: center;
 }
 

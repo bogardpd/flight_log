@@ -190,7 +190,7 @@ module ApplicationHelper
   # +flight_collection+:: collection of Flight objects to be mapped
   # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
   # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
-  def embed_gcmap_flights(flight_collection, use_regions: true)
+  def embed_gcmap_flights(flight_collection, use_regions: true, anchor: nil)
     if use_regions == false
       region = :world
     elsif params[:region]
@@ -209,7 +209,7 @@ module ApplicationHelper
     html = ""
     
     if use_regions
-      html += gcmap_region_select_links(region)
+      html += gcmap_region_select_links(region, anchor: anchor)
     end
     
     html += gcmap_map_link(route_string, airport_options, map_center)
