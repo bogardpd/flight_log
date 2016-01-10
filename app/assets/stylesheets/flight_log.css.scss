@@ -355,6 +355,15 @@ div.hidden_trip {
 	padding: 5px;
 }
 
+div.iata_info {
+	float: right;
+	font-family: $font-stack-monospace;
+	font-weight: 300;
+	margin-left: $margin-icon-to-text;
+	border: 1px solid $color-table-border;
+	padding: 0 10px;
+}
+
 div.illustration_container {
 	text-align: center;
 	margin: 5px;
