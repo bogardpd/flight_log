@@ -8,6 +8,7 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="class_class">Travel Class</th>
+		<th class="class_iata_code">Code</th>
     <th class="class_flights">Flights</th>
   </tr>
 <% previous_count = nil %>
@@ -15,7 +16,8 @@
   <% unless travel_class.nil? %>
   <tr>
     <td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
-		<td class="class_class"><%= link_to(travel_class, show_class_path(travel_class), :title => "View #{travel_class.downcase} class flights") %></td>
+		<td class="class_class"><%= link_to(Flight.classes_list[travel_class], show_class_path(travel_class), :title => "View #{Flight.classes_list[travel_class].downcase} class flights") %></td>
+		<td class="class_iata_code iata_mono"><%= link_to(travel_class, show_class_path(travel_class), :title => "View #{Flight.classes_list[travel_class].downcase} class flights") %></td>
     <td class="class_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @class_frequency_maximum %></td>
   </tr>
 		<% previous_count = frequency %>

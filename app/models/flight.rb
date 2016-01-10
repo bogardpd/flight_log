@@ -6,8 +6,17 @@ class Flight < ActiveRecord::Base
   belongs_to :aircraft_family
   belongs_to :operator, :class_name => 'Airline'
   belongs_to :codeshare_airline, :class_name => 'Airline'
+  
+  def self.classes_list
+    classes = Hash.new
+    classes['F'] = 'First'
+    classes['J'] = 'Business'
+    classes['W'] = 'Premium Economy'
+    classes['Y'] = 'Economy'
+    return classes
+  end
     
-  NULL_ATTRS = %w( flight_number aircraft_family aircraft_variant aircraft_name tail_number travel_class comment fleet_number )
+  NULL_ATTRS = %w( flight_number aircraft_variant aircraft_name tail_number travel_class comment fleet_number boarding_pass_data )
   STRIP_ATTRS = %w( operator fleet_number aircraft_family aircraft_variant aircraft_name tail_number, boarding_pass_data )
   
   before_save :nil_if_blank
@@ -20,7 +29,7 @@ class Flight < ActiveRecord::Base
   validates :departure_date, :presence => true
   validates :departure_utc, :presence => true
   validates :airline_id, presence: true
-  validates :travel_class, :inclusion => { :in => %w(Economy Business First), :message => "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
+  validates :travel_class, :inclusion => { in: classes_list.keys, message: "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
   scope :chronological, -> {
     order('flights.departure_utc')

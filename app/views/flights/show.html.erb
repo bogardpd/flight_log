@@ -41,7 +41,7 @@
     <td class="flight_show_label">Airline</td>
     <td class="flight_show_airline">
 			<%= link_to("#{image_tag(airline_icon_path(@flight.airline.iata_airline_code), alt: @flight.airline.airline_name, class: 'airline_icon')}#{@flight.airline.airline_name}".html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %>
-			<div class="iata_info"><%= @flight.airline.iata_airline_code %></div></td>
+			<div class="iata_info"><%= iata_airline_code_display(@flight.airline.iata_airline_code) %></div></td>
   </tr>
   <% if @flight.operator %>
   <tr>
@@ -49,7 +49,7 @@
     <td class="flight_show_airline">
 			<%= link_to("#{image_tag(airline_icon_path(@flight.operator.iata_airline_code), alt: @flight.operator.airline_name, class: 'airline_icon')}#{@flight.operator.airline_name}".html_safe, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %>
 			<% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.iata_airline_code, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %>
-			<div class="iata_info"><%= @flight.operator.iata_airline_code %></td>
+			<div class="iata_info"><%= iata_airline_code_display(@flight.operator.iata_airline_code) %></td>
   </tr>
   <% end %>
   <% if @flight.codeshare_airline %>
@@ -57,14 +57,17 @@
     <td class="flight_show_label">Codeshare</td>
     <td class="flight_show_airline">
 			<%= image_tag(airline_icon_path(@flight.codeshare_airline.iata_airline_code), alt: @flight.codeshare_airline.airline_name, class: 'airline_icon') %><%= @flight.codeshare_airline.airline_name %> <%= @flight.codeshare_flight_number %>
-			<div class="iata_info"><%= @flight.codeshare_airline.iata_airline_code %></td>
+			<div class="iata_info"><%= iata_airline_code_display(@flight.codeshare_airline.iata_airline_code) %></td>
 		</td>
   </tr>
   <% end %>
   <% if @flight.travel_class %>
   <tr>
     <td class="flight_show_label">Travel Class</td>
-    <td><%= link_to(@flight.travel_class.titlecase, show_class_path(@flight.travel_class.titlecase), :title => "View #{@flight.travel_class.downcase} class flights") %></td>
+    <td>
+			<%= link_to(Flight.classes_list[@flight.travel_class].titlecase, show_class_path(@flight.travel_class.titlecase), :title => "View #{Flight.classes_list[@flight.travel_class].downcase} class flights") %>
+			<div class="iata_info"><%= @flight.travel_class %></td>
+		</td>
   </tr>
   <% end %>
   <% if @flight.aircraft_family.family_name %>

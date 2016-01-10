@@ -51,7 +51,7 @@
 
 <p>
   <%= f.label :travel_class, "Travel Class" %><br />
-  <%= f.select(:travel_class, options_for_select([['Economy','Economy'],['Business','Business'],['First','First']], @flight.travel_class), :include_blank => true)%>
+  <%= f.select(:travel_class, options_for_select(Flight.classes_list.invert, @flight.travel_class), :include_blank => true)%>
 </p>
 
 <p>
