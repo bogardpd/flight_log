@@ -197,8 +197,10 @@ class FlightsController < ApplicationController
     
       sort_mult = (@sort_dir == :asc ? 1 : -1)
       
+      total_flights_with_class = 0
       @flight_classes.each do |travel_class, count| 
         @classes_array.push({:travel_class => travel_class, :count => count})
+        total_flights_with_class += count
       end
       
       # Find maxima for graph scaling:
@@ -213,8 +215,7 @@ class FlightsController < ApplicationController
         @classes_array = @classes_array.sort_by { |travel_class| [sort_mult*travel_class[:count], travel_class[:travel_class]] }
       end
       
-      #@classes_array = @classes_array.sort_by { |travel_class| [-travel_class[:count], travel_class[:travel_class]] }
-      #@classes_maximum = @classes_array.first[:count]
+      @unknown_class_flights = Flight.all.length - total_flights_with_class
     end
   end
   

@@ -26,4 +26,10 @@
 <% end %>
 </table>
 
+<% if @unknown_class_flights > 1 %>
+<p class="center"><%= @unknown_class_flights %> flights with unknown classes are not included in this table.</p>
+<% elsif @unknown_class_flights > 0 %>
+<p class="center">1 flight with an unknown class is not included in this table.</p>
+<% end %>
+
 <% end %>
