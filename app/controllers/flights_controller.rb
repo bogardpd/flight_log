@@ -379,7 +379,7 @@ class FlightsController < ApplicationController
   def create
     @flight = Trip.find(params[:flight][:trip_id]).flights.new(flight_params)
     if @flight.save
-      flash[:success] = "Successfully added #{params[:flight][:airline]} #{params[:flight][:flight_number]}."
+      flash[:success] = "Successfully added #{@flight.airline.airline_name} #{@flight.flight_number}."
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
         flash[:success] += " You've had prior flights on this tail!"
       end
