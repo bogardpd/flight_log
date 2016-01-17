@@ -4,6 +4,7 @@
   <ul>
 		<li><%= link_to("Map", "#map", :title => "Map of flights flown in #{@title.downcase}") %></li>
 		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{@title.downcase} flights") %></li>
+		<li><%= link_to("Operators", "#operators", :title => "Operators with #{@title.downcase} flights") %></li>
 		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft with #{@title.downcase} flights") %></li>
 		<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown in #{@title.downcase}") %></li>
 		<li><%= link_to("Flight List", "#flights", :title => "Flights flown in #{@title.downcase}") %></li>
@@ -21,6 +22,10 @@
 <a name="airlines"></a>
 <h2>Airlines with <%= @title %> Flights</h2>
 <%= render "summary_airline_table" %>
+
+<a name="operators"></a>
+<h2>Operators with <%= @title %> Flights</h2>
+<%= render "summary_operator_table" %>
 
 <a name="aircraft"></a>
 <h2>Aircraft with <%= @title %> Flights</h2>

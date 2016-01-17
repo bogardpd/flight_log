@@ -6,11 +6,12 @@
 
 	<div class="page_navigation">
 	  <ul>
-			<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@aircraft_family}") %></li>
-			<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{@aircraft_family} flights") %></li>
-			<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@aircraft_family}") %></li>
-			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@aircraft_family}") %></li>
-			<li><%= link_to("Flight List", "#flights", :title => "Flights flown on #{@aircraft_family}") %></li>
+			<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@aircraft_family.family_name}") %></li>
+			<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{@aircraft_family.family_name} flights") %></li>
+			<li><%= link_to("Operators", "#operators", :title => "Operators with #{@aircraft_family.family_name} flights") %></li>
+			<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@aircraft_family.family_name}") %></li>
+			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@aircraft_family.family_name}") %></li>
+			<li><%= link_to("Flight List", "#flights", :title => "Flights flown on #{@aircraft_family.family_name}") %></li>
 	  </ul>
 	</div>
 
@@ -29,8 +30,11 @@
 
 	<a name="airlines"></a>
 	<h2>Airlines with <%= @aircraft_family.family_name %> Flights</h2>
-
 	<%= render "flights/summary_airline_table" %>
+
+	<a name="operators"></a>
+	<h2>Operators with <%= @aircraft_family.family_name %> Flights</h2>
+	<%= render "flights/summary_operator_table" %>
 
 	<a name="classes"></a>
 	<h2>Classes Flown on <%= @aircraft_family.family_name %> Aircraft</h2>

@@ -9,6 +9,7 @@
 		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Airports", "#airports", :title => "Origin and destination airports for #{@airport.iata_code}") %></li>
 		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Operators", "#operators", :title => "Operators using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Classes", "#classes", :title => "Classes flown to or from #{@airport.iata_code}") %></li>
 		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections using #{@airport.iata_code}") %></li>
@@ -67,8 +68,11 @@
 
 	<a name="airlines"></a>
 	<h2>Airlines Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
-
 	<%= render "flights/summary_airline_table" %>
+	
+	<a name="operators"></a>
+	<h2>Operators Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<%= render "flights/summary_operator_table" %>
 
 	<a name="aircraft"></a>
 	<h2>Aircraft Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>

@@ -233,8 +233,9 @@ class FlightsController < ApplicationController
 
     @total_distance = total_distance(@flights)
 
-    # Create comparitive lists of airlines and aircraft:
+    # Create comparitive lists of airlines, operators, and aircraft:
     airline_frequency(@flights)
+    operator_frequency(@flights)
     aircraft_frequency(@flights)
 
     # Create superlatives:
@@ -334,7 +335,7 @@ class FlightsController < ApplicationController
   def show_tail
     @logo_used = true
     @flights = Flight.where(:tail_number => params[:tail_number])
-    @flight_operators = @flights.where("operator_id IS NOT NULL").group("operator").count
+    #@flight_operators = @flights.where("operator_id IS NOT NULL").group("operator").count
     @flights = @flights.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
@@ -347,23 +348,15 @@ class FlightsController < ApplicationController
     
     @total_distance = total_distance(@flights)
     
-    # Create comparitive list of classes:
+    # Create comparitive list of operators and classes:
+    operator_frequency(@flights)
     class_frequency(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
     
-    # Create list of fleet numbers used by this tail:
-    @operators_array = Array.new
-    @flight_operators.each do |operator, count|
-      @operators_array.push({name: operator.airline_name, iata_code: operator.iata_airline_code, count: count})
-    end
-    @operators_array = @operators_array.sort_by { |operator| [-operator[:count], operator[:operator]] }
-    @operators_maximum = @flight_operators.length > 0 ? @operators_array.first[:count] : 1
-    
-    
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights with the tail number #{params[:tail_number]}. Instead, we'll give you a list of tail numbers."
+   flash[:record_not_found] = "We couldn't find any flights with the tail number #{params[:tail_number]}. Instead, we'll give you a list of tail numbers."
     redirect_to tails_path
   end
   

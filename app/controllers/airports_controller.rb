@@ -199,6 +199,7 @@ class AirportsController < ApplicationController
     
     # Create comparitive lists of airlines, aircraft, and classes:
     airline_frequency(@flights)
+    operator_frequency(@flights)
     aircraft_frequency(@flights)
     class_frequency(@flights)
     

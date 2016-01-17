@@ -100,6 +100,7 @@ class AircraftFamiliesController < ApplicationController
     
     # Create comparitive lists of airlines and classes:
     airline_frequency(@flights)
+    operator_frequency(@flights)
     class_frequency(@flights)
     
     # Create superlatives:

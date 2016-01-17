@@ -5,10 +5,12 @@
 <% if @flights.any? %>
 	<div class="page_navigation">
 	  <ul>
-			<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@airline}") %></li>
-			<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft flown on #{@airline}") %></li>
-			<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@airline}") %></li>
-			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@airline}") %></li><li><%= link_to("Flight List", "#flights", :title => "Flights flown on #{@airline}") %></li>
+			<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@airline.airline_name}") %></li>
+			<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft flown on #{@airline.airline_name}") %></li>
+			<li><%= link_to("Operators", "#operators", :title => "Operators for #{@airline.airline_name} flights") %></li>
+			<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@airline.airline_name}") %></li>
+			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@airline.airline_name}") %></li>
+			<li><%= link_to("Flight List", "#flights", :title => "Flights flown on #{@airline.airline_name}") %></li>
 			
 	  </ul>
 	</div>
@@ -25,17 +27,18 @@
 	
 	<a name="aircraft"></a>
 	<h2>Aircraft Flown on <%= @airline.airline_name %></h2>
-
 	<%= render "flights/summary_aircraft_table" %>
+	
+	<a name="operators"></a>
+	<h2>Operators for <%= @airline.airline_name %> Flights</h2>
+	<%= render "flights/summary_operator_table" %>
 
 	<a name="classes"></a>
 	<h2>Classes Flown on <%= @airline.airline_name %></h2>
-
 	<%= render "flights/summary_travel_class_table" %>
 
 	<a name="superlatives"></a>
 	<h2>Longest and Shortest Routes Flown on <%= @airline.airline_name %></h2>
-
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 	
 	<a name="flights"></a>

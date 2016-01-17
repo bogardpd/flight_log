@@ -4,6 +4,7 @@
   <ul>
 		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airports[0]} - #{@airports[1]}") %></li>
 		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airports[0]} - #{@airports[1]}") %></li>
+		<li><%= link_to("Operators", "#operators", :title => "Operators using #{@airports[0]} - #{@airports[1]}") %></li>
 		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airports[0]} - #{@airports[1]}") %></li>
 		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@airports[0]} - #{@airports[1]}") %></li>
 		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections with a #{@airports[0]} - #{@airports[1]} flight") %></li>
@@ -26,17 +27,18 @@
 
 <a name="airlines"></a>
 <h2>Airlines Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
-
 <%= render "flights/summary_airline_table" %>
+
+<a name="operators"></a>
+<h2>Operators Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
+<%= render "flights/summary_operator_table" %>
 
 <a name="aircraft"></a>
 <h2>Aircraft Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
-
 <%= render "flights/summary_aircraft_table" %>
 
 <a name="classes"></a>
 <h2>Classes Flown on <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
-
 <%= render "flights/summary_travel_class_table" %>
 
 <a name="sections"></a>

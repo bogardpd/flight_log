@@ -48,6 +48,25 @@ protected
     @airline_frequency_maximum = airline_frequency_hash.values.max
   end
   
+  def operator_frequency(flights)
+    # Creates global variables containing the operators of a list of flights, and how many flights involving this list each operator has.
+    operator_frequency_hash = Hash.new(0) # All operators start with 0 flights
+    @operator_names = Hash.new
+    if flights.where("operator_id IS NOT NULL").any?
+      flights.where("operator_id IS NOT NULL").each do |flight|
+        operator_frequency_hash[flight.operator_iata_airline_code] += 1
+        @operator_names[flight.operator_iata_airline_code] ||= flight.operator_name
+      end
+      @operator_frequency_sorted = operator_frequency_hash.sort_by { |airline, frequency| [-frequency, airline] }
+      @operator_frequency_maximum = operator_frequency_hash.values.max
+      @unknown_operator_flights = flights.length - flights.where("operator_id IS NOT NULL").length
+    else
+      @operator_frequency_sorted = nil
+      @operator_frequency_maximum = nil
+      @unknown_operator_flights = nil
+    end
+  end
+  
   def class_frequency(flights)
     # Creates global variables containing the classes of a list of flights, and how many flights involving this list each class has.
     class_frequency_hash = Hash.new(0) # All classes start with 0 flights

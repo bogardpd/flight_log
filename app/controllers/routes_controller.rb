@@ -122,11 +122,6 @@ class RoutesController < ApplicationController
     section_where_array.uniq!
     
     # Create list of trips sorted by first flight:
-#    if logged_in?
-#      @trips = Trip.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
-#    else
-#      @trips = Trip.visitor.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
-#    end
     
     if logged_in?
       @trips = Flight.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", trip_array])
@@ -136,6 +131,7 @@ class RoutesController < ApplicationController
     
     # Create comparitive lists of airlines, aircraft, and classes:
     airline_frequency(@flights)
+    operator_frequency(@flights)
     aircraft_frequency(@flights)
     class_frequency(@flights)
     

@@ -1,0 +1,39 @@
+<% if @operator_frequency_sorted.nil? %>
+
+	<p>In many cases, an airline subcontracts another airline to operate flights for them.</p>
+	<div class="alert">All of these flights have unknown operators.</div>
+
+<% elsif @airline_frequency_sorted && (@airline_frequency_sorted == @operator_frequency_sorted) %>
+
+	<p>In many cases, an airline subcontracts another airline to operate flights for them. However, all of these flights were operated by <%= (params[:controller] == 'airlines' && params[:action] == 'show') ? @airline.airline_name : "their advertised airline" %>.</p>
+
+<% else %>
+
+	<p>In many cases, an airline subcontracts another airline to operate flights for them. This is a table of the airlines that actually operated these flights.</p>
+	<table class="flightlog">
+	  <tr class="th">
+			<th class="counter">#</th>
+	    <th class="airline_airline">Operator</th>
+			<th class="airline_iata_code">Code</th>
+	    <th class="airline_flights">Flights</th>
+	  </tr>
+	<% previous_count = nil %>
+	<% @operator_frequency_sorted.each_with_index do |(operator, frequency), index| %>
+	  <tr>
+	    <td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
+			<td class="airline_airline"><%= link_to(image_tag(airline_icon_path(operator), :title => @operator_names[operator], :class => 'airline_icon') + @operator_names[operator], show_operator_path(operator), :title => "View flights operated by #{@operator_names[operator]}") %></td>
+			<td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(operator), show_operator_path(operator), :title => "View flights operated by #{@operator_names[operator]}") %></td>
+	    <td class="airline_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @operator_frequency_maximum %></td>
+	  </tr>
+		<% previous_count = frequency %>
+	<% end %>
+	  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@operator_frequency_sorted.count, 'operator') %></td></tr>
+	</table>
+
+	<% if @unknown_operator_flights > 1 %>
+		<p class="center"><%= @unknown_operator_flights %> flights with unknown operators are not included in this table.</p>
+	<% elsif @unknown_operator_flights > 0 %>
+		<p class="center">1 flight with an unknown operator is not included in this table.</p>
+	<% end %>
+
+<% end %>

@@ -109,6 +109,8 @@ class AirlinesController < ApplicationController
     @total_distance = total_distance(@flights)
     
     # Create comparitive lists of aircraft and classes:
+    airline_frequency(@flights) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
+    operator_frequency(@flights)
     aircraft_frequency(@flights)
     class_frequency(@flights)
     
