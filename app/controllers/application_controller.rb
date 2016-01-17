@@ -81,7 +81,20 @@ protected
       return false
     end
   end
+  
+  def superlatives(flights)
+    # This function takes a collection of flights and returns a superlatives collection.
+    route_distances = Hash.new()
+    route_hash = Hash.new()
+    Route.find_by_sql("SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_hash[[x.iata1,x.iata2]] = x.distance_mi }
+    flights.each do |flight|
+      airport_alphabetize = [flight.origin_iata_code,flight.destination_iata_code].sort
+      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_hash[[airport_alphabetize[0],airport_alphabetize[1]]] || route_hash[[airport_alphabetize[1],airport_alphabetize[0]]] || -1
+    end
+    return superlatives_collection(route_distances)
     
+  end
+  
   def superlatives_collection(route_distances)
     # accept a hash of distances in format distances[[airport1,airport2]] = distance and return a hash of hashes of superlative distances
     return false if route_distances.length == 0
@@ -93,18 +106,6 @@ protected
     route_superlatives[:min] = route_distances.select{|k,v| v == route_min}
     route_superlatives[:zero] = route_distances.select{|k,v| v == 0}
     return route_superlatives
-  end
-  
-  def superlatives(flights)
-    # This function takes a collection of flights and returns a superlatives collection.
-    route_distances = Hash.new()
-    route_hash = Hash.new()
-    Route.find_by_sql("SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_hash[[x.iata1,x.iata2]] = x.distance_mi }
-    flights.each do |flight|
-      airport_alphabetize = [flight.origin_iata_code,flight.destination_iata_code].sort
-      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_hash[[airport_alphabetize[0],airport_alphabetize[1]]] || route_hash[[airport_alphabetize[1],airport_alphabetize[0]]] || 0
-    end
-    return superlatives_collection(route_distances)
   end
   
   def total_distance(flights)

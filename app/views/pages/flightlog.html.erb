@@ -117,12 +117,10 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
 <div class="intro_box column">
   <h2>Superlatives</h2>
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
-	
 </div>
 <% end %>
 
 </div>
-
 <% end %>
 
 <p class="center">Flights from trips in progress are not shown until the trip is complete.</p>
