@@ -1,4 +1,4 @@
-<% if superlatives %>
+<% if superlatives && superlatives[:max].first[1] >= 0 %>
 <table class="flightlog">
 	<% if superlatives[:max].length > 0 %>
 	<tr>
