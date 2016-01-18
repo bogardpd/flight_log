@@ -348,7 +348,8 @@ class FlightsController < ApplicationController
     
     @total_distance = total_distance(@flights)
     
-    # Create comparitive list of operators and classes:
+    # Create comparitive list of airlines, operators, and classes:
+    airline_frequency(@flights)
     operator_frequency(@flights)
     class_frequency(@flights)
     
@@ -376,6 +377,9 @@ class FlightsController < ApplicationController
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
         flash[:success] += " You've had prior flights on this tail!"
       end
+      if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
+        flash[:alert] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they're correct?".html_safe
+      end
       redirect_to @flight
     else
       render 'new'
@@ -396,6 +400,9 @@ class FlightsController < ApplicationController
       flash[:success] = "Successfully updated flight."
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
         flash[:success] += " You've had prior flights on this tail!"
+      end
+      if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
+        flash[:alert] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they're correct?".html_safe
       end
       redirect_to @flight
     else

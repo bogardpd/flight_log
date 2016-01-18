@@ -8,6 +8,7 @@
 	<ul>
 		<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{params[:tail_number]}") %></li>
 		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{params[:tail_number]}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{params[:tail_number]}") %></li>
 		<li><%= link_to("Operators", "#operators", :title => "Operators using #{params[:tail_number]}") %></li>
 		<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{params[:tail_number]}") %></li>
 		<li><%= link_to("Flight List", "#flights", :title => "Flights flown on #{params[:tail_number]}") %></li>
@@ -27,9 +28,12 @@
 <h2>Classes Flown on <%= params[:tail_number] %></h2>
 <%= render "summary_travel_class_table" %>
 
+<a name="airlines"></a>
+<h2>Airlines Using <%= params[:tail_number] %></h2>
+<%= render "summary_airline_table" %>
+
 <a name="operators"></a>
 <h2>Operators Using <%= params[:tail_number] %></h2>
-
 <%= render "summary_operator_table" %>
 
 <a name="superlatives"></a>
