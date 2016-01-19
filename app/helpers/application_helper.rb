@@ -1,7 +1,7 @@
 module ApplicationHelper
   
   def title_flight_log
-    base_title = "Paul Bogard's Flight Log"
+    base_title = "Paul Bogard's Flight Historian"
     if @title.nil?
       base_title
     else
