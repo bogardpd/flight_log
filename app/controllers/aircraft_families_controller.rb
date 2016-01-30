@@ -18,7 +18,7 @@ class AircraftFamiliesController < ApplicationController
     end
     
     @title = "Aircraft"
-    @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often he's flown on each."
+    @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often heʼs flown on each."
     
     @aircraft_array = Array.new
     
@@ -89,7 +89,7 @@ class AircraftFamiliesController < ApplicationController
     
     @logo_used = true
     @title = @aircraft_family.full_name
-    @meta_description = "Maps and lists of Paul Bogard's flights on #{@aircraft_family} aircraft."
+    @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft."
     @flights = Flight.flights_table.where(:aircraft_family_id => @aircraft_family)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
@@ -107,7 +107,7 @@ class AircraftFamiliesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldn't find an aircraft family with an IATA code of #{params[:id]}. Instead, we'll give you a list of aircraft families."
+      flash[:record_not_found] = "We couldnʼt find an aircraft family with an IATA code of #{params[:id]}. Instead, weʼll give you a list of aircraft families."
       redirect_to aircraft_families_path
   end
   
@@ -148,7 +148,7 @@ class AircraftFamiliesController < ApplicationController
   def destroy
     @aircraft_family = AircraftFamily.find(params[:id])
     if @aircraft_family.flights.any?
-      flash[:error] = "This aircraft family still has flights and could not be deleted. Please delete all of this aircraft family's flights first."
+      flash[:error] = "This aircraft family still has flights and could not be deleted. Please delete all of this aircraft familyʼs flights first."
       redirect_to aircraft_family_path(@aircraft_family.iata_aircraft_code)
     else
       @aircraft_family.destroy

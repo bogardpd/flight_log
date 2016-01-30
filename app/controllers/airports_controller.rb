@@ -5,7 +5,7 @@ class AirportsController < ApplicationController
   def index
     add_breadcrumb 'Airports', 'airports_path'
     @title = "Airports"
-    @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often he's visited them."
+    @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often heʼs visited them."
     @flights = Flight.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
 
@@ -206,12 +206,12 @@ class AirportsController < ApplicationController
     
     
     @title = @airport.iata_code
-    @meta_description = "Maps and lists of Paul Bogard's flights through #{@airport.iata_code} - #{@airport.city}."
+    @meta_description = "Maps and lists of Paul Bogardʼs flights through #{@airport.iata_code} – #{@airport.city}."
     
     add_breadcrumb 'Airports', 'airports_path'
     add_breadcrumb @title, "airport_path(@airport.iata_code)"
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find an airport with an ID of #{params[:id]}. Instead, we'll give you a list of airports."
+    flash[:record_not_found] = "We couldnʼt find an airport with an ID of #{params[:id]}. Instead, weʼll give you a list of airports."
     redirect_to airports_path
   end
   
@@ -257,7 +257,7 @@ class AirportsController < ApplicationController
   def destroy
     @flights = Flight.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => params[:id]})
     if @flights.any?
-      flash[:error] = "This airport still has flights and could not be deleted. Please delete all of this airport's flights first."
+      flash[:error] = "This airport still has flights and could not be deleted. Please delete all of this airportʼs flights first."
       redirect_to airport_path(params[:id])
     else
       if (Airport.exists?(params[:id]))

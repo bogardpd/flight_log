@@ -5,7 +5,7 @@ class PagesController < ApplicationController
   
   def flightlog
     # Flight Log Index
-    @meta_description = "Paul Bogard's Flight Log shows maps and tables for various breakdowns of Paul's flight history."
+    @meta_description = "Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history."
     @logo_used = true
     @default_region = :conus
     

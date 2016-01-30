@@ -4,12 +4,12 @@
 
 <div class="page_navigation">
   <ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights on #{@operator} ##{@fleet_number}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator} ##{@fleet_number}") %></li>
-		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft operated by #{@operator} ##{@fleet_number}") %></li>
-		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@operator} ##{@fleet_number}") %></li>
-				<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@operator} ##{@fleet_number}") %></li>
-				<li><%= link_to("Flight List", "#flights", :title => "Flights on #{@operator} ##{@fleet_number}") %></li>
+		<li><%= link_to("Map", "#map", :title => "Map of flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Classes", "#classes", :title => "Classes operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
+				<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
+				<li><%= link_to("Flight List", "#flights", :title => "Flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
   </ul>
 </div>
 

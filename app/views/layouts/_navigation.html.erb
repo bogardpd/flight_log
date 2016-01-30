@@ -5,7 +5,7 @@
         <% if (params[:controller] == "pages" && params[:action] == "flightlog") %>
           <li class="active"><a class="active_non_link">Home</a></li>
         <% else %>
-          <li><%= link_to("Home", root_path, :title => "View the home page of Paul Bogard's Flight Log") %></li>
+          <li><%= link_to("Home", root_path, :title => "View the home page of Paul Bogardʼs Flight Log") %></li>
         <% end %>
       </ul>
     </div>
@@ -15,9 +15,9 @@
         <% if (params[:controller] == "flights" && params[:action] == "index" && params[:year].blank? && params[:start_date].blank? && params[:end_date].blank?) %>
           <li class="active"><a class="active_non_link">Flights</a></li>
         <% elsif (params[:controller] == "flights" && (params[:action] == "show" || params[:year].present? || params[:start_date].present? || params[:end_date].present?)) %>
-          <li class="active"><%= link_to("Flights", flights_path, :title => "View a list of Paul's flights", :class => "active")%></li>
+          <li class="active"><%= link_to("Flights", flights_path, :title => "View a list of Paulʼs flights", :class => "active")%></li>
         <% else %>
-          <li><%= link_to("Flights", flights_path, :title => "View a list of Paul's flights")%></li>
+          <li><%= link_to("Flights", flights_path, :title => "View a list of Paulʼs flights")%></li>
         <% end %>
 
         <% if (params[:controller] == "routes" && params[:action] == "index") %>

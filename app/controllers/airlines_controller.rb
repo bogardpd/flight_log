@@ -18,7 +18,7 @@ class AirlinesController < ApplicationController
     
     
     @title = "Airlines"
-    @meta_description = "A list of the airlines on which Paul Bogard has flown, and how often he's flown on each."
+    @meta_description = "A list of the airlines on which Paul Bogard has flown, and how often heʼs flown on each."
     
     @airlines_array = Array.new
     @operators_array = Array.new
@@ -101,6 +101,7 @@ class AirlinesController < ApplicationController
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     @title = @airline.airline_name
+    @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@airline.airline_name}."
     @logo_used = true
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb @title, "airline_path(@airline.iata_airline_code)"
@@ -118,7 +119,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldn't find an airline with an IATA code of #{params[:id]}. Instead, we'll give you a list of airlines."
+      flash[:record_not_found] = "We couldnʼt find an airline with an IATA code of #{params[:id]}. Instead, weʼll give you a list of airlines."
       redirect_to airlines_path
       
   end
@@ -131,7 +132,7 @@ class AirlinesController < ApplicationController
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  
     @title = @operator.airline_name + " (Operator)"
-    @meta_description = "Maps and lists of Paul Bogard's flights operated by #{@operator.airline_name}."
+    @meta_description = "Maps and lists of Paul Bogardʼs flights operated by #{@operator.airline_name}."
     @logo_used = true
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb 'Flights Operated by ' + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
@@ -158,7 +159,7 @@ class AirlinesController < ApplicationController
     @fleet_family = @fleet_family.sort_by{ |key, value| key }
         
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights operated by #{params[:operator]}. Instead, we'll give you a list of airlines and operators."
+    flash[:record_not_found] = "We couldnʼt find any flights operated by #{params[:operator]}. Instead, weʼll give you a list of airlines and operators."
     redirect_to airlines_path
   end
   
@@ -172,7 +173,7 @@ class AirlinesController < ApplicationController
     
     @logo_used = true
     @title = @operator.airline_name + " #" + @fleet_number
-    @meta_description = "Maps and lists of Paul Bogard's flights operated on #{@operator} ##{@fleet_number}."
+    @meta_description = "Maps and lists of Paul Bogardʼs flights operated on #{@operator.airline_name} ##{@fleet_number}."
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb 'Flights Operated by ' + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
     add_breadcrumb '#' + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number)
@@ -188,7 +189,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, we'll give you a list of airlines and operators."
+    flash[:record_not_found] = "We couldnʼt find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, weʼll give you a list of airlines and operators."
     redirect_to airlines_path
   end
   
@@ -237,7 +238,7 @@ class AirlinesController < ApplicationController
   def destroy
     @airline = Airline.find(params[:id])
     if @airline.flights.any?
-      flash[:error] = "This airline still has flights and could not be deleted. Please delete all of this airline's flights first."
+      flash[:error] = "This airline still has flights and could not be deleted. Please delete all of this airlineʼs flights first."
       redirect_to airline_path(params[:id])
     else
       @airline.destroy

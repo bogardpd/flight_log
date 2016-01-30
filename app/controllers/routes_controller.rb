@@ -5,7 +5,7 @@ class RoutesController < ApplicationController
   def index
     add_breadcrumb 'Routes', 'routes_path'
     @title = "Routes"
-    @meta_description = "A list of the routes Paul Bogard has flown on, and how often he's flown on each."
+    @meta_description = "A list of the routes Paul Bogard has flown on, and how often heʼs flown on each."
         
     flights = Flight.flights_table
     flights = flights.visitor if !logged_in? # Filter out hidden trips for visitors
@@ -95,7 +95,7 @@ class RoutesController < ApplicationController
     add_breadcrumb 'Routes', 'routes_path'
     add_breadcrumb "#{@airports[0]} - #{@airports[1]}", route_path(@route_string)
     @title = "#{@airports[0]} - #{@airports[1]}"
-    @meta_description = "Maps and lists of Paul Bogard's flights between #{@airports[0]} and #{@airports[1]}."
+    @meta_description = "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}."
     @logo_used = true
     
     if logged_in?
@@ -140,7 +140,7 @@ class RoutesController < ApplicationController
     @city_pair_section_flights = Flight.flights_table.where(section_where_array.join(' OR '))
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldn't find any flights with the route #{params[:id]}. Instead, we'll give you a list of routes."
+      flash[:record_not_found] = "We couldnʼt find any flights with the route #{params[:id]}. Instead, weʼll give you a list of routes."
       redirect_to routes_path
     
     
@@ -171,7 +171,7 @@ class RoutesController < ApplicationController
     end
     
     rescue ArgumentError
-      flash[:record_not_found] = "Can't look up route - at least one of these airports does not exist in the database."
+      flash[:record_not_found] = "Canʼt look up route - at least one of these airports does not exist in the database."
       redirect_to routes_path
     
   end

@@ -47,7 +47,7 @@ class TripsController < ApplicationController
     raise ActiveRecord::RecordNotFound if (!logged_in? && @trip.hidden)
     @flights = Flight.flights_table.where(trip_id: @trip)
     @title = @trip.name
-    @meta_description = "Maps and lists of flights on Paul Bogard's #{@trip.name} trip."
+    @meta_description = "Maps and lists of flights on Paul Bogardʼs #{@trip.name} trip."
     add_breadcrumb 'Trips', 'trips_path'
     add_breadcrumb @title, "trip_path(#{params[:id]})"
     @trip_distance = total_distance(@flights)
@@ -70,7 +70,7 @@ class TripsController < ApplicationController
     stops_array.uniq!
     @stops = stops_array
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find a trip with an ID of #{params[:id]}. Instead, we'll give you a list of trips."
+    flash[:record_not_found] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
     redirect_to trips_path
   end
   
@@ -82,7 +82,7 @@ class TripsController < ApplicationController
 
     @flights = Flight.flights_table.where(trip_id: @trip, trip_section: params[:section])
     @section_distance = total_distance(@flights)
-    @meta_description = "Maps and lists of flights on section #{params[:section]} Paul Bogard's #{@trip.name} trip."
+    @meta_description = "Maps and lists of flights on section #{params[:section]} of Paul Bogardʼs #{@trip.name} trip."
     @title = "#{@trip.name} (Section #{params[:section]})"
     add_breadcrumb 'Trips', 'trips_path'
     add_breadcrumb @trip.name, "trip_path(#{params[:trip]})"
@@ -131,7 +131,7 @@ class TripsController < ApplicationController
   def destroy
     @flights = Flight.where("trip_id = :trip_id", {:trip_id => params[:id]})
     if @flights.any?
-      flash[:error] = "This trip still has flights and could not be deleted. Please delete all of this trip's flights first."
+      flash[:error] = "This trip still has flights and could not be deleted. Please delete all of this tripʼs flights first."
       redirect_to trip_path(params[:id])
     else
       Trip.find(params[:id]).destroy

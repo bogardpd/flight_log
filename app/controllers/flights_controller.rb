@@ -25,7 +25,7 @@ class FlightsController < ApplicationController
       @flights.each do |flight|
         @years_with_flights[flight.departure_date.year] = true
       end
-      @meta_description = "Maps and lists of all of Paul Bogard's flights."
+      @meta_description = "Maps and lists of all of Paul Bogardʼs flights."
     
       # Set values for sort:
       case params[:sort_category]
@@ -84,7 +84,7 @@ class FlightsController < ApplicationController
     @city_pair_section_flights = Flight.where(section_where_array.join(' OR '))
     
     @title = @flight.airline.airline_name + " " + @flight.flight_number.to_s
-    @meta_description = "Details for Paul Bogard's #{@flight.airline} #{@flight.flight_number} flight on #{format_date(@flight.departure_date)}."
+    @meta_description = "Details for Paul Bogardʼs #{@flight.airline.airline_name} #{@flight.flight_number} flight on #{format_date(@flight.departure_date)}."
     
     @route_distance = route_distance_by_airport_id(@flight.origin_airport, @flight.destination_airport)
     
@@ -92,7 +92,7 @@ class FlightsController < ApplicationController
     add_breadcrumb @title, "flight_path(#{params[:id]})"
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find a flight with an ID of #{params[:id]}. Instead, we'll give you a list of flights."
+    flash[:record_not_found] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
   end
     
@@ -108,6 +108,7 @@ class FlightsController < ApplicationController
       @superlatives_title = params[:year] + " Longest and Shortest Routes"
       @superlatives_title_nav = @superlatives_title.downcase
       @title = "Flights in #{params[:year]}"
+      @meta_description = "Maps and lists of Paul Bogardʼs flights in #{params[:year]}"
     elsif (params[:start_date].present? && params[:end_date].present?)
       if (params[:start_date] > params[:end_date])
         raise ArgumentError.new('Start date cannot be later than end date')
@@ -120,6 +121,7 @@ class FlightsController < ApplicationController
       @superlatives_title = "Longest and Shortest Routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
       @superlatives_title_nav = "Longest and shortest routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
       @title = "Flights: #{format_date(params[:start_date].to_date)} - #{format_date(params[:end_date].to_date)}"
+      @meta_description = "Maps and lists of Paul Bogardʼs flights from #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
     else
       raise ArgumentError.new('No date parameters were given for a date range')
     end
@@ -157,7 +159,7 @@ class FlightsController < ApplicationController
     redirect_to flights_path
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights in #{@in_text}. Instead, we'll give you a list of flights."
+    flash[:record_not_found] = "We couldnʼt find any flights in #{@in_text}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
     
   end
@@ -226,7 +228,7 @@ class FlightsController < ApplicationController
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
     @title = Flight.classes_list[params[:travel_class]].titlecase + " Class"
-    @meta_description = "Maps and lists of Paul Bogard's #{params[:travel_class].downcase} class flights."
+    @meta_description = "Maps and lists of Paul Bogardʼs #{Flight.classes_list[params[:travel_class]].downcase} class flights."
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb 'Travel Classes', 'classes_path'
     add_breadcrumb Flight.classes_list[params[:travel_class]].titlecase, show_class_path(params[:travel_class])
@@ -242,7 +244,7 @@ class FlightsController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldn't find any flights in #{@title}. Instead, we'll give you a list of travel classes."
+    flash[:record_not_found] = "We couldnʼt find any flights in #{@title}. Instead, weʼll give you a list of travel classes."
     redirect_to classes_path
   end
 
@@ -256,7 +258,7 @@ class FlightsController < ApplicationController
       @flight_tail_details = Flight.visitor.select(:tail_number, :iata_aircraft_code, :airline_name, :iata_airline_code, :family_name, :manufacturer).joins(:airline, :aircraft_family).chronological.where("tail_number IS NOT NULL")
     end
     @title = "Tail Numbers"
-    @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often he's flown on each."
+    @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often heʼs flown on each."
     
     @tail_numbers_table = Array.new
     
@@ -342,7 +344,7 @@ class FlightsController < ApplicationController
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     @title = params[:tail_number]
-    @meta_description = "Maps and lists of Paul Bogard's flights on tail number #{params[:tail_number]}."
+    @meta_description = "Maps and lists of Paul Bogardʼs flights on tail number #{params[:tail_number]}."
     add_breadcrumb 'Tail Numbers', 'tails_path'
     add_breadcrumb @title, show_tail_path(params[:tail_number])
     
@@ -357,7 +359,7 @@ class FlightsController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-   flash[:record_not_found] = "We couldn't find any flights with the tail number #{params[:tail_number]}. Instead, we'll give you a list of tail numbers."
+   flash[:record_not_found] = "We couldnʼt find any flights with the tail number #{params[:tail_number]}. Instead, weʼll give you a list of tail numbers."
     redirect_to tails_path
   end
   
