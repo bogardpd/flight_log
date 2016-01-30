@@ -1,1 +1,0 @@
-# Paul Bogard's Portfolio
