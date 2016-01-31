@@ -6,6 +6,16 @@
 
 [Specifications](http://pbogard.com/flight_log#current_specs)
 
+## Version History
+
+| Version | Date |
+| --- | --- |
+| [2.0: Flight Historian](http://onehundredairports.com/2016/01/31/flight-log-version-2-0-flight-historian/) | 31 Jan 2016 |
+| [1.3: Distances and Annual Summaries](http://onehundredairports.com/2015/02/14/flight-log-version-1-3-distances-and-annual-summaries/) | 14 Feb 2015 |
+| [1.2: Operators and Codeshares](http://onehundredairports.com/2014/10/29/flight-log-version-1-2-operators-and-codeshares) | 29 Oct 2014 |
+| [1.1: Routes and Top 5 Lists](http://onehundredairports.com/2013/10/24/flight-log-version-1-1-routes-top-5-lists-and-more/) | 24 Oct 2013 |
+| 1.0: Initial Release | 27 Apr 2013 |
+
 ## License
 
 This project is licensed under The MIT license.
