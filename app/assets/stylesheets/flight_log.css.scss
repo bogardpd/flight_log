@@ -1,9 +1,11 @@
 $font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
-$font-stack-monospace: 'Source Code Pro', monospace;
+$font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 
 $color-table-background: #FCFCFD;
 $color-table-border: rgb(190, 212, 234);
+$color-text-primary: hsl(210, 20%, 16%);
 $color-text-secondary: rgb(84, 105, 127);
+$color-text-disabled: hsl(210, 20%, 70%);
 
 $margin-icon-to-text: 0.5em;
 $margin-paragraph: 10px;
@@ -11,7 +13,7 @@ $margin-paragraph: 10px;
 body {
 	background: #E6EAEF;
 	font-family: $font-stack-sans-serif;
-	color: #202830;
+	color: $color-text-primary;
 	font-size: 105%;
 	font-weight: 400;
 	line-height: 1.6;
@@ -115,27 +117,27 @@ body {
 		
 		a:hover {
 			background-color: #99CCFF;
-			color: #202830;
+			color: $color-text-primary;
 		}
 		
 		a.active {
-			color: #202830;
+			color: $color-text-primary;
 		}
 
 		a.active:hover {
 			background-color: #99CCFF;
-			color: #202830;
+			color: $color-text-primary;
 		}
 
 		a.active_non_link:hover {
 			background-color: #FFFFFF;
-			color: #202830;
+			color: $color-text-primary;
 		}
 	}
 	
 	li.active {
 		background-color: #FFFFFF;
-		color: #202830;
+		color: $color-text-primary;
 	}
 }
 
@@ -341,7 +343,7 @@ div.graph_background {
 div.hidden_marker {
 	float: right;
 	background: #FFFF00;
-	border: 1px solid #202830;
+	border: 1px solid $color-text-primary;
 	padding: 1px 4px;
 	margin-top: 1px;
 	margin-left: 8px;
@@ -351,7 +353,7 @@ div.hidden_marker {
 
 div.hidden_trip {
 	background: #FFFF00;
-	border: 1px solid #202830;
+	border: 1px solid $color-text-primary;
 	padding: 5px;
 }
 
@@ -582,7 +584,7 @@ span.breadcrumb_title {
 }
 
 span.disabled {
-	color: #6D88A5;
+	color: $color-text-disabled;
 }
 
 span.distance_primary {
@@ -942,4 +944,8 @@ th.flight_section {
 
 th.trip_name {
 	text-align: left;
+}
+
+td.year_link {
+	text-align: center;
 }

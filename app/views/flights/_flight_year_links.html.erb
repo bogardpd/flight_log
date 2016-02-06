@@ -1,20 +1,30 @@
 <% if @year_range %>
-	<p>
-	<%= (params[:year].present? || (params[:start_date].present? && params[:end_date].present?)) ? link_to("All Dates", flights_path, :title => "Show all flights") : "<span class=\"bold\">All Dates</span>".html_safe %>
-	&ensp;
-	<% if (params[:start_date].present? && params[:end_date].present?) %>
-	  <span class="bold"><%= format_date(params[:start_date].to_date) %> &dash; <%= format_date(params[:end_date].to_date) %></span>
-	<% else %>
-	  <% (@year_range).each do |i| %>
-	    <% if (i == params[:year].to_i) %>
-	      <span class="bold"><%= i %></span>
-	    <% elsif @years_with_flights[i] %>
-	      <%= link_to(i, show_year_path(i), :title => "Only show flights from #{i}" ) %>
-	    <% else %>
-	      <span class="disabled" title="There are no flights in <%= i %>"><%= i %></span>
-	    <% end %>
-	    &ensp;
-	  <% end %>
-	<% end %>
-	</p>
+	<table class="flightlog">
+		<tr>
+			<td colspan="10" class="year_link">
+				<%= (params[:year].present? || (params[:start_date].present? && params[:end_date].present?)) ? link_to("All Dates", flights_path, :title => "Show all flights") : "<span class=\"bold\">All Dates</span>".html_safe %>
+				<% if (params[:start_date].present? && params[:end_date].present?) %>
+				  &emsp;<span class="bold"><%= format_date(params[:start_date].to_date) %> &dash; <%= format_date(params[:end_date].to_date) %></span>
+				<% end %>
+			</td>
+		</tr>
+		<% ((@year_range.begin/10)..(@year_range.end/10)).each do |decade| %>
+		<tr>
+			<% (0..9).each do |year_digit| %>
+				<% current_year = (10*decade) + year_digit %>
+				<td class="year_link">
+					<% if @year_range.include?(current_year) %>
+						<% if current_year == params[:year].to_i %>
+							<span class="bold"><%= current_year %></span>
+						<% elsif @years_with_flights[current_year] %>
+							<%= link_to(current_year, show_year_path(current_year), :title => "Only show flights from #{current_year}" ) %>
+						<% else %>
+							<span class="disabled" title="I took no flights in <%= current_year %>"><%= current_year %></span>
+						<% end %>
+					<% end %>
+				</td>
+			<% end %>
+		</tr>
+		<% end %>
+	</table>
 <% end %>
