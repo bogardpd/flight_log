@@ -4,7 +4,7 @@ $font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 $color-table-background: #FCFCFD;
 $color-table-border: rgb(190, 212, 234);
 $color-text-primary: hsl(210, 20%, 16%);
-$color-text-secondary: rgb(84, 105, 127);
+$color-text-secondary: hsl(210, 20%, 40%);
 $color-text-disabled: hsl(210, 20%, 70%);
 
 $margin-icon-to-text: 0.5em;
@@ -593,12 +593,12 @@ span.distance_primary {
 }
 
 span.distance_secondary {
-	color: #54697F;
+	color: $color-text-secondary;
 	font-weight: 300;
 }
 
 span.measurement_unit {
-	color: #54697F;
+	color: $color-text-secondary;
 	font-weight: 300;
 }
 
@@ -607,12 +607,12 @@ span.aircraft_manufacturer {
 }
 
 span.flight_aircraft_variant {
-	color: #54697F;
+	color: $color-text-secondary;
 	font-weight: 300;
 }
 
 span.flight_city {
-	color: #54697F;
+	color: $color-text-secondary;
 	font-weight: 300;
 }
 
@@ -622,12 +622,12 @@ span.flight_iata_code {
 }
 
 span.flight_route_distance {
-	color: #54697F;
+	color: $color-text-secondary;
 	font-weight: 300;
 }
 
 span.flight_section_route {
-	color: #54697F;
+	color: $color-text-secondary;
 	font-size: 85%;
 }
 
@@ -904,6 +904,7 @@ td.tail_flights, th.tail_flights {
 
 td.tail_aircraft {
 	color: $color-text-secondary;
+	font-weight: 300;
 	text-align: center;
 }
 
