@@ -42,7 +42,6 @@ Portfolio::Application.routes.draw do
   match '/classes/:travel_class' => 'flights#show_class', :as => :show_class, :via => [:get]
   
   match '/tails' => 'flights#index_tails', :via => [:get]
-  match '/tails/sort/:sort_category/:sort_direction' => 'flights#index_tails', :as => :sort_tails, :via => [:get]
   match '/tails/:tail_number' => 'flights#show_tail', :as => :show_tail, :via => [:get]
   
   match '/routes' => 'routes#index', via: :get

@@ -325,10 +325,10 @@ class FlightsController < ApplicationController
       when :flights
         @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [sort_mult*tail[:count], tail[:tail_number]]}
       when :aircraft
-        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:aircraft], tail[:airline]]}
+        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:aircraft], tail[:airline_name]]}
         @tail_numbers_table.reverse! if @sort_dir == :desc
       when :airline
-        @tail_numbers_table = @tail_numbers_table.sort_by { |tail| [tail[:airline], tail[:aircraft]]}
+        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:airline_name], tail[:aircraft]]}
         @tail_numbers_table.reverse! if @sort_dir == :desc
       end
     end
