@@ -93,8 +93,8 @@ class RoutesController < ApplicationController
     end
     
     add_breadcrumb 'Routes', 'routes_path'
-    add_breadcrumb "#{@airports[0]} - #{@airports[1]}", route_path(@route_string)
-    @title = "#{@airports[0]} - #{@airports[1]}"
+    add_breadcrumb "#{@airports[0]} – #{@airports[1]}", route_path(@route_string)
+    @title = "#{@airports[0]} – #{@airports[1]}"
     @meta_description = "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}."
     @logo_used = true
     
