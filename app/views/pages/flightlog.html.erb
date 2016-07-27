@@ -49,7 +49,7 @@ Active Trip: <%= link_to(trip.name, trip_path(trip)) %><br/>
   <% @flight_airlines.first(5).each do |airline| %>
     <tr>
       <td class="left">
-      <%= link_to(image_tag(airline_icon_path(airline.iata_airline_code), alt: airline.airline_name, class: 'airline_icon') + airline.airline_name, airline_path(airline.iata_airline_code), :title => "View flights on #{airline.airline_name}") %></td>
+      <%= link_to(image_tag(airline_icon_path(airline.iata_airline_code), alt: airline.iata_airline_code, class: 'airline_icon') + airline.airline_name, airline_path(airline.iata_airline_code), :title => "View flights on #{airline.airline_name}") %></td>
       <td class="center"><%= airline.flight_count %></td>
     </tr>
   <% end %>
