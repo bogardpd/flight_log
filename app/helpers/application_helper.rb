@@ -249,7 +249,7 @@ module ApplicationHelper
     map_center = ""
     
     if highlighted_airports.any?
-      airport_highlight_string = "m:p:ring11:black,#{highlighted_airports.join(",")},"
+      airport_highlight_string = %Q(m:p:ring11:black%2B"%25N"12r%3A%23666,#{highlighted_airports.join(",")},)
     else
       airport_highlight_string = ""
     end
