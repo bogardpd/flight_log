@@ -35,5 +35,7 @@ Portfolio::Application.routes.draw do
   match '/routes' => 'routes#index', via: :get
   match '/routes/edit/:airport1/:airport2' => 'routes#edit', as: :edit_route, via: :get
   
+  # Certbot
+  get '/.well-known/acme-challenge/:id' => 'pages#letsencrypt'
   
 end
