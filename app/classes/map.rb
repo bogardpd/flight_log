@@ -16,6 +16,10 @@ class Map
     
   end
   
+  def exists?
+    query.present?
+  end
+  
   private
   
     def airport_options

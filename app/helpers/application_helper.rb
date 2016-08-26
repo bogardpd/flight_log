@@ -99,12 +99,13 @@ module ApplicationHelper
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
   
   def map_with_region_select(map, anchor: nil)
-    html = %Q(<div id="#{anchor}">\n)
-    html += gcmap_region_select_links(@region, anchor: anchor)
-    html += @map.draw
-    html += "</div>\n"
-    html.html_safe
-    
+    if map.exists?
+      html = %Q(<div id="#{anchor}">\n)
+      html += gcmap_region_select_links(@region, anchor: anchor)
+      html += @map.draw
+      html += "</div>\n"
+      html.html_safe
+    end
   end
   
   # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
