@@ -3,6 +3,14 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   @gcmap_used = false
   
+  def current_region(default: :world)
+    if params[:region]
+      region = params[:region].to_sym
+    else
+      region = default
+    end
+  end
+  
 protected
 
   def add_breadcrumb name, url=''

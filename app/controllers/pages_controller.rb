@@ -7,7 +7,7 @@ class PagesController < ApplicationController
     # Flight Log Index
     @meta_description = "Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history."
     @logo_used = true
-    @default_region = :conus
+    @region = current_region(default: :conus)
     
     if logged_in?
       @flights = Flight.flights_table
@@ -25,6 +25,8 @@ class PagesController < ApplicationController
     @hidden_trips = Trip.where(:hidden => true)
     
     if @flights.any?
+    
+      @map = FlightsMap.new(@flights, region: @region)
     
       @airport_array = Airport.frequency_array(@flights)
 
@@ -50,7 +52,7 @@ class PagesController < ApplicationController
   end
   
   def letsencrypt
-    render text: "ZUWNHM8BPtjBRhUXSTWFhEi4AA81Eqm4HR39dGgvX0M.CVdYVvLUZrSKMaO47kARZTGMHyRaz5zQgRNMa7gtC_A"
+    render text: ""
   end
 
 end
