@@ -40,6 +40,10 @@ class Map
     def routes_highlighted
       return Array.new
     end
+    
+    def routes_unhighlighted
+      return Array.new
+    end
   
     def airports_inside_region
       return Array.new
@@ -56,19 +60,62 @@ class Map
     def query
       query_sections = Array.new
       
-      # Add routes outside region:
-      if routes_outside_region.any?
-        query_sections.push("c:%23FF7777,o:noext,#{routes_outside_region.join(",o:noext,")}")
+      if routes_outside_region.any? || routes_unhighlighted.any?
+        
+        query_sections.push("c:%23FF7777")
+        
+        # Add routes outside region:
+        if routes_outside_region.any?
+          query_sections.push("o:noext")
+          query_sections.push(routes_outside_region.join(",o:noext,"))
+        end
+      
+        # Add unhighlighted routes:
+        if routes_unhighlighted.any?
+          query_sections.push(routes_unhighlighted.join(","))
+        end
+        
       end
       
-      # Add routes inside region:
-      if routes_inside_region.any?
-        query_sections.push("c:red,#{routes_inside_region.join(",")}")
-      end
+      if routes_inside_region.any? || routes_highlighted.any?
+        
+        query_sections.push("c:red")
+        
+        # Add routes inside region:
+        if routes_inside_region.any?
+          query_sections.push(routes_inside_region.join(","))
+        end
       
+        # Add highlighted routes:
+        if routes_highlighted.any?
+          query_sections.push("w:2")
+          query_sections.push(routes_highlighted.join(","))
+        end
+      
+      end
+            
       return query_sections.join(",")
     end
     
-    
+    # Convert a set of pairs into a Great Circle Mapper formatted querystring, minimizing string length.
+    # Params:
+    # +pairs+:: An array of arrays of two IATA codes.
+    def compressed_routes(pairs)
+      routes = Array.new
+      pairs = pairs.uniq.sort_by{|k| [k[0],k[1]]}
+      previous_origin = nil
+      route_string = nil
+      pairs.each do |pair|
+        if pair[0] == previous_origin && route_string
+          route_string += "/#{pair[1]}"
+        else
+          routes.push(route_string) if route_string
+          route_string = "#{pair[0]}-#{pair[1]}"
+        end
+        routes.push(route_string) if (pair == pairs.last && route_string)
+        previous_origin = pair[0]
+      end
+      return routes
+    end
   
 end

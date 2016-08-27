@@ -108,8 +108,7 @@ class RoutesController < ApplicationController
     
     @pair_distance = route_distance_by_iata(@airports[0],@airports[1])
     
-    # Create map:
-    @map = SingleFlightMap.new(@flights.first)
+    
     
     # Get trips sharing this city pair:
     trip_array = Array.new
@@ -139,8 +138,13 @@ class RoutesController < ApplicationController
     class_frequency(@flights)
     
     # Create flight arrays for maps of trips and sections:
-    @city_pair_trip_flights = Flight.flights_table.where(:trip_id => trip_array)
+    @city_pair_trip_flights    = Flight.flights_table.where(:trip_id => trip_array)
     @city_pair_section_flights = Flight.flights_table.where(section_where_array.join(' OR '))
+    
+    # Create maps:
+    @route_map    = SingleFlightMap.new(@flights.first)
+    @sections_map = HighlightedRoutesMap.new(@city_pair_section_flights, @flights)
+    @trips_map    = HighlightedRoutesMap.new(@city_pair_trip_flights, @flights)
     
     rescue ActiveRecord::RecordNotFound
       flash[:record_not_found] = "We couldnʼt find any flights with the route #{params[:id]}. Instead, weʼll give you a list of routes."

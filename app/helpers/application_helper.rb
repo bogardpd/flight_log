@@ -196,18 +196,7 @@ module ApplicationHelper
     html.html_safe
   end
   
-  
-  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights with a highlighted route
-  # Params:
-  # +flight_collection+:: collection of Flight objects to be mapped
-  # +highlighted_route+:: array of two airport IATA codes whose path between them should be highlighted. If more than two codes are used, any codes beyond the first two will be ignored.
-  def embed_gcmap_route_highlight(flight_collection, highlighted_route)
-    airport_options = "b:disc5:black"
-    map_center = ""
-    
-    route_string = "c:%23FF7777,#{gcmap_route_string(flight_collection, :world, uncolored: true)},c:red,w:2,#{highlighted_route[0..1].join("-")}"
-    return gcmap_map_link(route_string, airport_options, map_center).html_safe
-  end
+
   
   # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights with highlighted airports
   # Params:

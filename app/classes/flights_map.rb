@@ -3,9 +3,11 @@ class FlightsMap < Map
   # Initialize a map of a single flight route.
   # Params:
   # +flights+:: A collection of Flights
+  # +highlighted_route: A single Flight object whose route will be highlighted.
   # +region+:: The region to show. World map will be shown if region is left blank.
-  def initialize(flights, region: :world)
+  def initialize(flights, highlighted_routes: nil, region: :world)
     @flights = flights
+    @highlighted_routes = highlighted_routes
     @region = region
     @routes = separate_routes_by_region
   end
@@ -40,30 +42,11 @@ class FlightsMap < Map
         end  
       end
 
-      routes[:inside_region]  = compress_routes(pairs_inside_region)
-      routes[:outside_region] = compress_routes(pairs_outside_region)
+      routes[:inside_region]  = compressed_routes(pairs_inside_region)
+      routes[:outside_region] = compressed_routes(pairs_outside_region)
     
       return routes
     
     end
-    
-    def compress_routes(pairs)
-      routes = Array.new
-      pairs = pairs.uniq.sort_by{|k| [k[0],k[1]]}
-      previous_origin = nil
-      route_string = nil
-      pairs.each do |pair|
-        if pair[0] == previous_origin && route_string
-          route_string += "/#{pair[1]}"
-        else
-          routes.push(route_string) if route_string
-          route_string = "#{pair[0]}-#{pair[1]}"
-        end
-        routes.push(route_string) if (pair == pairs.last && route_string)
-        previous_origin = pair[0]
-      end
-      return routes
-    end
-    
   
 end
