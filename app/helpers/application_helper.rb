@@ -110,7 +110,34 @@ module ApplicationHelper
     html.html_safe
   end
   
-   
+  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
+  # Params:
+  # +flight_collection+:: collection of Flight objects to be mapped
+  # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
+  # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
+  def embed_gcmap_airports(airport_collection, anchor: nil)
+    if params[:region]
+      region = params[:region].to_sym
+    elsif @default_region
+      region = @default_region
+    else
+      region = :world
+    end
+    
+    airport_options = "b:disc5:black"
+    map_center = ""
+    
+    if region == :conus
+      airport_codes = Airport.where(id: airport_collection).where(region_conus: true).order(:iata_code).pluck(:iata_code)
+    else
+      airport_codes = Airport.where(id: airport_collection).order(:iata_code).pluck(:iata_code)
+    end
+      
+    html = gcmap_region_select_links(region, anchor: anchor) + gcmap_map_link(airport_codes.join(","), airport_options, map_center)
+    return html.html_safe
+  end
+  
+  
   # Return HTML for a hyperlinked Great Circle Mapper map image of airports with rings proportional in area to the airport visit frequencies
   # Params:
   # +airport_frequency_hash+:: Hash with airport id as the key and frequency as the value
@@ -171,23 +198,7 @@ module ApplicationHelper
   
 
   
-  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights with highlighted airports
-  # Params:
-  # +flight_collection+:: Collection of Flight objects to be mapped
-  # +highlighted_airports+:: Array of airport IATA codes whose airports should be highlighted
-  def embed_gcmap_airport_highlight(flight_collection, highlighted_airports)
-    airport_options = "b:disc5:black"
-    map_center = ""
-    
-    if highlighted_airports.any?
-      airport_highlight_string = %Q(m:p:ring11:black%2B"%25N"12r%3A%23666,#{highlighted_airports.join(",")},)
-    else
-      airport_highlight_string = ""
-    end
-    
-    route_string = airport_highlight_string + gcmap_route_string(flight_collection, :world)
-    return gcmap_map_link(route_string, airport_options, map_center).html_safe
-  end
+ 
   
   
   # GREAT CIRCLE MAPPER STRING HELPERS:
