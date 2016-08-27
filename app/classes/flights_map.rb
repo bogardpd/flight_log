@@ -1,7 +1,10 @@
 class FlightsMap < Map
   
-  def initialize(flights, region: nil)
-    # Setting region to nil will result in a world map with no region switching links.
+  # Initialize a map of a single flight route.
+  # Params:
+  # +flights+:: A collection of Flights
+  # +region+:: The region to show. World map will be shown if region is left blank.
+  def initialize(flights, region: :world)
     @flights = flights
     @region = region
     @routes = separate_routes_by_region

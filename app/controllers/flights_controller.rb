@@ -63,6 +63,9 @@ class FlightsController < ApplicationController
       @city_pair_flights = Flight.visitor.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @flight.origin_airport.id, :city2 => @flight.destination_airport.id})
     end
     
+    # Create map:
+    @map = SingleFlightMap.new(@flight)
+    
     # Get trips sharing this city pair:
     trip_array = Array.new
     @city_pair_flights = Array.new

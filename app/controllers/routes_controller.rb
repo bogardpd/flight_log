@@ -108,6 +108,9 @@ class RoutesController < ApplicationController
     
     @pair_distance = route_distance_by_iata(@airports[0],@airports[1])
     
+    # Create map:
+    @map = SingleFlightMap.new(@flights.first)
+    
     # Get trips sharing this city pair:
     trip_array = Array.new
     @sections = Array.new

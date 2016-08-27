@@ -26,7 +26,7 @@ class Map
   private
   
     def airport_options
-      "b:disc5:black"
+      return "b:disc5:black"
     end
       
     def routes_inside_region

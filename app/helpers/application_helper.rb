@@ -195,49 +195,6 @@ module ApplicationHelper
     html = gcmap_region_select_links(region, anchor: anchor) + gcmap_map_link(query, airport_options, map_center)
     html.html_safe
   end
-
-=begin  
-  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
-  # Params:
-  # +flight_collection+:: collection of Flight objects to be mapped
-  # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
-  # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
-  def embed_gcmap_flights(flight_collection, use_regions: true, anchor: nil)
-    if use_regions == false
-      region = :world
-    elsif params[:region]
-      region = params[:region].to_sym
-    elsif @default_region
-      region = @default_region
-    else
-      region = :world
-    end
-    
-    airport_options = "b:disc5:black"
-    map_center = ""
-    
-    route_string = gcmap_route_string(flight_collection, region)
-    
-    html = ""
-    
-    if use_regions
-      html += gcmap_region_select_links(region, anchor: anchor)
-    end
-    
-    html += gcmap_map_link(route_string, airport_options, map_center)
-    return html.html_safe
-  end
-=end  
-  
-  # Return HTML for a hyperlinked Great Circle Mapper map image of a single flight
-  # Params:
-  # +flight_route+:: array of two airport IATA codes. If more than two codes are used, any codes beyond the first two will be ignored.
-  def embed_gcmap_single_flight(flight_route)
-    airport_options = "*"
-    map_center = ""
-    route_string = flight_route[0..1].join("-")
-    return gcmap_map_link(route_string, airport_options, map_center).html_safe
-  end
   
   
   # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights with a highlighted route
