@@ -17,7 +17,7 @@
 <p><span class="bold"><%= link_to(@operator.airline_name, show_operator_path(@operator.iata_airline_code), :title => "View flights operated by #{@operator.airline_name}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
 
 <a name="map"></a>
-<%= embed_gcmap_flights(@flights) %>
+<%= map_with_region_select(@map) %>
 <%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 
 

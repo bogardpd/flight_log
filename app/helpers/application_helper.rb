@@ -99,13 +99,15 @@ module ApplicationHelper
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
   
   def map_with_region_select(map, anchor: nil)
-    if map.exists?
-      html = %Q(<div id="#{anchor}">\n)
+    html = %Q(<div id="#{anchor}">\n)
+    if @map.exists?
       html += gcmap_region_select_links(@region, anchor: anchor)
       html += @map.draw
-      html += "</div>\n"
-      html.html_safe
+    else
+      html += %Q(<div class="alert">When you add flights, you’ll see a map here.</div>)
     end
+    html += "</div>\n"
+    html.html_safe
   end
   
   # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
@@ -194,7 +196,7 @@ module ApplicationHelper
     html.html_safe
   end
 
-  
+=begin  
   # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
   # Params:
   # +flight_collection+:: collection of Flight objects to be mapped
@@ -225,7 +227,7 @@ module ApplicationHelper
     html += gcmap_map_link(route_string, airport_options, map_center)
     return html.html_safe
   end
-  
+=end  
   
   # Return HTML for a hyperlinked Great Circle Mapper map image of a single flight
   # Params:

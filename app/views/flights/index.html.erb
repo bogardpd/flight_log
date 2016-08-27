@@ -10,7 +10,7 @@
 
 <% if @flights.any? %>
 
-<%= embed_gcmap_flights(@flights) %>
+<%= map_with_region_select(@map, anchor: "flight-map") %>
 <%= distance_block(@total_distance, adjective: "total") %>
 
 <a name="flight_list"></a>

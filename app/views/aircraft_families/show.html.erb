@@ -25,7 +25,7 @@
 
 	<a name="map"></a>
 
-	<%= embed_gcmap_flights(@flights, anchor: 'map') %>
+  <%= map_with_region_select(@map) %>
 	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 
 	<a name="airlines"></a>

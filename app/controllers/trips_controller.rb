@@ -78,10 +78,10 @@ class TripsController < ApplicationController
   def show_section
     @logo_used = true
     @trip = Trip.find(params[:trip])
-    #@flights = @trip.flights.where(:trip_section => params[:section]).chronological
-
+    
     @flights = Flight.flights_table.where(trip_id: @trip, trip_section: params[:section])
     @section_distance = total_distance(@flights)
+    @map = FlightsMap.new(@flights)
     @meta_description = "Maps and lists of flights on section #{params[:section]} of Paul Bogardʼs #{@trip.name} trip."
     @title = "#{@trip.name} (Section #{params[:section]})"
     add_breadcrumb 'Trips', 'trips_path'

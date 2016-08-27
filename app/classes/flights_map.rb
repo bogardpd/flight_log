@@ -5,7 +5,6 @@ class FlightsMap < Map
     @flights = flights
     @region = region
     @routes = separate_routes_by_region
-    @airport_options = "b:disc5:black"
   end
   
   private

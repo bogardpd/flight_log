@@ -6,9 +6,9 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Flights', 'flights_path'
     @logo_used = true
     @title = "Flights"
+    @region = current_region(default: :world)
         
     if logged_in?
-      #@flights = Flight.chronological
       @flights = Flight.flights_table
       @year_range = @flights.any? ? Flight.chronological.first.departure_date.year..Flight.chronological.last.departure_date.year : nil
     else
@@ -18,6 +18,8 @@ class FlightsController < ApplicationController
     
     if @flights.any?
     
+      @map = FlightsMap.new(@flights, region: @region)
+      
       @total_distance = total_distance(@flights)
     
       # Determine which years have flights:
@@ -142,6 +144,8 @@ class FlightsController < ApplicationController
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
+    @region = current_region(default: :world)
+    @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
     
     @airport_array = Airport.frequency_array(@flights)
@@ -233,6 +237,8 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Travel Classes', 'classes_path'
     add_breadcrumb Flight.classes_list[params[:travel_class]].titlecase, show_class_path(params[:travel_class])
 
+    @region = current_region(default: :world)
+    @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
 
     # Create comparitive lists of airlines, operators, and aircraft:
@@ -337,7 +343,6 @@ class FlightsController < ApplicationController
   def show_tail
     @logo_used = true
     @flights = Flight.where(:tail_number => params[:tail_number])
-    #@flight_operators = @flights.where("operator_id IS NOT NULL").group("operator").count
     @flights = @flights.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
@@ -348,6 +353,8 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Tail Numbers', 'tails_path'
     add_breadcrumb @title, show_tail_path(params[:tail_number])
     
+    @region = current_region(default: :world)
+    @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
     
     # Create comparitive list of airlines, operators, and classes:

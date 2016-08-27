@@ -4,6 +4,7 @@ class AircraftFamiliesController < ApplicationController
   
   def index
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
+    
     if logged_in?
       @flight_aircraft_families = Flight.where("aircraft_family_id IS NOT NULL").group("aircraft_family_id").count
     else # Filter out hidden trips for visitors
@@ -23,7 +24,6 @@ class AircraftFamiliesController < ApplicationController
     @aircraft_array = Array.new
     
     if @flight_aircraft_families.any?
-      
       aircraft_family_details = AircraftFamily.select("id, iata_aircraft_code, family_name, manufacturer, category").find(used_aircraft_family_ids)
       aircraft_family_names = Hash.new
       aircraft_family_iata_codes = Hash.new
@@ -90,12 +90,15 @@ class AircraftFamiliesController < ApplicationController
     @logo_used = true
     @title = @aircraft_family.full_name
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft."
+    @region = current_region(default: :world)
+    
     @flights = Flight.flights_table.where(:aircraft_family_id => @aircraft_family)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
     add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family.iata_aircraft_code)
     
+    @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
     
     # Create comparitive lists of airlines and classes:

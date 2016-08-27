@@ -1,23 +1,26 @@
 class Map
   include ActionView::Helpers
-  include Rails.application.routes.url_helpers
   
   def draw
     # TO DO: Load image from URL and place into HTTPS wrapper
     
-    if query.present?
-      
-      html = %Q(<div class="center">)
-      html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
-      html += "</div>\n"
-    
-      return html.html_safe
-    end
+    html = %Q(<div class="center">)
+    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
+    html += "</div>\n"
+  
+    return html.html_safe
     
   end
   
   def exists?
     query.present?
+  end
+  
+  def includes_region?(region)
+    # Returns true if this map has any flights or listed airports within the given region.
+    # Allows the region select links to decide whether to show a particular region's link.
+    # Not yet implemented, will be implemented when additional regions are added.
+    return false
   end
   
   private

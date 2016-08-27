@@ -20,7 +20,7 @@
 
 <a name="map"></a>
 <div class="intro_box">
-	<%= embed_gcmap_flights(@flights) %>
+  <%= map_with_region_select(@map, anchor: "flight-map") %>
 	<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
 </div>
 

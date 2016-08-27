@@ -93,18 +93,21 @@ class AirlinesController < ApplicationController
   
   def show
     @airline = Airline.where(:iata_airline_code => params[:id]).first
-    raise ActiveRecord::RecordNotFound if (@airline.nil?) #all_flights will fail if code does not exist, so check here.    
+    raise ActiveRecord::RecordNotFound if (@airline.nil?) #all_flights will fail if code does not exist, so check here.
+    
     @flights = Flight.flights_table.where(airline_id: @airline.id)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
-    
-    #@flights = @airline.all_flights(logged_in?)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     @title = @airline.airline_name
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@airline.airline_name}."
     @logo_used = true
+    @region = current_region(default: :world)
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb @title, "airline_path(@airline.iata_airline_code)"
+    
+    # Create map:
+    @map = FlightsMap.new(@flights, region: @region)
     
     # Calculate total flight distance:
     @total_distance = total_distance(@flights)
@@ -134,10 +137,12 @@ class AirlinesController < ApplicationController
     @title = @operator.airline_name + " (Operator)"
     @meta_description = "Maps and lists of Paul Bogardʼs flights operated by #{@operator.airline_name}."
     @logo_used = true
+    @region = current_region(default: :world)
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb 'Flights Operated by ' + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
     
     @total_distance = total_distance(@flights)
+    @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
     airline_frequency(@flights)
@@ -172,6 +177,7 @@ class AirlinesController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @logo_used = true
+    @region = current_region(default: :world)
     @title = @operator.airline_name + " #" + @fleet_number
     @meta_description = "Maps and lists of Paul Bogardʼs flights operated on #{@operator.airline_name} ##{@fleet_number}."
     add_breadcrumb 'Airlines', 'airlines_path'
@@ -179,6 +185,7 @@ class AirlinesController < ApplicationController
     add_breadcrumb '#' + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number)
     
     @total_distance = total_distance(@flights)
+    @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
     airline_frequency(@flights)
