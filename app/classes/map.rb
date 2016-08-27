@@ -93,6 +93,16 @@ class Map
         end
       
       end
+      
+      # Add highlighted airports:
+      if airports_highlighted.any?
+        if @include_names
+          query_sections.push(%Q(m:p:ring11:black%2B"%25N"12r%3A%23666))
+        else
+          query_sections.push("m:p:ring11:black")
+        end
+        query_sections.push(airports_highlighted)
+      end
             
       return query_sections.join(",")
     end

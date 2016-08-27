@@ -25,8 +25,8 @@
 <% unless @flights.length == 0 %>
 
 	<a name="map"></a>
-
-	<%= embed_gcmap_airport_highlight(@flights, [@airport.iata_code]) %>
+  
+  <%= map_with_region_select(@airport_map, anchor: "airport-map") %>
 	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 
 
@@ -88,7 +88,7 @@
 	<a name="sections"></a>
 	<h2>Trip Sections Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
 	<p>This map shows the flights of all of my trip sections that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
-	<%= embed_gcmap_airport_highlight(@sections_using_airport_flights, [@airport.iata_code]) %>
+	<%= map_with_region_select(@sections_map, anchor: "sections-map") %>
 	<%= render 'trips/section_table' %>
 
 
@@ -96,7 +96,7 @@
 	<a name="trips"></a>
 	<h2>Trips Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
 	<p>This map shows the flights of all of my trips that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
-	<%= embed_gcmap_airport_highlight(@trips_using_airport_flights, [@airport.iata_code]) %>
+	<%= map_with_region_select(@trips_map, anchor: "trips-map") %>
 	<%= render "trips/trip_table" %>
 	
 	

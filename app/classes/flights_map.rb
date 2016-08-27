@@ -3,13 +3,14 @@ class FlightsMap < Map
   # Initialize a map of a single flight route.
   # Params:
   # +flights+:: A collection of Flights
-  # +highlighted_route: A single Flight object whose route will be highlighted.
+  # +highlighted_airports: An array of string IATA codes to highlight.
   # +region+:: The region to show. World map will be shown if region is left blank.
-  def initialize(flights, highlighted_routes: nil, region: :world)
+  def initialize(flights, highlighted_airports: nil, include_names: false, region: :world)
     @flights = flights
-    @highlighted_routes = highlighted_routes
+    @highlighted_airports = highlighted_airports ? highlighted_airports : Array.new
     @region = region
     @routes = separate_routes_by_region
+    @include_names = include_names
   end
   
   private
@@ -20,6 +21,10 @@ class FlightsMap < Map
   
     def routes_outside_region
       return @routes[:outside_region]
+    end
+    
+    def airports_highlighted
+      return @highlighted_airports
     end
   
     def separate_routes_by_region

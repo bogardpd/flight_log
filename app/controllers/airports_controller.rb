@@ -78,7 +78,7 @@ class AirportsController < ApplicationController
       when :visits
         @airport_array = @airport_array.sort_by { |airport| [sort_mult*airport[:frequency], airport[:city]] }
       end
-    
+      
     end
     
   end
@@ -203,7 +203,11 @@ class AirportsController < ApplicationController
     aircraft_frequency(@flights)
     class_frequency(@flights)
     
-    
+    # Create maps:
+    @region = current_region(default: :world)
+    @airport_map  = FlightsMap.new(@flights, highlighted_airports: [@airport.iata_code], region: @region)
+    @sections_map = FlightsMap.new(@sections_using_airport_flights, highlighted_airports: [@airport.iata_code], region: @region)
+    @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport.iata_code], region: @region)
     
     @title = @airport.iata_code
     @meta_description = "Maps and lists of Paul Bogardʼs flights through #{@airport.iata_code} – #{@airport.city}."
