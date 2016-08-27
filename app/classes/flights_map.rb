@@ -18,14 +18,13 @@ class FlightsMap < Map
     end
   
     def separate_routes_by_region
-      routes_inside_region = Array.new
-      routes_outside_region = Array.new
 
-      pairs_inside_region = Array.new
+      pairs_inside_region  = Array.new
       pairs_outside_region = Array.new
+      routes = Hash.new
 
       @flights.each do |flight|
-        # Build array of city pairs
+        # Build arrays of city pairs
         if @region == :conus 
           conus_airports = Airport.where(region_conus: true).pluck(:iata_code)
           if (!conus_airports.include?(flight.origin_iata_code) || !conus_airports.include?(flight.destination_iata_code))
@@ -38,41 +37,30 @@ class FlightsMap < Map
         end  
       end
 
-      pairs_inside_region = pairs_inside_region.uniq.sort_by{|k| [k[0],k[1]]}
-      pairs_outside_region = pairs_outside_region.uniq.sort_by{|k| [k[0],k[1]]}
-
-      previous_origin = nil
-      route_string = nil
-      pairs_inside_region.each do |pair|
-        if pair[0] == previous_origin && route_string
-          route_string += "/#{pair[1]}"
-        else
-          routes_inside_region.push(route_string) if route_string
-          route_string = "#{pair[0]}-#{pair[1]}"
-        end
-        routes_inside_region.push(route_string) if (pair == pairs_inside_region.last && route_string)
-        previous_origin = pair[0]
-      end
-    
-      previous_origin = nil
-      route_string = nil
-      pairs_outside_region.each do |pair|
-        if pair[0] == previous_origin && route_string
-          route_string += "/#{pair[1]}"
-        else
-          routes_outside_region.push(route_string) if route_string
-          route_string = "#{pair[0]}-#{pair[1]}"
-        end
-        routes_outside_region.push(route_string) if (pair == pairs_outside_region.last && route_string)
-        previous_origin = pair[0]
-      end
-    
-      routes = Hash.new
-      routes[:inside_region] = routes_inside_region
-      routes[:outside_region] = routes_outside_region
+      routes[:inside_region]  = compress_routes(pairs_inside_region)
+      routes[:outside_region] = compress_routes(pairs_outside_region)
     
       return routes
     
     end
+    
+    def compress_routes(pairs)
+      routes = Array.new
+      pairs = pairs.uniq.sort_by{|k| [k[0],k[1]]}
+      previous_origin = nil
+      route_string = nil
+      pairs.each do |pair|
+        if pair[0] == previous_origin && route_string
+          route_string += "/#{pair[1]}"
+        else
+          routes.push(route_string) if route_string
+          route_string = "#{pair[0]}-#{pair[1]}"
+        end
+        routes.push(route_string) if (pair == pairs.last && route_string)
+        previous_origin = pair[0]
+      end
+      return routes
+    end
+    
   
 end
