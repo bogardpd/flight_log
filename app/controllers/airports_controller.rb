@@ -79,6 +79,10 @@ class AirportsController < ApplicationController
         @airport_array = @airport_array.sort_by { |airport| [sort_mult*airport[:frequency], airport[:city]] }
       end
       
+      # Create maps:
+      @region = current_region(default: :world)
+      @airports_map  = AirportsMap.new(@airport_array, region: @region)
+      
     end
     
   end

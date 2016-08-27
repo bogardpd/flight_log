@@ -7,7 +7,7 @@ class Map
     html = %Q(<div class="center">)
     html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
     html += "</div>\n"
-  
+    
     return html.html_safe
     
   end
@@ -92,6 +92,11 @@ class Map
           query_sections.push(routes_highlighted.join(","))
         end
       
+      end
+      
+      # Add airports:
+      if airports_inside_region.any?
+        query_sections.push(airports_inside_region.join(","))
       end
       
       # Add highlighted airports:

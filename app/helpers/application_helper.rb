@@ -104,39 +104,13 @@ module ApplicationHelper
       html += gcmap_region_select_links(@region, anchor: anchor)
       html += map.draw
     else
-      html += %Q(<div class="alert">When you add flights, you’ll see a map here.</div>)
+      html += %Q(<div class="alert">When flights have been added, you’ll see a map here.</div>)
     end
     html += "</div>\n"
     html.html_safe
   end
   
-  # Return HTML for a hyperlinked Great Circle Mapper map image of a collection of flights
-  # Params:
-  # +flight_collection+:: collection of Flight objects to be mapped
-  # +use_regions+:: Set to false to force disabling of the region links (all flights will be displayed)
-  # The region to use will come from params[:region]. If this does not exist, it will look for a value in @default_region, and if @default_region is nill, it will default to world.
-  def embed_gcmap_airports(airport_collection, anchor: nil)
-    if params[:region]
-      region = params[:region].to_sym
-    elsif @default_region
-      region = @default_region
-    else
-      region = :world
-    end
-    
-    airport_options = "b:disc5:black"
-    map_center = ""
-    
-    if region == :conus
-      airport_codes = Airport.where(id: airport_collection).where(region_conus: true).order(:iata_code).pluck(:iata_code)
-    else
-      airport_codes = Airport.where(id: airport_collection).order(:iata_code).pluck(:iata_code)
-    end
-      
-    html = gcmap_region_select_links(region, anchor: anchor) + gcmap_map_link(airport_codes.join(","), airport_options, map_center)
-    return html.html_safe
-  end
-  
+ 
   
   # Return HTML for a hyperlinked Great Circle Mapper map image of airports with rings proportional in area to the airport visit frequencies
   # Params:

@@ -17,7 +17,7 @@
 	<% if @flights.any? %>
 
 	<a name="airport_map"></a>
-	<%= embed_gcmap_airports(@airports) %>
+  <%= map_with_region_select(@airports_map, anchor: "airports-map") %>
 
 	<a name="airports_list"></a>
 
