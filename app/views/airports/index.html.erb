@@ -64,7 +64,7 @@
 
 	<p>This map shows how often Iʼve visited each airport. The area of the black rings centered on each red airport represents the number of times Iʼve visited that airport.</p>
 
-	<%= embed_gcmap_airport_frequency(@airport_frequency, anchor: "airport_frequency_map") %>
+  <%= map_with_region_select(@frequency_map, anchor: "frequency-map") %>
 
 <% else %>
 

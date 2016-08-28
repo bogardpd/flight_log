@@ -8,14 +8,10 @@ class AirportsController < ApplicationController
     @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often heʼs visited them."
     @flights = Flight.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
-
-    
-    @airport_array = Array.new
     
     if @flights.any?
       
-      airport_frequency = frequency_array(@flights)
-      @airport_frequency = airport_frequency
+      @airport_array = Airport.frequency_array(@flights)
     
       # Set values for sort:
       case params[:sort_category]
@@ -43,20 +39,9 @@ class AirportsController < ApplicationController
       sort_mult = (@sort_dir == :asc ? 1 : -1)
     
       # Select all airports in the database with at least one flight:
-      @airports = Airport.find(airport_frequency.keys)
-      @airports_with_no_flights = Airport.where('id not in (?)',airport_frequency.keys)
-    
-      # Create arrays of airports:
-      
-      @airport_iata_frequency = Hash.new
-      @airports.each do |airport|
-        # Create world airport array:
-        @airport_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})
-        # Create CONUS airport array:
-        if (airport.region_conus) then
-          @airport_conus_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :frequency => airport_frequency[airport.id]})
-        end
-      end
+      airport_ids = airports_with_flights(@flights)
+      @airports = Airport.find(airport_ids)
+      @airports_with_no_flights = Airport.where('id not in (?)',airport_ids)
     
       # Find maxima for graph scaling:
       @visits_maximum = @airport_array.max_by{|i| i[:frequency]}[:frequency]
@@ -82,6 +67,7 @@ class AirportsController < ApplicationController
       # Create maps:
       @region = current_region(default: :world)
       @airports_map  = AirportsMap.new(@airport_array, region: @region)
+      @frequency_map = AirportFrequencyMap.new(@flights, region: @region)
       
     end
     
@@ -289,26 +275,17 @@ class AirportsController < ApplicationController
       redirect_to root_path unless logged_in?
     end
     
-    
-    def frequency_array(flight_array)
-      airport_frequency = Hash.new(0) # All airports start with 0 flights
-      @airport_array = Array.new
-      @airport_conus_array = Array.new
-      previous_trip_id = nil;
-      previous_trip_section = nil;
-      previous_destination_airport_iata_code = nil;
-      flight_array.each do |flight|
-        unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_iata_code == previous_destination_airport_iata_code)
-          # This is not a layover, so count this origin airport
-          airport_frequency[flight.origin_airport_id] += 1
-        end
-        airport_frequency[flight.destination_airport_id] += 1
-        previous_trip_id = flight.trip_id
-        previous_trip_section = flight.trip_section
-        previous_destination_airport_iata_code = flight.destination_iata_code
+    # Take a collection of flights, and return an array of all airport IDs
+    # associated with those flights.
+    # Params:
+    # +flights+:: A collection of Flights.
+    def airports_with_flights(flights)
+      airport_ids = Array.new
+      flights.each do |flight|
+        airport_ids.push(flight[:origin_airport_id])
+        airport_ids.push(flight[:destination_airport_id])
       end
-      return airport_frequency
+      return airport_ids.uniq.sort
     end
- 
   
 end

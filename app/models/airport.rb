@@ -53,8 +53,77 @@ class Airport < ActiveRecord::Base
     end
   end
   
+  # Take a collection of flights and a region, and return a hash of all
+  # of the flights' airports that are within the given reason, with Airport
+  # IDs as the keys and IATA codes as the values.
+  # Params:
+  # +flights+:: A collection of Flights.
+  # +region+:: Only returns airports from this region.
+  def self.region_iata_codes(flights, region)
+    
+    # Create array of all flights' airport IDs:
+    airport_ids = Array.new
+    flights.each do |flight|
+      airport_ids.push(flight[:origin_airport_id])
+      airport_ids.push(flight[:destination_airport_id])
+    end
+    airport_ids.uniq!.sort!
+    
+    # Filter out non-CONUS airports, if necessary:
+    if region == :conus
+      airport_ids &= Airport.where(region_conus: true).pluck(:id)
+    end
+    
+    # Get IATA codes:
+    iata_hash = Hash.new
+    airports = Airport.find(airport_ids)
+    airports.each do |airport|
+      iata_hash[airport[:id]] = airport[:iata_code]
+    end
+    
+    return iata_hash
+  end
+  
+  # Take a collection of flights, and return a hash of with airport IDs as the
+  # keys and the number of visits to each airport as the values.
+  # Params:
+  # +flights+:: A collection of Flights, with flights_table applied.
+  def self.frequency_hash(flights)
+    airport_frequency = Hash.new(0) # All airports start with 0 flights
+    previous_trip_id = nil;
+    previous_trip_section = nil;
+    previous_destination_airport_iata_code = nil;
+    flights.each do |flight|
+      unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_iata_code == previous_destination_airport_iata_code)
+        # This is not a layover, so count this origin airport
+        airport_frequency[flight.origin_airport_id] += 1
+      end
+      airport_frequency[flight.destination_airport_id] += 1
+      previous_trip_id = flight.trip_id
+      previous_trip_section = flight.trip_section
+      previous_destination_airport_iata_code = flight.destination_iata_code
+    end
+    
+    return airport_frequency
+    
+  end
+  
+  ## -------- BREAK LINE --------
+  
+  # Take a collection of flights, and return an array of all airport IDs
+  # associated with those flights.
+  # Params:
+  # +flights+:: A collection of Flights.
+  def self.airports_with_flights(flights)
+    airport_ids = Array.new
+    flights.each do |flight|
+      airport_ids.push(flight[:origin_airport_id])
+      airport_ids.push(flight[:destination_airport_id])
+    end
+    return airport_ids.uniq.sort
+  end
+  
   def self.frequency_array(flight_array)
-    flight_array = flight_array
     airport_frequency = Hash.new(0) # All airports start with 0 flights
     @airport_array = Array.new
     @airport_conus_array = Array.new

@@ -49,11 +49,11 @@ class Map
       return Array.new
     end
   
-    def airports_outside_region
+    def airports_highlighted
       return Array.new
     end
-  
-    def airports_highlighted
+    
+    def airports_frequency
       return Array.new
     end
   
@@ -107,6 +107,11 @@ class Map
           query_sections.push("m:p:ring11:black")
         end
         query_sections.push(airports_highlighted)
+      end
+      
+      # Add frequency rings:
+      if airports_frequency.any?
+        query_sections.push(airports_frequency.join(","))
       end
             
       return query_sections.join(",")
