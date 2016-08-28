@@ -61,26 +61,6 @@ class AirportFrequencyMap < Map
       return query
     end
     
-    # Analyze a flight collection, and return a hash of IATA codes and the
-    # number of visits to each.
-    # Params:
-    # +flight_array+:: A collection of Flights (sorted by UTC departure).
-    def frequency_hash
-      airport_frequency = Hash.new(0) # All airports start with 0 flights
-      previous_trip_id = nil;
-      previous_trip_section = nil;
-      previous_destination_airport_iata_code = nil;
-      @flights.each do |flight|
-        unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_iata_code == previous_destination_airport_iata_code)
-          # This is not a layover, so count this origin airport
-          airport_frequency[flight.origin_airport_id] += 1
-        end
-        airport_frequency[flight.destination_airport_id] += 1
-        previous_trip_id = flight.trip_id
-        previous_trip_section = flight.trip_section
-        previous_destination_airport_iata_code = flight.destination_iata_code
-      end
-      return airport_frequency
-    end
+   
   
 end
