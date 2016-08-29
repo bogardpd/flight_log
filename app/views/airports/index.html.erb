@@ -12,7 +12,7 @@
 
 	<% end %>
 
-	<p>I have visited <%= pluralize(@airport_array.count, 'airport') %>.</p>
+	<p>I have visited <%= pluralize(@airport_table.count, 'airport') %>.</p>
 
 	<% if @flights.any? %>
 
@@ -32,7 +32,7 @@
 	    <th class="airport_visits"><%= sort_link("Visits", :visits, "visits", :desc, "airports_list") %></th>	
 	  </tr>
 	<% previous_count = nil %>
-	<% @airport_array.each_with_index do |airport, index| %>
+	<% @airport_table.each_with_index do |airport, index| %>
 	  <tr>
 	    <td class="counter"><%= (@sort_cat == :visits && airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="airport_country"><%= country_flag(airport[:country]) %></td>
@@ -43,7 +43,7 @@
 	  </tr>
 		<% previous_count = airport[:frequency] %>
 	<% end %>
-	  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@airport_array.count, 'airport') %></td></tr>
+	  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@airport_table.count, 'airport') %></td></tr>
 	</table>
 
 	<% if (logged_in? && @airports_with_no_flights.any?) %>

@@ -108,47 +108,19 @@ class Airport < ActiveRecord::Base
     
   end
   
-  ## -------- BREAK LINE --------
-  
-  # Take a collection of flights, and return an array of all airport IDs
-  # associated with those flights.
+  # Take a collection of flights, and return an array of hashes of airport IDs,
+  # IATA codes, cities, countries, and visit frequencies.
   # Params:
-  # +flights+:: A collection of Flights.
-  def self.airports_with_flights(flights)
-    airport_ids = Array.new
-    flights.each do |flight|
-      airport_ids.push(flight[:origin_airport_id])
-      airport_ids.push(flight[:destination_airport_id])
-    end
-    return airport_ids.uniq.sort
-  end
-  
-  def self.frequency_array(flight_array)
-    airport_frequency = Hash.new(0) # All airports start with 0 flights
-    @airport_array = Array.new
-    @airport_conus_array = Array.new
-    previous_trip_id = nil;
-    previous_trip_section = nil;
-    previous_destination_airport_iata_code = nil;
-    flight_array.each do |flight|
-      unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_iata_code == previous_destination_airport_iata_code)
-        # This is not a layover, so count this origin airport
-        airport_frequency[flight.origin_airport_id] += 1
-      end
-      airport_frequency[flight.destination_airport_id] += 1
-      previous_trip_id = flight.trip_id
-      previous_trip_section = flight.trip_section
-      previous_destination_airport_iata_code = flight.destination_iata_code
-    end
-    
+  # +flights+:: A collection of Flights, with flights_table applied. 
+  def self.airport_table(flights)
+    airport_frequency = Airport.frequency_hash(flights)
     airports = Airport.find(airport_frequency.keys)
-    airport_array = Array.new
+    airport_table = Array.new
     airports.each do |airport|
-      # Create world airport array:
-      airport_array.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})
+      airport_table.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})
     end
-    airport_array = airport_array.sort_by { |airport| [-airport[:frequency], airport[:city]] }
-    return airport_array
+    airport_table.sort_by! { |airport| [-airport[:frequency], airport[:city]] }
+    return airport_table
   end
   
 end

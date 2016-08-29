@@ -28,7 +28,7 @@ class PagesController < ApplicationController
     
       @map = FlightsMap.new(@flights, region: @region)
     
-      @airport_array = Airport.frequency_array(@flights)
+      @airport_array = Airport.airport_table(@flights)
 
       # Create route totals hash:
       @route_totals = Hash.new(0)

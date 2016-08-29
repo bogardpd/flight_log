@@ -20,7 +20,7 @@
 
 
 
-<p>I have visited <span class="bold"><acronym title="<%= @airport.city %>"><%= @airport.iata_code %></span> <%= pluralize(@airport_frequency[@airport.id], "time") %>.</p>
+<p>I have visited <span class="bold"><acronym title="<%= @airport.city %>"><%= @airport.iata_code %></span> <%= pluralize(@airport_frequency, "time") %>.</p>
 
 <% unless @flights.length == 0 %>
 
@@ -105,7 +105,7 @@
 	<table class="flightlog">
 	<%= render :partial => "flights/flight_header_row" %>
 	<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
-	<tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency[@airport.id], "visit") %></td></tr>
+	<tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %> &middot; <%= pluralize(@airport_frequency, "visit") %></td></tr>
 	</table>
 
 	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
