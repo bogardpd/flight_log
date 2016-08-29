@@ -151,7 +151,7 @@ class FlightsController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
     
-    @airport_array = Airport.frequency_array(@flights)
+    @airport_array = Airport.airport_table(@flights)
     @airport_maximum = @airport_array.first[:frequency]
       
     # Create comparitive lists of airlines and classes:
