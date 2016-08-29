@@ -98,6 +98,10 @@ module ApplicationHelper
   
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
   
+  # Return a region select menu, along with a map.
+  # Params:
+  # +region+:: The currently active region
+  # +anchor+:: If set, defines a page anchor position for the region select links to link to
   def map_with_region_select(map, anchor: nil)
     html = %Q(<div id="#{anchor}">\n)
     if map.exists?
@@ -109,82 +113,9 @@ module ApplicationHelper
     html += "</div>\n"
     html.html_safe
   end
-  
-  
-  # GREAT CIRCLE MAPPER STRING HELPERS:
-  
-  # Take a collection of flights and return a string of routes formatted for use in the Great Circle Mapper.
-  # Params:
-  # +flight_collection+:: collection of Flight objects to be mapped
-  # +region+:: The region to focus on, or :world for all
-  # +uncolored+:: Set to true to prevent automatic coloring of the route string
-  def gcmap_route_string(flight_collection, region, uncolored: false)
-    route_inside_region = ""
-    route_outside_region = ""
     
-    pairs_inside_region = Array.new
-    pairs_outside_region = Array.new
-    
-    conus_airports = Airport.where(region_conus: true).pluck(:iata_code)
-    
-    flight_collection.each do |flight|
-      # Build array of city pairs
-      #if (region == :conus && (!flight.origin_airport.region_conus || !flight.destination_airport.region_conus))
-      if (region == :conus && (!conus_airports.include?(flight.origin_iata_code) || !conus_airports.include?(flight.destination_iata_code)))
-        pairs_outside_region.push([flight.origin_iata_code, flight.destination_iata_code].sort)
-      else
-        pairs_inside_region.push([flight.origin_iata_code, flight.destination_iata_code].sort)
-      end  
-    end
-    
-    pairs_inside_region = pairs_inside_region.uniq.sort_by{|k| [k[0],k[1]]}
-    pairs_outside_region = pairs_outside_region.uniq.sort_by{|k| [k[0],k[1]]}
-
-    previous_pair0 = nil
-    pairs_inside_region.each do |pair|
-      if pair[0] == previous_pair0
-        route_inside_region += "/#{pair[1]}"
-      else
-        route_inside_region += ",#{pair[0]}-#{pair[1]}"
-      end
-      previous_pair0 = pair[0]
-    end  
-    
-    previous_pair0 = nil
-    pairs_outside_region.each do |pair|
-      if pair[0] == previous_pair0
-        route_outside_region += "/#{pair[1]}"
-      else
-        route_outside_region += ",o:noext,#{pair[0]}-#{pair[1]}"
-      end
-      previous_pair0 = pair[0]
-    end   
-    
-    if pairs_outside_region.length > 0
-      route = "c:%23FF7777#{route_outside_region},c:red#{route_inside_region}"
-    elsif uncolored
-      route = route_inside_region
-    else
-      route = "c:red#{route_inside_region}"
-    end
-  end
-  
-  
-  # Return a string of routes formatted for use in the Great Circle Mapper.
-  # Params:
-  # +route_string+:: string in Great Circle Mapper path format
-  # +airport_options+:: string of Great Circle Mapper airport point formatting options
-  # +map_center+:: IATA code of the airport to center the map on (leave blank if centering is not desired)
-  def gcmap_map_link(route_string, airport_options, map_center)
-    if map_center.length > 0
-      map_center = "&MC=#{map_center}"
-    end
-    html = "<div class=\"center\">"
-    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2#{map_center}&P=#{route_string}")
-    html += "</div>"
-  end
-  
   # Return a menu allowing the user to switch between regions on a map
+  # Params: 
   # +region+:: The currently active region
   def gcmap_region_select_links(region, anchor: nil)
     html = "<div class=\"region_select\">"
