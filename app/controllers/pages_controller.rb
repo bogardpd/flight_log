@@ -57,7 +57,7 @@ class PagesController < ApplicationController
   def gcmap_image_proxy
     require 'open-uri'
     response.headers['Cache-Control'] = "public, max-age=#{84.hours.to_i}"
-    response.headers['Content-Type'] = 'image/png'
+    response.headers['Content-Type'] = 'image/gif'
     response.headers['Content-Disposition'] = 'inline'
     
     if Map.hash_image_query(params[:query]) == params[:check] # Ensure the query was issued by this application

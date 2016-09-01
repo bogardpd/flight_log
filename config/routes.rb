@@ -36,7 +36,7 @@ Portfolio::Application.routes.draw do
   match '/routes/edit/:airport1/:airport2' => 'routes#edit', as: :edit_route, via: :get
   
   # Image proxy:
-  match "/images/gcmap/:airport_options/:query/:check/map.png" => 'pages#gcmap_image_proxy', as: :gcmap_image, via: [:get]
+  match "/images/gcmap/:airport_options/:query/:check/map.gif" => 'pages#gcmap_image_proxy', as: :gcmap_image, via: [:get]
   
   # Certbot:
   get '/.well-known/acme-challenge/:id' => 'pages#letsencrypt'
