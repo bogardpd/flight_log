@@ -2,7 +2,6 @@
 
 class PagesController < ApplicationController
 
-  
   def flightlog
     # Flight Log Index
     @meta_description = "Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history."
@@ -53,6 +52,20 @@ class PagesController < ApplicationController
   
   def letsencrypt
     render text: ""
+  end
+  
+  def gcmap_image_proxy
+    require 'open-uri'
+    response.headers['Cache-Control'] = "public, max-age=#{84.hours.to_i}"
+    response.headers['Content-Type'] = 'image/png'
+    response.headers['Content-Disposition'] = 'inline'
+    
+    if Map.hash_image_query(params[:query]) == params[:check] # Ensure the query was issued by this application
+      image_url = "http://www.gcmap.com/map?PM=#{params[:airport_options]}&MP=r&MS=wls2&P=#{params[:query]}"
+      render :text => open(image_url, "rb").read
+    else
+      render :text => ""
+    end
   end
 
 end

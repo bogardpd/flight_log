@@ -2,10 +2,10 @@ class Map
   include ActionView::Helpers
   
   def draw
-    # TO DO: Load image from URL and place into HTTPS wrapper
-    
+        
     html = %Q(<div class="center">)
-    html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
+    #html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
+    html += link_to(image_tag(Rails.application.routes.url_helpers.gcmap_image_path(airport_options, query, Map.hash_image_query(query)), :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
     html += "</div>\n"
     
     return html.html_safe
@@ -21,6 +21,13 @@ class Map
     # Allows the region select links to decide whether to show a particular region's link.
     # Not yet implemented, will be implemented when additional regions are added.
     return false
+  end
+  
+  # Return a hash of a map query based on a secret key
+  # Params: 
+  # +query+:: The query to hash
+  def self.hash_image_query(query)
+    Digest::MD5.hexdigest(query + ENV["IMAGE_KEY"])
   end
   
   private
