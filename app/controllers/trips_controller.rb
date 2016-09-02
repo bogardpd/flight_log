@@ -53,25 +53,24 @@ class TripsController < ApplicationController
     @trip_distance = total_distance(@flights)
     @section_count = Hash.new(0) # Holds a count of the number of flights in each section
     @section_final_destination = Hash.new # Holds the last destination airport code in each section
-    stops_array = Array.new # Holds the origin, destination, and intermediate stops of the trip
+    stops = Array.new # Holds the origin, destination, and intermediate stops of the trip
     previous_section = nil
     previous_destination = nil
     @flights.each do |flight|
       @section_count[flight.trip_section] += 1
       @section_final_destination[flight.trip_section] = flight.destination_iata_code
       unless flight.trip_section == previous_section  
-        stops_array.push(previous_destination) unless previous_destination.nil?
-        stops_array.push(flight.origin_iata_code)
+        stops.push(previous_destination) unless previous_destination.nil?
+        stops.push(flight.origin_iata_code)
       end
       previous_section = flight.trip_section
       previous_destination = flight.destination_iata_code
     end
-    stops_array.push(@flights.last.destination_iata_code) unless @flights.empty?
-    stops_array.uniq!
-    @stops = stops_array
+    stops.push(@flights.last.destination_iata_code) unless @flights.empty?
+    stops.uniq!
     
     # Create map
-    @map = FlightsMap.new(@flights, highlighted_airports: @stops, include_names: true)
+    @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
     
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
@@ -85,7 +84,8 @@ class TripsController < ApplicationController
     
     @flights = Flight.flights_table.where(trip_id: @trip, trip_section: params[:section])
     @section_distance = total_distance(@flights)
-    @map = FlightsMap.new(@flights)
+    stops = [@flights.first.origin_iata_code,@flights.last.destination_iata_code]
+    @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
     @meta_description = "Maps and lists of flights on section #{params[:section]} of Paul Bogardʼs #{@trip.name} trip."
     @title = "#{@trip.name} (Section #{params[:section]})"
     add_breadcrumb 'Trips', 'trips_path'
