@@ -4,8 +4,7 @@ class Map
   def draw
         
     html = %Q(<div class="center">)
-    #html += link_to(image_tag("http://www.gcmap.com/map?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}", :alt => "Map of flight routes", :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
-    html += link_to(image_tag(Rails.application.routes.url_helpers.gcmap_image_path(airport_options, query, Map.hash_image_query(query)), :alt => alt_tag, :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
+    html += link_to(image_tag(Rails.application.routes.url_helpers.gcmap_image_path(airport_options, query.gsub('/','_'), Map.hash_image_query(query)), :alt => alt_tag, :class => "photo_gallery"), "http://www.gcmap.com/mapui?PM=#{airport_options}&MP=r&MS=wls2&P=#{query}")
     html += "</div>\n"
     
     return html.html_safe
