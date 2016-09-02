@@ -58,6 +58,10 @@ class AirportFrequencyMap < Map
       return query
     end
     
+    def alt_tag
+      return "Map of airport locations and number of visits"
+    end
+    
    
   
 end

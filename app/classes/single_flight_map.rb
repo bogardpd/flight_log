@@ -4,13 +4,18 @@ class SingleFlightMap < Map
   # Params:
   # +flight+:: An instance of the Flight model
   def initialize(flight)
-    @route = [[flight.origin_airport.iata_code, flight.destination_airport.iata_code].join("-")]
+    @codes = [flight.origin_airport.iata_code, flight.destination_airport.iata_code]
+    @route = [@codes.join("-")]
   end
   
   private
     
     def airport_options
       return "*"
+    end
+    
+    def alt_tag
+      "Map of flight route between #{@codes[0]} and #{@codes[1]}"
     end
     
     def routes_inside_region

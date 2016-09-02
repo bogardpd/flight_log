@@ -23,6 +23,10 @@ class AirportsMap < Map
     def airports_inside_region
       return @airport_codes
     end
+    
+    def alt_tag
+      return "Map of airport locations"
+    end
   
     
   

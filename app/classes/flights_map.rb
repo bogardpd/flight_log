@@ -1,6 +1,6 @@
 class FlightsMap < Map
   
-  # Initialize a map of a single flight route.
+  # Initialize a map of flight routes.
   # Params:
   # +flights+:: A collection of Flights.
   # ++highlighted_airports+:: An array of string IATA codes to highlight.
