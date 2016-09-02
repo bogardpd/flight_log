@@ -89,7 +89,7 @@ module ApplicationHelper
     else
       sort_dir_string = ['asc','desc']
     end
-    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(:sort_category => sort_string, :sort_direction => ((@sort_cat == sort_symbol && @sort_dir == default_dir) ? sort_dir_string[0] : sort_dir_string[1]), :anchor => page_anchor), :class => "sort")
+    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(region: params[:region], :sort_category => sort_string, :sort_direction => ((@sort_cat == sort_symbol && @sort_dir == default_dir) ? sort_dir_string[0] : sort_dir_string[1]), :anchor => page_anchor), :class => "sort")
   end
   
   def tail_number_country_flag(tail_number)
@@ -122,11 +122,11 @@ module ApplicationHelper
     html += "<ul class=\"region_select\">"
     if region == :conus
     	html += "<li>"
-      html +=	link_to("World", url_for(region: :world, anchor: anchor))
+      html +=	link_to("World", url_for(region: :world, anchor: anchor, sort_category: params[:sort_category], sort_direction: params[:sort_direction]))
       html += "</li><li class=\"selected\">Contiguous United States</li>"
     else
     	html += "<li class=\"selected\">World</li><li>"
-      html += link_to("Contiguous United States", url_for(region: :conus, anchor: anchor))
+      html += link_to("Contiguous United States", url_for(region: :conus, anchor: anchor, sort_category: params[:sort_category], sort_direction: params[:sort_direction]))
       html += "</li>"      	
     end
     html += "</ul></div>"
