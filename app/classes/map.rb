@@ -123,8 +123,12 @@ class Map
       if airports_frequency.any?
         query_sections.push(airports_frequency.join(","))
       end
-            
-      return query_sections.join(",")
+      
+      if query_sections.length > 0
+        return query_sections.join(",")
+      else
+        return " "
+      end
     end
     
     # Convert a set of pairs into a Great Circle Mapper formatted querystring, minimizing string length.
