@@ -71,6 +71,15 @@ module ApplicationHelper
     html.html_safe
   end
   
+  # Accept a sort querystring in the format "±category", and return a hash
+  # in the form [category: 'category', direction: ':asc|:desc'].
+  def sort_parse(query)
+    result = Hash.new
+    result[:category] = query[1..-1]
+    result[:direction] = query[0] == '-' ? :desc : :asc
+    return result
+  end
+  
   def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
         
     if @sort_cat == sort_symbol
@@ -86,10 +95,17 @@ module ApplicationHelper
     case default_dir
     when :asc
       sort_dir_string = ['desc','asc']
+      sort_direction = ['-','+']
     else
       sort_dir_string = ['asc','desc']
+      sort_direction = ['+','-']
     end
-    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(region: params[:region], :sort_category => sort_string, :sort_direction => ((@sort_cat == sort_symbol && @sort_dir == default_dir) ? sort_dir_string[0] : sort_dir_string[1]), :anchor => page_anchor), :class => "sort")
+    if (@sort_cat == sort_symbol && @sort_dir == default_dir)
+      sort_polarity = sort_direction[0]
+    else
+      sort_polarity = sort_direction[1]
+    end
+    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(region: params[:region], :sort_category => sort_string, :sort_direction => ((@sort_cat == sort_symbol && @sort_dir == default_dir) ? sort_dir_string[0] : sort_dir_string[1]), sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
   end
   
   def tail_number_country_flag(tail_number)
