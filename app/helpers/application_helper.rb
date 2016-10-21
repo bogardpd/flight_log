@@ -98,7 +98,7 @@ module ApplicationHelper
     else
       sort_polarity = sort_direction[1]
     end
-    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(region: params[:region], :sort_category => sort_string, :sort_direction => ((@sort_cat == sort_symbol && @sort_dir == default_dir) ? sort_dir_string[0] : sort_dir_string[1]), sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
+    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(region: params[:region],  sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
   end
   
   def tail_number_country_flag(tail_number)
