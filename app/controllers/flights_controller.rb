@@ -29,24 +29,10 @@ class FlightsController < ApplicationController
       end
       @meta_description = "Maps and lists of all of Paul Bogardʼs flights."
     
-      # Set values for sort:
-      case params[:sort_category]
-      when "departure"
-        @sort_cat = :departure
-      else
-        @sort_cat = :departure
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :asc
-      end
-          
       # Sort flight table:
+      sort_params = sort_parse(params[:sort], %w(departure), :asc)
+      @sort_cat   = sort_params[:category]
+      @sort_dir   = sort_params[:direction]
       @flights = @flights.reverse_order if @sort_dir == :desc
     
     end
@@ -185,26 +171,6 @@ class FlightsController < ApplicationController
     @classes_array = Array.new
     
     if @flight_classes.any?
-      # Set values for sort:
-      case params[:sort_category]
-      when "class"
-        @sort_cat = :class
-      when "flights"
-        @sort_cat = :flights
-      else
-        @sort_cat = :class
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :asc
-      end
-    
-      sort_mult = (@sort_dir == :asc ? 1 : -1)
       
       total_flights_with_class = 0
       @flight_classes.each do |travel_class, count| 
@@ -216,6 +182,10 @@ class FlightsController < ApplicationController
       @classes_maximum = @classes_array.max_by{|i| i[:count]}[:count]
       
       # Sort aircraft table:
+      sort_params = sort_parse(params[:sort], %w(class flights), :asc)
+      @sort_cat   = sort_params[:category]
+      @sort_dir   = sort_params[:direction]
+      sort_mult   = (@sort_dir == :asc ? 1 : -1)
       case @sort_cat
       when :class
         @classes_array = @classes_array.sort_by { |travel_class| travel_class[:travel_class] }
@@ -273,31 +243,6 @@ class FlightsController < ApplicationController
     
     if @flight_tail_numbers.any?
     
-      # Set values for sort:
-      case params[:sort_category]
-      when "tail"
-        @sort_cat = :tail
-      when "flights"
-        @sort_cat = :flights
-      when "aircraft"
-        @sort_cat = :aircraft
-      when "airline"
-        @sort_cat = :airline
-      else
-        @sort_cat = :flights
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :desc
-      end
-    
-      sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
       # Create tail number count array    
       tails_count = Array.new
       @flight_tail_numbers.each do |tail_number, count| 
@@ -327,6 +272,10 @@ class FlightsController < ApplicationController
       @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
     
       # Sort tails table:
+      sort_params = sort_parse(params[:sort], %w(flights tail aircraft airline), :desc)
+      @sort_cat   = sort_params[:category]
+      @sort_dir   = sort_params[:direction]
+      sort_mult   = (@sort_dir == :asc ? 1 : -1)
       case @sort_cat
       when :tail
         @tail_numbers_table = @tail_numbers_table.sort_by {|tail| tail[:tail_number]}

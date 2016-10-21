@@ -36,29 +36,6 @@ class AircraftFamiliesController < ApplicationController
         aircraft_family_categories[aircraft_family.id] = aircraft_family.category 
       end
       
-      # Set values for sort:
-      case params[:sort_category]
-      when "aircraft"
-        @sort_cat = :aircraft
-      when "code"
-        @sort_cat = :code
-      when "flights"
-        @sort_cat = :flights
-      else
-        @sort_cat = :flights
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :desc
-      end
-    
-      sort_mult = (@sort_dir == :asc ? 1 : -1)
-      
       # Prepare aircraft family list:
       @flight_aircraft_families.each do |aircraft_family, count| 
         @aircraft_array.push({name: aircraft_family_names[aircraft_family], iata_code: aircraft_family_iata_codes[aircraft_family], manufacturer: aircraft_family_manufacturers[aircraft_family], category: aircraft_family_categories[aircraft_family], count: count})
@@ -68,6 +45,11 @@ class AircraftFamiliesController < ApplicationController
       @aircraft_maximum = @aircraft_array.max_by{|i| i[:count]}[:count]
     
       # Sort aircraft table:
+      sort_params = sort_parse(params[:sort], %w(flights aircraft code), :desc)
+      @sort_cat   = sort_params[:category]
+      @sort_dir   = sort_params[:direction]
+      sort_mult   = (@sort_dir == :asc ? 1 : -1)
+      
       case @sort_cat
       when :aircraft
         @aircraft_array = @aircraft_array.sort_by { |aircraft_family| [aircraft_family[:manufacturer].downcase, aircraft_family[:name].downcase] }

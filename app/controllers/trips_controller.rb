@@ -18,22 +18,9 @@ class TripsController < ApplicationController
     if @trips.any?
     
       # Set values for sort:
-      case params[:sort_category]
-      when "departure"
-        @sort_cat = :departure
-      else
-        @sort_cat = :departure
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :desc
-      end
-    
+      sort_params = sort_parse(params[:sort], %w(departure), :desc)
+      @sort_cat   = sort_params[:category]
+      @sort_dir   = sort_params[:direction]
       @trips.reverse! if @sort_dir == :desc
     
     end

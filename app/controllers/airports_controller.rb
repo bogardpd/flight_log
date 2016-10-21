@@ -11,31 +11,6 @@ class AirportsController < ApplicationController
     
     if @flights.any?
         
-      # Set values for sort:
-      case params[:sort_category]
-      when "country"
-        @sort_cat = :country
-      when "city"
-        @sort_cat = :city
-      when "code"
-        @sort_cat = :code
-      when "visits"
-        @sort_cat = :visits
-      else
-        @sort_cat = :visits
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :desc
-      end
-    
-      sort_mult = (@sort_dir == :asc ? 1 : -1)
-      
       # Create airport table array:
       @airport_table = Airport.airport_table(@flights)
       
@@ -49,6 +24,12 @@ class AirportsController < ApplicationController
       @visits_maximum = @airport_table.max_by{|i| i[:frequency]}[:frequency]
     
       # Sort route table:
+      
+      sort_params = sort_parse(params[:sort], %w(visits country city code), :desc)
+      @sort_cat   = sort_params[:category]
+      @sort_dir   = sort_params[:direction]
+      sort_mult   = (@sort_dir == :asc ? 1 : -1)
+      
       case @sort_cat
       when :country
         if @sort_dir == :asc
@@ -84,30 +65,6 @@ class AirportsController < ApplicationController
       @airport = Airport.where(:iata_code => params[:id]).first
       raise ActiveRecord::RecordNotFound if (@airport.nil?) #all_flights will fail if code does not exist, so check here.
     end
-    
-    # Set values for sort:
-    case params[:sort_category]
-    when "city"
-      @sort_cat = :city
-    when "code"
-      @sort_cat = :code
-    when "flights"
-      @sort_cat = :flights
-    when "distance"
-      @sort_cat = :distance
-    else
-      @sort_cat = :flights
-    end
-    
-    case params[:sort_direction]
-    when "asc"
-      @sort_dir = :asc
-    when "desc"
-      @sort_dir = :desc
-    else
-      @sort_dir = :desc
-    end
-    sort_mult = (@sort_dir == :asc ? 1 : -1)
     
     @flights = Flight.flights_table.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
@@ -176,6 +133,11 @@ class AirportsController < ApplicationController
     @distance_maximum = @flights.length == 0 ? 0 : @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
     
     # Sort city pair table:
+    sort_params = sort_parse(params[:sort], %w(flights city code distance), :desc)
+    @sort_cat   = sort_params[:category]
+    @sort_dir   = sort_params[:direction]
+    sort_mult   = (@sort_dir == :asc ? 1 : -1)
+    
     case @sort_cat
     when :city
       @direct_flight_airports = @direct_flight_airports.sort_by {|value| value[:city]}

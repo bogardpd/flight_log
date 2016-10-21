@@ -71,14 +71,7 @@ module ApplicationHelper
     html.html_safe
   end
   
-  # Accept a sort querystring in the format "±category", and return a hash
-  # in the form [category: 'category', direction: ':asc|:desc'].
-  def sort_parse(query)
-    result = Hash.new
-    result[:category] = query[1..-1]
-    result[:direction] = query[0] == '-' ? :desc : :asc
-    return result
-  end
+  
   
   def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
         
@@ -95,10 +88,10 @@ module ApplicationHelper
     case default_dir
     when :asc
       sort_dir_string = ['desc','asc']
-      sort_direction = ['-','+']
+      sort_direction = ['-','']
     else
       sort_dir_string = ['asc','desc']
-      sort_direction = ['+','-']
+      sort_direction = ['','-']
     end
     if (@sort_cat == sort_symbol && @sort_dir == default_dir)
       sort_polarity = sort_direction[0]

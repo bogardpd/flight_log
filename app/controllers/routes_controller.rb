@@ -14,27 +14,6 @@ class RoutesController < ApplicationController
     
     if flights.any?
     
-      # Set values for sort:
-      case params[:sort_category]
-      when "flights"
-        @sort_cat = :flights
-      when "distance"
-        @sort_cat = :distance
-      else
-        @sort_cat = :flights
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :desc
-      end
-    
-      sort_mult = (@sort_dir == :asc ? 1 : -1)
-    
       # Build hash of distances:
       route_totals = Hash.new(0)
       route_distances = Hash.new(nil)
@@ -47,18 +26,20 @@ class RoutesController < ApplicationController
       end
       route_totals = route_totals.sort_by {|key, value| [-value, key]}
 
-  
       # Build array of routes, distances, and number of flights:
       route_totals.each do |flight_route, count|
         @route_table << {:route => flight_route, :distance_mi => route_distances[flight_route] || -1, :total_flights => count} # Make nil distances negative so we can sort
       end
-
     
       # Find maxima for graph scaling:
       @flights_maximum = @route_table.max_by{|i| i[:total_flights].to_i}[:total_flights]
       @distance_maximum = @route_table.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
     
       # Sort route table:
+      sort_params = sort_parse(params[:sort], %w(flights distance), :desc)
+      @sort_cat   = sort_params[:category]
+      @sort_dir   = sort_params[:direction]
+      sort_mult   = (@sort_dir == :asc ? 1 : -1)
       if @sort_cat == :flights
         @route_table = @route_table.sort_by {|value| [sort_mult*value[:total_flights], -value[:distance_mi]]}
       elsif @sort_cat == :distance

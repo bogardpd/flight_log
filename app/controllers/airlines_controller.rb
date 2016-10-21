@@ -33,29 +33,6 @@ class AirlinesController < ApplicationController
         airline_iata_codes[airline.id] = airline.iata_airline_code 
       end
       
-      # Set values for sort:
-      case params[:sort_category]
-      when "airline"
-        @sort_cat = :airline
-      when "code"
-        @sort_cat = :code
-      when "flights"
-        @sort_cat = :flights
-      else
-        @sort_cat = :flights
-      end
-    
-      case params[:sort_direction]
-      when "asc"
-        @sort_dir = :asc
-      when "desc"
-        @sort_dir = :desc
-      else
-        @sort_dir = :desc
-      end
-    
-      sort_mult = (@sort_dir == :asc ? 1 : -1)
-      
       # Prepare airline list:
       @flight_airlines.each do |airline, count| 
         @airlines_array.push({name: airline_names[airline], iata_code: airline_iata_codes[airline], count: count})
@@ -71,6 +48,11 @@ class AirlinesController < ApplicationController
       @operators_maximum = @operators_array.any? ? @operators_array.max_by{|i| i[:count]}[:count] : 0
     
       # Sort airline and operator tables:
+      sort_params = sort_parse(params[:sort], %w(flights airline code), :desc)
+      @sort_cat   = sort_params[:category]
+      @sort_dir   = sort_params[:direction]
+      sort_mult   = (@sort_dir == :asc ? 1 : -1)
+      
       case @sort_cat
       when :airline
         @airlines_array = @airlines_array.sort_by { |airline| airline[:name].downcase }

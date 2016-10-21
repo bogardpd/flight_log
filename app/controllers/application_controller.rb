@@ -109,6 +109,39 @@ protected
     end
   end
   
+  # Accept a sort querystring in the format "category" or "-category", and
+  # return a hash in the form [category: :category, direction: ':asc|:desc'].
+  # Parameters:
+  # +query+:                Sort querystring in the format "category" or
+  #                         "-category"
+  # +permitted_categories+: An array of category strings which the sort is
+  #                         limited to. If no category is specified in the
+  #                         query, or if the category provided is not in this
+  #                         array, then the first element of this array will be
+  #                         returned as the category.
+  # +default_direction+:    Symbol for the direction to return if no direction
+  #                         is specified
+  def sort_parse(query, permitted_categories, default_direction)
+    return {category: permitted_categories.first.to_sym, direction: default_direction} if query.nil?
+    result = Hash.new
+    # Extract category and direction
+    if query[0] == '-'
+      category = query[1..-1]
+      result[:direction] = :desc
+    else
+      category = query
+      result[:direction] = :asc
+    end
+    # Check if category is in the query:
+    if permitted_categories.include?(category)
+      result[:category] = category.to_sym
+    else
+      result[:category] = permitted_categories.first.to_sym
+      result[:direction] = default_direction
+    end
+    return result
+  end
+  
   def superlatives(flights)
     # This function takes a collection of flights and returns a superlatives collection.
     route_distances = Hash.new()
