@@ -1,15 +1,11 @@
+<% provide(:button_text, "Add Flight")%>
+
 <h1>New Flight</h1>
 
 <% if !Airport.any? %>
 	<div class="alert">There are no airports in the flight log. Please <%= link_to "add an airport", new_airport_path %> before trying to add a flight.</div>
 <% else %>
 
-	<%= form_for(@flight) do |f| %>
-	  <%= render 'error_messages' %>
-	  <%= render :partial => 'form_fields', :locals => { :f => f } %>
-	  <p>
-	    <%= f.submit "Add Flight" %>
-	  </p>
-	<% end %>
+	<%= render :partial => 'form' %>
 
 <% end %>

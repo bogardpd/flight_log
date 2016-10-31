@@ -1,13 +1,5 @@
-<h1>Edit Flight</acronym></h1>
+<% provide(:button_text, "Update Flight")%>
 
-<%= form_for(@flight) do |f| %>
+<h1>Edit Flight</h1>
 
-  <%= render 'error_messages' %>
-  
-  <%= render :partial => 'form_fields', :locals => { :f => f } %>
-  
-  <p>
-    <%= f.submit "Update Flight" %>
-  </p>
-
-<% end %>
+<%= render :partial => 'form' %>

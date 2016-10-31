@@ -1,0 +1,75 @@
+<%= form_for(@flight) do |f| %>
+  <%= render 'error_messages' %>
+
+  <p>Trip: <strong><%= @flight.trip.name %></strong></p>
+
+  <p>
+    <%= f.label :trip_section, "Trip Section" %><br />
+    <%= f.telephone_field :trip_section, :size => 2 %>
+  </p>
+
+  <p>
+    <%= f.label :origin_airport_id, "Origin" %> - <%= f.label :destination_airport_id, "Destination" %><br />
+    <% if params[:id] || Flight.chronological.empty? %>
+  		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}, {class: "iata_mono"}) %>
+  	<% else %>
+  		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, :selected => Flight.chronological.last.destination_airport_id}, {class: "iata_mono"}) %>
+  	<% end %> &ndash; <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {:include_blank => true}, {class: "iata_mono"}) %>
+  </p>
+
+  <p>
+    <%= f.label :departure_date, "Departure Date (Local)" %><br />
+    <%= f.date_select :departure_date, :start_year => 2000 %>
+  </p>
+
+  <p>
+    <%= f.label :departure_utc, "UTC Departure (for sorting flights)" %> &mdash; Current time: <strong><%= Time.now.utc %></strong><br />
+    <%= f.datetime_select :departure_utc, :start_year => 2000, :minute_step => 5 %>
+  </p>
+
+  <p>
+    <%= f.label :airline_id %> / <%= f.label :flight_number, "Flight Number" %><br />
+    <%= f.collection_select(:airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.telephone_field :flight_number, :size => 6 %>
+  </p>
+
+  <p>
+    <%= f.label :codeshare_airline_id, "Codeshare Airline" %> / <%= f.label :codeshare_flight_number, "Codeshare Flight Number" %><br />
+    <%= f.collection_select(:codeshare_airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.telephone_field :codeshare_flight_number, :size => 6 %>
+  </p>
+
+  <p>
+    <%= f.label :aircraft_family_id, "Aircraft Family" %> / <%= f.label :aircraft_variant, "Variant" %><br />
+    <%= f.collection_select(:aircraft_family_id, AircraftFamily.order("LOWER(family_name)"), :id, :format_name, {include_blank: true}) %> <%= f.text_field :aircraft_variant %>
+  </p>
+
+  <p>
+    <%= f.label :tail_number, "Tail Number" %> / <%= f.label :aircraft_name %><br />
+    <%= f.text_field :tail_number, :size => 10 %> <%= f.text_field :aircraft_name %>
+  </p>
+
+  <p>
+    <%= f.label :operator_id, "Operator" %> / <%= f.label :fleet_number, "Fleet Number" %><br />
+    <%= f.collection_select(:operator_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.text_field :fleet_number, :size => 8 %>
+  </p>
+
+  <p>
+    <%= f.label :travel_class, "Travel Class" %><br />
+    <%= f.select(:travel_class, options_for_select(Flight.classes_list.invert, @flight.travel_class), :include_blank => true)%>
+  </p>
+
+  <p>
+    <%= f.label :comment %><br />
+    <%= f.text_field :comment, :size => 60 %>
+  </p>
+
+  <p>
+  	<%= f.label :boarding_pass_data %><br />
+  	<%= f.text_area :boarding_pass_data, size: '60x5', class: 'iata_mono' %>
+  </p>
+
+  <%= f.hidden_field :trip_id, :value => @flight.trip.id %>
+
+  <p>
+    <%= f.submit yield(:button_text) %>
+  </p>
+<% end %>

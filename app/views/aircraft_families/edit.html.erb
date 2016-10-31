@@ -1,13 +1,5 @@
+<% provide(:button_text, "Update Aircraft Family")%>
+
 <h1>Edit <%= @aircraft_family.full_name %></h1>
 
-<%= form_for(@aircraft_family) do |f| %>
-
-  <%= render 'error_messages' %>
-  
-  <%= render :partial => 'form_fields', :locals => { :f => f } %>
-  
-  <p>
-    <%= f.submit "Update Aircraft Family" %>
-  </p>
-
-<% end %>
+<%= render :partial => 'form' %>

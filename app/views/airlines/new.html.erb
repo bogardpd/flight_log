@@ -1,13 +1,5 @@
+<% provide(:button_text, "Add Airline")%>
+
 <h1>New Airline</h1>
-
-<%= form_for(@airline) do |f| %>
-
-  <%= render 'error_messages' %>
   
-  <%= render :partial => 'form_fields', :locals => { :f => f } %>
-  
-  <p>
-    <%= f.submit "Add Airline" %>
-  </p>
-
-<% end %>
+<%= render :partial => 'form' %>

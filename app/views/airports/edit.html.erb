@@ -1,13 +1,5 @@
+<% provide(:button_text, "Update Airport")%>
+
 <h1>Edit <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h1>
 
-<%= form_for(@airport) do |f| %>
-
-  <%= render 'error_messages' %>
-  
-  <%= render :partial => 'form_fields', :locals => { :f => f } %>
-  
-  <p>
-    <%= f.submit "Update Airport" %>
-  </p>
-
-<% end %>
+<%= render :partial => 'form' %>

@@ -1,0 +1,25 @@
+<%= form_for(@aircraft_family) do |f| %>
+
+  <%= render 'error_messages' %>
+
+  <p>
+    <%= f.label :manufacturer %> / <%= f.label :family_name, "Aircraft Family" %><br />
+    <%= f.text_field :manufacturer, size: 25 %> <%= f.text_field :family_name, size: 25 %>
+  </p>
+
+  <p>
+    <%= f.label :iata_aircraft_code, "IATA Aircraft Code" %><br />
+    <%= f.text_field :iata_aircraft_code, size: 4, class: "iata_mono" %><br />
+  </p>
+
+  <p>
+    <%= f.label :category %><br />
+  	<%= f.select(:category, options_for_select(AircraftFamily.categories_list.invert, @aircraft_family.category), :include_blank => true)%>
+  	</p>
+  </p>
+
+  <p>
+    <%= f.submit yield(:button_text) %>
+  </p>
+  
+<% end %>
