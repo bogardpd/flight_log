@@ -4,7 +4,10 @@ class Airport < ActiveRecord::Base
   has_many :first_routes, :class_name => 'Route', :foreign_key => 'airport1_id'
   has_many :second_routes, :class_name => 'Route', :foreign_key => 'airport2_id'
   
+  STRIP_ATTRS = %w( city country )
+  
   before_save { |airport| airport.iata_code = iata_code.upcase }
+  before_save :strip_blanks
   
   validates :iata_code, :presence => true, :length => { :is => 3 }, :uniqueness => { :case_sensitive => false }
   validates :city, :presence => true
@@ -121,6 +124,12 @@ class Airport < ActiveRecord::Base
     end
     airport_table.sort_by! { |airport| [-airport[:frequency], airport[:city]] }
     return airport_table
+  end
+  
+  protected
+  
+  def strip_blanks
+    STRIP_ATTRS.each { |attr| self[attr] = self[attr].strip if !self[attr].blank? }
   end
   
 end
