@@ -100,6 +100,18 @@ class Flight < ActiveRecord::Base
       
   end
   
+  # Return a hash with years as the keys, and hashes of counts of business,
+  # mixed, and personal flights as the values. 
+  # by_year[2009] = {business: 35, mixed: 4, personal: 7}
+  # Years with no flights that are between the earliest and latest flight will
+  # be included, with zeroes in the values.
+  def self.by_year
+    summary = Hash.new
+    summary[2009] = {business: 35, mixed: 4, personal: 7}
+    summary[2010] = {business: 41, mixed: 4, personal: 4}
+    return summary
+  end
+  
   protected
   
   def nil_if_blank

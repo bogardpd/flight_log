@@ -1,0 +1,6 @@
+<pre>
+Year,Business,Mixed,Personal
+<% @flight_summary.each do |year, data| %>
+<%= "#{year},#{data[:business]},#{data[:mixed]},#{data[:personal]}"%>
+<% end %>
+</pre>

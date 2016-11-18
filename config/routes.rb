@@ -17,6 +17,8 @@ Portfolio::Application.routes.draw do
   match '/signup', :to => 'users#new', :via => [:get]
   match '/login', :to => 'sessions#new', :via => [:get]
   match '/logout', :to => 'sessions#destroy', :via => :delete
+  
+  match '/annual_summary', to: 'flights#show_annual_summary', via: [:get]
 
   match '/flights/from/:start_date/to/:end_date', :to => 'flights#show_date_range', :as => :show_date_range, :via => [:get]
   match '/flights/year/:year', :to => 'flights#show_date_range', :as => :show_year, :via => [:get]

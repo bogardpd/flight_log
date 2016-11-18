@@ -86,6 +86,10 @@ class FlightsController < ApplicationController
     flash[:record_not_found] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
   end
+  
+  def show_annual_summary
+    @flight_summary = Flight.by_year
+  end
     
   def show_date_range
     add_breadcrumb 'Flights', 'flights_path'
