@@ -6,6 +6,11 @@
     <%= f.label :name, "Trip Name" %><br />
     <%= f.text_field :name %>
   </p>
+  
+  <p>
+    <%= f.label :purpose %><br />
+    <%= f.select(:purpose, options_for_select(Trip.purposes_list.invert, @trip.purpose), :include_blank => true)%>
+  </p>
 
   <p>
     <%= f.check_box :hidden %> <%= f.label :hidden, "Hidden" %>

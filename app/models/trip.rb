@@ -1,6 +1,14 @@
 class Trip < ActiveRecord::Base
   has_many :flights, :dependent => :destroy
   
+  def self.purposes_list
+    purposes = Hash.new
+    purposes['business'] = 'Business'
+    purposes['mixed'] = 'Mixed'
+    purposes['personal'] = 'Personal'
+    return purposes
+  end
+  
   NULL_ATTRS = %w( comment )
   before_save :nil_if_blank
   

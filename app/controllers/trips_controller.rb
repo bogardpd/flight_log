@@ -135,7 +135,7 @@ class TripsController < ApplicationController
   private
   
     def trip_params
-      params.require(:trip).permit(:comment, :hidden, :name)
+      params.require(:trip).permit(:comment, :hidden, :name, :purpose)
     end
     
     def logged_in_user
