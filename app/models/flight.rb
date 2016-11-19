@@ -148,24 +148,22 @@ class Flight < ActiveRecord::Base
     return summary
   end
   
-  # Return a range of the years that contain flights for a given flight
-  # collection
+  # For a given flight collection, return a range of the years that contain
+  # flights.
   def self.year_range
     return nil unless self.any?
     sorted = self.chronological
     return sorted.first.departure_date.year..sorted.last.departure_date.year
   end
   
-  # For a given flight collection, return a hash with years as the keys and
-  # values of true (if the year has flights) or false.
+  # For a given flight collection, return an array of years containing flights.
   def self.years_with_flights
     flights = self.chronological
-    
-    years_with_flights = Hash.new(false)
+    years_with_flights = Array.new
     flights.each do |flight|
-      years_with_flights[flight.departure_date.year] = true
+      years_with_flights.push(flight.departure_date.year)
     end
-    return years_with_flights
+    return years_with_flights.uniq
   end
   
 end
