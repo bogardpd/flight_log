@@ -1,5 +1,5 @@
 class FlightsController < ApplicationController
-  before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy, :show_annual_summary]
   add_breadcrumb 'Home', 'root_path'
   
   def index
@@ -88,6 +88,7 @@ class FlightsController < ApplicationController
   end
   
   def show_annual_summary
+    @title = "Annual Summary"
     @flight_summary = Flight.by_year
   end
     

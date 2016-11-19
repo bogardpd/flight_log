@@ -129,22 +129,19 @@ class Flight < ActiveRecord::Base
   # Years with no flights that are between the earliest and latest flight will
   # be included, with zeroes in the values.
   def self.by_year
-    summary = Hash.new
-    
-    # Get earliest and latest flight years (use whatever generates year selector on show flights):
-    
-    
     # Create hash ranging from earliest to latest years (default all values to zero):
-    
+    summary = Hash.new
+    self.year_range.each do |year|
+      summary[year] = {business: 0, mixed: 0, personal: 0, undefined: 0}
+    end
     
     # Loop through all flights (with year and flight.trip.purpose selected and increment hash):
+    flights = self.select("departure_date, trips.purpose AS purpose").joins("LEFT OUTER JOIN trips ON trips.id = flights.trip_id")
+    flights.each do |flight|
+      purpose = flight.purpose ? flight.purpose.to_sym : :undefined
+      summary[flight.departure_date.year][purpose] += 1
+    end
     
-    
-    
-    
-    
-    summary[2009] = {business: 35, mixed: 4, personal: 7}
-    summary[2010] = {business: 41, mixed: 4, personal: 4}
     return summary
   end
   

@@ -796,6 +796,16 @@ td.airport_visits {
 	text-align: center;
 }
 
+td.annual_summary, th.annual_summary {
+  width: 3em;
+  text-align: center;
+}
+
+td.annual_summary_undefined, th.annual_summary_undefined {
+  color: #FF0000;
+  background-color: #FFEEEE !important;
+}
+
 td.class_class, th.class_class {
 	text-align: left;
 }

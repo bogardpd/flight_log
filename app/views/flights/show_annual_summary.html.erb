@@ -1,6 +1,21 @@
-<pre>
-Year,Business,Mixed,Personal
+<h1><%= @title %></h1>
+<table class="flightlog">
+  <tr>
+    <th class="annual_summary">Year</th>
+    <th class="annual_summary">Business</th>
+    <th class="annual_summary">Mixed</th>
+    <th class="annual_summary">Personal</th>
+    <th class="annual_summary annual_summary_undefined">Undefined</th>
+    <th class="annual_summary">Total</th>
+  </tr>
 <% @flight_summary.each do |year, data| %>
-<%= "#{year},#{data[:business]},#{data[:mixed]},#{data[:personal]}"%>
+  <tr>
+    <td class="annual_summary"><%= year %></td>
+    <td class="annual_summary"><%= data[:business] %></td>
+    <td class="annual_summary"><%= data[:mixed] %></td>
+    <td class="annual_summary"><%= data[:personal] %></td>
+    <td class="annual_summary annual_summary_undefined"><%= data[:undefined] %></td>
+    <td class="annual_summary"><%= data.inject(0) { |sum, n| sum + n[1] } %></td>
+  </tr>
 <% end %>
-</pre>
+</table>
