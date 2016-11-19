@@ -14,7 +14,7 @@
     <td class="annual_summary"><%= data[:business] %></td>
     <td class="annual_summary"><%= data[:mixed] %></td>
     <td class="annual_summary"><%= data[:personal] %></td>
-    <td class="annual_summary annual_summary_undefined"><%= data[:undefined] %></td>
+    <td class="annual_summary annual_summary_undefined"><%= data[:undefined] > 0 ? data[:undefined] : "-"  %></td>
     <td class="annual_summary"><%= data.inject(0) { |sum, n| sum + n[1] } %></td>
   </tr>
 <% end %>
