@@ -156,4 +156,16 @@ class Flight < ActiveRecord::Base
     return sorted.first.departure_date.year..sorted.last.departure_date.year
   end
   
+  # For a given flight collection, return a hash with years as the keys and
+  # values of true (if the year has flights) or false.
+  def self.years_with_flights
+    flights = self.chronological
+    
+    years_with_flights = Hash.new(false)
+    flights.each do |flight|
+      years_with_flights[flight.departure_date.year] = true
+    end
+    return years_with_flights
+  end
+  
 end

@@ -126,18 +126,17 @@ class FlightsController < ApplicationController
     @new_aircraft_flag = false
     @new_airline_tag = false
     
-
-        
     if logged_in?
       @flights = Flight.flights_table.where(:departure_date => @date_range)
+      @year_range = Flight.year_range
+      @years_with_flights = Flight.years_with_flights
     else
       @flights = Flight.visitor.flights_table.where(:departure_date => @date_range)
+      @year_range = Flight.visitor.year_range
+      @years_with_flights = Flight.visitor.years_with_flights
     end
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
-    
-    @years_with_flights = years_with_flights
-    @year_range = @flights.year_range
     
     @region = current_region(default: :world)
     @map = FlightsMap.new(@flights, region: @region)
@@ -394,21 +393,7 @@ class FlightsController < ApplicationController
     end
     
     
-    
-    def years_with_flights
-      if logged_in?
-        flights = Flight.chronological
-      else
-        flights = Flight.visitor.chronological
-      end
-    
-      # Determine which years have flights:
-      years_with_flights = Hash.new(false)
-      flights.each do |flight|
-        years_with_flights[flight.departure_date.year] = true
-      end
-      return years_with_flights
-    end
+  
     
     
 end
