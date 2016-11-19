@@ -10,11 +10,11 @@ class FlightsController < ApplicationController
         
     if logged_in?
       @flights = Flight.flights_table
-      @year_range = @flights.any? ? Flight.chronological.first.departure_date.year..Flight.chronological.last.departure_date.year : nil
     else
       @flights = Flight.flights_table.visitor
-      @year_range = @flights.any? ? Flight.visitor.chronological.first.departure_date.year..Flight.visitor.chronological.last.departure_date.year : nil
     end
+    
+    @year_range = @flights.year_range
     
     if @flights.any?
     
@@ -126,8 +126,7 @@ class FlightsController < ApplicationController
     @new_aircraft_flag = false
     @new_airline_tag = false
     
-    @years_with_flights = years_with_flights
-    @year_range = years_with_flights_range
+
         
     if logged_in?
       @flights = Flight.flights_table.where(:departure_date => @date_range)
@@ -136,6 +135,9 @@ class FlightsController < ApplicationController
     end
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
+    
+    @years_with_flights = years_with_flights
+    @year_range = @flights.year_range
     
     @region = current_region(default: :world)
     @map = FlightsMap.new(@flights, region: @region)
@@ -408,12 +410,5 @@ class FlightsController < ApplicationController
       return years_with_flights
     end
     
-    def years_with_flights_range
-      if logged_in?
-        return Flight.chronological.first.departure_date.year..Flight.last.departure_date.year
-      else
-        return Flight.visitor.chronological.first.departure_date.year..Flight.visitor.last.departure_date.year
-      end
-      return false      
-    end
+    
 end

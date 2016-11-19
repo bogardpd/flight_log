@@ -100,17 +100,6 @@ class Flight < ActiveRecord::Base
       
   end
   
-  # Return a hash with years as the keys, and hashes of counts of business,
-  # mixed, and personal flights as the values. 
-  # by_year[2009] = {business: 35, mixed: 4, personal: 7}
-  # Years with no flights that are between the earliest and latest flight will
-  # be included, with zeroes in the values.
-  def self.by_year
-    summary = Hash.new
-    summary[2009] = {business: 35, mixed: 4, personal: 7}
-    summary[2010] = {business: 41, mixed: 4, personal: 4}
-    return summary
-  end
   
   protected
   
@@ -123,7 +112,6 @@ class Flight < ActiveRecord::Base
   end
   
   def self.aircraft_first_flight(aircraft_family)
-    #return Flight.where(:aircraft_family => aircraft_family).order(departure_date: :asc).first.departure_date
     return Flight.select("aircraft_families.iata_aircraft_code, flights.departure_date").joins(:aircraft_family).where("aircraft_families.iata_aircraft_code = ?", aircraft_family).order(departure_date: :asc).first.departure_date
   end
   
@@ -133,6 +121,39 @@ class Flight < ActiveRecord::Base
   
   def self.airport_first_visit(airport_id)
     return Flight.where("origin_airport_id = ? OR destination_airport_id = ?", airport_id, airport_id).order(departure_date: :asc).first.departure_date
+  end
+  
+  # For a given flight collection, return a hash with years as the keys, and
+  # hashes of counts of business, mixed, and personal flights as the values.
+  # by_year[2009] = {business: 35, mixed: 4, personal: 7}
+  # Years with no flights that are between the earliest and latest flight will
+  # be included, with zeroes in the values.
+  def self.by_year
+    summary = Hash.new
+    
+    # Get earliest and latest flight years (use whatever generates year selector on show flights):
+    
+    
+    # Create hash ranging from earliest to latest years (default all values to zero):
+    
+    
+    # Loop through all flights (with year and flight.trip.purpose selected and increment hash):
+    
+    
+    
+    
+    
+    summary[2009] = {business: 35, mixed: 4, personal: 7}
+    summary[2010] = {business: 41, mixed: 4, personal: 4}
+    return summary
+  end
+  
+  # Return a range of the years that contain flights for a given flight
+  # collection
+  def self.year_range
+    return nil unless self.any?
+    sorted = self.chronological
+    return sorted.first.departure_date.year..sorted.last.departure_date.year
   end
   
 end
