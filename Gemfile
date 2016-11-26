@@ -4,12 +4,14 @@ ruby '2.3.1'
 
 gem 'rails', '4.2.3'
 
+# Use puma as the webserver
+gem 'puma', '2.11.1'
 # Use PostgreSQL as the database
 gem 'pg' , '0.18.4'
 # Use bcrypt to hash passwords
 gem 'bcrypt', '3.1.7'
 # Use SCSS for stylesheets
-gem 'sass-rails', '5.0.2'
+gem 'sass-rails', '5.0.6'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '2.5.3'
 # Use CoffeeScript for .coffee assets and views
@@ -23,8 +25,6 @@ gem 'jbuilder', '2.2.3'
 
 group :development do
   #gem 'rspec-rails', '2.10.0'
-  #gem 'webrick'
-  gem 'puma', '2.11.1'
   gem 'sql_queries_count'
 end
 
@@ -36,6 +36,4 @@ end
 
 group :production do
   gem 'rails_12factor', '0.0.2'
-  # Use puma as the production webserver
-  gem 'puma', '2.11.1'
 end
