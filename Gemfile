@@ -2,7 +2,6 @@ source 'http://rubygems.org'
 
 ruby '2.3.1'
 
-#gem 'rails', '4.2.3'
 gem 'rails', '5.0.0.1'
 
 # Use puma as the webserver
@@ -33,7 +32,7 @@ group :development, :test do
 end
 
 group :test do
-  #gem 'rails-controller-testing', '0.1.1'
+  gem 'rails-controller-testing', '0.1.1'
   gem 'minitest-reporters',       '1.1.9'
   gem 'guard',                    '2.13.0'
   gem 'guard-minitest',           '2.4.4'
