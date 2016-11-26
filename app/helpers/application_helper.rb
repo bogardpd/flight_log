@@ -113,7 +113,7 @@ module ApplicationHelper
   # +anchor+:: If set, defines a page anchor position for the region select links to link to
   def map_with_region_select(map, anchor: nil)
     html = %Q(<div id="#{anchor}">\n)
-    if map.exists?
+    if map && map.exists?
       html += gcmap_region_select_links(@region, anchor: anchor)
       html += map.draw
     else

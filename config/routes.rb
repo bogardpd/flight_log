@@ -11,9 +11,9 @@ Portfolio::Application.routes.draw do
   resources :aircraft_families, path: :aircraft
   resources :trips
   resources :routes, :only => [:new, :show, :create, :update]
-
-  root 'pages#flightlog'
   
+  root 'pages#flightlog'
+    
   match '/signup', :to => 'users#new', :via => [:get]
   match '/login', :to => 'sessions#new', :via => [:get]
   match '/logout', :to => 'sessions#destroy', :via => :delete
