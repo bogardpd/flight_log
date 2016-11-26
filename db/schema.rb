@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -40,9 +39,8 @@ ActiveRecord::Schema.define(version: 20161118234442) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.string   "country"
+    t.index ["iata_code"], name: "index_airports_on_iata_code", unique: true, using: :btree
   end
-
-  add_index "airports", ["iata_code"], name: "index_airports_on_iata_code", unique: true, using: :btree
 
   create_table "flights", force: :cascade do |t|
     t.integer  "origin_airport_id"
@@ -91,9 +89,8 @@ ActiveRecord::Schema.define(version: 20161118234442) do
     t.datetime "updated_at",      null: false
     t.string   "password_digest"
     t.string   "remember_token"
+    t.index ["name"], name: "index_users_on_name", unique: true, using: :btree
+    t.index ["remember_token"], name: "index_users_on_remember_token", using: :btree
   end
-
-  add_index "users", ["name"], name: "index_users_on_name", unique: true, using: :btree
-  add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
 end

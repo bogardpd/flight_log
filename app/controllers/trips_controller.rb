@@ -1,5 +1,5 @@
 class TripsController < ApplicationController
-  before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
+  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   add_breadcrumb 'Home', 'root_path'
 
   

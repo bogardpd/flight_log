@@ -1,5 +1,5 @@
 class FlightsController < ApplicationController
-  before_filter :logged_in_user, :only => [:new, :create, :edit, :update, :destroy, :show_annual_summary]
+  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy, :show_annual_summary]
   add_breadcrumb 'Home', 'root_path'
   
   def index
