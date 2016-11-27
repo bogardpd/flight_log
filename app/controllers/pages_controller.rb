@@ -66,9 +66,10 @@ class PagesController < ApplicationController
       image_url = "http://www.gcmap.com/map?PM=#{params[:airport_options]}&MP=r&MS=wls2&P=#{query}"
       render body: open(image_url, "rb").read
     else
-      #render body: => ""
       raise ActionController::RoutingError.new('Not Found')
     end
+    
+  rescue SocketError
   end
 
 end
