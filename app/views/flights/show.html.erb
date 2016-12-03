@@ -113,6 +113,19 @@
 </div>
 <% end %>
 
+<% if logged_in? && @boarding_pass.bcbp_fields %>
+<h3>Parsed</h3>
+<table class="flightlog">
+<% @boarding_pass.bcbp_fields.each do |field, value| %>
+  <tr>
+    <td class="flight_show_label"><%= field %></td>
+    <td class="code"><%= value %></td>
+  </tr>
+<% end %>
+</table>
+
+<% end %>
+
 <% content_for :admin_actions do %>
   <%= link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => 'warning') %> &emsp; <%= link_to("Edit Flight", edit_flight_path(@flight)) %>
 <% end %>

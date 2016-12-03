@@ -163,4 +163,6 @@ class Flight < ActiveRecord::Base
     return years_with_flights.uniq
   end
   
+  
+  
 end

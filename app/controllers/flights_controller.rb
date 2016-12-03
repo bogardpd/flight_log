@@ -79,6 +79,8 @@ class FlightsController < ApplicationController
     
     @route_distance = route_distance_by_airport_id(@flight.origin_airport, @flight.destination_airport)
     
+    @boarding_pass = BoardingPass.new(@flight.boarding_pass_data)
+    
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb @title, "flight_path(#{params[:id]})"
     

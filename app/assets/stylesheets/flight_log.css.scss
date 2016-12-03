@@ -818,6 +818,10 @@ td.class_iata_code, th.class_iata_code {
 	text-align: center;
 }
 
+td.code {
+  font-family: $font-stack-monospace;
+}
+
 td.counter {
 	color: #C0C9D3;
 	text-align: right;
