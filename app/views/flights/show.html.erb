@@ -126,7 +126,7 @@
       <% else %> 
         <tr>
           <td class="flight_show_label"><%= field %></td>
-          <td class="code"><%= value.to_s.gsub(' ','∙') %></td>
+          <td class="code"><%= value.to_s.gsub(' ','∙').scan(/.{1,24}/).join("<br/>").html_safe %></td>
         </tr>
       <% end %>
     <% end %>

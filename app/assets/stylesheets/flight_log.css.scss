@@ -819,7 +819,12 @@ td.class_iata_code, th.class_iata_code {
 }
 
 td.code {
+  width: 25em;
   font-family: $font-stack-monospace;
+	white-space: pre-wrap !important;
+	white-space: -moz-pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
 }
 
 td.counter {
@@ -883,7 +888,7 @@ td.flight_show_label {
 	border-right: 2px solid #9EC7F3;
 	font-weight: 600;
 	text-align: right;
-	vertical-align: middle;	
+	vertical-align: middle;
 }
 
 td.flight_show_label_leg {
