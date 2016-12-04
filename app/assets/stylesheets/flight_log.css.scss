@@ -843,6 +843,11 @@ td.flight_flight {
 	padding-left: 0;
 }
 
+td.flight_leg_banner {
+  background-color: #9EC7F3;
+  font-weight: bold;
+}
+
 td.flight_tail, th.flight_tail {
 	text-align: left;
 }
@@ -879,6 +884,10 @@ td.flight_show_label {
 	font-weight: 600;
 	text-align: right;
 	vertical-align: middle;	
+}
+
+td.flight_show_label_leg {
+  border-left: 10px solid #9EC7F3;
 }
 
 td.flight_trip_title {
