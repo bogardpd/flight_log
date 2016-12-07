@@ -106,35 +106,8 @@
   <% end %>
 </table>
 
-<% if logged_in? && @flight.boarding_pass_data %>
-  <h2>Boarding Pass Data</h2>
-  <div class="code">
-  	<code><%= @flight.boarding_pass_data %></code>
-  </div>
-
-  <h3>Parsed</h3>
-  <table class="flightlog">
-    <% @boarding_pass.bcbp_fields.each do |field, value| %>
-      <% if value.class == Hash %>
-        <tr><td colspan="2" class="flight_leg_banner flight_show_label_leg"><%= field %></tr>
-        <% value.each do |leg, leg_value| %>
-          <tr>
-            <td class="flight_show_label flight_show_label_leg"><%= leg %></td>
-            <td class="code"><%= leg_value.to_s.gsub(' ','∙') %></td>
-          </tr>
-        <% end %>
-      <% else %> 
-        <tr>
-          <td class="flight_show_label"><%= field %></td>
-          <td class="code"><%= value.to_s.gsub(' ','∙').scan(/.{1,24}/).join("<br/>").html_safe %></td>
-        </tr>
-      <% end %>
-    <% end %>
-  </table>
-
-
-  <%= @boarding_pass.bcbp_fields %>
-
+<% if logged_in? && @boarding_pass.has_data? %>
+  <%= render "bcbp", boarding_pass: @boarding_pass %>
 <% end %>
 
 <% content_for :admin_actions do %>

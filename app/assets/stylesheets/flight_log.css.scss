@@ -282,18 +282,20 @@ a.warning {
 
 code {
 	font-family: $font-stack-monospace;
-	font-size: 90%;
 	white-space: pre-wrap;
 	white-space: -moz-pre-wrap;
 	white-space: -o-pre-wrap;
 	word-wrap: break-word;
-	
 }
 
 div.alert {
 	background: #FFFFDD;
 	border: 1px solid #FFDD99;
 	padding: 5px 10px;
+}
+
+div.bcbp_code {
+	width: 18em;
 }
 
 div.code {
@@ -806,6 +808,16 @@ td.annual_summary_undefined, th.annual_summary_undefined {
   background-color: #FFEEEE !important;
 }
 
+td.bcbp_data {
+  width: 18em;
+}
+
+td.bcbp_label {
+  width: 18em;
+  word-wrap: normal;
+  white-space: normal !important;
+}
+
 td.class_class, th.class_class {
 	text-align: left;
 }
@@ -816,15 +828,6 @@ td.class_flights, th.class_flights {
 
 td.class_iata_code, th.class_iata_code {
 	text-align: center;
-}
-
-td.code {
-  width: 25em;
-  font-family: $font-stack-monospace;
-	white-space: pre-wrap !important;
-	white-space: -moz-pre-wrap;
-	white-space: -o-pre-wrap;
-	word-wrap: break-word;
 }
 
 td.counter {

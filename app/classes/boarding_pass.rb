@@ -1,18 +1,34 @@
 class BoardingPass
   
   def initialize(boarding_pass_data)
-    @data = boarding_pass_data
+    @raw_data = boarding_pass_data
     
-    if @data.present?
-      @bcbp = create_bcbp(@data)
-    else
-      @bcbp = nil
+    @bcbp_unique    = Hash.new
+    @legs_repeated  = Hash.new
+    
+    if @raw_data.present?
+      create_bcbp(@raw_data)
     end
   end
   
   # Return a hash of IATA Bar Coded Boarding Pass (BCBP) fields and data.
   def bcbp_fields
-    return @bcbp
+    return @bcbp_unique
+  end
+  
+  def has_data?
+    return @raw_data.present?
+  end
+  
+  # Return a hash of repeated per-leg fields, with leg numbers as the keys and
+  # hashes of fields and data as the values.
+  def legs
+    return @legs_repeated
+  end
+  
+  # Return the raw BCBP string.
+  def raw
+    return @raw_data
   end
   
   # Return a hash of IATA BCBP fields for a particular leg. Leg number index
@@ -23,7 +39,7 @@ class BoardingPass
   end
   
   def number_of_legs_encoded
-    return @data[1].to_i
+    return @raw_data[1].to_i
   end
   
   
@@ -91,15 +107,17 @@ class BoardingPass
           
         end
         
-        bcbp["Leg #{index+1}"] = leg_data
+        @legs_repeated["Leg #{index+1}"] = leg_data
       end
     
       bcbp['Beginning of Security Data']  = data[(i+1)..(i+=1)]
       bcbp['Type of Security Data']       = data[(i+1)..(i+=1)]
       bcbp['Length of Security Data']     = data[(i+1)..(i+=2)]
       bcbp['Security Data']               = data[(i+1)..(-1)]
+      
+      @bcbp_unique = bcbp
     
-      return bcbp
+      return nil
       
       
     end

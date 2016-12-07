@@ -1,0 +1,13 @@
+<h2>Boarding Pass Data</h2>
+<h3>Raw</h3>
+<div class="code">
+	<code><%= boarding_pass.raw %></code>
+</div>
+
+<h3>Passenger Unique Data</h3>
+<%= render "bcbp_table", data: boarding_pass.bcbp_fields %>
+
+<% boarding_pass.legs.each do |leg, leg_data| %>
+  <h3><%= leg %></h3>
+  <%= render "bcbp_table", data: leg_data %>
+<% end %>
