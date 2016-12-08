@@ -330,6 +330,24 @@ class FlightsController < ApplicationController
     redirect_to tails_path
   end
   
+  def input_boarding_pass
+    @title = "Boarding Pass"
+    @meta_description = "A boarding pass barcode parser."
+    add_breadcrumb @title, boarding_pass_path
+  end
+  
+  def build_boarding_pass
+    redirect_to show_boarding_pass_path(Base64.urlsafe_encode64(params[:data]))
+  end
+  
+  def show_boarding_pass
+    @title = "Boarding Pass Results"
+    @meta_description = "Results from the boarding pass barcode parser."
+    add_breadcrumb "Boarding Pass", boarding_pass_path
+    add_breadcrumb "Results", boarding_pass_path
+    
+    @boarding_pass = BoardingPass.new(Base64.urlsafe_decode64(params[:data]))
+  end
 
     
   def new
@@ -344,10 +362,10 @@ class FlightsController < ApplicationController
     if @flight.save
       flash[:success] = "Successfully added #{@flight.airline.airline_name} #{@flight.flight_number}."
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
-        flash[:success] += " You've had prior flights on this tail!"
+        flash[:success] += " Youʼve had prior flights on this tail!"
       end
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
-        flash[:alert] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they're correct?".html_safe
+        flash[:alert] = "Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?".html_safe
       end
       redirect_to @flight
     else

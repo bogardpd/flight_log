@@ -1,0 +1,12 @@
+<h1>Boarding Pass</h1>
+
+<%= form_tag(build_boarding_pass_path, method: :get, id: "bcbp-form") do %>
+  
+	<p>
+    <%= label :data, "Paste your boarding pass data here:" %><br />
+	  <%= text_area_tag :data, params[:data], size: '60x5', class: 'iata_mono' %>
+  </p>
+  
+  <p><%= submit_tag "Submit", name: nil %></p>
+  
+<% end %>

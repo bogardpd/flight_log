@@ -16,6 +16,7 @@ class BoardingPass
     return @bcbp_unique
   end
   
+  # Return true if data is present.
   def has_data?
     return @raw_data.present?
   end
@@ -29,13 +30,6 @@ class BoardingPass
   # Return the raw BCBP string.
   def raw
     return @raw_data
-  end
-  
-  # Return a hash of IATA BCBP fields for a particular leg. Leg number index
-  # starts at 1.
-  def leg_fields(leg_number)
-    return nil if leg_number > number_of_legs_encoded || leg_number < 1
-    # write me
   end
   
   def number_of_legs_encoded

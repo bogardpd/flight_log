@@ -1,0 +1,8 @@
+<h1>Boarding Pass Results</h1>
+<p><%= link_to "Parse another boarding pass", boarding_pass_path %></p>
+
+<% if @boarding_pass.has_data? %>
+  <%= render "bcbp", boarding_pass: @boarding_pass %>
+<% else %>
+  <p>Weʼre sorry, but we were unable to parse the boarding pass data provided.</p>
+<% end %>

@@ -14,9 +14,9 @@ Portfolio::Application.routes.draw do
   
   root 'pages#flightlog'
     
-  match '/signup', :to => 'users#new', :via => [:get]
-  match '/login', :to => 'sessions#new', :via => [:get]
-  match '/logout', :to => 'sessions#destroy', :via => :delete
+  match '/signup' => 'users#new',         via: :get
+  match '/login'  => 'sessions#new',      via: :get
+  match '/logout' => 'sessions#destroy',  via: :delete
   
   match '/annual_summary', to: 'flights#show_annual_summary', via: [:get]
 
@@ -25,17 +25,21 @@ Portfolio::Application.routes.draw do
   
   match '/trips/:trip/section/:section' => 'trips#show_section', :as => :show_section, :via => [:get]
 
-  match '/operators/:operator' => 'airlines#show_operator', as: :show_operator, via: [:get]
-  match '/operators/:operator/:fleet_number' => 'airlines#show_fleet_number', as: :show_fleet_number, via: [:get]
+  match '/operators/:operator'                => 'airlines#show_operator',      via: :get, as: :show_operator
+  match '/operators/:operator/:fleet_number'  => 'airlines#show_fleet_number',  via: :get, as: :show_fleet_number
   
-  match '/classes' => 'flights#index_classes', :via => [:get]
-  match '/classes/:travel_class' => 'flights#show_class', :as => :show_class, :via => [:get]
+  match '/classes'                => 'flights#index_classes', via: :get
+  match '/classes/:travel_class'  => 'flights#show_class',    via: :get, as: :show_class
   
-  match '/tails' => 'flights#index_tails', :via => [:get]
-  match '/tails/:tail_number' => 'flights#show_tail', :as => :show_tail, :via => [:get]
+  match '/tails'              => 'flights#index_tails', via: :get
+  match '/tails/:tail_number' => 'flights#show_tail',   via: :get, as: :show_tail
   
-  match '/routes' => 'routes#index', via: :get
-  match '/routes/edit/:airport1/:airport2' => 'routes#edit', as: :edit_route, via: :get
+  match '/routes'                           => 'routes#index',  via: :get
+  match '/routes/edit/:airport1/:airport2'  => 'routes#edit',   via: :get, as: :edit_route
+  
+  match '/boarding_pass'        => 'flights#input_boarding_pass',       via: :get
+  match '/boarding_pass/:data'  => 'flights#show_boarding_pass',  via: :get, as: :show_boarding_pass
+  match '/build_boarding_pass'  => 'flights#build_boarding_pass', via: :get, as: :build_boarding_pass
   
   # Image proxy:
   match "/images/gcmap/:airport_options/:query/:check/map.gif" => 'pages#gcmap_image_proxy', as: :gcmap_image, via: [:get]
