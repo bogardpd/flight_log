@@ -74,27 +74,34 @@ class BoardingPass
           if index == 0
             bcbp['Beginning of Version Number']       = data[(i+1)..(i+=1)]
             bcbp['Version Number']                    = data[(i+1)..(i+=1)]
+            
             bcbp['Field size of following structured message - unique'] = data[(i+1)..(i+=2)]
-            bcbp['Passenger Description']             = data[(i+1)..(i+=1)]
-            bcbp['Source of Check-In']                = data[(i+1)..(i+=1)]
-            bcbp['Source of Boarding Pass Issuance']  = data[(i+1)..(i+=1)]
-            bcbp['Date of Issue of Boarding Pass']    = data[(i+1)..(i+=4)]
-            bcbp['Document Type']                     = data[(i+1)..(i+=1)]
-            bcbp['Airline Designator of Boarding Pass Issuer'] = data[(i+1)..(i+=3)]
-            bcbp['Baggage Tag License Plate Number']  = data[(i+1)..(i+=13)]
+            unique_stop = i + bcbp['Field size of following structured message - unique'].to_i(16)
+            
+            bcbp['Passenger Description']             = i < unique_stop ? data[(i+1)..(i+=1)] : nil
+            bcbp['Source of Check-In']                = i < unique_stop ? data[(i+1)..(i+=1)] : nil
+            bcbp['Source of Boarding Pass Issuance']  = i < unique_stop ? data[(i+1)..(i+=1)] : nil
+            bcbp['Date of Issue of Boarding Pass']    = i < unique_stop ? data[(i+1)..(i+=4)] : nil
+            bcbp['Document Type']                     = i < unique_stop ? data[(i+1)..(i+=1)] : nil
+            bcbp['Airline Designator of Boarding Pass Issuer'] = i < unique_stop ? data[(i+1)..(i+=3)] : nil
+            bcbp['Baggage Tag License Plate Number']  = i < unique_stop ? data[(i+1)..(i+=13)] : nil
           end
           
           # Conditional Items - Repeated
           leg_data['Field size of following structured message - repeated'] = data[(i+1)..(i+=2)]
-          leg_data['Airline Numeric Code']          = data[(i+1)..(i+=3)]
-          leg_data['Document Form/Serial Number']   = data[(i+1)..(i+=10)]
-          leg_data['Selectee Indicator']            = data[(i+1)..(i+=1)]
-          leg_data['International Documentation Verification'] = data[(i+1)..(i+=1)]
-          leg_data['Marketing Carrier Designator']  = data[(i+1)..(i+=3)]
-          leg_data['Frequent Flier Airline Designator'] = data[(i+1)..(i+=3)]
-          leg_data['Frequent Flier Number']         = data[(i+1)..(i+=16)]
-          leg_data['ID/AD Indicator']               = data[(i+1)..(i+=1)]
-          leg_data['Free Baggage Allowance']        = data[(i+1)..(i+=3)]
+          repeated_stop = i + leg_data['Field size of following structured message - repeated'].to_i(16)
+          
+          leg_data['Airline Numeric Code']          = i < repeated_stop ? data[(i+1)..(i+=3)]  : nil
+          leg_data['Document Form/Serial Number']   = i < repeated_stop ? data[(i+1)..(i+=10)] : nil
+          leg_data['Selectee Indicator']            = i < repeated_stop ? data[(i+1)..(i+=1)]  : nil # 3: tsapre?
+          leg_data['International Documentation Verification'] = 
+                                                      i < repeated_stop ? data[(i+1)..(i+=1)]  : nil
+          leg_data['Marketing Carrier Designator']  = i < repeated_stop ? data[(i+1)..(i+=3)]  : nil
+          leg_data['Frequent Flier Airline Designator'] = 
+                                                      i < repeated_stop ? data[(i+1)..(i+=3)]  : nil
+          leg_data['Frequent Flier Number']         = i < repeated_stop ? data[(i+1)..(i+=16)] : nil
+          leg_data['ID/AD Indicator']               = i < repeated_stop ? data[(i+1)..(i+=1)]  : nil
+          leg_data['Free Baggage Allowance']        = i < repeated_stop ? data[(i+1)..(i+=3)]  : nil
           leg_data['For Individual Airline Use']    = data[(i+1)..field_end]
           
           i = field_end
@@ -104,9 +111,9 @@ class BoardingPass
         @legs_repeated["Leg #{index+1}"] = leg_data
       end
     
-      bcbp['Beginning of Security Data']  = data[(i+1)..(i+=1)]
-      bcbp['Type of Security Data']       = data[(i+1)..(i+=1)]
-      bcbp['Length of Security Data']     = data[(i+1)..(i+=2)]
+      #bcbp['Beginning of Security Data']  = data[(i+1)..(i+=1)]
+      #bcbp['Type of Security Data']       = data[(i+1)..(i+=1)]
+      #bcbp['Length of Security Data']     = data[(i+1)..(i+=2)]
       bcbp['Security Data']               = data[(i+1)..(-1)]
       
       @bcbp_unique = bcbp
