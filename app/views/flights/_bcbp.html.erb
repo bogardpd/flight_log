@@ -1,13 +1,146 @@
 <h2>Boarding Pass Data</h2>
+
 <h3>Raw</h3>
 <div class="code">
 	<code><%= boarding_pass.raw %></code>
 </div>
 
+<table class="flightlog">
+  
+  <tr>
+    <td class="flight_show_label">Document Type</td>
+    <td><%= boarding_pass.document_type %></td>
+  </tr>  
+  
+  <tr>
+    <td class="flight_show_label">Format</td>
+    <td><%= boarding_pass.format_version %></td>
+  </tr>
+  
+  <tr>
+    <td class="flight_show_label">Passenger Name</td>
+    <td><%= boarding_pass.passenger_name %></td>
+  </tr>
+  
+  <tr>
+    <td class="flight_show_label">Passenger Description</td>
+    <td><%= boarding_pass.passenger_description %></td>
+  </tr>
+  
+  <tr>
+    <td class="flight_show_label">Electronic Ticket?</td>
+    <td><%= boarding_pass.electronic_ticket %></td>
+  </tr>
+  
+  <tr>
+    <td class="flight_show_label">Source of Check-In</td>
+    <td><%= boarding_pass.source_of_check_in %></td>
+  </tr>
+  
+  <tr>
+    <td class="flight_show_label">Source of Boarding Pass Issuance</td>
+    <td><%= boarding_pass.source_of_boarding_pass_issuance %></td>
+  </tr>
+  
+  <tr>
+    <td class="flight_show_label">Date of Issue of Boarding Pass</td>
+    <td><%= format_date(boarding_pass.date_of_issue_of_boarding_pass) %></td>
+  </tr>
+  
+  <tr>
+    <td class="flight_show_label">Boarding Pass Issuer</td>
+    <td>
+      <%= display_airline_by_code(boarding_pass.airline_designator_of_boarding_pass_issuer) %>
+    </td>
+  </tr>  
+  
+  <tr>
+    <td class="flight_show_label">Baggage Tag</td>
+    <td>
+      <%= boarding_pass.baggage_tag_license_plate_number %>
+    </td>
+  </tr>
+  
+  <tr>
+    <td class="flight_show_label">Security</td>
+    <td>
+      <div class="bcbp_code"><code><%= boarding_pass.security %></code></div>
+    </td>
+  </tr>
+    
+</table>
+
+<% boarding_pass.legs.each_with_index do |leg_data, index| %>
+  <h3>Leg <%= index+1 %></h3>
+  <table class="flightlog">
+  
+    <tr>
+      <td class="flight_show_label">Record Locator</td>
+      <td><%= iata_mono(boarding_pass.leg_operating_carrier_pnr_code(index)) %></td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Date of Flight</td>
+      <td><%= format_date(boarding_pass.leg_date_of_flight(index)) %></td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Operating Carrier</td>
+      <td>
+        <%= display_airline_by_code(boarding_pass.leg_operating_carrier_designator(index)) %>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Flight Number</td>
+      <td><%= boarding_pass.leg_flight_number(index) %></td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">From</td>
+      <td>
+        <%= display_airport_by_code(boarding_pass.leg_from_city_airport_code(index)) %>
+      </td>
+    </tr>    
+    
+    <tr>
+      <td class="flight_show_label">To</td>
+      <td>
+        <%= display_airport_by_code(boarding_pass.leg_to_city_airport_code(index)) %>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Compartment Code</td>
+      <td><%= boarding_pass.leg_compartment_code(index) %></td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Seat Number</td>
+      <td><%= boarding_pass.leg_seat_number(index) %></td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Check-In Sequence Number</td>
+      <td><%= boarding_pass.leg_check_in_sequence_number(index) %></td>
+    </tr>  
+      
+    <tr>
+      <td class="flight_show_label">Passenger Status</td>
+      <td><%= boarding_pass.leg_passenger_status(index) %></td>
+    </tr>
+    
+  </table>
+  
+<% end %>
+
+<hr/>
+
+
 <h3>Passenger Unique Data</h3>
 <%= render "bcbp_table", data: boarding_pass.bcbp_fields %>
 
-<% boarding_pass.legs.each do |leg, leg_data| %>
-  <h3><%= leg %></h3>
+<% boarding_pass.legs.each_with_index do |leg_data, index| %>
+  <h3>Leg <%= index+1 %></h3>
   <%= render "bcbp_table", data: leg_data %>
 <% end %>

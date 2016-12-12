@@ -3,8 +3,8 @@ class BoardingPass
   def initialize(boarding_pass_data)
     @raw_data = boarding_pass_data
     
-    @bcbp_unique    = Hash.new
-    @legs_repeated  = Hash.new
+    @bcbp_unique   = Hash.new
+    @bcbp_repeated = Array.new
     
     if @raw_data.present?
       create_bcbp(@raw_data)
@@ -24,7 +24,7 @@ class BoardingPass
   # Return a hash of repeated per-leg fields, with leg numbers as the keys and
   # hashes of fields and data as the values.
   def legs
-    return @legs_repeated
+    return @bcbp_repeated
   end
   
   # Return the raw BCBP string.
@@ -32,11 +32,231 @@ class BoardingPass
     return @raw_data
   end
   
+  # Return data formatted into a string:
+  def format_data(data)
+    return data.to_s.gsub(' ','·')
+  end
+  
+  # Return unique field values:
+  
+  def airline_designator_of_boarding_pass_issuer
+    return @bcbp_unique['Airline Designator of Boarding Pass Issuer'].strip
+  end
+  
+  def baggage_tag_license_plate_number
+    return @bcbp_unique['Baggage Tag License Plate Number']
+  end
+  
+  def date_of_issue_of_boarding_pass
+    bp_date = @bcbp_unique['Date of Issue of Boarding Pass']
+    return nil unless bp_date.present?
+    day = bp_date.to_s[1..3].to_i
+    if @flight && @flight.departure_utc
+      # If date of flight is known, use that year
+      year = @flight.departure_utc.year
+    else
+      # If date of issue is set, assume year is in last 10 years
+      if bp_date.to_s[0].to_i > (Date.today.year)%10
+        # Year is in last decade
+        year = (Date.today.year/10 - 1) * 10 + bp_date.to_s[0].to_i
+      else
+        # Year is in this decade
+        year = (Date.today.year/10) * 10 + bp_date.to_s[0].to_i
+      end
+
+    end
+    
+    return Date.ordinal(year, day)
+  end
+  
+  def document_type
+    case @bcbp_unique['Document Type']
+    when "B"
+      return "Boarding pass"
+    when "I"
+      return "Itinerary receipt"
+    else
+      return nil
+    end
+  end
+  
+  def electronic_ticket
+    return @bcbp_unique['Electronic Ticket Indicator'] == "E" ? "Yes" : "No"
+  end
+  
+  def format_version
+    return "IATA BCBP #{@bcbp_unique['Format Code']} Format Version #{@bcbp_unique['Version Number']}"
+  end
+  
   def number_of_legs_encoded
     return @raw_data[1].to_i
   end
   
+  def passenger_description
+    case @bcbp_unique['Passenger Description']
+    when "0"
+      return "Adult"
+    when "1"
+      return "Male"
+    when "2"
+      return "Female"
+    when "3"
+      return "Child"
+    when "4"
+      return "Infant"
+    when "5"
+      return "No passenger (cabin baggage)"
+    when "6"
+      return "Adult traveling with infant"
+    when "7"
+      return "Unaccompanied Minor"
+    else
+      return nil
+    end 
+  end
   
+  def passenger_name
+    return @bcbp_unique['Passenger Name']
+  end
+  
+  def security
+    return @bcbp_unique['Security']
+  end
+  
+  def source_of_boarding_pass_issuance
+    case @bcbp_unique['Source of Boarding Pass Issuance']
+    when "W"
+      return "Web printed"
+    when "K"
+      return "Airport kiosk printed"
+    when "X"
+      return "Transfer kiosk printed"
+    when "R"
+      return "Remote or off site kiosk printed"
+    when "M"
+      return "Mobile device printed"
+    when "O"
+      return "Airport agent printed"
+    when "T"
+      return "Town agent printed"
+    when "V"
+      return "Third party vendor printed"
+    when " "
+      return "Unable to support"
+    else
+      return nil
+    end
+  end
+  
+  def source_of_check_in
+    case @bcbp_unique['Source of Check-In']
+    when "W"
+      return "Web"
+    when "K"
+      return "Airport kiosk"
+    when "R"
+      return "Remote or off site kiosk"
+    when "M"
+      return "Mobile device"
+    when "O"
+      return "Airport agent"
+    when "T"
+      return "Town agent"
+    when "V"
+      return "Third party vendor"
+    else
+      return nil
+    end
+  end
+  
+  # Return repeated field values:
+  
+  def leg_check_in_sequence_number(leg)
+    return @bcbp_repeated[leg]['Check-In Sequence Number'].to_i
+  end
+  
+  def leg_compartment_code(leg)
+    return @bcbp_repeated[leg]['Compartment Code']
+  end
+  
+  def leg_date_of_flight(leg)
+    bp_date = @bcbp_repeated[leg]['Date of Flight']
+    return nil unless bp_date.present?
+    day = bp_date.to_i
+    if @flight && @flight.departure_utc
+      # If date of flight is known, use that year
+      year = @flight.departure_utc.year
+    elsif @bcbp_unique['Date of Issue of Boarding Pass'].present?
+      # If date of issue is set, assume year is in last 10 years
+      if @bcbp_unique['Date of Issue of Boarding Pass'].to_s[0].to_i > (Date.today.year)%10
+        # Year is in last decade
+        year = (Date.today.year/10 - 1) * 10 + @bcbp_unique['Date of Issue of Boarding Pass'].to_s[0].to_i
+      else
+        # Year is in this decade
+        year = (Date.today.year/10) * 10 + @bcbp_unique['Date of Issue of Boarding Pass'].to_s[0].to_i
+      end
+    else
+      # Use current year
+      year = Date.today.year
+    end
+    
+    return Date.ordinal(year, day)
+  end
+  
+  def leg_flight_number(leg)
+    return @bcbp_repeated[leg]['Flight Number'].strip.to_i
+  end
+  
+  def leg_from_city_airport_code(leg)
+    return @bcbp_repeated[leg]['From City Airport Code']
+  end
+  
+  def leg_operating_carrier_designator(leg)
+    return @bcbp_repeated[leg]['Operating Carrier Designator'].strip
+  end
+  
+  def leg_operating_carrier_pnr_code(leg)
+    return @bcbp_repeated[leg]['Operating Carrier PNR Code'].strip
+  end
+  
+  def leg_passenger_status(leg)
+    case @bcbp_repeated[leg]['Passenger Status']
+    when "0"
+      return "Ticket issuance/passenger not checked in"
+    when "1"
+      return "Ticket issuance/passenger checked in"
+    when "2"
+      return "Baggage checked/passenger not checked in"
+    when "3"
+      return "Baggage checked/passenger checked in"
+    when "4"
+      return "Passenger passed security check"
+    when "5"
+      return "Passenger passed gate exit (coupon used)"
+    when "6"
+      return "Transit"
+    when "7"
+      return "Standby"
+    when "8"
+      return "Boarding pass revalidation done"
+    when "9"
+      return "Original boarding line used at time of ticket issuance"
+    when "A"
+      return "Up- or down-grading required"
+    else
+      return nil
+    end
+  end
+  
+  def leg_seat_number(leg)
+    row = @bcbp_repeated[leg]['Seat Number'][0..2].to_i
+    seat = @bcbp_repeated[leg]['Seat Number'][3]
+    return "#{row}#{seat}"
+  end
+  
+  def leg_to_city_airport_code(leg)
+    return @bcbp_repeated[leg]['To City Airport Code']
+  end
   
   private
     
@@ -51,7 +271,7 @@ class BoardingPass
       bcbp['Electronic Ticket Indicator']   = data[22]
       i = 22
       
-      (1..number_of_legs_encoded).each_with_index do |leg, index|
+      (0..number_of_legs_encoded-1).each_with_index do |leg, index|
         leg_data = Hash.new
         leg_data['Operating Carrier PNR Code']    = data[(i+1)..(i+=7)]
         leg_data['From City Airport Code']        = data[(i+1)..(i+=3)]
@@ -78,12 +298,13 @@ class BoardingPass
             bcbp['Field size of following structured message - unique'] = data[(i+1)..(i+=2)]
             unique_stop = i + bcbp['Field size of following structured message - unique'].to_i(16)
             
-            bcbp['Passenger Description']             = i < unique_stop ? data[(i+1)..(i+=1)] : nil
-            bcbp['Source of Check-In']                = i < unique_stop ? data[(i+1)..(i+=1)] : nil
-            bcbp['Source of Boarding Pass Issuance']  = i < unique_stop ? data[(i+1)..(i+=1)] : nil
-            bcbp['Date of Issue of Boarding Pass']    = i < unique_stop ? data[(i+1)..(i+=4)] : nil
-            bcbp['Document Type']                     = i < unique_stop ? data[(i+1)..(i+=1)] : nil
-            bcbp['Airline Designator of Boarding Pass Issuer'] = i < unique_stop ? data[(i+1)..(i+=3)] : nil
+            bcbp['Passenger Description']             = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
+            bcbp['Source of Check-In']                = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
+            bcbp['Source of Boarding Pass Issuance']  = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
+            bcbp['Date of Issue of Boarding Pass']    = i < unique_stop ? data[(i+1)..(i+=4 )] : nil
+            bcbp['Document Type']                     = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
+            bcbp['Airline Designator of Boarding Pass Issuer'] =
+                                                        i < unique_stop ? data[(i+1)..(i+=3 )] : nil
             bcbp['Baggage Tag License Plate Number']  = i < unique_stop ? data[(i+1)..(i+=13)] : nil
           end
           
@@ -91,30 +312,27 @@ class BoardingPass
           leg_data['Field size of following structured message - repeated'] = data[(i+1)..(i+=2)]
           repeated_stop = i + leg_data['Field size of following structured message - repeated'].to_i(16)
           
-          leg_data['Airline Numeric Code']          = i < repeated_stop ? data[(i+1)..(i+=3)]  : nil
+          leg_data['Airline Numeric Code']          = i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
           leg_data['Document Form/Serial Number']   = i < repeated_stop ? data[(i+1)..(i+=10)] : nil
-          leg_data['Selectee Indicator']            = i < repeated_stop ? data[(i+1)..(i+=1)]  : nil # 3: tsapre?
+          leg_data['Selectee Indicator']            = i < repeated_stop ? data[(i+1)..(i+=1 )] : nil # 3: tsapre?
           leg_data['International Documentation Verification'] = 
-                                                      i < repeated_stop ? data[(i+1)..(i+=1)]  : nil
-          leg_data['Marketing Carrier Designator']  = i < repeated_stop ? data[(i+1)..(i+=3)]  : nil
+                                                      i < repeated_stop ? data[(i+1)..(i+=1 )] : nil
+          leg_data['Marketing Carrier Designator']  = i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
           leg_data['Frequent Flier Airline Designator'] = 
-                                                      i < repeated_stop ? data[(i+1)..(i+=3)]  : nil
+                                                      i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
           leg_data['Frequent Flier Number']         = i < repeated_stop ? data[(i+1)..(i+=16)] : nil
-          leg_data['ID/AD Indicator']               = i < repeated_stop ? data[(i+1)..(i+=1)]  : nil
-          leg_data['Free Baggage Allowance']        = i < repeated_stop ? data[(i+1)..(i+=3)]  : nil
+          leg_data['ID/AD Indicator']               = i < repeated_stop ? data[(i+1)..(i+=1 )] : nil
+          leg_data['Free Baggage Allowance']        = i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
           leg_data['For Individual Airline Use']    = data[(i+1)..field_end]
           
           i = field_end
           
         end
         
-        @legs_repeated["Leg #{index+1}"] = leg_data
+        @bcbp_repeated.push(leg_data)
       end
     
-      #bcbp['Beginning of Security Data']  = data[(i+1)..(i+=1)]
-      #bcbp['Type of Security Data']       = data[(i+1)..(i+=1)]
-      #bcbp['Length of Security Data']     = data[(i+1)..(i+=2)]
-      bcbp['Security Data']               = data[(i+1)..(-1)]
+      bcbp['Security'] = data[(i+1)..(-1)]
       
       @bcbp_unique = bcbp
     

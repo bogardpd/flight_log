@@ -63,6 +63,7 @@ module ApplicationHelper
   end
   
   def format_date(input_date) # Also see method in application controller
+    return nil unless input_date.present?
     input_date.strftime("%e %b %Y")
   end
   
