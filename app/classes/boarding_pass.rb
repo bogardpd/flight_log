@@ -171,6 +171,10 @@ class BoardingPass
   
   # Return repeated field values:
   
+  def leg_airline_numeric_code(leg)
+    return @bcbp_repeated[leg]['Airline Numeric Code']
+  end
+  
   def leg_check_in_sequence_number(leg)
     return @bcbp_repeated[leg]['Check-In Sequence Number'].to_i
   end
@@ -203,12 +207,44 @@ class BoardingPass
     return Date.ordinal(year, day)
   end
   
+  def leg_document_form_serial_number(leg)
+    return @bcbp_repeated[leg]['Document Form/Serial Number']
+  end
+  
   def leg_flight_number(leg)
     return @bcbp_repeated[leg]['Flight Number'].strip.to_i
   end
   
+  def leg_frequent_flier_airline_designator(leg)
+    return nil unless @bcbp_repeated[leg]['Frequent Flier Airline Designator'].present?
+    return @bcbp_repeated[leg]['Frequent Flier Airline Designator'].strip
+  end
+  
+  def leg_frequent_flier_number(leg)
+    return nil unless @bcbp_repeated[leg]['Frequent Flier Number'].present?
+    return @bcbp_repeated[leg]['Frequent Flier Number'].strip
+  end
+  
   def leg_from_city_airport_code(leg)
     return @bcbp_repeated[leg]['From City Airport Code']
+  end
+  
+  def leg_international_documentation_verification(leg)
+    case @bcbp_repeated[leg]['International Documentation Verification']
+    when "0"
+      return "Travel document verification not required"
+    when "1"
+      return "Travel document verification required"
+    when "2"
+      return "Travel document verification performed"
+    else
+      return nil
+    end
+  end
+  
+  def leg_marketing_carrier_designator(leg)
+    return nil unless @bcbp_repeated[leg]['Marketing Carrier Designator'].present?
+    return @bcbp_repeated[leg]['Marketing Carrier Designator'].strip
   end
   
   def leg_operating_carrier_designator(leg)
@@ -252,6 +288,19 @@ class BoardingPass
     row = @bcbp_repeated[leg]['Seat Number'][0..2].to_i
     seat = @bcbp_repeated[leg]['Seat Number'][3]
     return "#{row}#{seat}"
+  end
+  
+  def leg_selectee_indicator(leg)
+    case @bcbp_repeated[leg]['Selectee Indicator']
+    when "0"
+      return "Not selectee"
+    when "1"
+      return "SSSS"
+    when "3"
+      return "LLLL"
+    else
+      return nil
+    end
   end
   
   def leg_to_city_airport_code(leg)

@@ -130,6 +130,53 @@
       <td><%= boarding_pass.leg_passenger_status(index) %></td>
     </tr>
     
+    <tr>
+      <td class="flight_show_label">Airline Numeric Code</td>
+      <td><%= iata_mono(boarding_pass.leg_airline_numeric_code(index)) %></td>
+    </tr>
+        
+    <tr>
+      <td class="flight_show_label">Ticket Number</td>
+      <td><%= iata_mono(boarding_pass.leg_document_form_serial_number(index)) %></td>
+    </tr>
+        
+    <tr>
+      <td class="flight_show_label">Selectee Indicator</td>
+      <td>
+        <% if boarding_pass.leg_selectee_indicator(index) == "LLLL"%>
+          <%= boarding_pass.leg_selectee_indicator(index) %>&emsp;<%= image_tag('tpc.png', title: 'TSA PreCheck', class: 'airline_icon') %>
+        <% else %>
+          <%= boarding_pass.leg_selectee_indicator(index) %>
+        <% end %>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">International Documentation Verification</td>
+      <td><%= boarding_pass.leg_international_documentation_verification(index) %></td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Marketing Carrier</td>
+      <td>
+        <%= display_airline_by_code(boarding_pass.leg_marketing_carrier_designator(index)) %>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Frequent Flier Airline</td>
+      <td>
+        <%= display_airline_by_code(boarding_pass.leg_frequent_flier_airline_designator(index)) %>
+      </td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Frequent Flier Number</td>
+      <td>
+        <%= iata_mono(boarding_pass.leg_frequent_flier_number(index)) %>
+      </td>
+    </tr>
+    
   </table>
   
 <% end %>

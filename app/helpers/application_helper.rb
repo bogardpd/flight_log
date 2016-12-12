@@ -68,6 +68,7 @@ module ApplicationHelper
   end
   
   def iata_mono(code)
+    return nil unless code.present?
     html = "<span class=\"iata_mono\">" + code + "</span>"
     html.html_safe
   end
