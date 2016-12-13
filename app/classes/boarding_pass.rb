@@ -215,6 +215,14 @@ class BoardingPass
     return @bcbp_repeated[leg]['Flight Number'].strip.to_i
   end
   
+  def leg_for_individual_airline_use(leg)
+    return @bcbp_repeated[leg]['For Individual Airline Use']
+  end
+  
+  def leg_free_baggage_allowance(leg)
+    return @bcbp_repeated[leg]['Free Baggage Allowance']
+  end
+  
   def leg_frequent_flier_airline_designator(leg)
     return nil unless @bcbp_repeated[leg]['Frequent Flier Airline Designator'].present?
     return @bcbp_repeated[leg]['Frequent Flier Airline Designator'].strip
@@ -227,6 +235,45 @@ class BoardingPass
   
   def leg_from_city_airport_code(leg)
     return @bcbp_repeated[leg]['From City Airport Code']
+  end
+  
+  def leg_id_ad_indicator(leg)
+    case @bcbp_repeated[leg]['ID/AD Indicator']
+    when "0"
+      return "IDN1 positive space"
+    when "1"
+      return "IDN2 space available"
+    when "2"
+      return "IDB1 positive space"
+    when "3"
+      return "IDB2 space available"
+    when "4"
+      return "AD"
+    when "5"
+      return "DG"
+    when "6"
+      return "DM"
+    when "7"
+      return "GE"
+    when "8"
+      return "IG"
+    when "9"
+      return "RG"
+    when "A"
+      return "UD"
+    when "B"
+      return "ID – industry discount not followed any classification"
+    when "C"
+      return "IDFS1"
+    when "D"
+      return "IDFS2"
+    when "E"
+      return "IDR1"
+    when "F"
+      return "IDR2"
+    else
+      return nil
+    end
   end
   
   def leg_international_documentation_verification(leg)

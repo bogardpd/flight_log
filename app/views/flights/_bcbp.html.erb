@@ -172,14 +172,29 @@
     
     <tr>
       <td class="flight_show_label">Frequent Flier Number</td>
-      <td>
-        <%= iata_mono(boarding_pass.leg_frequent_flier_number(index)) %>
-      </td>
+      <td><%= iata_mono(boarding_pass.leg_frequent_flier_number(index)) %></td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">Industry Discount</td>
+      <td><%= boarding_pass.leg_id_ad_indicator(index) %></td>
+    </tr>    
+    
+    <tr>
+      <td class="flight_show_label">Free Baggage Allowance</td>
+      <td><%= boarding_pass.leg_free_baggage_allowance(index) %></td>
+    </tr>
+    
+    <tr>
+      <td class="flight_show_label">For Individual Airline Use</td>
+      <td><%= iata_mono(boarding_pass.leg_for_individual_airline_use(index)) %></td>
     </tr>
     
   </table>
   
 <% end %>
+
+<% if false %>
 
 <hr/>
 
@@ -190,4 +205,6 @@
 <% boarding_pass.legs.each_with_index do |leg_data, index| %>
   <h3>Leg <%= index+1 %></h3>
   <%= render "bcbp_table", data: leg_data %>
+<% end %>
+
 <% end %>
