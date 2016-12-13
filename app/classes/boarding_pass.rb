@@ -40,6 +40,7 @@ class BoardingPass
   # Return unique field values:
   
   def airline_designator_of_boarding_pass_issuer
+    return nil unless @bcbp_unique['Airline Designator of Boarding Pass Issuer'].present?
     return @bcbp_unique['Airline Designator of Boarding Pass Issuer'].strip
   end
   
@@ -212,6 +213,7 @@ class BoardingPass
   end
   
   def leg_flight_number(leg)
+    return nil unless @bcbp_repeated[leg]['Flight Number'].present?
     return @bcbp_repeated[leg]['Flight Number'].strip.to_i
   end
   
@@ -295,10 +297,12 @@ class BoardingPass
   end
   
   def leg_operating_carrier_designator(leg)
+    return nil unless @bcbp_repeated[leg]['Operating Carrier Designator'].present?
     return @bcbp_repeated[leg]['Operating Carrier Designator'].strip
   end
   
   def leg_operating_carrier_pnr_code(leg)
+    return nil unless @bcbp_repeated[leg]['Operating Carrier PNR Code'].present?
     return @bcbp_repeated[leg]['Operating Carrier PNR Code'].strip
   end
   
