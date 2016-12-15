@@ -16,9 +16,9 @@ module FlightsHelper
     html = iata_mono(iata_code)
     airport = Airport.where(iata_code: iata_code) 
     if airport.length > 0
-      html += " #{airport.first.city}"
+      html += %Q(<div class="info_bcbp">#{airport.first.city}</div>).html_safe
     end
-    html.html_safe
+    return html
   end
   
 end
