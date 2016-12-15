@@ -144,7 +144,7 @@
       <td class="flight_show_label">Selectee Indicator</td>
       <td>
         <% if boarding_pass.leg_selectee_indicator(index) == "LLLL"%>
-          <%= boarding_pass.leg_selectee_indicator(index) %>&emsp;<%= image_tag('tpc.png', title: 'TSA PreCheck', class: 'airline_icon') %>
+          <%= (boarding_pass.leg_selectee_indicator(index) + image_tag('tpc.png', title: 'TSA PreCheck', class: 'airline_icon icon_between_text')).html_safe %>
         <% else %>
           <%= boarding_pass.leg_selectee_indicator(index) %>
         <% end %>

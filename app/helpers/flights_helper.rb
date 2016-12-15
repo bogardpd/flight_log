@@ -2,10 +2,11 @@ module FlightsHelper
   
   def display_airline_by_code(iata_code)
     return nil unless iata_code.present?
-    html = iata_mono(iata_code)
     airline = Airline.where(iata_airline_code: iata_code) 
     if airline.length > 0
-      html += " #{airline.first.airline_name}"
+      html = link_to(iata_mono(iata_code) + image_tag(airline_icon_path(iata_code), alt: iata_code, title: airline.first.airline_name, class: 'airline_icon icon_between_text') + airline.first.airline_name, airline_path(iata_code))
+    else
+      html = iata_mono(iata_code)
     end
     html.html_safe
   end
