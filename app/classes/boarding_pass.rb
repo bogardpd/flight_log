@@ -6,7 +6,10 @@ class BoardingPass
     @bcbp_unique   = Hash.new
     @bcbp_repeated = Array.new
     
+    @valid = false
+    
     if @raw_data.present?
+      @valid = true
       create_bcbp(@raw_data)
     end
   end
@@ -19,6 +22,11 @@ class BoardingPass
   # Return true if data is present.
   def has_data?
     return @raw_data.present?
+  end
+  
+  # Return true if data appears to be valid BCBP data.
+  def is_valid?
+    return @valid
   end
   
   # Return a hash of repeated per-leg fields, with leg numbers as the keys and
@@ -365,9 +373,15 @@ class BoardingPass
     def create_bcbp(data)
       bcbp = Hash.new
       
-      # Mandatory Items
+      # MANDATORY ITEMS
+      
+      # 1: Format Code
       bcbp['Format Code']                   = data[0]
+      
+      # 5: Number of Legs Encoded
       bcbp['Number of Legs Encoded']        = data[1]
+      @valid = false unless bcbp['Number of Legs Encoded'] =~ /^[0-9]$/
+      
       bcbp['Passenger Name']                = data[2..21]
       bcbp['Electronic Ticket Indicator']   = data[22]
       i = 22

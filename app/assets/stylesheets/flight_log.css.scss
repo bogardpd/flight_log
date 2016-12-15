@@ -366,7 +366,7 @@ div.hidden_trip {
 	padding: 5px;
 }
 
-div.iata_info {
+div.info_iata {
 	float: right;
 	width: 3em;
 	text-align: center;
@@ -374,6 +374,13 @@ div.iata_info {
 	font-weight: 300;
 	margin-left: $margin-icon-to-text;
 	border: 1px solid $color-table-border;
+}
+
+div.info_bcbp {
+	float: right;
+	text-align: right;
+	font-weight: 300;
+	margin-left: $margin-icon-to-text;
 }
 
 div.illustration_container {
@@ -509,6 +516,11 @@ img.icon_between_text {
 
 img.icon_no_text {
 	margin: 0;
+}
+
+img.icon_right {
+  margin-left: $margin-icon-to-text;
+  margin-right: 0;
 }
 
 img.country_flag {

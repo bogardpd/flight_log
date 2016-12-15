@@ -5,6 +5,8 @@
 	<code><%= boarding_pass.raw %></code>
 </div>
 
+Valid: <%= boarding_pass.is_valid? %>
+
 <table class="flightlog">
   
   <% if boarding_pass.document_type.present? %>
@@ -190,10 +192,9 @@
     <tr>
       <td class="flight_show_label bcbp_label">Selectee Indicator</td>
       <td class="bcbp_data">
-        <% if boarding_pass.leg_selectee_indicator(index) == "LLLL"%>
-          <%= (boarding_pass.leg_selectee_indicator(index) + image_tag('tpc.png', title: 'TSA PreCheck', class: 'airline_icon icon_between_text')).html_safe %>
-        <% else %>
-          <%= boarding_pass.leg_selectee_indicator(index) %>
+        <%= boarding_pass.leg_selectee_indicator(index) %>
+        <% if boarding_pass.leg_selectee_indicator(index) == "LLLL" %>
+          <div class="info_bcbp"><%= image_tag('tpc.png', title: 'TSA PreCheck', class: 'airline_icon icon_right') %></div>
         <% end %>
       </td>
     </tr>

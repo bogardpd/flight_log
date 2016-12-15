@@ -4,7 +4,7 @@ module FlightsHelper
     return nil unless iata_code.present?
     airline = Airline.where(iata_airline_code: iata_code) 
     if airline.length > 0
-      html = link_to(iata_mono(iata_code) + image_tag(airline_icon_path(iata_code), alt: iata_code, title: airline.first.airline_name, class: 'airline_icon icon_between_text') + airline.first.airline_name, airline_path(iata_code))
+      html = %Q(#{iata_mono(iata_code)}<div class="info_bcbp">#{airline.first.airline_name}#{image_tag(airline_icon_path(iata_code), alt: iata_code, title: airline.first.airline_name, class: 'airline_icon icon_right')}</div>) 
     else
       html = iata_mono(iata_code)
     end
