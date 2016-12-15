@@ -45,7 +45,8 @@ class BoardingPass
   end
   
   def baggage_tag_license_plate_number
-    return @bcbp_unique['Baggage Tag License Plate Number']
+    return nil unless @bcbp_unique['Baggage Tag License Plate Number'].present?
+    return @bcbp_unique['Baggage Tag License Plate Number'].strip
   end
   
   def date_of_issue_of_boarding_pass
