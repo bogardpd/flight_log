@@ -193,8 +193,11 @@ Valid: <%= boarding_pass.is_valid? %>
       <td class="flight_show_label bcbp_label">Selectee Indicator</td>
       <td class="bcbp_data">
         <%= boarding_pass.leg_selectee_indicator(index) %>
-        <% if boarding_pass.leg_selectee_indicator(index) == "LLLL" %>
+        <% case boarding_pass.leg_selectee_indicator(index) %>
+        <% when "LLLL" %>
           <div class="info_bcbp"><%= image_tag('tpc.png', title: 'TSA PreCheck', class: 'airline_icon icon_right') %></div>
+        <% when "SSSS" %>
+          <div class="info_bcbp">Secondary Security<br/>Screening Selectee</div>
         <% end %>
       </td>
     </tr>
