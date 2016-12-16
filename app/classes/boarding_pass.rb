@@ -77,6 +77,8 @@ class BoardingPass
     end
     
     return Date.ordinal(year, day)
+    rescue ArgumentError
+      return nil
   end
   
   def document_type
