@@ -5,8 +5,11 @@
 	<code><%= boarding_pass.raw %></code>
 </div>
 
-Valid: <%= boarding_pass.is_valid? %>
+<% unless boarding_pass.is_valid? %>
+<p>This boarding pass may contain invalid data!</p>
+<% end %>
 
+<h3>Passenger Unique Data</h3>
 <table class="flightlog">
   
   <% if boarding_pass.document_type.present? %>
