@@ -376,69 +376,155 @@ class BoardingPass
       # MANDATORY ITEMS
       
       # 1: Format Code
-      bcbp['Format Code']                   = data[0]
+      bcbp['Format Code'] = data[0]
       
       # 5: Number of Legs Encoded
-      bcbp['Number of Legs Encoded']        = data[1]
-      @valid = false unless bcbp['Number of Legs Encoded'] =~ /^[0-9]$/
+      bcbp['Number of Legs Encoded'] = data[1]
+      @valid = false unless bcbp['Number of Legs Encoded'] =~ /^\d{1}$/
       
-      bcbp['Passenger Name']                = data[2..21]
-      bcbp['Electronic Ticket Indicator']   = data[22]
+      # 11: Passenger Name
+      bcbp['Passenger Name'] = data[2..21]
+      
+      # 253: Electronic Ticket Indicator
+      bcbp['Electronic Ticket Indicator'] = data[22]
       i = 22
       
       (0..number_of_legs_encoded-1).each_with_index do |leg, index|
         leg_data = Hash.new
-        leg_data['Operating Carrier PNR Code']    = data[(i+1)..(i+=7)]
-        leg_data['From City Airport Code']        = data[(i+1)..(i+=3)]
-        leg_data['To City Airport Code']          = data[(i+1)..(i+=3)]
-        leg_data['Operating Carrier Designator']  = data[(i+1)..(i+=3)]
-        leg_data['Flight Number']                 = data[(i+1)..(i+=5)]
-        leg_data['Date of Flight']                = data[(i+1)..(i+=3)]
-        leg_data['Compartment Code']              = data[(i+1)..(i+=1)]
-        leg_data['Seat Number']                   = data[(i+1)..(i+=4)]
-        leg_data['Check-In Sequence Number']      = data[(i+1)..(i+=5)]
-        leg_data['Passenger Status']              = data[(i+1)..(i+=1)]
-        leg_data['Field size of following variable size field'] = field_size = data[(i+1)..(i+=2)]
         
+        # 7: Operating Carrier PNR Code
+        leg_data['Operating Carrier PNR Code'] = data[(i+1)..(i+=7)]
+        
+        # 26: From City Airport Code
+        leg_data['From City Airport Code'] = data[(i+1)..(i+=3)]
+        @valid = false unless leg_data['From City Airport Code'] =~ /^[A-Z]{3}$/
+        
+        # 38: To City Airport Code
+        leg_data['To City Airport Code'] = data[(i+1)..(i+=3)]
+        @valid = false unless leg_data['To City Airport Code'] =~ /^[A-Z]{3}$/
+        
+        # 42: Operating Carrier Designator
+        leg_data['Operating Carrier Designator'] = data[(i+1)..(i+=3)]
+        
+        # 43: Flight Number
+        leg_data['Flight Number'] = data[(i+1)..(i+=5)]
+        @valid = false unless leg_data['Flight Number'] =~ /^\d{4}[A-Z ]{1}$/
+        
+        # 46: Date of Flight
+        leg_data['Date of Flight'] = data[(i+1)..(i+=3)]
+        @valid = false unless leg_data['Date of Flight'] =~ /^\d{3}$/
+        
+        # 71: Compartment Code
+        leg_data['Compartment Code'] = data[(i+1)..(i+=1)]
+        @valid = false unless leg_data['Compartment Code'] =~ /^[A-Z]{1}$/
+        
+        # 104: Seat Number
+        leg_data['Seat Number'] = data[(i+1)..(i+=4)]
+        @valid = false unless leg_data['Seat Number'] =~ /^\d{3}[A-Z]{1}$/
+        
+        # 107: Check-In Sequence Number
+        leg_data['Check-In Sequence Number'] = data[(i+1)..(i+=5)]
+        @valid = false unless leg_data['Check-In Sequence Number'] =~ /^[0-9 ]{4}[A-Z ]{1}$/
+        
+        # 113: Passenger Status
+        leg_data['Passenger Status'] = data[(i+1)..(i+=1)]
+        
+        # 6: Field size of variable size field
+        leg_data['Field size of variable size field'] = field_size = data[(i+1)..(i+=2)]
+        @valid = false unless field_size =~ /^[0-9A-F]{2}$/
         field_size = "0x#{field_size}".to_i(16)
         
         if field_size > 0
           field_end = i + field_size
                     
-          # Conditional Items - Unique
+          # CONDITIONAL ITEMS - UNIQUE
           if index == 0
-            bcbp['Beginning of Version Number']       = data[(i+1)..(i+=1)]
-            bcbp['Version Number']                    = data[(i+1)..(i+=1)]
             
+            # 8: Beginning of Version Number
+            bcbp['Beginning of Version Number'] = data[(i+1)..(i+=1)]
+            @valid = false unless bcbp['Beginning of Version Number'] == ">"
+            
+            # 9: Version Number
+            bcbp['Version Number'] = data[(i+1)..(i+=1)]
+            
+            # 10: Field size of following structured message - unique
             bcbp['Field size of following structured message - unique'] = data[(i+1)..(i+=2)]
+            @valid = false unless bcbp['Field size of following structured message - unique'] =~ /^[0-9A-F]{2}$/
             unique_stop = i + bcbp['Field size of following structured message - unique'].to_i(16)
             
-            bcbp['Passenger Description']             = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
-            bcbp['Source of Check-In']                = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
-            bcbp['Source of Boarding Pass Issuance']  = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
-            bcbp['Date of Issue of Boarding Pass']    = i < unique_stop ? data[(i+1)..(i+=4 )] : nil
-            bcbp['Document Type']                     = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
-            bcbp['Airline Designator of Boarding Pass Issuer'] =
-                                                        i < unique_stop ? data[(i+1)..(i+=3 )] : nil
+            # 15: Passenger Description
+            bcbp['Passenger Description'] = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
+            
+            # 12: Source of Check-In
+            bcbp['Source of Check-In'] = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
+            
+            # 14: Source of Boarding Pass Issuance
+            bcbp['Source of Boarding Pass Issuance'] = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
+            
+            # 22: Date of Issue of Boarding Pass (Julian Date)
+            if i < unique_stop
+              bcbp['Date of Issue of Boarding Pass'] = data[(i+1)..(i+=4 )]
+              @valid = false unless bcbp['Date of Issue of Boarding Pass'] =~ /^[0-9 ]{4}$/
+            else
+              bcbp['Date of Issue of Boarding Pass'] = nil
+            end
+            
+            # 16: Document Type
+            bcbp['Document Type'] = i < unique_stop ? data[(i+1)..(i+=1 )] : nil
+            
+            # 21: Airline Designator of Boarding Pass Issuer
+            bcbp['Airline Designator of Boarding Pass Issuer'] = i < unique_stop ? data[(i+1)..(i+=3 )] : nil
+            
+            # 23: Baggage Tag License Plate Number
             bcbp['Baggage Tag License Plate Number']  = i < unique_stop ? data[(i+1)..(i+=13)] : nil
+            
           end
           
-          # Conditional Items - Repeated
+          # CONDITIONAL ITEMS - REPEATED
+          
+          # 17: Field size of following structured message - repeated
           leg_data['Field size of following structured message - repeated'] = data[(i+1)..(i+=2)]
+          @valid = false unless leg_data['Field size of following structured message - repeated'] =~ /^[0-9A-F]{2}$/
           repeated_stop = i + leg_data['Field size of following structured message - repeated'].to_i(16)
           
-          leg_data['Airline Numeric Code']          = i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
-          leg_data['Document Form/Serial Number']   = i < repeated_stop ? data[(i+1)..(i+=10)] : nil
-          leg_data['Selectee Indicator']            = i < repeated_stop ? data[(i+1)..(i+=1 )] : nil # 3: tsapre?
-          leg_data['International Documentation Verification'] = 
-                                                      i < repeated_stop ? data[(i+1)..(i+=1 )] : nil
-          leg_data['Marketing Carrier Designator']  = i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
-          leg_data['Frequent Flier Airline Designator'] = 
-                                                      i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
-          leg_data['Frequent Flier Number']         = i < repeated_stop ? data[(i+1)..(i+=16)] : nil
-          leg_data['ID/AD Indicator']               = i < repeated_stop ? data[(i+1)..(i+=1 )] : nil
-          leg_data['Free Baggage Allowance']        = i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
-          leg_data['For Individual Airline Use']    = data[(i+1)..field_end]
+          # 142: Airline Numeric Code
+          if i < repeated_stop
+            leg_data['Airline Numeric Code'] = data[(i+1)..(i+=3)]
+            @valid = false unless leg_data['Airline Numeric Code'] =~ /^[0-9 ]{3}$/
+          else
+            leg_data['Airline Numeric Code'] = nil
+          end
+          
+          # 143: Document Form/Serial Number
+          if i < repeated_stop
+            leg_data['Document Form/Serial Number'] = data[(i+1)..(i+=10)]
+          else 
+            leg_data['Document Form/Serial Number'] = nil
+          end
+          
+          # 18: Selectee Indicator
+          leg_data['Selectee Indicator'] = i < repeated_stop ? data[(i+1)..(i+=1)] : nil
+          
+          # 108: International Documentation Verification
+          leg_data['International Documentation Verification'] = i < repeated_stop ? data[(i+1)..(i+=1)] : nil
+          
+          # 19: Marketing Carrier Designator
+          leg_data['Marketing Carrier Designator'] = i < repeated_stop ? data[(i+1)..(i+=3 )] : nil
+          
+          # 20: Frequent Flier Airline Designator
+          leg_data['Frequent Flier Airline Designator'] = i < repeated_stop ? data[(i+1)..(i+=3)] : nil
+          
+          # 236: Frequent Flier Number
+          leg_data['Frequent Flier Number'] = i < repeated_stop ? data[(i+1)..(i+=16)] : nil
+          
+          # 89: ID/AD Indicator
+          leg_data['ID/AD Indicator'] = i < repeated_stop ? data[(i+1)..(i+=1)] : nil
+          
+          # 118: Free Baggage Allowance
+          leg_data['Free Baggage Allowance'] = i < repeated_stop ? data[(i+1)..(i+=3)] : nil
+          
+          # 4: For Individual Airline Use
+          leg_data['For Individual Airline Use'] = data[(i+1)..field_end]
           
           i = field_end
           
