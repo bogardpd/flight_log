@@ -262,18 +262,3 @@
   </table>
   
 <% end %>
-
-<% if false %>
-
-<hr/>
-
-
-<h3>Passenger Unique Data</h3>
-<%= render "bcbp_table", data: boarding_pass.bcbp_fields %>
-
-<% boarding_pass.legs.each_with_index do |leg_data, index| %>
-  <h3>Leg <%= index+1 %></h3>
-  <%= render "bcbp_table", data: leg_data %>
-<% end %>
-
-<% end %>
