@@ -195,9 +195,9 @@ Valid: <%= boarding_pass.is_valid? %>
         <%= boarding_pass.leg_selectee_indicator(index) %>
         <% case boarding_pass.leg_selectee_indicator(index) %>
         <% when "LLLL" %>
-          <div class="info_bcbp"><%= image_tag('tpc.png', title: 'TSA PreCheck', class: 'airline_icon icon_right') %></div>
+          <div class="supplemental_info"><%= image_tag('tpc.png', title: 'TSA PreCheck', class: 'airline_icon icon_right') %></div>
         <% when "SSSS" %>
-          <div class="info_bcbp">Secondary Security<br/>Screening Selectee</div>
+          <div class="supplemental_info">Secondary Security<br/>Screening Selectee</div>
         <% end %>
       </td>
     </tr>
