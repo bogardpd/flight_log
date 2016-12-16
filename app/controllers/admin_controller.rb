@@ -10,6 +10,7 @@ class AdminController < ApplicationController
   
   def boarding_pass_validator
     add_breadcrumb 'Boarding Pass Validator', boarding_pass_validator_path
+    @pass_flights = Flight.select(:id, :boarding_pass_data).where("boarding_pass_data IS NOT NULL").order(:departure_utc)
   end
   
   private

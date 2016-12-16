@@ -7,6 +7,9 @@ $color-text-primary: hsl(210, 20%, 16%);
 $color-text-secondary: hsl(210, 20%, 40%);
 $color-text-disabled: hsl(210, 20%, 70%);
 
+$color-background-status-bad:   hsl(0,   50%, 90%);
+$color-background-status-good:  hsl(180, 50%, 90%);
+
 $margin-icon-to-text: 0.5em;
 $margin-paragraph: 10px;
 
@@ -938,6 +941,14 @@ td.route_route, th.route_route {
 	text-align: left;
 }
 
+td.status_bad {
+  background-color: $color-background-status-bad;
+}
+
+td.status_good {
+  background-color: $color-background-status-good;
+}
+
 td.superlative_label {
 	background-color: #F9F9FB;
 	border-right: 2px solid #9EC7F3;
@@ -966,6 +977,10 @@ td.tail_number {
 
 th.tail_number {
 	text-align: left;
+}
+
+td.valid {
+  text-align: center;
 }
 
 td.weak_top_border {
