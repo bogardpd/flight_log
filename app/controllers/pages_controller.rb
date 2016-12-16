@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 class PagesController < ApplicationController
+  before_action :logged_in_user, :only => [:admin]
 
   def flightlog
     # Flight Log Index
@@ -50,6 +51,11 @@ class PagesController < ApplicationController
 
   end
   
+  def admin
+    add_breadcrumb 'Home', 'root_path'
+    add_breadcrumb 'Admin', 'admin_path'
+  end
+  
   def letsencrypt
     render text: ENV["LETS_ENCRYPT_KEY"]
   end
@@ -71,5 +77,11 @@ class PagesController < ApplicationController
     
   rescue SocketError
   end
+  
+  private
+  
+    def logged_in_user
+      redirect_to root_path unless logged_in?
+    end
 
 end

@@ -41,6 +41,7 @@ Portfolio::Application.routes.draw do
   match '/boarding_pass/:data'  => 'flights#show_boarding_pass',  via: :get, as: :show_boarding_pass
   match '/build_boarding_pass'  => 'flights#build_boarding_pass', via: :get, as: :build_boarding_pass
   
+  match '/admin' => 'pages#admin', via: :get
   # Image proxy:
   match "/images/gcmap/:airport_options/:query/:check/map.gif" => 'pages#gcmap_image_proxy', as: :gcmap_image, via: [:get]
   
