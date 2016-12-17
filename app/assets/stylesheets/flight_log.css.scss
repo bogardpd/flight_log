@@ -9,9 +9,13 @@ $color-text-disabled: hsl(210, 20%, 70%);
 
 $color-background-status-bad:   hsl(0,   50%, 90%);
 $color-background-status-good:  hsl(180, 50%, 90%);
+$color-border-status-bad:   hsl(0,   50%, 75%);
+$color-border-status-good:  hsl(180, 50%, 75%);
 
 $margin-icon-to-text: 0.5em;
 $margin-paragraph: 10px;
+
+$letter-spacing-status: 2px;
 
 body {
 	background: #E6EAEF;
@@ -289,6 +293,7 @@ code {
 	white-space: -moz-pre-wrap;
 	white-space: -o-pre-wrap;
 	word-wrap: break-word;
+  line-height: 135%;
 }
 
 div.alert {
@@ -605,6 +610,18 @@ pre.debug_dump {
 
 span.breadcrumb_title {
 	
+}
+
+span.code_status_bad {
+  background-color: $color-background-status-bad;
+  border: 1px solid $color-border-status-bad;
+  letter-spacing: $letter-spacing-status;
+}
+
+span.code_status_good {
+  background-color: $color-background-status-good;
+  border: 1px solid $color-border-status-good;
+  letter-spacing: $letter-spacing-status;
 }
 
 span.disabled {

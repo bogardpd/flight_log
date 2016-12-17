@@ -5,6 +5,10 @@
 	<code><%= boarding_pass.raw %></code>
 </div>
 
+<div class="code">
+  <code><% boarding_pass.raw_with_metadata.each do |field| %><span class="code_status_<%= field[:valid] ? 'good' : 'bad' %>"><%= field[:raw] %></span><% end %></code>
+</div>
+
 <% if boarding_pass.is_valid? %>
 
   <h3>Passenger Unique Data</h3>
