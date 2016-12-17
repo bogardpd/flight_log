@@ -1,13 +1,12 @@
 <h2>Boarding Pass Data</h2>
 
 <h3>Raw</h3>
-<div class="code">
-	<code><%= boarding_pass.raw %></code>
-</div>
 
-<div class="code">
-  <code><% boarding_pass.raw_with_metadata.each do |field| %><span class="code_status_<%= field[:valid] ? 'good' : 'bad' %>"><%= field[:raw] %></span><% end %></code>
-</div>
+<% if boarding_pass.raw_with_metadata %>
+  <div class="code">
+    <code><% boarding_pass.raw_with_metadata.each_with_index do |field, index| %><span id="field<%= index %>" class="code_status_<%= field[:valid] ? 'good' : 'bad' %>"><%= field[:raw].gsub(" ", "&nbsp;").gsub(/\s/, "▓").html_safe %></span><% end %></code>
+  </div>
+<% end %>
 
 <% if boarding_pass.is_valid? %>
 
@@ -269,7 +268,7 @@
 <div class="error">
   <p>This boarding pass data doesn’t meet the BCBP standard, so we can’t parse it!</p>
   <ul>
-    <li>Whitespace is important in the BCBP standard; ensure that your barcode reader isn’t removing extra spaces.</li>
+    <li>Whitespace is important in the BCBP standard; ensure that your barcode reader isn’t removing extra spaces or adding extra line breaks.</li>
   </ul>
 </div>
 <% end %>
