@@ -457,8 +457,8 @@ class BoardingPass
         
         # 6: Field size of variable size field
         leg_data['6'] = field_size = data[(i+1)..(i+=2)]
-        @raw_with_metadata.push({raw: leg_data['6'], valid: leg_data['6'] =~ /^[0-9A-F]{2}$/})
-        @valid = false unless field_size =~ /^[0-9A-F]{2}$/
+        @raw_with_metadata.push({raw: leg_data['6'], valid: leg_data['6'] =~ /^[0-9A-Fa-f]{2}$/})
+        @valid = false unless field_size =~ /^[0-9A-Fa-f]{2}$/
         field_size = "0x#{leg_data['6']}".to_i(16)
         
         if field_size > 0
@@ -478,8 +478,8 @@ class BoardingPass
             
             # 10: Field size of following structured message - unique
             bcbp['10'] = data[(i+1)..(i+=2)]
-            @raw_with_metadata.push({raw: bcbp['10'], valid: bcbp['10'] =~ /^[0-9A-F]{2}$/})
-            @valid = false unless bcbp['10'] =~ /^[0-9A-F]{2}$/
+            @raw_with_metadata.push({raw: bcbp['10'], valid: bcbp['10'] =~ /^[0-9A-Fa-f]{2}$/})
+            @valid = false unless bcbp['10'] =~ /^[0-9A-Fa-f]{2}$/
             unique_stop = i + bcbp['10'].to_i(16)
             
             # 15: Passenger Description
@@ -545,8 +545,8 @@ class BoardingPass
           
           # 17: Field size of following structured message - repeated
           leg_data['17'] = data[(i+1)..(i+=2)]
-          @raw_with_metadata.push({raw: leg_data['17'], valid: leg_data['17'] =~ /^[0-9A-F]{2}$/})
-          @valid = false unless leg_data['17'] =~ /^[0-9A-F]{2}$/
+          @raw_with_metadata.push({raw: leg_data['17'], valid: leg_data['17'] =~ /^[0-9A-Fa-f]{2}$/})
+          @valid = false unless leg_data['17'] =~ /^[0-9A-Fa-f]{2}$/
           repeated_stop = i + leg_data['17'].to_i(16)
           
           # 142: Airline Numeric Code
