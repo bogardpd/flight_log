@@ -4,19 +4,18 @@
 <table class="flightlog">
   <thead>
     <th>Boarding Pass Data</th>
-    <th>Valid?</th>
     <th>Edit</th>
   </thead>
 <% count = 0 %>
 <% @pass_flights.each do |flight| %>
-  <% unless BoardingPass.new(flight.boarding_pass_data).is_valid? %>
+  <% pass = BoardingPass.new(flight.boarding_pass_data) %>
+  <% unless pass.is_valid? %>
   <% count += 1 %>
-  <tr>
+  <tr class="no_top_border">
     <td>
-      <div class="bcbp_code"><code><%= flight.boarding_pass_data %></code></div>
-    </td>
-    <td class="valid status_bad">
-      Not Valid
+      <div style="width: 30em;">
+        <%= render 'flights/bcbp_raw', boarding_pass: pass %>
+      </div>
     </td>
     <td>
       <%= link_to "Edit", edit_flight_path(flight.id) %>
