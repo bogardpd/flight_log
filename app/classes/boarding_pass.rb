@@ -105,7 +105,7 @@ class BoardingPass
   
   def format_version
     output = "IATA BCBP #{@bcbp_unique['1']} Format"
-    output += "Version #{@bcbp_unique['9']}" if @bcbp_unique['9']
+    output += " Version #{@bcbp_unique['9']}" if @bcbp_unique['9']
     return output
   end
   
