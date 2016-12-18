@@ -2,11 +2,7 @@
 
 <h3>Raw</h3>
 
-<% if boarding_pass.raw_with_metadata %>
-  <div class="code">
-    <code><% boarding_pass.raw_with_metadata.each_with_index do |field, index| %><span id="field<%= index %>" class="code_status_<%= field[:valid] ? 'good' : 'bad' %>"><%= field[:raw].gsub(" ", "&nbsp;").gsub(/\s/, "▓").html_safe %></span><% end %></code>
-  </div>
-<% end %>
+<%= render 'bcbp_raw', boarding_pass: boarding_pass %>
 
 <% if boarding_pass.is_valid? %>
 
