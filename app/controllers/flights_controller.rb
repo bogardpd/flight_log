@@ -1,5 +1,5 @@
 class FlightsController < ApplicationController
-  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy, :show_annual_summary]
+  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   add_breadcrumb 'Home', 'root_path'
   
   def index
@@ -87,11 +87,6 @@ class FlightsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
-  end
-  
-  def show_annual_summary
-    @title = "Annual Summary"
-    @flight_summary = Flight.by_year
   end
     
   def show_date_range

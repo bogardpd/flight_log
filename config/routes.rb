@@ -17,8 +17,6 @@ Portfolio::Application.routes.draw do
   match '/signup' => 'users#new',         via: :get
   match '/login'  => 'sessions#new',      via: :get
   match '/logout' => 'sessions#destroy',  via: :delete
-  
-  match '/annual_summary', to: 'flights#show_annual_summary', via: [:get]
 
   match '/flights/from/:start_date/to/:end_date', :to => 'flights#show_date_range', :as => :show_date_range, :via => [:get]
   match '/flights/year/:year', :to => 'flights#show_date_range', :as => :show_year, :via => [:get]
@@ -42,8 +40,9 @@ Portfolio::Application.routes.draw do
   match '/build_boarding_pass'  => 'flights#build_boarding_pass', via: :get, as: :build_boarding_pass
   
   # Admin pages:
-  match '/admin'                          => 'admin#admin',                   via: :get
-  match '/admin/boarding_pass_validator'  => 'admin#boarding_pass_validator', via: :get, as: :boarding_pass_validator
+  match '/admin',                         to: 'admin#admin',                   via: :get
+  match '/admin/boarding_pass_validator', to: 'admin#boarding_pass_validator', via: :get, as: :boarding_pass_validator
+  match '/admin/annual_summary',          to: 'admin#annual_flight_summary',   via: :get, as: :annual_flight_summary
   
   # Image proxy:
   match "/images/gcmap/:airport_options/:query/:check/map.gif" => 'pages#gcmap_image_proxy', as: :gcmap_image, via: [:get]
