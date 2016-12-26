@@ -227,7 +227,7 @@ class BoardingPass
     
     return Date.ordinal(year, day)
     
-    rescue ActionView::Template::Error
+    rescue ArgumentError
       return nil
   end
   
