@@ -428,7 +428,7 @@ class BoardingPass
         
         # 43: Flight Number
         leg_data['43'] = data[(i+1)..(i+=5)]
-        @raw_with_metadata.push({raw: leg_data['43'], valid: leg_data['43'] =~ /^\d{4}[A-Z ]{1}$/})
+        @raw_with_metadata.push({raw: leg_data['43'], valid: leg_data['43'] =~ /^[0-9 ]{4}[A-Z ]{1}$/})
         
         # 46: Date of Flight
         leg_data['46'] = data[(i+1)..(i+=3)]
