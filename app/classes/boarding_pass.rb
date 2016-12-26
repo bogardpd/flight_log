@@ -25,7 +25,7 @@ class BoardingPass
   # Return true if data appears to be valid BCBP data.
   def is_valid?
     return false unless @raw_data.present?
-    return !(@raw_with_metadata.map{|h| h[:valid]}.include?(false))
+    return !(@raw_with_metadata.map{|h| h[:valid]}.include?(false || nil))
   end
   
   # Return a hash of repeated per-leg fields, with leg numbers as the keys and
