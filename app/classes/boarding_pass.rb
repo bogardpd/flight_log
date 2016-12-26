@@ -226,6 +226,9 @@ class BoardingPass
     end
     
     return Date.ordinal(year, day)
+    
+    rescue ActionView::Template::Error
+      return nil
   end
   
   def leg_document_form_serial_number(leg)
