@@ -189,9 +189,5 @@ class RoutesController < ApplicationController
     def route_params
       params.require(:route).permit(:airport1_id, :airport2_id, :distance_mi)
     end
-    
-    def logged_in_user
-      redirect_to root_path unless logged_in?
-    end
 end
   

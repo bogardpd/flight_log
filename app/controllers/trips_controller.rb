@@ -138,7 +138,4 @@ class TripsController < ApplicationController
       params.require(:trip).permit(:comment, :hidden, :name, :purpose)
     end
     
-    def logged_in_user
-      redirect_to root_path unless logged_in?
-    end
 end

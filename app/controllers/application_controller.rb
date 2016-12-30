@@ -11,6 +11,12 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def logged_in_user
+    unless logged_in?
+      redirect_to root_url
+    end
+  end
+  
 protected
 
   def add_breadcrumb name, url=''

@@ -148,8 +148,4 @@ class AircraftFamiliesController < ApplicationController
       params.require(:aircraft_family).permit(:family_name, :iata_aircraft_code, :manufacturer, :category)
     end
   
-    def logged_in_user
-      redirect_to root_path unless logged_in?
-    end
-  
 end

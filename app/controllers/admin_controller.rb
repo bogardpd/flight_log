@@ -20,10 +20,4 @@ class AdminController < ApplicationController
     @pass_flights = Flight.select(:id, :boarding_pass_data).where("boarding_pass_data IS NOT NULL").order(:departure_utc)
   end
   
-  private
-  
-    def logged_in_user
-      redirect_to root_path unless logged_in?
-    end
-    
 end

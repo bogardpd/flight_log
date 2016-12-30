@@ -404,10 +404,6 @@ class FlightsController < ApplicationController
       params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
     end
     
-    def logged_in_user
-      redirect_to root_path unless logged_in?
-    end
-    
     
   
     

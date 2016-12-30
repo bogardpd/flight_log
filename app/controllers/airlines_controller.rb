@@ -242,8 +242,4 @@ class AirlinesController < ApplicationController
       params.require(:airline).permit(:iata_airline_code, :airline_name, :is_only_operator)
     end
   
-    def logged_in_user
-      redirect_to root_path unless logged_in?
-    end
-  
 end

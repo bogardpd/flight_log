@@ -131,8 +131,10 @@ class Flight < ActiveRecord::Base
   def self.by_year
     # Create hash ranging from earliest to latest years (default all values to zero):
     summary = Hash.new
-    self.year_range.each do |year|
-      summary[year] = {business: 0, mixed: 0, personal: 0, undefined: 0}
+    if self.year_range
+      self.year_range.each do |year|
+        summary[year] = {business: 0, mixed: 0, personal: 0, undefined: 0}
+      end
     end
     
     # Loop through all flights (with year and flight.trip.purpose selected and increment hash):
