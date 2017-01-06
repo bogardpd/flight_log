@@ -1,5 +1,5 @@
 <% if boarding_pass.raw_with_metadata %>
   <div class="code">
-    <code class="bcbp_raw"><% boarding_pass.raw_with_metadata.each_with_index do |field, index| %><span id="field<%= index %>" class="bcbp code_status_<%= field[:valid] ? 'good' : 'bad' %>" data-index="<%= index %>"><%= field[:raw].to_s.gsub(" ", "&nbsp;").gsub(/\s/, "▓").html_safe %></span><% end %></code>
+    <code class="bcbp_raw"><% boarding_pass.raw_with_metadata.each_with_index do |field, index| %><span id="field<%= index %>" class="bcbp code_status_<%= field[:valid] ? 'good' : 'bad' %>" data-description="<%= field[:description] %>"><%= field[:raw].to_s.gsub(" ", "&nbsp;").gsub(/\s/, "▓").html_safe %></span><% end %></code>
   </div>
 <% end %>
