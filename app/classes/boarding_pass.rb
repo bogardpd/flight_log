@@ -12,6 +12,10 @@ class BoardingPass
     end
   end
   
+  def bcbp_version
+    return @raw_data[@raw_data.index(">")+1].to_i
+  end
+  
   # Return a hash of IATA Bar Coded Boarding Pass (BCBP) fields and data.
   def bcbp_fields
     return @bcbp_unique
@@ -237,6 +241,10 @@ class BoardingPass
   
   def leg_document_form_serial_number(leg)
     return @bcbp_repeated[leg]['143']
+  end
+  
+  def leg_fast_track(leg)
+    return @bcbp_repeated[leg]['254']
   end
   
   def leg_flight_number(leg)
@@ -753,6 +761,18 @@ class BoardingPass
             })
           else
             leg_data['118'] = nil
+          end
+          
+          # 254: Fast Track (Version 5+)
+          if i < repeated_stop && bcbp_version >= 5
+            leg_data['254'] = data[(i+1)..(i+=1)]
+            @raw_with_metadata.push({
+              description: format_leg(index, "Fast Track"),
+              raw:         leg_data['254'],
+              valid:       true
+            })
+          else
+            leg_data['254'] = nil
           end
           
           # 4: For Individual Airline Use
