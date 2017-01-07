@@ -339,9 +339,16 @@ class FlightsController < ApplicationController
     @title = "Boarding Pass Results"
     @meta_description = "Results from the boarding pass barcode parser."
     add_breadcrumb "Boarding Pass", boarding_pass_path
-    add_breadcrumb "Results", boarding_pass_path
     
     @boarding_pass = BoardingPass.new(Base64.urlsafe_decode64(params[:data]))
+    if @boarding_pass.leg_operating_carrier_designator(0)
+      bp_string = "#{@boarding_pass.leg_operating_carrier_designator(0)} #{@boarding_pass.leg_flight_number(0)} #{@boarding_pass.leg_from_city_airport_code(0)} ✈ #{@boarding_pass.leg_to_city_airport_code(0)}"
+      @title += ": #{bp_string}"
+      add_breadcrumb bp_string, boarding_pass_path
+    else
+      add_breadcrumb "Results", boarding_pass_path
+    end
+    
   end
 
     

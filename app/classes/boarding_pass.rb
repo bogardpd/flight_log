@@ -212,18 +212,22 @@ class BoardingPass
   # Return repeated field values:
   
   def leg_airline_numeric_code(leg)
+    return nil unless @bcbp_repeated[leg].present?
     return @bcbp_repeated[leg]['142']
   end
   
   def leg_check_in_sequence_number(leg)
+    return nil unless @bcbp_repeated[leg].present?
     return @bcbp_repeated[leg]['107'].to_i
   end
   
   def leg_compartment_code(leg)
+    return nil unless @bcbp_repeated[leg].present?
     return @bcbp_repeated[leg]['71']
   end
   
   def leg_date_of_flight(leg)
+    return nil unless @bcbp_repeated[leg].present?
     bp_date = @bcbp_repeated[leg]['46']
     return nil unless bp_date.present?
     day = bp_date.to_i
@@ -251,23 +255,27 @@ class BoardingPass
   end
   
   def leg_document_form_serial_number(leg)
+    return nil unless @bcbp_repeated[leg].present?
     return @bcbp_repeated[leg]['143']
   end
   
   def leg_fast_track(leg)
+    return nil unless @bcbp_repeated[leg].present?
     return @bcbp_repeated[leg]['254']
   end
   
   def leg_flight_number(leg)
-    return nil unless @bcbp_repeated[leg]['43'].present?
+    return nil unless @bcbp_repeated[leg].present? && @bcbp_repeated[leg]['43'].present?
     return @bcbp_repeated[leg]['43'].strip.to_i
   end
   
   def leg_for_individual_airline_use(leg)
+    return nil unless @bcbp_repeated[leg].present?
     return @bcbp_repeated[leg]['4']
   end
   
   def leg_free_baggage_allowance(leg)
+    return nil unless @bcbp_repeated[leg].present?
     free_raw = @bcbp_repeated[leg]['118']
     return nil unless free_raw.present?
     return pluralize(free_raw[0].to_i, "piece") if free_raw[0] =~ /\d/ && free_raw[1..2] == "PC" # "xPC" = x pieces
@@ -277,20 +285,22 @@ class BoardingPass
   end
   
   def leg_frequent_flier_airline_designator(leg)
-    return nil unless @bcbp_repeated[leg]['20'].present?
+    return nil unless @bcbp_repeated[leg].present? && @bcbp_repeated[leg]['20'].present?
     return @bcbp_repeated[leg]['20'].strip
   end
   
   def leg_frequent_flier_number(leg)
-    return nil unless @bcbp_repeated[leg]['236'].present?
+    return nil unless @bcbp_repeated[leg].present? && @bcbp_repeated[leg]['236'].present?
     return @bcbp_repeated[leg]['236'].strip
   end
   
   def leg_from_city_airport_code(leg)
+    return nil unless @bcbp_repeated[leg].present?
     return @bcbp_repeated[leg]['26']
   end
   
   def leg_id_ad_indicator(leg)
+    return nil unless @bcbp_repeated[leg].present?
     case @bcbp_repeated[leg]['89']
     when "0"
       return "IDN1 positive space"
@@ -330,6 +340,7 @@ class BoardingPass
   end
   
   def leg_international_documentation_verification(leg)
+    return nil unless @bcbp_repeated[leg].present?
     case @bcbp_repeated[leg]['108']
     when "0"
       return "Travel document verification not required"
@@ -343,21 +354,22 @@ class BoardingPass
   end
   
   def leg_marketing_carrier_designator(leg)
-    return nil unless @bcbp_repeated[leg]['19'].present?
+    return nil unless @bcbp_repeated[leg].present? && @bcbp_repeated[leg]['19'].present?
     return @bcbp_repeated[leg]['19'].strip
   end
   
   def leg_operating_carrier_designator(leg)
-    return nil unless @bcbp_repeated[leg]['42'].present?
+    return nil unless @bcbp_repeated[leg].present? && @bcbp_repeated[leg]['42'].present?
     return @bcbp_repeated[leg]['42'].strip
   end
   
   def leg_operating_carrier_pnr_code(leg)
-    return nil unless @bcbp_repeated[leg]['7'].present?
+    return nil unless @bcbp_repeated[leg].present? && @bcbp_repeated[leg]['7'].present?
     return @bcbp_repeated[leg]['7'].strip
   end
   
   def leg_passenger_status(leg)
+    return nil unless @bcbp_repeated[leg].present?
     case @bcbp_repeated[leg]['113']
     when "0"
       return "Ticket issuance/passenger not checked in"
@@ -387,12 +399,14 @@ class BoardingPass
   end
   
   def leg_seat_number(leg)
+    return nil unless @bcbp_repeated[leg].present?
     row = @bcbp_repeated[leg]['104'][0..2].to_i
     seat = @bcbp_repeated[leg]['104'][3]
     return "#{row}#{seat}"
   end
   
   def leg_selectee_indicator(leg)
+    return nil unless @bcbp_repeated[leg].present?
     case @bcbp_repeated[leg]['18']
     when "0"
       return "Not selectee"
@@ -406,6 +420,7 @@ class BoardingPass
   end
   
   def leg_to_city_airport_code(leg)
+    return nil unless @bcbp_repeated[leg].present?
     return @bcbp_repeated[leg]['38']
   end
   
