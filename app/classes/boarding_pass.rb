@@ -269,6 +269,7 @@ class BoardingPass
   
   def leg_free_baggage_allowance(leg)
     free_raw = @bcbp_repeated[leg]['118']
+    return nil unless free_raw.present?
     return pluralize(free_raw[0].to_i, "piece") if free_raw[0] =~ /\d/ && free_raw[1..2] == "PC" # "xPC" = x pieces
     return "#{free_raw[0..1].to_i} kg" if free_raw[0..1] =~ /\d{2}/ && free_raw[2] == "K"        # "xxK" = x kilos
     return "#{free_raw[0..1].to_i} lb" if free_raw[0..1] =~ /\d{2}/ && free_raw[2] == "L"        # "xxL" = x pounds
