@@ -74,13 +74,33 @@
     </tr>
     <% end %>
   
-    <% if boarding_pass.baggage_tag_license_plate_number.present? %>
+    <% if boarding_pass.baggage_tag_licence_plate_number.present? %>
     <tr>
       <td class="flight_show_label bcbp_label">Baggage Tag</td>
       <td class="bcbp_data">
-        <%= boarding_pass.baggage_tag_license_plate_number %>
+        <%= boarding_pass.baggage_tag_licence_plate_number %>
       </td>
     </tr>
+    <% end %>
+    
+    <% if boarding_pass.bcbp_version >= 5 %>
+      <% if boarding_pass.first_non_consecutive_baggage_tag_licence_number.present? %>
+      <tr>
+        <td class="flight_show_label bcbp_label">1st Non-Consecutive Baggage Tag</td>
+        <td class="bcbp_data">
+          <%= boarding_pass.first_non_consecutive_baggage_tag_licence_number %>
+        </td>
+      </tr>
+      <% end %>
+      
+      <% if boarding_pass.second_non_consecutive_baggage_tag_licence_number.present? %>
+      <tr>
+        <td class="flight_show_label bcbp_label">2nd Non-Consecutive Baggage Tag</td>
+        <td class="bcbp_data">
+          <%= boarding_pass.second_non_consecutive_baggage_tag_licence_number %>
+        </td>
+      </tr>
+      <% end %>
     <% end %>
   
     <% if boarding_pass.security.present? %>
@@ -248,11 +268,20 @@
         <td class="bcbp_data"><%= boarding_pass.leg_free_baggage_allowance(index) %></td>
       </tr>
       <% end %>
+      
+      <% if boarding_pass.bcbp_version >= 5 && boarding_pass.leg_fast_track(index).present? %>
+      <tr>
+        <td class="flight_show_label bcbp_label">Fast Track</td>
+        <td class="bcbp_data"><%= boarding_pass.leg_fast_track(index) %></td>
+      </tr>
+      <% end %>
     
       <% if boarding_pass.leg_for_individual_airline_use(index).present? %>
       <tr>
         <td class="flight_show_label bcbp_label">For Individual Airline Use</td>
-        <td class="bcbp_data"><%= iata_mono(boarding_pass.leg_for_individual_airline_use(index)) %></td>
+        <td class="bcbp_data">
+          <div class="bcbp_code"><code><%= iata_mono(boarding_pass.leg_for_individual_airline_use(index)) %></code></div>
+        </td>
       </tr>
       <% end %>
     

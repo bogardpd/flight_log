@@ -67,7 +67,7 @@ class BoardingPass
     return @bcbp_unique['21'].strip
   end
   
-  def baggage_tag_license_plate_number
+  def baggage_tag_licence_plate_number
     return nil unless @bcbp_unique['23'].present?
     return @bcbp_unique['23'].strip
   end
@@ -111,6 +111,11 @@ class BoardingPass
     return @bcbp_unique['253'] == "E" ? "Yes" : "No"
   end
   
+  def first_non_consecutive_baggage_tag_licence_number
+    return nil unless @bcbp_unique['31'].present?
+    return @bcbp_unique['31'].strip
+  end
+  
   def format_version
     output = "IATA BCBP #{@bcbp_unique['1']} Format"
     output += " Version #{@bcbp_unique['9']}" if @bcbp_unique['9']
@@ -146,6 +151,11 @@ class BoardingPass
   
   def passenger_name
     return @bcbp_unique['11']
+  end
+  
+  def second_non_consecutive_baggage_tag_licence_number
+    return nil unless @bcbp_unique['32'].present?
+    return @bcbp_unique['32'].strip
   end
   
   def security
