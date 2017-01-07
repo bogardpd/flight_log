@@ -630,16 +630,40 @@ class BoardingPass
               bcbp['21'] = nil
             end
             
-            # 23: Baggage Tag License Plate Number
+            # 23: Baggage Tag Licence Plate Number
             if i < unique_stop
               bcbp['23'] = data[(i+1)..(i+=13)]
               @raw_with_metadata.push({
-                description: "Baggage Tag License Plate Number(s)",
+                description: "Baggage Tag Licence Plate Number(s)",
                 raw:         bcbp['23'],
                 valid:       true
               })
             else
               bcbp['23'] = nil
+            end
+            
+            # 31: 1st Non-Consecutive Baggage Tag Licence Plate Number (Version 5+)
+            if i < unique_stop && bcbp_version >= 5
+              bcbp['31'] = data[(i+1)..(i+=13)]
+              @raw_with_metadata.push({
+                description: "1st Non-Consecutive Baggage Tag Licence Plate Number",
+                raw:         bcbp['31'],
+                valid:       true
+              })
+            else
+              bcbp['31'] = nil
+            end
+            
+            # 32: 2nd Non-Consecutive Baggage Tag Licence Plate Number (Version 5+)
+            if i < unique_stop && bcbp_version >= 5
+              bcbp['32'] = data[(i+1)..(i+=13)]
+              @raw_with_metadata.push({
+                description: "2nd Non-Consecutive Baggage Tag Licence Plate Number",
+                raw:         bcbp['32'],
+                valid:       true
+              })
+            else
+              bcbp['32'] = nil
             end
             
           end
