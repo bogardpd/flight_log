@@ -1,5 +1,15 @@
 <h1>Boarding Pass Results</h1>
-<p><%= link_to "Parse another boarding pass", boarding_pass_path %></p>
+
+<div id="bcbp_input_form">
+  <%= form_tag(build_boarding_pass_path, method: :get, id: "bcbp-form") do %>
+  <p>
+    <%= label :data, "Update your boarding pass data here:" %><br />
+	  <%= text_area_tag :data, Base64.urlsafe_decode64(params[:data]), size: '70x5', class: 'iata_mono' %>
+  </p>
+  <p><%= submit_tag "Update", name: nil, id: "bcbp_submit_button" %></p>
+  
+<% end %>
+</div>
 
 <% if @boarding_pass.has_data? %>
   <%= render "bcbp", boarding_pass: @boarding_pass %>

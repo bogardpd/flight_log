@@ -332,7 +332,12 @@ class FlightsController < ApplicationController
   end
   
   def build_boarding_pass
-    redirect_to show_boarding_pass_path(Base64.urlsafe_encode64(params[:data]))
+    if params[:data].present?
+      redirect_to show_boarding_pass_path(Base64.urlsafe_encode64(params[:data]))
+    else
+      flash[:alert] = "Boarding pass data cannot be blank."
+      redirect_to boarding_pass_path
+    end
   end
   
   def show_boarding_pass
