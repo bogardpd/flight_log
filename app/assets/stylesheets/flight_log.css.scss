@@ -17,6 +17,8 @@ $margin-paragraph: 10px;
 
 $letter-spacing-status: 4px;
 
+$line-height-raw-bcbp: 140%;
+
 body {
 	background: #E6EAEF;
 	font-family: $font-stack-sans-serif;
@@ -293,7 +295,12 @@ code {
 	white-space: -moz-pre-wrap;
 	white-space: -o-pre-wrap;
 	word-wrap: break-word;
-  line-height: 140%;
+  line-height: $line-height-raw-bcbp;
+  
+  span.active {
+    background-color: #444444;
+    color: #FFFFFF;
+  }
 }
 
 div.alert {
@@ -486,6 +493,34 @@ div.region_select a {
 	font-weight: 300;
 }
 
+div.tooltip {
+  height: 110px;
+	margin-left: $margin-paragraph;
+	margin-right: $margin-paragraph;
+  padding: 10px;
+  background-color: #444444;
+  color: #FFFFFF;
+  border: 1px solid #222222;
+  border-radius: 1em;
+  box-shadow: 1px 1px 2px #222222;
+  text-shadow: 1px 1px #222222;
+  opacity: 0.9;
+  
+  .bcbp_description {
+    font-weight: bold;
+  }
+  
+  .bcbp_raw_value {
+    font-family: $font-stack-monospace;
+    word-wrap: break-word;
+    line-height: $line-height-raw-bcbp;
+    span {
+      border: 1px solid #444444;
+      background-color: #000000;
+      padding: 0 3px;
+    }
+  }
+}
 
 
 h1, h2, h3, h4, h5, h6 {

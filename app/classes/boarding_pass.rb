@@ -867,7 +867,7 @@ class BoardingPass
     
     # Takes an index (zero-indexed) and returns a formatted string (one-indexed).
     def format_leg(index, description)
-      return "Leg #{index+1}/#{description}"
+      return "[Leg #{index+1}] #{description}"
     end
   
 end
