@@ -102,7 +102,7 @@ GEM
     multi_json (1.12.1)
     nenv (0.3.0)
     nio4r (1.2.1)
-    nokogiri (1.7.0)
+    nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -175,8 +175,6 @@ GEM
     thor (0.19.4)
     thread_safe (0.3.5)
     tilt (2.0.5)
-    turbolinks (2.3.0)
-      coffee-rails
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -204,7 +202,6 @@ DEPENDENCIES
   rails_12factor (= 0.0.2)
   sass-rails (= 5.0.6)
   sql_queries_count
-  turbolinks (= 2.3.0)
   uglifier (= 3.0.0)
 
 RUBY VERSION
