@@ -437,6 +437,7 @@ class BoardingPass
       @raw_with_metadata.push({
         description: "Format Code",
         raw:         bcbp['1'],
+        interpreted: "IATA BCBP Format #{bcbp['1']}",
         valid:       true
       })
       
@@ -445,6 +446,7 @@ class BoardingPass
       @raw_with_metadata.push({
         description: "Number of Legs Encoded",
         raw:         bcbp['5'],
+        interpreted: "This boarding pass contains #{pluralize(bcbp['5'], "flight leg")}",
         valid:       bcbp['5'] =~ /^\d{1}$/
       })
       
@@ -461,6 +463,7 @@ class BoardingPass
       @raw_with_metadata.push({
         description: "Electronic Ticket Indicator",
         raw:         bcbp['253'],
+        interpreted: interpret_electronic_ticket_indicator(bcbp['253']),
         valid: true
       })
       
@@ -482,6 +485,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "From City Airport Code"),
           raw:         leg_data['26'],
+          interpreted: interpret_airport_code(leg_data['26']),
           valid:       leg_data['26'] =~ /^[A-Z]{3}$/
         })
         
@@ -490,6 +494,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "To City Airport Code"),
           raw:         leg_data['38'],
+          interpreted: interpret_airport_code(leg_data['38']),
           valid:       leg_data['38'] =~ /^[A-Z]{3}$/
         })
         
@@ -498,6 +503,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Operating Carrier Designator"),
           raw:         leg_data['42'],
+          interpreted: interpret_airline_code(leg_data['42']),
           valid:       true
         })
         
@@ -538,6 +544,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Check-In Sequence Number"),
           raw:         leg_data['107'],
+          interpreted: interpret_checkin_sequence_number(leg_data['107']),
           valid:       leg_data['107'] =~ /^[0-9 ]{4}[A-Z ]{1}$/
         })
         
@@ -655,6 +662,7 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "Airline Designator of Boarding Pass Issuer",
                 raw:         bcbp['21'],
+                interpreted: interpret_airline_code(bcbp['21']),
                 valid:       true
               })
             else
@@ -764,6 +772,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "Marketing Carrier Designator"),
               raw:         leg_data['19'],
+              interpreted: interpret_airline_code(leg_data['19']),
               valid:       true
             })
           else
@@ -776,6 +785,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "Frequent Flier Airline Designator"),
               raw:         leg_data['20'],
+              interpreted: interpret_airline_code(leg_data['20']),
               valid:       true
             })
           else
@@ -868,6 +878,39 @@ class BoardingPass
     # Takes an index (zero-indexed) and returns a formatted string (one-indexed).
     def format_leg(index, description)
       return "[Leg #{index+1}] #{description}"
+    end
+    
+###############################################################################
+# Raw BCBP Interpreters                                                       #
+###############################################################################
+    
+    def interpret_airline_code(raw)
+      return nil unless raw.present?
+      airline = Airline.where(iata_airline_code: raw.strip()) 
+      if airline.length > 0
+        return airline.first.airline_name
+      else
+        return nil
+      end
+    end
+    
+    def interpret_airport_code(raw)
+      airport = Airport.where(iata_code: raw) 
+      if airport.length > 0
+        return airport.first.city
+      else
+        return nil
+      end
+    end
+    
+    def interpret_checkin_sequence_number(raw)
+      return nil unless raw.present?
+      return "#{raw.strip().to_i.ordinalize} person to check in for this flight"
+    end
+
+    
+    def interpret_electronic_ticket_indicator(raw)
+      return raw == "E" ? "Electronic ticket" : "Not an electronic ticket"
     end
   
 end

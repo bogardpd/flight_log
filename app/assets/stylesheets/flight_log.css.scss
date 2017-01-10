@@ -510,6 +510,11 @@ div.tooltip {
     font-weight: bold;
   }
   
+  .bcbp_interpreted {
+    font-weight: 300;
+    margin-left: 2px;
+  }
+  
   .bcbp_raw_value {
     font-family: $font-stack-monospace;
     word-wrap: break-word;

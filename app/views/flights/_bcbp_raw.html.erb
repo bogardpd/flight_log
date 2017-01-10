@@ -1,7 +1,7 @@
 <% if boarding_pass.raw_with_metadata %>
   <div id="bcbp_raw_text">
     <div class="code">
-      <code class="bcbp_raw"><% boarding_pass.raw_with_metadata.each_with_index do |field, index| %><span id="field<%= index %>" class="bcbp code_status_<%= field[:valid] ? 'good' : 'bad' %>" data-description="<%= field[:description] %>"><%= field[:raw].to_s.gsub(" ", "&nbsp;").gsub(/\s/, "▓").html_safe %></span><% end %></code>
+      <code class="bcbp_raw"><% boarding_pass.raw_with_metadata.each_with_index do |field, index| %><span id="field<%= index %>" class="bcbp code_status_<%= field[:valid] ? 'good' : 'bad' %>" data-description="<%= field[:description] %>" data-interpreted="<%= field[:interpreted] %>"><%= field[:raw].to_s.gsub(" ", "&nbsp;").gsub(/\s/, "▓").html_safe %></span><% end %></code>
     </div>
   </div>
 <% end %>

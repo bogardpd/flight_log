@@ -34,6 +34,7 @@ $(function() {
       var $tooltipDiv = jQuery('<div id="bcbp_tooltip" class="tooltip"></div>');
       $tooltipDiv.append('<div class="bcbp_description"></div>');
       $tooltipDiv.append('<div class="bcbp_raw_value"></div>');
+      $tooltipDiv.append('<div class="bcbp_interpreted"></div>');
       $rawText.before($tooltipDiv)
       resetTooltip();
       
@@ -57,8 +58,10 @@ $(function() {
       $element.addClass('active');
       $element.siblings().removeClass('active');
     
-      // Update tooltip:    
+      // Update description:  
       $tooltip.children('div').eq(0).text(element.getAttribute('data-description') + ":");
+      
+      // Update raw text:
       $tooltip.children('div').eq(1).empty(); // Clear all existing raw text
       // Add spans around each raw character and add to tooltip:
       element.textContent.split('').forEach(function(character) {
@@ -66,12 +69,17 @@ $(function() {
         $span.text(character);
         $tooltip.children('div').eq(1).append($span);
       });
+      
+      // Update interpretation:
+      $tooltip.children('div').eq(2).text(element.getAttribute('data-interpreted'));
+      
     }
   
     function resetTooltip() {
       var $tooltip = jQuery('#bcbp_tooltip');
       $tooltip.children('div').eq(0).text("Hover over (or tap on) any part of the raw data to see details.");
       $tooltip.children('div').eq(1).empty();
+      $tooltip.children('div').eq(2).empty();
       $rawDataElements.removeClass('active');
     }
   
