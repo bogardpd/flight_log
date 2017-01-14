@@ -83,7 +83,7 @@
     </tr>
     <% end %>
     
-    <% if boarding_pass.bcbp_version >= 5 %>
+    <% if boarding_pass.bcbp_version && boarding_pass.bcbp_version >= 5 %>
       <% if boarding_pass.first_non_consecutive_baggage_tag_licence_number.present? %>
       <tr>
         <td class="flight_show_label bcbp_label">1st Non-Consecutive Baggage Tag</td>
@@ -269,7 +269,7 @@
       </tr>
       <% end %>
       
-      <% if boarding_pass.bcbp_version >= 5 && boarding_pass.leg_fast_track(index).present? %>
+      <% if boarding_pass.bcbp_version && boarding_pass.bcbp_version >= 5 && boarding_pass.leg_fast_track(index).present? %>
       <tr>
         <td class="flight_show_label bcbp_label">Fast Track</td>
         <td class="bcbp_data"><%= boarding_pass.leg_fast_track(index) %></td>

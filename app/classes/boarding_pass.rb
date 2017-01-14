@@ -1,8 +1,9 @@
 class BoardingPass
   include ActionView::Helpers::TextHelper
   
-  def initialize(boarding_pass_data)
+  def initialize(boarding_pass_data, flight: nil)
     @raw_data = boarding_pass_data
+    @flight = flight
     
     @bcbp_unique       = Hash.new
     @bcbp_repeated     = Array.new
@@ -13,8 +14,10 @@ class BoardingPass
     end
   end
   
+  # Return BCBP version number, or -1 if version not present.
   def bcbp_version
-    return @raw_data[@raw_data.index(">")+1].to_i
+    index = @raw_data.index(">")
+    return @raw_data[index+1].to_i if index.present?
   end
   
   # Return a hash of IATA Bar Coded Boarding Pass (BCBP) fields and data.
@@ -109,7 +112,7 @@ class BoardingPass
   end
   
   def electronic_ticket
-    return @bcbp_unique['253'] == "E" ? "Yes" : "No"
+    return interpret_electronic_ticket_indicator(@bcbp_unique['253'])
   end
   
   def first_non_consecutive_baggage_tag_licence_number
@@ -520,6 +523,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Date of Flight (Julian Date)"),
           raw:         leg_data['46'],
+          interpreted: interpret_julian_date(leg_data['46']),
           valid:       leg_data['46'] =~ /^\d{3}$/
         })
         
@@ -638,6 +642,7 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "Date of Issue of Boarding Pass (Julian Date)",
                 raw:         bcbp['22'],
+                interpreted: interpret_julian_date(bcbp['22']),
                 valid:       bcbp['22'] =~ /^[0-9 ]{4}$/
               })
             else
@@ -875,10 +880,15 @@ class BoardingPass
       
     end
     
+    
+    
+      
     # Takes an index (zero-indexed) and returns a formatted string (one-indexed).
     def format_leg(index, description)
       return "[Leg #{index+1}] #{description}"
     end
+    
+    
     
 ###############################################################################
 # Raw BCBP Interpreters                                                       #
@@ -907,10 +917,139 @@ class BoardingPass
       return nil unless raw.present?
       return "#{raw.strip().to_i.ordinalize} person to check in for this flight"
     end
+    
+    def interpret_julian_date(raw)
+      return nil unless raw.present?
+      
+      invalid_date_error = "(not a valid date)"
+      
+      # Given the last digit of a year and a day of the year, returns a
+      # FormattedDate of the best estimate of the date of this boarding pass.
+      estimate_boarding_pass_issue_date = lambda { |year_digit, day_of_year|
+        # Assume date is up to 1 year in the future or 9 years in the past.
+        expected_dates = (9.years.ago.beginning_of_day...1.year.from_now.beginning_of_day)
+        year_this_decade = Date.today.year/10*10 + year_digit
+        years_to_consider = [year_this_decade-10,year_this_decade,year_this_decade+10]
+        years_to_consider.each do |y|
+          begin
+            this_date = FormattedDate.ordinal(y, day_of_year)
+            if expected_dates.cover?(this_date)
+              return this_date
+            end
+          rescue
+          end
+        end
+        return nil
+      }
+        
+      if raw =~ /^\d{3}$/
+        # Julian date without year
+        
+        # Returns a string of an array of likely dates
+        estimate_julian_date = lambda { |day_of_year|
+          year = Date.today.year
+          dates = Array.new
+          if day_of_year == 366
+            # Find closest leap year
+            # Worst case is non-leap-year century (i.e. 2100) where closest
+            # leap years are an 8 year gap (2096, 2104). We assume the travel
+            # date can't be more than one year in the future, so we'll search
+            # from 7 years ago to next year, and then use the most recent leap
+            # year found.
+            (year-7..year+1).each do |y|
+              begin
+                this_date = FormattedDate.ordinal(y, 366)
+                dates.push(this_date.standard_date)
+              rescue
+              end
+            end
+            return "(#{dates.last})"
+          else
+            ((year-1)..(year+1)).each do |y|
+              begin
+                this_date = FormattedDate.ordinal(y, day_of_year)
+                dates.push(this_date.standard_date)
+              rescue
+              end
+            end
+            return "(#{dates.join(', ')})" if dates.length > 0
+          end
+          return invalid_date_error
+        }
+        
+        day_of_year = raw.to_i
+        output = "#{day_of_year.ordinalize} day of the year "
+        conditional_start = @raw_data.index(">")
+                
+        if @flight
+          # Get the year from the flight
+          year = @flight.departure_date.year
+          output += "(#{FormattedDate.ordinal(year, day_of_year).standard_date})"
+        
+        elsif (conditional_start && @raw_data[conditional_start+2,2].to_i(16)>=7 && @raw_data[conditional_start+7,4] =~ /^\d{4}$/)
+          # Boarding pass issue date field exists and is correct format, so get
+          # date from boarding pass year. Assume flight occurs between boarding
+          # pass date and one year from boarding pass date
+          bp_year_digit  = @raw_data[conditional_start+7].to_i
+          bp_day_of_year = @raw_data[conditional_start+8,3].to_i
+          bp_date = estimate_boarding_pass_issue_date.call(bp_year_digit, bp_day_of_year)
+          return "#{output}#{estimate_julian_date.call(day_of_year)}" unless bp_date.present?
+          expected_dates = (bp_date.beginning_of_day...(bp_date + 1.year).beginning_of_day)
+          [bp_date.year,bp_date.year+1].each do |y|
+            begin
+              this_date = FormattedDate.ordinal(y, day_of_year)
+              if expected_dates.cover?(this_date)
+                return "#{output}(#{this_date.standard_date})"
+              end
+            rescue
+            end
 
+          end
+          return "#{output}#{estimate_julian_date.call(day_of_year)}"
+          
+        else
+          # Assume current year
+          return "#{output}#{estimate_julian_date.call(day_of_year)}"
+          
+        end
+        return output
+        
+      elsif raw =~ /^\d{4}$/
+        # Julian date with year
+        
+        year_digit = raw[0].to_i
+        day_of_year = raw[1..3].to_i
+        output = "#{day_of_year.ordinalize} day of a year ending in #{year_digit} "
+        if @flight
+          flight_date = @flight.departure_date
+          # Assume boarding pass was issued on or up to one decade prior to flight date
+          expected_dates = (flight_date-10.years+1.day...flight_date+1.day)
+          year_this_decade = flight_date.year/10*10 + year_digit
+          years_to_consider = [year_this_decade-10,year_this_decade]
+          years_to_consider.each do |y|
+            begin
+              this_date = FormattedDate.ordinal(y, day_of_year)
+              if expected_dates.cover?(this_date)
+                return "#{output}(#{this_date.standard_date})"
+              end
+            rescue
+            end
+          end
+        else
+          bp_date = estimate_boarding_pass_issue_date.call(year_digit, day_of_year)
+          return "#{output}(#{bp_date.standard_date})" if bp_date
+        end
+        return "#{output}#{invalid_date_error}"
+      end
+      
+      return nil
+    end
     
     def interpret_electronic_ticket_indicator(raw)
       return raw == "E" ? "Electronic ticket" : "Not an electronic ticket"
     end
+    
+    
+
   
 end

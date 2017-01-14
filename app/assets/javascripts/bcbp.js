@@ -71,7 +71,7 @@ $(function() {
       });
       
       // Update interpretation:
-      $tooltip.children('div').eq(2).text(element.getAttribute('data-interpreted'));
+      $tooltip.children('div').eq(2).text(element.getAttribute('data-interpreted') || "");
       
     }
   
