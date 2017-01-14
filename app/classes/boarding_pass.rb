@@ -1023,7 +1023,7 @@ class BoardingPass
         if @flight
           flight_date = @flight.departure_date
           # Assume boarding pass was issued on or up to one decade prior to flight date
-          expected_dates = (flight_date-10.years+1.day...flight_date+1.day)
+          expected_dates = (flight_date-10.years+2.day...flight_date+1.day)
           year_this_decade = flight_date.year/10*10 + year_digit
           years_to_consider = [year_this_decade-10,year_this_decade]
           years_to_consider.each do |y|
