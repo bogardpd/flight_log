@@ -47,7 +47,7 @@ class BoardingPassTest < ActiveSupport::TestCase
       pass = BoardingPass.new("M1DOE/JOHN            EABC123 DAYCLTAA 5163 346Y015D0027 148>218 MM    BAA              29001001123456732AA AA XXXXXXX             X")
       interpreted = get_field_value(pass, "[Leg 1] Date of Flight (Julian Date)")
       # Should return this ordinal date for last year, this year, and next year:
-      assert_equal("346th day of the year (11 Dec 2016, 12 Dec 2017, 12 Dec 2018)", interpreted)
+      assert_equal("346th day of the year (12 Dec 2015, 11 Dec 2016, 12 Dec 2017)", interpreted)
     end
   
     test "ordinal flight date of 366 without issue date" do
@@ -58,6 +58,9 @@ class BoardingPassTest < ActiveSupport::TestCase
     end
   
     test "ordinal flight date with issue date" do
+      # Deliberately set the pass date in a year before a leap year, as this
+      # could cause two results in pass_date...pass_date+1.year, and we only
+      # want one
       pass = BoardingPass.new("M1DOE/JOHN            EABC123 DAYCLTAA 5163 346Y015D0027 148>218 MM5346BAA              29001001123456732AA AA XXXXXXX             X")
       interpreted = get_field_value(pass, "[Leg 1] Date of Flight (Julian Date)")
       # Should return first valid ordinal date on or after the boarding pass issue date:
