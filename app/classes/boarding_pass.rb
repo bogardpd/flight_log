@@ -576,6 +576,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Field size of variable size field (conditional + airline item 4)"),
           raw:         leg_data['6'],
+          interpreted: interpret_field_size(leg_data['6']),
           valid:       leg_data['6'] =~ /^[0-9A-Fa-f]{2}$/
         })
         field_size = "0x#{leg_data['6']}".to_i(16)
@@ -599,6 +600,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: "Version Number",
               raw:         bcbp['9'],
+              interpreted: (bcbp['9'].present? ? "IATA BCBP Format #{bcbp['1']} Version #{bcbp['9']}" : nil),
               valid:       true
             })
             
@@ -607,6 +609,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: "Field size of following structured messge - unique",
               raw:         bcbp['10'],
+              interpreted: interpret_field_size(bcbp['10']),
               valid:       bcbp['10'] =~ /^[0-9A-Fa-f]{2}$/
             })
             unique_stop = i + bcbp['10'].to_i(16)
@@ -617,6 +620,7 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "Passenger Description",
                 raw:         bcbp['15'],
+                interpreted: interpret_passenger_description(bcbp['15']),
                 valid:       true
               })
             else
@@ -629,6 +633,7 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "Source of Check-In",
                 raw:         bcbp['12'],
+                interpreted: interpret_source_of_check_in(bcbp['12']),
                 valid:       true
               })
             else
@@ -641,6 +646,7 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "Source of Boarding Pass Issuance",
                 raw:         bcbp['14'],
+                interpreted: interpret_source_of_boarding_pass_issuance(bcbp['14']),
                 valid:       true
               })
             else
@@ -666,6 +672,7 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "Document Type",
                 raw:         bcbp['16'],
+                interpreted: interpret_document_type(bcbp['16']),
                 valid:       true
               })
             else
@@ -730,6 +737,7 @@ class BoardingPass
           @raw_with_metadata.push({
             description: format_leg(index, "Field size of following structured message - repeated"),
             raw:         leg_data['17'],
+            interpreted: interpret_field_size(leg_data['17']),
             valid:       leg_data['17'] =~ /^[0-9A-Fa-f]{2}$/
           })
           repeated_stop = i + leg_data['17'].to_i(16)
@@ -937,11 +945,26 @@ class BoardingPass
       output = "#{ticket_class} class ticket"
       output += " (#{ticket_details})" if ticket_details
       return output
-      
+    end
+    
+    def interpret_document_type(raw)
+      case raw
+      when "B"
+        return "Boarding pass"
+      when "I"
+        return "Itinerary receipt"
+      else
+        return nil
+      end
     end
     
     def interpret_electronic_ticket_indicator(raw)
       return raw == "E" ? "Electronic ticket" : "Not an electronic ticket"
+    end
+    
+    def interpret_field_size(raw)
+      return nil unless raw.present?
+      return "#{raw.upcase} hexadecimal = #{raw.to_i(16)} decimal characters"
     end
     
     def interpret_flight_number(raw)
@@ -1066,6 +1089,29 @@ class BoardingPass
       end
     end
     
+    def interpret_passenger_description(raw)
+      case raw
+      when "0"
+        return "Adult"
+      when "1"
+        return "Male"
+      when "2"
+        return "Female"
+      when "3"
+        return "Child"
+      when "4"
+        return "Infant"
+      when "5"
+        return "No passenger (cabin baggage)"
+      when "6"
+        return "Adult traveling with infant"
+      when "7"
+        return "Unaccompanied Minor"
+      else
+        return nil
+      end 
+    end
+    
     def interpret_passenger_status(raw)
       return nil unless raw.present?
       case raw
@@ -1104,6 +1150,52 @@ class BoardingPass
     def interpret_seat_number(raw)
       return nil unless raw.present?
       return "Seat #{raw[0..2].to_i}#{raw[3].strip}"
+    end
+    
+    def interpret_source_of_boarding_pass_issuance(raw)
+      case raw
+      when "W"
+        return "Web printed"
+      when "K"
+        return "Airport kiosk printed"
+      when "X"
+        return "Transfer kiosk printed"
+      when "R"
+        return "Remote or off site kiosk printed"
+      when "M"
+        return "Mobile device printed"
+      when "O"
+        return "Airport agent printed"
+      when "T"
+        return "Town agent printed"
+      when "V"
+        return "Third party vendor printed"
+      when " "
+        return "Unable to support"
+      else
+        return nil
+      end
+    end
+  
+    def interpret_source_of_check_in(raw)
+      case raw
+      when "W"
+        return "Web"
+      when "K"
+        return "Airport kiosk"
+      when "R"
+        return "Remote or off site kiosk"
+      when "M"
+        return "Mobile device"
+      when "O"
+        return "Airport agent"
+      when "T"
+        return "Town agent"
+      when "V"
+        return "Third party vendor"
+      else
+        return nil
+      end
     end
     
 end
