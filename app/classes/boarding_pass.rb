@@ -9,6 +9,12 @@ class BoardingPass
     @bcbp_repeated     = Array.new
     @raw_with_metadata = Array.new
     
+    begin
+      @airline_compartments = JSON.parse(File.read('app/assets/json/airline_compartments.json'))
+    rescue
+      @airline_compartments = nil
+    end
+    
     if @raw_data.present?
       create_bcbp(@raw_data)
     end
@@ -480,6 +486,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Operating Carrier PNR Code"),
           raw:         leg_data['7'],
+          interpreted: interpret_pnr_code(leg_data['7']),
           valid:       true
         })
         
@@ -515,6 +522,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Flight Number"),
           raw:         leg_data['43'],
+          interpreted: interpret_flight_number(leg_data['43']),
           valid:       leg_data['43'] =~ /^[0-9 ]{4}[A-Z ]{1}$/
         })
         
@@ -532,6 +540,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Compartment Code"),
           raw:         leg_data['71'],
+          interpreted: interpret_compartment_code(leg_data['71'], leg_data['42']),
           valid:       leg_data['71'] =~ /^[A-Z]{1}$/
         })
         
@@ -540,6 +549,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Seat Number"),
           raw:         leg_data['104'],
+          interpreted: interpret_seat_number(leg_data['104']),
           valid:       leg_data['104'] =~ /^\d{3}[A-Z]{1}$/
         })
         
@@ -557,6 +567,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Passenger Status"),
           raw:         leg_data['113'],
+          interpreted: interpret_passenger_status(leg_data['113']),
           valid:       true
         })
         
@@ -580,7 +591,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: "Beginning of Version Number",
               raw:         bcbp['8'],
-              valid: bcbp['8'] == ">"
+              valid:       bcbp['8'] == ">"
             })
             
             # 9: Version Number
@@ -877,18 +888,12 @@ class BoardingPass
     
       return nil
       
-      
-    end
-    
-    
-    
+    end 
       
     # Takes an index (zero-indexed) and returns a formatted string (one-indexed).
     def format_leg(index, description)
       return "[Leg #{index+1}] #{description}"
     end
-    
-    
     
 ###############################################################################
 # Raw BCBP Interpreters                                                       #
@@ -918,6 +923,30 @@ class BoardingPass
     def interpret_checkin_sequence_number(raw)
       return nil unless raw.present?
       return "#{raw.strip().to_i.ordinalize} person to check in for this flight"
+    end
+    
+    def interpret_compartment_code(compartment, airline)
+      return nil unless compartment.present? && airline.present?
+      airline = airline.strip
+      begin
+        ticket_class = @airline_compartments[airline][compartment]['name'].capitalize
+        ticket_details = @airline_compartments[airline][compartment]['details']
+      rescue
+        ticket_class = compartment
+      end
+      output = "#{ticket_class} class ticket"
+      output += " (#{ticket_details})" if ticket_details
+      return output
+      
+    end
+    
+    def interpret_electronic_ticket_indicator(raw)
+      return raw == "E" ? "Electronic ticket" : "Not an electronic ticket"
+    end
+    
+    def interpret_flight_number(raw)
+      return nil unless raw.present?
+      return "Flight #{raw[0..3].to_i}#{raw[4].strip}"
     end
     
     def interpret_ordinal_date(raw)
@@ -1037,11 +1066,44 @@ class BoardingPass
       end
     end
     
-    def interpret_electronic_ticket_indicator(raw)
-      return raw == "E" ? "Electronic ticket" : "Not an electronic ticket"
+    def interpret_passenger_status(raw)
+      return nil unless raw.present?
+      case raw
+      when "0"
+        return "Ticket issuance/passenger not checked in"
+      when "1"
+        return "Ticket issuance/passenger checked in"
+      when "2"
+        return "Baggage checked/passenger not checked in"
+      when "3"
+        return "Baggage checked/passenger checked in"
+      when "4"
+        return "Passenger passed security check"
+      when "5"
+        return "Passenger passed gate exit (coupon used)"
+      when "6"
+        return "Transit"
+      when "7"
+        return "Standby"
+      when "8"
+        return "Boarding pass revalidation done"
+      when "9"
+        return "Original boarding line used at time of ticket issuance"
+      when "A"
+        return "Up- or down-grading required"
+      else
+        return nil
+      end
     end
     
+    def interpret_pnr_code(raw)
+      return nil unless raw.present?
+      return "Passenger Name Record/record locator: #{raw.strip}"
+    end
     
-
-  
+    def interpret_seat_number(raw)
+      return nil unless raw.present?
+      return "Seat #{raw[0..2].to_i}#{raw[3].strip}"
+    end
+    
 end
