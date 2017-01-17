@@ -760,6 +760,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "Document Form/Serial Number"),
               raw:         leg_data['143'],
+              interpreted: interpret_ticket_number(leg_data['143'], leg_data['142']),
               valid:       true
             })
           else 
@@ -772,6 +773,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "Selectee Indicator"),
               raw:         leg_data['18'],
+              interpreted: interpret_selectee_indicator(leg_data['18']),
               valid:       true
             })
           else
@@ -784,6 +786,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "International Documentation Verification"),
               raw:         leg_data['108'],
+              interpreted: interpret_international_documentation(leg_data['108']),
               valid:       true
             })
           else
@@ -834,6 +837,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "ID/AD Indicator"),
               raw:         leg_data['89'],
+              interpreted: interpret_id_ad_indicator(leg_data['89']),
               valid:       true
             })
           else
@@ -846,6 +850,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "Free Baggage Allowance"),
               raw:         leg_data['118'],
+              interpreted: interpret_free_baggage_allowance(leg_data['118']),
               valid:       true
             })
           else
@@ -858,6 +863,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "Fast Track"),
               raw:         leg_data['254'],
+              interpreted: (leg_data['254'] == "Y" ? "Passenger is entitled to use a priority security or immigration lane" : nil),
               valid:       true
             })
           else
@@ -970,6 +976,68 @@ class BoardingPass
     def interpret_flight_number(raw)
       return nil unless raw.present?
       return "Flight #{raw[0..3].to_i}#{raw[4].strip}"
+    end
+    
+    def interpret_free_baggage_allowance(raw)
+      return nil unless raw.present?
+      return pluralize(raw[0].to_i, "piece") if raw[0] =~ /\d/ && raw[1..2] == "PC" # "xPC" = x pieces
+      return "#{raw[0..1].to_i} kg" if raw[0..1] =~ /\d{2}/ && raw[2] == "K"        # "xxK" = x kilos
+      return "#{raw[0..1].to_i} lb" if raw[0..1] =~ /\d{2}/ && raw[2] == "L"        # "xxL" = x pounds
+      return nil
+    end
+    
+    def interpret_id_ad_indicator(raw)
+      return nil unless raw.present?
+      case raw
+      when "0"
+        return "IDN1 positive space"
+      when "1"
+        return "IDN2 space available"
+      when "2"
+        return "IDB1 positive space"
+      when "3"
+        return "IDB2 space available"
+      when "4"
+        return "AD"
+      when "5"
+        return "DG"
+      when "6"
+        return "DM"
+      when "7"
+        return "GE"
+      when "8"
+        return "IG"
+      when "9"
+        return "RG"
+      when "A"
+        return "UD"
+      when "B"
+        return "ID – industry discount not followed any classification"
+      when "C"
+        return "IDFS1"
+      when "D"
+        return "IDFS2"
+      when "E"
+        return "IDR1"
+      when "F"
+        return "IDR2"
+      else
+        return nil
+      end
+    end
+    
+    def interpret_international_documentation(raw)
+      return nil unless raw.present?
+      case raw
+      when "0"
+        return "Travel document verification not required"
+      when "1"
+        return "Travel document verification required"
+      when "2"
+        return "Travel document verification performed"
+      else
+        return nil
+      end
     end
     
     def interpret_ordinal_date(raw)
@@ -1152,6 +1220,20 @@ class BoardingPass
       return "Seat #{raw[0..2].to_i}#{raw[3].strip}"
     end
     
+    def interpret_selectee_indicator(raw)
+      return nil unless raw.present?
+      case raw
+      when "0"
+        return "Not selectee"
+      when "1"
+        return "SSSS (Secondary Security<br/>Screening Selectee)"
+      when "3"
+        return "LLLL (TSA PreCheck)"
+      else
+        return nil
+      end
+    end
+    
     def interpret_source_of_boarding_pass_issuance(raw)
       case raw
       when "W"
@@ -1196,6 +1278,15 @@ class BoardingPass
       else
         return nil
       end
+    end
+    
+    def interpret_ticket_number(raw, airline_numeric)
+      return nil unless raw.present?
+      output = "Ticket number: #{raw} (ten-digit)"
+      if airline_numeric
+        output += "; #{airline_numeric} #{raw} (thirteen-digit)"
+      end
+      return output
     end
     
 end
