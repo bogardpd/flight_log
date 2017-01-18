@@ -550,7 +550,7 @@ class BoardingPass
           description: format_leg(index, "Seat Number"),
           raw:         leg_data['104'],
           interpreted: interpret_seat_number(leg_data['104']),
-          valid:       leg_data['104'] =~ /^\d{3}[A-Z]{1}$/
+          valid:       leg_data['104'] =~ /(^\d{3}[A-Z]{1}$|INF)/
         })
         
         # 107: Check-In Sequence Number
@@ -1217,6 +1217,7 @@ class BoardingPass
     
     def interpret_seat_number(raw)
       return nil unless raw.present?
+      return "Infant seat" if raw =~ /INF/
       return "Seat #{raw[0..2].to_i}#{raw[3].strip}"
     end
     
