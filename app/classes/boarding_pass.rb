@@ -698,7 +698,8 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "Baggage Tag Licence Plate Number(s)",
                 raw:         bcbp['23'],
-                valid:       true
+                interpreted: interpret_baggage_tag(bcbp['23']),
+                valid:       bcbp['23'] =~ /^( {13}|\d{13})/
               })
             else
               bcbp['23'] = nil
@@ -710,7 +711,8 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "1st Non-Consecutive Baggage Tag Licence Plate Number",
                 raw:         bcbp['31'],
-                valid:       true
+                interpreted: interpret_baggage_tag(bcbp['31']),
+                valid:       bcbp['31'] =~ /^( {13}|\d{13})/
               })
             else
               bcbp['31'] = nil
@@ -722,7 +724,8 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "2nd Non-Consecutive Baggage Tag Licence Plate Number",
                 raw:         bcbp['32'],
-                valid:       true
+                interpreted: interpret_baggage_tag(bcbp['32']),
+                valid:       bcbp['32'] =~ /^( {13}|\d{13})/
               })
             else
               bcbp['32'] = nil
@@ -748,6 +751,7 @@ class BoardingPass
             @raw_with_metadata.push({
               description: format_leg(index, "Airline Numeric Code"),
               raw:         leg_data['142'],
+              interpreted: interpret_airline_code(leg_data['142']),
               valid:       leg_data['142'] =~ /^[0-9 ]{3}$/
             })
           else
@@ -917,11 +921,16 @@ class BoardingPass
     
     def interpret_airline_code(raw)
       return nil unless raw.present?
-      airline = Airline.where(iata_airline_code: raw.strip()) 
-      if airline.length > 0
-        return airline.first.airline_name
-      else
+      if raw =~ /^\d{3}$/
+        # Airline numeric code
         return nil
+      else
+        airline = Airline.where(iata_airline_code: raw.strip()) 
+        if airline.length > 0
+          return airline.first.airline_name
+        else
+          return nil
+        end
       end
     end
     
@@ -932,6 +941,26 @@ class BoardingPass
       else
         return nil
       end
+    end
+    
+    def interpret_baggage_tag(raw)
+      return nil unless raw.present?
+      leading_digit = {"0": "interline", "1": "fall-back", "2": "interline rush"}[raw[0].to_sym]
+      carrier_code_digits = raw[1..3]
+      carrier_code = interpret_airline_code(carrier_code_digits)
+      carrier_initial_tag_number = raw[4..9].to_i
+      consecutive_tags = raw[10..12].to_i
+      output = ""
+      output += "#{leading_digit.capitalize} / " if leading_digit
+      output += "#{carrier_code_digits} "
+      output += "– #{carrier_code} " if carrier_code
+      output += "/ #{pluralize(consecutive_tags+1, "bag")}: #"
+      bag_tags = Array.new
+      (0..consecutive_tags).each do |tag|
+        bag_tags.push((carrier_initial_tag_number + tag).to_s.rjust(6, "0"))
+      end
+      output += bag_tags.join(", ")
+      return output
     end
     
     def interpret_checkin_sequence_number(raw)
@@ -1283,11 +1312,8 @@ class BoardingPass
     
     def interpret_ticket_number(raw, airline_numeric)
       return nil unless raw.present?
-      output = "Ticket number: #{raw} (ten-digit)"
-      if airline_numeric
-        output += "; #{airline_numeric} #{raw} (thirteen-digit)"
-      end
-      return output
+      return "Ticket number: (#{airline_numeric}) #{raw}" if airline_numeric
+      return "Ticket number: #{raw}"
     end
     
 end
