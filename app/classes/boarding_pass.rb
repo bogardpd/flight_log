@@ -1,6 +1,10 @@
 class BoardingPass
   include ActionView::Helpers::TextHelper
   
+  LEN_UMRM0 = 60 # Length of Unique and Repeated[0] Mandatory fields
+  LEN_UCVERSIZE = 4 # Length of Unique Conditional version number and size fields
+  LEN_RM = 37 # Length of each set of Repeated Mandatory fields
+  
   def initialize(boarding_pass_data, flight: nil)
     @raw_data = boarding_pass_data
     @flight = flight
@@ -18,6 +22,16 @@ class BoardingPass
     if @raw_data.present?
       create_bcbp(@raw_data)
     end
+    
+    # New control point creation
+    if @raw_data.present?
+      @control_points = create_control_points(@raw_data)
+    end
+  end
+  
+  # TO DELETE
+  def test_output
+    return @control_points
   end
   
   # Return BCBP version number, or -1 if version not present.
@@ -434,6 +448,89 @@ class BoardingPass
   end
   
   private
+    
+    # Returns a hash of the control points (number of legs and variable field
+    # sizes). If there is invalid data, its starting position will be stored
+    # in an 'invalid' key.
+    def create_control_points(data)
+      control = Hash.new
+      # Set the invalid field and return control points:
+      invalid = proc{|location|
+        control.store(:invalid, location)
+        return control
+      }
+      if data.length < LEN_UMRM0
+        # Mandatory data is too short
+        control.store(:invalid, 0)
+        return control
+      end
+      
+      # Number of legs:
+      legs = data[1]
+      if legs !~ /^[1-9]{1}$/
+        control.store(:invalid, 1)
+        return control
+      end
+      control.store(:legs, data[1].to_i)
+      
+      # Size of unique conditional and repeated contitional 0:
+      ucrc0 = data[LEN_UMRM0-2,2]
+      invalid.call(LEN_UMRM0-2) if ucrc0 !~ /^[0-9A-F]{2}$/i
+      control.store(:ucrc0, ucrc0.to_i(16))
+      return control if control[:ucrc0] == 0
+      
+      # Size of unique conditional fields (except version number and size fields):
+      
+      invalid.call(LEN_UMRM0) if control[:ucrc0] < LEN_UCVERSIZE
+      uc = data[LEN_UMRM0+2,2]
+      invalid.call(LEN_UMRM0+2) if uc !~ /^[0-9A-F]{2}$/i
+      control.store(:uc, uc.to_i(16))
+      
+      # Size of repeated conditional 0:
+      rc = Array.new # Array of total length of each leg's conditional fields (including field size field and airline use field)
+      control.store(:rc, rc)
+      
+      rc0 = control[:ucrc0] - LEN_UCVERSIZE - control[:uc]
+      
+      # Check that field17 + 2 <= field6 - LEN_UCVERSIZE - uc
+      if rc0 > 0
+        rc17_0 = data[LEN_UMRM0+LEN_UCVERSIZE+control[:uc],2]
+        invalid.call(LEN_UMRM0+LEN_UCVERSIZE+control[:uc]) if rc17_0 !~ /^[0-9A-F]{2}$/i
+        invalid.call(LEN_UMRM0+LEN_UCVERSIZE+control[:uc]) if rc17_0.to_i(16) + 2 > control[:ucrc0] - LEN_UCVERSIZE - control[:uc]
+      end
+      control[:rc].push(rc0)
+      
+      # Build rc array:
+      if control[:legs] > 1
+        leg_start = LEN_UMRM0 + control[:ucrc0]
+        (1..(control[:legs]-1)).each do |leg|
+          # Check that RMx is long enough
+          invalid.call(leg_start) if data.length < leg_start + LEN_RM
+          
+          # Get size of conditional fields
+          rcx = data[leg_start+LEN_RM-2,2]
+          invalid.call(leg_start+LEN_RM) if rcx !~ /^[0-9A-F]{2}$/i
+          
+          # Check that field17 + 2 <= field6
+          if rcx.to_i(16) > 0
+            rc17x = data[leg_start+LEN_RM,2]
+            invalid.call(leg_start+LEN_RM) if rc17x !~ /^[0-9A-F]{2}$/i
+            invalid.call(leg_start+LEN_RM) if rc17x.to_i(16) + 2 > rcx.to_i(16)
+          end
+          
+          # Store size of conditional fields in rc array
+          control[:rc].push(rcx.to_i(16))
+          # Set next leg start
+          leg_start += (LEN_RM + rcx.to_i(16))
+        end
+      
+      end
+      
+      # Size of all security fields:
+      control.store(:security, data.length - leg_start)
+        
+      return control
+    end
     
     # Create and return a hash of IATA Bar Coded Boarding Pass (BCBP) fields and data.
     def create_bcbp(data)
