@@ -1,9 +1,10 @@
 class BoardingPass
   include ActionView::Helpers::TextHelper
   
-  LEN_UMRM0 = 60 # Length of Unique and Repeated[0] Mandatory fields
   LEN_UCVERSIZE = 4 # Length of Unique Conditional version number and size fields
+  LEN_UM = 23 # Length of Unique Mandatory fields
   LEN_RM = 37 # Length of each set of Repeated Mandatory fields
+  LEN_UMRM0 = LEN_UM+LEN_RM # Length of Unique and Repeated[0] Mandatory field
   
   def initialize(boarding_pass_data, flight: nil)
     @raw_data = boarding_pass_data
@@ -459,13 +460,24 @@ class BoardingPass
         control.store(:invalid, location)
         return control
       }
+      # Set conditional and airline control points:
+      get_conditional_and_airline = lambda{|start_cond, len_cond_airline|
+        rc_field_size = data[start_cond,2] # Field 17
+        invalid.call(cond_start) if rc_field_size !~ /^[0-9A-F]{2}$/i
+        len_cond = rc_field_size.to_i(16) + 2
+        len_airline = len_cond_airline - len_cond
+        invalid.call(start_cond) if len_airline < 0
+        control[:rc].push({start: start_cond, length: len_cond})
+        control[:ra].push(len_airline == 0 ? nil : {start: start_cond + len_cond, length:  len_airline})
+      }
+      
       if data.length < LEN_UMRM0
         # Mandatory data is too short
         control.store(:invalid, 0)
         return control
       end
       
-      # Number of legs:
+      # NUMBER OF LEGS:
       legs = data[1]
       if legs !~ /^[1-9]{1}$/
         control.store(:invalid, 1)
@@ -473,64 +485,107 @@ class BoardingPass
       end
       control.store(:legs, data[1].to_i)
       
-      # Size of unique conditional and repeated contitional 0:
-      ucrc0 = data[LEN_UMRM0-2,2]
-      invalid.call(LEN_UMRM0-2) if ucrc0 !~ /^[0-9A-F]{2}$/i
-      control.store(:ucrc0, ucrc0.to_i(16))
-      return control if control[:ucrc0] == 0
+      # Set up arrays:
+      control.store(:rm, Array.new) # Repeated Mandatory start and length data
+      control.store(:rc, Array.new) # Repeated Conditional start and length data
+      control.store(:ra, Array.new) # Repeated Airline use start and length data
       
-      # Size of unique conditional fields (except version number and size fields):
+      # UNIQUE MANDATORY FIELDS:
+      control.store(:um, {start: 0, length: LEN_UM})
       
-      invalid.call(LEN_UMRM0) if control[:ucrc0] < LEN_UCVERSIZE
-      uc = data[LEN_UMRM0+2,2]
-      invalid.call(LEN_UMRM0+2) if uc !~ /^[0-9A-F]{2}$/i
-      control.store(:uc, uc.to_i(16))
+      # REPEATED MANDATORY FIELDS (Leg 0):
+      control[:rm].push({start: LEN_UM, length: LEN_RM})
       
-      # Size of repeated conditional 0:
-      rc = Array.new # Array of total length of each leg's conditional fields (including field size field and airline use field)
-      control.store(:rc, rc)
+      # UNIQUE CONDITIONAL FIELDS:
+      ucrc0_field_size = data[LEN_UMRM0-2,2]
+      invalid.call(LEN_UMRM0-2) if ucrc0_field_size !~ /^[0-9A-F]{2}$/i
+      ucrc0 = ucrc0_field_size.to_i(16)
       
-      rc0 = control[:ucrc0] - LEN_UCVERSIZE - control[:uc]
-      
-      # Check that field17 + 2 <= field6 - LEN_UCVERSIZE - uc
-      if rc0 > 0
-        rc17_0 = data[LEN_UMRM0+LEN_UCVERSIZE+control[:uc],2]
-        invalid.call(LEN_UMRM0+LEN_UCVERSIZE+control[:uc]) if rc17_0 !~ /^[0-9A-F]{2}$/i
-        invalid.call(LEN_UMRM0+LEN_UCVERSIZE+control[:uc]) if rc17_0.to_i(16) + 2 > control[:ucrc0] - LEN_UCVERSIZE - control[:uc]
+      if ucrc0 == 0 # No unique or repeated[0] conditional fields
+        control.store(:uc, nil)
+        control[:rc].push(nil)
+        control[:ra].push(nil)
+      else
+        invalid.call(LEN_UMRM0) if ucrc0 < LEN_UCVERSIZE # Check that field 10 is available
+        uc_hex = data[LEN_UMRM0+2,2]
+        invalid.call(LEN_UMRM0+2) if uc_hex !~ /^[0-9A-F]{2}$/i
+        uc = uc_hex.to_i(16) + LEN_UCVERSIZE
+        control.store(:uc, {start: LEN_UMRM0, length: uc})
+        
+        # Check if RC0 exists:
+        if ucrc0 >= control[:uc][:length] + 2
+          start_rc0 = LEN_UMRM0+control[:uc][:length]
+          get_conditional_and_airline.call(start_rc0, ucrc0-control[:uc][:length])
+        else
+          # RC0 does not exist
+          control[:rc].push(nil)
+          control[:ra].push(nil)
+        end
+        
       end
-      control[:rc].push(rc0)
-      
-      # Build rc array:
+     
+      # Build rc[1..n] array:
+      leg_start = LEN_UMRM0 + ucrc0
       if control[:legs] > 1
-        leg_start = LEN_UMRM0 + control[:ucrc0]
         (1..(control[:legs]-1)).each do |leg|
           # Check that RMx is long enough
           invalid.call(leg_start) if data.length < leg_start + LEN_RM
           
-          # Get size of conditional fields
-          rcx = data[leg_start+LEN_RM-2,2]
-          invalid.call(leg_start+LEN_RM) if rcx !~ /^[0-9A-F]{2}$/i
+          # Store start and length of mandatory fields in rm array
+          control[:rm].push({start: leg_start, length: LEN_RM})
           
-          # Check that field17 + 2 <= field6
-          if rcx.to_i(16) > 0
-            rc17x = data[leg_start+LEN_RM,2]
-            invalid.call(leg_start+LEN_RM) if rc17x !~ /^[0-9A-F]{2}$/i
-            invalid.call(leg_start+LEN_RM) if rc17x.to_i(16) + 2 > rcx.to_i(16)
+          # Get size of conditional fields
+          rcra = data[leg_start+LEN_RM-2,2]
+          invalid.call(leg_start+LEN_RM-2) if rcra !~ /^[0-9A-F]{2}$/i
+          len_rcra = rcra.to_i(16) # Length of repeated conditional plus airline use
+          
+          if len_rcra == 0
+            # No conditional or airline fields for this leg
+            control[:rc].push(nil)
+            control[:ra].push(nil)
+          else
+            invalid.call(invalid.call(leg_start+LEN_RM-2)) if len_rcra < 2
+            get_conditional_and_airline.call(leg_start+LEN_RM,len_rcra)
           end
           
-          # Store size of conditional fields in rc array
-          control[:rc].push(rcx.to_i(16))
           # Set next leg start
-          leg_start += (LEN_RM + rcx.to_i(16))
+          leg_start += (LEN_RM + len_rcra)
         end
       
       end
       
       # Size of all security fields:
-      control.store(:security, data.length - leg_start)
+      control.store(:security, {start: leg_start, length: data.length - leg_start})
         
       return control
     end
+    
+    # Accepts a field ID string, and an optional leg number (zero-indexed).
+    # Leg number is ignored on unique fields, but needed for repeated fields.
+    # Returns the raw string from the given field (and leg). The results of
+    # create_control_points need to be saved to @control_points, and the raw
+    # data to @raw_data.
+    def get_raw(field_id, leg=nil)
+      return nil unless field_id.present?
+      return_range = proc{|start, length=1|
+        return @raw_data[start,length] if !@control_points[:invalid] || @control_points[:invalid] >= (start + length)
+      }
+      case field_id
+      when "1" # Format Code
+        return_range.call(0)
+      when "5" # Number of Legs Encoded
+        return_range.call(1)
+      when "11" # Passenger Name
+        return_range.call(2,20)
+      when "253" # Electronic Ticket Indicator
+        return_range.call(22)
+      when "7" # Repeated: Operating Carrier PNR Code
+        return nil unless leg.present?
+        
+      end
+      return nil
+    end
+
     
     # Create and return a hash of IATA Bar Coded Boarding Pass (BCBP) fields and data.
     def create_bcbp(data)
