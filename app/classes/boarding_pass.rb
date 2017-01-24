@@ -460,6 +460,12 @@ class BoardingPass
         control.store(:invalid, location)
         return control
       }
+      # Get a hex field size and return a decimal if valid, or call invalid if not:
+      get_field_size = proc{|location|
+        hex = data[location,2]
+        invalid.call(location) if hex !~ /^[0-9A-F]{2}$/i
+        hex.to_i(16)
+      }
       # Set conditional and airline control points:
       get_conditional_and_airline = lambda{|start_cond, len_cond_airline|
         rc_field_size = data[start_cond,2] # Field 17
@@ -497,25 +503,21 @@ class BoardingPass
       control[:rm].push({start: LEN_UM, length: LEN_RM})
       
       # UNIQUE CONDITIONAL FIELDS:
-      ucrc0_field_size = data[LEN_UMRM0-2,2]
-      invalid.call(LEN_UMRM0-2) if ucrc0_field_size !~ /^[0-9A-F]{2}$/i
-      ucrc0 = ucrc0_field_size.to_i(16)
+      len_ucrc0 = get_field_size.call(LEN_UMRM0-2)
       
-      if ucrc0 == 0 # No unique or repeated[0] conditional fields
+      if len_ucrc0 == 0 # No unique or repeated[0] conditional fields
         control.store(:uc, nil)
         control[:rc].push(nil)
         control[:ra].push(nil)
       else
-        invalid.call(LEN_UMRM0) if ucrc0 < LEN_UCVERSIZE # Check that field 10 is available
-        uc_hex = data[LEN_UMRM0+2,2]
-        invalid.call(LEN_UMRM0+2) if uc_hex !~ /^[0-9A-F]{2}$/i
-        uc = uc_hex.to_i(16) + LEN_UCVERSIZE
-        control.store(:uc, {start: LEN_UMRM0, length: uc})
+        invalid.call(LEN_UMRM0) if len_ucrc0 < LEN_UCVERSIZE # Check that field 10 is available
+        len_uc = get_field_size.call(LEN_UMRM0+2) + LEN_UCVERSIZE
+        control.store(:uc, {start: LEN_UMRM0, length: len_uc})
         
         # Check if RC0 exists:
-        if ucrc0 >= control[:uc][:length] + 2
+        if len_ucrc0 >= control[:uc][:length] + 2
           start_rc0 = LEN_UMRM0+control[:uc][:length]
-          get_conditional_and_airline.call(start_rc0, ucrc0-control[:uc][:length])
+          get_conditional_and_airline.call(start_rc0, len_ucrc0-control[:uc][:length])
         else
           # RC0 does not exist
           control[:rc].push(nil)
@@ -525,7 +527,7 @@ class BoardingPass
       end
      
       # Build rc[1..n] array:
-      leg_start = LEN_UMRM0 + ucrc0
+      leg_start = LEN_UMRM0 + len_ucrc0
       if control[:legs] > 1
         (1..(control[:legs]-1)).each do |leg|
           # Check that RMx is long enough
@@ -535,10 +537,7 @@ class BoardingPass
           control[:rm].push({start: leg_start, length: LEN_RM})
           
           # Get size of conditional fields
-          rcra = data[leg_start+LEN_RM-2,2]
-          invalid.call(leg_start+LEN_RM-2) if rcra !~ /^[0-9A-F]{2}$/i
-          len_rcra = rcra.to_i(16) # Length of repeated conditional plus airline use
-          
+          len_rcra = get_field_size.call(leg_start+LEN_RM-2) # Length of repeated conditional plus airline use
           if len_rcra == 0
             # No conditional or airline fields for this leg
             control[:rc].push(nil)
@@ -555,7 +554,8 @@ class BoardingPass
       end
       
       # Size of all security fields:
-      control.store(:security, {start: leg_start, length: data.length - leg_start})
+      len_security = data.length - leg_start
+      control.store(:security, len_security == 0 ? nil : {start: leg_start, length: len_security})
         
       return control
     end
