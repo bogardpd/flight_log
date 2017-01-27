@@ -26,13 +26,14 @@ class BoardingPass
     
     # New control point creation
     if @raw_data.present?
-      @control_points = create_control_points(@raw_data)
+      @control = create_control_points(@raw_data)
+      @fields = create_fields
     end
   end
   
   # TO DELETE
   def test_output
-    return @control_points
+    return "<p>#{@fields}</p><p>#{get_raw(7,0)}</p>".html_safe
   end
   
   # Return BCBP version number, or -1 if version not present.
@@ -560,29 +561,164 @@ class BoardingPass
       return control
     end
     
+    # Returns a hash of possible fields. If a version is detected, only fields
+    # available in that BCBP version will be included.
+    def create_fields
+      fields = Hash.new
+      
+      # Determine version (or use 0 if unknown)
+      version = 0
+      if @control[:uc] && @control[:uc][:length] >= 2
+        # Data has something in the version field
+        version += @raw_data[@control[:uc][:start]+1].to_i
+      end
+      
+      start = proc{|prev| prev[:start]+prev[:length]}
+      
+      # Unique Mandatory (:um)
+      prev = {start: 0, length: 0}
+      fields[  1] = (prev = {description: "Format Code",
+        group: :um, start: start.call(prev), length:  1})
+      fields[  5] = (prev = {description: "Number of Legs Encoded",
+        group: :um, start: start.call(prev), length:  1})
+      fields[ 11] = (prev = {description: "Passenger Name",
+        group: :um, start: start.call(prev), length: 20})
+      fields[253] = (prev = {description: "Electronic Ticket Indicator",
+        group: :um, start: start.call(prev), length:  1})
+        
+      # Unique Conditional (:uc)
+      prev = {start: 0, length: 0}
+      fields[  8] = (prev = {description: "Beginning of Version Number",
+        group: :uc, start: start.call(prev), length:  1})
+      fields[  9] = (prev = {description: "Version Number",
+        group: :uc, start: start.call(prev), length:  1})
+      fields[ 10] = (prev = {description: "Field Size of Following Structured Message - Unique",
+        group: :uc, start: start.call(prev), length:  2})
+      fields[ 15] = (prev = {description: "Passenger Description",
+        group: :uc, start: start.call(prev), length:  1})
+      fields[ 12] = (prev = {description: "Source of Check-In",
+        group: :uc, start: start.call(prev), length:  1})
+      fields[ 14] = (prev = {description: "Source of Boarding Pass Issuance",
+        group: :uc, start: start.call(prev), length:  1})
+      fields[ 22] = (prev = {description: "Date of Issue of Boarding Pass",
+        group: :uc, start: start.call(prev), length:  4})
+      fields[ 16] = (prev = {description: "Document Type",
+        group: :uc, start: start.call(prev), length:  1})
+      fields[ 21] = (prev = {description: "Airline Designator of Boarding Pass Issuer",
+        group: :uc, start: start.call(prev), length:  3})
+      fields[ 23] = (prev = {description: "Baggage Tag Licence Plate Number",
+        group: :uc, start: start.call(prev), length: 13})
+      if version >= 4
+        fields[ 31] = (prev = {description: "1st Non-Consecutive Baggage Tag Licence Plate Number",
+          group: :uc, start: start.call(prev), length: 13})
+        fields[ 32] = (prev = {description: "2nd Non-Consecutive Baggage Tag Licence Plate Number",
+          group: :uc, start: start.call(prev), length: 13})
+      end
+      
+      # Repeated Mandatory (:rm)
+      prev = {start: 0, length: 0}
+      fields[  7] = (prev = {description: "Operating Carrier PNR Code",
+        group: :rm, start: start.call(prev), length:  7})
+      fields[ 26] = (prev = {description: "From City Airport Code",
+        group: :rm, start: start.call(prev), length:  3})
+      fields[ 38] = (prev = {description: "To City Airport Code",
+        group: :rm, start: start.call(prev), length:  3})
+      fields[ 42] = (prev = {description: "Operating Carrier Designator",
+        group: :rm, start: start.call(prev), length:  3})
+      fields[ 43] = (prev = {description: "Flight Number",
+        group: :rm, start: start.call(prev), length:  5})
+      fields[ 46] = (prev = {description: "Date of Flight",
+        group: :rm, start: start.call(prev), length:  3})
+      fields[ 71] = (prev = {description: "Compartment Code",
+        group: :rm, start: start.call(prev), length:  1})
+      fields[104] = (prev = {description: "Seat Number",
+        group: :rm, start: start.call(prev), length:  4})
+      fields[107] = (prev = {description: "Check-In Sequence Number",
+        group: :rm, start: start.call(prev), length:  5})
+      fields[113] = (prev = {description: "Passenger Status",
+        group: :rm, start: start.call(prev), length:  1})
+      fields[  6] = (prev = {description: "Field Size of Following Variable Size Field",
+        group: :rm, start: start.call(prev), length:  2})
+        
+      # Repeated Conditional (:rc)
+      prev = {start: 0, length: 0}
+      fields[ 17] = (prev = {description: "Field Size of Following Structured Message - Repeated",
+        group: :rc, start: start.call(prev), length:  2})
+      fields[142] = (prev = {description: "Airline Numeric Code",
+        group: :rc, start: start.call(prev), length:  3})
+      fields[143] = (prev = {description: "Document Form/Serial Number",
+        group: :rc, start: start.call(prev), length: 10})
+      fields[ 18] = (prev = {description: "Selectee Indicator",
+        group: :rc, start: start.call(prev), length:  1})
+      fields[108] = (prev = {description: "International Documentation Verification",
+        group: :rc, start: start.call(prev), length:  1})
+      fields[ 19] = (prev = {description: "Marketing Carrier Designator",
+        group: :rc, start: start.call(prev), length:  3})
+      fields[ 20] = (prev = {description: "Frequent Flier Airline Designator",
+        group: :rc, start: start.call(prev), length:  3})
+      fields[236] = (prev = {description: "Frequent Flier Number",
+        group: :rc, start: start.call(prev), length: 16})
+      fields[ 89] = (prev = {description: "ID/AD Indicator",
+        group: :rc, start: start.call(prev), length:  1})
+      fields[118] = (prev = {description: "Free Baggage Allowance",
+        group: :rc, start: start.call(prev), length:  3})
+      if version >= 5
+        fields[254] = (prev = {description: "Fast Track",
+          group: :rc, start: start.call(prev), length:  1})
+      end
+        
+      # Repeated Airline Use (:ra)
+      prev = {start: 0, length: 0}
+      fields[  4] = (prev = {description: "For Individual Airline Use",
+        group: :ra, start: start.call(prev), length: nil})
+        
+      # Security (:security)
+      prev = {start: 0, length: 0}
+      if version >= 3
+        fields[ 25] = (prev = {description: "Beginning of Security Data",
+          group: :security, start: start.call(prev), length:   1})
+        fields[ 28] = (prev = {description: "Type of Security Data",
+          group: :security, start: start.call(prev), length:   1})
+        fields[ 29] = (prev = {description: "Length of Security Data",
+          group: :security, start: start.call(prev), length:   2})
+      end
+      fields[ 30] = (prev = {description: "Security Data",
+        group: :security, start: start.call(prev), length: nil})
+      
+      return fields
+    end
+    
     # Accepts a field ID string, and an optional leg number (zero-indexed).
     # Leg number is ignored on unique fields, but needed for repeated fields.
     # Returns the raw string from the given field (and leg). The results of
-    # create_control_points need to be saved to @control_points, and the raw
+    # create_control_points need to be saved to @control, and the raw
     # data to @raw_data.
     def get_raw(field_id, leg=nil)
       return nil unless field_id.present?
-      return_range = proc{|start, length=1|
-        return @raw_data[start,length] if !@control_points[:invalid] || @control_points[:invalid] >= (start + length)
-      }
-      case field_id
-      when "1" # Format Code
-        return_range.call(0)
-      when "5" # Number of Legs Encoded
-        return_range.call(1)
-      when "11" # Passenger Name
-        return_range.call(2,20)
-      when "253" # Electronic Ticket Indicator
-        return_range.call(22)
-      when "7" # Repeated: Operating Carrier PNR Code
-        return nil unless leg.present?
-        
+      
+      field = @fields[field_id]
+      return nil unless field.present? # Handle invalid field ID
+      
+      group = field[:group]
+      if [:rm, :rc, :ra].include?(group)
+        # This is a repeated field
+        return nil unless leg.present? && leg < @control[:legs]
+        control = @control[group][leg]
+      else
+        # This is not a repeated field
+        control = @control[group]
       end
+      start = control[:start] + field[:start]
+      
+      if field[:length].nil? || start + field[:length] > control[:length]
+        # Field is variable length or field length extends past end of its group
+        len = control[:length] - field[:start]
+      else
+        len = field[:length]
+      end
+      
+      return @raw_data[start,len] if (!@control[:invalid] || @control[:invalid] >= (start + length))
+      
       return nil
     end
 
