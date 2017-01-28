@@ -27,13 +27,15 @@ class BoardingPass
     # New control point creation
     if @raw_data.present?
       @control = create_control_points(@raw_data)
-      @fields = create_fields
+      @version = determine_version(@control, @raw_data)
+      @fields  = create_fields(@version)
+      @structured_data = build_structured_data(@control, @fields)
     end
   end
   
   # TO DELETE
   def test_output
-    return "<p>#{@fields}</p><p>#{get_raw(7,0)}</p>".html_safe
+    return "<p>#{@structured_data}</p>".html_safe
   end
   
   # Return BCBP version number, or -1 if version not present.
@@ -470,7 +472,7 @@ class BoardingPass
       # Set conditional and airline control points:
       get_conditional_and_airline = lambda{|start_cond, len_cond_airline|
         rc_field_size = data[start_cond,2] # Field 17
-        invalid.call(cond_start) if rc_field_size !~ /^[0-9A-F]{2}$/i
+        invalid.call(start_cond) if rc_field_size !~ /^[0-9A-F]{2}$/i
         len_cond = rc_field_size.to_i(16) + 2
         len_airline = len_cond_airline - len_cond
         invalid.call(start_cond) if len_airline < 0
@@ -561,17 +563,19 @@ class BoardingPass
       return control
     end
     
+    # Returns the version number (or 0 if unknown).
+    def determine_version(control, data)
+      version = 0
+      if control[:uc] && control[:uc][:length] >= 2
+        # Data has something in the version field
+        version += data[control[:uc][:start]+1].to_i
+      end
+    end
+    
     # Returns a hash of possible fields. If a version is detected, only fields
     # available in that BCBP version will be included.
-    def create_fields
+    def create_fields(version=0)
       fields = Hash.new
-      
-      # Determine version (or use 0 if unknown)
-      version = 0
-      if @control[:uc] && @control[:uc][:length] >= 2
-        # Data has something in the version field
-        version += @raw_data[@control[:uc][:start]+1].to_i
-      end
       
       start = proc{|prev| prev[:start]+prev[:length]}
       
@@ -694,7 +698,7 @@ class BoardingPass
     # create_control_points need to be saved to @control, and the raw
     # data to @raw_data.
     def get_raw(field_id, leg=nil)
-      return nil unless field_id.present?
+      return nil unless (field_id.present? && @control.present? && @raw_data.present?)
       
       field = @fields[field_id]
       return nil unless field.present? # Handle invalid field ID
@@ -708,18 +712,80 @@ class BoardingPass
         # This is not a repeated field
         control = @control[group]
       end
+      return nil unless control.present?
       start = control[:start] + field[:start]
       
-      if field[:length].nil? || start + field[:length] > control[:length]
+      if field[:length].nil? || field[:start] + field[:length] > control[:length]
         # Field is variable length or field length extends past end of its group
         len = control[:length] - field[:start]
       else
         len = field[:length]
       end
       
-      return @raw_data[start,len] if (!@control[:invalid] || @control[:invalid] >= (start + length))
+      return @raw_data[start,len] if (!@control[:invalid] || @control[:invalid] >= (start + len))
       
       return nil
+    end
+    
+    # Create a nested hash of fields and values.
+    # unique
+    #   mandatory
+    #     field {field data}
+    #   conditional
+    #     field {field data}
+    #   security
+    #     field {field data}
+    # repeated [
+    #   mandatory
+    #     field {field data}
+    #   conditional
+    #     field {field data}
+    #   airline
+    #     field {field data}
+    # ]
+    
+    def build_structured_data(control, fields)
+      populate_group = proc{|group, leg=nil|
+        group_fields = Hash.new
+        if control[group].present?
+          len_fields = 0
+          fields.select{|k,v| v[:group] == group}.each do |k, v|
+            raw = get_raw(k, leg)
+            # __CHECK IF RAW FIELD LENGTH MATCHES EXPECTED FIELD LENGTH
+            next if raw.nil?  
+            field = Hash.new
+            field.store(:description, v[:description])
+            field.store(:raw, raw)
+            group_fields.store(k, field)
+            len_fields += raw.length
+            # __IF FIELD STARTS AFTER INVALID, THEN PUT IT IN A BLANK FIELD AT THE END
+            # __CHECK IF THERE ARE UNACCOUNTED FOR PLACES AT END OF GROUP
+          end
+        end
+        group_fields
+      }
+      
+      # BUILD UNIQUE HASH
+      unique = Hash.new
+      unique.store(:mandatory,   populate_group.call(:um))
+      unique.store(:conditional, populate_group.call(:uc))
+      unique.store(:security,    populate_group.call(:security))
+      
+      # BUILD REPEATED ARRAY
+      repeated = Array.new
+      (0..control[:legs]-1).each do |leg|
+        leg_hash = Hash.new
+        leg_hash.store(:mandatory,   populate_group.call(:rm, leg))
+        leg_hash.store(:conditional, populate_group.call(:rc, leg))
+        repeated.push(leg_hash)
+      end
+      
+      # CREATE OUTPUT HASH
+      output = Hash.new
+      output.store(:unique, unique)
+      output.store(:repeated, repeated)
+      
+      return output
     end
 
     
