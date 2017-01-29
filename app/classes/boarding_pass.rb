@@ -33,7 +33,46 @@ class BoardingPass
     end
   end
   
+  def data
+    return @structured_data
+  end
+  
+  # Return an array of group titles and fields
+  def ordered_groups
+    output = Array.new
+    output.push({title: "Unique Mandatory", fields: @structured_data[:unique][:mandatory]})
+    output.push({title: "Repeated Mandatory (Leg 1)", fields: @structured_data[:repeated][0][:mandatory]})
+    if @control[:uc]
+      output.push({title: "Unique Conditional", fields: @structured_data[:unique][:conditional]})
+    end
+    if @control[:rc][0]
+      output.push({title: "Repeated Conditional (Leg 1)", fields: @structured_data[:repeated][0][:conditional]})
+    end
+    if @control[:ra][0]
+      output.push({title: "Repeated Airline Use (Leg 1)", fields: @structured_data[:repeated][0][:airline]})
+    end
+    if @control[:legs] > 1
+      (1..@control[:legs]-1).each do |leg|
+        if @control[:rc][leg]
+          output.push({title: "Repeated Conditional (Leg #{leg+1})", fields: @structured_data[:repeated][leg][:conditional]})
+        end
+        if @control[:ra][leg]
+          output.push({title: "Repeated Airline Use (Leg #{leg+1})", fields: @structured_data[:repeated][leg][:airline]})
+        end
+      end
+    end
+    if @control[:security]
+      output.push({title: "Security", fields: @structured_data[:unique][:security]})
+    end
+      
+    return output
+  end
+  
   # TO DELETE
+  
+  
+ 
+  
   def test_output
     return "<p>#{@structured_data}</p>".html_safe
   end
@@ -777,6 +816,7 @@ class BoardingPass
         leg_hash = Hash.new
         leg_hash.store(:mandatory,   populate_group.call(:rm, leg))
         leg_hash.store(:conditional, populate_group.call(:rc, leg))
+        leg_hash.store(:airline,     populate_group.call(:ra, leg))
         repeated.push(leg_hash)
       end
       

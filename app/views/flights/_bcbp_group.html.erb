@@ -1,0 +1,10 @@
+<div class="boarding-pass-fields">
+  <table class="flightlog">
+    <% group_fields.each do |k, v| %>
+    <tr>
+      <td class="description label"><%= v[:description] %></td>
+      <td class="raw-data"><div><code><% v[:raw].split('').each do |char| %><span><%= char %></span><% end %></code></div></td>
+    </tr>
+    <% end %>
+  </table>
+</div>

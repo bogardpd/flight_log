@@ -1,7 +1,8 @@
 $font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
 $font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 
-$color-table-background: #FCFCFD;
+$color-table-background:      hsl(240, 20%, 99%);
+$color-table-background-dark: hsl(240, 20%, 90%);
 $color-table-border: rgb(190, 212, 234);
 $color-text-primary: hsl(210, 20%, 16%);
 $color-text-secondary: hsl(210, 20%, 40%);
@@ -216,6 +217,10 @@ body {
 	}
 }
 
+
+
+
+/* Generic fields */
 .bold {
 	font-weight: 600;
 }
@@ -243,6 +248,37 @@ body {
 .iata_mono {
 	font-family: $font-stack-monospace;
 }
+
+
+/* Boarding Passes */
+div.boarding-pass-fields {
+  td {
+    vertical-align: top;
+  }
+  td.description {
+    width: 15em;
+    white-space: normal;
+  }
+  td.raw-data {
+    font-family: $font-stack-monospace;
+    word-wrap: break-word;
+    line-height: $line-height-raw-bcbp;
+    text-shadow: 1px 1px $color-table-border;
+    width: 22em;
+    div {
+      width: 21em;
+    }
+    span {
+      border: 1px solid $color-table-background;
+      background-color: $color-table-background-dark;
+      padding: 0 3px;
+    }
+  }
+}
+
+
+
+
 
 a {
 	text-decoration: none;
@@ -724,6 +760,7 @@ span.summary_total {
 	font-weight: 600;
 }
 
+/* Tables */
 table.flightlog {
 	margin-left: auto;
 	margin-right: auto;
@@ -732,32 +769,40 @@ table.flightlog {
 	border-spacing: 0;
 	border-collapse: collapse;
 	border-bottom: 1px solid #BED4EA;
-}
-
-table.flightlog a {
-	text-decoration: none;
-}
-
-table.flightlog tr {
-	border-top: 1px solid #BED4EA;
-	background-color: $color-table-background;
-}
-
-table.flightlog tr.no_top_border {
-	border-top: none !important;
-}
-
-table.flightlog td {
-	padding: 0.5em 0.6em;
-	white-space: nowrap;
-	height: 28px;
-}
-
-table.flightlog th {
-	padding: 0.5em 0.6em;
-	background-color: #F9F9FB;
-	border-bottom: 2px solid #9EC7F3;
-	height: 28px;
+  
+  a {
+  	text-decoration: none;
+  }
+  
+  td {
+  	padding: 0.5em 0.6em;
+  	white-space: nowrap;
+  	height: 28px;
+  }
+  
+  td.label {
+  	background-color: #FCFCFD;
+  	border-right: 2px solid #9EC7F3;
+  	font-weight: 600;
+  	text-align: right;
+  	vertical-align: top;
+  }
+  
+  th {
+  	padding: 0.5em 0.6em;
+  	background-color: #F9F9FB;
+  	border-bottom: 2px solid #9EC7F3;
+  	height: 28px;
+  }
+  
+  tr {
+  	border-top: 1px solid #BED4EA;
+  	background-color: $color-table-background;
+  }
+  
+  tr.no_top_border {
+  	border-top: none !important;
+  }
 }
 
 td.flightlog_total {
