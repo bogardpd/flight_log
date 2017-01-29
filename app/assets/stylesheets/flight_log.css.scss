@@ -259,14 +259,17 @@ div.boarding-pass-fields {
     width: 15em;
     white-space: normal;
   }
-  td.raw-data {
-    font-family: $font-stack-monospace;
-    word-wrap: break-word;
-    line-height: $line-height-raw-bcbp;
-    text-shadow: 1px 1px $color-table-border;
+  td.data {
     width: 22em;
-    div {
+    div.raw-data {
       width: 21em;
+      font-family: $font-stack-monospace;
+      word-wrap: break-word;
+      line-height: $line-height-raw-bcbp;
+      text-shadow: 1px 1px $color-table-border;
+    }
+    div.interpreted-data {
+      font-weight: 300;
     }
     span {
       border: 1px solid $color-table-background;
