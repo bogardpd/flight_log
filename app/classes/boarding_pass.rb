@@ -69,14 +69,7 @@ class BoardingPass
   end
   
   # TO DELETE
-  
-  
- 
-  
-  def test_output
-    return "<p>#{@structured_data}</p>".html_safe
-  end
-  
+    
   # Return BCBP version number, or -1 if version not present.
   def bcbp_version
     index = @raw_data.index(">")
@@ -621,90 +614,123 @@ class BoardingPass
       # Unique Mandatory (:um)
       prev = {start: 0, length: 0}
       fields[  1] = (prev = {description: "Format Code",
-        group: :um, start: start.call(prev), length:  1})
+        group: :um, start: start.call(prev), length:  1,
+        interpretation: :interpret_format_code})
       fields[  5] = (prev = {description: "Number of Legs Encoded",
         group: :um, start: start.call(prev), length:  1})
       fields[ 11] = (prev = {description: "Passenger Name",
         group: :um, start: start.call(prev), length: 20})
       fields[253] = (prev = {description: "Electronic Ticket Indicator",
-        group: :um, start: start.call(prev), length:  1})
+        group: :um, start: start.call(prev), length:  1,
+        interpretation: :interpret_electronic_ticket_indicator})
         
       # Unique Conditional (:uc)
       prev = {start: 0, length: 0}
       fields[  8] = (prev = {description: "Beginning of Version Number",
         group: :uc, start: start.call(prev), length:  1})
       fields[  9] = (prev = {description: "Version Number",
-        group: :uc, start: start.call(prev), length:  1})
+        group: :uc, start: start.call(prev), length:  1,
+        interpretation: :interpret_version_number})
       fields[ 10] = (prev = {description: "Field Size of Following Structured Message - Unique",
-        group: :uc, start: start.call(prev), length:  2})
+        group: :uc, start: start.call(prev), length:  2,
+        interpretation: :interpret_field_size})
       fields[ 15] = (prev = {description: "Passenger Description",
-        group: :uc, start: start.call(prev), length:  1})
+        group: :uc, start: start.call(prev), length:  1,
+        interpretation: :interpret_passenger_description})
       fields[ 12] = (prev = {description: "Source of Check-In",
-        group: :uc, start: start.call(prev), length:  1})
+        group: :uc, start: start.call(prev), length:  1,
+        interpretation: :interpret_source_of_checkin})
       fields[ 14] = (prev = {description: "Source of Boarding Pass Issuance",
-        group: :uc, start: start.call(prev), length:  1})
+        group: :uc, start: start.call(prev), length:  1,
+        interpretation: :interpret_source_of_boarding_pass_issuance})
       fields[ 22] = (prev = {description: "Date of Issue of Boarding Pass",
-        group: :uc, start: start.call(prev), length:  4})
+        group: :uc, start: start.call(prev), length:  4,
+        interpretation: :interpret_ordinal_date})
       fields[ 16] = (prev = {description: "Document Type",
-        group: :uc, start: start.call(prev), length:  1})
+        group: :uc, start: start.call(prev), length:  1,
+        interpretation: :interpret_document_type})
       fields[ 21] = (prev = {description: "Airline Designator of Boarding Pass Issuer",
-        group: :uc, start: start.call(prev), length:  3})
+        group: :uc, start: start.call(prev), length:  3,
+        interpretation: :interpret_airline_code})
       fields[ 23] = (prev = {description: "Baggage Tag Licence Plate Number",
-        group: :uc, start: start.call(prev), length: 13})
+        group: :uc, start: start.call(prev), length: 13,
+        interpretation: :interpret_baggage_tag})
       if version >= 4
         fields[ 31] = (prev = {description: "1st Non-Consecutive Baggage Tag Licence Plate Number",
-          group: :uc, start: start.call(prev), length: 13})
+          group: :uc, start: start.call(prev), length: 13,
+          interpretation: :interpret_baggage_tag})
         fields[ 32] = (prev = {description: "2nd Non-Consecutive Baggage Tag Licence Plate Number",
-          group: :uc, start: start.call(prev), length: 13})
+          group: :uc, start: start.call(prev), length: 13,
+          interpretation: :interpret_baggage_tag})
       end
       
       # Repeated Mandatory (:rm)
       prev = {start: 0, length: 0}
       fields[  7] = (prev = {description: "Operating Carrier PNR Code",
-        group: :rm, start: start.call(prev), length:  7})
+        group: :rm, start: start.call(prev), length:  7,
+        interpretation: :interpret_pnr_code})
       fields[ 26] = (prev = {description: "From City Airport Code",
-        group: :rm, start: start.call(prev), length:  3})
+        group: :rm, start: start.call(prev), length:  3,
+        interpretation: :interpret_airport_code})
       fields[ 38] = (prev = {description: "To City Airport Code",
-        group: :rm, start: start.call(prev), length:  3})
+        group: :rm, start: start.call(prev), length:  3,
+        interpretation: :interpret_airport_code})
       fields[ 42] = (prev = {description: "Operating Carrier Designator",
-        group: :rm, start: start.call(prev), length:  3})
+        group: :rm, start: start.call(prev), length:  3,
+        interpretation: :interpret_airline_code})
       fields[ 43] = (prev = {description: "Flight Number",
-        group: :rm, start: start.call(prev), length:  5})
+        group: :rm, start: start.call(prev), length:  5,
+        interpretation: :interpret_flight_number})
       fields[ 46] = (prev = {description: "Date of Flight",
-        group: :rm, start: start.call(prev), length:  3})
+        group: :rm, start: start.call(prev), length:  3,
+        interpretation: :interpret_ordinal_date})
       fields[ 71] = (prev = {description: "Compartment Code",
-        group: :rm, start: start.call(prev), length:  1})
+        group: :rm, start: start.call(prev), length:  1,
+        interpretation: :interpret_compartment_code, include_leg: true})
       fields[104] = (prev = {description: "Seat Number",
-        group: :rm, start: start.call(prev), length:  4})
+        group: :rm, start: start.call(prev), length:  4,
+        interpretation: :interpret_seat_number})
       fields[107] = (prev = {description: "Check-In Sequence Number",
-        group: :rm, start: start.call(prev), length:  5})
+        group: :rm, start: start.call(prev), length:  5,
+        interpretation: :interpret_checkin_sequence_number})
       fields[113] = (prev = {description: "Passenger Status",
-        group: :rm, start: start.call(prev), length:  1})
+        group: :rm, start: start.call(prev), length:  1,
+        interpretation: :interpret_passenger_status})
       fields[  6] = (prev = {description: "Field Size of Following Variable Size Field",
-        group: :rm, start: start.call(prev), length:  2})
+        group: :rm, start: start.call(prev), length:  2,
+        interpretation: :interpret_field_size})
         
       # Repeated Conditional (:rc)
       prev = {start: 0, length: 0}
       fields[ 17] = (prev = {description: "Field Size of Following Structured Message - Repeated",
-        group: :rc, start: start.call(prev), length:  2})
+        group: :rc, start: start.call(prev), length:  2,
+        interpretation: :interpret_field_size})
       fields[142] = (prev = {description: "Airline Numeric Code",
-        group: :rc, start: start.call(prev), length:  3})
+        group: :rc, start: start.call(prev), length:  3,
+        interpretation: :interpret_airline_code})
       fields[143] = (prev = {description: "Document Form/Serial Number",
-        group: :rc, start: start.call(prev), length: 10})
+        group: :rc, start: start.call(prev), length: 10,
+        interpretation: :interpret_ticket_number, include_leg: true})
       fields[ 18] = (prev = {description: "Selectee Indicator",
-        group: :rc, start: start.call(prev), length:  1})
+        group: :rc, start: start.call(prev), length:  1,
+        interpretation: :interpret_selectee_indicator})
       fields[108] = (prev = {description: "International Documentation Verification",
-        group: :rc, start: start.call(prev), length:  1})
+        group: :rc, start: start.call(prev), length:  1,
+        interpretation: :interpret_international_documentation})
       fields[ 19] = (prev = {description: "Marketing Carrier Designator",
-        group: :rc, start: start.call(prev), length:  3})
+        group: :rc, start: start.call(prev), length:  3,
+        interpretation: :interpret_airline_code})
       fields[ 20] = (prev = {description: "Frequent Flier Airline Designator",
-        group: :rc, start: start.call(prev), length:  3})
+        group: :rc, start: start.call(prev), length:  3,
+        interpretation: :interpret_airline_code})
       fields[236] = (prev = {description: "Frequent Flier Number",
         group: :rc, start: start.call(prev), length: 16})
       fields[ 89] = (prev = {description: "ID/AD Indicator",
-        group: :rc, start: start.call(prev), length:  1})
+        group: :rc, start: start.call(prev), length:  1,
+        interpretation: :interpret_id_ad_indicator})
       fields[118] = (prev = {description: "Free Baggage Allowance",
-        group: :rc, start: start.call(prev), length:  3})
+        group: :rc, start: start.call(prev), length:  3,
+        interpretation: :interpret_free_baggage_allowance})
       if version >= 5
         fields[254] = (prev = {description: "Fast Track",
           group: :rc, start: start.call(prev), length:  1})
@@ -723,7 +749,8 @@ class BoardingPass
         fields[ 28] = (prev = {description: "Type of Security Data",
           group: :security, start: start.call(prev), length:   1})
         fields[ 29] = (prev = {description: "Length of Security Data",
-          group: :security, start: start.call(prev), length:   2})
+          group: :security, start: start.call(prev), length:   2,
+          interpretation: :interpret_field_size})
       end
       fields[ 30] = (prev = {description: "Security Data",
         group: :security, start: start.call(prev), length: nil})
@@ -795,6 +822,13 @@ class BoardingPass
             field = Hash.new
             field.store(:description, v[:description])
             field.store(:raw, raw)
+            if v[:interpretation]
+              if v[:include_leg]
+                field.store(:interpretation, method(v[:interpretation]).call(raw, leg))
+              else
+                field.store(:interpretation, method(v[:interpretation]).call(raw))
+              end
+            end
             group_fields.store(k, field)
             len_fields += raw.length
             # __IF FIELD STARTS AFTER INVALID, THEN PUT IT IN A BLANK FIELD AT THE END
@@ -827,7 +861,7 @@ class BoardingPass
       
       return output
     end
-
+    
     
     # Create and return a hash of IATA Bar Coded Boarding Pass (BCBP) fields and data.
     def create_bcbp(data)
@@ -934,7 +968,7 @@ class BoardingPass
         @raw_with_metadata.push({
           description: format_leg(index, "Compartment Code"),
           raw:         leg_data['71'],
-          interpreted: interpret_compartment_code(leg_data['71'], leg_data['42']),
+          #interpreted: interpret_compartment_code(leg_data['71'], leg_data['42']),
           valid:       leg_data['71'] =~ /^[A-Z]{1}$/
         })
         
@@ -1027,7 +1061,7 @@ class BoardingPass
               @raw_with_metadata.push({
                 description: "Source of Check-In",
                 raw:         bcbp['12'],
-                interpreted: interpret_source_of_check_in(bcbp['12']),
+                interpreted: interpret_source_of_checkin(bcbp['12']),
                 valid:       true
               })
             else
@@ -1362,14 +1396,14 @@ class BoardingPass
       return "#{raw.strip().to_i.ordinalize} person to check in for this flight"
     end
     
-    def interpret_compartment_code(compartment, airline)
-      return nil unless compartment.present? && airline.present?
-      airline = airline.strip
+    def interpret_compartment_code(raw, leg)
+      return nil unless raw.present? && leg.present?
+      airline = get_raw(42, leg).strip
       begin
-        ticket_class = @airline_compartments[airline][compartment]['name'].capitalize
-        ticket_details = @airline_compartments[airline][compartment]['details']
+        ticket_class = @airline_compartments[airline][raw]['name'].capitalize
+        ticket_details = @airline_compartments[airline][raw]['details']
       rescue
-        ticket_class = compartment
+        ticket_class = raw
       end
       output = "#{ticket_class} class ticket"
       output += " (#{ticket_details})" if ticket_details
@@ -1377,14 +1411,11 @@ class BoardingPass
     end
     
     def interpret_document_type(raw)
-      case raw
-      when "B"
-        return "Boarding pass"
-      when "I"
-        return "Itinerary receipt"
-      else
-        return nil
-      end
+      map = {
+        "B" => "Boarding pass",
+        "I" => "Itinerary receipt"
+      }
+      return map[raw]
     end
     
     def interpret_electronic_ticket_indicator(raw)
@@ -1401,6 +1432,13 @@ class BoardingPass
       return "Flight #{raw[0..3].to_i}#{raw[4].strip}"
     end
     
+    def interpret_format_code(raw)
+      map = {
+        "M" => "IATA BCBP Format M"
+      }
+      return map[raw]
+    end
+    
     def interpret_free_baggage_allowance(raw)
       return nil unless raw.present?
       return pluralize(raw[0].to_i, "piece") if raw[0] =~ /\d/ && raw[1..2] == "PC" # "xPC" = x pieces
@@ -1410,57 +1448,34 @@ class BoardingPass
     end
     
     def interpret_id_ad_indicator(raw)
-      return nil unless raw.present?
-      case raw
-      when "0"
-        return "IDN1 positive space"
-      when "1"
-        return "IDN2 space available"
-      when "2"
-        return "IDB1 positive space"
-      when "3"
-        return "IDB2 space available"
-      when "4"
-        return "AD"
-      when "5"
-        return "DG"
-      when "6"
-        return "DM"
-      when "7"
-        return "GE"
-      when "8"
-        return "IG"
-      when "9"
-        return "RG"
-      when "A"
-        return "UD"
-      when "B"
-        return "ID – industry discount not followed any classification"
-      when "C"
-        return "IDFS1"
-      when "D"
-        return "IDFS2"
-      when "E"
-        return "IDR1"
-      when "F"
-        return "IDR2"
-      else
-        return nil
-      end
+      map = {
+        "0" => "IDN1 positive space",
+        "1" => "IDN2 space available",
+        "2" => "IDB1 positive space",
+        "3" => "IDB2 space available",
+        "4" => "AD",
+        "5" => "DG",
+        "6" => "DM",
+        "7" => "GE",
+        "8" => "IG",
+        "9" => "RG",
+        "A" => "UD",
+        "B" => "ID – industry discount not followed any classification",
+        "C" => "IDFS1",
+        "D" => "IDFS2",
+        "E" => "IDR1",
+        "F" => "IDR2"
+      }
+      return map[raw]
     end
     
     def interpret_international_documentation(raw)
-      return nil unless raw.present?
-      case raw
-      when "0"
-        return "Travel document verification not required"
-      when "1"
-        return "Travel document verification required"
-      when "2"
-        return "Travel document verification performed"
-      else
-        return nil
-      end
+      map = {
+        "0" => "Travel document verification not required",
+        "1" => "Travel document verification required",
+        "2" => "Travel document verification performed"
+      }
+      return map[raw]
     end
     
     def interpret_ordinal_date(raw)
@@ -1581,56 +1596,34 @@ class BoardingPass
     end
     
     def interpret_passenger_description(raw)
-      case raw
-      when "0"
-        return "Adult"
-      when "1"
-        return "Male"
-      when "2"
-        return "Female"
-      when "3"
-        return "Child"
-      when "4"
-        return "Infant"
-      when "5"
-        return "No passenger (cabin baggage)"
-      when "6"
-        return "Adult traveling with infant"
-      when "7"
-        return "Unaccompanied Minor"
-      else
-        return nil
-      end 
+      map = {
+        "0" => "Adult",
+        "1" => "Male",
+        "2" => "Female",
+        "3" => "Child",
+        "4" => "Infant",
+        "5" => "No passenger (cabin baggage)",
+        "6" => "Adult traveling with infant",
+        "7" => "Unaccompanied Minor"
+      }
+      return map[raw]
     end
     
     def interpret_passenger_status(raw)
-      return nil unless raw.present?
-      case raw
-      when "0"
-        return "Ticket issuance/passenger not checked in"
-      when "1"
-        return "Ticket issuance/passenger checked in"
-      when "2"
-        return "Baggage checked/passenger not checked in"
-      when "3"
-        return "Baggage checked/passenger checked in"
-      when "4"
-        return "Passenger passed security check"
-      when "5"
-        return "Passenger passed gate exit (coupon used)"
-      when "6"
-        return "Transit"
-      when "7"
-        return "Standby"
-      when "8"
-        return "Boarding pass revalidation done"
-      when "9"
-        return "Original boarding line used at time of ticket issuance"
-      when "A"
-        return "Up- or down-grading required"
-      else
-        return nil
-      end
+      map = {
+        "0" => "Ticket issuance/passenger not checked in",
+        "1" => "Ticket issuance/passenger checked in",
+        "2" => "Baggage checked/passenger not checked in",
+        "3" => "Baggage checked/passenger checked in",
+        "4" => "Passenger passed security check",
+        "5" => "Passenger passed gate exit (coupon used)",
+        "6" => "Transit",
+        "7" => "Standby",
+        "8" => "Boarding pass revalidation done",
+        "9" => "Original boarding line used at time of ticket issuance",
+        "A" => "Up- or down-grading required"
+      }
+      return map[raw]
     end
     
     def interpret_pnr_code(raw)
@@ -1645,69 +1638,52 @@ class BoardingPass
     end
     
     def interpret_selectee_indicator(raw)
-      return nil unless raw.present?
-      case raw
-      when "0"
-        return "Not selectee"
-      when "1"
-        return "SSSS (Secondary Security<br/>Screening Selectee)"
-      when "3"
-        return "LLLL (TSA PreCheck)"
-      else
-        return nil
-      end
+      map = {
+        "0" => "Not selectee",
+        "1" => "SSSS (Secondary Security Screening Selectee)",
+        "3" => "LLLL (TSA PreCheck)"
+      }
+      return map[raw]
     end
     
     def interpret_source_of_boarding_pass_issuance(raw)
-      case raw
-      when "W"
-        return "Web printed"
-      when "K"
-        return "Airport kiosk printed"
-      when "X"
-        return "Transfer kiosk printed"
-      when "R"
-        return "Remote or off site kiosk printed"
-      when "M"
-        return "Mobile device printed"
-      when "O"
-        return "Airport agent printed"
-      when "T"
-        return "Town agent printed"
-      when "V"
-        return "Third party vendor printed"
-      when " "
-        return "Unable to support"
-      else
-        return nil
-      end
+      map = {
+        "W" => "Web printed",
+        "K" => "Airport kiosk printed",
+        "X" => "Transfer kiosk printed",
+        "R" => "Remote or off site kiosk printed",
+        "M" => "Mobile device printed",
+        "O" => "Airport agent printed",
+        "T" => "Town agent printed",
+        "V" => "Third party vendor printed",
+        " " => "Unable to support"
+      }
+      return map[raw]
     end
   
-    def interpret_source_of_check_in(raw)
-      case raw
-      when "W"
-        return "Web"
-      when "K"
-        return "Airport kiosk"
-      when "R"
-        return "Remote or off site kiosk"
-      when "M"
-        return "Mobile device"
-      when "O"
-        return "Airport agent"
-      when "T"
-        return "Town agent"
-      when "V"
-        return "Third party vendor"
-      else
-        return nil
-      end
+    def interpret_source_of_checkin(raw)
+      map = {
+        "W" => "Web",
+        "K" => "Airport kiosk",
+        "R" => "Remote or off site kiosk",
+        "M" => "Mobile device",
+        "O" => "Airport agent",
+        "T" => "Town agent",
+        "V" => "Third party vendor"
+      }
+      return map[raw]
     end
     
-    def interpret_ticket_number(raw, airline_numeric)
+    def interpret_ticket_number(raw, leg)
       return nil unless raw.present?
+      airline_numeric = get_raw(142, leg)
       return "Ticket number: (#{airline_numeric}) #{raw}" if airline_numeric
       return "Ticket number: #{raw}"
+    end
+    
+    def interpret_version_number(raw)
+      return nil unless raw.present?
+      return "IATA BCBP Version #{raw}"
     end
     
 end

@@ -1,6 +1,7 @@
 {
   "AA" : {
     "G" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
+    "L" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
     "Q" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
     "T" : { "code" : "Y", "name" : "economy", "details" : "award" },
     "X" : { "code" : "F", "name" : "first", "details" : "upgrade" },
