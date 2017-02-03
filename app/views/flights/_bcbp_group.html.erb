@@ -1,11 +1,13 @@
 <div class="boarding-pass-fields">
   <table class="flightlog">
     <% group_fields.each do |k, v| %>
-    <tr>
+    <tr<%= %Q( class="invalid").html_safe unless v[:valid] %>>
       <td class="description label"><%= v[:description] %></td>
       <td class="data">
         <div class="raw-data"><code><% v[:raw].split('').each do |char| %><span><%= char %></span><% end %></code></div>
-        <% if v[:interpretation] %>
+        <% if v[:valid] == false %>
+          <div class="interpreted-data">This is not the right type of data for this field.</div>
+        <% elsif v[:interpretation] %>
           <div class="interpreted-data"><%= v[:interpretation] %></div>
         <% end %>
       </td>

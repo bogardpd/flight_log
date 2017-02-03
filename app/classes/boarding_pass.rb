@@ -611,13 +611,21 @@ class BoardingPass
       
       start = proc{|prev| prev[:start]+prev[:length]}
       
+      v = { # Reused validity regexps
+        airline_designator_optional: /^( {3}|[A-Z0-9]{1} {2}|[A-Z0-9]{2} {1}|[A-Z0-9]{3})$/i,
+        airport_code_alpha: /^[A-Z]{3}$/i,
+        baggage_tag: /^(\d{13}| {13})$/,
+        hex: /^[0-9A-F]{2}$/i
+      }
+      
       # Unique Mandatory (:um)
       prev = {start: 0, length: 0}
       fields[  1] = (prev = {description: "Format Code",
         group: :um, start: start.call(prev), length:  1,
         interpretation: :interpret_format_code})
       fields[  5] = (prev = {description: "Number of Legs Encoded",
-        group: :um, start: start.call(prev), length:  1})
+        group: :um, start: start.call(prev), length:  1,
+        validity: /^\d{1}$/})
       fields[ 11] = (prev = {description: "Passenger Name",
         group: :um, start: start.call(prev), length: 20})
       fields[253] = (prev = {description: "Electronic Ticket Indicator",
@@ -627,13 +635,15 @@ class BoardingPass
       # Unique Conditional (:uc)
       prev = {start: 0, length: 0}
       fields[  8] = (prev = {description: "Beginning of Version Number",
-        group: :uc, start: start.call(prev), length:  1})
+        group: :uc, start: start.call(prev), length:  1,
+        validity: /^>$/})
       fields[  9] = (prev = {description: "Version Number",
         group: :uc, start: start.call(prev), length:  1,
         interpretation: :interpret_version_number})
       fields[ 10] = (prev = {description: "Field Size of Following Structured Message - Unique",
         group: :uc, start: start.call(prev), length:  2,
-        interpretation: :interpret_field_size})
+        interpretation: :interpret_field_size,
+        validity: v[:hex]})
       fields[ 15] = (prev = {description: "Passenger Description",
         group: :uc, start: start.call(prev), length:  1,
         interpretation: :interpret_passenger_description})
@@ -645,23 +655,28 @@ class BoardingPass
         interpretation: :interpret_source_of_boarding_pass_issuance})
       fields[ 22] = (prev = {description: "Date of Issue of Boarding Pass",
         group: :uc, start: start.call(prev), length:  4,
-        interpretation: :interpret_ordinal_date})
+        interpretation: :interpret_ordinal_date,
+        validity: /^((\d[0-2]\d{2}|\d3[0-5]\d|\d36[0-6])| {4})$/})
       fields[ 16] = (prev = {description: "Document Type",
         group: :uc, start: start.call(prev), length:  1,
         interpretation: :interpret_document_type})
       fields[ 21] = (prev = {description: "Airline Designator of Boarding Pass Issuer",
         group: :uc, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code})
+        interpretation: :interpret_airline_code,
+        validity: v[:airline_designator_optional]})
       fields[ 23] = (prev = {description: "Baggage Tag Licence Plate Number",
         group: :uc, start: start.call(prev), length: 13,
-        interpretation: :interpret_baggage_tag})
+        interpretation: :interpret_baggage_tag,
+        validity: v[:baggage_tag]})
       if version >= 4
         fields[ 31] = (prev = {description: "1st Non-Consecutive Baggage Tag Licence Plate Number",
           group: :uc, start: start.call(prev), length: 13,
-          interpretation: :interpret_baggage_tag})
+          interpretation: :interpret_baggage_tag,
+          validity: v[:baggage_tag]})
         fields[ 32] = (prev = {description: "2nd Non-Consecutive Baggage Tag Licence Plate Number",
           group: :uc, start: start.call(prev), length: 13,
-          interpretation: :interpret_baggage_tag})
+          interpretation: :interpret_baggage_tag,
+          validity: v[:baggage_tag]})
       end
       
       # Repeated Mandatory (:rm)
@@ -671,46 +686,57 @@ class BoardingPass
         interpretation: :interpret_pnr_code})
       fields[ 26] = (prev = {description: "From City Airport Code",
         group: :rm, start: start.call(prev), length:  3,
-        interpretation: :interpret_airport_code})
+        interpretation: :interpret_airport_code,
+        validity: v[:airport_code_alpha]})
       fields[ 38] = (prev = {description: "To City Airport Code",
         group: :rm, start: start.call(prev), length:  3,
-        interpretation: :interpret_airport_code})
+        interpretation: :interpret_airport_code,
+        validity: v[:airport_code_alpha]})
       fields[ 42] = (prev = {description: "Operating Carrier Designator",
         group: :rm, start: start.call(prev), length:  3,
         interpretation: :interpret_airline_code})
       fields[ 43] = (prev = {description: "Flight Number",
         group: :rm, start: start.call(prev), length:  5,
-        interpretation: :interpret_flight_number})
+        interpretation: :interpret_flight_number,
+        validity: /^\d{4}[A-Z ]$/i})
       fields[ 46] = (prev = {description: "Date of Flight",
         group: :rm, start: start.call(prev), length:  3,
-        interpretation: :interpret_ordinal_date})
+        interpretation: :interpret_ordinal_date,
+        validity: /^([0-2]\d{2}|3[0-5]\d|36[0-6])$/})
       fields[ 71] = (prev = {description: "Compartment Code",
         group: :rm, start: start.call(prev), length:  1,
-        interpretation: :interpret_compartment_code, include_leg: true})
+        interpretation: :interpret_compartment_code, include_leg: true,
+        validity: /^[A-Z]{1}$/i})
       fields[104] = (prev = {description: "Seat Number",
         group: :rm, start: start.call(prev), length:  4,
-        interpretation: :interpret_seat_number})
+        interpretation: :interpret_seat_number,
+        validity: /((^\d{3}[A-Z]$)|INF)/i})
       fields[107] = (prev = {description: "Check-In Sequence Number",
         group: :rm, start: start.call(prev), length:  5,
-        interpretation: :interpret_checkin_sequence_number})
+        interpretation: :interpret_checkin_sequence_number,
+        validity: /^\d{4}[A-Z ]$/i})
       fields[113] = (prev = {description: "Passenger Status",
         group: :rm, start: start.call(prev), length:  1,
         interpretation: :interpret_passenger_status})
       fields[  6] = (prev = {description: "Field Size of Following Variable Size Field",
         group: :rm, start: start.call(prev), length:  2,
-        interpretation: :interpret_field_size})
+        interpretation: :interpret_field_size,
+        validity: v[:hex]})
         
       # Repeated Conditional (:rc)
       prev = {start: 0, length: 0}
       fields[ 17] = (prev = {description: "Field Size of Following Structured Message - Repeated",
         group: :rc, start: start.call(prev), length:  2,
-        interpretation: :interpret_field_size})
+        interpretation: :interpret_field_size,
+        validity: v[:hex]})
       fields[142] = (prev = {description: "Airline Numeric Code",
         group: :rc, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code})
+        interpretation: :interpret_airline_code,
+        validity: /^(\d{3}| {3})$/})
       fields[143] = (prev = {description: "Document Form/Serial Number",
         group: :rc, start: start.call(prev), length: 10,
-        interpretation: :interpret_ticket_number, include_leg: true})
+        interpretation: :interpret_ticket_number, include_leg: true,
+        validity: /^([A-Z0-9]{10}| {10})$/i})
       fields[ 18] = (prev = {description: "Selectee Indicator",
         group: :rc, start: start.call(prev), length:  1,
         interpretation: :interpret_selectee_indicator})
@@ -719,10 +745,12 @@ class BoardingPass
         interpretation: :interpret_international_documentation})
       fields[ 19] = (prev = {description: "Marketing Carrier Designator",
         group: :rc, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code})
+        interpretation: :interpret_airline_code,
+        validity: v[:airline_designator_optional]})
       fields[ 20] = (prev = {description: "Frequent Flier Airline Designator",
         group: :rc, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code})
+        interpretation: :interpret_airline_code,
+        validity: v[:airline_designator_optional]})
       fields[236] = (prev = {description: "Frequent Flier Number",
         group: :rc, start: start.call(prev), length: 16})
       fields[ 89] = (prev = {description: "ID/AD Indicator",
@@ -730,7 +758,8 @@ class BoardingPass
         interpretation: :interpret_id_ad_indicator})
       fields[118] = (prev = {description: "Free Baggage Allowance",
         group: :rc, start: start.call(prev), length:  3,
-        interpretation: :interpret_free_baggage_allowance})
+        interpretation: :interpret_free_baggage_allowance,
+        validity: /^(\dPC|\d{2}[KL]| {3})$/i})
       if version >= 5
         fields[254] = (prev = {description: "Fast Track",
           group: :rc, start: start.call(prev), length:  1})
@@ -745,12 +774,14 @@ class BoardingPass
       prev = {start: 0, length: 0}
       if version >= 3
         fields[ 25] = (prev = {description: "Beginning of Security Data",
-          group: :security, start: start.call(prev), length:   1})
+          group: :security, start: start.call(prev), length:   1,
+          validity: /^\^$/})
         fields[ 28] = (prev = {description: "Type of Security Data",
           group: :security, start: start.call(prev), length:   1})
         fields[ 29] = (prev = {description: "Length of Security Data",
           group: :security, start: start.call(prev), length:   2,
-          interpretation: :interpret_field_size})
+          interpretation: :interpret_field_size,
+          validity: v[:hex]})
       end
       fields[ 30] = (prev = {description: "Security Data",
         group: :security, start: start.call(prev), length: nil})
@@ -822,11 +853,16 @@ class BoardingPass
             field = Hash.new
             field.store(:description, v[:description])
             field.store(:raw, raw)
-            if v[:interpretation]
-              if v[:include_leg]
-                field.store(:interpretation, method(v[:interpretation]).call(raw, leg))
-              else
-                field.store(:interpretation, method(v[:interpretation]).call(raw))
+            if v[:validity] && raw !~ v[:validity]
+              field.store(:valid, false)
+            else
+              field.store(:valid, true)
+              if v[:interpretation]
+                if v[:include_leg]
+                  field.store(:interpretation, method(v[:interpretation]).call(raw, leg))
+                else
+                  field.store(:interpretation, method(v[:interpretation]).call(raw))
+                end
               end
             end
             group_fields.store(k, field)
@@ -1398,12 +1434,13 @@ class BoardingPass
     
     def interpret_compartment_code(raw, leg)
       return nil unless raw.present? && leg.present?
+      code = raw.upcase
       airline = get_raw(42, leg).strip
       begin
-        ticket_class = @airline_compartments[airline][raw]['name'].capitalize
-        ticket_details = @airline_compartments[airline][raw]['details']
+        ticket_class = @airline_compartments[airline][code]['name'].capitalize
+        ticket_details = @airline_compartments[airline][code]['details']
       rescue
-        ticket_class = raw
+        ticket_class = code
       end
       output = "#{ticket_class} class ticket"
       output += " (#{ticket_details})" if ticket_details

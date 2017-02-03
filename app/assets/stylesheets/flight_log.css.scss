@@ -1,17 +1,18 @@
 $font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
 $font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 
-$color-table-background:      hsl(240, 20%, 99%);
-$color-table-background-dark: hsl(240, 20%, 90%);
-$color-table-border: rgb(190, 212, 234);
-$color-text-primary: hsl(210, 20%, 16%);
-$color-text-secondary: hsl(210, 20%, 40%);
-$color-text-disabled: hsl(210, 20%, 70%);
-
-$color-background-status-bad:   hsl(0,    50%, 80%);
-$color-background-status-good:  hsl(180,  50%, 80%);
-$color-border-status-bad:       hsl(0,   100%,100%);
-$color-border-status-good:      hsl(180, 100%,100%);
+$color-table-background:        hsl(240,  20%,  99%);
+$color-table-background-dark:   hsl(240,  20%,  90%);
+$color-table-border:            rgb(190,  212,  234);
+$color-text-primary:            hsl(210,  20%,  16%);
+$color-text-secondary:          hsl(210,  20%,  40%);
+$color-text-disabled:           hsl(210,  20%,  70%);
+$color-text-error:              hsl(  0, 100%,  40%);
+                                               
+$color-background-status-bad:   hsl(  0,  50%,  80%);
+$color-background-status-good:  hsl(180,  50%,  80%);
+$color-border-status-bad:       hsl(  0, 100%, 100%);
+$color-border-status-good:      hsl(180, 100%, 100%);
 
 $margin-icon-to-text: 0.5em;
 $margin-paragraph: 10px;
@@ -266,16 +267,26 @@ div.boarding-pass-fields {
       font-family: $font-stack-monospace;
       word-wrap: break-word;
       line-height: $line-height-raw-bcbp;
-      text-shadow: 1px 1px $color-table-border;
     }
     div.interpreted-data {
       font-weight: 300;
       white-space: normal;
+      line-height: $line-height-raw-bcbp;
     }
     span {
       border: 1px solid $color-table-background;
       background-color: $color-table-background-dark;
+      text-shadow: 1px 1px darken($color-table-background-dark, 10%);
       padding: 0 3px;
+    }
+  }
+  tr.invalid {
+    td {
+      color: $color-text-error;
+    }
+    span {
+      background-color: lighten($color-background-status-bad, 10%);
+      text-shadow: 1px 1px $color-background-status-bad;
     }
   }
 }
@@ -387,7 +398,7 @@ div.field_with_errors input {
 }
 
 div.field_with_errors label {
-	color: #CC0000;
+	color: $color-text-error;
 }
 
 div.graph {
