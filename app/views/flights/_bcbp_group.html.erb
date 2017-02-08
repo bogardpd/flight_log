@@ -4,7 +4,7 @@
     <tr<%= {true => "", false => %Q( class="invalid").html_safe, nil => %Q( class="unknown").html_safe}[v[:valid]] %>>
       <td class="description label"><%= v[:description] %></td>
       <td class="data">
-        <div class="raw-data"><code><% v[:raw].split('').each do |char| %><span><%= char %></span><% end %></code></div>
+        <div class="raw-data"><code><% v[:raw].split('').each do |char| %><span><%= char.gsub(" ", " ").gsub(/\s/, "▓") %></span><% end %></code></div>
         <% if v[:valid] == false %>
           <div class="interpreted-data">This is not the right type of data for this field.</div>
         <% elsif v[:interpretation] %>

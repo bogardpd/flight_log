@@ -264,10 +264,15 @@ div.boarding-pass-fields {
   }
   td.data {
     width: 22em;
+    code {
+    	white-space: pre-wrap;
+    	white-space: -moz-pre-wrap;
+    	white-space: -o-pre-wrap;
+    	word-wrap: break-word;
+    }
     div.raw-data {
       width: 21em;
       font-family: $font-stack-monospace;
-      word-wrap: break-word;
       line-height: $line-height-raw-bcbp;
     }
     div.interpreted-data {
