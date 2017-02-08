@@ -41,41 +41,38 @@ class BoardingPass
   def ordered_groups
     output = Array.new
     set_group = proc{|title, fields|
-      begin
-        output.push({title: title, fields: fields})
-      rescue
-      end
+      output.push({title: title, fields: fields})
     }
     if @control[:um]
-      set_group.call("Unique Mandatory", @structured_data[:unique][:mandatory])
+      set_group.call("Unique Mandatory", @structured_data.dig(:unique, :mandatory))
     end
-    if @control[:rm] && @control[:rm][0]
-      set_group.call("Repeated Mandatory (Leg 1)", @structured_data[:repeated][0][:mandatory])
+    if @control.dig(:rm, 0)
+      set_group.call("Repeated Mandatory (Leg 1)", @structured_data.dig(:repeated, 0, :mandatory))
     end
-    if @control[:uc] && @structured_data[:unique][:conditional]
-      set_group.call("Unique Conditional", @structured_data[:unique][:conditional])
+    if @control[:uc]
+      set_group.call("Unique Conditional", @structured_data.dig(:unique, :conditional))
     end
-    if @control[:rc] && @control[:rc][0]
-      set_group.call("Repeated Conditional (Leg 1)", @structured_data[:repeated][0][:conditional])
+    if @control.dig(:rc, 0)
+      set_group.call("Repeated Conditional (Leg 1)", @structured_data.dig(:repeated, 0, :conditional))
     end
-    if @control[:ra] && @control[:ra][0]
-      set_group.call("Repeated Airline Use (Leg 1)", @structured_data[:repeated][0][:airline])
+    if @control.dig(:ra, 0)
+      set_group.call("Repeated Airline Use (Leg 1)", @structured_data.dig(:repeated, 0, :airline))
     end
     if @control[:legs] && @control[:legs] > 1
       (1..@control[:legs]-1).each do |leg|
-        if @control[:rm][leg]
-          set_group.call("Repeated Mandatory (Leg #{leg+1})", @structured_data[:repeated][leg][:mandatory])
+        if @control.dig(:rm, leg)
+          set_group.call("Repeated Mandatory (Leg #{leg+1})", @structured_data.dig(:repeated, leg, :mandatory))
         end
-        if @control[:rc][leg]
-          set_group.call("Repeated Conditional (Leg #{leg+1})", @structured_data[:repeated][leg][:conditional])
+        if @control.dig(:rc, leg)
+          set_group.call("Repeated Conditional (Leg #{leg+1})", @structured_data.dig(:repeated, leg, :conditional))
         end
-        if @control[:ra][leg] && @structured_data[:repeated][leg][:airline]
-          set_group.call("Repeated Airline Use (Leg #{leg+1})", @structured_data[:repeated][leg][:airline])
+        if @control.dig(:ra, leg)
+          set_group.call("Repeated Airline Use (Leg #{leg+1})", @structured_data.dig(:repeated, leg, :airline))
         end
       end
     end
-    if @control[:security] && @structured_data[:unique][:security]
-      set_group.call("Security", @structured_data[:unique][:security])
+    if @control[:security]
+      set_group.call("Security", @structured_data.dig(:unique, :security))
     end
     if @control[:unknown]
       set_group.call("Unknown", @structured_data[:unknown])
