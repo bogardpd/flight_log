@@ -40,36 +40,45 @@ class BoardingPass
   # Return an array of group titles and fields
   def ordered_groups
     output = Array.new
-    if @control[:um] && @structured_data[:unique] && @structured_data[:unique][:mandatory]
-      output.push({title: "Unique Mandatory", fields: @structured_data[:unique][:mandatory]})
+    set_group = proc{|title, fields|
+      begin
+        output.push({title: title, fields: fields})
+      rescue
+      end
+    }
+    if @control[:um]
+      set_group.call("Unique Mandatory", @structured_data[:unique][:mandatory])
     end
-    if @control[:rm] && @control[:rm][0] && @structured_data[:repeated][0][:mandatory]
-      output.push({title: "Repeated Mandatory (Leg 1)", fields: @structured_data[:repeated][0][:mandatory]})
+    if @control[:rm] && @control[:rm][0]
+      set_group.call("Repeated Mandatory (Leg 1)", @structured_data[:repeated][0][:mandatory])
     end
     if @control[:uc] && @structured_data[:unique][:conditional]
-      output.push({title: "Unique Conditional", fields: @structured_data[:unique][:conditional]})
+      set_group.call("Unique Conditional", @structured_data[:unique][:conditional])
     end
-    if @control[:rc] && @control[:rc][0] && @structured_data[:repeated][0][:conditional]
-      output.push({title: "Repeated Conditional (Leg 1)", fields: @structured_data[:repeated][0][:conditional]})
+    if @control[:rc] && @control[:rc][0]
+      set_group.call("Repeated Conditional (Leg 1)", @structured_data[:repeated][0][:conditional])
     end
-    if @control[:ra] && @control[:ra][0] && @structured_data[:repeated][0][:airline]
-      output.push({title: "Repeated Airline Use (Leg 1)", fields: @structured_data[:repeated][0][:airline]})
+    if @control[:ra] && @control[:ra][0]
+      set_group.call("Repeated Airline Use (Leg 1)", @structured_data[:repeated][0][:airline])
     end
     if @control[:legs] && @control[:legs] > 1
       (1..@control[:legs]-1).each do |leg|
-        if @control[:rc][leg] && @structured_data[:repeated][leg][:conditional]
-          output.push({title: "Repeated Conditional (Leg #{leg+1})", fields: @structured_data[:repeated][leg][:conditional]})
+        if @control[:rm][leg]
+          set_group.call("Repeated Mandatory (Leg #{leg+1})", @structured_data[:repeated][leg][:mandatory])
+        end
+        if @control[:rc][leg]
+          set_group.call("Repeated Conditional (Leg #{leg+1})", @structured_data[:repeated][leg][:conditional])
         end
         if @control[:ra][leg] && @structured_data[:repeated][leg][:airline]
-          output.push({title: "Repeated Airline Use (Leg #{leg+1})", fields: @structured_data[:repeated][leg][:airline]})
+          set_group.call("Repeated Airline Use (Leg #{leg+1})", @structured_data[:repeated][leg][:airline])
         end
       end
     end
     if @control[:security] && @structured_data[:unique][:security]
-      output.push({title: "Security", fields: @structured_data[:unique][:security]})
+      set_group.call("Security", @structured_data[:unique][:security])
     end
-    if @structured_data[:unknown]
-      output.push({title: "Unknown", fields: @structured_data[:unknown]})
+    if @control[:unknown]
+      set_group.call("Unknown", @structured_data[:unknown])
     end
       
     return output
