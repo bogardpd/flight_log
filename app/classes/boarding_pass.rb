@@ -40,33 +40,41 @@ class BoardingPass
   # Return an array of group titles and fields
   def ordered_groups
     output = Array.new
-    output.push({title: "Unique Mandatory", fields: @structured_data[:unique][:mandatory]})
-    output.push({title: "Repeated Mandatory (Leg 1)", fields: @structured_data[:repeated][0][:mandatory]})
-    if @control[:uc]
+    if @control[:um] && @structured_data[:unique] && @structured_data[:unique][:mandatory]
+      output.push({title: "Unique Mandatory", fields: @structured_data[:unique][:mandatory]})
+    end
+    if @control[:rm] && @control[:rm][0] && @structured_data[:repeated][0][:mandatory]
+      output.push({title: "Repeated Mandatory (Leg 1)", fields: @structured_data[:repeated][0][:mandatory]})
+    end
+    if @control[:uc] && @structured_data[:unique][:conditional]
       output.push({title: "Unique Conditional", fields: @structured_data[:unique][:conditional]})
     end
-    if @control[:rc][0]
+    if @control[:rc] && @control[:rc][0] && @structured_data[:repeated][0][:conditional]
       output.push({title: "Repeated Conditional (Leg 1)", fields: @structured_data[:repeated][0][:conditional]})
     end
-    if @control[:ra][0]
+    if @control[:ra] && @control[:ra][0] && @structured_data[:repeated][0][:airline]
       output.push({title: "Repeated Airline Use (Leg 1)", fields: @structured_data[:repeated][0][:airline]})
     end
-    if @control[:legs] > 1
+    if @control[:legs] && @control[:legs] > 1
       (1..@control[:legs]-1).each do |leg|
-        if @control[:rc][leg]
+        if @control[:rc][leg] && @structured_data[:repeated][leg][:conditional]
           output.push({title: "Repeated Conditional (Leg #{leg+1})", fields: @structured_data[:repeated][leg][:conditional]})
         end
-        if @control[:ra][leg]
+        if @control[:ra][leg] && @structured_data[:repeated][leg][:airline]
           output.push({title: "Repeated Airline Use (Leg #{leg+1})", fields: @structured_data[:repeated][leg][:airline]})
         end
       end
     end
-    if @control[:security]
+    if @control[:security] && @structured_data[:unique][:security]
       output.push({title: "Security", fields: @structured_data[:unique][:security]})
+    end
+    if @structured_data[:unknown]
+      output.push({title: "Unknown", fields: @structured_data[:unknown]})
     end
       
     return output
   end
+  
   
   # TO DELETE
     
@@ -492,37 +500,36 @@ class BoardingPass
       control = Hash.new
       # Set the invalid field and return control points:
       invalid = proc{|location|
-        control.store(:invalid, location)
+        control.store(:unknown, location)
         return control
       }
       # Get a hex field size and return a decimal if valid, or call invalid if not:
       get_field_size = proc{|location|
         hex = data[location,2]
-        invalid.call(location) if hex !~ /^[0-9A-F]{2}$/i
+        invalid.call(location+2) if hex !~ /^[0-9A-F]{2}$/i
         hex.to_i(16)
       }
       # Set conditional and airline control points:
       get_conditional_and_airline = lambda{|start_cond, len_cond_airline|
         rc_field_size = data[start_cond,2] # Field 17
-        invalid.call(start_cond) if rc_field_size !~ /^[0-9A-F]{2}$/i
+        control[:rc].push({start: start_cond, length: 2}) # Store in case next line fails
+        invalid.call(start_cond+2) if rc_field_size !~ /^[0-9A-F]{2}$/i
         len_cond = rc_field_size.to_i(16) + 2
         len_airline = len_cond_airline - len_cond
         invalid.call(start_cond) if len_airline < 0
-        control[:rc].push({start: start_cond, length: len_cond})
-        control[:ra].push(len_airline == 0 ? nil : {start: start_cond + len_cond, length:  len_airline})
+        control[:rc].last[:length] = len_cond
+        control[:ra].push(len_airline == 0 ? nil : {start: start_cond + len_cond, length: len_airline})
       }
       
       if data.length < LEN_UMRM0
         # Mandatory data is too short
-        control.store(:invalid, 0)
-        return control
+        invalid.call(0)
       end
       
       # NUMBER OF LEGS:
       legs = data[1]
       if legs !~ /^[1-9]{1}$/
-        control.store(:invalid, 1)
-        return control
+        invalid.call(0)
       end
       control.store(:legs, data[1].to_i)
       
@@ -545,9 +552,10 @@ class BoardingPass
         control[:rc].push(nil)
         control[:ra].push(nil)
       else
-        invalid.call(LEN_UMRM0) if len_ucrc0 < LEN_UCVERSIZE # Check that field 10 is available
+        invalid.call(LEN_UMRM0) if len_ucrc0 < LEN_UCVERSIZE # Check that field 10 is available #CHECK
+        control.store(:uc, {start: LEN_UMRM0, length: LEN_UCVERSIZE}) # Store in case next line fails
         len_uc = get_field_size.call(LEN_UMRM0+2) + LEN_UCVERSIZE
-        control.store(:uc, {start: LEN_UMRM0, length: len_uc})
+        control[:uc][:length] = len_uc
         
         # Check if RC0 exists:
         if len_ucrc0 >= control[:uc][:length] + 2
@@ -607,6 +615,7 @@ class BoardingPass
     # Returns a hash of possible fields. If a version is detected, only fields
     # available in that BCBP version will be included.
     def create_fields(version=0)
+      version ||= 0
       fields = Hash.new
       
       start = proc{|prev| prev[:start]+prev[:length]}
@@ -819,7 +828,7 @@ class BoardingPass
         len = field[:length]
       end
       
-      return @raw_data[start,len] if (!@control[:invalid] || @control[:invalid] >= (start + len))
+      return @raw_data[start,len] if (!@control[:unknown] || @control[:unknown] >= (start + len))
       
       return nil
     end
@@ -840,14 +849,19 @@ class BoardingPass
     #   airline
     #     field {field data}
     # ]
+    # unknown
     
     def build_structured_data(control, fields)
       populate_group = proc{|group, leg=nil|
         group_fields = Hash.new
         if control[group].present?
+          
           len_fields = 0
+          
           fields.select{|k,v| v[:group] == group}.each do |k, v|
             raw = get_raw(k, leg)
+            break if raw.length == 0 # If field is invalid, do not create this or any more fields
+            
             # __CHECK IF RAW FIELD LENGTH MATCHES EXPECTED FIELD LENGTH
             next if raw.nil?  
             field = Hash.new
@@ -867,33 +881,44 @@ class BoardingPass
             end
             group_fields.store(k, field)
             len_fields += raw.length
-            # __IF FIELD STARTS AFTER INVALID, THEN PUT IT IN A BLANK FIELD AT THE END
             # __CHECK IF THERE ARE UNACCOUNTED FOR PLACES AT END OF GROUP
           end
         end
         group_fields
       }
+
+      output = Hash.new
+      if !control[:unknown] || control[:unknown] >= LEN_UMRM0
+        # BUILD UNIQUE HASH
+        unique = Hash.new
+        um       = populate_group.call(:um)
+        unique.store(:mandatory,   um      )
+        uc       = populate_group.call(:uc)
+        unique.store(:conditional, uc      ) if uc.any?
+        security = populate_group.call(:security)
+        unique.store(:security,    security) if security.any?
       
-      # BUILD UNIQUE HASH
-      unique = Hash.new
-      unique.store(:mandatory,   populate_group.call(:um))
-      unique.store(:conditional, populate_group.call(:uc))
-      unique.store(:security,    populate_group.call(:security))
+        # BUILD REPEATED ARRAY
+        repeated = Array.new
+        (0..control[:legs]-1).each do |leg|
+          leg_hash = Hash.new
+          rm = populate_group.call(:rm, leg)
+          leg_hash.store(:mandatory,   rm)
+          rc = populate_group.call(:rc, leg)
+          leg_hash.store(:conditional, rc) if rc.any?
+          ra = populate_group.call(:ra, leg)
+          leg_hash.store(:airline,     ra) if ra.any?
+          repeated.push(leg_hash)
+        end
       
-      # BUILD REPEATED ARRAY
-      repeated = Array.new
-      (0..control[:legs]-1).each do |leg|
-        leg_hash = Hash.new
-        leg_hash.store(:mandatory,   populate_group.call(:rm, leg))
-        leg_hash.store(:conditional, populate_group.call(:rc, leg))
-        leg_hash.store(:airline,     populate_group.call(:ra, leg))
-        repeated.push(leg_hash)
+        # CREATE OUTPUT HASH
+        output.store(:unique, unique)
+        output.store(:repeated, repeated)
       end
       
-      # CREATE OUTPUT HASH
-      output = Hash.new
-      output.store(:unique, unique)
-      output.store(:repeated, repeated)
+      if @control[:unknown]
+        output.store(:unknown, {0 => {description: "Unknown Data", raw: @raw_data[@control[:unknown]..-1], interpretation: "Because this boarding pass has incorrect fields, we don't know what this data means."}})
+      end
       
       return output
     end
