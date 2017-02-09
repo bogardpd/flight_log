@@ -83,6 +83,10 @@ class BoardingPass
   
   
   # TO DELETE
+  
+  def test_output
+    return @fields
+  end
     
   # Return BCBP version number, or -1 if version not present.
   def bcbp_version
@@ -503,6 +507,9 @@ class BoardingPass
     # sizes). If there is invalid data, its starting position will be stored
     # in an 'invalid' key.
     def create_control_points(data)
+      # Things to check for:
+      
+      
       control = Hash.new
       # Set the invalid field and return control points:
       invalid = proc{|location|
@@ -863,13 +870,29 @@ class BoardingPass
         if control[group].present?
           
           len_fields = 0
+          # Determine group length:
+          len_group = leg.nil? ? control.dig(group, :length) : control.dig(group, leg, :length)
           
           fields.select{|k,v| v[:group] == group}.each do |k, v|
             raw = get_raw(k, leg)
-            break if raw.length == 0 # If field is invalid, do not create this or any more fields
+            next if raw.nil?
             
-            # __CHECK IF RAW FIELD LENGTH MATCHES EXPECTED FIELD LENGTH
-            next if raw.nil?  
+            len_fields += raw.length
+            
+            if fields.dig(k, :length) && raw.length < fields.dig(k, :length)
+              # Field was shortened, which means that it extended past the end
+              # of its group. Mark this field as unknown, and stop adding any
+              # further fields to this group.
+              break if raw.length == 0
+              unk = unknown_field(raw)
+              group_fields.store(unk.keys.first, unk.values.first)
+              break
+            elsif len_fields > len_group
+              # Field is past the end of the group, so stop adding fields to
+              # this group
+              break
+            end
+            
             field = Hash.new
             field.store(:description, v[:description])
             field.store(:raw, raw)
@@ -886,10 +909,18 @@ class BoardingPass
               end
             end
             group_fields.store(k, field)
-            len_fields += raw.length
-            # __CHECK IF THERE ARE UNACCOUNTED FOR PLACES AT END OF GROUP
+          end
+          
+          # If extra data exists after all the fields, put it in an unknown field.
+          if len_fields < len_group
+            start_group = leg.nil? ? control.dig(group, :start) : control.dig(group, leg, :start)
+            unk = unknown_field(@raw_data[start_group+len_fields,len_group-len_fields])
+            group_fields.store(unk.keys.first, unk.values.first)
           end
         end
+        
+        
+        
         group_fields
       }
 
@@ -923,10 +954,15 @@ class BoardingPass
       end
       
       if @control[:unknown]
-        output.store(:unknown, {0 => {description: "Unknown Data", raw: @raw_data[@control[:unknown]..-1], interpretation: "Because this boarding pass has incorrect fields, we don't know what this data means."}})
+        output.store(:unknown, unknown_field(@raw_data[@control[:unknown]..-1]))
       end
       
       return output
+    end
+    
+    # Returns a field hash in the format {0 => {description: "Unknown", raw: raw, interpretation: "..."}}
+    def unknown_field(raw)
+      return {0 => {description: "Unknown Data", raw: raw, interpretation: "We don't know what this data means."}}
     end
     
     

@@ -29,7 +29,23 @@ class BoardingPassTest < ActiveSupport::TestCase
     return interpreted
   end
   
-  class OrdinalTest < BoardingPassTest
+  class BoardingPassGeneralTest < BoardingPassTest
+    test "boarding pass with field split by end of group" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 DAYCLTAA 5163 346Y015D0027 147>217 MM5346BAA 11234567890029001001123456732AA AA XXXXXXX             X")
+      # Unknown field should be populated:
+      assert_equal("112345678900", pass.data.dig(:unique, :conditional, 0, :raw))
+      # Baggage Tag field should be nil:
+      assert_nil pass.data.dig(:unique, :conditional, 23, :raw)
+    end
+    
+    test "boarding pass with extra group data after fields" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 DAYCLTAA 5163 346Y015D0027 150>21A MM5346BAA              yy2F001001123456732AA AA XXXXXXX          0PCzzzzzzX")
+      assert_equal("yy", pass.data.dig(:unique, :conditional, 0, :raw))
+      assert_equal("zzzzzz", pass.data.dig(:repeated, 0, :conditional, 0, :raw))
+    end
+  end
+  
+  class BoardingPassOrdinalTest < BoardingPassTest
     
     test "ordinal flight with blank flight date" do
       pass = BoardingPass.new("M1DOE/JOHN            EABC123 DAYCLTAA 5163    Y015D0027 148>218 MM    BAA              29001001123456732AA AA XXXXXXX             X")
