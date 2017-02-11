@@ -85,7 +85,7 @@ class BoardingPass
   # TO DELETE
   
   def test_output
-    return @fields
+    return @control
   end
     
   # Return BCBP version number, or -1 if version not present.
@@ -507,9 +507,6 @@ class BoardingPass
     # sizes). If there is invalid data, its starting position will be stored
     # in an 'invalid' key.
     def create_control_points(data)
-      # Things to check for:
-      
-      
       control = Hash.new
       # Set the invalid field and return control points:
       invalid = proc{|location|
@@ -867,10 +864,9 @@ class BoardingPass
     def build_structured_data(control, fields)
       populate_group = proc{|group, leg=nil|
         group_fields = Hash.new
-        if control[group].present?
+        if control[group].present? && (leg.nil? || control.dig(group, leg).present?)
           
           len_fields = 0
-          # Determine group length:
           len_group = leg.nil? ? control.dig(group, :length) : control.dig(group, leg, :length)
           
           fields.select{|k,v| v[:group] == group}.each do |k, v|
@@ -889,7 +885,7 @@ class BoardingPass
               break
             elsif len_fields > len_group
               # Field is past the end of the group, so stop adding fields to
-              # this group
+              # this group.
               break
             end
             
@@ -918,8 +914,6 @@ class BoardingPass
             group_fields.store(unk.keys.first, unk.values.first)
           end
         end
-        
-        
         
         group_fields
       }
