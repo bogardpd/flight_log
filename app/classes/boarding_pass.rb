@@ -878,8 +878,7 @@ class BoardingPass
               # of its group. Mark this field as unknown, and stop adding any
               # further fields to this group.
               break if raw.length == 0
-              unk = unknown_field(raw)
-              group_fields.store(unk.keys.first, unk.values.first)
+              group_fields.merge!(unknown_field(raw))
               break
             elsif len_fields > len_group
               # Field is past the end of the group, so stop adding fields to
@@ -909,7 +908,7 @@ class BoardingPass
           if len_fields < len_group
             start_group = leg.nil? ? control.dig(group, :start) : control.dig(group, leg, :start)
             unk = unknown_field(@raw_data[start_group+len_fields,len_group-len_fields])
-            group_fields.store(unk.keys.first, unk.values.first)
+            group_fields.merge!(unk)
           end
         end
         
