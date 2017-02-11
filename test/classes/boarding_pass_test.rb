@@ -35,13 +35,20 @@ class BoardingPassTest < ActiveSupport::TestCase
       # Unknown field should be populated:
       assert_equal("112345678900", pass.data.dig(:unique, :conditional, 0, :raw))
       # Baggage Tag field should be nil:
-      assert_nil pass.data.dig(:unique, :conditional, 23, :raw)
+      refute_nil pass.data
     end
     
     test "boarding pass with extra group data after fields" do
       pass = BoardingPass.new("M1DOE/JOHN            EABC123 DAYCLTAA 5163 346Y015D0027 150>21A MM5346BAA              yy2F001001123456732AA AA XXXXXXX          0PCzzzzzzX")
       assert_equal("yy", pass.data.dig(:unique, :conditional, 0, :raw))
       assert_equal("zzzzzz", pass.data.dig(:repeated, 0, :conditional, 0, :raw))
+    end
+  end
+  
+  class BoardingPassControlTest < BoardingPassTest
+    test "boarding pass with no airline data" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^160MEUCICFMA7Cl4KV626AIdavAb/AS2+OmCesErB0giiK5E9xMAiEAkzmMderGbB7hrPG7JP6zAh4LbFRNCH4E4xG91c/ymaM=")
+      assert_nil(pass.data.dig(:repeated, 0, :airline))
     end
   end
   

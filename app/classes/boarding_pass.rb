@@ -27,8 +27,7 @@ class BoardingPass
     # New control point creation
     if @raw_data.present?
       @control = create_control_points(@raw_data)
-      @version = determine_version(@control, @raw_data)
-      @fields  = create_fields(@version)
+      @fields  = create_fields(@control[:version])
       @structured_data = build_structured_data(@control, @fields)
     end
   end
@@ -609,19 +608,18 @@ class BoardingPass
       # Size of all security fields:
       len_security = data.length - leg_start
       control.store(:security, len_security == 0 ? nil : {start: leg_start, length: len_security})
-        
-      return control
-    end
-    
-    # Returns the version number (or 0 if unknown).
-    def determine_version(control, data)
+      
+      # Determine the version number (or 0 if unknown):
       version = 0
       if control[:uc] && control[:uc][:length] >= 2
         # Data has something in the version field
         version += data[control[:uc][:start]+1].to_i
       end
+      control.store(:version, version)
+        
+      return control
     end
-    
+
     # Returns a hash of possible fields. If a version is detected, only fields
     # available in that BCBP version will be included.
     def create_fields(version=0)
