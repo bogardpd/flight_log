@@ -31,9 +31,9 @@ class BoardingPassTest < ActiveSupport::TestCase
   
   class BoardingPassGeneralTest < BoardingPassTest
     test "boarding pass with field split by end of group" do
-      pass = BoardingPass.new("M1DOE/JOHN            EABC123 DAYCLTAA 5163 346Y015D0027 147>217 MM5346BAA 11234567890029001001123456732AA AA XXXXXXX             X")
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              21279          0 B6 B6 1234567890          ^160MEUCICFMA7Cl4KV626AIdavAb/AS2+OmCesErB0giiK5E9xMAiEAkzmMderGbB7hrPG7JP6zAh4LbFRNCH4E4xG91c/ymaM=")
       # Unknown field should be populated:
-      assert_equal("112345678900", pass.data.dig(:unique, :conditional, 0, :raw))
+      assert_equal("1234567890  ", pass.data.dig(:repeated, 0, :conditional, 0, :raw))
       # Baggage Tag field should be nil:
       refute_nil pass.data
     end
@@ -46,9 +46,73 @@ class BoardingPassTest < ActiveSupport::TestCase
   end
   
   class BoardingPassControlTest < BoardingPassTest
+    test "boarding pass with invalid leg field" do
+      pass_text = "MZDOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^160MEUCICFMA7Cl4KV626AIdavAb/AS2+OmCesErB0giiK5E9xMAiEAkzmMderGbB7hrPG7JP6zAh4LbFRNCH4E4xG91c/ymaM="
+      pass = BoardingPass.new(pass_text)
+      assert_equal(pass_text, pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass shorter than mandatory length" do
+      pass_text = "M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 14"
+      pass = BoardingPass.new(pass_text)
+      assert_equal(pass_text, pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass with invalid hex in rm0" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 1ZZ>3180 M6344BB6              29279          0 B6 B6 1234567890          ^160MEUCICFMA7Cl4KV626AIdavAb/AS2+OmCesErB0giiK5E9xMAiEAkzmMderGbB7hrPG7JP6zAh4LbFRNCH4E4xG91c/ymaM=")
+      assert_equal(false, pass.data.dig(:repeated, 0, :mandatory, 6, :valid))
+      assert_equal(">3180 M6344BB6              29279          0 B6 B6 1234567890          ^160MEUCICFMA7Cl4KV626AIdavAb/AS2+OmCesErB0giiK5E9xMAiEAkzmMderGbB7hrPG7JP6zAh4LbFRNCH4E4xG91c/ymaM=", pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass with invalid hex in rc0" do
+      pass = BoardingPass.new("M2DOE/JOHN            EABC123 DAYORDAA 1234 123Y001A0001 14C>3181WW6122BAA 00011234560012G0141234567890 1AA AA 1234567890123    1PCABCDEDEF456 ORDSEAAA 5678 123Y002A0002 12D290011234567891 1AA AA 1234567890       1PCFG^164BJ50O43F9LVV9ZZNMUJR54172ML8XHESJO5K1CQ4NGTP3UMXCTYDQP2E763HH58CMA4PP2VJA8N19XPL7T0134QLG5L4OJWFK6H9")
+      assert_equal(false, pass.data.dig(:repeated, 0, :conditional, 17, :valid))
+      assert_equal("0141234567890 1AA AA 1234567890123    1PCABCDEDEF456 ORDSEAAA 5678 123Y002A0002 12D290011234567891 1AA AA 1234567890       1PCFG^164BJ50O43F9LVV9ZZNMUJR54172ML8XHESJO5K1CQ4NGTP3UMXCTYDQP2E763HH58CMA4PP2VJA8N19XPL7T0134QLG5L4OJWFK6H9", pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass with no version bracket" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147x3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefgh")
+      assert_nil(pass.data.dig(:unique, :security))
+      assert_equal("x3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefgh", pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass with version bracket too early" do
+      pass = BoardingPass.new("M1DOE/JOHN>2          EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefgh")
+      assert_nil(pass.data.dig(:unique, :security))
+      assert_equal(">3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefgh", pass.data.dig(:unknown, 0, :raw))
+    end
+    
     test "boarding pass with no airline data" do
       pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^160MEUCICFMA7Cl4KV626AIdavAb/AS2+OmCesErB0giiK5E9xMAiEAkzmMderGbB7hrPG7JP6zAh4LbFRNCH4E4xG91c/ymaM=")
       assert_nil(pass.data.dig(:repeated, 0, :airline))
+    end
+    
+    test "boarding pass with no caret" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          108abcdefgh")
+      assert_nil(pass.data.dig(:unique, :security))
+      assert_equal("108abcdefgh", pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass with first caret too early" do
+      pass = BoardingPass.new("M1DOE/JOHN^           EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefgh")
+      assert_nil(pass.data.dig(:unique, :security))
+      assert_equal("^108abcdefgh", pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass with first caret too late" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890           ^108abcdefgh")
+      assert_nil(pass.data.dig(:unique, :security))
+      assert_equal(" ^108abcdefgh", pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass with extra data after security" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefghij")
+      assert_equal("ij", pass.data.dig(:unknown, 0, :raw))
+    end
+    
+    test "boarding pass where not enough security data exists" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdef")
+      assert_equal("abcdef", pass.data.dig(:unknown, 0, :raw))
     end
   end
   
