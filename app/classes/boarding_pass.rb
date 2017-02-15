@@ -74,8 +74,15 @@ class BoardingPass
     if @control[:unknown]
       set_group.call("Unknown", @structured_data[:unknown])
     end
-      
-    return output
+    
+    # Check that raw data presence and order in output matches raw input
+    if output.map{|g| g[:fields].map{|k,v| v[:raw]}}.join == @raw_data
+      return output
+    else
+      raw_output = Array.new
+      raw_output.push({title: "Raw Data", fields: {0 => {description: "Raw", raw: @raw_data, interpretation: "Something went wrong and we couldn’t parse this data."}}})
+      return raw_output
+    end
   end
   
   

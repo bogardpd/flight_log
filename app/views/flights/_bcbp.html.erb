@@ -1,7 +1,5 @@
 <h2>Boarding Pass Data</h2>
 
-<%= boarding_pass.test_output %>
-
 <% boarding_pass.ordered_groups.each do |group| %>
   <h3><%= group[:title] %></h3>
   <%= render 'bcbp_group', group_fields: group[:fields] %>

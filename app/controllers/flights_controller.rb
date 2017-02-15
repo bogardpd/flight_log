@@ -326,7 +326,7 @@ class FlightsController < ApplicationController
   end
   
   def input_boarding_pass
-    @title = "Boarding Pass"
+    @title = "Boarding Pass Parser"
     @meta_description = "A boarding pass barcode parser."
     add_breadcrumb @title, boarding_pass_path
   end
