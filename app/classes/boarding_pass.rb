@@ -88,7 +88,7 @@ class BoardingPass
   # TO DELETE
   
   def test_output
-    return @fields[29].present?
+    return @control
   end
     
   # Return BCBP version number, or -1 if version not present.
@@ -944,9 +944,11 @@ class BoardingPass
           
           # If extra data exists after all the fields, put it in an unknown field.
           if len_fields < len_group
+            @control.store(:test, "len_fields #{len_fields} < len_group #{len_group}")
             start_group = leg.nil? ? control.dig(group, :start) : control.dig(group, leg, :start)
-            unk = unknown_field(@raw_data[start_group+len_fields,len_group-len_fields])
-            group_fields.merge!(unk)
+            data = @raw_data[start_group+len_fields,len_group-len_fields]
+            unk = unknown_field(data)
+            group_fields.merge!(unk) if data.length > 0
           end
         end
         
