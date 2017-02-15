@@ -21,4 +21,21 @@ module FlightsHelper
     return html
   end
   
+  # Accepts a type and returns an icon
+  def display_icon(type, raw, interpretation=nil)
+    return nil unless raw && type
+    path = {
+      :airline => lambda{|data|
+        airline_icon_path(data.strip)
+      },
+      :selectee => lambda{|data|
+        'tpc.png' if data.to_i == 3        
+      }
+    }
+    if path[type]
+      return image_tag(path[type].call(raw), class: 'airline_icon', title: interpretation).html_safe
+    end
+    return nil
+  end
+  
 end

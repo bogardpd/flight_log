@@ -9,7 +9,12 @@
         <% if v[:valid] == false %>
           <div class="interpreted-data">This is not the right type of data for this field.</div>
         <% elsif v[:interpretation] %>
-          <div class="interpreted-data"><%= v[:interpretation] %></div>
+          <div class="interpreted-data">
+            <% if v[:type] %>
+              <div class="interpreted-icon"><%= display_icon(v[:type], v[:raw], v[:interpretation]) %></div>
+            <% end %>
+            <%= v[:interpretation] %>
+          </div>
         <% end %>
       </td>
     </tr>

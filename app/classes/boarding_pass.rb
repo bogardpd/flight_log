@@ -33,7 +33,7 @@ class BoardingPass
   def data
     return @structured_data
   end
-  
+    
   # Return an array of group titles and fields
   def ordered_groups
     output = Array.new
@@ -84,7 +84,6 @@ class BoardingPass
       return raw_output
     end
   end
-  
   
   # TO DELETE
   
@@ -718,7 +717,7 @@ class BoardingPass
         interpretation: :interpret_document_type})
       fields[ 21] = (prev = {description: "Airline Designator of Boarding Pass Issuer",
         group: :uc, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code,
+        interpretation: :interpret_airline_code, type: :airline,
         validity: v[:airline_designator_optional]})
       fields[ 23] = (prev = {description: "Baggage Tag Licence Plate Number",
         group: :uc, start: start.call(prev), length: 13,
@@ -750,7 +749,7 @@ class BoardingPass
         validity: v[:airport_code_alpha]})
       fields[ 42] = (prev = {description: "Operating Carrier Designator",
         group: :rm, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code})
+        interpretation: :interpret_airline_code, type: :airline})
       fields[ 43] = (prev = {description: "Flight Number",
         group: :rm, start: start.call(prev), length:  5,
         interpretation: :interpret_flight_number,
@@ -795,17 +794,17 @@ class BoardingPass
         validity: /^([A-Z0-9]{10}| {10})$/i})
       fields[ 18] = (prev = {description: "Selectee Indicator",
         group: :rc, start: start.call(prev), length:  1,
-        interpretation: :interpret_selectee_indicator})
+        interpretation: :interpret_selectee_indicator, type: :selectee})
       fields[108] = (prev = {description: "International Documentation Verification",
         group: :rc, start: start.call(prev), length:  1,
         interpretation: :interpret_international_documentation})
       fields[ 19] = (prev = {description: "Marketing Carrier Designator",
         group: :rc, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code,
+        interpretation: :interpret_airline_code, type: :airline,
         validity: v[:airline_designator_optional]})
       fields[ 20] = (prev = {description: "Frequent Flier Airline Designator",
         group: :rc, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code,
+        interpretation: :interpret_airline_code, type: :airline,
         validity: v[:airline_designator_optional]})
       fields[236] = (prev = {description: "Frequent Flier Number",
         group: :rc, start: start.call(prev), length: 16})
@@ -937,6 +936,7 @@ class BoardingPass
                 else
                   field.store(:interpretation, method(v[:interpretation]).call(raw))
                 end
+                field.store(:type, v[:type]) if v[:type]
               end
             end
             group_fields.store(k, field)
