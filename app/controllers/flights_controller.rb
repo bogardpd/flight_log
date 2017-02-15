@@ -346,8 +346,9 @@ class FlightsController < ApplicationController
     add_breadcrumb "Boarding Pass", boarding_pass_path
     
     @boarding_pass = BoardingPass.new(Base64.urlsafe_decode64(params[:data]))
-    if @boarding_pass.leg_operating_carrier_designator(0)
-      bp_string = "#{@boarding_pass.leg_operating_carrier_designator(0)} #{@boarding_pass.leg_flight_number(0)} #{@boarding_pass.leg_from_city_airport_code(0)} ✈ #{@boarding_pass.leg_to_city_airport_code(0)}"
+    #if @boarding_pass.leg_operating_carrier_designator(0)
+    if @boarding_pass.data.dig(:repeated, 0, :mandatory, 42)
+      bp_string = "#{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 43, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 26, :raw)} ✈ #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)}"
       @title += ": #{bp_string}"
       add_breadcrumb bp_string, boarding_pass_path
     else

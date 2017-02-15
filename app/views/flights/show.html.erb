@@ -106,7 +106,7 @@
   <% end %>
 </table>
 
-<% if logged_in? && @boarding_pass.has_data? %>
+<% if logged_in? && @boarding_pass.data.present? %>
   <%= render "bcbp", boarding_pass: @boarding_pass %>
 <% end %>
 
