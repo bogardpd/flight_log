@@ -33,7 +33,8 @@ module FlightsHelper
       }
     }
     if path[type]
-      return image_tag(path[type].call(raw), class: 'airline_icon', title: interpretation).html_safe
+      path = path[type].call(raw)
+      return image_tag(path, class: 'airline_icon', title: interpretation).html_safe if path
     end
     return nil
   end
