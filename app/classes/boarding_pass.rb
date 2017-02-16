@@ -323,7 +323,8 @@ class BoardingPass
       prev = {start: 0, length: 0}
       fields[  7] = (prev = {description: "Operating Carrier PNR Code",
         group: :rm, start: start.call(prev), length:  7,
-        interpretation: :interpret_pnr_code})
+        interpretation: :interpret_pnr_code,
+        validity: /^(?=^.{7}$)[A-Z0-9]+ *$/i})
       fields[ 26] = (prev = {description: "From City Airport Code",
         group: :rm, start: start.call(prev), length:  3,
         interpretation: :interpret_airport_code,
@@ -334,11 +335,12 @@ class BoardingPass
         validity: v[:airport_code_alpha]})
       fields[ 42] = (prev = {description: "Operating Carrier Designator",
         group: :rm, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code, type: :airline})
+        interpretation: :interpret_airline_code, type: :airline,
+        validity: /^(?=^.{3}$) ?[A-Z]{2,3} ?$/i})
       fields[ 43] = (prev = {description: "Flight Number",
         group: :rm, start: start.call(prev), length:  5,
         interpretation: :interpret_flight_number,
-        validity: /^(?=.{5}$) {0,3}\d{1,4} {0,3}[A-Z ]$/i})
+        validity: /^(?=^.{5}$) {0,3}\d{1,4} {0,3}[A-Z ]$/i})
       fields[ 46] = (prev = {description: "Date of Flight",
         group: :rm, start: start.call(prev), length:  3,
         interpretation: :interpret_ordinal_date,
@@ -354,7 +356,7 @@ class BoardingPass
       fields[107] = (prev = {description: "Check-In Sequence Number",
         group: :rm, start: start.call(prev), length:  5,
         interpretation: :interpret_checkin_sequence_number,
-        validity: /^(?=.{5}$) {0,3}\d{1,4}[A-Z ]$/i})
+        validity: /^(?=^.{5}$) {0,3}\d{1,4}[A-Z ]$/i})
       fields[113] = (prev = {description: "Passenger Status",
         group: :rm, start: start.call(prev), length:  1,
         interpretation: :interpret_passenger_status})
