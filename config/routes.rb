@@ -35,9 +35,10 @@ Portfolio::Application.routes.draw do
   match '/routes'                           => 'routes#index',  via: :get
   match '/routes/edit/:airport1/:airport2'  => 'routes#edit',   via: :get, as: :edit_route
   
-  match '/boarding_pass'        => 'flights#input_boarding_pass', via: :get
-  match '/boarding_pass/:data'  => 'flights#show_boarding_pass',  via: :get, as: :show_boarding_pass
-  match '/build_boarding_pass'  => 'flights#build_boarding_pass', via: :get, as: :build_boarding_pass
+  match '/boarding-pass'        => 'flights#input_boarding_pass', via: :get
+  match '/build-boarding-pass'  => 'flights#build_boarding_pass', via: :get, as: :build_boarding_pass
+  match '/boarding-pass/results/:data'  => 'flights#show_boarding_pass',  via: :get, as: :show_boarding_pass
+  match '/boarding-pass/json(/:callback)/:data'  => 'flights#show_boarding_pass_json',  via: :get, as: :show_boarding_pass_json
   
   # Admin pages:
   match '/admin',                         to: 'admin#admin',                   via: :get

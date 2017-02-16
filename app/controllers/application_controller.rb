@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  
   include SessionsHelper
   @gcmap_used = false
   
@@ -207,6 +208,10 @@ protected
     
     return total_distance
     
+  end
+  
+  def json_request?
+    request.format.json?
   end
   
 end

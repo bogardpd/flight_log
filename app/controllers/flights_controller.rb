@@ -1,4 +1,5 @@
 class FlightsController < ApplicationController
+  protect_from_forgery except: :show_boarding_pass_json
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   add_breadcrumb 'Home', 'root_path'
   
@@ -333,7 +334,7 @@ class FlightsController < ApplicationController
   
   def build_boarding_pass
     if params[:data].present?
-      redirect_to show_boarding_pass_path(Base64.urlsafe_encode64(params[:data]))
+      redirect_to show_boarding_pass_path(params[:data])
     else
       flash[:alert] = "Boarding pass data cannot be blank."
       redirect_to boarding_pass_path
@@ -345,7 +346,7 @@ class FlightsController < ApplicationController
     @meta_description = "Results from the boarding pass barcode parser."
     add_breadcrumb "Boarding Pass", boarding_pass_path
     
-    @boarding_pass = BoardingPass.new(Base64.urlsafe_decode64(params[:data]))
+    @boarding_pass = BoardingPass.new(params[:data])
     #if @boarding_pass.leg_operating_carrier_designator(0)
     if @boarding_pass.data.dig(:repeated, 0, :mandatory, 42)
       bp_string = "#{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 43, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 26, :raw)} ✈ #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)}"
@@ -355,6 +356,15 @@ class FlightsController < ApplicationController
       add_breadcrumb "Results", boarding_pass_path
     end
     
+  end
+  
+  def show_boarding_pass_json
+    boarding_pass = BoardingPass.new(params[:data])
+    if params[:callback]
+      render :json => boarding_pass.data, :callback => params[:callback]
+    else
+      render :json => boarding_pass.data
+    end
   end
 
     

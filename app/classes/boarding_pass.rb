@@ -18,6 +18,10 @@ class BoardingPass
     end
   end
   
+  def raw
+    return @raw_data
+  end
+  
   def data
     return @structured_data
   end
