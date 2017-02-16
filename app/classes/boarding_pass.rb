@@ -1,9 +1,6 @@
 class BoardingPass
   include ActionView::Helpers::TextHelper
   
-#  LEN_UM = 23 # Length of Unique Mandatory fields
-#  LEN_RM = 37 # Length of each set of Repeated Mandatory fields
-  
   def initialize(boarding_pass_data, flight: nil)
     @raw_data = boarding_pass_data
     @flight = flight
@@ -469,7 +466,6 @@ class BoardingPass
     #     field {field data}
     # ]
     # unknown
-    
     def build_structured_data(control, fields)
       populate_group = proc{|group, leg=nil|
         group_fields = Hash.new
@@ -517,7 +513,6 @@ class BoardingPass
           
           # If extra data exists after all the fields, put it in an unknown field.
           if len_fields < len_group
-            @control.store(:test, "len_fields #{len_fields} < len_group #{len_group}")
             start_group = leg.nil? ? control.dig(group, :start) : control.dig(group, leg, :start)
             data = @raw_data[start_group+len_fields,len_group-len_fields]
             unk = unknown_field(data)
