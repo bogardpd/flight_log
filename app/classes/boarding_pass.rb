@@ -18,12 +18,23 @@ class BoardingPass
     end
   end
   
+  # Return false if any fields have valid equal to false or nil
+  def is_valid?
+    extract_detail(:valid).reduce(:&)
+  end
+  
   def raw
     return @raw_data
   end
   
   def data
     return @structured_data
+  end
+  
+  # Returns an array of a particular detail (:raw, :valid, etc.), in the order
+  # that it would show up in the boarding pass raw data.
+  def extract_detail(detail)
+    ordered_groups.map{|g| g[:fields].map{|k,v| v[detail.to_sym]}}.flatten
   end
     
   # Return an array of group titles and fields
@@ -213,7 +224,7 @@ class BoardingPass
         # security field validity checks.
         
         # Check if security "^" starts at correct spot
-        invalid.call(start_remainder) if data.index('^') != start_remainder
+        invalid.call(start_remainder) if (data.index('^') != start_remainder && data.index('>',len_um_rm+1) != start_remainder)
                   
         control.store(:security, {start: start_remainder, length: len_field(25,28,29)}) # Store in case next line fails
         len_security_data  = get_field_size.call(start_remainder+len_field(25,28),len_field(29))
@@ -327,7 +338,7 @@ class BoardingPass
       fields[ 43] = (prev = {description: "Flight Number",
         group: :rm, start: start.call(prev), length:  5,
         interpretation: :interpret_flight_number,
-        validity: /^\d{4}[A-Z ]$/i})
+        validity: /^(?=.{5}$) {0,3}\d{1,4} {0,3}[A-Z ]$/i})
       fields[ 46] = (prev = {description: "Date of Flight",
         group: :rm, start: start.call(prev), length:  3,
         interpretation: :interpret_ordinal_date,
@@ -343,7 +354,7 @@ class BoardingPass
       fields[107] = (prev = {description: "Check-In Sequence Number",
         group: :rm, start: start.call(prev), length:  5,
         interpretation: :interpret_checkin_sequence_number,
-        validity: /^\d{4}[A-Z ]$/i})
+        validity: /^(?=.{5}$) {0,3}\d{1,4}[A-Z ]$/i})
       fields[113] = (prev = {description: "Passenger Status",
         group: :rm, start: start.call(prev), length:  1,
         interpretation: :interpret_passenger_status})
@@ -404,7 +415,7 @@ class BoardingPass
       if version >= 3
         fields[ 25] = (prev = {description: "Beginning of Security Data",
           group: :security, start: start.call(prev), length:   1,
-          validity: /^\^$/})
+          validity: /^[\^>]$/})
         fields[ 28] = (prev = {description: "Type of Security Data",
           group: :security, start: start.call(prev), length:   1})
         fields[ 29] = (prev = {description: "Length of Security Data",

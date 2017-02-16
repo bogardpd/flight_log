@@ -32,6 +32,22 @@ class BoardingPassTest < ActiveSupport::TestCase
       assert_equal("yy", pass.data.dig(:unique, :conditional, 0, :raw))
       assert_equal("zzzzzz", pass.data.dig(:repeated, 0, :conditional, 0, :raw))
     end
+    
+    test "boarding pass with all valid fields is valid" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefgh")
+      assert_equal(true, pass.is_valid?)
+    end
+    
+    test "boarding pass with unknown field is not valid" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 BOSJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefgh ")
+      assert_equal(false, pass.is_valid?)
+    end
+    
+    test "boarding pass with invalid field is not valid" do
+      pass = BoardingPass.new("M1DOE/JOHN            EABC123 B1SJFKB6 0717 345P014C0010 147>3180 M6344BB6              29279          0 B6 B6 1234567890          ^108abcdefgh")
+      assert_equal(false, pass.is_valid?)
+    end
+    
   end
   
   class BoardingPassControlTest < BoardingPassTest

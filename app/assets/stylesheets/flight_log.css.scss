@@ -255,6 +255,45 @@ body {
 
 /* Boarding Passes */
 div.boarding-pass-fields {
+  
+  div.raw-data {
+    width: 21em;
+    font-family: $font-stack-monospace;
+    line-height: $line-height-raw-bcbp;
+    code {
+    	white-space: pre-wrap;
+    	white-space: -moz-pre-wrap;
+    	white-space: -o-pre-wrap;
+    	word-wrap: break-word;
+    }
+    span {
+      border: 1px solid $color-table-background;
+      background-color: $color-table-background-dark;
+      text-shadow: 1px 1px darken($color-table-background-dark, 10%);
+      padding: 0 3px;
+    }
+    span.invalid {
+      color: $color-text-error;
+      background-color: lighten($color-background-status-bad, 10%);
+      text-shadow: 1px 1px $color-background-status-bad;
+    }
+    span.unknown {
+      color: $color-text-warning;
+      background-color: lighten($color-background-status-unknown, 10%);
+      text-shadow: 1px 1px $color-background-status-unknown;
+    }
+  }
+  div.interpreted-data {
+    margin-top: 5px;
+    font-weight: 300;
+    white-space: normal;
+    line-height: $line-height-raw-bcbp;
+  }
+  div.interpreted-icon {
+    float: right;
+  }
+  
+  
   td {
     vertical-align: top;
   }
@@ -264,40 +303,15 @@ div.boarding-pass-fields {
   }
   td.data {
     width: 22em;
-    code {
-    	white-space: pre-wrap;
-    	white-space: -moz-pre-wrap;
-    	white-space: -o-pre-wrap;
-    	word-wrap: break-word;
-    }
-    div.raw-data {
-      width: 21em;
-      font-family: $font-stack-monospace;
-      line-height: $line-height-raw-bcbp;
-    }
-    div.interpreted-data {
-      margin-top: 5px;
-      font-weight: 300;
-      white-space: normal;
-      line-height: $line-height-raw-bcbp;
-    }
-    div.interpreted-icon {
-      float: right;
-    }
-    span {
-      border: 1px solid $color-table-background;
-      background-color: $color-table-background-dark;
-      text-shadow: 1px 1px darken($color-table-background-dark, 10%);
-      padding: 0 3px;
-    }
+    
   }
+  
   tr.invalid {
     td {
       color: $color-text-error;
     }
     span {
-      background-color: lighten($color-background-status-bad, 10%);
-      text-shadow: 1px 1px $color-background-status-bad;
+      @extend span.invalid
     }
   }
   tr.unknown {
@@ -305,8 +319,7 @@ div.boarding-pass-fields {
       color: $color-text-warning;
     }
     span {
-      background-color: lighten($color-background-status-unknown, 10%);
-      text-shadow: 1px 1px $color-background-status-unknown;
+      @extend span.unknown
     }
   }
 }
