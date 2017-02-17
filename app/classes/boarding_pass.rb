@@ -336,7 +336,7 @@ class BoardingPass
       fields[ 42] = (prev = {description: "Operating Carrier Designator",
         group: :rm, start: start.call(prev), length:  3,
         interpretation: :interpret_airline_code, type: :airline,
-        validity: /^(?=^.{3}$) ?[A-Z]{2,3} ?$/i})
+        validity: /^(?=^.{3}$) ?[A-Z0-9]{2,3} ?$/i})
       fields[ 43] = (prev = {description: "Flight Number",
         group: :rm, start: start.call(prev), length:  5,
         interpretation: :interpret_flight_number,
@@ -373,7 +373,7 @@ class BoardingPass
         validity: v[:hex]})
       fields[142] = (prev = {description: "Airline Numeric Code",
         group: :rc, start: start.call(prev), length:  3,
-        interpretation: :interpret_airline_code,
+        interpretation: :interpret_airline_code, type: :airline,
         validity: /^(\d{3}| {3})$/})
       fields[143] = (prev = {description: "Document Form/Serial Number",
         group: :rc, start: start.call(prev), length: 10,
@@ -605,17 +605,21 @@ class BoardingPass
     
     def interpret_airline_code(raw)
       return nil unless raw.present?
+
       if raw =~ /^\d{3}$/
         # Airline numeric code
-        return nil
+        airline = Airline.where(numeric_code: raw) 
       else
+        # Airline IATA code
         airline = Airline.where(iata_airline_code: raw.strip()) 
-        if airline.length > 0
-          return airline.first.airline_name
-        else
-          return nil
-        end
       end
+
+      if airline.length > 0
+        return airline.first.airline_name
+      else
+        return nil
+      end
+
     end
     
     def interpret_airport_code(raw)

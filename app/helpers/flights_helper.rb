@@ -26,7 +26,12 @@ module FlightsHelper
     return nil unless raw && type
     path = {
       :airline => lambda{|data|
-        airline_icon_path(data.strip)
+        if raw =~ /^\d{3}$/
+          airline = Airline.where(numeric_code: data)
+          airline_icon_path(airline.first.iata_airline_code) if airline.length > 0
+        else
+          airline_icon_path(data.strip)
+        end
       },
       :selectee => lambda{|data|
         'tpc.png' if data.to_i == 3        
