@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161118234442) do
+ActiveRecord::Schema.define(version: 20170217025129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20161118234442) do
     t.boolean  "is_only_operator"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.string   "numeric_code"
   end
 
   create_table "airports", force: :cascade do |t|

@@ -239,7 +239,7 @@ class AirlinesController < ApplicationController
   private
   
     def airline_params
-      params.require(:airline).permit(:iata_airline_code, :airline_name, :is_only_operator)
+      params.require(:airline).permit(:iata_airline_code, :airline_name, :numeric_code, :is_only_operator)
     end
   
 end

@@ -1,4 +1,4 @@
-<div id="title_info"><%= iata_airline_code_display(@airline.iata_airline_code) %><%= image_tag(airline_icon_path(@airline.iata_airline_code), :title => @airline.airline_name, :class => 'airline_icon')%></div>
+<div id="title_info"><%= iata_airline_code_display(@airline.iata_airline_code) %><%= "&ensp; #{@airline.numeric_code}".html_safe if @airline.numeric_code %><%= image_tag(airline_icon_path(@airline.iata_airline_code), :title => @airline.airline_name, :class => 'airline_icon')%></div>
 
 <h1><%= @airline.airline_name %></h1>
 
