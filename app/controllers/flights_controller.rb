@@ -349,7 +349,7 @@ class FlightsController < ApplicationController
     @boarding_pass = BoardingPass.new(params[:data])
     #if @boarding_pass.leg_operating_carrier_designator(0)
     if @boarding_pass.data.dig(:repeated, 0, :mandatory, 42)
-      bp_string = "#{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 43, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 26, :raw)} ✈ #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)}"
+      bp_string = "#{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 43, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 26, :raw)} ✈ #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 38, :raw)}"
       @title += ": #{bp_string}"
       add_breadcrumb bp_string, boarding_pass_path
     else
