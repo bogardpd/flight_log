@@ -593,7 +593,7 @@ class BoardingPass
     
     # Returns a field hash in the format {0 => {description: "Unknown", raw: raw, interpretation: "..."}}
     def unknown_field(raw)
-      return {0 => {description: "Unknown Data", raw: raw, interpretation: "We don't know what this data means."}}
+      return {0 => {description: "Unknown Data", raw: raw, interpretation: "We don’t know what this data means."}}
     end
     
     
