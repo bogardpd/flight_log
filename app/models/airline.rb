@@ -5,7 +5,7 @@ class Airline < ActiveRecord::Base
     
   validates :iata_airline_code, :presence => true, :length => { :minimum => 2 }, :uniqueness => { :case_sensitive => false }
   validates :airline_name, :presence => true
-  validates :numeric_code, :length => { :is => 3 }
+  validates :numeric_code, :length => { :is => 3, :allow_blank => true }
   
   
   def format_name
