@@ -402,7 +402,7 @@ class BoardingPass
         group: :rc, start: start.call(prev), length:  3,
         interpretation: :interpret_free_baggage_allowance,
         validity: /^(\dPC|\d{2}[KL]| {3})$/i})
-      if version >= 5
+      if version >= 3 # Standard doesn't introduce this until v5, but UA appears to use this even with v3 passes
         fields[254] = (prev = {description: "Fast Track",
           group: :rc, start: start.call(prev), length:  1})
       end
