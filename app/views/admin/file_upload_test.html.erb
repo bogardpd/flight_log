@@ -1,6 +1,0 @@
-<h1>File upload test</h1>
-
-<%= form_tag({controller: "admin", action: "file_upload_test_process"}, multipart: true) do %>
-  <p><%= file_field_tag :uploaded_file %></p>
-  <p><p><%= submit_tag "Submit", name: nil %></p>
-<% end %>

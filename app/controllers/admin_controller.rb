@@ -20,13 +20,4 @@ class AdminController < ApplicationController
     @pass_flights = Flight.select(:id, :boarding_pass_data).where("boarding_pass_data IS NOT NULL").order(:departure_utc)
   end
   
-  def file_upload_test
-    
-  end
-  
-  def file_upload_test_process
-    @data = ""
-    File.foreach(params[:uploaded_file].path, :encoding => 'utf-8'){|f| @data += f}
-  end
-  
 end

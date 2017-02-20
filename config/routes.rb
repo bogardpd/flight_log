@@ -44,8 +44,6 @@ Portfolio::Application.routes.draw do
   match '/admin',                         to: 'admin#admin',                   via: :get
   match '/admin/boarding-pass-validator', to: 'admin#boarding_pass_validator', via: :get, as: :boarding_pass_validator
   match '/admin/annual-summary',          to: 'admin#annual_flight_summary',   via: :get, as: :annual_flight_summary
-  match '/admin/file-upload-test', to: 'admin#file_upload_test', via: :get, as: :file_upload_test
-  match '/admin/file-upload-test-process', to: 'admin#file_upload_test_process', via: :post, as: :file_upload_test_process
   
   # Image proxy:
   match "/images/gcmap/:airport_options/:query/:check/map.gif" => 'pages#gcmap_image_proxy', as: :gcmap_image, via: [:get]
