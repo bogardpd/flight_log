@@ -25,7 +25,8 @@ class AdminController < ApplicationController
   end
   
   def file_upload_test_process
-    @data = params[:uploaded_file].read
+    @data = ""
+    File.foreach(params[:uploaded_file].path, :encoding => 'utf-8'){|f| @data += f}
   end
   
 end
