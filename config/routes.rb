@@ -18,8 +18,8 @@ Portfolio::Application.routes.draw do
   match '/login'  => 'sessions#new',      via: :get
   match '/logout' => 'sessions#destroy',  via: :delete
 
-  match '/flights/from/:start_date/to/:end_date', :to => 'flights#show_date_range', :as => :show_date_range, :via => [:get]
-  match '/flights/year/:year', :to => 'flights#show_date_range', :as => :show_year, :via => [:get]
+  match '/flights/from/:start_date/to/:end_date' => 'flights#show_date_range', as: :show_date_range, via: :get
+  match '/flights/year/:year' => 'flights#show_date_range', as: :show_year, via: :get
   
   match '/trips/:trip/section/:section' => 'trips#show_section', :as => :show_section, :via => [:get]
 
@@ -35,10 +35,13 @@ Portfolio::Application.routes.draw do
   match '/routes'                           => 'routes#index',  via: :get
   match '/routes/edit/:airport1/:airport2'  => 'routes#edit',   via: :get, as: :edit_route
   
+  # Boarding pass pages:
   match '/boarding-pass'        => 'flights#input_boarding_pass', via: :get
   match '/build-boarding-pass'  => 'flights#build_boarding_pass', via: :get, as: :build_boarding_pass
   match '/boarding-pass/results/:data'  => 'flights#show_boarding_pass',  via: :get, as: :show_boarding_pass
-  match '/boarding-pass/json(/:callback)/:data'  => 'flights#show_boarding_pass_json',  via: :get, as: :show_boarding_pass_json
+  match '/boarding-pass/json(/:callback)/:data'  => 'flights#show_boarding_pass_json',  via: :get, as:
+   :show_boarding_pass_json
+  match '/boarding-pass/email' => 'flights#index_emails', as: :index_emails, via: :get
   
   # Admin pages:
   match '/admin',                         to: 'admin#admin',                   via: :get

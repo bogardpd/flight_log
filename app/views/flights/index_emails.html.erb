@@ -1,0 +1,8 @@
+<h1>Email Test</h1>
+
+<% @emails.each do |email| %>
+<p>
+  <b><%= email.dig(:attr, 'ENVELOPE', :sender, 0, :name) %></b><br/>
+  <%= email.dig(:attr, 'ENVELOPE', :subject) %>
+</p>
+<% end %>

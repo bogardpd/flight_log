@@ -326,6 +326,34 @@ class FlightsController < ApplicationController
     redirect_to tails_path
   end
   
+  def index_emails
+    @title = "Import Boarding Passes"
+    add_breadcrumb 'Flights', 'flights_path'
+    add_breadcrumb @title, index_emails_path
+    
+    # Connect to email address
+    
+    begin
+      require 'net/imap'
+      imap = Net::IMAP.new('imap.gmail.com',993,true)
+      imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
+      imap.select('INBOX')
+      all_mail = imap.uid_search('ALL')
+      @emails = imap.uid_fetch(all_mail, "ENVELOPE")
+      imap.logout
+    rescue
+      @emails = nil
+    end
+    
+    
+    
+    # Connect to gmail
+    #Gmail.connect!(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD']) do |gmail|
+    #  @emails = gmail.inbox.emails
+    #end
+    
+  end
+  
   def input_boarding_pass
     @title = "Boarding Pass Parser"
     @meta_description = "A boarding pass barcode parser."
