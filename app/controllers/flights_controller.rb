@@ -335,22 +335,19 @@ class FlightsController < ApplicationController
     
     begin
       require 'net/imap'
+      require 'mail'
       imap = Net::IMAP.new('imap.gmail.com',993,true)
       imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
       imap.select('INBOX')
       all_mail = imap.uid_search('ALL')
-      @emails = imap.uid_fetch(all_mail, "ENVELOPE")
+      bodies   = imap.uid_fetch(all_mail, 'RFC822').map{|m| Mail.new(m.attr['RFC822'])}
+      @attachments = bodies.select{|body| body.attachments.present?}.map{|body| body.attachments}.flatten
+      
       imap.logout
     rescue
       @emails = nil
     end
     
-    
-    
-    # Connect to gmail
-    #Gmail.connect!(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD']) do |gmail|
-    #  @emails = gmail.inbox.emails
-    #end
     
   end
   
