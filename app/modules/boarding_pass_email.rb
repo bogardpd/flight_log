@@ -1,12 +1,16 @@
 module BoardingPassEmail
   
   TYPE_PKPASS = "application/vnd.apple.pkpass"
+  FILENAME_PASS = "pass.json"
+  
+  require 'net/imap'
+  require 'mail'
+  require 'zip'
   
   def self.process_attachments
    
     #begin
-      require 'net/imap'
-      require 'mail'
+      
       imap = Net::IMAP.new('imap.gmail.com',993,true)
       imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
       imap.select('INBOX')
@@ -41,8 +45,12 @@ module BoardingPassEmail
         output = attachments.map.with_index{|attachment, index|
           File.open("#{dir}/#{index}.zip", 'wb') do |file|
             file.write(attachment.body.decoded)
-            # TODO: Unzip and extract JSON
-            file.path
+            Zip::File.open(file.path) do |zip_file|
+              if zip_file.glob(FILENAME_PASS).any?
+                pass = zip_file.glob(FILENAME_PASS).first.get_input_stream.read.force_encoding('UTF-8')
+                JSON.parse(pass)
+              end
+            end   
           end
         }
       }
