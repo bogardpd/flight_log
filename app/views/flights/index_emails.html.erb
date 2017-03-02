@@ -1,7 +1,11 @@
 <h1>Email Test</h1>
 
-<% @attachments.each do |a| %>
-<p>
-  <%= a %>
-</p>
+<% if @attachments %>
+  <% @attachments.each do |a| %>
+  <p>
+    <%= a %>
+  </p>
+  <% end %>
+<% else %>
+<p>Could not find attachments</p>
 <% end %>
