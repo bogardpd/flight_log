@@ -331,32 +331,8 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb @title, index_emails_path
     
-    # Connect to email address
-    
-    begin
-      require 'net/imap'
-      require 'mail'
-      imap = Net::IMAP.new('imap.gmail.com',993,true)
-      imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
-      imap.select('INBOX')
-      all_mail    = imap.uid_search('ALL')
-      bodies      = imap.uid_fetch(all_mail, 'RFC822').map{|m| Mail.new(m.attr['RFC822'])}
-      attachments = bodies.select{|body| body.attachments.present?}.map{|body| body.attachments}.flatten
-      
-      @attachments = attachments
-      
-      attachments.map.with_index{|attachment, index|
-        Dir.mkdir(File.join("tmp/attachments", "#{index}"), 0700) unless File.exists("tmp/attachments/#{index}")
-        File.open("tmp/attachments/#{index}/#{attachment.filename}", 'wb') do |file|
-          file.write(attachment.body.decoded)
-        end
-      }
-      
-      imap.logout
-    rescue
-      @emails = nil
-    end
-    
+    # Get attachments from boarding pass emails
+    @attachments = BoardingPassEmail::process_attachments
     
   end
   
