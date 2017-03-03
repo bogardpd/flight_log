@@ -332,7 +332,12 @@ class FlightsController < ApplicationController
     add_breadcrumb @title, index_emails_path
     
     # Get attachments from boarding pass emails
-    @attachments = BoardingPassEmail::process_attachments
+    begin
+      @attachments = BoardingPassEmail::process_attachments
+    rescue SocketError => details
+      @attachments = nil
+      @error = "Could not connect to email (#{details})"
+    end
     
   end
   

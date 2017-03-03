@@ -9,33 +9,42 @@ module BoardingPassEmail
   
   def self.process_attachments
    
-    #begin
-      
-      imap = Net::IMAP.new('imap.gmail.com',993,true)
-      imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
-      imap.select('INBOX')
-      all_mail = imap.uid_search('ALL')
-      bodies   = imap.uid_fetch(all_mail, 'RFC822').map{|m| Mail.new(m.attr['RFC822'])}
-      passes   = pkpass_attachments(bodies)
-      passjson = extract_passes(passes)
-      
-      #output = passes.map{|attachment| attachment.content_type}
-      output = passjson
-      
-      imap.logout
-      #rescue
-      #output = nil
-      #end
-    return output
+    imap = Net::IMAP.new('imap.gmail.com',993,true)
+    # TODO: Login with token instead
+    imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
+    imap.select('INBOX')
+    
+    passes = imap.uid_search('ALL').map{|uid| process_message(imap, uid)}
+    
+    imap.logout
+    
+    return passes.compact.flatten(1)
   end
   
   private
-    
-    # Accepts an array of message bodies and returns all pkpass attachments
-    def self.pkpass_attachments(bodies)
-      attachments = bodies.select{|body| body.attachments.present?}.map{|body| body.attachments}.flatten
-      pkpass_atch = attachments.select{|attachment| attachment.content_type.start_with?(TYPE_PKPASS)}
-      return pkpass_atch
+  
+    # Accepts an imap and UID, finds any pkpass attachments and stores them in a
+    # database table. Deletes the email if no pkpass attachments or if database
+    # store was successful. Returns an array of JSON strings or nil.
+    def self.process_message(imap, uid)
+      no_pkpass = Proc.new {|imap, uid|
+        imap.uid_store(uid, "+FLAGS", [:deleted])
+        return nil
+      }
+      
+      body = Mail.new(imap.uid_fetch(uid, 'RFC822').first.attr['RFC822'])
+      no_pkpass.call(imap, uid) unless body.attachments.present? # Email has no attachments
+      
+      pkpasses = body.attachments.select{|attachment| attachment.content_type.start_with?(TYPE_PKPASS)}
+      no_pkpass.call(imap, uid) unless pkpasses.any? # None of the attachments are type .pkpass
+   
+      pass_data = extract_passes(pkpasses)
+      pass_data.each do |pass|
+        # TODO: Check if pass already exists
+        # TODO: Store in database
+      end
+      # TODO: Delete email if store successful
+      
     end
     
     # Accepts an array of pkpass attachments and returns an array of pass.json data
@@ -48,7 +57,6 @@ module BoardingPassEmail
             Zip::File.open(file.path) do |zip_file|
               if zip_file.glob(FILENAME_PASS).any?
                 pass = zip_file.glob(FILENAME_PASS).first.get_input_stream.read.force_encoding('UTF-8')
-                JSON.parse(pass)
               end
             end   
           end
