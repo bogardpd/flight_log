@@ -8,12 +8,13 @@ module BoardingPassEmail
   require 'zip'
   
   def self.process_attachments
-   
     imap = Net::IMAP.new('imap.gmail.com',993,true)
     # TODO: Login with token instead
     imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
     imap.select('INBOX')
     
+    delete_old_emails(imap)
+        
     passes = imap.uid_search('ALL').map{|uid| process_message(imap, uid)}
     
     imap.logout
@@ -22,7 +23,18 @@ module BoardingPassEmail
   end
   
   private
-  
+    
+    # Deletes emails over 1 week old
+    def self.delete_old_emails(imap)
+      old = imap.uid_search(["BEFORE", 1.week.ago.strftime("%d-%b-%Y")])
+      if old.any?
+        imap.uid_store(old, "+FLAGS", [:deleted])
+        imap.expunge()
+      end
+      return old
+    end
+
+    
     # Accepts an imap and UID, finds any pkpass attachments and stores them in a
     # database table. Deletes the email if no pkpass attachments or if database
     # store was successful. Returns an array of JSON strings or nil.
