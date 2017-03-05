@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true, :length => { :maximum => 50 }
   validates :password, :presence => true, :length => { :minimum => 6 }
   validates :password_confirmation, :presence => true
+  validates :email, :presence => true
   
   # Returns the hash digest of the given string.
   def User.digest(string)

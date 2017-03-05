@@ -41,7 +41,7 @@ module BoardingPassEmail
       pass_data = extract_passes(pkpasses)
       pass_data.each do |pass|
         # TODO: Check if pass already exists
-        # TODO: Store in database
+        # TODO: Store in database (field serialize JSON)
       end
       # TODO: Delete email if store successful
       
