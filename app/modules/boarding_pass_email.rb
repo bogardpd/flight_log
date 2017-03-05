@@ -7,15 +7,26 @@ module BoardingPassEmail
   require 'mail'
   require 'zip'
   
-  def self.process_attachments
+  include SessionsHelper
+  
+  # Accepts a list of email addresses, and process attachments from those
+  # senders. Also deletes any emails older than 1 week.
+  def self.process_attachments(valid_emails)
     imap = Net::IMAP.new('imap.gmail.com',993,true)
     # TODO: Login with token instead
     imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
     imap.select('INBOX')
     
     delete_old_emails(imap)
-        
-    passes = imap.uid_search('ALL').map{|uid| process_message(imap, uid)}
+    
+    if valid_emails.length == 0
+      return nil
+    elsif valid_emails.length == 1
+      emails_from_user = imap.uid_search("FROM #{valid_emails[0]}")
+    else
+      emails_from_user = imap.uid_search("OR FROM #{valid_emails[0]} FROM #{valid_emails[1]}")
+    end
+    passes = emails_from_user.map{|uid| process_message(imap, uid)}
     
     imap.logout
     

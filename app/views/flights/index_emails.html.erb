@@ -1,13 +1,13 @@
 <h1>Email Test</h1>
 
-<div><%= current_user.all_emails %></div>
-
 <% if @attachments %>
+<table border="1">
   <% @attachments.each do |a| %>
-  <p>
+  <tr><td>
     <%= a %>
-  </p>
+  </td></tr>
   <% end %>
+</table>
 <% else %>
   <div class="error"><%= @error %></div>
 <% end %>

@@ -333,7 +333,7 @@ class FlightsController < ApplicationController
     
     # Get attachments from boarding pass emails
     begin
-      @attachments = BoardingPassEmail::process_attachments
+      @attachments = BoardingPassEmail::process_attachments(current_user.all_emails)
     rescue SocketError => details
       @attachments = nil
       @error = "Could not connect to email (#{details})"
