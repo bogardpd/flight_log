@@ -1,5 +1,7 @@
 <h1>Email Test</h1>
 
+<div><%= current_user.all_emails %></div>
+
 <% if @attachments %>
   <% @attachments.each do |a| %>
   <p>

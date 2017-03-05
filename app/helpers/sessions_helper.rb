@@ -15,7 +15,6 @@ module SessionsHelper
   
   def current_user
     @current_user ||= User.find_by_remember_token(cookies[:remember_token])
-    #@current_user = User.find_by_remember_token(params[:remember_token])
   end
   
   def log_out

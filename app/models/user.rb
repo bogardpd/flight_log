@@ -14,6 +14,11 @@ class User < ActiveRecord::Base
     BCrypt::Password.create(string, cost: cost)
   end
   
+  # Returns both emails associated with a user.
+  def all_emails
+    return [self.email, self.alternate_email]
+  end
+  
   private
     
     def create_remember_token
