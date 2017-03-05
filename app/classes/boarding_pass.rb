@@ -1,3 +1,7 @@
+###############################################################################
+# Defines a Boarding Pass based on IATA BarCoded Boarding Pass (BCBP) data.   #
+###############################################################################
+
 class BoardingPass
   include ActionView::Helpers::TextHelper
   

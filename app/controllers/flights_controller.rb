@@ -302,7 +302,6 @@ class FlightsController < ApplicationController
     @flights = @flights.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
-    
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     @title = params[:tail_number]
     @meta_description = "Maps and lists of Paul Bogardʼs flights on tail number #{params[:tail_number]}."
@@ -333,9 +332,10 @@ class FlightsController < ApplicationController
     
     # Get attachments from boarding pass emails
     begin
-      @attachments = BoardingPassEmail::process_attachments(current_user.all_emails)
+      attachments = BoardingPassEmail::process_attachments(current_user.all_emails)
+      @passes = attachments.map{|a| PKPass.new(a)}
     rescue SocketError => details
-      @attachments = nil
+      @passes = nil
       @error = "Could not connect to email (#{details})"
     end
     

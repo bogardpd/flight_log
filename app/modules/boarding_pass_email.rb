@@ -13,7 +13,6 @@ module BoardingPassEmail
   # senders. Also deletes any emails older than 1 week.
   def self.process_attachments(valid_emails)
     imap = Net::IMAP.new('imap.gmail.com',993,true)
-    # TODO: Login with token instead
     imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
     imap.select('INBOX')
     

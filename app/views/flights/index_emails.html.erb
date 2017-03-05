@@ -1,10 +1,10 @@
 <h1>Email Test</h1>
 
-<% if @attachments %>
-<table border="1">
-  <% @attachments.each do |a| %>
+<% if @passes %>
+<table class="flightlog">
+  <% @passes.each do |pass| %>
   <tr><td>
-    <%= a %>
+    <%= pass.identifier %>
   </td></tr>
   <% end %>
 </table>
