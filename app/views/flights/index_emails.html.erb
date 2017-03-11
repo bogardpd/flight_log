@@ -3,9 +3,10 @@
 <% if @passes %>
 <table class="flightlog">
   <% @passes.each do |pass| %>
-  <tr><td>
-    <%= pass %>
-  </td></tr>
+  <tr>
+    <td><%= pass.serial_number %></td>
+    <td><%= pass.barcode %></td>
+  </tr>
   <% end %>
 </table>
 <% else %>
