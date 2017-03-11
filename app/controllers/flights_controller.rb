@@ -333,11 +333,12 @@ class FlightsController < ApplicationController
     # Get attachments from boarding pass emails
     begin
       attachments = BoardingPassEmail::process_attachments(current_user.all_emails)
-      @passes = attachments.map{|a| PKPass.new(pass_json: a)}
     rescue SocketError => details
       @passes = nil
       @error = "Could not connect to email (#{details})"
     end
+    
+    @passes = PKPass.all
     
   end
   

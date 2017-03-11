@@ -65,12 +65,21 @@ module BoardingPassEmail
    
       pass_data = extract_passes(pkpasses)
       pass_data.each do |pass|
-        # TODO: Check if pass already exists
-        
-        # TODO: Store in database
+        new_pass = PKPass.new(pass_json: pass, received: message_datetime)
+        existing_record = PKPass.where(:serial_number => new_pass.serial_number).first
+        if existing_record.present?
+          if new_pass.received > existing_record.received
+            success = existing_record.update_attributes(:pass_json => new_pass.pass_json, :serial_number => new_pass.serial_number, :received => new_pass.received)
+          else
+            success = true
+          end
+        else
+          success = new_pass.save
+        end
+        imap.uid_store(uid, "+FLAGS", [:deleted]) if success
       end
-      # TODO: Delete email if store successful
       
+      return pass_data
     end
     
     # Accepts an array of pkpass attachments and returns an array of pass.json data

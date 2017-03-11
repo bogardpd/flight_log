@@ -2,13 +2,17 @@
 
 <% if @passes %>
 <table class="flightlog">
+  <tr>
+    <th>Serial Number</th>
+    <th>Received (UTC)</th>
+  </tr>
   <% @passes.each do |pass| %>
   <tr>
     <td><%= pass.serial_number %></td>
-    <td><%= pass.barcode %></td>
+    <td><%= pass.received %></td>
   </tr>
   <% end %>
 </table>
-<% else %>
+<% elsif @error %>
   <div class="error"><%= @error %></div>
 <% end %>

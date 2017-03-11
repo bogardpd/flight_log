@@ -5,11 +5,8 @@
 class PKPass < ApplicationRecord
   after_initialize :set_values
   
-  validates :serial_number, :presence => true
-  
-  def create_or_update(pass, date)
-    
-  end
+  validates :serial_number, :presence => true, :uniqueness => true
+  validates :pass_json, :presence => true
   
   # Returns the pass's barcode string
   def barcode
