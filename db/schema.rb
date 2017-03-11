@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170305173931) do
+ActiveRecord::Schema.define(version: 20170311212442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,15 @@ ActiveRecord::Schema.define(version: 20170305173931) do
     t.integer  "codeshare_airline_id"
     t.text     "boarding_pass_data"
     t.integer  "aircraft_family_id"
+  end
+
+  create_table "pk_passes", force: :cascade do |t|
+    t.string   "serial_number"
+    t.text     "pass_json"
+    t.datetime "received"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["serial_number"], name: "index_pk_passes_on_serial_number", using: :btree
   end
 
   create_table "routes", force: :cascade do |t|

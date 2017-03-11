@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  serial_number: MyString
+  pass_json: MyText
+  received: 2017-03-11 16:24:42
+
+two:
+  serial_number: MyString
+  pass_json: MyText
+  received: 2017-03-11 16:24:42
