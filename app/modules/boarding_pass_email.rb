@@ -10,7 +10,7 @@ module BoardingPassEmail
   include SessionsHelper
   
   # Accepts a list of email addresses, and process attachments from those
-  # senders. Also deletes any emails older than 1 week.
+  # senders. Also deletes old emails.
   def self.process_attachments(valid_emails)
     imap = Net::IMAP.new('imap.gmail.com',993,true)
     imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
@@ -34,9 +34,9 @@ module BoardingPassEmail
   
   private
     
-    # Deletes emails over 1 week old
+    # Deletes emails over 2 weeks old
     def self.delete_old_emails(imap)
-      old = imap.uid_search(["BEFORE", 1.week.ago.strftime("%d-%b-%Y")])
+      old = imap.uid_search(["BEFORE", 2.weeks.ago.strftime("%d-%b-%Y")])
       if old.any?
         imap.uid_store(old, "+FLAGS", [:deleted])
         imap.expunge()
@@ -54,6 +54,9 @@ module BoardingPassEmail
         return nil
       }
       
+      message_received = imap.uid_fetch(uid, 'ENVELOPE').first.dig('attr', 'ENVELOPE', 'date')
+      message_datetime = message_received.present? ? Time.parse(message_received).utc : nil
+      
       body = Mail.new(imap.uid_fetch(uid, 'RFC822').first.attr['RFC822'])
       no_pkpass.call(imap, uid) unless body.attachments.present? # Email has no attachments
       
@@ -63,7 +66,8 @@ module BoardingPassEmail
       pass_data = extract_passes(pkpasses)
       pass_data.each do |pass|
         # TODO: Check if pass already exists
-        # TODO: Store in database (field serialize JSON)
+        
+        # TODO: Store in database
       end
       # TODO: Delete email if store successful
       
