@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170311212442) do
+ActiveRecord::Schema.define(version: 20170311234642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20170311212442) do
     t.integer  "destination_airport_id"
     t.integer  "trip_id"
     t.date     "departure_date"
-    t.integer  "flight_number"
+    t.string   "flight_number"
     t.string   "aircraft_variant"
     t.string   "tail_number"
     t.string   "travel_class"
