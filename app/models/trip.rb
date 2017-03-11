@@ -1,4 +1,4 @@
-class Trip < ActiveRecord::Base
+class Trip < ApplicationRecord
   has_many :flights, :dependent => :destroy
   
   def self.purposes_list

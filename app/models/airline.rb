@@ -1,4 +1,4 @@
-class Airline < ActiveRecord::Base
+class Airline < ApplicationRecord
   has_many :flights
   has_many :operated_flights, :class_name => 'Flight', :foreign_key => 'operator_id'
   has_many :codeshared_flights, :class_name => 'Flight', :foreign_key => 'codeshare_airline_id'

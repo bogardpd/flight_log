@@ -1,4 +1,4 @@
-class AircraftFamily < ActiveRecord::Base
+class AircraftFamily < ApplicationRecord
   has_many :flights
   
   def self.categories_list
