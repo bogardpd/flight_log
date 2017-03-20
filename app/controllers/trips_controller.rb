@@ -59,6 +59,19 @@ class TripsController < ApplicationController
     # Create map
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
     
+    # If user is logged in, check email for new boarding passes to add to the trip:
+    if logged_in?
+      # Get attachments from boarding pass emails
+      begin
+        BoardingPassEmail::process_attachments(current_user.all_emails)
+      rescue SocketError => details
+        flash.now[:notice] = "Could not get new passes from email (#{details})"
+      end
+      @passes = PKPass.pass_summary_list
+    end
+    
+    
+    
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
     redirect_to trips_path

@@ -17,6 +17,21 @@ class PKPass < ApplicationRecord
     end
   end
   
+  # Returns a BoardingPass based on the PKPass's barcode field
+  def bcbp
+    return BoardingPass.new(barcode)
+  end
+  
+  # Returns an array of hashes of summary details for all boarding passes.
+  def self.pass_summary_list
+    PKPass.all.map{|pass|
+      fields = pass.bcbp.summary_fields
+      fields.store(:date, Time.parse(JSON.parse(pass.pass_json)["relevantDate"]))
+      fields.store(:id, pass.id)
+      fields
+    }.sort_by{|h| h[:date]}
+  end
+  
   protected
   
     def set_values

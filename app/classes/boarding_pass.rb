@@ -92,6 +92,18 @@ class BoardingPass
     end
   end
   
+  # Returns a hash of PNR
+  def summary_fields
+    output = Hash.new
+    output.store(:pnr,     @structured_data.dig(:repeated, 0, :mandatory,  7, :raw))
+    output.store(:airline, @structured_data.dig(:repeated, 0, :mandatory, 42, :raw))
+    output.store(:flight,  @structured_data.dig(:repeated, 0, :mandatory, 43, :raw))
+    output.store(:from,    @structured_data.dig(:repeated, 0, :mandatory, 26, :raw))
+    output.store(:to,      @structured_data.dig(:repeated, 0, :mandatory, 38, :raw))
+    output.inject(output){|h,(k,v)| h[k] = v.nil? ? nil : v.strip; h}
+    return output
+  end
+  
   
   private
     

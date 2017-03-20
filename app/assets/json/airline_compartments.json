@@ -3,6 +3,7 @@
     "G" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
     "L" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
     "Q" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
+    "R" : { "code" : "J", "name" : "business", "details" : "upgrade" },
     "T" : { "code" : "Y", "name" : "economy", "details" : "award" },
     "X" : { "code" : "F", "name" : "first", "details" : "upgrade" },
     "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" },
