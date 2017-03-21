@@ -31,15 +31,16 @@ Portfolio::Application.routes.draw do
   get   "/tails/:tail_number"                => "flights#show_tail",           as: :show_tail
   
   get   "/routes"                            => "routes#index"
-  match "/routes/edit/:airport1/:airport2"   => "routes#edit",                 as: :edit_route
+  get   "/routes/edit/:airport1/:airport2"   => "routes#edit",                 as: :edit_route
   
   # Boarding pass pages:
   match '/boarding-pass'        => 'flights#input_boarding_pass', via: :get
   match '/build-boarding-pass'  => 'flights#build_boarding_pass', via: :get, as: :build_boarding_pass
   match '/boarding-pass/results/:data'  => 'flights#show_boarding_pass',  via: :get, as: :show_boarding_pass
-  match '/boarding-pass/json(/:callback)/:data'  => 'flights#show_boarding_pass_json',  via: :get, as:
+  match '/boarding-pass/json(/:callback)/:data' => 'flights#show_boarding_pass_json',  via: :get, as:
    :show_boarding_pass_json
   match '/boarding-pass/email' => 'flights#index_emails', as: :index_emails, via: :get
+  get   "/boarding-pass/import(/:trip_id)"      => "trips#import_boarding_passes", as: :import_boarding_passes
   
   # Admin pages:
   match '/admin',                         to: 'admin#admin',                   via: :get

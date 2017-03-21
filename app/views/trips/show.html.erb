@@ -3,26 +3,7 @@
 <% end %>
 
 <h1><%= @trip.name %></h1>
-<% if logged_in? %>
-<div class="boarding-pass-list">
-  <table class="flightlog">
-    <thead>
-      <th colspan="5">Create Flight from Boarding Pass</th>
-    </thead>
-    <tbody>
-    <% @passes.each do |pass| %>
-      <tr>
-        <td><%= link_to "Create Flight", new_flight_path(:trip_id => @trip, :pass_id => pass[:id]) %>:</td>
-        <td class="iata_mono"><%= pass[:pnr] %></td>
-        <td><%= pass[:airline] %> <%= pass[:flight] %></td>
-        <td><%= iata_mono(pass[:from]) %> &ndash; <%= iata_mono(pass[:to]) %></td>
-        <td class="flight_date"><%= format_date(pass[:date]) %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-</div>
-<% end %>
+<%= render :partial => "pending_boarding_passes" if logged_in? && @trip.hidden %>
 
 <% if @trip.comment %>
 <p><%= @trip.comment %></p>
@@ -63,4 +44,7 @@
     <%= link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => 'warning') %> &emsp; 
   <% end %>
   <%= link_to("Edit Trip", edit_trip_path(@trip)) %> &emsp; <%= link_to("Add Flight", new_flight_path(:trip_id => @trip)) %>
+  <% unless @trip.hidden %>
+    &emsp; <%= link_to("Import Passes", import_boarding_passes_path(:trip_id => @trip)) %>
+  <% end %>
 <% end %>

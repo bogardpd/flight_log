@@ -1,0 +1,18 @@
+<div class="boarding-pass-list">
+  <table class="flightlog">
+    <thead>
+      <th colspan="5">Create Flight from Boarding Pass</th>
+    </thead>
+    <tbody>
+    <% @passes.each do |pass| %>
+      <tr>
+        <td><%= link_to "Create Flight", new_flight_path(:trip_id => @trip, :pass_id => pass[:id]) %>:</td>
+        <td class="iata_mono"><%= pass[:pnr] %></td>
+        <td><%= pass[:airline] %> <%= pass[:flight] %></td>
+        <td><%= iata_mono(pass[:from]) %> &ndash; <%= iata_mono(pass[:to]) %></td>
+        <td class="flight_date"><%= format_date(pass[:date]) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

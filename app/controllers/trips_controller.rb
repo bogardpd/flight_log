@@ -1,5 +1,5 @@
 class TripsController < ApplicationController
-  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
+  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy, :import_boarding_passes]
   add_breadcrumb 'Home', 'root_path'
 
   
@@ -58,23 +58,15 @@ class TripsController < ApplicationController
     
     # Create map
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
-    
-    # If user is logged in, check email for new boarding passes to add to the trip:
-    if logged_in?
-      # Get attachments from boarding pass emails
-      begin
-        BoardingPassEmail::process_attachments(current_user.all_emails)
-      rescue SocketError => details
-        flash.now[:notice] = "Could not get new passes from email (#{details})"
-      end
+
+    if logged_in? && @trip.hidden
+      check_email_for_boarding_passes
       @passes = PKPass.pass_summary_list
     end
     
-    
-    
-  rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
-    redirect_to trips_path
+    rescue ActiveRecord::RecordNotFound
+      flash[:record_not_found] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
+      redirect_to trips_path
   end
   
   
@@ -91,6 +83,27 @@ class TripsController < ApplicationController
     add_breadcrumb 'Trips', 'trips_path'
     add_breadcrumb @trip.name, "trip_path(#{params[:trip]})"
     add_breadcrumb "Section #{params[:section]}", "show_section_path(#{params[:trip]}, #{params[:section]})"
+  end
+  
+  def import_boarding_passes
+    @title = "Import Boarding Passes"
+    # TODO: get trip id if not provided
+    begin
+      @trip = Trip.find(params[:trip_id])
+    rescue ActiveRecord::RecordNotFound
+      # If there are any hidden trips, select the most recent hidden one
+      if Trip.where(hidden: true).any?
+        @trip = Trip.where(hidden: true).order(:created_at).last
+      elsif Trip.any?
+        @trip = Trip.order(:created_at).last
+      else
+        flash[:record_not_found] = "No trips have been created yet, so we can’t import a boarding pass. Please create a trip."
+        redirect_to new_trip_path
+      end
+    end
+    
+    check_email_for_boarding_passes
+    @passes = PKPass.pass_summary_list
   end
 
   
@@ -149,6 +162,15 @@ class TripsController < ApplicationController
   
     def trip_params
       params.require(:trip).permit(:comment, :hidden, :name, :purpose)
+    end
+    
+    # Get attachments from boarding pass emails
+    def check_email_for_boarding_passes
+      begin
+        BoardingPassEmail::process_attachments(current_user.all_emails)
+      rescue SocketError => details
+        flash.now[:notice] = "Could not get new passes from email (#{details})"
+      end
     end
     
 end
