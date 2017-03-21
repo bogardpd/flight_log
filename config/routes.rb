@@ -1,39 +1,37 @@
 Portfolio::Application.routes.draw do
-  get "trips/new"
-  get "airports/new"
-  get "flights/new"
-
+  
+  root "pages#flightlog"
+  
   resources :users
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :flights
+  resources :flights, :except => [:new]
   resources :airports
   resources :airlines
   resources :aircraft_families, path: :aircraft
   resources :trips
   resources :routes, :only => [:new, :show, :create, :update]
   
-  root 'pages#flightlog'
-    
   match '/signup' => 'users#new',         via: :get
   match '/login'  => 'sessions#new',      via: :get
   match '/logout' => 'sessions#destroy',  via: :delete
 
-  match '/flights/from/:start_date/to/:end_date' => 'flights#show_date_range', as: :show_date_range, via: :get
-  match '/flights/year/:year' => 'flights#show_date_range', as: :show_year, via: :get
+  get   "/flights/new/:trip_id(/:pass_id)"       => "flights#new",             as: :new_flight
+  get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range", as: :show_date_range
+  get   "/flights/year/:year"                    => "flights#show_date_range", as: :show_year
   
-  match '/trips/:trip/section/:section' => 'trips#show_section', :as => :show_section, :via => [:get]
+  get   "/trips/:trip/section/:section"      => "trips#show_section",          as: :show_section
 
-  match '/operators/:operator'                => 'airlines#show_operator',      via: :get, as: :show_operator
-  match '/operators/:operator/:fleet_number'  => 'airlines#show_fleet_number',  via: :get, as: :show_fleet_number
+  get   "/operators/:operator"               => "airlines#show_operator",      as: :show_operator
+  get   "/operators/:operator/:fleet_number" => "airlines#show_fleet_number",  as: :show_fleet_number
   
-  match '/classes'                => 'flights#index_classes', via: :get
-  match '/classes/:travel_class'  => 'flights#show_class',    via: :get, as: :show_class
+  get   "/classes"                           => "flights#index_classes"
+  get   "/classes/:travel_class"             => "flights#show_class",          as: :show_class
+                                             
+  get   "/tails"                             => "flights#index_tails"
+  get   "/tails/:tail_number"                => "flights#show_tail",           as: :show_tail
   
-  match '/tails'              => 'flights#index_tails', via: :get
-  match '/tails/:tail_number' => 'flights#show_tail',   via: :get, as: :show_tail
-  
-  match '/routes'                           => 'routes#index',  via: :get
-  match '/routes/edit/:airport1/:airport2'  => 'routes#edit',   via: :get, as: :edit_route
+  get   "/routes"                            => "routes#index"
+  match "/routes/edit/:airport1/:airport2"   => "routes#edit",                 as: :edit_route
   
   # Boarding pass pages:
   match '/boarding-pass'        => 'flights#input_boarding_pass', via: :get
