@@ -5,7 +5,7 @@
 class BoardingPass
   include ActionView::Helpers::TextHelper
   
-  def initialize(boarding_pass_data, flight: nil)
+  def initialize(boarding_pass_data, flight: nil, interpretations: true)
     @raw_data = boarding_pass_data
     @flight = flight
     
@@ -18,7 +18,7 @@ class BoardingPass
     if @raw_data.present?
       @fields  = create_fields(determine_version(@raw_data))
       @control = create_control_points(@raw_data)
-      @structured_data = build_structured_data(@control, @fields)
+      @structured_data = build_structured_data(@control, @fields, interpretations)
     end
   end
   
@@ -499,7 +499,7 @@ class BoardingPass
     #     field {field data}
     # ]
     # unknown
-    def build_structured_data(control, fields)
+    def build_structured_data(control, fields, interpretations)
       populate_group = proc{|group, leg=nil|
         group_fields = Hash.new
         if control[group].present? && (leg.nil? || control.dig(group, leg).present?)
@@ -532,7 +532,7 @@ class BoardingPass
               field.store(:valid, false)
             else
               field.store(:valid, true)
-              if v[:interpretation]
+              if interpretations && v[:interpretation]
                 if v[:include_leg]
                   field.store(:interpretation, method(v[:interpretation]).call(raw, leg))
                 else

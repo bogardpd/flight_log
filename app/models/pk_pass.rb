@@ -25,7 +25,7 @@ class PKPass < ApplicationRecord
   # Returns an array of hashes of summary details for all boarding passes.
   def self.pass_summary_list
     PKPass.all.map{|pass|
-      fields = pass.bcbp.summary_fields
+      fields = BoardingPass.new(pass.barcode, interpretations: false).summary_fields
       fields.store(:date, Time.parse(JSON.parse(pass.pass_json)["relevantDate"]))
       fields.store(:id, pass.id)
       fields
