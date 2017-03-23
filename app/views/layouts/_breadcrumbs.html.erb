@@ -1,12 +1,12 @@
-<% if (!(params[:controller] == "pages" && params[:action] == "flightlog") && (@breadcrumbs || content_for?(:admin_actions))) %>
+<% if (!(params[:controller] == "pages" && params[:action] == "flightlog") && (@breadcrumbs || @admin_actions.present?)) %>
 <div id="breadcrumbs">
   <% @breadcrumbs[0..-2].uniq.each do |txt, path| %>
     <%= link_to(h(txt), path) %> &gt;
   <% end %>
   <span class="breadcrumb_title"><%= h(@breadcrumbs.last.first) %></span>
-	<% if (logged_in? && content_for?(:admin_actions)) %>
+	<% if (logged_in? && @admin_actions.present?) %>
   <div id="admin_actions">
-    <%= yield :admin_actions %>
+    <%= @admin_actions.join("&emsp;").html_safe %>
   </div>
   <% end %>
 </div>

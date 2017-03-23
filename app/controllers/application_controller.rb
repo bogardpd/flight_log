@@ -20,6 +20,11 @@ class ApplicationController < ActionController::Base
   
 protected
 
+  def add_admin_action(link)
+    @admin_actions ||= Array.new
+    @admin_actions.push(link)
+  end
+
   def add_breadcrumb name, url=''
     @breadcrumbs ||= []
     url = eval(url) if url =~ /_path|_url|@/

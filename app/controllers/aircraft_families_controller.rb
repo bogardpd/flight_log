@@ -5,6 +5,8 @@ class AircraftFamiliesController < ApplicationController
   def index
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
     
+    add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
+    
     if logged_in?
       @flight_aircraft_families = Flight.where("aircraft_family_id IS NOT NULL").group("aircraft_family_id").count
     else # Filter out hidden trips for visitors
@@ -79,6 +81,9 @@ class AircraftFamiliesController < ApplicationController
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
     add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family.iata_aircraft_code)
+    
+    add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family))
     
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)

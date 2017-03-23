@@ -62,7 +62,3 @@
 <a name="flights"></a>
 <h2><acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight List</h2>
 <%= render "flights/flight_table" %>
-
-<% content_for :admin_actions do %>
-  <%= link_to("Edit Route", edit_route_path(@airports[0],@airports[1])) %>
-<% end %>

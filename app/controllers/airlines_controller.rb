@@ -5,6 +5,7 @@ class AirlinesController < ApplicationController
   def index
     @logo_used = true
     add_breadcrumb 'Airlines', 'airlines_path'
+    add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     if logged_in?
       @flight_airlines = Flight.where("airline_id IS NOT NULL").group("airline_id").count
       @flight_operators = Flight.where("operator_id IS NOT NULL").group("operator_id").count
@@ -85,8 +86,12 @@ class AirlinesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@airline.airline_name}."
     @logo_used = true
     @region = current_region(default: :world)
+    
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb @title, "airline_path(@airline.iata_airline_code)"
+    
+    add_admin_action view_context.link_to("Delete Airline", @airline, method: :delete, data: {:confirm => "Are you sure you want to delete #{@airline.airline_name}?"}, class: 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Airline", edit_airline_path(@airline))
     
     # Create map:
     @map = FlightsMap.new(@flights, region: @region)
@@ -120,8 +125,12 @@ class AirlinesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights operated by #{@operator.airline_name}."
     @logo_used = true
     @region = current_region(default: :world)
+    
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb 'Flights Operated by ' + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
+    
+    add_admin_action view_context.link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Airline", edit_airline_path(@operator))
     
     @total_distance = total_distance(@flights)
     @map = FlightsMap.new(@flights, region: @region)

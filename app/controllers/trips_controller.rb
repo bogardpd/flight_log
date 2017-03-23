@@ -5,6 +5,7 @@ class TripsController < ApplicationController
   
   def index
     add_breadcrumb 'Trips', 'trips_path'
+    add_admin_action view_context.link_to("Add New Trip", new_trip_path)
     if logged_in?
       @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date")
     else
@@ -35,8 +36,15 @@ class TripsController < ApplicationController
     @flights = Flight.flights_table.where(trip_id: @trip)
     @title = @trip.name
     @meta_description = "Maps and lists of flights on Paul Bogardʼs #{@trip.name} trip."
+    
     add_breadcrumb 'Trips', 'trips_path'
     add_breadcrumb @title, "trip_path(#{params[:id]})"
+    
+    add_admin_action view_context.link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Trip", edit_trip_path(@trip))
+    add_admin_action view_context.link_to("Add Flight", new_flight_path(:trip_id => @trip))
+    add_admin_action view_context.link_to("Import Passes", import_boarding_passes_path(:trip_id => @trip)) unless @trip.hidden
+    
     @trip_distance = total_distance(@flights)
     @section_count = Hash.new(0) # Holds a count of the number of flights in each section
     @section_final_destination = Hash.new # Holds the last destination airport code in each section
@@ -87,11 +95,11 @@ class TripsController < ApplicationController
   
   def import_boarding_passes
     @title = "Import Boarding Passes"
-    # TODO: get trip id if not provided
+    
+    # Determine an appropriate trip to use:
     begin
       @trip = Trip.find(params[:trip_id])
     rescue ActiveRecord::RecordNotFound
-      # If there are any hidden trips, select the most recent hidden one
       if Trip.where(hidden: true).any?
         @trip = Trip.where(hidden: true).order(:created_at).last
       elsif Trip.any?

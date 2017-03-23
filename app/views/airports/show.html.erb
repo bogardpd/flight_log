@@ -111,13 +111,3 @@
 	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
 
 <% end %>
-
-
-
-
-<% content_for :admin_actions do %>
-  <% if @flights.length == 0 %>
-    <%= link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => 'warning') %> &emsp; 
-  <% end %>
-  <%= link_to("Edit Airport", edit_airport_path(@airport)) %>
-<% end %>

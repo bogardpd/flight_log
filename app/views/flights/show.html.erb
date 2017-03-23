@@ -109,7 +109,3 @@
 <% if logged_in? && @boarding_pass.data.present? %>
   <%= render "bcbp", boarding_pass: @boarding_pass %>
 <% end %>
-
-<% content_for :admin_actions do %>
-  <%= link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => 'warning') %> &emsp; <%= link_to("Edit Flight", edit_flight_path(@flight)) %>
-<% end %>

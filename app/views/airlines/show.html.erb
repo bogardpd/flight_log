@@ -46,10 +46,3 @@
 	<%= render "flights/flight_table" %>
 
 <% end %>
-
-<% content_for :admin_actions do %>
-  <% if @flights.length == 0 %>
-    <%= link_to("Delete Airline", @airline, method: :delete, data: {:confirm => "Are you sure you want to delete #{@airline.airline_name}?"}, class: 'warning') %> &emsp; 
-  <% end %>
-  <%= link_to("Edit Airline", edit_airline_path(@airline)) %>
-<% end %>

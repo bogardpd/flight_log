@@ -38,13 +38,3 @@
 <% end %>
   <tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %></td></tr>
 </table>
-
-<% content_for :admin_actions do %>
-  <% if @flights.length == 0 %>
-    <%= link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => 'warning') %> &emsp; 
-  <% end %>
-  <%= link_to("Edit Trip", edit_trip_path(@trip)) %> &emsp; <%= link_to("Add Flight", new_flight_path(:trip_id => @trip)) %>
-  <% unless @trip.hidden %>
-    &emsp; <%= link_to("Import Passes", import_boarding_passes_path(:trip_id => @trip)) %>
-  <% end %>
-<% end %>

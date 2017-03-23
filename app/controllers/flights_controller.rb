@@ -85,6 +85,9 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb @title, "flight_path(#{params[:id]})"
     
+    add_admin_action view_context.link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => 'warning')
+    add_admin_action view_context.link_to("Edit Flight", edit_flight_path(@flight))
+    
   rescue ActiveRecord::RecordNotFound
     flash[:record_not_found] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
