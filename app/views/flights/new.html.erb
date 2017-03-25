@@ -2,6 +2,8 @@
 
 <h1>New Flight</h1>
 
+<%= @pass.form_values if @pass %>
+
 <% if !Airport.any? %>
 	<div class="alert">There are no airports in the flight log. Please <%= link_to "add an airport", new_airport_path %> before trying to add a flight.</div>
 <% else %>

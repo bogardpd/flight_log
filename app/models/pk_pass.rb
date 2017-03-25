@@ -22,6 +22,45 @@ class PKPass < ApplicationRecord
     return BoardingPass.new(barcode)
   end
   
+  # Returns a hash of form default values for this pass
+  def form_values
+    output = Hash.new
+    data = BoardingPass.new(barcode, interpretations: false).data
+    output.store(:origin_airport, data.dig(:repeated, 0, :mandatory, 26, :raw))
+    output.store(:destination_airport, data.dig(:repeated, 0, :mandatory, 38, :raw))
+    rel_date = @pass.dig("relevantDate")
+    if rel_date.present?
+      begin
+        output.store(:departure_date_local, Date.parse(rel_date))
+        output.store(:departure_utc, Time.parse(rel_date).utc)
+      rescue ArgumentError
+      end
+    end
+    airline = data.dig(:repeated, 0, :mandatory, 42, :raw)&.strip
+    if airline.present?
+      output.store(:airline, airline)
+      bp_issuer = data.dig(:unique, :conditional, 21, :raw)&.strip
+      marketing_carrier = data.dig(:repeated, 0, :conditional, 19, :raw)&.strip
+      if (bp_issuer.present? && airline != bp_issuer)
+        output.store(:codeshare_airline, bp_issuer)
+      elsif (marketing_carrier.present? && airline != marketing_carrier)
+        output.store(:codeshare_airline, marketing_carrier)
+      end
+      begin
+        airline_compartments = JSON.parse(File.read('app/assets/json/airline_compartments.json'))
+        compartment_code = data.dig(:repeated, 0, :mandatory, 71, :raw)
+        if compartment_code.present?
+          travel_class = airline_compartments.dig(airline, compartment_code, "name")
+          output.store(:travel_class, travel_class)
+        end
+      rescue Errno::ENOENT
+      end
+    end
+    output.store(:flight_number, data.dig(:repeated, 0, :mandatory, 43, :raw)&.strip)
+    output.store(:boarding_pass, barcode)
+    return output
+  end
+  
   # Returns an array of hashes of summary details for all boarding passes.
   def self.pass_summary_list
     PKPass.all.map{|pass|

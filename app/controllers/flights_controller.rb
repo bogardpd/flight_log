@@ -164,8 +164,6 @@ class FlightsController < ApplicationController
     
   end
     
-  
-    
   def index_classes
     add_breadcrumb 'Travel Classes', 'classes_path'
     if logged_in?
@@ -385,13 +383,19 @@ class FlightsController < ApplicationController
       render :json => boarding_pass.data
     end
   end
-
-    
+  
   def new
     @title = "New Flight"
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb 'New Flight', 'new_flight_path'
     @flight = Trip.find(params[:trip_id]).flights.new
+    @pass = nil
+    if params[:pass_id]
+      begin
+        @pass = PKPass.find(params[:pass_id])
+      rescue ActiveRecord::RecordNotFound
+      end
+    end
   end
     
   def create
