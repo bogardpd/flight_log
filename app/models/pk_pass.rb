@@ -26,8 +26,8 @@ class PKPass < ApplicationRecord
   def form_values
     output = Hash.new
     data = BoardingPass.new(barcode, interpretations: false).data
-    output.store(:origin_airport, data.dig(:repeated, 0, :mandatory, 26, :raw))
-    output.store(:destination_airport, data.dig(:repeated, 0, :mandatory, 38, :raw))
+    output.store(:origin_airport_iata, data.dig(:repeated, 0, :mandatory, 26, :raw))
+    output.store(:destination_airport_iata, data.dig(:repeated, 0, :mandatory, 38, :raw))
     rel_date = @pass.dig("relevantDate")
     if rel_date.present?
       begin
@@ -38,13 +38,13 @@ class PKPass < ApplicationRecord
     end
     airline = data.dig(:repeated, 0, :mandatory, 42, :raw)&.strip
     if airline.present?
-      output.store(:airline, airline)
+      output.store(:airline_iata, airline)
       bp_issuer = data.dig(:unique, :conditional, 21, :raw)&.strip
       marketing_carrier = data.dig(:repeated, 0, :conditional, 19, :raw)&.strip
       if (bp_issuer.present? && airline != bp_issuer)
-        output.store(:codeshare_airline, bp_issuer)
+        output.store(:codeshare_airline_iata, bp_issuer)
       elsif (marketing_carrier.present? && airline != marketing_carrier)
-        output.store(:codeshare_airline, marketing_carrier)
+        output.store(:codeshare_airline_iata, marketing_carrier)
       end
       begin
         airline_compartments = JSON.parse(File.read('app/assets/json/airline_compartments.json'))

@@ -1,0 +1,7 @@
+<% sym_base = name.downcase.tr(" ","_") %>
+<% if value %>
+  <p>
+    <span class="bold"><%= name %></span> <%= label_tag (sym_base+"_iata").to_sym, "IATA".html_safe %> / <%= label_tag (sym_base+"_name").to_sym, "Name" %><br />
+    <%= text_field_tag (sym_base+"_iata").to_sym, value, size: 3, disabled: true %> <%= text_field_tag (sym_base+"_name").to_sym %>
+  </p>
+<% end %>

@@ -390,12 +390,24 @@ class FlightsController < ApplicationController
     add_breadcrumb 'New Flight', 'new_flight_path'
     @flight = Trip.find(params[:trip_id]).flights.new
     @pass = nil
+    @defaults = nil
     if params[:pass_id]
       begin
         @pass = PKPass.find(params[:pass_id])
       rescue ActiveRecord::RecordNotFound
       end
     end
+    if @pass.present?
+      @undefined_fields = Hash.new
+      @defaults = check_iata_codes(@pass.form_values)
+    end
+      
+    
+    
+  end
+  
+  def new_undefined_fields
+    
   end
     
   def create
@@ -450,7 +462,61 @@ class FlightsController < ApplicationController
       params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
     end
     
+    # Accepts a hash of boarding pass form values. If all IATA codes are found
+    # in the database, return the hash with the ID for each IATA code appended.
+    # If any IATA code is not found, render a form to create new entries for
+    # the new IATA codes.
+    def check_iata_codes(values)
+          
+      # Check if proposed origin airport exists
+      if values[:origin_airport_iata]
+        origin_airport = Airport.where(iata_code: values[:origin_airport_iata]).first
+        if origin_airport
+          values.store(:origin_airport_id, origin_airport.id)
+        else
+          @undefined_fields.store(:airport_orig, values[:origin_airport_iata])
+        end
+      end
     
+      # Check if proposed destination airport exists
+      if values[:destination_airport_iata]
+        destination_airport = Airport.where(iata_code: values[:destination_airport_iata]).first
+        if destination_airport
+          values.store(:destination_airport_id, destination_airport.id)
+        else
+          @undefined_fields.store(:airport_dest, values[:destination_airport_iata])
+        end
+      end
+    
+      # Check if proposed airline exists
+      if values[:airline_iata]
+        airline = Airline.where(iata_airline_code: values[:airline_iata]).first
+        if airline
+          values.store(:airline_id, airline.id)
+        else
+          @undefined_fields.store(:airline, values[:airline_iata])
+        end
+      end
+    
+      # Check if proposed codeshare airline exists
+      if values[:codeshare_airline_iata]
+        airline = Airline.where(iata_airline_code: values[:codeshare_airline_iata]).first
+        if airline
+          values.store(:codeshare_airline_id, airline.id)
+        else
+          @undefined_fields.store(:codeshare_airline, values[:codeshare_airline_iata])
+        end
+      end
+    
+      # If there are any airports or airlines not in the database, show a form to create them
+      if @undefined_fields.any?
+        @title = "New Flight - Undefined Fields"
+        render "new_undefined_fields"
+      end
+      
+      return values
+    end
+      
   
     
     
