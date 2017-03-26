@@ -15,6 +15,11 @@ class Flight < ApplicationRecord
     classes['Y'] = 'Economy'
     return classes
   end
+  
+  def self.get_class_id(class_string)
+    classes = classes_list.invert
+    return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
+  end
     
   NULL_ATTRS = %w( flight_number aircraft_variant aircraft_name tail_number travel_class comment fleet_number boarding_pass_data )
   STRIP_ATTRS = %w( operator fleet_number aircraft_family aircraft_variant aircraft_name tail_number )

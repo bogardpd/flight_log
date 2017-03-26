@@ -680,6 +680,11 @@ input, select, button, textarea {
 	padding: 2px 4px;
 }
 
+input.autopopulated, select.autopopulated, textarea.autopopulated {
+	background: hsl(60, 100%, 50%);
+	border: 1px solid hsl(45, 100%, 50%);
+}
+
 p {
 	margin-left: $margin-paragraph;
 	margin-right: $margin-paragraph;

@@ -26,6 +26,7 @@ class PKPass < ApplicationRecord
   def form_values
     output = Hash.new
     data = BoardingPass.new(barcode, interpretations: false).data
+    output.store(:serial_number, serial_number)
     output.store(:origin_airport_iata, data.dig(:repeated, 0, :mandatory, 26, :raw))
     output.store(:destination_airport_iata, data.dig(:repeated, 0, :mandatory, 38, :raw))
     rel_date = @pass.dig("relevantDate")
@@ -51,7 +52,7 @@ class PKPass < ApplicationRecord
         compartment_code = data.dig(:repeated, 0, :mandatory, 71, :raw)
         if compartment_code.present?
           travel_class = airline_compartments.dig(airline, compartment_code, "name")
-          output.store(:travel_class, travel_class)
+          output.store(:travel_class, Flight.get_class_id(travel_class))
         end
       rescue Errno::ENOENT
       end

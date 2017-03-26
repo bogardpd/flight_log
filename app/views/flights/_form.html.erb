@@ -1,7 +1,8 @@
-<%= form_for(@flight) do |f| %>
+<% defaults ||= Hash.new %>
+<%= form_for(flight) do |f| %>
   <%= render 'error_messages' %>
 
-  <p>Trip: <strong><%= @flight.trip.name %></strong></p>
+  <p>Trip: <strong><%= flight.trip.name %></strong></p>
 
   <p>
     <%= f.label :trip_section, "Trip Section" %><br />
@@ -9,32 +10,61 @@
   </p>
 
   <p>
-    <%= f.label :origin_airport_id, "Origin" %> - <%= f.label :destination_airport_id, "Destination" %><br />
-    <% if params[:id] || Flight.chronological.empty? %>
+    <%= f.label :origin_airport_id, "Origin" %> &rarr; <%= f.label :destination_airport_id, "Destination" %><br />
+    <% if defaults[:origin_airport_id] %>
+      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, :selected => defaults[:origin_airport_id]}, {class: "iata_mono autopopulated"}) %>
+    <% elsif flight.errors.any? || params[:id] || Flight.chronological.empty? %>
   		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}, {class: "iata_mono"}) %>
   	<% else %>
   		<%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, :selected => Flight.chronological.last.destination_airport_id}, {class: "iata_mono"}) %>
-  	<% end %> &ndash; <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {:include_blank => true}, {class: "iata_mono"}) %>
+  	<% end %> &rarr; 
+    <% if defaults[:destination_airport_id] %>
+      <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {:include_blank => true, :selected => defaults[:destination_airport_id]}, {class: "iata_mono autopopulated"}) %>
+    <% else %>
+      <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {:include_blank => true}, {class: "iata_mono"}) %>
+    <% end %>
   </p>
 
   <p>
     <%= f.label :departure_date, "Departure Date (Local)" %><br />
-    <%= f.date_select :departure_date, :start_year => 2000 %>
+    <% if defaults[:departure_date_local] %>
+      <%= f.date_select(:departure_date, {:start_year => 2000, :default => defaults[:departure_date_local]}, :class => "autopopulated") %>
+    <% else %>
+      <%= f.date_select(:departure_date, {:start_year => 2000}) %>
+    <% end %>
   </p>
 
   <p>
     <%= f.label :departure_utc, "UTC Departure (for sorting flights)" %> &mdash; Current time: <strong><%= Time.now.utc %></strong><br />
-    <%= f.datetime_select :departure_utc, :start_year => 2000, :minute_step => 5 %>
+    <% if defaults[:departure_utc] %>
+      <%= f.datetime_select(:departure_utc, {:start_year => 2000, :default => defaults[:departure_utc]}, :class => "autopopulated") %>
+    <% else %>
+      <%= f.datetime_select(:departure_utc, {:start_year => 2000, :minute_step => 5}) %>
+    <% end %>
   </p>
 
   <p>
     <%= f.label :airline_id %> / <%= f.label :flight_number, "Flight Number" %><br />
-    <%= f.collection_select(:airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.telephone_field :flight_number, :size => 6 %>
+    <% if defaults[:airline_id] %>
+      <%= f.collection_select(:airline_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true, :selected => defaults[:airline_id]}, :class => "autopopulated") %>
+    <% else %>
+      <%= f.collection_select(:airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %>
+    <% end %>
+    <% if defaults[:flight_number] %>
+      <%= f.text_field(:flight_number, :size => 6, :value => defaults[:flight_number], :class => "autopopulated") %>
+    <% else %>
+      <%= f.text_field(:flight_number, {:size => 6}) %>
+    <% end %>
   </p>
 
   <p>
     <%= f.label :codeshare_airline_id, "Codeshare Airline" %> / <%= f.label :codeshare_flight_number, "Codeshare Flight Number" %><br />
-    <%= f.collection_select(:codeshare_airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.telephone_field :codeshare_flight_number, :size => 6 %>
+    <% if defaults[:codeshare_airline_id] %>
+      <%= f.collection_select(:codeshare_airline_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {:include_blank => true, :selected => defaults[:codeshare_airline_id]}, :class => "autopopulated") %>
+    <% else %>
+      <%= f.collection_select(:codeshare_airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {:include_blank => true}) %>
+    <% end %>
+    <%= f.text_field :codeshare_flight_number, :size => 6 %>
   </p>
 
   <p>
@@ -54,7 +84,11 @@
 
   <p>
     <%= f.label :travel_class, "Travel Class" %><br />
-    <%= f.select(:travel_class, options_for_select(Flight.classes_list.invert, @flight.travel_class), :include_blank => true)%>
+    <% if defaults[:travel_class] %>
+      <%= f.select(:travel_class, options_for_select(Flight.classes_list.invert, defaults[:travel_class]), {:include_blank => true}, :class => "autopopulated") %>
+    <% else %>
+      <%= f.select(:travel_class, options_for_select(Flight.classes_list.invert, flight.travel_class), :include_blank => true) %>
+    <% end %>
   </p>
 
   <p>
@@ -64,10 +98,15 @@
 
   <p>
   	<%= f.label :boarding_pass_data %><br />
-  	<%= f.text_area :boarding_pass_data, size: '60x5', class: 'iata_mono' %>
+  	<% if defaults[:boarding_pass] %>
+      <%= f.text_area :boarding_pass_data, size: '60x5', class: 'iata_mono autopopulated', value: defaults[:boarding_pass] %>
+    <% else %>
+      <%= f.text_area :boarding_pass_data, size: '60x5', class: 'iata_mono' %>
+    <% end %>
   </p>
 
-  <%= f.hidden_field :trip_id, :value => @flight.trip.id %>
+  <%= f.hidden_field(:trip_id, :value => flight.trip.id) %>
+  <%= f.hidden_field(:pass_serial_number, :value => defaults[:serial_number]) if defaults[:serial_number] %>
 
   <p>
     <%= f.submit yield(:button_text) %>

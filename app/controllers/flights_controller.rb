@@ -459,7 +459,7 @@ class FlightsController < ApplicationController
   private
   
     def flight_params
-      params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
+      params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section, :pass_serial_number)
     end
     
     # Accepts a hash of boarding pass form values. If all IATA codes are found
@@ -467,7 +467,7 @@ class FlightsController < ApplicationController
     # If any IATA code is not found, render a form to create new entries for
     # the new IATA codes.
     def check_iata_codes(values)
-          
+      
       # Check if proposed origin airport exists
       if values[:origin_airport_iata]
         origin_airport = Airport.where(iata_code: values[:origin_airport_iata]).first
@@ -497,7 +497,7 @@ class FlightsController < ApplicationController
           @undefined_fields.store(:airline, values[:airline_iata])
         end
       end
-    
+      
       # Check if proposed codeshare airline exists
       if values[:codeshare_airline_iata]
         airline = Airline.where(iata_airline_code: values[:codeshare_airline_iata]).first

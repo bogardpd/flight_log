@@ -8,6 +8,6 @@
 	<div class="alert">There are no airports in the flight log. Please <%= link_to "add an airport", new_airport_path %> before trying to add a flight.</div>
 <% else %>
 
-	<%= render :partial => 'form', locals: @defaults %>
+	<%= render :partial => 'form', locals: {flight: @flight, defaults: @defaults} %>
 
 <% end %>
