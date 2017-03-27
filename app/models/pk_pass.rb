@@ -76,7 +76,7 @@ class PKPass < ApplicationRecord
   
     def set_values
       @pass = JSON.parse(self.pass_json)
-      self.assign_attributes({:serial_number => @pass.dig('serialNumber')})
+      self.assign_attributes({:serial_number => [@pass.dig('passTypeIdentifier'),@pass.dig('serialNumber')].join(",")})
     end
 
 end
