@@ -10,10 +10,10 @@ class PKPass < ApplicationRecord
   
   # Returns the pass's barcode string
   def barcode
-    if @pass.dig('barcode')
-      return @pass.dig('barcode', 'message')
+    if @pass.dig('barcodes')
+      return @pass.dig('barcodes', 0, 'message')
     else
-      return @pass.dig('barcodes', 'message')
+      return @pass.dig('barcode', 'message')
     end
   end
   
