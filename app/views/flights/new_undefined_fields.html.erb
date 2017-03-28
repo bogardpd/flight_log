@@ -1,12 +1,13 @@
 <h1>Fill in Unknown IATA Codes</h1>
 
-<p>Undefined: <%= @undefined_fields %></p>
+<%= form_tag(create_iata_path(:trip_id => params[:trip_id], :pass_id => params[:pass_id])) do %>
 
-<%= form_tag do %>
-
-  <%= render :partial => "form_new_iata", locals: {name: "Origin Airport", value: @undefined_fields[:airport_orig]} %>
-  <%= render :partial => "form_new_iata", locals: {name: "Destination Airport", value: @undefined_fields[:airport_dest]} %>
-  <%= render :partial => "form_new_iata", locals: {name: "Airline", value: @undefined_fields[:airline]} %>
-  <%= render :partial => "form_new_iata", locals: {name: "Codeshare Airline", value: @undefined_fields[:codeshare_airline]} %>
+  <%= render :partial => "form_new_iata", locals: {type: :airport, name: "Origin Airport", value: @undefined_fields[:airport_orig]} %>
+  <%= render :partial => "form_new_iata", locals: {type: :airport, name: "Destination Airport", value: @undefined_fields[:airport_dest]} %>
+  <%= render :partial => "form_new_iata", locals: {type: :airline, name: "Airline", value: @undefined_fields[:airline]} %>
+  <%= render :partial => "form_new_iata", locals: {type: :airline, name: "Codeshare Airline", value: @undefined_fields[:codeshare_airline]} %>
+  
+  
+  <p><%= submit_tag "Submit", name: nil %></p>
      
 <% end %>

@@ -41,6 +41,7 @@ Portfolio::Application.routes.draw do
    :show_boarding_pass_json
   match '/boarding-pass/email' => 'flights#index_emails', as: :index_emails, via: :get
   get   "/boarding-pass/import(/:trip_id)"      => "trips#import_boarding_passes", as: :import_boarding_passes
+  post  "/flights/create-iata/:trip_id/:pass_id" => "flights#create_iata", as: :create_iata
   
   # Admin pages:
   match '/admin',                         to: 'admin#admin',                   via: :get

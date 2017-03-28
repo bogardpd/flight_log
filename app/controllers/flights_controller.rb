@@ -401,8 +401,6 @@ class FlightsController < ApplicationController
       @undefined_fields = Hash.new
       @defaults = check_iata_codes(@pass.form_values)
     end
-      
-    
     
   end
   
@@ -424,6 +422,22 @@ class FlightsController < ApplicationController
     else
       render 'new'
     end
+  end
+  
+  def create_iata
+    ["origin_airport","destination_airport"].each do |a|
+      a += "_"
+      if params[(a+"iata").to_sym] && params[(a+"name").to_sym] && params[(a+"country").to_sym]
+        Airport.create(iata_code: params[(a+"iata").to_sym], city: params[(a+"name").to_sym], country: params[(a+"country").to_sym], region_conus: params[(a+"region_conus").to_sym])
+      end
+    end
+    ["airline","codeshare_airline"].each do |a|
+      a += "_"
+      if params[(a+"iata").to_sym] && params[(a+"name").to_sym]
+        Airline.create(iata_airline_code: params[(a+"iata").to_sym], airline_name: params[(a+"name").to_sym], numeric_code: params[(a+"numeric_code").to_sym])
+      end
+    end
+    redirect_to new_flight_path(trip_id: params[:trip_id], pass_id: params[:pass_id])
   end
     
   def edit
@@ -467,7 +481,7 @@ class FlightsController < ApplicationController
     # If any IATA code is not found, render a form to create new entries for
     # the new IATA codes.
     def check_iata_codes(values)
-      
+     
       # Check if proposed origin airport exists
       if values[:origin_airport_iata]
         origin_airport = Airport.where(iata_code: values[:origin_airport_iata]).first

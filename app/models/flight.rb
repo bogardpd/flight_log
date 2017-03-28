@@ -17,6 +17,7 @@ class Flight < ApplicationRecord
   end
   
   def self.get_class_id(class_string)
+    return nil unless class_string.present?
     classes = classes_list.invert
     return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
   end
