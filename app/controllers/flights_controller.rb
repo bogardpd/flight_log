@@ -1,6 +1,6 @@
 class FlightsController < ApplicationController
   protect_from_forgery except: :show_boarding_pass_json
-  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy, :index_emails]
+  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy, :index_emails, :new_undefined_fields, :create_iata]
   add_breadcrumb 'Home', 'root_path'
   
   def index
