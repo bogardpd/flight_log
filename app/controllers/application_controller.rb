@@ -18,6 +18,15 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  # Get attachments from boarding pass emails
+  def check_email_for_boarding_passes
+    begin
+      BoardingPassEmail::process_attachments(current_user.all_emails)
+    rescue SocketError, IMAP::NoResponseError => details
+      flash.now[:notice] = "Could not get new passes from email (#{details})"
+    end
+  end
+  
 protected
 
   def add_admin_action(link)

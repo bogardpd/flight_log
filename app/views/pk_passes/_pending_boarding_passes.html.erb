@@ -1,7 +1,7 @@
 <div class="boarding-pass-list">
   <table class="flightlog">
     <thead>
-      <th colspan="5">Create Flight from Boarding Pass</th>
+      <th colspan="6">Create Flight from Boarding Pass</th>
     </thead>
     <tbody>
     <% @passes.each do |pass| %>
@@ -11,6 +11,7 @@
         <td><%= pass[:airline] %> <%= pass[:flight] %></td>
         <td><%= iata_mono(pass[:from]) %> &ndash; <%= iata_mono(pass[:to]) %></td>
         <td class="flight_date"><%= format_date(pass[:date]) %></td>
+        <td><%= link_to("Delete", pk_pass_path(pass[:id], trip_id: @trip), :method => :delete, :data => {:confirm => "Are you sure you want to delete #{pass[:from]}-#{pass[:to]}?"}, :class => 'warning') %></td>
       </tr>
     <% end %>
     </tbody>

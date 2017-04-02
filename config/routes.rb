@@ -10,6 +10,7 @@ Portfolio::Application.routes.draw do
   resources :aircraft_families, path: :aircraft
   resources :trips
   resources :routes, :only => [:new, :show, :create, :update]
+  resources :pk_passes, :only => [:destroy]
   
   match '/signup' => 'users#new',         via: :get
   match '/login'  => 'sessions#new',      via: :get
@@ -40,7 +41,7 @@ Portfolio::Application.routes.draw do
   match '/boarding-pass/json(/:callback)/:data' => 'flights#show_boarding_pass_json',  via: :get, as:
    :show_boarding_pass_json
   match '/boarding-pass/email' => 'flights#index_emails', as: :index_emails, via: :get
-  get   "/boarding-pass/import(/:trip_id)"      => "trips#import_boarding_passes", as: :import_boarding_passes
+  get   "/boarding-pass/import(/:trip_id)"      => "pk_passes#index", as: :import_boarding_passes
   post  "/flights/create-iata/:trip_id/:pass_id" => "flights#create_iata", as: :create_iata
   
   # Admin pages:

@@ -1,5 +1,5 @@
 class TripsController < ApplicationController
-  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy, :import_boarding_passes]
+  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   add_breadcrumb 'Home', 'root_path'
 
   
@@ -93,28 +93,7 @@ class TripsController < ApplicationController
     add_breadcrumb "Section #{params[:section]}", "show_section_path(#{params[:trip]}, #{params[:section]})"
   end
   
-  def import_boarding_passes
-    @title = "Import Boarding Passes"
     
-    # Determine an appropriate trip to use:
-    begin
-      @trip = Trip.find(params[:trip_id])
-    rescue ActiveRecord::RecordNotFound
-      if Trip.where(hidden: true).any?
-        @trip = Trip.where(hidden: true).order(:created_at).last
-      elsif Trip.any?
-        @trip = Trip.order(:created_at).last
-      else
-        flash[:record_not_found] = "No trips have been created yet, so we can’t import a boarding pass. Please create a trip."
-        redirect_to new_trip_path
-      end
-    end
-    
-    check_email_for_boarding_passes
-    @passes = PKPass.pass_summary_list
-  end
-
-  
   def new
     @title = "New Trip"
     add_breadcrumb 'Trips', 'trips_path'
@@ -170,15 +149,6 @@ class TripsController < ApplicationController
   
     def trip_params
       params.require(:trip).permit(:comment, :hidden, :name, :purpose)
-    end
-    
-    # Get attachments from boarding pass emails
-    def check_email_for_boarding_passes
-      begin
-        BoardingPassEmail::process_attachments(current_user.all_emails)
-      rescue SocketError, IMAP::NoResponseError => details
-        flash.now[:notice] = "Could not get new passes from email (#{details})"
-      end
     end
     
 end

@@ -3,7 +3,7 @@
 <% end %>
 
 <h1><%= @trip.name %></h1>
-<%= render :partial => "pending_boarding_passes" if logged_in? && @trip.hidden %>
+<%= render :partial => "pk_passes/pending_boarding_passes" if logged_in? && @trip.hidden %>
 
 <% if @trip.comment %>
 <p><%= @trip.comment %></p>
