@@ -106,6 +106,7 @@
   </p>
 
   <%= f.hidden_field(:trip_id, :value => flight.trip.id) %>
+  <%= f.hidden_field(:pass_id, :value => params[:pass_id]) if params[:pass_id] %>
   <%= f.hidden_field(:pass_serial_number, :value => defaults[:serial_number]) if defaults[:serial_number] %>
 
   <p>

@@ -418,6 +418,11 @@ class FlightsController < ApplicationController
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
         flash[:alert] = "Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?".html_safe
       end
+      # If pass exists, delete pass 
+      if params[:flight][:pass_id]
+        pass = PKPass.find(params[:flight][:pass_id])
+        pass.destroy if pass
+      end
       redirect_to @flight
     else
       render 'new'
@@ -465,9 +470,11 @@ class FlightsController < ApplicationController
   end
     
   def destroy
-    Flight.find(params[:id]).destroy
+    flight = Flight.find(params[:id])
+    trip = flight.trip
+    flight.destroy
     flash[:success] = "Flight destroyed."
-    redirect_to flights_path
+    redirect_to trip
   end
     
   private
