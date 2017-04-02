@@ -326,23 +326,6 @@ class FlightsController < ApplicationController
     redirect_to tails_path
   end
   
-  def index_emails
-    @title = "Import Boarding Passes"
-    add_breadcrumb 'Flights', 'flights_path'
-    add_breadcrumb @title, index_emails_path
-    
-    # Get attachments from boarding pass emails
-    begin
-      attachments = BoardingPassEmail::process_attachments(current_user.all_emails)
-    rescue SocketError => details
-      @passes = nil
-      @error = "Could not connect to email (#{details})"
-    end
-    
-    @passes = PKPass.all
-    
-  end
-  
   def input_boarding_pass
     @title = "Boarding Pass Parser"
     @meta_description = "A boarding pass barcode parser."

@@ -40,7 +40,6 @@ Portfolio::Application.routes.draw do
   match '/boarding-pass/results/:data'  => 'flights#show_boarding_pass',  via: :get, as: :show_boarding_pass
   match '/boarding-pass/json(/:callback)/:data' => 'flights#show_boarding_pass_json',  via: :get, as:
    :show_boarding_pass_json
-  match '/boarding-pass/email' => 'flights#index_emails', as: :index_emails, via: :get
   get   "/boarding-pass/import(/:trip_id)"      => "pk_passes#index", as: :import_boarding_passes
   post  "/flights/create-iata/:trip_id/:pass_id" => "flights#create_iata", as: :create_iata
   
