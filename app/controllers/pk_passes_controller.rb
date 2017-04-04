@@ -1,5 +1,7 @@
 class PkPassesController < ApplicationController
   before_action :logged_in_user
+
+  require 'net/imap'
   
   def index
     @title = "Import Boarding Passes"

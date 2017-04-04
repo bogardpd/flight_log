@@ -4,6 +4,7 @@
 
 class PKPass < ApplicationRecord
   after_initialize :set_values
+  before_create :check_for_existing_flight
   
   validates :serial_number, :presence => true, :uniqueness => true
   validates :pass_json, :presence => true
@@ -77,6 +78,13 @@ class PKPass < ApplicationRecord
     def set_values
       @pass = JSON.parse(self.pass_json)
       self.assign_attributes({:serial_number => [@pass.dig('passTypeIdentifier'),@pass.dig('serialNumber')].join(",")})
+    end
+    
+    def check_for_existing_flight
+      associated_flight = Flight.where(pass_serial_number: self.serial_number)
+      if associated_flight.any?
+        self.assign_attributes({flight_id: associated_flight.first.id})
+      end
     end
 
 end
