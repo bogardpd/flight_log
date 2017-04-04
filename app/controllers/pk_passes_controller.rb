@@ -21,7 +21,8 @@ class PkPassesController < ApplicationController
     end
     
     check_email_for_boarding_passes
-    @passes = PKPass.pass_summary_list
+    @import_pass_variables = import_pass_variables
+    
   end
   
   def destroy

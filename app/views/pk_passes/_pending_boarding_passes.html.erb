@@ -1,10 +1,13 @@
+<% if passes.any? || (flight_passes && flights.any?) %>
 <div class="boarding-pass-list">
+  
+  <% if passes.any? %>
   <table class="flightlog">
     <thead>
       <th colspan="6">Create Flight from Boarding Pass</th>
     </thead>
     <tbody>
-    <% @passes.each do |pass| %>
+    <% passes.each do |pass| %>
       <tr>
         <td><%= link_to "Create Flight", new_flight_path(:trip_id => @trip, :pass_id => pass[:id]) %>:</td>
         <td class="iata_mono"><%= pass[:pnr] %></td>
@@ -16,4 +19,25 @@
     <% end %>
     </tbody>
   </table>
+  <% end %>
+
+  <% if (flight_passes && flights.any?) %>
+  <table class="flightlog">
+    <thead>
+      <th colspan="6">Update Flight from Boarding Pass</th>
+    </thead>
+    <tbody>
+      <% flights.each do |flight| %>
+        <tr>
+          <td><%= link_to "Edit", edit_flight_path(flight, pass_id: flight_passes[flight.id]) %>:</td>
+          <%= render partial: "flights/flight_cell_flight", locals: {flight: flight, linkable: false} %>
+          <%= render partial: "flights/flight_cell_route", locals: {flight: flight, linkable: false} %>
+          <%= render "flights/flight_cell_departure", flight: flight %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% end %>
+  
 </div>
+<% end %>

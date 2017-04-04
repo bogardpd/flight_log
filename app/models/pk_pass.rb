@@ -63,14 +63,20 @@ class PKPass < ApplicationRecord
     return output
   end
   
-  # Returns an array of hashes of summary details for all boarding passes.
+  # Returns an array of hashes of summary details for all boarding passes
+  # that are not yet associated with a flight.
   def self.pass_summary_list
-    PKPass.all.map{|pass|
+    PKPass.where(flight_id: nil).map{|pass|
       fields = BoardingPass.new(pass.barcode, interpretations: false).summary_fields
       fields.store(:date, Time.parse(JSON.parse(pass.pass_json)["relevantDate"]))
       fields.store(:id, pass.id)
       fields
     }.sort_by{|h| h[:date]}
+  end
+  
+  # Returns a hash of Flights with updated boarding passes, with flight ids as the keys and pass ids as the values
+  def self.flights_with_updated_passes
+    return PKPass.where.not(flight_id: nil).map{|pass| {pass.flight_id => pass.id}}.reduce({}, :merge)
   end
   
   protected

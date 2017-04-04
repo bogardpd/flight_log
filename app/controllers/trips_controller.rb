@@ -69,7 +69,7 @@ class TripsController < ApplicationController
 
     if logged_in? && @trip.hidden
       check_email_for_boarding_passes
-      @passes = PKPass.pass_summary_list
+      @import_pass_variables = import_pass_variables
     end
     
     rescue ActiveRecord::RecordNotFound
