@@ -1,3 +1,49 @@
 <h1>Import Boarding Passes</h1>
 
-<%= render partial: "pending_boarding_passes", locals: @import_pass_variables %>
+<h2>New Boarding Passes</h2>
+
+<%= form_tag(change_boarding_pass_trip_path) do %>
+  <%= label_tag :trip_id %>: <%= select_tag(:trip_id, options_for_select(@trips, @trip.id)) %> <%= submit_tag "Change", name: nil %>
+<% end %>
+
+<% if @passes.any? %>
+<table class="flightlog">
+  <thead>
+    <th colspan="6">Create Flight from Boarding Pass</th>
+  </thead>
+  <tbody>
+  <% @passes.each do |pass| %>
+    <tr>
+      <td><%= link_to "Create Flight", new_flight_path(:trip_id => @trip, :pass_id => pass[:id]) %>:</td>
+      <td class="iata_mono"><%= pass[:pnr] %></td>
+      <td><%= pass[:airline] %> <%= pass[:flight] %></td>
+      <td><%= iata_mono(pass[:from]) %> &ndash; <%= iata_mono(pass[:to]) %></td>
+      <td class="flight_date"><%= format_date(pass[:date]) %></td>
+      <td><%= link_to("Delete", pk_pass_path(pass[:id], trip_id: @trip), :method => :delete, :data => {:confirm => "Are you sure you want to delete #{pass[:from]}-#{pass[:to]}?"}, :class => 'warning') %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<% end %>
+
+<h2>Flights with Updated Passes</h2>
+
+<% if (@flight_passes && @flights.any?) %>
+<table class="flightlog">
+  <thead>
+    <th colspan="6">Update Flight from Boarding Pass</th>
+  </thead>
+  <tbody>
+    <% @flights.each do |flight| %>
+      <tr>
+        <td><%= link_to "Edit", edit_flight_path(flight, pass_id: @flight_passes[flight.id]) %>:</td>
+        <%= render partial: "flights/flight_cell_flight", locals: {flight: flight, linkable: false} %>
+        <%= render partial: "flights/flight_cell_route", locals: {flight: flight, linkable: false} %>
+        <%= render "flights/flight_cell_departure", flight: flight %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+
+<%= javascript_include_tag "change_boarding_pass_trip" %>

@@ -16,7 +16,7 @@ Portfolio::Application.routes.draw do
   match '/login'  => 'sessions#new',      via: :get
   match '/logout' => 'sessions#destroy',  via: :delete
 
-  get   "/flights/new/:trip_id(/:pass_id)"       => "flights#new",             as: :new_flight
+  get   "/flights/new/trip/:trip_id(/pass/:pass_id)"       => "flights#new",             as: :new_flight
   get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range", as: :show_date_range
   get   "/flights/year/:year"                    => "flights#show_date_range", as: :show_year
   
@@ -40,8 +40,9 @@ Portfolio::Application.routes.draw do
   match '/boarding-pass/results/:data'  => 'flights#show_boarding_pass',  via: :get, as: :show_boarding_pass
   match '/boarding-pass/json(/:callback)/:data' => 'flights#show_boarding_pass_json',  via: :get, as:
    :show_boarding_pass_json
-  get   "/boarding-pass/import(/:trip_id)"      => "pk_passes#index", as: :import_boarding_passes
-  post  "/flights/create-iata/:trip_id/:pass_id" => "flights#create_iata", as: :create_iata
+  get   "/boarding-pass/import(/trip/:trip_id)"  => "pk_passes#index",       as: :import_boarding_passes
+  post  "/boarding-pass/import(/trip/:trip_id)"  => "pk_passes#change_trip", as: :change_boarding_pass_trip
+  post  "/flights/create-iata/:trip_id/:pass_id" => "flights#create_iata",   as: :create_iata
   
   # Admin pages:
   match '/admin',                         to: 'admin#admin',                   via: :get

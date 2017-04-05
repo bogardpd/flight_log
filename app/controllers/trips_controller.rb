@@ -6,11 +6,7 @@ class TripsController < ApplicationController
   def index
     add_breadcrumb 'Trips', 'trips_path'
     add_admin_action view_context.link_to("Add New Trip", new_trip_path)
-    if logged_in?
-      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date")
-    else
-      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date")
-    end
+    @trips = Trip.with_departure_dates(logged_in?)
 
     @trips_with_no_flights = Trip.where('id not in (?)',Trip.uniq.joins(:flights).select("trips.id"))
     @title = "Trips"
@@ -43,7 +39,7 @@ class TripsController < ApplicationController
     add_admin_action view_context.link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => 'warning') if @flights.length == 0
     add_admin_action view_context.link_to("Edit Trip", edit_trip_path(@trip))
     add_admin_action view_context.link_to("Add Flight", new_flight_path(:trip_id => @trip))
-    add_admin_action view_context.link_to("Import Passes", import_boarding_passes_path(:trip_id => @trip)) unless @trip.hidden
+    add_admin_action view_context.link_to("Import Passes", import_boarding_passes_path(:trip_id => @trip))
     
     @trip_distance = total_distance(@flights)
     @section_count = Hash.new(0) # Holds a count of the number of flights in each section
@@ -69,7 +65,6 @@ class TripsController < ApplicationController
 
     if logged_in? && @trip.hidden
       check_email_for_boarding_passes
-      @import_pass_variables = import_pass_variables
     end
     
     rescue ActiveRecord::RecordNotFound

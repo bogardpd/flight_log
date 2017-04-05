@@ -51,14 +51,6 @@ protected
     input_date.strftime("%e %b %Y")
   end
   
-  def import_pass_variables
-    passes = PKPass.pass_summary_list
-    flight_passes = PKPass.flights_with_updated_passes
-    flights = Flight.flights_table.where(id: flight_passes.keys)
-    flights = flights.visitor if !logged_in? # Filter out hidden trips for visitors
-    return {passes: passes, flight_passes: flight_passes, flights: flights}
-  end
-  
   def aircraft_frequency(flights)
     # Creates global variables containing the aircraft of a list of flights, and how many flights involving this list each aircraft has.
     aircraft_frequency_hash = Hash.new(0) # All aircraft start with 0 flights
