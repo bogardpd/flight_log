@@ -7,7 +7,7 @@
 	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
 		<%= render 'error_no_flights' %>
 	<% else %>
-		<div class="alert">There are no flights in the flight log that include a tail number!</p>
+		<%= render_message(:warning, "There are no flights in the flight log that include a tail number!") %>
 	<% end %>
 <% else %>
 

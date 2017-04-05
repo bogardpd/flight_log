@@ -174,7 +174,7 @@ class AirportsController < ApplicationController
     add_admin_action view_context.link_to("Edit Airport", edit_airport_path(@airport))
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find an airport with an ID of #{params[:id]}. Instead, weʼll give you a list of airports."
+    flash[:warning] = "We couldnʼt find an airport with an ID of #{params[:id]}. Instead, weʼll give you a list of airports."
     redirect_to airports_path
   end
   

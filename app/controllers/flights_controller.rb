@@ -50,6 +50,8 @@ class FlightsController < ApplicationController
       @city_pair_flights = Flight.visitor.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @flight.origin_airport.id, :city2 => @flight.destination_airport.id})
     end
     
+    add_message(:warning, "This flight is part of a #{view_context.link_to("hidden trip", trip_path(@flight.trip))}!") if @flight.trip.hidden
+    
     # Create map:
     @map = SingleFlightMap.new(@flight)
     
@@ -89,7 +91,7 @@ class FlightsController < ApplicationController
     add_admin_action view_context.link_to("Edit Flight", edit_flight_path(@flight))
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
+    flash[:warning] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
   end
     
@@ -159,7 +161,7 @@ class FlightsController < ApplicationController
     redirect_to flights_path
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find any flights in #{@in_text}. Instead, weʼll give you a list of flights."
+    flash[:warning] = "We couldnʼt find any flights in #{@in_text}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
     
   end
@@ -228,7 +230,7 @@ class FlightsController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find any flights in #{@title}. Instead, weʼll give you a list of travel classes."
+    flash[:warning] = "We couldnʼt find any flights in #{@title}. Instead, weʼll give you a list of travel classes."
     redirect_to classes_path
   end
 
@@ -322,7 +324,7 @@ class FlightsController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-   flash[:record_not_found] = "We couldnʼt find any flights with the tail number #{params[:tail_number]}. Instead, weʼll give you a list of tail numbers."
+   flash[:warning] = "We couldnʼt find any flights with the tail number #{params[:tail_number]}. Instead, weʼll give you a list of tail numbers."
     redirect_to tails_path
   end
   
@@ -336,7 +338,7 @@ class FlightsController < ApplicationController
     if params[:data].present?
       redirect_to show_boarding_pass_path(params[:data])
     else
-      flash[:alert] = "Boarding pass data cannot be blank."
+      flash[:error] = "Boarding pass data cannot be blank."
       redirect_to boarding_pass_path
     end
   end
@@ -399,7 +401,7 @@ class FlightsController < ApplicationController
         flash[:success] += " Youʼve had prior flights on this tail!"
       end
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
-        flash[:alert] = "Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?".html_safe
+        flash[:warning] = "Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?".html_safe
       end
       # If pass exists, delete pass 
       if params[:flight][:pass_id]
@@ -444,7 +446,7 @@ class FlightsController < ApplicationController
         flash[:success] += " You've had prior flights on this tail!"
       end
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
-        flash[:alert] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they're correct?".html_safe
+        flash[:warning] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they're correct?".html_safe
       end
       redirect_to @flight
     else

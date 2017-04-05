@@ -1,7 +1,7 @@
 <% if @operator_frequency_sorted.nil? %>
 
 	<p>In many cases, an airline subcontracts another airline to operate flights for them.</p>
-	<div class="alert">All of these flights have unknown operators.</div>
+	<%= render_message(:warning, "All of these flights have unknown operators.") %>
 
 <% elsif @airline_frequency_sorted && (@airline_frequency_sorted == @operator_frequency_sorted) %>
 

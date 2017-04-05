@@ -1,6 +1,3 @@
-<% if @flight.trip.hidden %>
-<div class="hidden_trip">This flight is part of a <%= link_to("hidden trip", trip_path(@flight.trip)) %>!</div>
-<% end %>
 <h1><%= @flight.airline.airline_name %> <%= @flight.flight_number %></h1>
 
 <% if @flight.comment %>
@@ -31,7 +28,7 @@
   </tr>
   <tr>
     <td class="flight_show_label">Trip</td>
-    <td class="flight_show_trip<%= " hidden_trip" if @flight.trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
+    <td class="flight_show_trip"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
   </tr>
   <tr>
     <td class="flight_show_label">Route</td>

@@ -3,7 +3,7 @@
 <h1>New Flight</h1>
 
 <% if !Airport.any? %>
-	<div class="alert">There are no airports in the flight log. Please <%= link_to "add an airport", new_airport_path %> before trying to add a flight.</div>
+	<%= render_message(:warning, "There are no airports in the flight log. Please #{link_to "add an airport", new_airport_path} before trying to add a flight.") %>
 <% else %>
 
 	<%= render :partial => 'form', locals: {flight: @flight, defaults: @defaults} %>

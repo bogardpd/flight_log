@@ -8,9 +8,11 @@
 	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
 		<%= render 'error_no_flights' %>
 	<% else %>
-		<div class="alert">There are no flights in the flight log that include an aircraft type!</div>
+    <%= render_message(:warning, "There are no flights in the flight log that include an aircraft type!") %>
 	<% end %>
 <% else %>
+
+
 
 <table class="flightlog">
   <tr class="th">

@@ -109,7 +109,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldnʼt find an airline with an IATA code of #{params[:id]}. Instead, weʼll give you a list of airlines."
+      flash[:warning] = "We couldnʼt find an airline with an IATA code of #{params[:id]}. Instead, weʼll give you a list of airlines."
       redirect_to airlines_path
       
   end
@@ -155,7 +155,7 @@ class AirlinesController < ApplicationController
     @fleet_family = @fleet_family.sort_by{ |key, value| key }
         
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find any flights operated by #{params[:operator]}. Instead, weʼll give you a list of airlines and operators."
+    flash[:warning] = "We couldnʼt find any flights operated by #{params[:operator]}. Instead, weʼll give you a list of airlines and operators."
     redirect_to airlines_path
   end
   
@@ -187,7 +187,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, weʼll give you a list of airlines and operators."
+    flash[:warning] = "We couldnʼt find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, weʼll give you a list of airlines and operators."
     redirect_to airlines_path
   end
   

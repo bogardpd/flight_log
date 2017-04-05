@@ -13,7 +13,7 @@ class PkPassesController < ApplicationController
       elsif Trip.any?
         @trip = Trip.order(:created_at).last
       else
-        flash[:record_not_found] = "No trips have been created yet, so we can’t import a boarding pass. Please create a trip."
+        flash[:warning] = "No trips have been created yet, so we can’t import a boarding pass. Please create a trip."
         redirect_to new_trip_path
       end
     end

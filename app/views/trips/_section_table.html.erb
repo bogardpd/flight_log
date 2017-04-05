@@ -7,7 +7,7 @@
 <% @sections.each_with_index do |section, index| %>
   <tr>
     <td class="counter"><%= index + 1 %></td>
-		<td class="trip_name<%= " hidden_trip" if section[:trip_hidden] %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if section[:trip_hidden] %><%= link_to("Section #{section[:trip_section]} - #{section[:trip_name]}", show_section_path(section[:trip_id], section[:trip_section])) %></td>
+		<td class="trip_name"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if section[:trip_hidden] %><%= link_to("Section #{section[:trip_section]} - #{section[:trip_name]}", show_section_path(section[:trip_id], section[:trip_section])) %></td>
     <td class="flight_date"><%= format_date(section[:departure]) %></td>
   </tr>
 <% end %>

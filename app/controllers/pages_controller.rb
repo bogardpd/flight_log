@@ -13,6 +13,8 @@ class PagesController < ApplicationController
       @flight_aircraft = Flight.find_by_sql("SELECT aircraft_families.iata_aircraft_code, aircraft_families.family_name, aircraft_families.manufacturer, COUNT(*) as flight_count FROM flights JOIN aircraft_families ON aircraft_families.id = flights.aircraft_family_id WHERE flights.aircraft_family_id IS NOT NULL GROUP BY aircraft_families.iata_aircraft_code, aircraft_families.family_name, aircraft_families.manufacturer ORDER BY flight_count DESC")
       @flight_airlines = Flight.find_by_sql("SELECT airlines.iata_airline_code, airlines.airline_name, COUNT(*) as flight_count FROM flights JOIN airlines ON airlines.id = flights.airline_id WHERE flights.airline_id IS NOT NULL GROUP BY airlines.iata_airline_code, airlines.airline_name ORDER BY flight_count DESC")
       @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
+      Trip.where(:hidden => true).map{|trip| add_message(:info, "Active Trip: #{view_context.link_to(trip.name, trip_path(trip), class: "title")}")} # Link to hidden trips
+       
     else # Filter out hidden trips for visitors
       @flights = Flight.visitor.flights_table
       @flight_aircraft = Flight.find_by_sql("SELECT aircraft_families.iata_aircraft_code, aircraft_families.family_name, aircraft_families.manufacturer, COUNT(*) as flight_count FROM flights JOIN aircraft_families ON aircraft_families.id = flights.aircraft_family_id JOIN trips ON trips.id = flights.trip_id WHERE flights.aircraft_family_id IS NOT NULL AND trips.hidden = false GROUP BY aircraft_families.iata_aircraft_code, aircraft_families.family_name, aircraft_families.manufacturer ORDER BY flight_count DESC")
@@ -20,8 +22,7 @@ class PagesController < ApplicationController
       @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
     end
     
-    @total_distance = total_distance(@flights)
-    @hidden_trips = Trip.where(:hidden => true)
+    @total_distance = total_distance(@flights)    
     
     if @flights.any?
     

@@ -41,6 +41,8 @@ class TripsController < ApplicationController
     add_admin_action view_context.link_to("Add Flight", new_flight_path(:trip_id => @trip))
     add_admin_action view_context.link_to("Import Passes", import_boarding_passes_path(:trip_id => @trip))
     
+    add_message(:warning, "This trip is hidden!") if @trip.hidden
+    
     @trip_distance = total_distance(@flights)
     @section_count = Hash.new(0) # Holds a count of the number of flights in each section
     @section_final_destination = Hash.new # Holds the last destination airport code in each section
@@ -68,7 +70,7 @@ class TripsController < ApplicationController
     end
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
+      flash[:warning] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
       redirect_to trips_path
   end
   
@@ -76,6 +78,8 @@ class TripsController < ApplicationController
   def show_section
     @logo_used = true
     @trip = Trip.find(params[:trip])
+    
+    add_message(:warning, "This trip is hidden!") if @trip.hidden
     
     @flights = Flight.flights_table.where(trip_id: @trip, trip_section: params[:section])
     @section_distance = total_distance(@flights)

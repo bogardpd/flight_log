@@ -97,7 +97,7 @@ class AircraftFamiliesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldnʼt find an aircraft family with an IATA code of #{params[:id]}. Instead, weʼll give you a list of aircraft families."
+      flash[:warning] = "We couldnʼt find an aircraft family with an IATA code of #{params[:id]}. Instead, weʼll give you a list of aircraft families."
       redirect_to aircraft_families_path
   end
   

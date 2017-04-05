@@ -127,7 +127,7 @@ class RoutesController < ApplicationController
     @trips_map    = HighlightedRoutesMap.new(@city_pair_trip_flights, @flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldnʼt find any flights with the route #{params[:id]}. Instead, weʼll give you a list of routes."
+      flash[:warning] = "We couldnʼt find any flights with the route #{params[:id]}. Instead, weʼll give you a list of routes."
       redirect_to routes_path
     
     
@@ -158,7 +158,7 @@ class RoutesController < ApplicationController
     end
     
     rescue ArgumentError
-      flash[:record_not_found] = "Canʼt look up route - at least one of these airports does not exist in the database."
+      flash[:warning] = "Canʼt look up route - at least one of these airports does not exist in the database."
       redirect_to routes_path
     
   end

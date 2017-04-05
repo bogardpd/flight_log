@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
     begin
       BoardingPassEmail::process_attachments(current_user.all_emails)
     rescue => details
-      flash.now[:notice] = "Could not get new passes from email (#{details})"
+      flash.now[:warning] = "Could not get new passes from email (#{details})"
     end
   end
   
@@ -44,6 +44,11 @@ protected
     before_action options do |controller|
       controller.send(:add_breadcrumb, name, url)
     end
+  end
+  
+  def add_message(type, text)
+    @messages ||= []
+    @messages.push({type: type, text: text})
   end
   
   def format_date(input_date) # Also see method in application helper
