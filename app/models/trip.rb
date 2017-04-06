@@ -20,6 +20,10 @@ class Trip < ApplicationRecord
     return trips
   end
   
+  def self.with_no_flights
+    return Trip.where('id not in (?)',Trip.uniq.joins(:flights).select("trips.id"))
+  end
+  
   NULL_ATTRS = %w( comment )
   before_save :nil_if_blank
   

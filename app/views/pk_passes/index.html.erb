@@ -2,9 +2,11 @@
 
 <h2>New Boarding Passes</h2>
 
+<div class="center">
 <%= form_tag(change_boarding_pass_trip_path) do %>
   <%= label_tag :trip_id %>: <%= select_tag(:trip_id, options_for_select(@trips, @trip.id)) %> <%= submit_tag "Change", name: nil %>
 <% end %>
+</div>
 
 <% if @passes.any? %>
 <table class="flightlog">

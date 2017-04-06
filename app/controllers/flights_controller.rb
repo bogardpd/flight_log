@@ -45,12 +45,17 @@ class FlightsController < ApplicationController
     if logged_in?
       @flight = Flight.find(params[:id])
       @city_pair_flights = Flight.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @flight.origin_airport.id, :city2 => @flight.destination_airport.id})
+      check_email_for_boarding_passes if @flight.trip.hidden?
     else
       @flight = Flight.visitor.find(params[:id])
       @city_pair_flights = Flight.visitor.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @flight.origin_airport.id, :city2 => @flight.destination_airport.id})
     end
     
     add_message(:warning, "This flight is part of a #{view_context.link_to("hidden trip", trip_path(@flight.trip))}!") if @flight.trip.hidden
+    updated_pass = PKPass.where(flight_id: @flight)
+    if updated_pass.any?
+      add_message(:info, "This flight has an #{view_context.link_to("updated boarding pass", edit_flight_path(pass_id: updated_pass.first))} available!")
+    end
     
     # Create map:
     @map = SingleFlightMap.new(@flight)
