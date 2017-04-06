@@ -9,17 +9,17 @@ class PagesController < ApplicationController
     @region = current_region(default: :conus)
     
     @flight_aircraft = AircraftFamily.flight_count(logged_in?)
+    @flight_airlines = Airline.flight_count(logged_in?)
+    
     if logged_in?
       @flights = Flight.flights_table
-      @flight_airlines = Flight.find_by_sql("SELECT airlines.iata_airline_code, airlines.airline_name, COUNT(*) as flight_count FROM flights JOIN airlines ON airlines.id = flights.airline_id WHERE flights.airline_id IS NOT NULL GROUP BY airlines.iata_airline_code, airlines.airline_name ORDER BY flight_count DESC")
       @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
       
       Trip.where(:hidden => true).map{|trip| add_message(:info, "Active Trip: #{view_context.link_to(trip.name, trip_path(trip), class: "title")}")} # Link to hidden trips
       add_message(:info, "You have boarding passes you can #{view_context.link_to("import", import_boarding_passes_path)}!") if PKPass.any?
        
-    else # Filter out hidden trips for visitors
+    else
       @flights = Flight.visitor.flights_table
-      @flight_airlines = Flight.find_by_sql("SELECT airlines.iata_airline_code, airlines.airline_name, COUNT(*) as flight_count FROM flights JOIN airlines ON airlines.id = flights.airline_id JOIN trips ON trips.id = flights.trip_id WHERE flights.airline_id IS NOT NULL AND trips.hidden = false GROUP BY airlines.iata_airline_code, airlines.airline_name ORDER BY flight_count DESC")
       @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
     end
     

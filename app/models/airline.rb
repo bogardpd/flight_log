@@ -12,4 +12,15 @@ class Airline < ApplicationRecord
     return self.airline_name
   end
   
+  # Returns an array of airlines, with a hash for each family containing the
+  # id, airline name, IATA code, and number of flights on that airline, sorted
+  # by number of flights descending.
+  def self.flight_count(logged_in=false, type=:airline)
+    flights = logged_in ? Flight.all : Flight.visitor
+    id_field = (type == :airline) ? :airline_id : :operator_id
+    flights.joins(type).group(id_field, :airline_name, :iata_airline_code).count
+      .map{|k,v| {id: k[0], airline_name: k[1], iata_airline_code: k[2], flight_count: v}}
+      .sort_by{|a| [-a[:flight_count], a[:airline_name]]}
+  end
+  
 end
