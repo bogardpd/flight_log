@@ -33,7 +33,7 @@ module ApplicationHelper
   def render_messages
     order = [:error, :warning, :success, :info]
     @messages ||= []
-    @messages.concat(flash.map{|k,v| {type: k, text: v}}) if flash
+    @messages.concat(flash.map{|k,v| {type: k.to_sym, text: v}}) if flash
     @messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text]) }.join.html_safe
   end
     
