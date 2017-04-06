@@ -4,7 +4,7 @@
 
 <p>I have flown on <%= pluralize(@aircraft_array.count, 'aircraft family') %>.</p>
 
-<% if @flight_aircraft_families.empty? %>
+<% if @aircraft_array.empty? %>
 	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
 		<%= render 'error_no_flights' %>
 	<% else %>
@@ -25,12 +25,12 @@
 
 <% @aircraft_array.each_with_index do |aircraft_family, index| %>
   <tr>
-    <td class="counter"><%= (@sort_cat == :flights && aircraft_family[:count] == previous_count) ? "⋮" : index + 1 %></td>
-		<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:name]}".html_safe, aircraft_family_path(aircraft_family[:iata_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:name]} aircraft") %></td>
-		<td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family[:iata_code], aircraft_family_path(aircraft_family[:iata_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:name]} aircraft") %></td>
-    <td class="aircraft_flights"><%= render "flights/graph_block", :value => aircraft_family[:count], :maximum => @aircraft_maximum %></td>
+    <td class="counter"><%= (@sort_cat == :flights && aircraft_family[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
+		<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}".html_safe, aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} aircraft") %></td>
+		<td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} aircraft") %></td>
+    <td class="aircraft_flights"><%= render "flights/graph_block", :value => aircraft_family[:flight_count], :maximum => @aircraft_maximum %></td>
   </tr>
-	<% previous_count = aircraft_family[:count] %>
+	<% previous_count = aircraft_family[:flight_count] %>
 <% end %>
 
   <tr><td colspan="5" class="flightlog_total"><%= pluralize(@aircraft_array.count, 'aircraft family') %></td></tr>
