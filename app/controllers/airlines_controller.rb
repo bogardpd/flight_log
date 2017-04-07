@@ -12,7 +12,7 @@ class AirlinesController < ApplicationController
     @airlines  = Airline.flight_count(logged_in?, :airline)
     @operators = Airline.flight_count(logged_in?, :operator)
    
-    used_airline_ids = @airlines.concat(@operators).map{|a| a[:id]}.uniq
+    used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
     
     if (@airlines.any? || @operators.any?)
@@ -39,8 +39,8 @@ class AirlinesController < ApplicationController
         @airlines.reverse!  if @sort_dir == :desc
         @operators.reverse! if @sort_dir == :desc
       when :flights
-        @airlines  =  @airlines.sort_by { |airline|  [sort_mult* airline[:flight_count],  airline[:airline_name].downcase] }
-        @operators = @operators.sort_by { |operator| [sort_mult*operator[:flight_count], operator[:airline_name].downcase] }
+        @airlines  =  @airlines.sort_by { |airline|  [sort_mult * airline[:flight_count],  airline[:airline_name].downcase] }
+        @operators = @operators.sort_by { |operator| [sort_mult * operator[:flight_count], operator[:airline_name].downcase] }
       end
     end
      
