@@ -257,6 +257,8 @@ body {
 }
 
 
+
+
 /* Boarding Passes */
 div.boarding-pass-fields {
   
@@ -315,7 +317,7 @@ div.boarding-pass-fields {
       color: $color-text-error;
     }
     span {
-      @extend span.invalid
+      @extend span.invalid;
     }
   }
   tr.unknown {
@@ -323,13 +325,27 @@ div.boarding-pass-fields {
       color: $color-text-warning;
     }
     span {
-      @extend span.unknown
+      @extend span.unknown;
     }
   }
 }
 
 
-
+/* Forms */
+form {
+  input, select, button, textarea {
+  	font-family: $font-stack-sans-serif;
+  	font-size: 95%;
+  	padding: 2px 4px;
+  }
+  .autopopulated {
+  	background: hsl(60, 100%, 50%);
+  	border: 1px solid hsl(45, 100%, 50%);
+  }
+  .old-value {
+    color: $color-text-disabled;
+  }
+}
 
 
 a {
@@ -418,6 +434,8 @@ div.error {
 	border: 1px solid #DD9999;
 	padding: 5px 10px;
 }
+
+/* Message banners */
 
 $color-background-message-default: hsl(0, 0%, 85%);
 div.message {
@@ -709,20 +727,7 @@ img.photo_gallery {
 	border: 1px solid #9EC7F3;
 }
 
-input, select, button, textarea {
-	font-family: $font-stack-sans-serif;
-	font-size: 95%;
-	padding: 2px 4px;
-}
 
-input.autopopulated, select.autopopulated, textarea.autopopulated {
-	background: hsl(60, 100%, 50%);
-	border: 1px solid hsl(45, 100%, 50%);
-}
-
-.old-value {
-  color: $color-text-disabled;
-}
 
 p {
 	margin-left: $margin-paragraph;
