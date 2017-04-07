@@ -1,6 +1,6 @@
 <h1>Fill in Unknown IATA Codes</h1>
 
-<%= form_tag(create_iata_path(:trip_id => params[:trip_id], :pass_id => params[:pass_id])) do %>
+<%= form_tag(create_iata_path) do %>
 
   <%= render :partial => "form_new_iata", locals: {type: :airport, name: "Origin Airport", value: @undefined_fields[:airport_orig]} %>
   <%= render :partial => "form_new_iata", locals: {type: :airport, name: "Destination Airport", value: @undefined_fields[:airport_dest]} %>

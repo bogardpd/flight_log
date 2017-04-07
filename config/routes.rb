@@ -4,7 +4,7 @@ Portfolio::Application.routes.draw do
   
   resources :users
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :flights, :except => [:new]
+  resources :flights, :except => [:new, :edit]
   resources :airports
   resources :airlines
   resources :aircraft_families, path: :aircraft
@@ -16,7 +16,8 @@ Portfolio::Application.routes.draw do
   match '/login'  => 'sessions#new',      via: :get
   match '/logout' => 'sessions#destroy',  via: :delete
 
-  get   "/flights/new/trip/:trip_id(/pass/:pass_id)"       => "flights#new",             as: :new_flight
+  get   "/flights/new/trip/:trip_id(/pass/:pass_id)"       => "flights#new",   as: :new_flight
+  get   "/flights/:id/edit(/pass/:pass_id)"      => "flights#edit",            as: :edit_flight
   get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range", as: :show_date_range
   get   "/flights/year/:year"                    => "flights#show_date_range", as: :show_year
   
@@ -42,7 +43,7 @@ Portfolio::Application.routes.draw do
    :show_boarding_pass_json
   get   "/boarding-pass/import(/trip/:trip_id)"  => "pk_passes#index",       as: :import_boarding_passes
   post  "/boarding-pass/import(/trip/:trip_id)"  => "pk_passes#change_trip", as: :change_boarding_pass_trip
-  post  "/flights/create-iata/:trip_id/:pass_id" => "flights#create_iata",   as: :create_iata
+  post  "/flights/create-iata/" => "flights#create_iata",   as: :create_iata
   
   # Admin pages:
   match '/admin',                         to: 'admin#admin',                   via: :get

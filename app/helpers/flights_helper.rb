@@ -44,4 +44,7 @@ module FlightsHelper
     return nil
   end
   
+  def form_highlight(current_flight_value, new_default_value)
+    (new_default_value.present? && current_flight_value != new_default_value) ? "autopopulated" : nil
+  end
 end

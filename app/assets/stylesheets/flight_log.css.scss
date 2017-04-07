@@ -720,6 +720,10 @@ input.autopopulated, select.autopopulated, textarea.autopopulated {
 	border: 1px solid hsl(45, 100%, 50%);
 }
 
+.old-value {
+  color: $color-text-disabled;
+}
+
 p {
 	margin-left: $margin-paragraph;
 	margin-right: $margin-paragraph;

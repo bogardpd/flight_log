@@ -379,19 +379,7 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb 'New Flight', 'new_flight_path'
     @flight = Trip.find(params[:trip_id]).flights.new
-    @pass = nil
-    @defaults = nil
-    if params[:pass_id]
-      begin
-        @pass = PKPass.find(params[:pass_id])
-      rescue ActiveRecord::RecordNotFound
-      end
-    end
-    if @pass.present?
-      @undefined_fields = Hash.new
-      @defaults = check_iata_codes(@pass.form_values)
-    end
-    
+    @defaults = get_defaults_from_pass
   end
   
   def new_undefined_fields
@@ -432,7 +420,7 @@ class FlightsController < ApplicationController
         Airline.create(iata_airline_code: params[(a+"iata").to_sym], airline_name: params[(a+"name").to_sym], numeric_code: params[(a+"numeric_code").to_sym])
       end
     end
-    redirect_to new_flight_path(trip_id: params[:trip_id], pass_id: params[:pass_id])
+    redirect_to session[:form_location]
   end
     
   def edit
@@ -441,6 +429,7 @@ class FlightsController < ApplicationController
     add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", 'flight_path(@flight)'
     add_breadcrumb 'Edit Flight', 'edit_flight_path(@flight)'
     @title = "Edit Flight"
+    @defaults = get_defaults_from_pass
   end
     
   def update
@@ -473,12 +462,30 @@ class FlightsController < ApplicationController
       params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section, :pass_serial_number)
     end
     
+    # If a boarding pass is present, returns a hash of boarding pass form
+    # values.
+    def get_defaults_from_pass
+      pass = nil
+      defaults = nil
+      if params[:pass_id]
+        begin
+          pass = PKPass.find(params[:pass_id])
+        rescue ActiveRecord::RecordNotFound
+        end
+      end
+      if pass.present?
+        defaults = check_iata_codes(pass.form_values)
+      end
+      return defaults
+    end
+    
     # Accepts a hash of boarding pass form values. If all IATA codes are found
     # in the database, return the hash with the ID for each IATA code appended.
     # If any IATA code is not found, render a form to create new entries for
     # the new IATA codes.
     def check_iata_codes(values)
-     
+      @undefined_fields = Hash.new
+      
       # Check if proposed origin airport exists
       if values[:origin_airport_iata]
         origin_airport = Airport.where(iata_code: values[:origin_airport_iata]).first
@@ -522,6 +529,7 @@ class FlightsController < ApplicationController
       # If there are any airports or airlines not in the database, show a form to create them
       if @undefined_fields.any?
         @title = "New Flight - Undefined Fields"
+        session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
         render "new_undefined_fields"
       end
       
