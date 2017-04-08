@@ -2,13 +2,14 @@
 
 <h2>New Boarding Passes</h2>
 
+<% if @passes.any? %>
+
 <div class="center">
 <%= form_tag(change_boarding_pass_trip_path) do %>
   <%= label_tag :trip_id %>: <%= select_tag(:trip_id, options_for_select(@trips, @trip.id)) %> <%= submit_tag "Change", name: nil %>
 <% end %>
 </div>
 
-<% if @passes.any? %>
 <table class="flightlog">
   <thead>
     <th colspan="6">Create Flight from Boarding Pass</th>
@@ -26,6 +27,8 @@
   <% end %>
   </tbody>
 </table>
+<% else %>
+  <%= render_message(:info, "We haven’t yet received any emailed boarding passes.") %>
 <% end %>
 
 <h2>Flights with Updated Passes</h2>
@@ -38,7 +41,7 @@
   <tbody>
     <% @flights.each do |flight| %>
       <tr>
-        <td><%= link_to "Edit", edit_flight_path(flight, pass_id: @flight_passes[flight.id]) %>:</td>
+        <td><%= link_to "Edit", edit_flight_with_pass_path(flight, pass_id: @flight_passes[flight.id]) %>:</td>
         <%= render partial: "flights/flight_cell_flight", locals: {flight: flight, linkable: false} %>
         <%= render partial: "flights/flight_cell_route", locals: {flight: flight, linkable: false} %>
         <%= render "flights/flight_cell_departure", flight: flight %>
@@ -46,6 +49,8 @@
     <% end %>
   </tbody>
 </table>
+<% else %>
+  <%= render_message(:info, "No flights have updated passes.") %>
 <% end %>
 
 <%= javascript_include_tag "change_boarding_pass_trip" %>

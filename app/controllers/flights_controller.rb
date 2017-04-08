@@ -1,6 +1,6 @@
 class FlightsController < ApplicationController
   protect_from_forgery except: :show_boarding_pass_json
-  before_action :logged_in_user, :only => [:new, :new_undefined_fields, :create, :create_iata, :edit, :update, :destroy, :index_emails, :new_undefined_fields, :create_iata]
+  before_action :logged_in_user, :only => [:new, :new_undefined_fields, :create, :create_iata, :edit, :edit_with_pass, :update, :destroy, :index_emails, :new_undefined_fields, :create_iata]
   add_breadcrumb 'Home', 'root_path'
   
   def index
@@ -54,7 +54,7 @@ class FlightsController < ApplicationController
     add_message(:warning, "This flight is part of a #{view_context.link_to("hidden trip", trip_path(@flight.trip))}!") if @flight.trip.hidden
     updated_pass = PKPass.where(flight_id: @flight)
     if updated_pass.any?
-      add_message(:info, "This flight has an #{view_context.link_to("updated boarding pass", edit_flight_path(pass_id: updated_pass.first))} available!")
+      add_message(:info, "This flight has an #{view_context.link_to("updated boarding pass", edit_flight_with_pass_path(pass_id: updated_pass.first))} available!")
     end
     
     # Create map:
@@ -427,9 +427,134 @@ class FlightsController < ApplicationController
     @flight = Flight.find(params[:id])
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", 'flight_path(@flight)'
-    add_breadcrumb 'Edit Flight', 'edit_flight_path(@flight)'
+    add_breadcrumb "Update Flight with New Boarding Pass", 'edit_flight_path(@flight)'
     @title = "Edit Flight"
-    @defaults = get_defaults_from_pass
+  end
+  
+  def edit_with_pass
+    begin
+      @flight = Flight.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
+      redirect_to flights_path
+      return
+    end
+    
+    begin
+      @pass = PKPass.find(params[:pass_id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "We couldnʼt find a pass with an ID of #{params[:id]}."
+      redirect_to import_boarding_passes_path
+      return
+    end
+    
+    @title = "Update Flight with new Boarding Pass"
+    add_breadcrumb 'Flights', 'flights_path'
+    add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", 'flight_path(@flight)'
+    add_breadcrumb 'Edit Flight', 'edit_flight_with_pass_path(id: @flight, pass_id: params[:pass_id])'
+    
+    defaults = get_defaults_from_pass
+        
+    # Build array of form fields
+    @fields = Array.new
+    # Origin Airport
+    if (defaults[:origin_airport_id] && @flight.origin_airport_id && defaults[:origin_airport_id] != @flight.origin_airport_id)
+      updated_airport = Airport.find(defaults[:origin_airport_id])
+      @fields.push({
+        field:         :origin_airport_id,
+        field_label:   "Origin Airport",
+        current_value: @flight.origin_airport.id,
+        current_text:  %Q(<span class="iata-code">#{@flight.origin_airport.iata_code}</span>&ensp;#{@flight.origin_airport.city}),
+        updated_value: updated_airport.id,
+        updated_text:  %Q(<span class="iata-code">#{updated_airport.iata_code}</span>&ensp;#{updated_airport.city})
+      })
+    end
+    # Destination Airport
+    if (defaults[:destination_airport_id] && @flight.destination_airport_id && defaults[:destination_airport_id] != @flight.destination_airport_id)
+      updated_airport = Airport.find(defaults[:destination_airport_id])
+      @fields.push({
+        field:         :destination_airport_id,
+        field_label:   "Destination Airport",
+        current_value: @flight.destination_airport.id,
+        current_text:  %Q(<span class="iata-code">#{@flight.destination_airport.iata_code}</span>&ensp;#{@flight.destination_airport.city}),
+        updated_value: updated_airport.id,
+        updated_text:  %Q(<span class="iata-code">#{updated_airport.iata_code}</span>&ensp;#{updated_airport.city})
+      })
+    end
+    # Departure Date (Local)
+    if (defaults[:departure_date_local] && @flight.departure_date && defaults[:departure_date_local] != @flight.departure_date)
+      @fields.push({
+        field:         :departure_date,
+        field_label:   "Departure Date (Local)",
+        current_value: @flight.departure_date,
+        current_text:  @flight.departure_date.strftime("%a, %-d %b %Y"),
+        updated_value: defaults[:departure_date_local],
+        updated_text:  defaults[:departure_date_local].strftime("%a, %-d %b %Y")
+      })
+    end
+    # Departure (UTC)
+    if (defaults[:departure_utc] && @flight.departure_utc && defaults[:departure_utc] != @flight.departure_utc)
+      @fields.push({
+        field:         :departure_utc,
+        field_label:   "Departure (UTC)",
+        current_value: @flight.departure_utc,
+        current_text:  @flight.departure_utc.strftime("%a, %-d %b %Y&ensp;%R %Z"),
+        updated_value: defaults[:departure_utc],
+        updated_text:  defaults[:departure_utc].strftime("%a, %-d %b %Y&ensp;%R %Z")
+      })
+    end
+    # Airline
+    if (defaults[:airline_id] && @flight.airline_id && defaults[:airline_id] != @flight.airline_id)
+      updated_airline = Airline.find(defaults[:airline_id])
+      @fields.push({
+        field:         :airline_id,
+        field_label:   "Airline",
+        current_value: @flight.airline_id,
+        current_text:  %Q(<span class="iata-code">#{@flight.airline.iata_airline_code}</span>&ensp;#{@flight.airline.airline_name}),
+        updated_value: updated_airline.id,
+        updated_text:  %Q(<span class="iata-code">#{updated_airline.iata_airline_code}</span>&ensp;#{updated_airline.airline_name})
+      })
+    end
+    # Flight Number
+    if (defaults[:flight_number] && @flight.flight_number && defaults[:flight_number] != @flight.flight_number)
+      @fields.push({
+        field:         :flight_number,
+        field_label:   "Flight Number",
+        current_value: @flight.flight_number,
+        current_text:  @flight.flight_number,
+        updated_value: defaults[:flight_number],
+        updated_text:  defaults[:flight_number]
+      })
+    end
+    # Travel Class
+    if (defaults[:travel_class] && @flight.travel_class && defaults[:travel_class] != @flight.travel_class)
+      @fields.push({
+        field:         :travel_class,
+        field_label:   "Travel Class",
+        current_value: @flight.travel_class,
+        current_text:  %Q(<span class="iata-code">#{@flight.travel_class}</span>&ensp;#{Flight.classes_list[@flight.travel_class]}),
+        updated_value: defaults[:travel_class],
+        updated_text:  %Q(<span class="iata-code">#{defaults[:travel_class]}</span>&ensp;#{Flight.classes_list[defaults[:travel_class]]})
+      })
+    end
+    # Boarding Pass
+    if (defaults[:boarding_pass] && @flight.boarding_pass_data && defaults[:boarding_pass] != @flight.boarding_pass_data)
+      @fields.push({
+        field:         :boarding_pass_data,
+        field_label:   "Boarding Pass Data",
+        current_value: @flight.boarding_pass_data,
+        current_text:  %Q(<code class="boarding-pass">#{@flight.boarding_pass_data.chars.each_slice(24).map(&:join).join("<br/>")}</code>),
+        updated_value: defaults[:boarding_pass],
+        updated_text:  %Q(<code class="boarding-pass">#{defaults[:boarding_pass].chars.each_slice(24).map(&:join).join("<br/>")}</code>)
+      })
+    end
+    
+    if @fields.empty?
+      flash[:warning] = "The updated boarding pass had no changes to make to the saved flight data."
+      @pass.destroy
+      redirect_to flight_path(@flight)
+    end
+      
   end
     
   def update
@@ -442,6 +567,9 @@ class FlightsController < ApplicationController
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
         flash[:warning] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they're correct?".html_safe
       end
+      @pass = PKPass.find_by(id: params[:flight][:pass_id])
+      @pass.destroy if @pass
+      
       redirect_to @flight
     else
       render 'edit'

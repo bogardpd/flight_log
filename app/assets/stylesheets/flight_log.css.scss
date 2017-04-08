@@ -19,6 +19,7 @@ $color-background-status-unknown: hsl( 45,  50%,  80%);
 $color-background-status-good:    hsl(180,  50%,  80%);
 $color-border-status-bad:         hsl(  0, 100%, 100%);
 $color-border-status-good:        hsl(180, 100%, 100%);
+$color-background-new:            lighten(yellow, 35%);
 
 $margin-icon-to-text: 0.5em;
 $margin-paragraph: 10px;
@@ -339,11 +340,32 @@ form {
   	padding: 2px 4px;
   }
   .autopopulated {
-  	background: hsl(60, 100%, 50%);
+  	background: $color-background-new;
   	border: 1px solid hsl(45, 100%, 50%);
+  }
+  .boarding-pass {
+    font-family: $font-stack-monospace;
+  }
+  .iata-code {
+    font-weight: 300;
+    font-family: $font-stack-monospace;
   }
   .old-value {
     color: $color-text-disabled;
+  }
+  .updated {
+    background-color: $color-background-new;
+  }  
+  td.radio-button {
+    width: 20px;
+    vertical-align: top;
+  }
+  td.radio-value {
+    width: 275px;
+    line-height: 120%;
+    span.label {
+      font-weight: 600;
+    }
   }
 }
 

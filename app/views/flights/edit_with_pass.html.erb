@@ -1,0 +1,32 @@
+<h1>Update Flight with New Boarding Pass</h1>
+
+<p>For each field, please select whether to keep the old data or use the updated boarding pass.</p>
+
+<%= form_for(@flight) do |f| %>
+  <table class="flightlog">
+    <thead>
+      <th colspan="2">Current Values</th>
+      <th colspan="2">Updated Boarding Pass</th>
+    </thead>
+    <tbody>
+    <% @fields.each do |field| %>
+      <tr>
+        <td class="radio-button">
+          <%= f.radio_button(field[:field], field[:current_value], {checked: false}) %>
+        </td>
+        <td class="radio-value">
+          <%= f.label(field[:field], %Q(<span class="label">Current #{field[:field_label]}</span><br/>#{field[:current_text]}).html_safe, value: field[:current_value]) %>
+        </td>
+        <td class="radio-button updated">
+          <%= f.radio_button(field[:field], field[:updated_value], {checked: true}) %></td>
+        <td class="radio-value updated">
+          <%= f.label(field[:field], %Q(<span class="label">Updated #{field[:field_label]}</span><br/>#{field[:updated_text]}).html_safe, value: field[:updated_value]) %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  
+  <%= f.hidden_field(:pass_id, :value => params[:pass_id]) %>
+  <div class="center"><%= f.submit %></div>
+<% end %>
