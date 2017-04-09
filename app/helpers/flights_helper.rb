@@ -44,10 +44,6 @@ module FlightsHelper
     return nil
   end
   
-  def form_highlight(current_flight_value, new_default_value)
-    (new_default_value.present? && current_flight_value != new_default_value) ? "autopopulated" : nil
-  end
-  
   def format_radio_text(label, text_hash)
     label = %Q(<span class="label">#{label}</span>)
     if text_hash.nil?

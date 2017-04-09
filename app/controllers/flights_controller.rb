@@ -380,6 +380,14 @@ class FlightsController < ApplicationController
     add_breadcrumb 'New Flight', 'new_flight_path'
     @flight = Trip.find(params[:trip_id]).flights.new
     @defaults = get_defaults_from_pass
+    
+    @pass = PKPass.find_by(id: params[:pass_id])
+    if @pass.nil?
+      @fields = Hash.new
+    else
+      fields = @pass.updated_values(@flight) || {}
+      @fields = fields.reject{|k,v| v[:pass_value].nil?}
+    end
   end
   
   def new_undefined_fields
