@@ -379,13 +379,13 @@ class FlightsController < ApplicationController
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb 'New Flight', 'new_flight_path'
     @flight = Trip.find(params[:trip_id]).flights.new
-    @defaults = get_defaults_from_pass
     
     @pass = PKPass.find_by(id: params[:pass_id])
     if @pass.nil?
       @fields = Hash.new
     else
       fields = @pass.updated_values(@flight) || {}
+      check_for_new_iata_codes(fields)
       @fields = fields.reject{|k,v| v[:pass_value].nil?}
     end
   end
@@ -416,18 +416,22 @@ class FlightsController < ApplicationController
   end
   
   def create_iata
-    ["origin_airport","destination_airport"].each do |a|
-      a += "_"
-      if params[(a+"iata").to_sym] && params[(a+"name").to_sym] && params[(a+"country").to_sym]
-        Airport.create(iata_code: params[(a+"iata").to_sym], city: params[(a+"name").to_sym], country: params[(a+"country").to_sym], region_conus: params[(a+"region_conus").to_sym])
+    (0..(params[:count].to_i-1)).each do |index|
+      type = params["type_#{index}".to_sym]
+      next if type.nil?
+      prefix = "#{type}_#{index}_"
+      case type
+      when "airline"
+        if params[(prefix+"iata").to_sym] && params[(prefix+"name").to_sym]
+          Airline.create(iata_airline_code: params[(prefix+"iata").to_sym], airline_name: params[(prefix+"name").to_sym], numeric_code: params[(prefix+"numeric_code").to_sym], is_only_operator: false)
+        end
+      when "airport"
+        if params[(prefix+"iata").to_sym] && params[(prefix+"name").to_sym] && params[(prefix+"country").to_sym]
+          Airport.create(iata_code: params[(prefix+"iata").to_sym], city: params[(prefix+"name").to_sym], country: params[(prefix+"country").to_sym], region_conus: params[(prefix+"region_conus").to_sym])
+        end
       end
     end
-    ["airline","codeshare_airline"].each do |a|
-      a += "_"
-      if params[(a+"iata").to_sym] && params[(a+"name").to_sym]
-        Airline.create(iata_airline_code: params[(a+"iata").to_sym], airline_name: params[(a+"name").to_sym], numeric_code: params[(a+"numeric_code").to_sym])
-      end
-    end
+    
     redirect_to session[:form_location]
   end
     
@@ -461,10 +465,9 @@ class FlightsController < ApplicationController
     add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", 'flight_path(@flight)'
     add_breadcrumb 'Edit Flight', 'edit_flight_with_pass_path(id: @flight, pass_id: params[:pass_id])'
     
-    defaults = get_defaults_from_pass
-        
     # Build array of form fields
     fields = @pass.updated_values(@flight) || {}
+    check_for_new_iata_codes(fields)
     @changed_fields = fields.reject{|k,v| v[:current_value] == v[:pass_value]}
     
     if @changed_fields.empty?
@@ -507,82 +510,20 @@ class FlightsController < ApplicationController
     def flight_params
       params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section, :pass_serial_number)
     end
-    
-    # If a boarding pass is present, returns a hash of boarding pass form
-    # values.
-    def get_defaults_from_pass
-      pass = nil
-      defaults = nil
-      if params[:pass_id]
-        begin
-          pass = PKPass.find(params[:pass_id])
-        rescue ActiveRecord::RecordNotFound
-        end
-      end
-      if pass.present?
-        defaults = check_iata_codes(pass.form_values)
-      end
-      return defaults
-    end
-    
-    # Accepts a hash of boarding pass form values. If all IATA codes are found
-    # in the database, return the hash with the ID for each IATA code appended.
-    # If any IATA code is not found, render a form to create new entries for
-    # the new IATA codes.
-    def check_iata_codes(values)
-      @undefined_fields = Hash.new
       
-      # Check if proposed origin airport exists
-      if values[:origin_airport_iata]
-        origin_airport = Airport.where(iata_code: values[:origin_airport_iata]).first
-        if origin_airport
-          values.store(:origin_airport_id, origin_airport.id)
-        else
-          @undefined_fields.store(:airport_orig, values[:origin_airport_iata])
-        end
-      end
-    
-      # Check if proposed destination airport exists
-      if values[:destination_airport_iata]
-        destination_airport = Airport.where(iata_code: values[:destination_airport_iata]).first
-        if destination_airport
-          values.store(:destination_airport_id, destination_airport.id)
-        else
-          @undefined_fields.store(:airport_dest, values[:destination_airport_iata])
-        end
-      end
-    
-      # Check if proposed airline exists
-      if values[:airline_iata]
-        airline = Airline.where(iata_airline_code: values[:airline_iata]).first
-        if airline
-          values.store(:airline_id, airline.id)
-        else
-          @undefined_fields.store(:airline, values[:airline_iata])
-        end
-      end
-      
-      # Check if proposed codeshare airline exists
-      if values[:codeshare_airline_iata]
-        airline = Airline.where(iata_airline_code: values[:codeshare_airline_iata]).first
-        if airline
-          values.store(:codeshare_airline_id, airline.id)
-        else
-          @undefined_fields.store(:codeshare_airline, values[:codeshare_airline_iata])
-        end
-      end
-    
-      # If there are any airports or airlines not in the database, show a form to create them
-      if @undefined_fields.any?
+    # Accepts the output of PKPass.updated_values, and detects any airport or
+    # airline IATA codes that don't already exist in the database. If there are
+    # any unknown codes, it redirects to a form allowing the user to enter the codes.
+    def check_for_new_iata_codes(fields)
+      return nil if fields.nil?
+      @undefined_codes = fields.map{|k,v| v[:lookup]}.compact.sort_by{|h| h[:type]}
+      if @undefined_codes.any?
         @title = "New Flight - Undefined Fields"
         session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
         render "new_undefined_fields"
       end
-      
-      return values
+      return true
     end
-      
-  
     
     
 end

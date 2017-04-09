@@ -1,6 +1,6 @@
-<% sym_base = name.downcase.tr(" ","_") %>
+<% sym_base = [type,index].join("_") %>
 <% if value %>
-  <h2><%= name %></h2>
+  <h2>New <%= type.to_s.capitalize %></h2>
   <p>
     <%= label_tag (sym_base+"_iata").to_sym, "IATA" %> / <%= label_tag (sym_base+"_name").to_sym, "Name" %><br />
     <%= text_field_tag (sym_base+"_iata").to_sym, value, size: 3, readonly: true %> <%= text_field_tag (sym_base+"_name").to_sym %>
@@ -20,4 +20,5 @@
       <%= text_field_tag (sym_base+"_numeric_code").to_sym, nil, size: 3, maxlength: 3 %>
     </p>
   <% end %>
+  <%= hidden_field_tag("type_#{index}", type) %>
 <% end %>

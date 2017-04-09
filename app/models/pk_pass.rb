@@ -82,7 +82,7 @@ class PKPass < ApplicationRecord
       fields[:origin_airport_id][:pass_value] = pass_airport.id
       fields[:origin_airport_id][:pass_text] = {text: pass_airport.city, code: pass_airport.iata_code}
     else
-      fields[:origin_airport_id][:lookup] = pass_data[:origin_airport_iata]
+      fields[:origin_airport_id][:lookup] = {type: :airport, code: pass_data[:origin_airport_iata]}
     end
     
     # Destination Airport
@@ -97,7 +97,7 @@ class PKPass < ApplicationRecord
       fields[:destination_airport_id][:pass_value] = pass_airport.id
       fields[:destination_airport_id][:pass_text] = {text: pass_airport.city, code: pass_airport.iata_code}
     else
-      fields[:destination_airport_id][:lookup] = pass_data[:destination_airport_iata]
+      fields[:destination_airport_id][:lookup] = {type: :airport, code: pass_data[:destination_airport_iata]}
     end
     
     # Departure Date (Local)
@@ -136,7 +136,7 @@ class PKPass < ApplicationRecord
       fields[:airline_id][:pass_value] = pass_airline.id
       fields[:airline_id][:pass_text] = {text: pass_airline.airline_name, code: pass_airline.iata_airline_code}
     else
-      fields[:airline_id][:lookup] = pass_data[:airline_iata]
+      fields[:airline_id][:lookup] = {type: :airline, code: pass_data[:airline_iata]}
     end
     
     # Flight Number
@@ -164,7 +164,7 @@ class PKPass < ApplicationRecord
         fields[:codeshare_airline_id][:pass_value] = pass_airline.id
         fields[:codeshare_airline_id][:pass_text] = {text: pass_airline.airline_name, code: pass_airline.iata_airline_code}
       else
-        fields[:codeshare_airline_id][:lookup] = pass_data[:codeshare_airline_iata]
+        fields[:codeshare_airline_id][:lookup] = {type: :airline, code: pass_data[:codeshare_airline_iata]}
       end
     end
     

@@ -37,13 +37,7 @@ class PkPassesController < ApplicationController
   def destroy
     PKPass.find(params[:id]).destroy
     flash[:success] = "Pass destroyed."
-    if params[:trip_id]
-      redirect_to trip_path(Trip.find(params[:trip_id]))
-      return
-    else
-      redirect_to import_boarding_passes_path
-      return
-    end
+    redirect_to import_boarding_passes_path
   end
   
   private
