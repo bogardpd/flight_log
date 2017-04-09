@@ -45,6 +45,7 @@
         <%= render partial: "flights/flight_cell_flight", locals: {flight: flight, linkable: false} %>
         <%= render partial: "flights/flight_cell_route", locals: {flight: flight, linkable: false} %>
         <%= render "flights/flight_cell_departure", flight: flight %>
+        <td><%= link_to("Delete", pk_pass_path(@flight_passes[flight.id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{flight.airline.airline_name} #{flight.flight_number}?"}, :class => 'warning') %></td>
       </tr>
     <% end %>
   </tbody>

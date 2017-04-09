@@ -30,12 +30,12 @@
 
   <p>
     <%= f.label :departure_date, "Departure Date (Local)" %><br />
-    <% if defaults[:departure_date_local] %>
-      <%= f.date_select(:departure_date, {start_year: 2000, selected: defaults[:departure_date_local]}, class: form_highlight(flight.departure_date, defaults[:departure_date_local])) %>
+    <% if defaults[:departure_date] %>
+      <%= f.date_select(:departure_date, {start_year: 2000, selected: defaults[:departure_date]}, class: form_highlight(flight.departure_date, defaults[:departure_date])) %>
     <% else %>
       <%= f.date_select(:departure_date, {start_year: 2000}) %>
     <% end %>
-    <% if defaults[:departure_date_local] && flight.departure_date && defaults[:departure_date_local] != flight.departure_date %>
+    <% if defaults[:departure_date] && flight.departure_date && defaults[:departure_date] != flight.departure_date %>
       <br/><span class="old-value">Was <%= flight.departure_date.strftime("%Y %B %-d") %></span>
     <% end %>
   </p>
@@ -114,8 +114,8 @@
 
   <p>
   	<%= f.label :boarding_pass_data %><br />
-  	<% if defaults[:boarding_pass] %>
-      <%= f.text_area :boarding_pass_data, size: '60x5', class: ["iata_mono",form_highlight(flight.boarding_pass_data, defaults[:boarding_pass])].compact.join(" "), value: defaults[:boarding_pass] %>
+  	<% if defaults[:boarding_pass_data] %>
+      <%= f.text_area :boarding_pass_data, size: '60x5', class: ["iata_mono",form_highlight(flight.boarding_pass_data, defaults[:boarding_pass_data])].compact.join(" "), value: defaults[:boarding_pass_data] %>
     <% else %>
       <%= f.text_area :boarding_pass_data, size: '60x5', class: 'iata_mono' %>
     <% end %>

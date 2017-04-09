@@ -9,24 +9,24 @@
       <th colspan="2">Updated Boarding Pass</th>
     </thead>
     <tbody>
-    <% @fields.each do |field| %>
+    <% @changed_fields.each do |k, v| %>
       <tr>
         <td class="radio-button">
-          <%= f.radio_button(field[:field], field[:current_value], {checked: false}) %>
+          <%= f.radio_button(k, v[:current_value], {checked: false}) %>
         </td>
         <td class="radio-value">
-          <%= f.label(field[:field], %Q(<span class="label">Current #{field[:field_label]}</span><br/>#{field[:current_text]}).html_safe, value: field[:current_value]) %>
+          <%= f.label(k, format_radio_text("Current #{v[:label]}", v[:current_text]).html_safe, value: v[:current_value]) %>
         </td>
         <td class="radio-button updated">
-          <%= f.radio_button(field[:field], field[:updated_value], {checked: true}) %></td>
+          <%= f.radio_button(k, v[:pass_value], {checked: true}) %></td>
         <td class="radio-value updated">
-          <%= f.label(field[:field], %Q(<span class="label">Updated #{field[:field_label]}</span><br/>#{field[:updated_text]}).html_safe, value: field[:updated_value]) %>
+          <%= f.label(k, format_radio_text("Updated #{v[:label]}", v[:pass_text]).html_safe, value: v[:pass_value]) %>
         </td>
       </tr>
     <% end %>
     </tbody>
   </table>
   
-  <%= f.hidden_field(:pass_id, :value => params[:pass_id]) %>
+  <%= f.hidden_field(:pass_id, :value => @pass.id) %>
   <div class="center"><%= f.submit %></div>
 <% end %>

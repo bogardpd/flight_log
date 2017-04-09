@@ -65,8 +65,8 @@ module BoardingPassEmail
    
       pass_data = extract_passes(pkpasses)
       pass_data.each do |pass|
-        new_pass = PKPass.new(pass_json: pass, received: message_datetime, flight_id: 2)
-        existing_record = PKPass.where(:serial_number => new_pass.serial_number).first
+        new_pass = PKPass.new(pass_json: pass, received: message_datetime)
+        existing_record = PKPass.find_by(serial_number: new_pass.serial_number)
         if existing_record.present?
           if new_pass.received > existing_record.received
             success = existing_record.update_attributes(:pass_json => new_pass.pass_json, :serial_number => new_pass.serial_number, :received => new_pass.received)
