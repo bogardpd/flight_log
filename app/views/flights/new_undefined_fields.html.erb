@@ -1,20 +1,11 @@
 <h1>Fill in Unknown IATA Codes</h1>
 
-<%= @undefined_codes %>
-
 <%= form_tag(create_iata_path) do %>
 
-<% @undefined_codes.each_with_index do |code, index| %>
-  <%= render :partial => "form_new_iata", locals: {index: index, type: code[:type], value: code[:code]} %>
-<% end %>
-
-<% if false %>
-  <%= render :partial => "form_new_iata", locals: {type: :airport, name: "Origin Airport", value: @undefined_fields[:airport_orig]} %>
-  <%= render :partial => "form_new_iata", locals: {type: :airport, name: "Destination Airport", value: @undefined_fields[:airport_dest]} %>
-  <%= render :partial => "form_new_iata", locals: {type: :airline, name: "Airline", value: @undefined_fields[:airline]} %>
-  <%= render :partial => "form_new_iata", locals: {type: :airline, name: "Codeshare Airline", value: @undefined_fields[:codeshare_airline]} %>
+  <% @undefined_codes.each_with_index do |code, index| %>
+    <%= render :partial => "form_new_iata", locals: {index: index, type: code[:type], value: code[:code]} %>
   <% end %>
-  
+
   <%= hidden_field_tag("count", @undefined_codes.length) %>
   
   <p><%= submit_tag "Submit", name: nil %></p>
