@@ -4,6 +4,7 @@ class AirportsController < ApplicationController
   
   def index
     add_breadcrumb 'Airports', 'airports_path'
+    add_admin_action view_context.link_to("Add New Airport", new_airport_path)
     @title = "Airports"
     @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often heʼs visited them."
     @flights = Flight.flights_table
@@ -168,8 +169,12 @@ class AirportsController < ApplicationController
     
     add_breadcrumb 'Airports', 'airports_path'
     add_breadcrumb @title, "airport_path(@airport.iata_code)"
+    
+    add_admin_action view_context.link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Airport", edit_airport_path(@airport))
+    
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find an airport with an ID of #{params[:id]}. Instead, weʼll give you a list of airports."
+    flash[:warning] = "We couldnʼt find an airport with an ID of #{params[:id]}. Instead, weʼll give you a list of airports."
     redirect_to airports_path
   end
   

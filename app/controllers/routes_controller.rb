@@ -75,6 +75,7 @@ class RoutesController < ApplicationController
     
     add_breadcrumb 'Routes', 'routes_path'
     add_breadcrumb "#{@airports[0]} – #{@airports[1]}", route_path(@route_string)
+    add_admin_action view_context.link_to("Edit Route", edit_route_path(@airports[0],@airports[1]))
     @title = "#{@airports[0]} – #{@airports[1]}"
     @meta_description = "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}."
     @logo_used = true
@@ -88,8 +89,6 @@ class RoutesController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @pair_distance = route_distance_by_iata(@airports[0],@airports[1])
-    
-    
     
     # Get trips sharing this city pair:
     trip_array = Array.new
@@ -128,7 +127,7 @@ class RoutesController < ApplicationController
     @trips_map    = HighlightedRoutesMap.new(@city_pair_trip_flights, @flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldnʼt find any flights with the route #{params[:id]}. Instead, weʼll give you a list of routes."
+      flash[:warning] = "We couldnʼt find any flights with the route #{params[:id]}. Instead, weʼll give you a list of routes."
       redirect_to routes_path
     
     
@@ -159,7 +158,7 @@ class RoutesController < ApplicationController
     end
     
     rescue ArgumentError
-      flash[:record_not_found] = "Canʼt look up route - at least one of these airports does not exist in the database."
+      flash[:warning] = "Canʼt look up route - at least one of these airports does not exist in the database."
       redirect_to routes_path
     
   end

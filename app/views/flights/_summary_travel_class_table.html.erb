@@ -1,6 +1,6 @@
 <% if @class_frequency_sorted.count == 0 %>
 
-<div class="alert">All of these flights have unknown travel classes.</div>
+<%= render_message(:warning, "All of these flights have unknown travel classes.") %>
 
 <% else %>
 

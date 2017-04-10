@@ -19,18 +19,14 @@
 <table class="flightlog">
 <% @trips_with_no_flights.each do |trip| %>
   <tr>
-    <td class="trip_name<%= " hidden_trip" if trip.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
+    <td class="trip_name"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
   </tr>
 <% end %>
 </table>
 <% end %>
 
 <% if logged_in? && @trips.empty? && @trips_with_no_flights.empty? %>
-	<div class="alert">There are no trips in the flight log! Please <%= link_to "create a trip", new_trip_path %>.</div>
+	<%= render_message(:warning, "There are no trips in the flight log! Please #{link_to "create a trip", new_trip_path}.") %>
 <% elsif !logged_in? && @trips.empty? %>
-	<div class="alert">There are no trips in the flight log!</div>
-<% end %>
-
-<% content_for :admin_actions do %>
-  <%= link_to("Add New Trip", new_trip_path) %>
+	<%= render_message(:warning, "There are no trips in the flight log!") %>
 <% end %>

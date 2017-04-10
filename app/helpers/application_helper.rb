@@ -26,6 +26,19 @@ module ApplicationHelper
     end
   end
   
+  def render_message(type, text)
+    render partial: "layouts/message", locals: {type: type, text: text}
+  end
+  
+  def render_messages
+    order = [:error, :warning, :success, :info]
+    @messages ||= []
+    @messages.concat(flash.map{|k,v| {type: k.to_sym, text: v}}) if flash
+    @messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text]) }.join.html_safe
+  end
+    
+    
+  
   def iata_airline_code_display(iata_airline_code)
     iata_airline_code.split('-').first
   end
@@ -110,7 +123,7 @@ module ApplicationHelper
       html += gcmap_region_select_links(@region, anchor: anchor)
       html += map.draw
     else
-      html += %Q(<div class="alert">When flights have been added, you’ll see a map here.</div>)
+      html += render_message(:warning, "When flights have been added, you’ll see a map here.")
     end
     html += "</div>\n"
     html.html_safe

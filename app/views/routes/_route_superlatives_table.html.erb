@@ -43,5 +43,5 @@
 	<% end %>
 </table>
 <% else %>
-<div class="alert">No superlatives are available, because none of these flight routes have a known length.</div>
+<%= render_message(:warning, "No superlatives are available, because none of these flight routes have a known length.") %>
 <% end %>

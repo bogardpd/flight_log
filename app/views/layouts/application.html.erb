@@ -44,9 +44,8 @@
     <%= render 'layouts/breadcrumbs' %>
     
     <div id="body">
-      <% flash.each do |key, value| %>
-        <div class="alert"><%= value %></div>
-      <% end %>
+          
+      <%= render_messages %>
       
       <section>
         <!-- Begin page-specific body -->

@@ -1,11 +1,15 @@
 $font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
 $font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 
+/* base color: #9EC7F3 hsl(211, 78%, 79%) */
+
 $color-table-background:          hsl(240,  20%,  99%);
 $color-table-background-dark:     hsl(240,  20%,  90%);
 $color-table-border:              rgb(190,  212,  234);
 $color-text-primary:              hsl(210,  20%,  16%);
 $color-text-secondary:            hsl(210,  20%,  40%);
+$color-text-link:                 #1E90FF;
+$color-text-link-hover:           #E47911;
 $color-text-disabled:             hsl(210,  20%,  70%);
 $color-text-error:                hsl(  0, 100%,  40%);
 $color-text-warning:              hsl( 45, 100%,  40%);
@@ -15,6 +19,7 @@ $color-background-status-unknown: hsl( 45,  50%,  80%);
 $color-background-status-good:    hsl(180,  50%,  80%);
 $color-border-status-bad:         hsl(  0, 100%, 100%);
 $color-border-status-good:        hsl(180, 100%, 100%);
+$color-background-new:            lighten(yellow, 35%);
 
 $margin-icon-to-text: 0.5em;
 $margin-paragraph: 10px;
@@ -253,6 +258,8 @@ body {
 }
 
 
+
+
 /* Boarding Passes */
 div.boarding-pass-fields {
   
@@ -311,7 +318,7 @@ div.boarding-pass-fields {
       color: $color-text-error;
     }
     span {
-      @extend span.invalid
+      @extend span.invalid;
     }
   }
   tr.unknown {
@@ -319,18 +326,55 @@ div.boarding-pass-fields {
       color: $color-text-warning;
     }
     span {
-      @extend span.unknown
+      @extend span.unknown;
     }
   }
 }
 
 
-
+/* Forms */
+form {
+  input, select, button, textarea {
+  	font-family: $font-stack-sans-serif;
+  	font-size: 95%;
+  	padding: 2px 4px;
+  }
+  .autopopulated {
+  	background: $color-background-new;
+  	border: 1px solid hsl(45, 100%, 50%);
+  }
+  .radio-code {
+    font-weight: 300;
+    font-family: $font-stack-monospace;
+  }
+  .radio-code-block {
+    font-family: $font-stack-monospace;
+  }
+  .radio-empty {
+    font-weight: 300;
+    font-style: italic;
+  }
+  .updated {
+    background-color: $color-background-new;
+  }  
+  td.radio-button {
+    width: 20px;
+    vertical-align: top;
+  }
+  td.radio-value {
+    width: 275px;
+    vertical-align: top;
+    line-height: 120%;
+    span.label {
+      font-weight: 600;
+    }
+  }
+}
 
 
 a {
 	text-decoration: none;
-	color: #1E90FF;
+	color: $color-text-link;
 }
 
 a:visited {
@@ -338,7 +382,7 @@ a:visited {
 }
 
 a:hover {
-	color: #E47911;
+	color: $color-text-link-hover;
 }
 
 a.home_link {
@@ -387,12 +431,6 @@ code {
   }
 }
 
-div.alert {
-	background: #FFFFDD;
-	border: 1px solid #FFDD99;
-	padding: 5px 10px;
-}
-
 div.bcbp_code {
 	width: 18em;
 }
@@ -419,6 +457,51 @@ div.error {
 	background: #FFDDDD;
 	border: 1px solid #DD9999;
 	padding: 5px 10px;
+}
+
+/* Message banners */
+
+$color-background-message-default: hsl(0, 0%, 85%);
+div.message {
+  margin: 8px 0;
+  padding:  5px 10px;
+  box-shadow: 1px 1px 2px darken($color-background-message-default, 20%);
+  background: $color-background-message-default;
+  border: 1px solid darken($color-background-message-default, 20%);
+  .title {
+    font-weight: 600;
+  }
+  a {
+    color: darken($color-text-link, 20%);
+    text-decoration: underline;
+  }
+  a:hover {
+    color: darken($color-text-link-hover, 5%);
+  }
+}
+
+$color-background-info: hsl(215, 80%, 85%);
+div.message-info {
+  background: $color-background-info;
+  border-color: darken($color-background-info, 20%);
+}
+
+$color-background-success: hsl(105, 80%, 85%);
+div.message-success {
+  background: $color-background-success;
+  border-color: darken($color-background-success, 20%);
+}
+
+$color-background-warning: hsl(45, 80%, 85%);
+div.message-warning {
+  background: $color-background-warning;
+  border-color: darken($color-background-warning, 20%);
+}
+
+$color-background-error: hsl(0, 80%, 85%);
+div.message-error {
+  background: $color-background-error;
+  border-color: darken($color-background-error, 20%);
 }
 
 div.field_with_errors {
@@ -457,12 +540,6 @@ div.hidden_marker {
 	margin-left: 8px;
 	font-size: 80%;
 	font-weight: 600;
-}
-
-div.hidden_trip {
-	background: #FFFF00;
-	border: 1px solid $color-text-primary;
-	padding: 5px;
 }
 
 div.supplemental_code {
@@ -674,27 +751,11 @@ img.photo_gallery {
 	border: 1px solid #9EC7F3;
 }
 
-input, select, button, textarea {
-	font-family: $font-stack-sans-serif;
-	font-size: 95%;
-	padding: 2px 4px;
-}
+
 
 p {
 	margin-left: $margin-paragraph;
 	margin-right: $margin-paragraph;
-}
-
-p.active_trips {
-	background-color: #EEFFDD;
-	border: 1px solid #CCFF99;
-	padding: 5px;
-	margin-left: 5px;
-	margin-right: 5px;
-}
-
-p.active_trips a {
-	font-weight: 600;
 }
 
 p.distance {

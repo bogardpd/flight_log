@@ -44,4 +44,17 @@ module FlightsHelper
     return nil
   end
   
+  def format_radio_text(label, text_hash)
+    label = %Q(<span class="label">#{label}</span>)
+    if text_hash.nil?
+      text = %Q(<span class="radio-empty">(blank)</span>)
+    else
+      text = Array.new
+      text.push(%Q(<code class="radio-code-block">#{text_hash[:code_block].chars.each_slice(24).map(&:join).join("<br/>")}</code>)) if text_hash[:code_block]
+      text.push(%Q(<span class="radio-code">#{text_hash[:code]}</span>)) if text_hash[:code]
+      text.push(text_hash[:text]) if text_hash[:text]
+      text = text.join("&emsp;")
+    end
+    return [label, text].join("<br/>")
+  end
 end

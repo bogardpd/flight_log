@@ -1,4 +1,4 @@
-class Flight < ActiveRecord::Base
+class Flight < ApplicationRecord
   belongs_to :trip
   belongs_to :origin_airport, :class_name => 'Airport'
   belongs_to :destination_airport, :class_name => 'Airport'
@@ -14,6 +14,12 @@ class Flight < ActiveRecord::Base
     classes['W'] = 'Premium Economy'
     classes['Y'] = 'Economy'
     return classes
+  end
+  
+  def self.get_class_id(class_string)
+    return nil unless class_string.present?
+    classes = classes_list.invert
+    return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
   end
     
   NULL_ATTRS = %w( flight_number aircraft_variant aircraft_name tail_number travel_class comment fleet_number boarding_pass_data )

@@ -5,13 +5,10 @@ class TripsController < ApplicationController
   
   def index
     add_breadcrumb 'Trips', 'trips_path'
-    if logged_in?
-      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date")
-    else
-      @trips = Flight.find_by_sql("SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date")
-    end
+    add_admin_action view_context.link_to("Add New Trip", new_trip_path)
+    @trips = Trip.with_departure_dates(logged_in?)
 
-    @trips_with_no_flights = Trip.where('id not in (?)',Trip.uniq.joins(:flights).select("trips.id"))
+    @trips_with_no_flights = Trip.with_no_flights
     @title = "Trips"
     @meta_description = "A list of airplane trips Paul Bogard has taken."
     
@@ -35,8 +32,22 @@ class TripsController < ApplicationController
     @flights = Flight.flights_table.where(trip_id: @trip)
     @title = @trip.name
     @meta_description = "Maps and lists of flights on Paul Bogardʼs #{@trip.name} trip."
+    
     add_breadcrumb 'Trips', 'trips_path'
     add_breadcrumb @title, "trip_path(#{params[:id]})"
+    
+    add_admin_action view_context.link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Trip", edit_trip_path(@trip))
+    add_admin_action view_context.link_to("Add Flight", new_flight_path(:trip_id => @trip))
+    add_admin_action view_context.link_to("Import Passes", import_boarding_passes_path(trip_id: @trip))
+    
+    if logged_in? && @trip.hidden
+      check_email_for_boarding_passes
+    end
+    
+    add_message(:warning, "This trip is hidden!") if @trip.hidden
+    add_message(:info, "You have boarding passes you can #{view_context.link_to("import", import_boarding_passes_path(trip_id: @trip))}!") if PKPass.where(flight_id: nil).any?
+    
     @trip_distance = total_distance(@flights)
     @section_count = Hash.new(0) # Holds a count of the number of flights in each section
     @section_final_destination = Hash.new # Holds the last destination airport code in each section
@@ -58,16 +69,18 @@ class TripsController < ApplicationController
     
     # Create map
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
-    
-  rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
-    redirect_to trips_path
+
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
+      redirect_to trips_path
   end
   
   
   def show_section
     @logo_used = true
     @trip = Trip.find(params[:trip])
+    
+    add_message(:warning, "This trip is hidden!") if @trip.hidden
     
     @flights = Flight.flights_table.where(trip_id: @trip, trip_section: params[:section])
     @section_distance = total_distance(@flights)
@@ -79,8 +92,8 @@ class TripsController < ApplicationController
     add_breadcrumb @trip.name, "trip_path(#{params[:trip]})"
     add_breadcrumb "Section #{params[:section]}", "show_section_path(#{params[:trip]}, #{params[:section]})"
   end
-
   
+    
   def new
     @title = "New Trip"
     add_breadcrumb 'Trips', 'trips_path'

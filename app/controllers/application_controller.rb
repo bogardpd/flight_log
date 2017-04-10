@@ -18,7 +18,21 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  # Get attachments from boarding pass emails
+  def check_email_for_boarding_passes
+    begin
+      BoardingPassEmail::process_attachments(current_user.all_emails)
+    rescue => details
+      flash.now[:warning] = "Could not get new passes from email (#{details})"
+    end
+  end
+  
 protected
+
+  def add_admin_action(link)
+    @admin_actions ||= Array.new
+    @admin_actions.push(link)
+  end
 
   def add_breadcrumb name, url=''
     @breadcrumbs ||= []
@@ -30,6 +44,11 @@ protected
     before_action options do |controller|
       controller.send(:add_breadcrumb, name, url)
     end
+  end
+  
+  def add_message(type, text)
+    @messages ||= []
+    @messages.push({type: type, text: text})
   end
   
   def format_date(input_date) # Also see method in application helper

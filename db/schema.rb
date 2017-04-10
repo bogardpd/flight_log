@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170217025129) do
+ActiveRecord::Schema.define(version: 20170404001311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 20170217025129) do
     t.integer  "destination_airport_id"
     t.integer  "trip_id"
     t.date     "departure_date"
-    t.integer  "flight_number"
+    t.string   "flight_number"
     t.string   "aircraft_variant"
     t.string   "tail_number"
     t.string   "travel_class"
@@ -65,6 +65,17 @@ ActiveRecord::Schema.define(version: 20170217025129) do
     t.integer  "codeshare_airline_id"
     t.text     "boarding_pass_data"
     t.integer  "aircraft_family_id"
+    t.string   "pass_serial_number"
+  end
+
+  create_table "pk_passes", force: :cascade do |t|
+    t.string   "serial_number"
+    t.text     "pass_json"
+    t.datetime "received"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "flight_id"
+    t.index ["serial_number"], name: "index_pk_passes_on_serial_number", using: :btree
   end
 
   create_table "routes", force: :cascade do |t|
@@ -90,6 +101,8 @@ ActiveRecord::Schema.define(version: 20170217025129) do
     t.datetime "updated_at",      null: false
     t.string   "password_digest"
     t.string   "remember_token"
+    t.string   "email"
+    t.string   "alternate_email"
     t.index ["name"], name: "index_users_on_name", unique: true, using: :btree
     t.index ["remember_token"], name: "index_users_on_remember_token", using: :btree
   end

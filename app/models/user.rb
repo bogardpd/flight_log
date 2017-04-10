@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_secure_password
   
   before_save :create_remember_token
@@ -6,11 +6,17 @@ class User < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true, :length => { :maximum => 50 }
   validates :password, :presence => true, :length => { :minimum => 6 }
   validates :password_confirmation, :presence => true
+  validates :email, :presence => true
   
   # Returns the hash digest of the given string.
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
+  end
+  
+  # Returns both emails associated with a user.
+  def all_emails
+    return [self.email, self.alternate_email]
   end
   
   private

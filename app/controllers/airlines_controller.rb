@@ -4,48 +4,22 @@ class AirlinesController < ApplicationController
   
   def index
     @logo_used = true
-    add_breadcrumb 'Airlines', 'airlines_path'
-    if logged_in?
-      @flight_airlines = Flight.where("airline_id IS NOT NULL").group("airline_id").count
-      @flight_operators = Flight.where("operator_id IS NOT NULL").group("operator_id").count
-    else # Filter out hidden trips for visitors
-      @flight_airlines = Flight.visitor.where("airline_id IS NOT NULL").group("airline_id").count
-      @flight_operators = Flight.visitor.where("operator_id IS NOT NULL").group("operator_id").count
-    end
-    used_airline_ids = (@flight_airlines.keys + @flight_operators.keys).uniq
-    @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name)
-    
-    
-    
     @title = "Airlines"
     @meta_description = "A list of the airlines on which Paul Bogard has flown, and how often heʼs flown on each."
+    add_breadcrumb 'Airlines', 'airlines_path'
+    add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
-    @airlines_array = Array.new
-    @operators_array = Array.new
+    @airlines  = Airline.flight_count(logged_in?, :airline)
+    @operators = Airline.flight_count(logged_in?, :operator)
+   
+    used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq
+    @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
     
-    if (@flight_airlines.any? || @flight_operators.any?)
-      
-      airline_details = Airline.select("id, iata_airline_code, airline_name").find(used_airline_ids)
-      airline_names = Hash.new
-      airline_iata_codes = Hash.new
-      airline_details.each do |airline|
-        airline_names[airline.id] = airline.airline_name
-        airline_iata_codes[airline.id] = airline.iata_airline_code 
-      end
-      
-      # Prepare airline list:
-      @flight_airlines.each do |airline, count| 
-        @airlines_array.push({name: airline_names[airline], iata_code: airline_iata_codes[airline], count: count})
-      end
-    
-      # Prepare operator list:
-      @flight_operators.each do |operator, count|
-        @operators_array.push({name: airline_names[operator], iata_code: airline_iata_codes[operator], :count => count})
-      end
+    if (@airlines.any? || @operators.any?)
       
       # Find maxima for graph scaling:
-      @airlines_maximum = @airlines_array.any? ? @airlines_array.max_by{|i| i[:count]}[:count] : 0
-      @operators_maximum = @operators_array.any? ? @operators_array.max_by{|i| i[:count]}[:count] : 0
+      @airlines_maximum  = @airlines.any?  ?  @airlines.max_by{|i| i[:flight_count]}[:flight_count] : 0
+      @operators_maximum = @operators.any? ? @operators.max_by{|i| i[:flight_count]}[:flight_count] : 0
     
       # Sort airline and operator tables:
       sort_params = sort_parse(params[:sort], %w(flights airline code), :desc)
@@ -55,22 +29,21 @@ class AirlinesController < ApplicationController
       
       case @sort_cat
       when :airline
-        @airlines_array = @airlines_array.sort_by { |airline| airline[:name].downcase }
-        @operators_array = @operators_array.sort_by { |operator| operator[:name].downcase }
-        @airlines_array.reverse! if @sort_dir == :desc
-        @operators_array.reverse! if @sort_dir == :desc
+        @airlines  =  @airlines.sort_by { |airline|   airline[:airline_name].downcase }
+        @operators = @operators.sort_by { |operator| operator[:airline_name].downcase }
+        @airlines.reverse!  if @sort_dir == :desc
+        @operators.reverse! if @sort_dir == :desc
       when :code
-        @airlines_array = @airlines_array.sort_by { |airline| airline[:iata_code].downcase }
-        @operators_array = @operators_array.sort_by { |operator| operator[:iata_code].downcase }
-        @airlines_array.reverse! if @sort_dir == :desc
-        @operators_array.reverse! if @sort_dir == :desc
+        @airlines  =  @airlines.sort_by { |airline|   airline[:iata_airline_code].downcase }
+        @operators = @operators.sort_by { |operator| operator[:iata_airline_code].downcase }
+        @airlines.reverse!  if @sort_dir == :desc
+        @operators.reverse! if @sort_dir == :desc
       when :flights
-        @airlines_array = @airlines_array.sort_by { |airline| [sort_mult*airline[:count], airline[:name].downcase] }
-        @operators_array = @operators_array.sort_by { |operator| [sort_mult*operator[:count], operator[:name].downcase] }
+        @airlines  =  @airlines.sort_by { |airline|  [sort_mult * airline[:flight_count],  airline[:airline_name].downcase] }
+        @operators = @operators.sort_by { |operator| [sort_mult * operator[:flight_count], operator[:airline_name].downcase] }
       end
     end
-    
-    
+     
   end
   
   def show
@@ -85,8 +58,12 @@ class AirlinesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@airline.airline_name}."
     @logo_used = true
     @region = current_region(default: :world)
+    
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb @title, "airline_path(@airline.iata_airline_code)"
+    
+    add_admin_action view_context.link_to("Delete Airline", @airline, method: :delete, data: {:confirm => "Are you sure you want to delete #{@airline.airline_name}?"}, class: 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Airline", edit_airline_path(@airline))
     
     # Create map:
     @map = FlightsMap.new(@flights, region: @region)
@@ -104,7 +81,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldnʼt find an airline with an IATA code of #{params[:id]}. Instead, weʼll give you a list of airlines."
+      flash[:warning] = "We couldnʼt find an airline with an IATA code of #{params[:id]}. Instead, weʼll give you a list of airlines."
       redirect_to airlines_path
       
   end
@@ -120,8 +97,12 @@ class AirlinesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights operated by #{@operator.airline_name}."
     @logo_used = true
     @region = current_region(default: :world)
+    
     add_breadcrumb 'Airlines', 'airlines_path'
     add_breadcrumb 'Flights Operated by ' + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
+    
+    add_admin_action view_context.link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Airline", edit_airline_path(@operator))
     
     @total_distance = total_distance(@flights)
     @map = FlightsMap.new(@flights, region: @region)
@@ -146,7 +127,7 @@ class AirlinesController < ApplicationController
     @fleet_family = @fleet_family.sort_by{ |key, value| key }
         
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find any flights operated by #{params[:operator]}. Instead, weʼll give you a list of airlines and operators."
+    flash[:warning] = "We couldnʼt find any flights operated by #{params[:operator]}. Instead, weʼll give you a list of airlines and operators."
     redirect_to airlines_path
   end
   
@@ -178,7 +159,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:record_not_found] = "We couldnʼt find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, weʼll give you a list of airlines and operators."
+    flash[:warning] = "We couldnʼt find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, weʼll give you a list of airlines and operators."
     redirect_to airlines_path
   end
   

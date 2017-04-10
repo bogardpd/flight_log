@@ -20,6 +20,8 @@ gem 'coffee-rails', '4.2.1'
 gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '2.4.1'
+# Use rubyzip for working with zip files
+gem 'rubyzip', '~> 1.2'
 
 group :development do
   gem 'sql_queries_count'

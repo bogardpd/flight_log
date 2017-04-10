@@ -52,10 +52,3 @@
 	<%= render "flights/flight_table" %>
 
 <% end %>
-
-<% content_for :admin_actions do %>
-  <% if @flights.length == 0 %>
-    <%= link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') %> &emsp; 
-  <% end %>
-  <%= link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family)) %>
-<% end %>

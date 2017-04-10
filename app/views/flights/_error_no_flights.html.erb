@@ -1,1 +1,5 @@
-<div class="alert">There are no flights in the flight log!<% if logged_in? %> Please create a <%= link_to "trip", trips_path %> and add one.<% end %></div>
+<% if logged_in? %>
+  <%= render_message(:warning, "There are no flights in the flight log! Please create a #{link_to "trip", trips_path} and add one.") %>
+<% else %>
+  <%= render_message(:warning, "There are no flights in the flight log!") %>
+<% end %>

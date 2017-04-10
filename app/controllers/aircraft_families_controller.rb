@@ -3,46 +3,19 @@ class AircraftFamiliesController < ApplicationController
   add_breadcrumb 'Home', 'root_path'
   
   def index
-    add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
-    
-    if logged_in?
-      @flight_aircraft_families = Flight.where("aircraft_family_id IS NOT NULL").group("aircraft_family_id").count
-    else # Filter out hidden trips for visitors
-      @flight_aircraft_families = Flight.visitor.where("aircraft_family_id IS NOT NULL").group("aircraft_family_id").count
-    end
-
-    used_aircraft_family_ids = @flight_aircraft_families.keys.uniq
-    if @flight_aircraft_families.any?
-      @aircraft_families_with_no_flights = AircraftFamily.where("id NOT IN (?)", used_aircraft_family_ids).order(:family_name)
-    else
-      @aircraft_families_with_no_flights = AircraftFamily.all.order(:family_name)
-    end
-    
     @title = "Aircraft"
     @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often heʼs flown on each."
+    add_breadcrumb "Aircraft Families", "aircraft_families_path"
+    add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
     
-    @aircraft_array = Array.new
+    @aircraft_array = AircraftFamily.flight_count(logged_in?)
     
-    if @flight_aircraft_families.any?
-      aircraft_family_details = AircraftFamily.select("id, iata_aircraft_code, family_name, manufacturer, category").find(used_aircraft_family_ids)
-      aircraft_family_names = Hash.new
-      aircraft_family_iata_codes = Hash.new
-      aircraft_family_manufacturers = Hash.new
-      aircraft_family_categories = Hash.new
-      aircraft_family_details.each do |aircraft_family|
-        aircraft_family_names[aircraft_family.id] = aircraft_family.family_name
-        aircraft_family_iata_codes[aircraft_family.id] = aircraft_family.iata_aircraft_code
-        aircraft_family_manufacturers[aircraft_family.id] = aircraft_family.manufacturer
-        aircraft_family_categories[aircraft_family.id] = aircraft_family.category 
-      end
+    if @aircraft_array.any?
+      used_aircraft_family_ids = @aircraft_array.map{|a| a[:id]}.uniq
+      @aircraft_families_with_no_flights = AircraftFamily.where("id NOT IN (?)", used_aircraft_family_ids).order(:manufacturer, :family_name)
       
-      # Prepare aircraft family list:
-      @flight_aircraft_families.each do |aircraft_family, count| 
-        @aircraft_array.push({name: aircraft_family_names[aircraft_family], iata_code: aircraft_family_iata_codes[aircraft_family], manufacturer: aircraft_family_manufacturers[aircraft_family], category: aircraft_family_categories[aircraft_family], count: count})
-      end
-          
       # Find maxima for graph scaling:
-      @aircraft_maximum = @aircraft_array.max_by{|i| i[:count]}[:count]
+      @aircraft_maximum = @aircraft_array.max_by{|i| i[:flight_count]}[:flight_count]
     
       # Sort aircraft table:
       sort_params = sort_parse(params[:sort], %w(flights aircraft code), :desc)
@@ -52,17 +25,17 @@ class AircraftFamiliesController < ApplicationController
       
       case @sort_cat
       when :aircraft
-        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| [aircraft_family[:manufacturer].downcase, aircraft_family[:name].downcase] }
+        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| [aircraft_family[:manufacturer].downcase, aircraft_family[:family_name].downcase] }
         @aircraft_array.reverse! if @sort_dir == :desc
       when :code
-        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| aircraft_family[:iata_code] }
+        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| aircraft_family[:iata_aircraft_code] }
         @aircraft_array.reverse! if @sort_dir == :desc
       when :flights
-        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| [sort_mult*aircraft_family[:count], aircraft_family[:name]] }
+        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]] }
       end
-    
-    end
-     
+    else
+      @aircraft_families_with_no_flights = AircraftFamily.all.order(:manufacturer, :family_name)
+    end     
   end
   
   def show
@@ -80,6 +53,9 @@ class AircraftFamiliesController < ApplicationController
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
     add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family.iata_aircraft_code)
     
+    add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family))
+    
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
     
@@ -92,7 +68,7 @@ class AircraftFamiliesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:record_not_found] = "We couldnʼt find an aircraft family with an IATA code of #{params[:id]}. Instead, weʼll give you a list of aircraft families."
+      flash[:warning] = "We couldnʼt find an aircraft family with an IATA code of #{params[:id]}. Instead, weʼll give you a list of aircraft families."
       redirect_to aircraft_families_path
   end
   

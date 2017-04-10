@@ -1,6 +1,3 @@
-<% if @trip.hidden %>
-<div class="hidden_trip">This trip is hidden!</div>
-<% end %>
 <h1><%= @trip.name %></h1>
 
 <% if @trip.comment %>
@@ -28,7 +25,7 @@
 <% else %>
 	<tr class="no_top_border">
 <% end %>
-    <td class="flight_flight<%= " hidden_trip" if flight.hidden %>"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if flight.hidden %><%= link_to(image_tag(airline_icon_path(flight.iata_airline_code), alt: flight.iata_airline_code, class: 'airline_icon') + flight.airline_name + " " + flight.flight_number.to_s, flight_path(flight), title: "View flight details for #{flight.airline_name} #{flight.flight_number.to_s}") %></td>
+    <td class="flight_flight"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if flight.hidden %><%= link_to(image_tag(airline_icon_path(flight.iata_airline_code), alt: flight.iata_airline_code, class: 'airline_icon') + flight.airline_name + " " + flight.flight_number.to_s, flight_path(flight), title: "View flight details for #{flight.airline_name} #{flight.flight_number.to_s}") %></td>
     <td class="flight_route"><%= link_to(iata_mono(flight.origin_iata_code), airport_path(flight.origin_iata_code), :title => "View airport details for " + flight.origin_city) %> &ndash; <%= link_to(iata_mono(flight.destination_iata_code), airport_path(flight.destination_iata_code), :title => "View airport details for " + flight.destination_city) %></td>
     <td class="flight_date"><%= format_date(flight.departure_date) %></td>
   </tr>
@@ -36,10 +33,3 @@
 <% end %>
   <tr><td colspan="4" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %></td></tr>
 </table>
-
-<% content_for :admin_actions do %>
-  <% if @flights.length == 0 %>
-    <%= link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => 'warning') %> &emsp; 
-  <% end %>
-  <%= link_to("Edit Trip", edit_trip_path(@trip)) %> &emsp; <%= link_to("Add Flight", new_flight_path(:trip_id => @trip)) %>
-<% end %>
