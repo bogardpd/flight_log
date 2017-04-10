@@ -378,14 +378,30 @@ class FlightsController < ApplicationController
     @title = "New Flight"
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb 'New Flight', 'new_flight_path'
-    @flight = Trip.find(params[:trip_id]).flights.new
+    trip = Trip.find(params[:trip_id])
+    existing_trip_flights_count = trip.flights.length
+    if existing_trip_flights_count > 0
+      last_flight = trip.flights.chronological.last
+    end
+    @flight = trip.flights.new
     
     @pass = PKPass.find_by(id: params[:pass_id])
     if @pass.nil?
       @fields = Hash.new
+      @default_trip_section = 1 unless existing_trip_flights_count > 0
     else
       fields = @pass.updated_values(@flight) || {}
       check_for_new_iata_codes(fields)
+      if existing_trip_flights_count > 0
+        pass_datetime = fields.dig(:departure_utc, :pass_value)
+        if pass_datetime >= last_flight.departure_utc + 1.day
+          @default_trip_section = last_flight.trip_section + 1
+        else
+          @default_trip_section = last_flight.trip_section
+        end
+      else
+        @default_trip_section = 1
+      end
       @fields = fields.reject{|k,v| v[:pass_value].nil?}
     end
   end

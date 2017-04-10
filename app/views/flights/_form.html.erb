@@ -7,7 +7,11 @@
 
   <p>
     <%= f.label :trip_section, "Trip Section" %><br />
-    <%= f.telephone_field :trip_section, :size => 2 %>
+    <% if @default_trip_section %>
+      <%= f.telephone_field(:trip_section, :size => 2, value: @default_trip_section, class: "autopopulated") %>
+    <% else %>
+      <%= f.telephone_field(:trip_section, :size => 2) %>
+    <% end %>
   </p>
 
   <p>
@@ -18,7 +22,7 @@
     <% elsif flight.errors.any? || params[:id] || Flight.chronological.empty? %>
       <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}, class: "iata_mono") %>
     <% else %>
-      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: Flight.chronological.last.destination_airport_id}, class: "iata_mono") %>    
+      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: Flight.chronological.last.destination_airport_id}, class: "iata_mono autopopulated") %>    
     <% end %>  
     &rarr;
     <% if fields[:destination_airport_id] %>
