@@ -22,6 +22,8 @@ gem 'jquery-rails'
 gem 'jbuilder', '2.4.1'
 # Use rubyzip for working with zip files
 gem 'rubyzip', '~> 1.2'
+# Use savon for SOAP
+gem 'savon', '~> 2.11', '>= 2.11.1'
 
 group :development do
   gem 'sql_queries_count'
