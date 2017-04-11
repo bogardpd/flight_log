@@ -44,6 +44,8 @@ Portfolio::Application.routes.draw do
   get   "/boarding-pass/import(/trip/:trip_id)"  => "pk_passes#index",       as: :import_boarding_passes
   post  "/boarding-pass/import(/trip/:trip_id)"  => "pk_passes#change_trip", as: :change_boarding_pass_trip
   post  "/flights/create-iata/" => "flights#create_iata",   as: :create_iata
+
+  get   "/boarding-pass/flightxml" => "pk_passes#flightxml_test", as: :flightxml_test
   
   # Admin pages:
   match '/admin',                         to: 'admin#admin',                   via: :get

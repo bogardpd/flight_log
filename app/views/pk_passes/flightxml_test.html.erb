@@ -1,0 +1,20 @@
+<h1>FlightXML Test</h1>
+
+<h2>Aircraft en route to KDAY</h2>
+
+<table class="flightlog">
+  <tr>
+    <th>Ident</th>
+    <th>Aircraft</th>
+    <th>Origin</th>
+    <th>Code</th>
+  </tr>
+<% @flights.each do |flight| %>
+  <tr>
+    <td class="iata_mono"><%= flight[:ident] %></td>
+    <td class="iata_mono"><%= flight[:aircrafttype] %></td>
+    <td><%= flight[:origin_name] %></td>
+    <td class="iata_mono"><%= flight[:origin] %></td>
+  </tr>
+<% end %>
+</table>

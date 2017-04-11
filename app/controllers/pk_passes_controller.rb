@@ -30,6 +30,23 @@ class PkPassesController < ApplicationController
     
   end
   
+  def flightxml_test
+    @title = "FlightXML Test"
+    add_message(:info, "Each reload incurs FlightAware transaction fees, so refresh wisely.")
+
+    client = Savon.client(wsdl: 'http://flightxml.flightaware.com/soap/FlightXML2/wsdl', basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
+    
+    response = client.call(:enroute, message: {
+      :airport => "KDAY",
+      :how_many => 10,
+      :filter => '',
+      :offset => 0
+    })
+
+    @flights = response.to_hash[:enroute_results][:enroute_result][:enroute]
+
+  end
+  
   def change_trip
     redirect_to import_boarding_passes_path(trip_id: params[:trip_id])
   end
