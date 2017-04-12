@@ -34,17 +34,8 @@ class PkPassesController < ApplicationController
     @title = "FlightXML Test"
     add_message(:info, "Each reload incurs FlightAware transaction fees, so refresh wisely.")
 
-    client = Savon.client(wsdl: 'http://flightxml.flightaware.com/soap/FlightXML2/wsdl', basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
-    
-    response = client.call(:enroute, message: {
-      :airport => "KDAY",
-      :how_many => 10,
-      :filter => '',
-      :offset => 0
-    })
-
-    @flights = response.to_hash[:enroute_results][:enroute_result][:enroute]
-
+    @output = PKPass.flight_xml("JBU", "101", Time.parse("2017-04-11 18:49:00 -0400"))    
+    add_message(:warning, "Flight not found in FlightAware.") if @output.nil?
   end
   
   def change_trip
