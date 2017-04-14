@@ -23,6 +23,20 @@ class PKPass < ApplicationRecord
     return BoardingPass.new(barcode)
   end
   
+  # Returns a FlightAware FlightXML hash (as described in self.flight_xml) for
+  # this particular pass
+  def flight_xml
+    pass_data = form_values
+    #airline = Airline.convert_iata_to_icao(pass_data[:airline_iata])
+    #flight_number = pass_data[:flight_number]
+    #departure_time = pass_data[:departure_utc]
+    airline = "AAL"
+    flight_number = "100"
+    departure_time = Time.parse("2017-04-13 18:05 -0400")
+    return nil if airline.nil? || flight_number.nil? || departure_time.nil?
+    return PKPass.flight_xml(airline, flight_number, departure_time)
+  end
+  
   # Returns a hash of form default values for this pass
   def form_values
     output = Hash.new
@@ -196,22 +210,6 @@ class PKPass < ApplicationRecord
   end
 
   
-  # Returns an array of hashes of summary details for all boarding passes
-  # that are not yet associated with a flight.
-  def self.pass_summary_list
-    PKPass.where(flight_id: nil).map{|pass|
-      fields = BoardingPass.new(pass.barcode, interpretations: false).summary_fields
-      fields.store(:date, Time.parse(JSON.parse(pass.pass_json)["relevantDate"]))
-      fields.store(:id, pass.id)
-      fields
-    }.sort_by{|h| h[:date]}
-  end
-  
-  # Returns a hash of Flights with updated boarding passes, with flight ids as the keys and pass ids as the values
-  def self.flights_with_updated_passes
-    return PKPass.where.not(flight_id: nil).map{|pass| {pass.flight_id => pass.id}}.reduce({}, :merge)
-  end
-  
   # Accepts an airline string, a flight number string, and a departure time
   # and returns a hash containing aircraft type (ICAO), tail number, and
   # operator (ICAO). Airline can be ICAO or IATA, but if IATA it may not contain
@@ -246,6 +244,23 @@ class PKPass < ApplicationRecord
       return nil
     end
   end
+  
+  # Returns a hash of Flights with updated boarding passes, with flight ids as the keys and pass ids as the values
+  def self.flights_with_updated_passes
+    return PKPass.where.not(flight_id: nil).map{|pass| {pass.flight_id => pass.id}}.reduce({}, :merge)
+  end
+  
+  # Returns an array of hashes of summary details for all boarding passes
+  # that are not yet associated with a flight.
+  def self.pass_summary_list
+    PKPass.where(flight_id: nil).map{|pass|
+      fields = BoardingPass.new(pass.barcode, interpretations: false).summary_fields
+      fields.store(:date, Time.parse(JSON.parse(pass.pass_json)["relevantDate"]))
+      fields.store(:id, pass.id)
+      fields
+    }.sort_by{|h| h[:date]}
+  end
+ 
   
   protected
   
