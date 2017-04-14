@@ -220,7 +220,7 @@ class PKPass < ApplicationRecord
           fields[:codeshare_flight_number] = Hash.new
           fields[:codeshare_flight_number][:label] = "Codeshare Flight Number"
           fields[:codeshare_flight_number][:pass_value] = codeshare_flight[3..-1]
-          fields[:codeshare_flight_number][:pass_text] = codeshare_flight[3..-1]
+          fields[:codeshare_flight_number][:pass_text] = {text: codeshare_flight[3..-1]}
         end
       end
       
@@ -232,7 +232,7 @@ class PKPass < ApplicationRecord
       fields[:aircraft_variant][:label] = "Aircraft Variant"
       if flight_xml_data[:aircraft_type]
         fields[:aircraft_variant][:pass_value] = flight_xml_data[:aircraft_type]
-        fields[:aircraft_variant][:pass_text] = flight_xml_data[:aircraft_type]
+        fields[:aircraft_variant][:pass_text] = {code: flight_xml_data[:aircraft_type]}
       end
       
       # Tail Number
@@ -240,7 +240,7 @@ class PKPass < ApplicationRecord
       fields[:tail_number][:label] = "Tail Number"
       if flight_xml_data[:tail_number]
         fields[:tail_number][:pass_value] = flight_xml_data[:tail_number]
-        fields[:tail_number][:pass_text] = flight_xml_data[:tail_number]
+        fields[:tail_number][:pass_text] = {text: flight_xml_data[:tail_number]}
       end
       
       # Operator
@@ -250,7 +250,7 @@ class PKPass < ApplicationRecord
         pass_operator = Airline.find_by(icao_airline_code: flight_xml_data[:operator])
         if pass_operator.present?
           fields[:operator_id][:pass_value] = pass_operator.id
-          fields[:operator_id][:pass_text] = flight_xml_data[:operator]
+          fields[:operator_id][:pass_text] = {text: pass_operator.airline_name, code: flight_xml_data[:operator]}
         else
           fields[:operator_id][:lookup] = {type: :airline, icao_code: flight_xml_data[:operator]}
         end
