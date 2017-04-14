@@ -1,0 +1,12 @@
+<table class="flightlog">
+<% fields.each do |k, v| %>
+<tr>
+  <td><%= k %></td>
+  <td>
+    <% v.each do |vk, vv| %>
+      <b><%= vk %>:</b> <%= vv %><br/>
+    <% end %>
+  </td>
+</tr>
+<% end %>
+</table>

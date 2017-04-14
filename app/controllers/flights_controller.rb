@@ -390,7 +390,7 @@ class FlightsController < ApplicationController
       @fields = Hash.new
       @default_trip_section = 1 unless existing_trip_flights_count > 0
     else
-      fields = @pass.updated_values(@flight) || {}
+      fields = @pass.updated_values(@flight, true) || {}
       check_for_new_iata_codes(fields)
       if existing_trip_flights_count > 0
         pass_datetime = fields.dig(:departure_utc, :pass_value)

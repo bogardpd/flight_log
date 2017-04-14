@@ -1,5 +1,5 @@
 <% fields ||= Hash.new %>
-
+<%= render "fields", fields: @fields %>
 <%= form_for(flight) do |f| %>
   <%= render 'error_messages' %>
 
@@ -72,22 +72,41 @@
     <% else %>
       <%= f.collection_select(:codeshare_airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {:include_blank => true}) %>
     <% end %>
-    <%= f.text_field :codeshare_flight_number, :size => 6 %>
+    <% if fields[:codeshare_flight_number] %>
+      <%= f.text_field :codeshare_flight_number, value: fields[:codeshare_flight_number][:pass_value], size: 6, class: "autopopulated" %>
+    <% else %>
+      <%= f.text_field :codeshare_flight_number, size: 6 %>
+    <% end %>
   </p>
 
   <p>
     <%= f.label :aircraft_family_id, "Aircraft Family" %> / <%= f.label :aircraft_variant, "Variant" %><br />
-    <%= f.collection_select(:aircraft_family_id, AircraftFamily.order("LOWER(family_name)"), :id, :format_name, {include_blank: true}) %> <%= f.text_field :aircraft_variant %>
+    <%= f.collection_select(:aircraft_family_id, AircraftFamily.order("LOWER(family_name)"), :id, :format_name, {include_blank: true}) %>
+    <% if fields[:aircraft_variant] %>
+      <%= f.text_field :aircraft_variant, value: fields[:aircraft_variant][:pass_value], class: "autopopulated" %>
+    <% else %>
+      <%= f.text_field :aircraft_variant %>
+    <% end %>
   </p>
 
   <p>
     <%= f.label :tail_number, "Tail Number" %> / <%= f.label :aircraft_name %><br />
-    <%= f.text_field :tail_number, :size => 10 %> <%= f.text_field :aircraft_name %>
+    <% if fields[:tail_number] %>
+      <%= f.text_field :tail_number, size: 10, value: fields[:tail_number][:pass_value], class: "autopopulated" %>
+    <% else %>
+      <%= f.text_field :tail_number, size: 10 %>
+    <% end %>
+    <%= f.text_field :aircraft_name %>
   </p>
 
   <p>
     <%= f.label :operator_id, "Operator" %> / <%= f.label :fleet_number, "Fleet Number" %><br />
-    <%= f.collection_select(:operator_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %> <%= f.text_field :fleet_number, :size => 8 %>
+    <% if fields[:operator_id] %>
+      <%= f.collection_select(:operator_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true, selected: fields[:operator_id][:pass_value]}, class: "autopopulated") %>
+    <% else %>
+      <%= f.collection_select(:operator_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %>
+    <% end %>
+    <%= f.text_field :fleet_number, :size => 8 %>
   </p>
 
   <p>

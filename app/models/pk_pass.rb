@@ -27,6 +27,7 @@ class PKPass < ApplicationRecord
   # this particular pass
   def flight_xml
     pass_data = form_values
+    #TODO: Use real pass data
     #airline = Airline.convert_iata_to_icao(pass_data[:airline_iata])
     #flight_number = pass_data[:flight_number]
     #departure_time = pass_data[:departure_utc]
@@ -80,10 +81,10 @@ class PKPass < ApplicationRecord
   # Accepts a Flight, and returns a hash of flight values compared to boarding
   # pass values. If any new pass values joined to another table aren't found,
   # they're stored in a :lookup key so that they can be added later.
-  def updated_values(flight)
+  def updated_values(flight, include_flightxml=false)
     fields = Hash.new
     pass_data = form_values
-    
+        
     # Origin Airport
     fields[:origin_airport_id] = Hash.new
     fields[:origin_airport_id][:label] = "Origin Airport"
@@ -96,7 +97,7 @@ class PKPass < ApplicationRecord
       fields[:origin_airport_id][:pass_value] = pass_airport.id
       fields[:origin_airport_id][:pass_text] = {text: pass_airport.city, code: pass_airport.iata_code}
     else
-      fields[:origin_airport_id][:lookup] = {type: :airport, code: pass_data[:origin_airport_iata]}
+      fields[:origin_airport_id][:lookup] = {type: :airport, iata_code: pass_data[:origin_airport_iata]}
     end
     
     # Destination Airport
@@ -111,7 +112,7 @@ class PKPass < ApplicationRecord
       fields[:destination_airport_id][:pass_value] = pass_airport.id
       fields[:destination_airport_id][:pass_text] = {text: pass_airport.city, code: pass_airport.iata_code}
     else
-      fields[:destination_airport_id][:lookup] = {type: :airport, code: pass_data[:destination_airport_iata]}
+      fields[:destination_airport_id][:lookup] = {type: :airport, iata_code: pass_data[:destination_airport_iata]}
     end
     
     # Departure Date (Local)
@@ -150,7 +151,7 @@ class PKPass < ApplicationRecord
       fields[:airline_id][:pass_value] = pass_airline.id
       fields[:airline_id][:pass_text] = {text: pass_airline.airline_name, code: pass_airline.iata_airline_code}
     else
-      fields[:airline_id][:lookup] = {type: :airline, code: pass_data[:airline_iata]}
+      fields[:airline_id][:lookup] = {type: :airline, iata_code: pass_data[:airline_iata]}
     end
     
     # Flight Number
@@ -178,7 +179,7 @@ class PKPass < ApplicationRecord
         fields[:codeshare_airline_id][:pass_value] = pass_airline.id
         fields[:codeshare_airline_id][:pass_text] = {text: pass_airline.airline_name, code: pass_airline.iata_airline_code}
       else
-        fields[:codeshare_airline_id][:lookup] = {type: :airline, code: pass_data[:codeshare_airline_iata]}
+        fields[:codeshare_airline_id][:lookup] = {type: :airline, iata_code: pass_data[:codeshare_airline_iata]}
       end
     end
     
@@ -204,6 +205,57 @@ class PKPass < ApplicationRecord
     if pass_data[:boarding_pass_data]
       fields[:boarding_pass_data][:pass_value] = pass_data[:boarding_pass_data]
       fields[:boarding_pass_data][:pass_text] = {code_block: pass_data[:boarding_pass_data]}
+    end
+    
+    # FlightXML fields:
+    if include_flightxml
+      flight_xml_data = {:aircraft_type=>"B77W", :tail_number=>"N733AR", :operator=>"AAL", :codeshares=>["BAW1511", "ELY8051", "FIN4012", "GFA6654", "IBE4218", "QTR5290"]}
+      #flight_xml_data = flight_xml
+      # TODO: Change the above to use flight_xml again
+      
+      # Codeshare Flight Number
+      if pass_data[:codeshare_airline_iata]
+        codeshare_flight = flight_xml_data[:codeshares].select{|cs| cs[0,3] == Airline.convert_iata_to_icao(pass_data[:codeshare_airline_iata])}.first
+        if codeshare_flight
+          fields[:codeshare_flight_number] = Hash.new
+          fields[:codeshare_flight_number][:label] = "Codeshare Flight Number"
+          fields[:codeshare_flight_number][:pass_value] = codeshare_flight[3..-1]
+          fields[:codeshare_flight_number][:pass_text] = codeshare_flight[3..-1]
+        end
+      end
+      
+      # Aircraft Family
+      # TODO: Write lookup from aircraft variant to aircraft family
+      
+      # Aircraft Variant
+      fields[:aircraft_variant] = Hash.new
+      fields[:aircraft_variant][:label] = "Aircraft Variant"
+      if flight_xml_data[:aircraft_type]
+        fields[:aircraft_variant][:pass_value] = flight_xml_data[:aircraft_type]
+        fields[:aircraft_variant][:pass_text] = flight_xml_data[:aircraft_type]
+      end
+      
+      # Tail Number
+      fields[:tail_number] = Hash.new
+      fields[:tail_number][:label] = "Tail Number"
+      if flight_xml_data[:tail_number]
+        fields[:tail_number][:pass_value] = flight_xml_data[:tail_number]
+        fields[:tail_number][:pass_text] = flight_xml_data[:tail_number]
+      end
+      
+      # Operator
+      fields[:operator_id] = Hash.new
+      fields[:operator_id][:label] = "Operator"
+      if flight_xml_data[:operator]
+        pass_operator = Airline.find_by(icao_airline_code: flight_xml_data[:operator])
+        if pass_operator.present?
+          fields[:operator_id][:pass_value] = pass_operator.id
+          fields[:operator_id][:pass_text] = flight_xml_data[:operator]
+        else
+          fields[:operator_id][:lookup] = {type: :airline, icao_code: flight_xml_data[:operator]}
+        end
+      end
+      
     end
     
     return fields

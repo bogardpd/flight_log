@@ -1,9 +1,9 @@
 <% sym_base = [type,index].join("_") %>
-<% if value %>
+<% if iata_code || icao_code %>
   <h2>New <%= type.to_s.capitalize %></h2>
   <p>
     <%= label_tag (sym_base+"_iata").to_sym, "IATA" %> / <%= label_tag (sym_base+"_name").to_sym, "Name" %><br />
-    <%= text_field_tag (sym_base+"_iata").to_sym, value, size: 3, readonly: true %> <%= text_field_tag (sym_base+"_name").to_sym %>
+    <%= text_field_tag (sym_base+"_iata").to_sym, iata_code, size: 3, readonly: iata_code.present? %> <%= text_field_tag (sym_base+"_name").to_sym %>
   </p>
   <% if type == :airport %>
     <p>
@@ -17,7 +17,7 @@
   <% if type == :airline %>
     <p>
       <%= label_tag (sym_base+"_icao_code").to_sym, "ICAO code" %><br />
-      <%= text_field_tag (sym_base+"_icao_code").to_sym, nil, size: 3, maxlength: 3 %>
+      <%= text_field_tag (sym_base+"_icao_code").to_sym, icao_code, size: 3, maxlength: 3, readonly: icao_code.present? %>
     </p>
     <p>
       <%= label_tag (sym_base+"_numeric_code").to_sym, "Numeric code (include leading zeroes)" %><br />
