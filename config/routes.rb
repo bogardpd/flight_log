@@ -43,7 +43,7 @@ Portfolio::Application.routes.draw do
    :show_boarding_pass_json
   get   "/boarding-pass/import(/trip/:trip_id)"  => "pk_passes#index",       as: :import_boarding_passes
   post  "/boarding-pass/import(/trip/:trip_id)"  => "pk_passes#change_trip", as: :change_boarding_pass_trip
-  post  "/flights/create-iata/" => "flights#create_iata",   as: :create_iata
+  post  "/flights/create-iata-icao/" => "flights#create_iata_icao",   as: :create_iata_icao
 
   get   "/boarding-pass/flightxml" => "pk_passes#flightxml_test", as: :flightxml_test
   

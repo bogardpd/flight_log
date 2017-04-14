@@ -431,7 +431,7 @@ class FlightsController < ApplicationController
     end
   end
   
-  def create_iata
+  def create_iata_icao
     (0..(params[:count].to_i-1)).each do |index|
       type = params["type_#{index}".to_sym]
       next if type.nil?

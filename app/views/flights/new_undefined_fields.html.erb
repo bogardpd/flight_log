@@ -1,6 +1,6 @@
 <h1>Fill in Unknown IATA and ICAO Codes</h1>
 
-<%= form_tag(create_iata_path) do %>
+<%= form_tag(create_iata_icao_path) do %>
 
   <% @undefined_codes.each_with_index do |code, index| %>
     <%= render :partial => "form_new_iata", locals: {index: index, type: code[:type], iata_code: code[:iata_code], icao_code: code[:icao_code]} %>
