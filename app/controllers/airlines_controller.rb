@@ -1,5 +1,6 @@
 class AirlinesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
+  #TODO: Capitalize IATA and ICAO codes on save
   add_breadcrumb 'Home', 'root_path'
   
   def index
@@ -220,7 +221,7 @@ class AirlinesController < ApplicationController
   private
   
     def airline_params
-      params.require(:airline).permit(:iata_airline_code, :airline_name, :numeric_code, :is_only_operator)
+      params.require(:airline).permit(:iata_airline_code, :icao_airline_code, :airline_name, :numeric_code, :is_only_operator)
     end
   
 end

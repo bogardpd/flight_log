@@ -15,11 +15,16 @@
   </p>
   
   <p>
+    <%= f.label :icao_airline_code, "ICAO Airline Code" %><br />
+    <%= f.text_field :icao_airline_code, size: 3, maxlength: 3, class: "iata_mono all-caps" %>
+  </p>
+  
+  <p>
     <%= f.label :numeric_code, "Airline Numeric Code" %><br />
     <%= f.text_field :numeric_code, size: 3, maxlength: 3, class: "iata_mono" %><br />
   	Please include leading zeroes.
   </p>
-
+  
   <p>
     <%= f.check_box :is_only_operator %> <%= f.label :is_only_operator, "This airline only operates flights (it does not sell or market flights)" %>
   </p>

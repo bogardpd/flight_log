@@ -1,4 +1,4 @@
-<div id="title_info"><%= iata_airline_code_display(@operator.iata_airline_code) %><%= image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: 'airline_icon') %></div>
+<div id="title_info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: 'airline_icon') %></div>
 
 <h1>Flights Operated by <%= @operator.airline_name %></h1>
 

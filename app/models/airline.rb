@@ -4,9 +4,12 @@ class Airline < ApplicationRecord
   has_many :codeshared_flights, :class_name => 'Flight', :foreign_key => 'codeshare_airline_id'
     
   validates :iata_airline_code, :presence => true, :length => { :minimum => 2 }, :uniqueness => { :case_sensitive => false }
+  validates :icao_airline_code, :presence => true, :length => { is: 3 }, :uniqueness => { :case_sensitive => false }
   validates :airline_name, :presence => true
   validates :numeric_code, :length => { :is => 3, :allow_blank => true }
   
+  CAPS_ATTRS = %w( icao_airline_code )
+  before_save :capitalize_codes
   
   def format_name
     return self.airline_name
@@ -21,6 +24,12 @@ class Airline < ApplicationRecord
     flights.joins(type).group(id_field, :airline_name, :iata_airline_code).count
       .map{|k,v| {id: k[0], airline_name: k[1], iata_airline_code: k[2], flight_count: v}}
       .sort_by{|a| [-a[:flight_count], a[:airline_name]]}
+  end
+  
+  protected
+  
+  def capitalize_codes
+    CAPS_ATTRS.each { |attr| self[attr] = self[attr].upcase if !self[attr].blank? }
   end
   
 end

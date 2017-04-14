@@ -16,6 +16,10 @@
   <% end %>
   <% if type == :airline %>
     <p>
+      <%= label_tag (sym_base+"_icao_code").to_sym, "ICAO code" %><br />
+      <%= text_field_tag (sym_base+"_icao_code").to_sym, nil, size: 3, maxlength: 3 %>
+    </p>
+    <p>
       <%= label_tag (sym_base+"_numeric_code").to_sym, "Numeric code (include leading zeroes)" %><br />
       <%= text_field_tag (sym_base+"_numeric_code").to_sym, nil, size: 3, maxlength: 3 %>
     </p>

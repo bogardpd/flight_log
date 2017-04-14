@@ -339,6 +339,9 @@ form {
   	font-size: 95%;
   	padding: 2px 4px;
   }
+  .all-caps {
+    text-transform: uppercase;
+  }
   .autopopulated {
   	background: $color-background-new;
   	border: 1px solid hsl(45, 100%, 50%);

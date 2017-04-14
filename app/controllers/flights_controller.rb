@@ -439,7 +439,7 @@ class FlightsController < ApplicationController
       case type
       when "airline"
         if params[(prefix+"iata").to_sym] && params[(prefix+"name").to_sym]
-          Airline.create(iata_airline_code: params[(prefix+"iata").to_sym], airline_name: params[(prefix+"name").to_sym], numeric_code: params[(prefix+"numeric_code").to_sym], is_only_operator: false)
+          Airline.create(iata_airline_code: params[(prefix+"iata").to_sym], airline_name: params[(prefix+"name").to_sym], icao_airline_code: params[(prefix+"icao_code").to_sym], numeric_code: params[(prefix+"numeric_code").to_sym], is_only_operator: false)
         end
       when "airport"
         if params[(prefix+"iata").to_sym] && params[(prefix+"name").to_sym] && params[(prefix+"country").to_sym]
