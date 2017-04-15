@@ -30,14 +30,6 @@ class PkPassesController < ApplicationController
     
   end
   
-  def flightxml_test
-    @title = "FlightXML Test"
-    add_message(:info, "Each reload incurs FlightAware transaction fees, so refresh wisely.")
-
-    @output = PKPass.flight_xml("JBU", "101", Time.parse("2017-04-11 18:49:00 -0400"))    
-    add_message(:warning, "Flight not found in FlightAware.") if @output.nil?
-  end
-  
   def change_trip
     redirect_to import_boarding_passes_path(trip_id: params[:trip_id])
   end
