@@ -1,3 +1,4 @@
+<% if fields %>
 <table class="flightlog">
 <% fields.each do |k, v| %>
 <tr>
@@ -10,3 +11,6 @@
 </tr>
 <% end %>
 </table>
+<% else %>
+<%= render_message(:info, "No fields!")%>
+<% end %>

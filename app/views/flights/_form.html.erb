@@ -1,5 +1,5 @@
 <% fields ||= Hash.new %>
-<%= render "fields", fields: @fields %>
+<%= render "fields", fields: @fields if @fields %>
 <%= form_for(flight) do |f| %>
   <%= render 'error_messages' %>
 

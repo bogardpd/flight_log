@@ -20,7 +20,7 @@ Portfolio::Application.routes.draw do
   
   # Flights:
   get   "/flights/new/trip/:trip_id(/pass/:pass_id)" => "flights#new",          as: :new_flight
-  get   "/flights/:id/edit(/pass/:pass_id)"      => "flights#edit_with_pass",   as: :edit_flight_with_pass
+  get   "/flights/:id/edit/pass/:pass_id"        => "flights#edit_with_pass",   as: :edit_flight_with_pass
   post  "/flights/create-iata-icao/"             => "flights#create_iata_icao", as: :create_iata_icao
   get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range",  as: :show_date_range
   get   "/flights/year/:year"                    => "flights#show_date_range",  as: :show_year
