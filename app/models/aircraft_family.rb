@@ -1,5 +1,8 @@
 class AircraftFamily < ApplicationRecord
+  belongs_to :parent, class_name: "AircraftFamily", foreign_key: "parent_id"
+  has_many :children, class_name: "AircraftFamily", foreign_key: "parent_id"
   has_many :flights
+  
   
   def self.categories_list
     categories = Hash.new
