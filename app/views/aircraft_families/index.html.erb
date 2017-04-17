@@ -2,9 +2,9 @@
 
 <p>This listing shows how often Iʼve flown on each particular type (family) of airplane. Each type of airplane may have several variants, but all of those variants have been included in each familyʼs total.</p>
 
-<p>I have flown on <%= pluralize(@aircraft_array.count, 'aircraft family') %>.</p>
+<p>I have flown on <%= pluralize(@aircraft_families.count, 'aircraft family') %>.</p>
 
-<% if @aircraft_array.empty? %>
+<% if @aircraft_families.empty? %>
 	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
 		<%= render 'error_no_flights' %>
 	<% else %>
@@ -23,7 +23,7 @@
   </tr>
 <% previous_count = nil %>
 
-<% @aircraft_array.each_with_index do |aircraft_family, index| %>
+<% @aircraft_families.each_with_index do |aircraft_family, index| %>
   <tr>
     <td class="counter"><%= (@sort_cat == :flights && aircraft_family[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
 		<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}".html_safe, aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} aircraft") %></td>
@@ -33,7 +33,7 @@
 	<% previous_count = aircraft_family[:flight_count] %>
 <% end %>
 
-  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@aircraft_array.count, 'aircraft family') %></td></tr>
+  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@aircraft_families.count, 'aircraft family') %></td></tr>
   
 </table>
 
@@ -45,13 +45,11 @@
 		<tr class="th">
 			<th class="aircraft_family">Aircraft Family</th>
 			<th class="aircraft_iata_code">Code</th>
-			<th class="aircraft_category">Category</th>
 		</tr>
 	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
 	  <tr>
-	    <td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family.manufacturer}</span> #{aircraft_family.family_name}".html_safe, aircraft_family_path(aircraft_family.iata_aircraft_code), :title => "View aircraft family details for #{aircraft_family.manufacturer} #{aircraft_family.family_name}") %></td>
-	    <td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family.iata_aircraft_code, aircraft_family_path(aircraft_family.iata_aircraft_code), :title => "View aircraft family details for #{aircraft_family.manufacturer} #{aircraft_family.family_name}") %></td>
-			<td class="aircraft_category"><%= AircraftFamily.categories_list[aircraft_family.category] %></td>
+	    <td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}".html_safe, aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
+	    <td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
 		</tr>
 	<% end %>
 	</table>

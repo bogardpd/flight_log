@@ -8,14 +8,13 @@ class AircraftFamiliesController < ApplicationController
     add_breadcrumb "Aircraft Families", "aircraft_families_path"
     add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
     
-    @aircraft_array = AircraftFamily.flight_count(logged_in?)
+    flight_count = AircraftFamily.flight_count(logged_in?)
+    @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
     
-    if @aircraft_array.any?
-      used_aircraft_family_ids = @aircraft_array.map{|a| a[:id]}.uniq
-      @aircraft_families_with_no_flights = AircraftFamily.where("id NOT IN (?)", used_aircraft_family_ids).order(:manufacturer, :family_name)
-      
+    if @aircraft_families.any?
+            
       # Find maxima for graph scaling:
-      @aircraft_maximum = @aircraft_array.max_by{|i| i[:flight_count]}[:flight_count]
+      @aircraft_maximum = @aircraft_families.max_by{|i| i[:flight_count]}[:flight_count]
     
       # Sort aircraft table:
       sort_params = sort_parse(params[:sort], %w(flights aircraft code), :desc)
@@ -25,13 +24,13 @@ class AircraftFamiliesController < ApplicationController
       
       case @sort_cat
       when :aircraft
-        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| [aircraft_family[:manufacturer].downcase, aircraft_family[:family_name].downcase] }
-        @aircraft_array.reverse! if @sort_dir == :desc
+        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [aircraft_family[:manufacturer].downcase, aircraft_family[:family_name].downcase] }
+        @aircraft_families.reverse! if @sort_dir == :desc
       when :code
-        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| aircraft_family[:iata_aircraft_code] }
-        @aircraft_array.reverse! if @sort_dir == :desc
+        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| aircraft_family[:iata_aircraft_code] }
+        @aircraft_families.reverse! if @sort_dir == :desc
       when :flights
-        @aircraft_array = @aircraft_array.sort_by { |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]] }
+        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]] }
       end
     else
       @aircraft_families_with_no_flights = AircraftFamily.all.order(:manufacturer, :family_name)
