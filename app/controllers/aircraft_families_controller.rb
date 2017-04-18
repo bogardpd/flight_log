@@ -36,7 +36,7 @@ class AircraftFamiliesController < ApplicationController
   end
   
   def show
-    @aircraft_family = AircraftFamily.where(iata_aircraft_code: params[:id]).first
+    @aircraft_family = AircraftFamily.find(params[:id])
     raise ActiveRecord::RecordNotFound if (@aircraft_family.nil?) #all_flights will fail if code does not exist, so check here.    
     
     @logo_used = true
@@ -48,7 +48,7 @@ class AircraftFamiliesController < ApplicationController
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
-    add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family.iata_aircraft_code)
+    add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
     
     add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
     add_admin_action view_context.link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family))
@@ -83,7 +83,7 @@ class AircraftFamiliesController < ApplicationController
     @aircraft_family = AircraftFamily.new(aircraft_family_params)
     if @aircraft_family.save
       flash[:success] = "Successfully added #{params[:aircraft_family][:family_name]}!"
-      redirect_to aircraft_family_path(@aircraft_family.iata_aircraft_code)
+      redirect_to aircraft_family_path(@aircraft_family)
     else
       render 'new'
     end
@@ -92,7 +92,7 @@ class AircraftFamiliesController < ApplicationController
   def edit
     @aircraft_family = AircraftFamily.find(params[:id])
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
-    add_breadcrumb @aircraft_family.full_name, 'aircraft_family_path(@aircraft_family.iata_aircraft_code)'
+    add_breadcrumb @aircraft_family.full_name, 'aircraft_family_path(@aircraft_family)'
     add_breadcrumb 'Edit Aircraft Family', 'edit_aircraft_family_path(@aircraft_family)'
   end
   
@@ -100,7 +100,7 @@ class AircraftFamiliesController < ApplicationController
     @aircraft_family = AircraftFamily.find(params[:id])
     if @aircraft_family.update_attributes(aircraft_family_params)
       flash[:success] = "Successfully updated aircraft family."
-      redirect_to aircraft_family_path(@aircraft_family.iata_aircraft_code)
+      redirect_to aircraft_family_path(@aircraft_family)
     else
       render 'edit'
     end
@@ -110,7 +110,7 @@ class AircraftFamiliesController < ApplicationController
     @aircraft_family = AircraftFamily.find(params[:id])
     if @aircraft_family.flights.any?
       flash[:error] = "This aircraft family still has flights and could not be deleted. Please delete all of this aircraft familyʼs flights first."
-      redirect_to aircraft_family_path(@aircraft_family.iata_aircraft_code)
+      redirect_to aircraft_family_path(@aircraft_family)
     else
       @aircraft_family.destroy
       flash[:success] = "Aircraft family deleted."

@@ -30,7 +30,21 @@
   <h2 id="types"><%= @aircraft_family.family_name %> Subtypes</h2>
   <%= render partial: "aircraft_family_subtypes", locals: {subtypes: @subtypes} %>
   <% if logged_in? && @subtypes_with_no_flights.any? %>
-    <p class="center">Subtypes with no flights: <%= @subtypes_with_no_flights.map{|type|  type.icao_aircraft_code}.join(" / ") %></p>
+    <table class="flightlog">
+      <thead>
+        <tr>
+          <th colspan="2">Types with no flights</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @subtypes_with_no_flights.each do |type| %>
+        <tr>
+          <td class="aircraft_family"><%= link_to(type.family_name, aircraft_family_path(type)) %></td>
+          <td class="aircraft-code code-mono"><%= link_to(type.icao_aircraft_code, aircraft_family_path(type)) %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
   <% end %>
   
 	<h2 id="airlines">Airlines with <%= @aircraft_family.family_name %> Flights</h2>

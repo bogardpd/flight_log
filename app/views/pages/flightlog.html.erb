@@ -83,7 +83,7 @@
     </tr>
   <% @flight_aircraft.first(5).each do |aircraft| %>
     <tr>
-      <td class="left"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft[:manufacturer]}</span> #{aircraft[:family_name]}".html_safe, aircraft_family_path(aircraft[:iata_aircraft_code]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
+      <td class="left"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft[:manufacturer]}</span> #{aircraft[:family_name]}".html_safe, aircraft_family_path(aircraft[:id]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
       <td class="center"><%= aircraft[:flight_count] %></td>
     </tr>
   <% end %>

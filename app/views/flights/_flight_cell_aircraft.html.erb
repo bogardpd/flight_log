@@ -1,1 +1,1 @@
-<td class="flight_aircraft<%= @top_row_style %>"><% if flight.family_name %><%= link_to(flight.iata_aircraft_code, aircraft_family_path(flight.iata_aircraft_code), :title => "View flights on #{flight.manufacturer} #{flight.family_name} aircraft") %><% end %></td>
+<td class="flight_aircraft<%= @top_row_style %>"><% if flight.family_name %><%= link_to(flight.iata_aircraft_code, aircraft_family_path(flight.aircraft_family_id), :title => "View flights on #{flight.manufacturer} #{flight.family_name} aircraft") %><% end %></td>

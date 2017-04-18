@@ -118,7 +118,7 @@ class Flight < ApplicationRecord
   end
   
   def self.aircraft_first_flight(aircraft_family)
-    return Flight.select("aircraft_families.iata_aircraft_code, flights.departure_date").joins(:aircraft_family).where("aircraft_families.iata_aircraft_code = ?", aircraft_family).order(departure_date: :asc).first.departure_date
+    return Flight.select("aircraft_families.iata_aircraft_code, flights.departure_date").joins(:aircraft_family).where(aircraft_family_id: aircraft_family).order(departure_date: :asc).first.departure_date
   end
   
   def self.airline_first_flight(airline)

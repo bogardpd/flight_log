@@ -16,7 +16,8 @@ class AircraftFamily < ApplicationRecord
   end
   
   validates :family_name, presence: true
-  validates :iata_aircraft_code, presence: true, length: { is: 3 }, uniqueness: true
+  validates :iata_aircraft_code, length: { is: 3 }
+  validates :icao_aircraft_code, length: { in: 2..4 }, uniqueness: true, allow_blank: true
   validates :manufacturer, presence: true
   validates :category, inclusion: { in: categories_list.keys, message: "%{value} is not a valid category" }, allow_nil: false, allow_blank: false
   
@@ -56,7 +57,7 @@ class AircraftFamily < ApplicationRecord
       .map{|k,v| {(k[1]||k[0]) => v}} # Create array of hashes with k as parent id or family id and v as count
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts
       
-    self.families.map{|f| {manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}.sort_by{|a| [-a[:flight_count], a[:manufacturer], a[:family_name]]}
+    self.families.map{|f| {id: f.id, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}.sort_by{|a| [-a[:flight_count], a[:manufacturer], a[:family_name]]}
   end
   
 

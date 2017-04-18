@@ -76,7 +76,7 @@
 	    <td class="flight_show_label">Aircraft</td>
 	    <td>
 	      <div class="supplemental_code"><%= @flight.aircraft_family.iata_aircraft_code %></div>
-				<%= link_to("#{@flight.aircraft_family.manufacturer} #{@flight.aircraft_family.family_name}".html_safe, aircraft_family_path(@flight.aircraft_family.iata_aircraft_code), :title => "View flights on #{@flight.aircraft_family.manufacturer} #{@flight.aircraft_family.family_name} aircraft") %>
+				<%= link_to("#{@flight.aircraft_family.manufacturer} #{@flight.aircraft_family.family_name}".html_safe, aircraft_family_path(@flight.aircraft_family), :title => "View flights on #{@flight.aircraft_family.manufacturer} #{@flight.aircraft_family.family_name} aircraft") %>
 				</td>
 	    </td>
 	  </tr>
