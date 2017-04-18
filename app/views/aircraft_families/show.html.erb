@@ -24,30 +24,30 @@
 <% if @flights.any? %>
 
 	<a name="map"></a>
-
   <%= map_with_region_select(@map) %>
 	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
-
-	<a name="airlines"></a>
-	<h2>Airlines with <%= @aircraft_family.family_name %> Flights</h2>
+  
+  <h2 id="types"><%= @aircraft_family.family_name %> Subtypes</h2>
+  <%= render partial: "aircraft_family_subtypes", locals: {subtypes: @subtypes} %>
+  <% if logged_in? && @subtypes_with_no_flights.any? %>
+    <p class="center">Subtypes with no flights: <%= @subtypes_with_no_flights.map{|type|  type.icao_aircraft_code}.join(" / ") %></p>
+  <% end %>
+  
+	<h2 id="airlines">Airlines with <%= @aircraft_family.family_name %> Flights</h2>
 	<%= render "flights/summary_airline_table" %>
 
-	<a name="operators"></a>
-	<h2>Operators with <%= @aircraft_family.family_name %> Flights</h2>
+	<h2 id="operators">Operators with <%= @aircraft_family.family_name %> Flights</h2>
 	<%= render "flights/summary_operator_table" %>
 
-	<a name="classes"></a>
-	<h2>Classes Flown on <%= @aircraft_family.family_name %> Aircraft</h2>
+	<h2 id="classes">Classes Flown on <%= @aircraft_family.family_name %> Aircraft</h2>
 
 	<%= render "flights/summary_travel_class_table" %>
 
-	<a name="superlatives"></a>
-	<h2>Longest and Shortest Routes Flown on <%= @aircraft_family.family_name %> Aircraft</h2>
+	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @aircraft_family.family_name %> Aircraft</h2>
 
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 
-	<a name="flights"></a>
-	<h2><%= @aircraft_family.family_name %> Flight List</h2>
+	<h2 id="flights"><%= @aircraft_family.family_name %> Flight List</h2>
 
 	<%= render "flights/flight_table" %>
 

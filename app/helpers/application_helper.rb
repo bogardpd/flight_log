@@ -71,9 +71,9 @@ module ApplicationHelper
     input_date.strftime("%e %b %Y")
   end
   
-  def iata_mono(code)
+  def code_mono(code)
     return nil unless code.present?
-    html = "<span class=\"iata_mono\">" + code + "</span>"
+    html = "<span class=\"code-mono\">" + code + "</span>"
     html.html_safe
   end
   

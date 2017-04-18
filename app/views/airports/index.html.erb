@@ -28,7 +28,7 @@
 	    <th class="counter">#</th>
 			<th class="airport_country"><%= sort_link("<abbr title=\"Country\">Cnt</abbr>", :country, "country", :asc, "airports_list") %></th>
 			<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports_list") %></th>
-	    <th class="airport_iata_code"><%= sort_link("Code", :code, "code", :asc, "airports_list") %></th>
+	    <th class="airport-code"><%= sort_link("Code", :code, "code", :asc, "airports_list") %></th>
 	    <th class="airport_visits"><%= sort_link("Visits", :visits, "visits", :desc, "airports_list") %></th>	
 	  </tr>
 	<% previous_count = nil %>
@@ -37,7 +37,7 @@
 	    <td class="counter"><%= (@sort_cat == :visits && airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="airport_country"><%= country_flag(airport[:country]) %></td>
 			<td class="airport_city"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-	    <td class="airport_iata_code iata_mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+	    <td class="airport-code code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 	    <td class="airport_visits"><%= render "flights/graph_block", :value => airport[:frequency], :maximum => @visits_maximum %></td>
 	
 	  </tr>
@@ -52,7 +52,7 @@
 	<% @airports_with_no_flights.each do |airport| %>
 	  <tr>
 	    <td class="airport_city"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %> <%= link_to(airport.city, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
-	    <td class="airport_iata_code iata_mono"><%= link_to(airport.iata_code, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
+	    <td class="airport-code code-mono"><%= link_to(airport.iata_code, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
 	
 	  </tr>
 	<% end %>

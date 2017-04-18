@@ -12,14 +12,14 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="class_class"><%= sort_link("Travel Class", :class, "class", :asc, nil) %></th>
-		<th class="class_iata_code">Code</th>
+		<th class="class-code">Code</th>
     <th class="class_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
 <% previous_count = nil %>
 <% @classes_array.each_with_index do |travel_class, index| %>
   <tr>
 		<td class="counter"><%= (travel_class[:count] == previous_count) ? "⋮" : index + 1 %></td>
     <td class="class_class"><%= link_to(Flight.classes_list[travel_class[:travel_class]], show_class_path(travel_class[:travel_class]), :title => "View #{Flight.classes_list[travel_class[:travel_class]].downcase} class flights") %></td>
-		<td class="class_iata_code iata_mono"><%= link_to(travel_class[:travel_class], show_class_path(travel_class[:travel_class]), :title => "View #{Flight.classes_list[travel_class[:travel_class]].downcase} class flights") %></td>
+		<td class="class-code code-mono"><%= link_to(travel_class[:travel_class], show_class_path(travel_class[:travel_class]), :title => "View #{Flight.classes_list[travel_class[:travel_class]].downcase} class flights") %></td>
     <td class="class_flights"><%= render "graph_block", :value => travel_class[:count], :maximum => @classes_maximum %></td>
   </tr>
 	<% previous_count = travel_class[:count] %>

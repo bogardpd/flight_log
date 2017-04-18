@@ -253,7 +253,7 @@ body {
 	text-align: right;
 }
 
-.iata_mono {
+.code-mono {
 	font-family: $font-stack-monospace;
 }
 
@@ -847,7 +847,7 @@ span.flight_city {
 	font-weight: 300;
 }
 
-span.flight_iata_code {
+span.flight-code {
 	font-size: 150%;
 	font-weight: 600;
 }
@@ -967,13 +967,18 @@ td.aircraft_flights, th.aircraft_flights {
 	text-align: center;
 }
 
-td.aircraft_iata_code, th.aircraft_iata_code {
+td.aircraft-code, th.aircraft-code {
 	text-align: center;
 }
 
 td.aircraft_name {
 	text-align: left;
 	font-style: italic;
+}
+
+td.subdued {
+	color: $color-text-secondary;
+  font-weight: 300;
 }
 
 span.aircraft_name {
@@ -988,7 +993,7 @@ td.airline_flights, th.airline_flights {
 	text-align: center;
 }
 
-td.airline_iata_code, th.airline_iata_code {
+td.airline-code, th.airline-code {
 	text-align: center;
 }
 
@@ -1009,7 +1014,7 @@ td.airport_flights, th.airport_flights {
 	text-align: center;
 }
 
-td.airport_iata_code {
+td.airport-code {
 	text-align: center;
 }
 
@@ -1055,7 +1060,7 @@ td.class_flights, th.class_flights {
 	text-align: center;
 }
 
-td.class_iata_code, th.class_iata_code {
+td.class-code, th.class-code {
 	text-align: center;
 }
 

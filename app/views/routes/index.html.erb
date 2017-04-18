@@ -25,7 +25,7 @@
 				<%= index + 1 %>
 			<% end %>
 		</td>
-		<td class="route_route"><%= link_to("<span class=\"iata_mono\">#{row[:route][0]}</span> &#x21C4; <span class=\"iata_mono\">#{row[:route][1]}</span>".html_safe, route_path(row[:route].join("-")), :title => "View flights between #{row[:route][0]} and #{row[:route][1]}") %></td>
+		<td class="route_route"><%= link_to("<span class=\"code-mono\">#{row[:route][0]}</span> &#x21C4; <span class=\"code-mono\">#{row[:route][1]}</span>".html_safe, route_path(row[:route].join("-")), :title => "View flights between #{row[:route][0]} and #{row[:route][1]}") %></td>
     <td class="route_distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
 		<td class="route_flights"><%= render "flights/graph_block", :value => row[:total_flights], :maximum => @flights_maximum %></td>
   </tr>

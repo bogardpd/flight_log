@@ -18,7 +18,7 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="aircraft_family"><%= sort_link("Aircraft Family", :aircraft, "aircraft", :asc, nil) %></th>
-		<th class="aircraft_iata_code"><%= sort_link("Code", :code, "code", :asc, nil) %></th>
+		<th class="aircraft-code"><%= sort_link("Code", :code, "code", :asc, nil) %></th>
     <th class="aircraft_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
   </tr>
 <% previous_count = nil %>
@@ -27,7 +27,7 @@
   <tr>
     <td class="counter"><%= (@sort_cat == :flights && aircraft_family[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
 		<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}".html_safe, aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} aircraft") %></td>
-		<td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} aircraft") %></td>
+		<td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} aircraft") %></td>
     <td class="aircraft_flights"><%= render "flights/graph_block", :value => aircraft_family[:flight_count], :maximum => @aircraft_maximum %></td>
   </tr>
 	<% previous_count = aircraft_family[:flight_count] %>
@@ -44,12 +44,12 @@
 	<table class="flightlog">
 		<tr class="th">
 			<th class="aircraft_family">Aircraft Family</th>
-			<th class="aircraft_iata_code">Code</th>
+			<th class="aircraft-code">Code</th>
 		</tr>
 	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
 	  <tr>
 	    <td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}".html_safe, aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
-	    <td class="aircraft_iata_code iata_mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
+	    <td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:iata_aircraft_code]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
 		</tr>
 	<% end %>
 	</table>

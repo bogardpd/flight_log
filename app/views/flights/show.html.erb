@@ -9,12 +9,12 @@
 <table class="flightlog no_border flight_large_route">
   <tr class="no_top_border">
     <td class="flight_show_airport right">
-      <span class="flight_iata_code"><%= link_to(@flight.origin_airport.iata_code, airport_path(@flight.origin_airport.iata_code), :title => "View airport details for " + @flight.origin_airport.city) %></span><br />
+      <span class="flight-code"><%= link_to(@flight.origin_airport.iata_code, airport_path(@flight.origin_airport.iata_code), :title => "View airport details for " + @flight.origin_airport.city) %></span><br />
       <span class="flight_city"><%= @flight.origin_airport.city %></span>
     </td>
     <td class="flight_airplane_icon">&#x2708;</td>
     <td class="flight_show_airport">
-      <span class="flight_iata_code"><%= link_to(@flight.destination_airport.iata_code, airport_path(@flight.destination_airport.iata_code), :title => "View airport details for " + @flight.destination_airport.city) %></span><br />
+      <span class="flight-code"><%= link_to(@flight.destination_airport.iata_code, airport_path(@flight.destination_airport.iata_code), :title => "View airport details for " + @flight.destination_airport.city) %></span><br />
       <span class="flight_city"><%= @flight.destination_airport.city %></span>
     </td>
   </tr>

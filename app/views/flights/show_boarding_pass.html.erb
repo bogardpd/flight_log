@@ -4,7 +4,7 @@
   <%= form_tag(build_boarding_pass_path, method: :get, id: "bcbp-form") do %>
   <p>
     <%= label :data, "Update your boarding pass data here:" %><br />
-	  <%= text_area_tag :data, params[:data], size: '70x5', class: 'iata_mono' %>
+	  <%= text_area_tag :data, params[:data], size: '70x5', class: 'code-mono' %>
   </p>
   <p><%= submit_tag "Update", name: nil, id: "bcbp_submit_button" %></p>
   

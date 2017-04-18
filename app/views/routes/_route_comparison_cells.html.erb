@@ -1,2 +1,2 @@
-<td class="route_route"><%= link_to(iata_mono(route[0][0]) + " &#x21C4; ".html_safe + iata_mono(route[0][1]), route_path(route[0].join('-')), :title => "View flights between #{route[0][0]} and #{route[0][1]}") %></td>
+<td class="route_route"><%= link_to(code_mono(route[0][0]) + " &#x21C4; ".html_safe + code_mono(route[0][1]), route_path(route[0].join('-')), :title => "View flights between #{route[0][0]} and #{route[0][1]}") %></td>
 <td class="route_distance"><%= number_with_delimiter(route[1], :delimiter => ',') %> <span class="measurement_unit">mi</span></td>

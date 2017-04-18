@@ -44,12 +44,12 @@
 			<% @new_airport_flag = true %>
 			<td class="counter new"><%= (airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="airport_city new"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %> <%= link_to(airport[:city] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-			<td class="airport_iata_code new"><%= link_to(iata_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+			<td class="airport-code new"><%= link_to(code_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 			<td class="airport_visits new"><%= render "graph_block", :value => airport[:frequency], :maximum => @airport_maximum %></td>
 		<% else %>
 			<td class="counter"><%= (airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="airport_city"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %> <%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-			<td class="airport_iata_code"><%= link_to(iata_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+			<td class="airport-code"><%= link_to(code_mono(airport[:iata_code]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
 			<td class="airport_visits"><%= render "graph_block", :value => airport[:frequency], :maximum => @airport_maximum %></td>
 		<% end %>
 	
@@ -75,7 +75,7 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="aircraft_family">Aircraft Family</th>
-		<th class="aircraft_iata_code">Code</th>
+		<th class="aircraft-code">Code</th>
     <th class="aircraft_flights">Flights</th>
   </tr>
 <% previous_count = nil %>
@@ -87,12 +87,12 @@
 			<td class="counter new"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
 			<% @new_aircraft_flag = true %>
 			<td class="aircraft_family new"><%= link_to("<span class=\"aircraft_manufacturer\">#{@aircraft_family_manufacturers[aircraft]}</span> #{@aircraft_family_names[aircraft]}*".html_safe, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
-			<td class="aircraft_iata_code iata_mono new"><%= link_to(aircraft, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
+			<td class="aircraft-code code-mono new"><%= link_to(aircraft, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
 			<td class="aircraft_flights new"><%= render "graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
 		<% else %>
 			<td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{@aircraft_family_manufacturers[aircraft]}</span> #{@aircraft_family_names[aircraft]}".html_safe, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
-			<td class="aircraft_iata_code iata_mono"><%= link_to(aircraft, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
+			<td class="aircraft-code code-mono"><%= link_to(aircraft, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
 			<td class="aircraft_flights"><%= render "graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
 		<% end %>
     
@@ -122,7 +122,7 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="airline_airline">Airline</th>
-		<th class="airline_iata_code">Code</th>
+		<th class="airline-code">Code</th>
     <th class="airline_flights">Flights</th>
   </tr>
 <% previous_count = nil %>
@@ -135,7 +135,7 @@
 			<td class="airline_airline new">
 				<%= link_to(image_tag(airline_icon_path(airline), :alt => @airline_names[airline], class: 'airline_icon') + @airline_names[airline] + "*", airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
 			</td>
-			<td class="airline_iata_code iata_mono new">
+			<td class="airline-code code-mono new">
 				<%= link_to(airline, airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
 			</td>
 			<td class="airline_flights new"><%= render "graph_block", value: frequency, maximum: @airline_frequency_maximum %></td>
@@ -144,7 +144,7 @@
 			<td class="airline_airline">
 				<%= link_to(image_tag(airline_icon_path(airline), :alt => @airline_names[airline], class: 'airline_icon') + @airline_names[airline], airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
 			</td>
-			<td class="airline_iata_code iata_mono">
+			<td class="airline-code code-mono">
 				<%= link_to(airline, airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
 			</td>
 			<td class="airline_flights"><%= render "graph_block", value: frequency, maximum: @airline_frequency_maximum %></td>

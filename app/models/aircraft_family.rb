@@ -4,6 +4,7 @@ class AircraftFamily < ApplicationRecord
   has_many :flights
   
   scope :families, -> { where(parent_id: nil) }
+  scope :with_no_flights, -> { where('id not in (?)', self.uniq.joins(:flights).select("aircraft_families.id")) }
   
   def self.categories_list
     categories = Hash.new
@@ -28,6 +29,15 @@ class AircraftFamily < ApplicationRecord
     return ids.flatten
   end
   
+  # Returns an array containing ids, family names, icao codes, and flight counts.
+  def family_and_subtype_count(logged_in=false)
+    flights = logged_in ? Flight.all : Flight.visitor
+    type_count = flights.where(aircraft_family_id: family_and_subtype_ids).joins(:aircraft_family)
+      .group(:family_name, :icao_aircraft_code, :parent_id).count
+      .map{|k,v| {family_name: k[0], icao_aircraft_code: k[1], is_family: k[2].nil?, flight_count: v}}
+      .sort_by{|a| [-a[:flight_count], a[:family_name]] }
+  end
+  
   def format_name
     return self.family_name
   end
@@ -48,5 +58,6 @@ class AircraftFamily < ApplicationRecord
       
     self.families.map{|f| {manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}.sort_by{|a| [-a[:flight_count], a[:manufacturer], a[:family_name]]}
   end
+  
 
 end

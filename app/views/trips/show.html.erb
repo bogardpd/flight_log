@@ -26,7 +26,7 @@
 	<tr class="no_top_border">
 <% end %>
     <td class="flight_flight"><%= "<div class=\"hidden_marker\">Hidden</div>".html_safe if flight.hidden %><%= link_to(image_tag(airline_icon_path(flight.iata_airline_code), alt: flight.iata_airline_code, class: 'airline_icon') + flight.airline_name + " " + flight.flight_number.to_s, flight_path(flight), title: "View flight details for #{flight.airline_name} #{flight.flight_number.to_s}") %></td>
-    <td class="flight_route"><%= link_to(iata_mono(flight.origin_iata_code), airport_path(flight.origin_iata_code), :title => "View airport details for " + flight.origin_city) %> &ndash; <%= link_to(iata_mono(flight.destination_iata_code), airport_path(flight.destination_iata_code), :title => "View airport details for " + flight.destination_city) %></td>
+    <td class="flight_route"><%= link_to(code_mono(flight.origin_iata_code), airport_path(flight.origin_iata_code), :title => "View airport details for " + flight.origin_city) %> &ndash; <%= link_to(code_mono(flight.destination_iata_code), airport_path(flight.destination_iata_code), :title => "View airport details for " + flight.destination_city) %></td>
     <td class="flight_date"><%= format_date(flight.departure_date) %></td>
   </tr>
   <% previous_section = flight.trip_section %>

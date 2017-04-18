@@ -18,17 +18,17 @@
     <%= f.label :origin_airport_id, "Origin" %> &rarr; <%= f.label :destination_airport_id, "Destination" %><br />
     
     <% if fields[:origin_airport_id] %>
-      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:origin_airport_id][:pass_value]}, class: "iata_mono autopopulated") %>
+      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:origin_airport_id][:pass_value]}, class: "code-mono autopopulated") %>
     <% elsif flight.errors.any? || params[:id] || Flight.chronological.empty? %>
-      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}, class: "iata_mono") %>
+      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}, class: "code-mono") %>
     <% else %>
-      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: Flight.chronological.last.destination_airport_id}, class: "iata_mono autopopulated") %>    
+      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: Flight.chronological.last.destination_airport_id}, class: "code-mono autopopulated") %>    
     <% end %>  
     &rarr;
     <% if fields[:destination_airport_id] %>
-      <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:destination_airport_id][:pass_value]}, class: "iata_mono autopopulated") %>
+      <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:destination_airport_id][:pass_value]}, class: "code-mono autopopulated") %>
     <% else %>
-      <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}, class: "iata_mono") %>
+      <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}, class: "code-mono") %>
     <% end %>
   </p>
 
@@ -126,9 +126,9 @@
   <p>
   	<%= f.label :boarding_pass_data %><br />
   	<% if fields[:boarding_pass_data] %>
-      <%= f.text_area :boarding_pass_data, size: '60x5', class: "iata_mono autopopulated", value: fields[:boarding_pass_data][:pass_value] %>
+      <%= f.text_area :boarding_pass_data, size: '60x5', class: "code-mono autopopulated", value: fields[:boarding_pass_data][:pass_value] %>
     <% else %>
-      <%= f.text_area :boarding_pass_data, size: '60x5', class: 'iata_mono' %>
+      <%= f.text_area :boarding_pass_data, size: '60x5', class: 'code-mono' %>
     <% end %>
   </p>
 

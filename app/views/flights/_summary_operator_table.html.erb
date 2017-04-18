@@ -14,7 +14,7 @@
 	  <tr class="th">
 			<th class="counter">#</th>
 	    <th class="airline_airline">Operator</th>
-			<th class="airline_iata_code">Code</th>
+			<th class="airline-code">Code</th>
 	    <th class="airline_flights">Flights</th>
 	  </tr>
 	<% previous_count = nil %>
@@ -22,7 +22,7 @@
 	  <tr>
 	    <td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="airline_airline"><%= link_to(image_tag(airline_icon_path(operator), :title => @operator_names[operator], :class => 'airline_icon') + @operator_names[operator], show_operator_path(operator), :title => "View flights operated by #{@operator_names[operator]}") %></td>
-			<td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(operator), show_operator_path(operator), :title => "View flights operated by #{@operator_names[operator]}") %></td>
+			<td class="airline-code code-mono"><%= link_to(iata_airline_code_display(operator), show_operator_path(operator), :title => "View flights operated by #{@operator_names[operator]}") %></td>
 	    <td class="airline_flights"><%= render "flights/graph_block", :value => frequency, :maximum => @operator_frequency_maximum %></td>
 	  </tr>
 		<% previous_count = frequency %>

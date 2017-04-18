@@ -23,7 +23,7 @@
   <tr class="th">
     <th class="counter">#</th>
 		<th class="airline_airline"><%= sort_link("Airline", :airline, "airline", :asc, "airlines") %></th>
-		<th class="airline_iata_code"><%= sort_link("Code", :code, "code", :asc, "airlines") %></th>
+		<th class="airline-code"><%= sort_link("Code", :code, "code", :asc, "airlines") %></th>
     <th class="airline_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airlines") %></th>
   </tr>
 <% previous_count = nil %>
@@ -33,7 +33,7 @@
     <td class="airline_airline">
     	<%= link_to(image_tag(airline_icon_path(airline[:iata_airline_code]), alt: airline[:iata_airline_code], title: airline[:airline_name], class: 'airline_icon') + airline[:airline_name], airline_path(airline[:iata_airline_code])) %>
 		</td>
-		<td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(airline[:iata_airline_code]), airline_path(airline[:iata_airline_code])) %></td>
+		<td class="airline-code code-mono"><%= link_to(iata_airline_code_display(airline[:iata_airline_code]), airline_path(airline[:iata_airline_code])) %></td>
     <td class="airline_flights"><%= render "flights/graph_block", :value => airline[:flight_count], :maximum => @airlines_maximum %></td>
   </tr>
 	<% previous_count = airline[:flight_count] %>
@@ -63,7 +63,7 @@
 		<td class="counter"><%= (@sort_cat == :flights && operator[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
     <td class="airline_airline">
     <%= link_to(image_tag(airline_icon_path(operator[:iata_airline_code]), title: operator[:airline_name], class: 'airline_icon') + operator[:airline_name], show_operator_path(operator[:iata_airline_code])) %></td>
-		<td class="airline_iata_code iata_mono">
+		<td class="airline-code code-mono">
 			<%= link_to(iata_airline_code_display(operator[:iata_airline_code]), show_operator_path(operator[:iata_airline_code])) %>
 		</td>
     <td class="airline_flights"><%= render "flights/graph_block", :value => operator[:flight_count], :maximum => @operators_maximum %></td>
@@ -88,12 +88,12 @@
 	<table class="flightlog">
 		<tr class="th">
 			<th class="airline_airline">Airline</th>
-			<th class="airline_iata_code">Code</th>
+			<th class="airline-code">Code</th>
 		</tr>
 	<% @airlines_with_no_flights.each do |airline| %>
 	  <tr>
 	    <td class="airline_airline"><%= image_tag(airline_icon_path(airline.iata_airline_code), :title => airline.airline_name, :class => 'airline_icon')%> <%= link_to(airline.airline_name, airline_path(airline.iata_airline_code), :title => "View airline details for #{airline.airline_name}") %></td>
-	    <td class="airline_iata_code iata_mono"><%= link_to(iata_airline_code_display(airline.iata_airline_code), airline_path(airline.iata_airline_code), :title => "View airline details for #{airline.airline_name}") %></td>
+	    <td class="airline-code code-mono"><%= link_to(iata_airline_code_display(airline.iata_airline_code), airline_path(airline.iata_airline_code), :title => "View airline details for #{airline.airline_name}") %></td>
 		</tr>
 	<% end %>
 	</table>
