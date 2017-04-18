@@ -1,12 +1,15 @@
-<div id="title_info"><%= @aircraft_family.iata_aircraft_code %></div>
+<div id="title_info"><%= [@aircraft_family.iata_aircraft_code, @aircraft_family.icao_aircraft_code].compact.join(" / ") %></div>
 
-<h1><%= @aircraft_family.full_name %></h1>
+<h1><%= @aircraft_family.full_name %><%= " Family" if @aircraft_family.is_family? %></h1>
 
 <% if @flights.any? %>
 
 	<div class="page_navigation">
 	  <ul>
 			<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@aircraft_family.full_name} aircraft") %></li>
+			<% if @aircraft_family.is_family? %>
+        <li><%= link_to("Subtypes", "#types", :title => "Subtypes of the #{@aircraft_family.full_name} family") %></li>
+      <% end %>
 			<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{@aircraft_family.full_name} flights") %></li>
 			<li><%= link_to("Operators", "#operators", :title => "Operators with #{@aircraft_family.full_name} flights") %></li>
 			<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@aircraft_family.full_name} aircraft") %></li>
@@ -27,41 +30,43 @@
   <%= map_with_region_select(@map) %>
 	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
   
-  <h2 id="types"><%= @aircraft_family.family_name %> Subtypes</h2>
-  <%= render partial: "aircraft_family_subtypes", locals: {subtypes: @subtypes} %>
-  <% if logged_in? && @subtypes_with_no_flights.any? %>
-    <table class="flightlog">
-      <thead>
-        <tr>
-          <th colspan="2">Types with no flights</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% @subtypes_with_no_flights.each do |type| %>
-        <tr>
-          <td class="aircraft_family"><%= link_to(type.family_name, aircraft_family_path(type)) %></td>
-          <td class="aircraft-code code-mono"><%= link_to(type.icao_aircraft_code, aircraft_family_path(type)) %></td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
+  <% if @aircraft_family.is_family? %>
+    <h2 id="types"><%= @aircraft_family.family_name %> Family Subtypes</h2>
+    <%= render partial: "aircraft_family_subtypes", locals: {subtypes: @subtypes} %>
+    <% if logged_in? && @subtypes_with_no_flights.any? %>
+      <table class="flightlog">
+        <thead>
+          <tr>
+            <th colspan="2">Types with no flights</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @subtypes_with_no_flights.each do |type| %>
+          <tr>
+            <td class="aircraft_family"><%= link_to(type.family_name, aircraft_family_path(type)) %></td>
+            <td class="aircraft-code code-mono"><%= link_to(type.icao_aircraft_code, aircraft_family_path(type)) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% end %>
   <% end %>
   
-	<h2 id="airlines">Airlines with <%= @aircraft_family.family_name %> Flights</h2>
+	<h2 id="airlines">Airlines with <%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Flights</h2>
 	<%= render "flights/summary_airline_table" %>
 
-	<h2 id="operators">Operators with <%= @aircraft_family.family_name %> Flights</h2>
+	<h2 id="operators">Operators with <%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Flights</h2>
 	<%= render "flights/summary_operator_table" %>
 
-	<h2 id="classes">Classes Flown on <%= @aircraft_family.family_name %> Aircraft</h2>
+	<h2 id="classes">Classes Flown on <%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Aircraft</h2>
 
 	<%= render "flights/summary_travel_class_table" %>
 
-	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @aircraft_family.family_name %> Aircraft</h2>
+	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Aircraft</h2>
 
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 
-	<h2 id="flights"><%= @aircraft_family.family_name %> Flight List</h2>
+	<h2 id="flights"><%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Flight List</h2>
 
 	<%= render "flights/flight_table" %>
 

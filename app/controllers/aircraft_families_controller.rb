@@ -41,6 +41,7 @@ class AircraftFamiliesController < ApplicationController
     
     @logo_used = true
     @title = @aircraft_family.full_name
+    @title += " Family" if @aircraft_family.is_family?
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft."
     @region = current_region(default: :world)
     
@@ -48,10 +49,18 @@ class AircraftFamiliesController < ApplicationController
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
-    add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
+    if @aircraft_family.is_family?
+      add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
+      type_or_family = "Family"
+    else
+      family = @aircraft_family.parent
+      add_breadcrumb family.full_name, aircraft_family_path(family)
+      add_breadcrumb @aircraft_family.family_name, aircraft_family_path(@aircraft_family)
+      type_or_family = "Type"
+    end
     
-    add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
-    add_admin_action view_context.link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family))
+    add_admin_action view_context.link_to("Delete Aircraft #{type_or_family}", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Edit Aircraft #{type_or_family}", edit_aircraft_family_path(@aircraft_family))
     
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
@@ -68,7 +77,7 @@ class AircraftFamiliesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "We couldnʼt find an aircraft family with an IATA code of #{params[:id]}. Instead, weʼll give you a list of aircraft families."
+      flash[:warning] = "We couldnʼt find an aircraft family with an ID of #{params[:id]}. Instead, weʼll give you a list of aircraft families."
       redirect_to aircraft_families_path
   end
   
