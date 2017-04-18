@@ -2,23 +2,17 @@ Portfolio::Application.routes.draw do
   
   root "pages#flightlog"
   
-  # Resources:
+  # Users:
   resources :users
-  resources :sessions, :only => [:new, :create, :destroy]
-  resources :flights, :except => [:new]
-  resources :airports
-  resources :airlines
-  resources :aircraft_families, path: :aircraft
-  resources :trips
-  resources :routes, :only => [:new, :show, :create, :update]
-  resources :pk_passes, :only => [:destroy]
   
   # Sessions:
+  resources :sessions, :only => [:new, :create, :destroy]
   get    "/signup" => "users#new"
   get    "/login"  => "sessions#new"
   delete "/logout" => "sessions#destroy"
   
   # Flights:
+  resources :flights, :except => [:new]
   get   "/flights/new/trip/:trip_id(/pass/:pass_id)" => "flights#new",          as: :new_flight
   get   "/flights/:id/edit/pass/:pass_id"        => "flights#edit_with_pass",   as: :edit_flight_with_pass
   post  "/flights/create-iata-icao/"             => "flights#create_iata_icao", as: :create_iata_icao
@@ -26,11 +20,20 @@ Portfolio::Application.routes.draw do
   get   "/flights/year/:year"                    => "flights#show_date_range",  as: :show_year
   
   # Trips:
+  resources :trips
   get   "/trips/:trip/section/:section"      => "trips#show_section",           as: :show_section
+  
+  # Airports:
+  resources :airports
           
   # Airlines and operators:                                                                      
+  resources :airlines  
   get   "/operators/:operator"               => "airlines#show_operator",       as: :show_operator
   get   "/operators/:operator/:fleet_number" => "airlines#show_fleet_number",   as: :show_fleet_number
+  
+  # Aircraft families and types:
+  get   "/aircraft/new(/family/:family_id)"    => "aircraft_families#new",      as: :new_aircraft_family
+  resources :aircraft_families, path: :aircraft, except: [:new]
   
   # Travel classes:                                                     
   get   "/classes"                           => "flights#index_classes"         
@@ -40,9 +43,15 @@ Portfolio::Application.routes.draw do
   get   "/tails"                             => "flights#index_tails"           
   get   "/tails/:tail_number"                => "flights#show_tail",            as: :show_tail
 
-  # Routes:
+  # Flight routes:
+  resources :routes, :only => [:new, :show, :create, :update]
   get   "/routes"                            => "routes#index"                  
   get   "/routes/edit/:airport1/:airport2"   => "routes#edit",                  as: :edit_route
+  
+  # Boarding pass import pages:
+  resources :pk_passes, :only => [:destroy]
+  get   "/boarding-pass/import(/trip/:trip_id)" => "pk_passes#index",        as: :import_boarding_passes
+  post  "/boarding-pass/import(/trip/:trip_id)" => "pk_passes#change_trip",  as: :change_boarding_pass_trip
   
   # Boarding pass parser pages:
   get   "/boarding-pass" => "flights#input_boarding_pass"
@@ -50,10 +59,6 @@ Portfolio::Application.routes.draw do
   get   "/boarding-pass/results/:data" => "flights#show_boarding_pass", as: :show_boarding_pass
   get   "/boarding-pass/json(/:callback)/:data" => "flights#show_boarding_pass_json", as:
    :show_boarding_pass_json
-  
-  # Boarding pass input pages:
-  get   "/boarding-pass/import(/trip/:trip_id)" => "pk_passes#index",        as: :import_boarding_passes
-  post  "/boarding-pass/import(/trip/:trip_id)" => "pk_passes#change_trip",  as: :change_boarding_pass_trip
   
   # Admin pages:
   get   "/admin"                         => "admin#admin"

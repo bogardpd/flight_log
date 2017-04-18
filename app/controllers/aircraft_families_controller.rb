@@ -48,19 +48,25 @@ class AircraftFamiliesController < ApplicationController
     @flights = Flight.flights_table.where(aircraft_family_id: @aircraft_family.family_and_subtype_ids)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
+    
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
+    
+    
     if @aircraft_family.is_family?
       add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
-      type_or_family = "Family"
+      add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
+      add_admin_action view_context.link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family))
+      add_admin_action view_context.link_to("Add Subtype", new_aircraft_family_path(family_id: @aircraft_family))
     else
       family = @aircraft_family.parent
       add_breadcrumb family.full_name, aircraft_family_path(family)
       add_breadcrumb @aircraft_family.family_name, aircraft_family_path(@aircraft_family)
-      type_or_family = "Type"
+      add_admin_action view_context.link_to("Delete Aircraft Type", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
+      add_admin_action view_context.link_to("Edit Aircraft Type", edit_aircraft_family_path(@aircraft_family))
     end
     
-    add_admin_action view_context.link_to("Delete Aircraft #{type_or_family}", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
-    add_admin_action view_context.link_to("Edit Aircraft #{type_or_family}", edit_aircraft_family_path(@aircraft_family))
+    
+    
     
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
@@ -82,10 +88,23 @@ class AircraftFamiliesController < ApplicationController
   end
   
   def new
-    @title = "New Aircraft Family"
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
-    add_breadcrumb 'New Aircraft Family', 'new_aircraft_family_path'
-    @aircraft_family = AircraftFamily.new
+    if params[:family_id]
+      @parent_family = AircraftFamily.find(params[:family_id])
+      @title = "New #{@parent_family.family_name} Type"
+      add_breadcrumb @parent_family.full_name, aircraft_family_path(@parent_family)
+      add_breadcrumb @title, "new_aircraft_family_path(family_id: #{@parent_family.id})"
+      @aircraft_family = AircraftFamily.new(parent_id: @parent_family.id)
+    else
+      @title = "New Aircraft Family"
+      add_breadcrumb 'New Aircraft Family', 'new_aircraft_family_path'
+      @aircraft_family = AircraftFamily.new
+    end
+    
+    
+    rescue ActiveRecord::RecordNotFound
+      flash[:warning] = "We couldnʼt find an aircraft family with an ID of #{params[:family_id]}. Instead, weʼll give you a list of aircraft families."
+      redirect_to aircraft_families_path
   end
   
   def create
@@ -130,7 +149,7 @@ class AircraftFamiliesController < ApplicationController
   private
   
     def aircraft_family_params
-      params.require(:aircraft_family).permit(:family_name, :iata_aircraft_code, :manufacturer, :category)
+      params.require(:aircraft_family).permit(:family_name, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :category, :parent_id)
     end
   
 end

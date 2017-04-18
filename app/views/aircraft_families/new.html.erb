@@ -1,6 +1,6 @@
-<% provide(:button_text, "Add Aircraft Family")%>
+<% provide(:button_text, "Add Aircraft #{@aircraft_family.is_family? ? "Family" : "Type"}") %>
 
-<h1>New Aircraft Family</h1>
+<h1><%= @title %></h1>
 
 <%= render :partial => 'form' %>
   

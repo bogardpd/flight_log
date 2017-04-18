@@ -5,7 +5,7 @@ class AircraftFamily < ApplicationRecord
   
   scope :families, -> { where(parent_id: nil) }
   scope :with_no_flights, -> { where('id not in (?)', self.uniq.joins(:flights).select("aircraft_families.id")) }
-  
+    
   def self.categories_list
     categories = Hash.new
     categories['wide_body'] = 'Wide-body'
@@ -16,11 +16,14 @@ class AircraftFamily < ApplicationRecord
   end
   
   validates :family_name, presence: true
-  validates :iata_aircraft_code, length: { is: 3 }
-  validates :icao_aircraft_code, length: { in: 2..4 }, uniqueness: true, allow_blank: true
+  validates :iata_aircraft_code, length: { is: 3 }, allow_blank: true
+  validates :icao_aircraft_code, length: { in: 2..4 }, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :manufacturer, presence: true
   validates :category, inclusion: { in: categories_list.keys, message: "%{value} is not a valid category" }, allow_nil: false, allow_blank: false
   
+  CAPS_ATTRS = %w( iata_aircraft_code icao_aircraft_code )
+  before_save :capitalize_codes
+    
   # Returns an array containing the current family's ID and the IDs of all
   # child types.
   def family_and_subtype_ids
@@ -65,5 +68,10 @@ class AircraftFamily < ApplicationRecord
     self.families.map{|f| {id: f.id, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}.sort_by{|a| [-a[:flight_count], a[:manufacturer], a[:family_name]]}
   end
   
+  protected
+  
+  def capitalize_codes
+    CAPS_ATTRS.each { |attr| self[attr] = self[attr].upcase if !self[attr].blank? }
+  end
 
 end
