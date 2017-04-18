@@ -46,7 +46,7 @@ class AircraftFamiliesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft."
     @region = current_region(default: :world)
     
-    @flights = Flight.flights_table.where(:aircraft_family_id => @aircraft_family)
+    @flights = Flight.flights_table.where(aircraft_family_id: @aircraft_family.family_and_subtype_ids)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'

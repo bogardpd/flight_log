@@ -19,6 +19,15 @@ class AircraftFamily < ApplicationRecord
   validates :manufacturer, presence: true
   validates :category, inclusion: { in: categories_list.keys, message: "%{value} is not a valid category" }, allow_nil: false, allow_blank: false
   
+  # Returns an array containing the current family's ID and the IDs of all
+  # child types.
+  def family_and_subtype_ids
+    ids = Array.new
+    ids.push(id)
+    ids.push(children.pluck(:id))
+    return ids.flatten
+  end
+  
   def format_name
     return self.family_name
   end
