@@ -80,13 +80,8 @@
   </p>
 
   <p>
-    <%= f.label :aircraft_family_id, "Aircraft Family" %> / <%= f.label :aircraft_variant, "Variant" %><br />
-    <%= f.collection_select(:aircraft_family_id, AircraftFamily.order("LOWER(family_name)"), :id, :format_name, {include_blank: true}) %>
-    <% if fields[:aircraft_variant] %>
-      <%= f.text_field :aircraft_variant, value: fields[:aircraft_variant][:pass_value], class: "autopopulated" %>
-    <% else %>
-      <%= f.text_field :aircraft_variant %>
-    <% end %>
+    <%= f.label :aircraft_family_id, "Aircraft Family/Type" %><br />
+    <%= f.select(:aircraft_family_id, grouped_options_for_select(AircraftFamily.grouped_types, flight.aircraft_family_id), {include_blank: true}) %>
   </p>
 
   <p>

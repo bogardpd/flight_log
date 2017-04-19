@@ -4,6 +4,7 @@ class AircraftFamily < ApplicationRecord
   has_many :flights
   
   scope :families, -> { where(parent_id: nil) }
+  scope :types,    -> { where.not(parent_id: nil) }
   scope :with_no_flights, -> { where('id not in (?)', self.uniq.joins(:flights).select("aircraft_families.id")) }
     
   def self.categories_list
@@ -66,6 +67,16 @@ class AircraftFamily < ApplicationRecord
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts
       
     self.families.map{|f| {id: f.id, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}.sort_by{|a| [-a[:flight_count], a[:manufacturer], a[:family_name]]}
+  end
+  
+  # Returns a nested array of families and types in a format ready for
+  # grouped_options_for_select
+  def self.grouped_types
+    types = self.types.map{|f| {family_id: f.parent_id, family_name: f.family_name, id: f.id}}
+    families = self.families.order(:manufacturer, :family_name)
+    return families.map{|f| {f.id => {family_name: f.family_name, manufacturer: f.manufacturer}}}
+      .reduce{|a,b| a.merge(b)}
+      .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]} Family"].push(([{family_name: "Unknown type of #{v[:family_name]}", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
   end
   
   protected
