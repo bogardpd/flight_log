@@ -268,7 +268,7 @@ class PKPass < ApplicationRecord
   # a number (B6) and must then be converted to ICAO (JBU).
   def self.flight_xml(airline, flight_number, departure_time)
     begin
-      client = Savon.client(wsdl: 'http://flightxml.flightaware.com/soap/FlightXML2/wsdl', basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
+      client = Savon.client(wsdl: 'https://flightxml.flightaware.com/soap/FlightXML2/wsdl', basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
       
       flight_id = client.call(:get_flight_id, message: {
         ident: [airline,flight_number].join,
@@ -312,7 +312,6 @@ class PKPass < ApplicationRecord
       fields
     }.sort_by{|h| h[:date]}
   end
- 
   
   protected
   
