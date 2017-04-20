@@ -71,20 +71,22 @@
 		</td>
   </tr>
   <% end %>
-  <% if @flight.aircraft_family %>
+  <% aircraft = @flight.aircraft_family_and_type %>
+  <% if aircraft %>
 	  <tr>
-	    <td class="flight_show_label">Aircraft</td>
+	    <td class="flight_show_label">Aircraft Family</td>
 	    <td>
-	      <div class="supplemental_code"><%= @flight.aircraft_family.iata_aircraft_code %></div>
-				<%= link_to("#{@flight.aircraft_family.manufacturer} #{@flight.aircraft_family.family_name}".html_safe, aircraft_family_path(@flight.aircraft_family), :title => "View flights on #{@flight.aircraft_family.manufacturer} #{@flight.aircraft_family.family_name} aircraft") %>
+	      <div class="supplemental_code"><%= aircraft[:family].iata_aircraft_code %></div>
+				<%= link_to("#{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family".html_safe, aircraft_family_path(aircraft[:family]), :title => "View flights on #{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family aircraft") %>
 				</td>
 	    </td>
 	  </tr>
-		<% if @flight.aircraft_variant %>
-		  <tr>
-		    <td class="flight_show_label">Variant</td>
-		    <td>
-		      <span class="flight_aircraft_variant"><%= @flight.aircraft_variant %></span>
+		<% if aircraft[:type] %>
+		  <tr class="aircraft-type">
+		    <td class="flight_show_label">Type</td>
+		    <td class="aircraft-type">
+          <div class="supplemental_code"><%= aircraft[:type].icao_aircraft_code %></div>
+		      <%= link_to(aircraft[:type].family_name, aircraft_family_path(aircraft[:type])) %>
 		    </td>
 		  </tr>
 		<% end %>

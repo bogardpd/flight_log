@@ -837,11 +837,6 @@ span.aircraft_manufacturer {
 	font-weight: 300;
 }
 
-span.flight_aircraft_variant {
-	color: $color-text-secondary;
-	font-weight: 300;
-}
-
 span.flight_city {
 	color: $color-text-secondary;
 	font-weight: 300;
@@ -891,6 +886,10 @@ table.flightlog {
   	white-space: nowrap;
   	height: 28px;
   }
+  
+  td.aircraft-type {
+    font-weight: 300;
+  }  
   
   td.label {
   	background-color: #FCFCFD;
