@@ -229,8 +229,13 @@ class PKPass < ApplicationRecord
       fields[:aircraft_family_id] = Hash.new
       fields[:aircraft_family_id][:label] = "Aircraft Type"
       if flight_xml_data[:aircraft_type]
-        fields[:aircraft_family_id][:pass_value] = AircraftFamily.find_id_from_code(flight_xml_data[:aircraft_type])
-        fields[:aircraft_family_id][:pass_text] = {code: flight_xml_data[:aircraft_type]}
+        pass_aircraft_type = AircraftFamily.find_id_from_code(flight_xml_data[:aircraft_type])
+        if pass_aircraft_type.present?
+          fields[:aircraft_family_id][:pass_value] = pass_aircraft_type
+          fields[:aircraft_family_id][:pass_text] = {code: flight_xml_data[:aircraft_type]}
+        else
+          fields[:aircraft_family_id][:lookup] = {type: :aircraft, icao_code: flight_xml_data[:aircraft_type]}
+        end
       end
       
       # Tail Number

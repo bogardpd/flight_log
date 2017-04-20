@@ -100,6 +100,10 @@ class AircraftFamily < ApplicationRecord
       .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]} Family"].push(([{family_name: "Unknown type of #{v[:family_name]}", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
   end
   
+  def self.family_select_options
+    self.families.pluck(:manufacturer, :family_name, :id).sort_by{|af| [af[0].downcase,af[1].downcase]}.map{|af| [[af[0],af[1]].join(" "), af[2]]}
+  end
+  
   # Accepts a date range, and returns all aircraft families that had their
   # first fligt in this date range.
   def self.new_in_date_range(date_range, logged_in=false)
