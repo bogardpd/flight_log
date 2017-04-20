@@ -55,7 +55,16 @@ class AircraftFamily < ApplicationRecord
   def is_family?
     return parent_id.nil?
   end
-    
+  
+  # Returns the type ID for a given ICAO or IATA code
+  def self.find_id_from_code(airline_code)
+    from_icao = self.find_by(icao_aircraft_code: airline_code)
+    return from_icao.id if from_icao
+    from_iata = self.find_by(iata_aircraft_code: airline_code)
+    return from_iata.id if from_iata
+    return nil
+  end
+  
   # Returns an array of aircraft families (only those without parents), with a
   # hash for each family containing the aircraft manufacturer, name, IATA code,
   # and number of flights on that aircraft, sorted by number of flights

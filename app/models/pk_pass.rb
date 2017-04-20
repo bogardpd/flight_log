@@ -173,6 +173,7 @@ class PKPass < ApplicationRecord
       fields[:codeshare_airline_id][:current_value] = flight.codeshare_airline.id
       fields[:codeshare_airline_id][:current_text] = {text: flight.codeshare_airline.airline_name, code: flight.codeshare_airline.iata_airline_code}
     end
+    
     if pass_data[:codeshare_airline_iata]
       pass_airline = Airline.find_by(iata_airline_code: pass_data[:codeshare_airline_iata])
       if pass_airline
@@ -224,15 +225,12 @@ class PKPass < ApplicationRecord
         end
       end
       
-      # Aircraft Family
-      # TODO: Write lookup from aircraft variant to aircraft family
-      
-      # Aircraft Variant
-      fields[:aircraft_variant] = Hash.new
-      fields[:aircraft_variant][:label] = "Aircraft Variant"
+      # Aircraft Family/Type
+      fields[:aircraft_family_id] = Hash.new
+      fields[:aircraft_family_id][:label] = "Aircraft Type"
       if flight_xml_data[:aircraft_type]
-        fields[:aircraft_variant][:pass_value] = flight_xml_data[:aircraft_type]
-        fields[:aircraft_variant][:pass_text] = {code: flight_xml_data[:aircraft_type]}
+        fields[:aircraft_family_id][:pass_value] = AircraftFamily.find_id_from_code(flight_xml_data[:aircraft_type])
+        fields[:aircraft_family_id][:pass_text] = {code: flight_xml_data[:aircraft_type]}
       end
       
       # Tail Number
