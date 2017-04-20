@@ -156,7 +156,10 @@ class FlightsController < ApplicationController
       
     # Create comparitive lists of airlines and classes:
     airline_frequency(@flights)
-    aircraft_frequency(@flights)
+    
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(:departure_date => @date_range))
+    @new_aircraft_families = AircraftFamily.new_in_date_range(@date_range, logged_in?)
+    
     class_frequency(@flights)
     
     # Create superlatives:
@@ -229,7 +232,7 @@ class FlightsController < ApplicationController
     # Create comparitive lists of airlines, operators, and aircraft:
     airline_frequency(@flights)
     operator_frequency(@flights)
-    aircraft_frequency(@flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(:travel_class => params[:travel_class]))
 
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

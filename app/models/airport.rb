@@ -33,15 +33,7 @@ class Airport < ApplicationRecord
     return airline_frequency_hash
   end
   
-  def aircraft_frequency(logged_in)
-      # Returns a hash of the aircraft families of the flights using this airport, and how many flights involving this airport each aircraft family has.
-      flights = self.all_flights(logged_in).where('aircraft_family IS NOT NULL')
-      aircraft_frequency_hash = Hash.new(0) # All aircraft families start with 0 flights
-      flights.each do |flight|
-        aircraft_frequency_hash[flight.aircraft_family] += 1
-      end
-      return aircraft_frequency_hash
-  end
+  
   
   def country_flag_path
     if self.country == nil

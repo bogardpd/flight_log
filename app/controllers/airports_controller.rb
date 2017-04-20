@@ -155,7 +155,7 @@ class AirportsController < ApplicationController
     # Create comparitive lists of airlines, aircraft, and classes:
     airline_frequency(@flights)
     operator_frequency(@flights)
-    aircraft_frequency(@flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id))
     class_frequency(@flights)
     
     # Create maps:

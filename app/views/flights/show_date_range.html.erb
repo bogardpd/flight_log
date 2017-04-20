@@ -62,58 +62,10 @@
 	<p class="note new">* Airport first visited in <%= @in_text %></p>
 <% end %>
 
-<a name="aircraft"></a>
-<h2>Aircraft Flown <%= @date_range_text %></h2>
 
-<% if @aircraft_frequency_sorted.count == 0 %>
+<h2 id="aircraft">Aircraft Flown <%= @date_range_text %></h2>
+<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true, new_aircraft_families: @new_aircraft_families, legend_range: @in_text} %>
 
-<p>All flights have unknown aircraft families.</p>
-
-<% else %>
-
-<table class="flightlog">
-  <tr class="th">
-    <th class="counter">#</th>
-		<th class="aircraft_family">Aircraft Family</th>
-		<th class="aircraft-code">Code</th>
-    <th class="aircraft_flights">Flights</th>
-  </tr>
-<% previous_count = nil %>
-<% @aircraft_frequency_sorted.each_with_index do |(aircraft, frequency), index| %>
-  <% unless aircraft.nil? %>
-  <tr>
-		
-    <% if @date_range.include?(Flight.aircraft_first_flight(aircraft)) %>
-			<td class="counter new"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
-			<% @new_aircraft_flag = true %>
-			<td class="aircraft_family new"><%= link_to("<span class=\"aircraft_manufacturer\">#{@aircraft_family_manufacturers[aircraft]}</span> #{@aircraft_family_names[aircraft]}*".html_safe, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
-			<td class="aircraft-code code-mono new"><%= link_to(@aircraft_family_iata_codes[aircraft], aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
-			<td class="aircraft_flights new"><%= render "graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
-		<% else %>
-			<td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
-			<td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{@aircraft_family_manufacturers[aircraft]}</span> #{@aircraft_family_names[aircraft]}".html_safe, aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
-			<td class="aircraft-code code-mono"><%= link_to(@aircraft_family_iata_codes[aircraft], aircraft_family_path(aircraft), :title => "View all flights on #{@aircraft_family_manufacturers[aircraft]} #{@aircraft_family_names[aircraft]} aircraft") %></td>
-			<td class="aircraft_flights"><%= render "graph_block", :value => frequency, :maximum => @aircraft_frequency_maximum %></td>
-		<% end %>
-    
-  </tr>
-		<% previous_count = frequency %>
-  <% end %>
-<% end %>
-  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@aircraft_frequency_sorted.count, 'aircraft family') %></td></tr>
-</table>
-
-<% if @unknown_aircraft_flights > 1 %>
-<p class="center"><%= @unknown_aircraft_flights %> flights with unknown aircraft families are not included in this table.</p>
-<% elsif @unknown_aircraft_flights > 0 %>
-<p class="center">1 flight with an unknown aircraft family is not included in this table.</p>
-<% end %>
-
-<% if @new_aircraft_flag %>
-	<p class="note new">* Aircraft family first flown in <%= @in_text %></p>
-<% end %>
-
-<% end %>
 
 <a name="airlines"></a>
 <h2>Airlines Flown <%= @date_range_text %></h2>

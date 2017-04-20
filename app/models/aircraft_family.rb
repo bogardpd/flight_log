@@ -55,18 +55,30 @@ class AircraftFamily < ApplicationRecord
   def is_family?
     return parent_id.nil?
   end
-  
+    
   # Returns an array of aircraft families (only those without parents), with a
   # hash for each family containing the aircraft manufacturer, name, IATA code,
   # and number of flights on that aircraft, sorted by number of flights
-  # descending. Child types are included with the parent family count.
-  def self.flight_count(logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
+  # descending. Child types are included with the parent family count. If a
+  # collection of flights is provided, the count will be conducted on that
+  # collection; otherwise, it will be conducted on all flights.
+  def self.flight_count(logged_in=false, flights: nil)
+    flights ||= Flight.all
+    flights = flights.visitor unless logged_in
     family_count = flights.joins(:aircraft_family).group(:aircraft_family_id, :parent_id).count
       .map{|k,v| {(k[1]||k[0]) => v}} # Create array of hashes with k as parent id or family id and v as count
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts
+    family_count ||= Array.new
       
-    self.families.map{|f| {id: f.id, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}.sort_by{|a| [-a[:flight_count], a[:manufacturer], a[:family_name]]}
+    counts = self.families.map{|f| {id: f.id, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}
+      .reject{|a| a[:flight_count] == 0}
+      .sort_by{|a| [-a[:flight_count], a[:manufacturer].downcase, a[:family_name].downcase]}
+    
+    family_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
+    if flights.count > family_sum
+      counts.push({id: nil, flight_count: flights.count - family_sum})
+    end  
+    return counts
   end
   
   # Returns a nested array of families and types in a format ready for
@@ -77,6 +89,16 @@ class AircraftFamily < ApplicationRecord
     return families.map{|f| {f.id => {family_name: f.family_name, manufacturer: f.manufacturer}}}
       .reduce{|a,b| a.merge(b)}
       .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]} Family"].push(([{family_name: "Unknown type of #{v[:family_name]}", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
+  end
+  
+  # Accepts a date range, and returns all aircraft families that had their
+  # first fligt in this date range.
+  def self.new_in_date_range(date_range, logged_in=false)
+    flights = logged_in ? Flight.all : Flight.visitor
+    first_flights = flights.joins(:aircraft_family).select(:aircraft_family_id, :parent_id, :departure_date).where.not(aircraft_family_id: nil).group(:aircraft_family_id, :parent_id).minimum(:departure_date)
+    family_first_flights = first_flights.map{|k,v| {(k[1]||k[0]) => v}}
+      .reduce{|a,b| a.merge(b){|k,oldval,newval| [oldval,newval].min}}
+    return family_first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
   end
   
   protected

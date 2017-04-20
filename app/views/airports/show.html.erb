@@ -76,8 +76,7 @@
 
 	<a name="aircraft"></a>
 	<h2>Aircraft Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
-
-	<%= render "flights/summary_aircraft_table" %>
+	<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
 	<a name="classes"></a>
 	<h2>Classes Flown to or from <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>

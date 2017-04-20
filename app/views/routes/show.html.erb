@@ -25,24 +25,19 @@
 </p>
 <% end %>
 
-<a name="airlines"></a>
-<h2>Airlines Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
+<h2 id="airlines">Airlines Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
 <%= render "flights/summary_airline_table" %>
 
-<a name="operators"></a>
-<h2>Operators Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
+<h2 id="operators">Operators Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
 <%= render "flights/summary_operator_table" %>
 
-<a name="aircraft"></a>
-<h2>Aircraft Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
-<%= render "flights/summary_aircraft_table" %>
+<h2 id="aircraft">Aircraft Using <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
+<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
-<a name="classes"></a>
-<h2>Classes Flown on <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
+<h2 id="classes">Classes Flown on <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
 <%= render "flights/summary_travel_class_table" %>
 
-<a name="sections"></a>
-<h2>Trip Sections with a <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight</h2>
+<h2 id="sections">Trip Sections with a <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight</h2>
 
 <p>This map shows the flights of all of my trip sections with a segment from <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> to <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> or from <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> to <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym>.</p>
 
@@ -50,8 +45,7 @@
 
 <%= render 'trips/section_table' %>
 
-<a name="trips"></a>
-<h2>Trips with a <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight</h2>
+<h2 id="trips">Trips with a <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight</h2>
 
 <p>This map shows the flights of all of my trips with a segment from from <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> to <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> or from <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> to <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym>.</p>
 

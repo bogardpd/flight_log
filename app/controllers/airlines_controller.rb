@@ -75,7 +75,7 @@ class AirlinesController < ApplicationController
     # Create comparitive lists of aircraft and classes:
     airline_frequency(@flights) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
     operator_frequency(@flights)
-    aircraft_frequency(@flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(airline_id: @airline.id))
     class_frequency(@flights)
     
     # Create superlatives:
@@ -110,7 +110,7 @@ class AirlinesController < ApplicationController
     
     # Create comparitive lists of airlines, aircraft and classes:
     airline_frequency(@flights)
-    aircraft_frequency(@flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(operator_id: @operator.id))
     class_frequency(@flights)
     
     # Create superlatives:
@@ -153,7 +153,7 @@ class AirlinesController < ApplicationController
     
     # Create comparitive lists of airlines, aircraft and classes:
     airline_frequency(@flights)
-    aircraft_frequency(@flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(:operator_id => @operator.id, :fleet_number => @fleet_number))
     class_frequency(@flights)
     
     # Create superlatives:

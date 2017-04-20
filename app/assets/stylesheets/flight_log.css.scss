@@ -772,8 +772,9 @@ p.home_link {
 	margin-bottom: 20px;
 }
 
-p.new {
-	text-shadow: 0 0 3px #FFBB56;
+p.new, p.new-legend {
+	text-align: center;
+  text-shadow: 0 0 3px #FFBB56;
 }
 
 p.note {
@@ -897,6 +898,16 @@ table.flightlog {
   	font-weight: 600;
   	text-align: right;
   	vertical-align: top;
+  }
+  
+  td.new {
+  	background-color: #FFF5E6;
+  }
+  
+  tr.new {
+    td {
+      background-color: #FFF5E6;
+    }
   }
   
   th {
@@ -1140,9 +1151,7 @@ td.flight_trip_title {
 }
 
 
-td.new {
-	background-color: #FFF5E6;
-}
+
 
 td.route_distance {
 	text-align: right;

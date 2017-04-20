@@ -114,7 +114,7 @@ class RoutesController < ApplicationController
     # Create comparitive lists of airlines, aircraft, and classes:
     airline_frequency(@flights)
     operator_frequency(@flights)
-    aircraft_frequency(@flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]}))
     class_frequency(@flights)
     
     # Create flight arrays for maps of trips and sections:

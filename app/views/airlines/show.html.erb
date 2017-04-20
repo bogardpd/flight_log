@@ -25,24 +25,19 @@
   <%= map_with_region_select(@map) %>
 	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 	
-	<a name="aircraft"></a>
-	<h2>Aircraft Flown on <%= @airline.airline_name %></h2>
-	<%= render "flights/summary_aircraft_table" %>
+	<h2 id="aircraft">Aircraft Flown on <%= @airline.airline_name %></h2>
+	<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 	
-	<a name="operators"></a>
-	<h2>Operators for <%= @airline.airline_name %> Flights</h2>
+	<h2 id="operators">Operators for <%= @airline.airline_name %> Flights</h2>
 	<%= render "flights/summary_operator_table" %>
 
-	<a name="classes"></a>
-	<h2>Classes Flown on <%= @airline.airline_name %></h2>
+	<h2 id="classes">Classes Flown on <%= @airline.airline_name %></h2>
 	<%= render "flights/summary_travel_class_table" %>
 
-	<a name="superlatives"></a>
-	<h2>Longest and Shortest Routes Flown on <%= @airline.airline_name %></h2>
+	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @airline.airline_name %></h2>
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 	
-	<a name="flights"></a>
-	<h2><%= @airline.airline_name %> Flight List</h2>
+	<h2 id="flights"><%= @airline.airline_name %> Flight List</h2>
 	<%= render "flights/flight_table" %>
 
 <% end %>
