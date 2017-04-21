@@ -27,13 +27,9 @@ class PKPass < ApplicationRecord
   # this particular pass
   def flight_xml
     pass_data = form_values
-    #TODO: Use real pass data
-    #airline = Airline.convert_iata_to_icao(pass_data[:airline_iata])
-    #flight_number = pass_data[:flight_number]
-    #departure_time = pass_data[:departure_utc]
-    airline = "AAL"
-    flight_number = "100"
-    departure_time = Time.parse("2017-04-13 18:05 -0400")
+    airline = Airline.convert_iata_to_icao(pass_data[:airline_iata])
+    flight_number = pass_data[:flight_number]
+    departure_time = pass_data[:departure_utc]
     return nil if airline.nil? || flight_number.nil? || departure_time.nil?
     return PKPass.flight_xml(airline, flight_number, departure_time)
   end
@@ -210,53 +206,57 @@ class PKPass < ApplicationRecord
     
     # FlightXML fields:
     if include_flightxml
-      flight_xml_data = {:aircraft_type=>"B77W", :tail_number=>"N733AR", :operator=>"AAL", :codeshares=>["BAW1511", "ELY8051", "FIN4012", "GFA6654", "IBE4218", "QTR5290"]}
-      #flight_xml_data = flight_xml
-      # TODO: Change the above to use flight_xml again
+      flight_xml_data = flight_xml
       
-      # Codeshare Flight Number
-      if pass_data[:codeshare_airline_iata]
-        codeshare_flight = flight_xml_data[:codeshares].select{|cs| cs[0,3] == Airline.convert_iata_to_icao(pass_data[:codeshare_airline_iata])}.first
-        if codeshare_flight
-          fields[:codeshare_flight_number] = Hash.new
-          fields[:codeshare_flight_number][:label] = "Codeshare Flight Number"
-          fields[:codeshare_flight_number][:pass_value] = codeshare_flight[3..-1]
-          fields[:codeshare_flight_number][:pass_text] = {text: codeshare_flight[3..-1]}
+      if flight_xml
+      
+        # Codeshare Flight Number
+        if pass_data[:codeshare_airline_iata]
+          codeshare_flight = flight_xml_data[:codeshares].select{|cs| cs[0,3] == Airline.convert_iata_to_icao(pass_data[:codeshare_airline_iata])}.first
+          if codeshare_flight
+            fields[:codeshare_flight_number] = Hash.new
+            fields[:codeshare_flight_number][:label] = "Codeshare Flight Number"
+            fields[:codeshare_flight_number][:pass_value] = codeshare_flight[3..-1]
+            fields[:codeshare_flight_number][:pass_text] = {text: codeshare_flight[3..-1]}
+          end
         end
-      end
       
-      # Aircraft Family/Type
-      fields[:aircraft_family_id] = Hash.new
-      fields[:aircraft_family_id][:label] = "Aircraft Type"
-      if flight_xml_data[:aircraft_type]
-        pass_aircraft_type = AircraftFamily.find_id_from_code(flight_xml_data[:aircraft_type])
-        if pass_aircraft_type.present?
-          fields[:aircraft_family_id][:pass_value] = pass_aircraft_type
-          fields[:aircraft_family_id][:pass_text] = {code: flight_xml_data[:aircraft_type]}
-        else
-          fields[:aircraft_family_id][:lookup] = {type: :aircraft, icao_code: flight_xml_data[:aircraft_type]}
+        # Aircraft Family/Type
+        fields[:aircraft_family_id] = Hash.new
+        fields[:aircraft_family_id][:label] = "Aircraft Type"
+        if flight_xml_data[:aircraft_type]
+          pass_aircraft_type = AircraftFamily.find_id_from_code(flight_xml_data[:aircraft_type])
+          if pass_aircraft_type.present?
+            fields[:aircraft_family_id][:pass_value] = pass_aircraft_type
+            fields[:aircraft_family_id][:pass_text] = {code: flight_xml_data[:aircraft_type]}
+          else
+            fields[:aircraft_family_id][:lookup] = {type: :aircraft, icao_code: flight_xml_data[:aircraft_type]}
+          end
         end
-      end
       
-      # Tail Number
-      fields[:tail_number] = Hash.new
-      fields[:tail_number][:label] = "Tail Number"
-      if flight_xml_data[:tail_number]
-        fields[:tail_number][:pass_value] = flight_xml_data[:tail_number]
-        fields[:tail_number][:pass_text] = {text: flight_xml_data[:tail_number]}
-      end
-      
-      # Operator
-      fields[:operator_id] = Hash.new
-      fields[:operator_id][:label] = "Operator"
-      if flight_xml_data[:operator]
-        pass_operator = Airline.find_by(icao_airline_code: flight_xml_data[:operator])
-        if pass_operator.present?
-          fields[:operator_id][:pass_value] = pass_operator.id
-          fields[:operator_id][:pass_text] = {text: pass_operator.airline_name, code: flight_xml_data[:operator]}
-        else
-          fields[:operator_id][:lookup] = {type: :airline, icao_code: flight_xml_data[:operator]}
+        # Tail Number
+        fields[:tail_number] = Hash.new
+        fields[:tail_number][:label] = "Tail Number"
+        if flight_xml_data[:tail_number]
+          fields[:tail_number][:pass_value] = flight_xml_data[:tail_number]
+          fields[:tail_number][:pass_text] = {text: flight_xml_data[:tail_number]}
         end
+      
+        # Operator
+        fields[:operator_id] = Hash.new
+        fields[:operator_id][:label] = "Operator"
+        if flight_xml_data[:operator]
+          pass_operator = Airline.find_by(icao_airline_code: flight_xml_data[:operator])
+          if pass_operator.present?
+            fields[:operator_id][:pass_value] = pass_operator.id
+            fields[:operator_id][:pass_text] = {text: pass_operator.airline_name, code: flight_xml_data[:operator]}
+          else
+            fields[:operator_id][:lookup] = {type: :airline, icao_code: flight_xml_data[:operator]}
+          end
+        end
+      else
+        fields[:error] = Hash.new
+        fields[:error][:label] = "Could not find flight data on FlightAware; you will have to manually enter some fields. (Searched for #{Airline.convert_iata_to_icao(pass_data[:airline_iata])} #{pass_data[:flight_number]} #{pass_data[:departure_utc]})"
       end
       
     end
