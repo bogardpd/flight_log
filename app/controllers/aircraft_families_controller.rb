@@ -10,6 +10,7 @@ class AircraftFamiliesController < ApplicationController
     
     flight_count = AircraftFamily.flight_count(logged_in?)
     @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
+    @aircraft_families.reject!{|af| af[:id].nil? }
     
     if @aircraft_families.any?
             
