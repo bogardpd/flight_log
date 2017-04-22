@@ -30,8 +30,8 @@ class Flight < ApplicationRecord
     return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
   end
     
-  NULL_ATTRS = %w( flight_number aircraft_variant aircraft_name tail_number travel_class comment fleet_number boarding_pass_data )
-  STRIP_ATTRS = %w( operator fleet_number aircraft_family aircraft_variant aircraft_name tail_number )
+  NULL_ATTRS = %w( flight_number aircraft_name tail_number travel_class comment fleet_number boarding_pass_data )
+  STRIP_ATTRS = %w( operator fleet_number aircraft_family aircraft_name tail_number )
   
   before_save :nil_if_blank
   before_save :strip_blanks

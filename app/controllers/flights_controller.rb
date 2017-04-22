@@ -537,7 +537,7 @@ class FlightsController < ApplicationController
   private
   
     def flight_params
-      params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :aircraft_variant, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section, :pass_serial_number)
+      params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section, :pass_serial_number)
     end
       
     # Accepts the output of PKPass.updated_values, and detects any airport or
