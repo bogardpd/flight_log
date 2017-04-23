@@ -257,31 +257,10 @@ class FlightsController < ApplicationController
     @tail_numbers_table = Array.new
     
     if @flight_tail_numbers.any?
-    
-      # Create tail number count array    
-      tails_count = Array.new
-      @flight_tail_numbers.each do |tail_number, count| 
-        tails_count.push({:tail_number => tail_number, :count => count})
-      end
-    
-      # Create details array, using the latest flight for each tail number.
-      tails_airline_name_hash = Hash.new
-      tails_airline_iata_hash = Hash.new
-      tails_aircraft_hash = Hash.new
-      tails_manufacturer_hash = Hash.new
-      tails_aircraft_name_hash = Hash.new
-      @flight_tail_details.each do |tail|
-        tails_airline_name_hash[tail.tail_number] = tail.airline_name
-        tails_airline_iata_hash[tail.tail_number] = tail.iata_airline_code
-        tails_aircraft_hash[tail.tail_number] = tail.iata_aircraft_code
-        tails_manufacturer_hash[tail.tail_number] = tail.manufacturer
-        tails_aircraft_name_hash[tail.tail_number] = tail.family_name
-      end
-    
-      # Create table array
-      tails_count.each do |tail|
-        @tail_numbers_table.push({:tail_number => tail[:tail_number], :count => tail[:count], :aircraft => tails_aircraft_hash[tail[:tail_number]] || "", :airline_name => tails_airline_name_hash[tail[:tail_number]] || "", airline_iata: tails_airline_iata_hash[tail[:tail_number]] || "", manufacturer: tails_manufacturer_hash[tail[:tail_number]] || "", family_name: tails_aircraft_name_hash[tail[:tail_number]] || ""})
-      end
+      
+      @tail_numbers_table = Flight.tail_number_table(logged_in?)
+      
+
     
       # Find maxima for graph scaling:
       @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
