@@ -20,7 +20,7 @@
 <% else %>
 
 <table class="flightlog">
-  <tr class="th">
+  <tr>
     <th class="counter">#</th>
 		<th class="airline_airline"><%= sort_link("Airline", :airline, "airline", :asc, "airlines") %></th>
 		<th class="airline-code"><%= sort_link("Code", :code, "code", :asc, "airlines") %></th>
@@ -51,7 +51,7 @@
 <% if @operators.any? %>
 
 <table class="flightlog">
-  <tr class="th">
+  <tr>
     <th class="counter">#</th>
 		<th class="airline_airline"><%= sort_link("Operator", :airline, "airline", :asc, "operators") %></th>
 		<th class="airline_code"><%= sort_link("Code", :code, "code", :asc, "operators") %></th>
@@ -86,7 +86,7 @@
 <% if (logged_in? && @airlines_with_no_flights.any?) %>
 	<h2>Airlines/Operators with No Flights</h2>
 	<table class="flightlog">
-		<tr class="th">
+		<tr>
 			<th class="airline_airline">Airline</th>
 			<th class="airline-code">Code</th>
 		</tr>

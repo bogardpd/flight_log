@@ -36,7 +36,7 @@
 	<p>These are the airports with which Iʼve had a direct flight from or to <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
 
 	<table class="flightlog">
-	  <tr class="th">
+	  <tr>
 	    <th class="counter">#</th>
 			<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports") %></th>
 	    <th class="airport-code"><%= sort_link("Code", :code, "code", :asc, "airports") %></th>
