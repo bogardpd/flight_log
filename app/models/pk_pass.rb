@@ -69,7 +69,7 @@ class PKPass < ApplicationRecord
       rescue Errno::ENOENT
       end
     end
-    output.store(:flight_number, data.dig(:repeated, 0, :mandatory, 43, :raw)&.strip)
+    output.store(:flight_number, data.dig(:repeated, 0, :mandatory, 43, :raw)&.strip&.gsub(/^0*/, ""))
     output.store(:boarding_pass_data, barcode)
     return output
   end
