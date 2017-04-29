@@ -10,6 +10,7 @@
 
 | Version | Date |
 | --- | --- |
+| [2.1: Import Boarding Passes from Digital Boarding Passes](http://onehundredairports.com/2017/04/09/flight-log-version-2-1-import-flights-from-digital-boarding-passes) | 29 Apr 2017 |
 | [2.0: Flight Historian](http://onehundredairports.com/2016/01/31/flight-log-version-2-0-flight-historian/) | 31 Jan 2016 |
 | [1.3: Distances and Annual Summaries](http://onehundredairports.com/2015/02/14/flight-log-version-1-3-distances-and-annual-summaries/) | 14 Feb 2015 |
 | [1.2: Operators and Codeshares](http://onehundredairports.com/2014/10/29/flight-log-version-1-2-operators-and-codeshares) | 29 Oct 2014 |
