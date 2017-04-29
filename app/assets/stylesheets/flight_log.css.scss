@@ -1,11 +1,20 @@
 $font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
 $font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 
-/* base color: #9EC7F3 hsl(211, 78%, 79%) */
+$color-base: #9EC7F3; /* hsl(211, 78%, 79%) */
 
-$color-table-background:          hsl(240,  20%,  99%);
-$color-table-background-dark:     hsl(240,  20%,  90%);
-$color-table-border:              rgb(190,  212,  234);
+$color-background-page:           #E6EAEF;
+$color-border-page:               #D7E2ED;
+
+$color-background-table:          hsl(240,  20%,  99%);
+$color-border-table:              rgb(190,  212,  234);
+
+$color-background-banner-primary: #5D94D7;
+$color-background-banner-secondary: #4892EB;
+
+$color-background-menu-primary:   #1F497D;
+$color-background-menu-secondary: #0F478C;
+
 $color-text-primary:              hsl(210,  20%,  16%);
 $color-text-secondary:            hsl(210,  20%,  40%);
 $color-text-link:                 #1E90FF;
@@ -21,6 +30,12 @@ $color-border-status-bad:         hsl(  0, 100%, 100%);
 $color-border-status-good:        hsl(180, 100%, 100%);
 $color-background-new:            lighten(yellow, 35%);
 
+$color-background-message-default: hsl(0, 0%, 85%);
+$color-background-info: hsl(215, 80%, 85%);
+$color-background-success: hsl(105, 80%, 85%);
+$color-background-warning: hsl(45, 80%, 85%);
+$color-background-error: hsl(0, 80%, 85%);
+
 $margin-icon-to-text: 0.5em;
 $margin-paragraph: 10px;
 
@@ -29,7 +44,7 @@ $letter-spacing-status: 4px;
 $line-height-raw-bcbp: 140%;
 
 body {
-	background: #E6EAEF;
+	background: $color-background-page;
 	font-family: $font-stack-sans-serif;
 	color: $color-text-primary;
 	font-size: 18px;
@@ -45,59 +60,43 @@ body {
 	font-feature-settings: "liga", "dlig";
 }
 
-#footer {
-	background: #E6EAEF;
-	color: #435466;
-	text-align: center;
-	font-size: 90%;
+#header {
+	height: 46px;
+	background-color: $color-background-banner-primary;	
+	background-image: linear-gradient(to bottom, $color-background-banner-secondary, $color-background-banner-primary);
+	color: #FFFFFF;
 }
 
-#top_banner {
+#top-banner {
 	position: absolute;
 	z-index: -1;
 	width: 100%;
 	height: 46px;
-	background: #5D94D7;
-	background-image: linear-gradient(to bottom, #4892EB, #5D94D7);
+	background: $color-background-banner-primary;
+	background-image: linear-gradient(to bottom, $color-background-banner-secondary, $color-background-banner-primary);
 	margin: 0;
 }
 
-#menu_banner {
+#portfolio-link {
+	float: right;
+	text-align: right;
+	padding: 12px 5px 5px 5px;
+	font-weight: 300;
+  a {
+    color: #FFFFFF;
+  }
+}
+
+#menu-banner {
 	position: absolute;
 	top: 46px;
 	z-index: -1;
 	width: 100%;
 	height: 36px;
-	background: #1F497D;
-	background-image: linear-gradient(to bottom, #0F478C, #1F497D);
+	background: $color-background-menu-primary;
+	background-image: linear-gradient(to bottom, $color-background-menu-secondary, $color-background-menu-primary);
 	border-top: 1px solid #376092;
 	border-bottom: 1px solid #376092;
-}
-
-#container {
-	width: 800px;
-	margin-left: auto;
-	margin-right: auto;
-	background: #FFFFFF;
-	padding: 0;
-}
-
-#header {
-	height: 46px;
-	background-color: #5D94D7;	
-	background-image: linear-gradient(to bottom, #4892EB, #5D94D7);
-	color: #FFFFFF;
-}
-
-#portfolio_link {
-	float: right;
-	text-align: right;
-	padding: 12px 5px 5px 5px;
-	font-weight: 300;
-}
-
-#portfolio_link a {
-	color: #FFFFFF;
 }
 
 #menu {
@@ -106,8 +105,8 @@ body {
 	padding: 0 2px;
 	border-top: 1px solid #376092;
 	border-bottom: 1px solid #376092;
-	background-color: #1F497D;
-	background-image: linear-gradient(to bottom, #0F478C, #1F497D);
+	background-color: $color-background-menu-primary;
+	background-image: linear-gradient(to bottom, $color-background-menu-secondary, $color-background-menu-primary);
 	color: #FFFFFF;
 	
 	ul {
@@ -158,6 +157,18 @@ body {
 			color: $color-text-primary;
 		}
 	}
+  
+  div.menu-home {
+  	display: block;
+  	float: left;
+  	height: 100%;
+  }
+
+  div.menu-main {
+  	display: block;
+  	float: right;
+  	height: 100%;
+  }
 	
 	li.active {
 		background-color: #FFFFFF;
@@ -165,56 +176,38 @@ body {
 	}
 }
 
-#menu_home {
-	display: block;
-	float: left;
-	height: 100%;
-}
-
-#menu_main {
-	display: block;
-	float: right;
-	height: 100%;
-}
-
-
 #breadcrumbs {
 	-webkit-text-size-adjust:100%;
 	padding: 2px 10px;
-	border-left: 1px solid #D7E2ED;
-	border-right: 1px solid #D7E2ED;
-	border-bottom: 1px solid #D7E2ED;
+	border-left: 1px solid $color-border-page;
+	border-right: 1px solid $color-border-page;
+	border-bottom: 1px solid $color-border-page;
 	font-weight: 300;
 }
 
-#body {
-	padding: 10px;
-	border-left: 1px solid #D7E2ED;
-	border-right: 1px solid #D7E2ED;
-	border-bottom: 1px solid #D7E2ED;
-}
-
-#login_info {
-	padding: 2px 10px;
-	border-left: 1px solid #D7E2ED;
-	border-right: 1px solid #D7E2ED;
-	border-bottom: 1px solid #D7E2ED;
-	background-color: #EEFFEE;
-	color: #336633;
-}
-
-#admin_actions {
+#admin-actions {
 	float: right;
 	text-align: right;
 	font-size: 100%;
 	white-space: nowrap;
 }
 
-#chart_div {
-	text-align: center;
+#container {
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	background: #FFFFFF;
+	padding: 0;
 }
 
-#title_info {
+#body {
+	padding: 10px;
+	border-left: 1px solid $color-border-page;
+	border-right: 1px solid $color-border-page;
+	border-bottom: 1px solid $color-border-page;
+}
+
+#title-info {
 	float: right;
 	padding-top: 6px;
 	font-weight: 300;
@@ -225,7 +218,20 @@ body {
 	}
 }
 
+#footer {
+	background: $color-background-page;
+	color: #435466;
+	text-align: center;
+	font-size: 90%;
+}
 
+#user-footer {
+	padding: 2px 10px;
+	border-left: 1px solid $color-border-page;
+	border-right: 1px solid $color-border-page;
+	border-bottom: 1px solid $color-border-page;
+	background-color: lighten($color-background-info, 10%);
+}
 
 
 /* Generic fields */
@@ -258,8 +264,6 @@ body {
 }
 
 
-
-
 /* Boarding Passes */
 div.boarding-pass-fields {
   
@@ -274,9 +278,9 @@ div.boarding-pass-fields {
     	word-wrap: break-word;
     }
     span {
-      border: 1px solid $color-table-background;
-      background-color: $color-table-background-dark;
-      text-shadow: 1px 1px darken($color-table-background-dark, 10%);
+      border: 1px solid $color-background-table;
+      background-color: darken($color-background-table, 10%);
+      text-shadow: 1px 1px darken($color-background-table, 20%);
       padding: 0 3px;
     }
     span.invalid {
@@ -388,27 +392,8 @@ a:hover {
 	color: $color-text-link-hover;
 }
 
-a.home_link {
-	padding: 5px 10px;
-	box-shadow: 1px 1px 2px #385D8A;
-	background-color: #5D94D7;
-	border: 1px solid #376092;
-	color: #FFFFFF;
-	font-size: 150%;
-	text-decoration: none;
-}
-
-a.home_link:hover {
-	background-color: #4892EB;
-	text-decoration: none;
-}
-
-a.home_link:visited {
-	color: #FFFFFF;
-}
-
 a.sort {
-	color: #1F497D;
+	color: $color-background-menu-primary;
 }
 
 a.sort:hover {
@@ -438,33 +423,12 @@ div.bcbp_code {
 	width: 18em;
 }
 
-div.code {
-	background-color: $color-table-background;
-	border: 1px solid $color-table-border;
-	margin: $margin-paragraph;
-	padding: 10px;
-	line-height: 120%;
-}
-
 div.column {
 	display: inline-block;
 }
 
-div.cover {
-	float: right;
-	margin-left: 10px;
-	margin-right: 10px;
-}
-
-div.error {
-	background: #FFDDDD;
-	border: 1px solid #DD9999;
-	padding: 5px 10px;
-}
-
 /* Message banners */
 
-$color-background-message-default: hsl(0, 0%, 85%);
 div.message {
   margin: 8px 0;
   padding:  5px 10px;
@@ -483,25 +447,21 @@ div.message {
   }
 }
 
-$color-background-info: hsl(215, 80%, 85%);
 div.message-info {
   background: $color-background-info;
   border-color: darken($color-background-info, 20%);
 }
 
-$color-background-success: hsl(105, 80%, 85%);
 div.message-success {
   background: $color-background-success;
   border-color: darken($color-background-success, 20%);
 }
 
-$color-background-warning: hsl(45, 80%, 85%);
 div.message-warning {
   background: $color-background-warning;
   border-color: darken($color-background-warning, 20%);
 }
 
-$color-background-error: hsl(0, 80%, 85%);
 div.message-error {
   background: $color-background-error;
   border-color: darken($color-background-error, 20%);
@@ -510,14 +470,12 @@ div.message-error {
 div.field_with_errors {
 	display: inline;
 	margin-left: 10px;
-}
-
-div.field_with_errors input {
-	border: 1px solid #CC0000;
-}
-
-div.field_with_errors label {
-	color: $color-text-error;
+  input {
+  	border: 1px solid #CC0000;
+  }
+  label {
+  	color: $color-text-error;
+  }
 }
 
 div.graph {
@@ -530,11 +488,11 @@ div.graph {
 	background-repeat:no-repeat;
 }
 
-div.graph_background {
+div.graph-background {
 	background-color: #FCFCFD;
 }
 
-div.hidden_marker {
+div.hidden-marker {
 	float: right;
 	background: #FFFF00;
 	border: 1px solid $color-text-primary;
@@ -545,17 +503,17 @@ div.hidden_marker {
 	font-weight: 600;
 }
 
-div.supplemental_code {
+div.supplemental-code {
 	float: right;
 	width: 3em;
 	text-align: center;
 	font-family: $font-stack-monospace;
 	font-weight: 300;
 	margin-left: $margin-icon-to-text;
-	border: 1px solid $color-table-border;
+	border: 1px solid $color-border-table;
 }
 
-div.supplemental_info {
+div.supplemental-info {
 	float: right;
 	text-align: right;
 	font-weight: 300;
@@ -612,7 +570,7 @@ div.page_navigation {
 	margin-left: 5px;
 	margin-right: 5px;
 	text-align: left;
-	border-bottom: 1px solid #E6EAEF;
+	border-bottom: 1px solid $color-background-page;
 }
 
 div.page_navigation ul {
@@ -751,7 +709,7 @@ img.logo {
 }
 
 img.photo_gallery {
-	border: 1px solid #9EC7F3;
+	border: 1px solid $color-base;
 }
 
 
@@ -764,12 +722,6 @@ p {
 p.distance {
 	text-align: center;
 	margin-top: 0;
-}
-
-p.home_link {
-	text-align: center;
-	margin-top: 20px;
-	margin-bottom: 20px;
 }
 
 p.new, p.new-legend {
@@ -786,7 +738,7 @@ p.total {
 }
 
 p.pre_footer {
-	border-top: 1px solid #D7E2ED;
+	border-top: 1px solid $color-border-page;
 	padding-top: 10px;
 	text-align: center;
 }
@@ -795,10 +747,6 @@ pre.debug_dump {
 	background-color: inherit;
 	color: inherit;
 	border: none;
-}
-
-span.breadcrumb_title {
-	
 }
 
 span.code_status_bad {
@@ -894,7 +842,7 @@ table.flightlog {
   
   td.label {
   	background-color: #FCFCFD;
-  	border-right: 2px solid #9EC7F3;
+  	border-right: 2px solid $color-base;
   	font-weight: 600;
   	text-align: right;
   	vertical-align: top;
@@ -913,13 +861,13 @@ table.flightlog {
   th {
   	padding: 0.5em 0.6em;
   	background-color: #F9F9FB;
-  	border-bottom: 2px solid #9EC7F3;
+  	border-bottom: 2px solid $color-base;
   	height: 28px;
   }
   
   tr {
   	border-top: 1px solid #BED4EA;
-  	background-color: $color-table-background;
+  	background-color: $color-background-table;
   }
   
   tr.no_top_border {
@@ -930,7 +878,7 @@ table.flightlog {
 td.flightlog_total {
 	-webkit-text-size-adjust:100%;
 	background-color: #F9F9FB;
-	border-top: 2px solid #9EC7F3;
+	border-top: 2px solid $color-base;
 	text-align: center;
 	font-weight: 600;
 }
@@ -1091,7 +1039,7 @@ td.flight_flight {
 }
 
 td.flight_leg_banner {
-  background-color: #9EC7F3;
+  background-color: $color-base;
   font-weight: bold;
 }
 
@@ -1112,7 +1060,7 @@ td.flight_route {
 }
 
 td.flight_section {
-	border-right: 2px solid #9EC7F3;
+	border-right: 2px solid $color-base;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 1.2;
@@ -1127,18 +1075,18 @@ td.flight_show_airport {
 
 td.flight_show_label {
 	background-color: #FCFCFD;
-	border-right: 2px solid #9EC7F3;
+	border-right: 2px solid $color-base;
 	font-weight: 600;
 	text-align: right;
 	vertical-align: top;
 }
 
 td.flight_show_label_leg {
-  border-left: 10px solid #9EC7F3;
+  border-left: 10px solid $color-base;
 }
 
 td.flight_trip_title {
-	background-color: #9EC7F3;
+	background-color: $color-base;
 	border-bottom: 1px solid #385D8A !important;
 	border-top: 1px solid #385D8A !important;
 	font-weight: 600;
@@ -1175,7 +1123,7 @@ td.status_good {
 
 td.superlative_label {
 	background-color: #F9F9FB;
-	border-right: 2px solid #9EC7F3;
+	border-right: 2px solid $color-base;
 	font-weight: 600;
 	text-align: right;
 	vertical-align: middle;	

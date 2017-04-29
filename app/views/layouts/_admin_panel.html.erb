@@ -1,5 +1,5 @@
 <% if logged_in? %>
-<div id="login_info">
+<div id="user-footer">
   <span class="bold"><%= current_user.name %></span> &emsp; <%= link_to "Admin", admin_path %> &emsp; <%= link_to "Log out", logout_path, :method => :delete %>
   
 </div>

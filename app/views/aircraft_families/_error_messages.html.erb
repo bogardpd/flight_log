@@ -1,5 +1,5 @@
 <% if @aircraft_family.errors.any? %>
-  <div class="error">
+  <div class="message message-error">
     <ul>
       <% @aircraft_family.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>

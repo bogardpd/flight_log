@@ -1,6 +1,6 @@
 <nav>
   <div id="menu">
-    <div id="menu_home">
+    <div class="menu-home">
       <ul>
         <% if (params[:controller] == "pages" && params[:action] == "flightlog") %>
           <li class="active"><a class="active_non_link">Home</a></li>
@@ -9,7 +9,7 @@
         <% end %>
       </ul>
     </div>
-    <div id="menu_main">
+    <div class="menu-main">
       <ul>
         
         <% if (params[:controller] == "flights" && params[:action] == "index" && params[:year].blank? && params[:start_date].blank? && params[:end_date].blank?) %>
