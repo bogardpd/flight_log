@@ -1,0 +1,64 @@
+<% known_airlines, unknown_airlines = airlines.partition{|af| af[:id].present?} %>
+
+<% if known_airlines.any? %>
+  <% new_airlines ||= Array.new %>
+  <% legend_range ||= "this date range" %>
+  <% type ||= :airline %>
+  <% identical ||= false %>
+  
+  <% if identical && type == :operator %>
+  
+  	<p>In many cases, an airline subcontracts another airline to operate flights for them. However, all of these flights were operated by <%= (params[:controller] == 'airlines' && params[:action] == 'show') ? @airline.airline_name : "their advertised airline" %>.</p>
+  
+  <% else %>
+  
+    <table class="flightlog">
+      <thead>
+        <tr>
+      		<th class="counter">#</th>
+          <th class="airline_airline"><%= is_summary ? "Airline" : sort_link("Airline", :airline, "airline", :asc, type.to_s.pluralize) %></th>
+      		<th class="airline-code"><%= is_summary ? "Code" : sort_link("Code", :code, "code", :asc, type.to_s.pluralize) %></th>
+          <th class="airline_flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, type.to_s.pluralize) %></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% previous_count = nil %>
+
+      <% airline_maximum = known_airlines.max_by{|i| i[:flight_count]}[:flight_count]%>
+      <% known_airlines.each_with_index do |airline, index| %>
+        <% path = (type == :operator) ? show_operator_path(airline[:iata_airline_code]) : airline_path(airline[:iata_airline_code]) %>
+        <%= (new_airlines.include?(airline[:id]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
+          <td class="counter"><%= ((is_summary || @sort_cat == :flights) && airline[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
+      		<td class="airline_airline">
+            <%= link_to(image_tag(airline_icon_path(airline[:iata_airline_code]), title: airline[:airline_name], class: "airline_icon") + airline[:airline_name], path, title: "View all flights on #{airline[:airline_name]}") %>
+          </td>
+      		<td class="airline-code code-mono">
+            <%= link_to(airline[:iata_airline_code].split("-").first, path, :title => "View all flights on #{airline[:airline_name]}") %>
+          </td>
+          <td class="airline_flights">
+            <%= render "flights/graph_block", value: airline[:flight_count], maximum: airline_maximum %>
+          </td>
+        </tr>
+      	<% previous_count = airline[:flight_count] %>
+      <% end %>
+
+        <tr><td colspan="5" class="flightlog_total"><%= pluralize(known_airlines.count, type.to_s) %></td></tr>
+      </tbody>
+  
+    </table>
+
+    <% if (known_airlines.map{|af| af[:id]} & new_airlines).any? %>
+      <p class="new-legend">* Airline first flown in <%= legend_range %></p>
+    <% end %>
+    
+    <% unknown_airline_flights = unknown_airlines.any? ? unknown_airlines.first[:flight_count] : 0 %>
+    <% if unknown_airline_flights > 1 %>
+      <p class="center"><%= unknown_airline_flights %> flights with unknown <%= type.to_s.pluralize %> are not included in this table.</p>
+    <% elsif unknown_airline_flights == 1 %> 
+      <p class="center">1 flight with an unknown <%= type.to_s %> is not included in this table.</p>
+    <% end %>
+    
+  
+  <% end %>
+  
+<% end %>

@@ -29,7 +29,7 @@
 
 	<a name="airlines"></a>
 	<h2>Airlines with Flights Operated by <%= @operator.airline_name %></h2>
-	<%= render "flights/summary_airline_table" %>
+	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 
 	<a name="aircraft"></a>
 	<h2>Aircraft Operated by <%= @operator.airline_name %></h2>

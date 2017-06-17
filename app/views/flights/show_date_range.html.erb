@@ -70,47 +70,8 @@
 <a name="airlines"></a>
 <h2>Airlines Flown <%= @date_range_text %></h2>
 
-<table class="flightlog">
-  <tr>
-    <th class="counter">#</th>
-		<th class="airline_airline">Airline</th>
-		<th class="airline-code">Code</th>
-    <th class="airline_flights">Flights</th>
-  </tr>
-<% previous_count = nil %>
-<% @airline_frequency_sorted.each_with_index do |(airline, frequency), index| %>
-  <tr>
-    
-		<% if @date_range.include?(Flight.airline_first_flight(airline)) %>
-			<% @new_airline_flag = true %>
-			<td class="counter new"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
-			<td class="airline_airline new">
-				<%= link_to(image_tag(airline_icon_path(airline), :alt => @airline_names[airline], class: 'airline_icon') + @airline_names[airline] + "*", airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
-			</td>
-			<td class="airline-code code-mono new">
-				<%= link_to(airline, airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
-			</td>
-			<td class="airline_flights new"><%= render "graph_block", value: frequency, maximum: @airline_frequency_maximum %></td>
-		<% else %>
-			<td class="counter"><%= (frequency == previous_count) ? "⋮" : index + 1 %></td>
-			<td class="airline_airline">
-				<%= link_to(image_tag(airline_icon_path(airline), :alt => @airline_names[airline], class: 'airline_icon') + @airline_names[airline], airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
-			</td>
-			<td class="airline-code code-mono">
-				<%= link_to(airline, airline_path(airline), title: "View all flights on #{@airline_names[airline]}") %>
-			</td>
-			<td class="airline_flights"><%= render "graph_block", value: frequency, maximum: @airline_frequency_maximum %></td>
-		<% end %>
-    
-  </tr>
-	<% previous_count = frequency %>
-<% end %>
-  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airline_frequency_sorted.count, 'airline') %></td></tr>
-</table>
+<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true, new_airlines: @new_airlines, legend_range: @in_text} %>
 
-<% if @new_airline_flag %>
-	<p class="note new">* Airline first flown in <%= @in_text %></p>
-<% end %>
 
 <a name="classes"></a>
 <h2>Classes Flown <%= @date_range_text %></h2>

@@ -19,27 +19,7 @@
 	<% end %>
 <% else %>
 
-<table class="flightlog">
-  <tr>
-    <th class="counter">#</th>
-		<th class="airline_airline"><%= sort_link("Airline", :airline, "airline", :asc, "airlines") %></th>
-		<th class="airline-code"><%= sort_link("Code", :code, "code", :asc, "airlines") %></th>
-    <th class="airline_flights"><%= sort_link("Flights", :flights, "flights", :desc, "airlines") %></th>
-  </tr>
-<% previous_count = nil %>
-<% @airlines.each_with_index do |airline, index| %>
-  <tr>
-		<td class="counter"><%= (@sort_cat == :flights && airline[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
-    <td class="airline_airline">
-    	<%= link_to(image_tag(airline_icon_path(airline[:iata_airline_code]), alt: airline[:iata_airline_code], title: airline[:airline_name], class: 'airline_icon') + airline[:airline_name], airline_path(airline[:iata_airline_code])) %>
-		</td>
-		<td class="airline-code code-mono"><%= link_to(iata_airline_code_display(airline[:iata_airline_code]), airline_path(airline[:iata_airline_code])) %></td>
-    <td class="airline_flights"><%= render "flights/graph_block", :value => airline[:flight_count], :maximum => @airlines_maximum %></td>
-  </tr>
-	<% previous_count = airline[:flight_count] %>
-<% end %>
-  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@airlines.count, 'airline') %></td></tr>
-</table>
+  <%= render partial: "airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: false} %>
 
 <% end %>
 
@@ -50,28 +30,7 @@
 
 <% if @operators.any? %>
 
-<table class="flightlog">
-  <tr>
-    <th class="counter">#</th>
-		<th class="airline_airline"><%= sort_link("Operator", :airline, "airline", :asc, "operators") %></th>
-		<th class="airline_code"><%= sort_link("Code", :code, "code", :asc, "operators") %></th>
-    <th class="airline_flights"><%= sort_link("Flights", :flights, "flights", :desc, "operators") %></th>
-  </tr>
-<% previous_count = nil %>
-<% @operators.each_with_index do |operator, index| %>
-  <tr>
-		<td class="counter"><%= (@sort_cat == :flights && operator[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
-    <td class="airline_airline">
-    <%= link_to(image_tag(airline_icon_path(operator[:iata_airline_code]), title: operator[:airline_name], class: 'airline_icon') + operator[:airline_name], show_operator_path(operator[:iata_airline_code])) %></td>
-		<td class="airline-code code-mono">
-			<%= link_to(iata_airline_code_display(operator[:iata_airline_code]), show_operator_path(operator[:iata_airline_code])) %>
-		</td>
-    <td class="airline_flights"><%= render "flights/graph_block", :value => operator[:flight_count], :maximum => @operators_maximum %></td>
-  </tr>
-	<% previous_count = operator[:flight_count] %>
-<% end %>
-	<tr><td colspan="4" class="flightlog_total"><%= pluralize(@operators.count, 'operator') %></td></tr>
-</table>
+  <%= render partial: "airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: false} %>
 
 <% else %>
 	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>

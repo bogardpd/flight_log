@@ -20,10 +20,10 @@
 <%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 
 <h2 id="airlines">Airlines with <%= @title %> Flights</h2>
-<%= render "summary_airline_table" %>
+<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 
 <h2 id="operators">Operators with <%= @title %> Flights</h2>
-<%= render "summary_operator_table" %>
+<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
 <h2 id="aircraft">Aircraft with <%= @title %> Flights</h2>
 <%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>

@@ -105,7 +105,7 @@ class AircraftFamily < ApplicationRecord
   end
   
   # Accepts a date range, and returns all aircraft families that had their
-  # first fligt in this date range.
+  # first flight in this date range.
   def self.new_in_date_range(date_range, logged_in=false)
     flights = logged_in ? Flight.all : Flight.visitor
     first_flights = flights.joins(:aircraft_family).select(:aircraft_family_id, :parent_id, :departure_date).where.not(aircraft_family_id: nil).group(:aircraft_family_id, :parent_id).minimum(:departure_date)

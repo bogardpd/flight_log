@@ -53,10 +53,10 @@
   <% end %>
   
 	<h2 id="airlines">Airlines with <%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Flights</h2>
-	<%= render "flights/summary_airline_table" %>
+	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: true} %>
 
 	<h2 id="operators">Operators with <%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Flights</h2>
-	<%= render "flights/summary_operator_table" %>
+	<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
 	<h2 id="classes">Classes Flown on <%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Aircraft</h2>
 

@@ -46,7 +46,8 @@ class AircraftFamiliesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft."
     @region = current_region(default: :world)
     
-    @flights = Flight.flights_table.where(aircraft_family_id: @aircraft_family.family_and_subtype_ids)
+    filtered_flights = Flight.where(aircraft_family_id: @aircraft_family.family_and_subtype_ids)
+    @flights = filtered_flights.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
@@ -66,9 +67,6 @@ class AircraftFamiliesController < ApplicationController
       add_admin_action view_context.link_to("Edit Aircraft Type", edit_aircraft_family_path(@aircraft_family))
     end
     
-    
-    
-    
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
     
@@ -76,8 +74,8 @@ class AircraftFamiliesController < ApplicationController
     @subtypes_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft_family)
     
     # Create comparitive lists of airlines and classes:
-    airline_frequency(@flights)
-    operator_frequency(@flights)
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
     class_frequency(@flights)
     
     # Create superlatives:

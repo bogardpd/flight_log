@@ -10,11 +10,15 @@ class AirlinesController < ApplicationController
     add_breadcrumb 'Airlines', 'airlines_path'
     add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
-    @airlines  = Airline.flight_count(logged_in?, :airline)
-    @operators = Airline.flight_count(logged_in?, :operator)
-   
+    @airlines  = Airline.flight_count(logged_in?, type: :airline)
+    @operators = Airline.flight_count(logged_in?, type: :operator)
+    
+    @airlines.reject!{|af| af[:id].nil? }
+    @operators.reject!{|af| af[:id].nil? }
+    
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
+    
     
     if (@airlines.any? || @operators.any?)
       
@@ -51,8 +55,8 @@ class AirlinesController < ApplicationController
     @airline = Airline.where(:iata_airline_code => params[:id]).first
     raise ActiveRecord::RecordNotFound if (@airline.nil?) #all_flights will fail if code does not exist, so check here.
     
-    @flights = Flight.flights_table.where(airline_id: @airline.id)
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    filtered_flights = Flight.where(airline_id: @airline.id)
+    @flights = logged_in? ? filtered_flights.flights_table : filtered_flights.visitor.flights_table
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     @title = @airline.airline_name
@@ -73,9 +77,9 @@ class AirlinesController < ApplicationController
     @total_distance = total_distance(@flights)
     
     # Create comparitive lists of aircraft and classes:
-    airline_frequency(@flights) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
-    operator_frequency(@flights)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(airline_id: @airline.id))
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
+    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     class_frequency(@flights)
     
     # Create superlatives:
@@ -90,7 +94,8 @@ class AirlinesController < ApplicationController
   def show_operator
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     raise ActiveRecord::RecordNotFound if (@operator.nil?) #all_flights will fail if code does not exist, so check here.
-    @flights = Flight.flights_table.select(:fleet_number, :aircraft_name).where(:operator_id => @operator.id)
+    filtered_flights = Flight.where(:operator_id => @operator.id)
+    @flights = filtered_flights.flights_table.select(:fleet_number, :aircraft_name)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  
@@ -109,8 +114,8 @@ class AirlinesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
-    airline_frequency(@flights)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(operator_id: @operator.id))
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     class_frequency(@flights)
     
     # Create superlatives:
@@ -136,7 +141,8 @@ class AirlinesController < ApplicationController
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     @fleet_number = params[:fleet_number]
     
-    @flights = Flight.flights_table.select(:tail_number).where(:operator_id => @operator.id, :fleet_number => @fleet_number)
+    filtered_flights = Flight.where(:operator_id => @operator.id, :fleet_number => @fleet_number)
+    @flights = filtered_flights.flights_table.select(:tail_number)
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
@@ -152,8 +158,8 @@ class AirlinesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
-    airline_frequency(@flights)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(:operator_id => @operator.id, :fleet_number => @fleet_number))
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     class_frequency(@flights)
     
     # Create superlatives:

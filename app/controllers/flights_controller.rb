@@ -124,7 +124,7 @@ class FlightsController < ApplicationController
       @flight_list_title = "Flight List for #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
       @superlatives_title = "Longest and Shortest Routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
       @superlatives_title_nav = "Longest and shortest routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
-      @title = "Flights: #{format_date(params[:start_date].to_date)} - #{format_date(params[:end_date].to_date)}"
+      @title = "Flights: #{format_date(params[:start_date].to_date)} – #{format_date(params[:end_date].to_date)}"
       @meta_description = "Maps and lists of Paul Bogardʼs flights from #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
     else
       raise ArgumentError.new('No date parameters were given for a date range')
@@ -135,12 +135,13 @@ class FlightsController < ApplicationController
     @new_aircraft_flag = false
     @new_airline_tag = false
     
+    filtered_flights = Flight.where(:departure_date => @date_range)
     if logged_in?
-      @flights = Flight.flights_table.where(:departure_date => @date_range)
+      @flights = filtered_flights.flights_table
       @year_range = Flight.year_range
       @years_with_flights = Flight.years_with_flights
     else
-      @flights = Flight.visitor.flights_table.where(:departure_date => @date_range)
+      @flights = filtered_flights.visitor.flights_table
       @year_range = Flight.visitor.year_range
       @years_with_flights = Flight.visitor.years_with_flights
     end
@@ -155,9 +156,9 @@ class FlightsController < ApplicationController
     @airport_maximum = @airport_array.first[:frequency]
       
     # Create comparitive lists of airlines and classes:
-    airline_frequency(@flights)
-    
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(:departure_date => @date_range))
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @new_airlines = Airline.new_in_date_range(@date_range, logged_in?)    
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     @new_aircraft_families = AircraftFamily.new_in_date_range(@date_range, logged_in?)
     
     class_frequency(@flights)
@@ -216,7 +217,8 @@ class FlightsController < ApplicationController
   def show_class
     @logo_used = true
     
-    @flights = Flight.flights_table.where(:travel_class => params[:travel_class])
+    filtered_flights = Flight.where(:travel_class => params[:travel_class])
+    @flights = filtered_flights.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
     @title = Flight.classes_list[params[:travel_class]].titlecase + " Class"
@@ -230,9 +232,9 @@ class FlightsController < ApplicationController
     @total_distance = total_distance(@flights)
 
     # Create comparitive lists of airlines, operators, and aircraft:
-    airline_frequency(@flights)
-    operator_frequency(@flights)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where(:travel_class => params[:travel_class]))
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
 
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -288,8 +290,8 @@ class FlightsController < ApplicationController
   
   def show_tail
     @logo_used = true
-    @flights = Flight.where(:tail_number => params[:tail_number])
-    @flights = @flights.flights_table
+    filtered_flights = Flight.where(:tail_number => params[:tail_number])
+    @flights = filtered_flights.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
@@ -303,8 +305,8 @@ class FlightsController < ApplicationController
     @total_distance = total_distance(@flights)
     
     # Create comparitive list of airlines, operators, and classes:
-    airline_frequency(@flights)
-    operator_frequency(@flights)
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
     class_frequency(@flights)
     
     # Create superlatives:

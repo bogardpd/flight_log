@@ -59,11 +59,9 @@ class RoutesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}."
     @logo_used = true
     
-    if logged_in?
-      @flights = Flight.flights_table.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
-    else
-      @flights = Flight.flights_table.visitor.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
-    end
+    filtered_flights = Flight.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
+    @flights = filtered_flights.flights_table
+    @flights = @flights.visitor unless logged_in?
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
@@ -91,9 +89,9 @@ class RoutesController < ApplicationController
     end
     
     # Create comparitive lists of airlines, aircraft, and classes:
-    airline_frequency(@flights)
-    operator_frequency(@flights)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: Flight.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]}))
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     class_frequency(@flights)
     
     # Create flight arrays for maps of trips and sections:

@@ -9,7 +9,7 @@ class PagesController < ApplicationController
     @region = current_region(default: :conus)
     
     @flight_aircraft = AircraftFamily.flight_count(logged_in?)
-    @flight_airlines = Airline.flight_count(logged_in?)
+    @flight_airlines = Airline.flight_count(logged_in?, type: :airline)
     
     if logged_in?
       @flights = Flight.flights_table
