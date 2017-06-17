@@ -462,9 +462,15 @@ div.message-warning {
   border-color: darken($color-background-warning, 20%);
 }
 
-div.message-error {
+div.message-error, {
   background: $color-background-error;
   border-color: darken($color-background-error, 20%);
+  a {
+    padding: 0.2em;
+    text-shadow: none;
+    font-weight: 400;
+    color: darken($color-text-link, 20%);
+  }
 }
 
 div.field_with_errors {

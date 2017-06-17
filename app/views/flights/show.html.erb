@@ -32,7 +32,7 @@
   </tr>
   <tr>
     <td class="flight_show_label">Route</td>
-    <td class="flight_show_route"><%= link_to("#{@flight.origin_airport.iata_code} &#x21C4; #{@flight.destination_airport.iata_code}".html_safe, route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %><% if @route_distance %><div class="supplemental-info"><span class="flight_route_distance"><%= number_with_delimiter(@route_distance, :delimiter => ',') %> mi / <%= number_with_delimiter((@route_distance*1.60934).to_i, :delimiter => ',') %> km</span></div><% end %></td>
+    <td class="flight_show_route"><%= link_to("#{@flight.origin_airport.iata_code} &#x21C4; #{@flight.destination_airport.iata_code}".html_safe, route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %><% if @route_distance %><div class="supplemental-info"><span class="flight_route_distance"><%= number_with_delimiter(@route_distance, :delimiter => ',') %> mi / <%= number_with_delimiter((@route_distance*1.60934).to_i, :delimiter => ',') %> km</span></div><% elsif logged_in? %><div class="supplemental-info message-error"><%= link_to "Distance Undefined",  edit_route_path(@flight.origin_airport.iata_code,@flight.destination_airport.iata_code) %><% end %></div></td>
   </tr>
   <tr>
     <td class="flight_show_label">Airline</td>

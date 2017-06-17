@@ -167,7 +167,7 @@ class RoutesController < ApplicationController
     @route = Route.new(route_params)
     if @route.save
       flash[:success] = "Successfully added distance to route!"
-      redirect_to routes_path
+      redirect_to route_path("#{@route.airport1.iata_code}-#{@route.airport2.iata_code}")
     else
       render 'new'
     end
@@ -177,7 +177,7 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
     if @route.update_attributes(route_params)
       flash[:success] = "Successfully updated route distance."
-      redirect_to routes_path
+      redirect_to route_path("#{@route.airport1.iata_code}-#{@route.airport2.iata_code}")
     else
       render 'edit'
     end
