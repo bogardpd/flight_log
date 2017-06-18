@@ -157,7 +157,7 @@ class AirportsController < ApplicationController
     @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
     @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    class_frequency(@flights)
+    @classes = Flight.flight_count_class(logged_in?, flights: filtered_flights)
     
     # Create maps:
     @region = current_region(default: :world)

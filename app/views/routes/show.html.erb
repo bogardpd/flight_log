@@ -35,7 +35,7 @@
 <%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
 <h2 id="classes">Classes Flown on <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym></h2>
-<%= render "flights/summary_travel_class_table" %>
+<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
 <h2 id="sections">Trip Sections with a <acronym title="<%= @airports_city[0] %>"><%= @airports[0] %></acronym> &#x21C4; <acronym title="<%= @airports_city[1] %>"><%= @airports[1] %></acronym> Flight</h2>
 

@@ -32,7 +32,7 @@
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
 	<h2 id="classes">Classes Flown on <%= @airline.airline_name %></h2>
-	<%= render "flights/summary_travel_class_table" %>
+	<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
 	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @airline.airline_name %></h2>
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>

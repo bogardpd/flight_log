@@ -56,17 +56,6 @@ protected
     input_date.strftime("%e %b %Y")
   end
   
-  def class_frequency(flights)
-    # Creates global variables containing the classes of a list of flights, and how many flights involving this list each class has.
-    class_frequency_hash = Hash.new(0) # All classes start with 0 flights
-    flights.where("travel_class IS NOT NULL").each do |flight|
-      class_frequency_hash[flight.travel_class] += 1
-    end
-    @class_frequency_sorted = class_frequency_hash.sort_by { |travel_class, frequency| [-frequency, travel_class] }
-    @class_frequency_maximum = class_frequency_hash.values.max
-    @unknown_class_flights = flights.length - flights.where("travel_class IS NOT NULL").length
-  end
-
   # This calls an SQL query, and should not be used in a loop.
   def route_distance_by_iata(iata1, iata2)
     airport_ids = Array.new

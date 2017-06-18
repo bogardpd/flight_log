@@ -80,7 +80,6 @@ class AircraftFamily < ApplicationRecord
     family_count ||= Array.new
       
     counts = self.families.map{|f| {id: f.id, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}
-      .reject{|a| a[:flight_count] == 0}
       .sort_by{|a| [-a[:flight_count], a[:manufacturer].downcase, a[:family_name].downcase]}
     
     family_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}

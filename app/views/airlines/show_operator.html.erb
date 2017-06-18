@@ -37,7 +37,7 @@
 
 	<a name="classes"></a>
 	<h2>Classes Flown on Flights Operated by <%= @operator.airline_name %></h2>
-	<%= render "flights/summary_travel_class_table" %>
+	<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
 	<a name="superlatives"></a>
 	<h2>Longest and Shortest Routes Operated by <%= @operator.airline_name %></h2>

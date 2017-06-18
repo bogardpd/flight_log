@@ -75,8 +75,7 @@
 
 <a name="classes"></a>
 <h2>Classes Flown <%= @date_range_text %></h2>
-
-<%= render "summary_travel_class_table" %>
+<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true, new_classes: @new_classes} %>
 
 <a name="superlatives"></a>
 <h2><%= @superlatives_title %></h2>

@@ -1,0 +1,48 @@
+<% known_classes, unknown_classes = classes.partition{|tc| tc[:class_code].present?} %>
+
+<% if known_classes.any? %>
+  <% new_classes ||= Array.new %>
+  <% legend_range ||= "this date range" %>
+  
+  <table class="flightlog">
+    <thead>
+      <tr>
+    		<th class="counter">#</th>
+        <th class="airline_airline"><%= is_summary ? "Travel Class" : sort_link("Travel Class", :class, "class", :asc, nil) %></th>
+    		<th class="airline-code">Code</th>
+        <th class="airline_flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, nil) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% previous_count = nil %>
+
+      <% class_maximum = known_classes.max_by{|i| i[:flight_count]}[:flight_count]%>
+      <% known_classes.each_with_index do |tc, index| %>
+        <%= (new_classes.include?(tc[:class_code]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
+          <td class="counter"><%= ((is_summary || @sort_cat == :flights) && tc[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
+          <td class="class_class"><%= link_to(Flight.classes_list[tc[:class_code]], show_class_path(tc[:class_code]), :title => "View #{Flight.classes_list[tc[:class_code]].downcase} class flights") %></td>
+      		<td class="class-code code-mono"><%= link_to(tc[:class_code], show_class_path(tc[:class_code]), :title => "View #{Flight.classes_list[tc[:class_code]].downcase} class flights") %></td>
+          <td class="class_flights"><%= render "flights/graph_block", value: tc[:flight_count], maximum: class_maximum %></td>
+        </tr>
+      	<% previous_count = tc[:flight_count] %>
+      <% end %>
+
+    </tbody>
+
+  </table>
+
+  <% if (known_classes.map{|af| af[:class_code]} & new_classes).any? %>
+    <p class="new-legend">* Class first flown in <%= legend_range %></p>
+  <% end %>
+  
+  <% unknown_class_flights = unknown_classes.any? ? unknown_classes.first[:flight_count] : 0 %>
+  <% if unknown_class_flights > 1 %>
+    <p class="center"><%= unknown_class_flights %> flights with unknown classes are not included in this table.</p>
+  <% elsif unknown_class_flights == 1 %> 
+    <p class="center">1 flight with an unknown class is not included in this table.</p>
+  <% end %>
+  
+
+ 
+  
+<% end %>

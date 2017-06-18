@@ -23,10 +23,9 @@
 <%= map_with_region_select(@map) %>
 <%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
 
-
 <a name="classes"></a>
 <h2>Classes Flown on <%= params[:tail_number] %></h2>
-<%= render "summary_travel_class_table" %>
+<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
 <a name="airlines"></a>
 <h2>Airlines Using <%= params[:tail_number] %></h2>
@@ -35,7 +34,6 @@
 <a name="operators"></a>
 <h2>Operators Using <%= params[:tail_number] %></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
-
 
 <a name="superlatives"></a>
 <h2>Longest and Shortest Routes Flown on <%= params[:tail_number] %></h2>

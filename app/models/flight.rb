@@ -189,6 +189,29 @@ class Flight < ApplicationRecord
     return summary
   end
   
+  # Returns an array of airlines, with a hash for each family containing the
+  # class code and number of flights in that class.
+  def self.flight_count_class(logged_in=false, flights: nil)
+    flights ||= Flight.all
+    flights = flights.visitor unless logged_in
+    counts = flights.group(:travel_class).count
+      .map{|k,v| {class_code: k, flight_count: v}}
+    
+    class_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
+    if flights.count > class_sum
+      counts.push({class_code: nil, flight_count: flights.count - class_sum})
+    end
+    return counts
+  end
+  
+  # Accepts a date range, and returns all classes that had their
+  # first flight in this date range.
+  def self.new_class_in_date_range(date_range, logged_in=false)
+    flights = logged_in ? Flight.all : Flight.visitor
+    first_flights = flights.select(:travel_class, :departure_date).where.not(travel_class: nil).group(:travel_class).minimum(:departure_date)
+    return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
+  end
+  
   # For a given flight collection, return a range of the years that contain
   # flights.
   def self.year_range

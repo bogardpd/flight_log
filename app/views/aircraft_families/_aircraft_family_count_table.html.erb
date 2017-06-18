@@ -1,4 +1,5 @@
 <% known_families, unknown_families = aircraft_families.partition{|af| af[:id].present?} %>
+<% known_families.reject!{|af| af[:flight_count] == 0} %>
 
 <% if known_families.any? %>
   <% new_aircraft_families ||= Array.new %>

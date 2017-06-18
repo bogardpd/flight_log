@@ -10,7 +10,6 @@ class AircraftFamiliesController < ApplicationController
     
     flight_count = AircraftFamily.flight_count(logged_in?)
     @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
-    @aircraft_families.reject!{|af| af[:id].nil? }
     
     if @aircraft_families.any?
             
@@ -25,13 +24,13 @@ class AircraftFamiliesController < ApplicationController
       
       case @sort_cat
       when :aircraft
-        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [aircraft_family[:manufacturer].downcase, aircraft_family[:family_name].downcase] }
+        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [aircraft_family[:manufacturer]&.downcase || "", aircraft_family[:family_name]&.downcase || ""] }
         @aircraft_families.reverse! if @sort_dir == :desc
       when :code
-        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| aircraft_family[:iata_aircraft_code] }
+        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| aircraft_family[:iata_aircraft_code] || "" }
         @aircraft_families.reverse! if @sort_dir == :desc
       when :flights
-        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]] }
+        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]&.downcase || ""] }
       end
     end     
   end
@@ -76,7 +75,7 @@ class AircraftFamiliesController < ApplicationController
     # Create comparitive lists of airlines and classes:
     @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
     @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
-    class_frequency(@flights)
+    @classes = Flight.flight_count_class(logged_in?, flights: filtered_flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

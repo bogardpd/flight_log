@@ -160,8 +160,8 @@ class FlightsController < ApplicationController
     @new_airlines = Airline.new_in_date_range(@date_range, logged_in?)    
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     @new_aircraft_families = AircraftFamily.new_in_date_range(@date_range, logged_in?)
-    
-    class_frequency(@flights)
+    @classes = Flight.flight_count_class(logged_in?, flights: filtered_flights)
+    @new_classes = Flight.new_class_in_date_range(@date_range, logged_in?)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -177,26 +177,14 @@ class FlightsController < ApplicationController
     
   def index_classes
     add_breadcrumb 'Travel Classes', 'classes_path'
-    if logged_in?
-      @flight_classes = Flight.where("travel_class IS NOT NULL").group("travel_class").count
-    else # Filter out hidden trips for visitors
-      @flight_classes = Flight.visitor.where("travel_class IS NOT NULL").group("travel_class").count
-    end
+    
+    @classes = Flight.flight_count_class(logged_in?)
+    
     @title = "Travel Classes"
     @meta_description = "A count of how many times Paul Bogard has flown in each class."
-    @classes_array = Array.new
     
-    if @flight_classes.any?
-      
-      total_flights_with_class = 0
-      @flight_classes.each do |travel_class, count| 
-        @classes_array.push({:travel_class => travel_class, :count => count})
-        total_flights_with_class += count
-      end
-      
-      # Find maxima for graph scaling:
-      @classes_maximum = @classes_array.max_by{|i| i[:count]}[:count]
-      
+    if @classes.any?
+                
       # Sort aircraft table:
       sort_params = sort_parse(params[:sort], %w(class flights), :asc)
       @sort_cat   = sort_params[:category]
@@ -204,13 +192,12 @@ class FlightsController < ApplicationController
       sort_mult   = (@sort_dir == :asc ? 1 : -1)
       case @sort_cat
       when :class
-        @classes_array = @classes_array.sort_by { |travel_class| travel_class[:travel_class] }
-        @classes_array.reverse! if @sort_dir == :desc
+        @classes = @classes.sort_by { |tc| tc[:class_code] || "" }
+        @classes.reverse! if @sort_dir == :desc
       when :flights
-        @classes_array = @classes_array.sort_by { |travel_class| [sort_mult*travel_class[:count], travel_class[:travel_class]] }
+        @classes = @classes.sort_by { |tc| [sort_mult*tc[:flight_count], tc[:class_code] || ""] }
       end
       
-      @unknown_class_flights = Flight.all.length - total_flights_with_class
     end
   end
   
@@ -307,7 +294,7 @@ class FlightsController < ApplicationController
     # Create comparitive list of airlines, operators, and classes:
     @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
     @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
-    class_frequency(@flights)
+    @classes = Flight.flight_count_class(logged_in?, flights: filtered_flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

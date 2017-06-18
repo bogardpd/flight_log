@@ -13,10 +13,7 @@ class AirlinesController < ApplicationController
     @airlines  = Airline.flight_count(logged_in?, type: :airline)
     @operators = Airline.flight_count(logged_in?, type: :operator)
     
-    @airlines.reject!{|af| af[:id].nil? }
-    @operators.reject!{|af| af[:id].nil? }
-    
-    used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq
+    used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
     
     
@@ -34,18 +31,18 @@ class AirlinesController < ApplicationController
       
       case @sort_cat
       when :airline
-        @airlines  =  @airlines.sort_by { |airline|   airline[:airline_name].downcase }
-        @operators = @operators.sort_by { |operator| operator[:airline_name].downcase }
+        @airlines  =  @airlines.sort_by { |airline|   airline[:airline_name]&.downcase || "" }
+        @operators = @operators.sort_by { |operator| operator[:airline_name]&.downcase || "" }
         @airlines.reverse!  if @sort_dir == :desc
         @operators.reverse! if @sort_dir == :desc
       when :code
-        @airlines  =  @airlines.sort_by { |airline|   airline[:iata_airline_code].downcase }
-        @operators = @operators.sort_by { |operator| operator[:iata_airline_code].downcase }
+        @airlines  =  @airlines.sort_by { |airline|   airline[:iata_airline_code]&.downcase || "" }
+        @operators = @operators.sort_by { |operator| operator[:iata_airline_code]&.downcase || "" }
         @airlines.reverse!  if @sort_dir == :desc
         @operators.reverse! if @sort_dir == :desc
       when :flights
-        @airlines  =  @airlines.sort_by { |airline|  [sort_mult * airline[:flight_count],  airline[:airline_name].downcase] }
-        @operators = @operators.sort_by { |operator| [sort_mult * operator[:flight_count], operator[:airline_name].downcase] }
+        @airlines  =  @airlines.sort_by { |airline|  [sort_mult * airline[:flight_count],  airline[:airline_name]&.downcase || ""] }
+        @operators = @operators.sort_by { |operator| [sort_mult * operator[:flight_count], operator[:airline_name]&.downcase || ""] }
       end
     end
      
@@ -80,7 +77,7 @@ class AirlinesController < ApplicationController
     @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
     @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    class_frequency(@flights)
+    @classes = Flight.flight_count_class(logged_in?, flights: filtered_flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -116,7 +113,7 @@ class AirlinesController < ApplicationController
     # Create comparitive lists of airlines, aircraft and classes:
     @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    class_frequency(@flights)
+    @classes = Flight.flight_count_class(logged_in?, flights: filtered_flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -160,7 +157,7 @@ class AirlinesController < ApplicationController
     # Create comparitive lists of airlines, aircraft and classes:
     @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    class_frequency(@flights)
+    @classes = Flight.flight_count_class(logged_in?, flights: filtered_flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
