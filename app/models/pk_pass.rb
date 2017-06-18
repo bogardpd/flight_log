@@ -64,7 +64,7 @@ class PKPass < ApplicationRecord
         compartment_code = data.dig(:repeated, 0, :mandatory, 71, :raw)
         if compartment_code.present?
           travel_class = airline_compartments.dig(airline, compartment_code, "name")
-          output.store(:travel_class, Flight.get_class_id(travel_class))
+          output.store(:travel_class, TravelClass.get_class_id(travel_class))
         end
       rescue Errno::ENOENT
       end
@@ -185,11 +185,11 @@ class PKPass < ApplicationRecord
     fields[:travel_class][:label] = "Travel Class"
     if flight.travel_class
       fields[:travel_class][:current_value] = flight.travel_class
-      fields[:travel_class][:current_text] = {text: Flight.classes_list[flight.travel_class], code: flight.travel_class}
+      fields[:travel_class][:current_text] = {text: TravelClass.list[flight.travel_class], code: flight.travel_class}
     end
     if pass_data[:travel_class]
       fields[:travel_class][:pass_value] = pass_data[:travel_class]
-      fields[:travel_class][:pass_text] = {text: Flight.classes_list[pass_data[:travel_class]], code: pass_data[:travel_class]}
+      fields[:travel_class][:pass_text] = {text: TravelClass.list[pass_data[:travel_class]], code: pass_data[:travel_class]}
     end
     
     # Boarding Pass

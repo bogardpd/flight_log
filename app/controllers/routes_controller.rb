@@ -92,7 +92,7 @@ class RoutesController < ApplicationController
     @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
     @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    @classes = Flight.flight_count_class(logged_in?, flights: filtered_flights)
+    @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     
     # Create flight arrays for maps of trips and sections:
     @city_pair_trip_flights    = Flight.flights_table.where(:trip_id => trip_array)

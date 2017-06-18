@@ -6,16 +6,7 @@ class Flight < ApplicationRecord
   belongs_to :aircraft_family
   belongs_to :operator, :class_name => 'Airline'
   belongs_to :codeshare_airline, :class_name => 'Airline'
-  
-  def self.classes_list
-    classes = Hash.new
-    classes['F'] = 'First'
-    classes['J'] = 'Business'
-    classes['W'] = 'Premium Economy'
-    classes['Y'] = 'Economy'
-    return classes
-  end
-  
+    
   # Returns a hash containing the AircraftFamily for the flight's family, and
   # the AircraftFamily for the flight's subtype if available
   def aircraft_family_and_type
@@ -24,12 +15,6 @@ class Flight < ApplicationRecord
     return {family: aircraft_family.parent, type: aircraft_family}
   end
   
-  def self.get_class_id(class_string)
-    return nil unless class_string.present?
-    classes = classes_list.invert
-    return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
-  end
-    
   NULL_ATTRS = %w( flight_number aircraft_name tail_number travel_class comment fleet_number boarding_pass_data )
   STRIP_ATTRS = %w( operator fleet_number aircraft_family aircraft_name tail_number )
   
@@ -43,7 +28,7 @@ class Flight < ApplicationRecord
   validates :departure_date, :presence => true
   validates :departure_utc, :presence => true
   validates :airline_id, presence: true
-  validates :travel_class, :inclusion => { in: classes_list.keys, message: "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
+  validates :travel_class, :inclusion => { in: TravelClass.list.keys, message: "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
   scope :chronological, -> {
     order('flights.departure_utc')
@@ -187,21 +172,6 @@ class Flight < ApplicationRecord
     end
     
     return summary
-  end
-  
-  # Returns an array of airlines, with a hash for each family containing the
-  # class code and number of flights in that class.
-  def self.flight_count_class(logged_in=false, flights: nil)
-    flights ||= Flight.all
-    flights = flights.visitor unless logged_in
-    counts = flights.group(:travel_class).count
-      .map{|k,v| {class_code: k, flight_count: v}}
-    
-    class_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
-    if flights.count > class_sum
-      counts.push({class_code: nil, flight_count: flights.count - class_sum})
-    end
-    return counts
   end
   
   # Accepts a date range, and returns all classes that had their
