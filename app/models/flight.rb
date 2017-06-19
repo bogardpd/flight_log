@@ -53,18 +53,6 @@ class Flight < ApplicationRecord
     STRIP_ATTRS.each { |attr| self[attr] = self[attr].strip if !self[attr].blank? }
   end
   
-  def self.aircraft_first_flight(aircraft_family)
-    return Flight.select("aircraft_families.iata_aircraft_code, flights.departure_date").joins(:aircraft_family).where(aircraft_family_id: aircraft_family).order(departure_date: :asc).first.departure_date
-  end
-  
-  def self.airline_first_flight(airline)
-    return Flight.select("airlines.iata_airline_code, flights.departure_date").joins(:airline).where("airlines.iata_airline_code = ?", airline).order(departure_date: :asc).first.departure_date
-  end
-  
-  def self.airport_first_visit(airport_id)
-    return Flight.where("origin_airport_id = ? OR destination_airport_id = ?", airport_id, airport_id).order(departure_date: :asc).first.departure_date
-  end
-  
   # For a given flight collection, return a hash with years as the keys, and
   # hashes of counts of business, mixed, and personal flights as the values.
   # by_year[2009] = {business: 35, mixed: 4, personal: 7}

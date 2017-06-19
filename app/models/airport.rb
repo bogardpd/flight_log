@@ -36,6 +36,13 @@ class Airport < ApplicationRecord
     end
   end
   
+  def first_visit(logged_in=false)
+    flights = logged_in ? Flight.all : Flight.visitor
+    matching_flights = flights.where("origin_airport_id = ? OR destination_airport_id = ?", self.id, self.id)
+    return nil if matching_flights.length == 0
+    return matching_flights.order(departure_date: :asc).first.departure_date
+  end
+  
   # Take a collection of flights and a region, and return a hash of all
   # of the flights' airports that are within the given reason, with Airport
   # IDs as the keys and IATA codes as the values.

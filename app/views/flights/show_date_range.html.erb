@@ -40,7 +40,7 @@
 <% @airport_array.each_with_index do |airport, index| %>
   <tr>
 		
-		<% if @date_range.include?(Flight.airport_first_visit(airport[:id])) %>
+		<% if @date_range.include?(Airport.find(airport[:id]).first_visit(logged_in?)) %>
 			<% @new_airport_flag = true %>
 			<td class="counter new"><%= (airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
 			<td class="airport_city new"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %> <%= link_to(airport[:city] + "*", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>

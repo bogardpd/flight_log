@@ -88,6 +88,10 @@ class AircraftFamily < ApplicationRecord
     end  
     return counts
   end
+
+  def self.family_select_options
+    self.families.pluck(:manufacturer, :family_name, :id).sort_by{|af| [af[0].downcase,af[1].downcase]}.map{|af| [[af[0],af[1]].join(" "), af[2]]}
+  end
   
   # Returns a nested array of families and types in a format ready for
   # grouped_options_for_select
@@ -97,10 +101,6 @@ class AircraftFamily < ApplicationRecord
     return families.map{|f| {f.id => {family_name: f.family_name, manufacturer: f.manufacturer}}}
       .reduce{|a,b| a.merge(b)}
       .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]} Family"].push(([{family_name: "Unknown type of #{v[:family_name]}", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
-  end
-  
-  def self.family_select_options
-    self.families.pluck(:manufacturer, :family_name, :id).sort_by{|af| [af[0].downcase,af[1].downcase]}.map{|af| [[af[0],af[1]].join(" "), af[2]]}
   end
   
   # Accepts a date range, and returns all aircraft families that had their
