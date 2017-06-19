@@ -85,7 +85,7 @@ class FlightsController < ApplicationController
     @title = @flight.airline.airline_name + " " + @flight.flight_number.to_s
     @meta_description = "Details for Paul Bogardʼs #{@flight.airline.airline_name} #{@flight.flight_number} flight on #{format_date(@flight.departure_date)}."
     
-    @route_distance = route_distance_by_airport_id(@flight.origin_airport, @flight.destination_airport)
+    @route_distance = Route.distance_by_airport_id(@flight.origin_airport, @flight.destination_airport)
     
     @boarding_pass = BoardingPass.new(@flight.boarding_pass_data, flight: @flight)
     

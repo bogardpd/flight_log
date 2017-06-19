@@ -2,6 +2,31 @@ class Route < ApplicationRecord
   belongs_to :airport1, :class_name => 'Airport'
   belongs_to :airport2, :class_name => 'Airport'
   
+  # Given two IATA airport codes, returns the distance in statute miles
+  # between them. This calls an SQL query, and should not be used in a loop.
+  def self.distance_by_iata(iata1, iata2)
+    airport_ids = Array.new
+    airport_ids[0] = Airport.where(:iata_code => iata1).first.try(:id)
+    airport_ids[1] = Airport.where(:iata_code => iata2).first.try(:id)
+    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport_ids[0], airport_ids[1], airport_ids[1], airport_ids[0])
+    if current_route.present?
+      return current_route.first.distance_mi
+    else
+      return false
+    end
+  end
+  
+  # Given two airport IDs, returns the distance in statute miles between them.
+  # This calls an SQL query, and should not be used in a loop.
+  def self.distance_by_airport_id(airport1_id, airport2_id)
+    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport1_id, airport2_id, airport2_id, airport1_id)
+    if current_route.present?
+      return current_route.first.distance_mi
+    else
+      return false
+    end
+  end
+  
   # Returns an array of hashes. Each hash contains an array of two airport codes
   # (sorted alphabetically), distance, and
   # number of times flown. Routes which have been flown but have
@@ -32,4 +57,5 @@ class Route < ApplicationRecord
     return route_array
     
   end
+  
 end

@@ -56,29 +56,6 @@ protected
     input_date.strftime("%e %b %Y")
   end
   
-  # This calls an SQL query, and should not be used in a loop.
-  def route_distance_by_iata(iata1, iata2)
-    airport_ids = Array.new
-    airport_ids[0] = Airport.where(:iata_code => iata1).first.try(:id)
-    airport_ids[1] = Airport.where(:iata_code => iata2).first.try(:id)
-    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport_ids[0], airport_ids[1], airport_ids[1], airport_ids[0])
-    if current_route.present?
-      return current_route.first.distance_mi
-    else
-      return false
-    end
-  end
-  
-  # This calls an SQL query, and should not be used in a loop.
-  def route_distance_by_airport_id(airport1_id, airport2_id)
-    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport1_id, airport2_id, airport2_id, airport1_id)
-    if current_route.present?
-      return current_route.first.distance_mi
-    else
-      return false
-    end
-  end
-  
   # Accept a sort querystring in the format "category" or "-category", and
   # return a hash in the form [category: :category, direction: ':asc|:desc'].
   # Parameters:
@@ -138,6 +115,7 @@ protected
     return route_superlatives
   end
   
+  # Given a collection of Flights, returns their total distance.
   def total_distance(flights)
     
     # Get set of airports used in flights and select all routes with at least one of those airports
