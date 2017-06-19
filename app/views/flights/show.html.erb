@@ -107,7 +107,7 @@
   <% if @flight.tail_number %>
   <tr>
     <td class="flight_show_label">Tail Number</td>
-    <td class="tail_number"><% if Flight.tail_country(@flight.tail_number) %><%= tail_number_country_flag(@flight.tail_number) %> <% end %><%= link_to(@flight.tail_number, show_tail_path(@flight.tail_number), :title => "View flights on tail number #{@flight.tail_number}") %></td>
+    <td class="tail_number"><% if TailNumber.country(@flight.tail_number) %><%= tail_number_country_flag(@flight.tail_number) %> <% end %><%= link_to(@flight.tail_number, show_tail_path(@flight.tail_number), :title => "View flights on tail number #{@flight.tail_number}") %></td>
   </tr>
   <% end %>
 </table>

@@ -108,7 +108,7 @@ module ApplicationHelper
   end
   
   def tail_number_country_flag(tail_number)
-    country_flag(Flight.tail_country(tail_number))
+    country_flag(TailNumber.country(tail_number))
   end
   
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS

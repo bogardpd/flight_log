@@ -247,9 +247,7 @@ class FlightsController < ApplicationController
     
     if @flight_tail_numbers.any?
       
-      @tail_numbers_table = Flight.tail_number_table(logged_in?)
-      
-
+      @tail_numbers_table = TailNumber.table(logged_in?)
     
       # Find maxima for graph scaling:
       @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]

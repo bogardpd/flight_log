@@ -1,5 +1,5 @@
-<% if Flight.tail_country(params[:tail_number]) %>
-<div id="title-info"><%= Flight.tail_country(params[:tail_number]) %><%= tail_number_country_flag(params[:tail_number]) %></div>
+<% if TailNumber.country(params[:tail_number]) %>
+<div id="title-info"><%= TailNumber.country(params[:tail_number]) %><%= tail_number_country_flag(params[:tail_number]) %></div>
 <% end %>
 
 <h1><%= params[:tail_number] %></h1>
