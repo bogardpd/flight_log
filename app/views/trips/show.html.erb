@@ -1,7 +1,11 @@
+<% if logged_in? && @trip.purpose.present? %>
+  <div id="title-info"><%= @trip.purpose.capitalize %> trip</div>
+<% end %>
+
 <h1><%= @trip.name %></h1>
 
 <% if @trip.comment %>
-<p><%= @trip.comment %></p>
+  <p><%= @trip.comment %></p>
 <% end %>
 
 <%= @map.draw %>
