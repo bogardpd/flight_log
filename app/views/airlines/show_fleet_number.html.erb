@@ -22,23 +22,23 @@
 
 
 <a name="airlines"></a>
-<h2>Airlines with Flights Operated as <acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %></h2>
+<h2>Airlines with Flights Operated as <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 
 <a name="aircraft"></a>
-<h2>Aircraft Operated as <acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %></h2>
+<h2>Aircraft Operated as <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
 <a name="classes"></a>
-<h2>Classes Flown on <acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %></h2>
+<h2>Classes Flown on <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
 <a name="superlatives"></a>
-<h2>Longest and Shortest Routes Flown on <acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %></h2>
+<h2>Longest and Shortest Routes Flown on <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>
 <%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 
 <a name="flights"></a>
-<h2><acronym title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></acronym> #<%= @fleet_number %> Flight List</h2>
+<h2><abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %> Flight List</h2>
 
 <table class="flightlog">
 	<tr>

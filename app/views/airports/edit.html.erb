@@ -1,5 +1,5 @@
 <% provide(:button_text, "Update Airport")%>
 
-<h1>Edit <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h1>
+<h1>Edit <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h1>
 
 <%= render :partial => 'form' %>

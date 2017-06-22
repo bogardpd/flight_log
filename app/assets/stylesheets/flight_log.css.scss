@@ -264,6 +264,13 @@ body {
 }
 
 
+/* Base tags */
+
+abbr {
+  text-decoration: none;
+  border-bottom: 2px dotted $color-text-primary;
+}
+
 /* Boarding Passes */
 div.boarding-pass-fields {
   

@@ -20,7 +20,7 @@
 
 
 
-<p>I have visited <span class="bold"><acronym title="<%= @airport.city %>"><%= @airport.iata_code %></span> <%= pluralize(@airport_frequency, "time") %>.</p>
+<p>I have visited <span class="bold"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></span> <%= pluralize(@airport_frequency, "time") %>.</p>
 
 <% unless @flights.length == 0 %>
 
@@ -31,9 +31,9 @@
 
 
 	<a name="airports"></a>
-	<h2>Direct Flight Airports for <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<h2>Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 
-	<p>These are the airports with which Iʼve had a direct flight from or to <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.</p>
+	<p>These are the airports with which Iʼve had a direct flight from or to <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.</p>
 
 	<table class="flightlog">
 	  <tr>
@@ -67,40 +67,40 @@
 	</table>
 
 	<a name="airlines"></a>
-	<h2>Airlines Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<h2>Airlines Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 	
 	<a name="operators"></a>
-	<h2>Operators Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<h2>Operators Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
 	<a name="aircraft"></a>
-	<h2>Aircraft Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<h2>Aircraft Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
 	<a name="classes"></a>
-	<h2>Classes Flown to or from <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
+	<h2>Classes Flown to or from <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 
 	<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
 
 	<a name="sections"></a>
-	<h2>Trip Sections Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
-	<p>This map shows the flights of all of my trip sections that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+	<h2>Trip Sections Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<p>This map shows the flights of all of my trip sections that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
 	<%= map_with_region_select(@sections_map, anchor: "sections-map") %>
 	<%= render 'trips/section_table' %>
 
 
 
 	<a name="trips"></a>
-	<h2>Trips Using <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym></h2>
-	<p>This map shows the flights of all of my trips that, at some point, flew through <acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym>.
+	<h2>Trips Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<p>This map shows the flights of all of my trips that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
 	<%= map_with_region_select(@trips_map, anchor: "trips-map") %>
 	<%= render "trips/trip_table" %>
 	
 	
 	<a name="flights"></a>
-	<h2><acronym title="<%= @airport.city %>"><%= @airport.iata_code %></acronym> Flight List</h2>
+	<h2><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Flight List</h2>
 	<table class="flightlog">
 	<%= render :partial => "flights/flight_header_row" %>
 	<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
