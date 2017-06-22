@@ -77,14 +77,6 @@ class Flight < ApplicationRecord
     return summary
   end
   
-  # Accepts a date range, and returns all classes that had their
-  # first flight in this date range.
-  def self.new_class_in_date_range(date_range, logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
-    first_flights = flights.select(:travel_class, :departure_date).where.not(travel_class: nil).group(:travel_class).minimum(:departure_date)
-    return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
-  end
-  
   # For a given flight collection, return a range of the years that contain
   # flights.
   def self.year_range

@@ -12,7 +12,14 @@ module TravelClass
     if flights.count > class_sum
       counts.push({class_code: nil, flight_count: flights.count - class_sum})
     end
-    return counts
+    return counts.sort_by{|tc| tc[:class_code] || ""}
+  end
+  
+  # Given a travel class string, gets the travel class code.
+  def self.get_class_id(class_string)
+    return nil unless class_string.present?
+    classes = list.invert
+    return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
   end
   
   # Returns a hash of travel classes.
@@ -25,11 +32,12 @@ module TravelClass
     return classes
   end
   
-  # Given a travel class string, gets the travel class code.
-  def self.get_class_id(class_string)
-    return nil unless class_string.present?
-    classes = list.invert
-    return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
-  end
+  # Accepts a date range, and returns all classes that had their
+  # first flight in this date range.
+  def self.new_in_date_range(date_range, logged_in=false)
+    flights = logged_in ? Flight.all : Flight.visitor
+    first_flights = flights.select(:travel_class, :departure_date).where.not(travel_class: nil).group(:travel_class).minimum(:departure_date)
+    return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
+  end  
   
 end

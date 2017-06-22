@@ -157,7 +157,7 @@ class FlightsController < ApplicationController
     @new_airports = Airport.new_in_date_range(@date_range, logged_in?)
     @new_airlines = Airline.new_in_date_range(@date_range, logged_in?)   
     @new_aircraft_families = AircraftFamily.new_in_date_range(@date_range, logged_in?)
-    @new_classes = Flight.new_class_in_date_range(@date_range, logged_in?)
+    @new_classes = TravelClass.new_in_date_range(@date_range, logged_in?)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
