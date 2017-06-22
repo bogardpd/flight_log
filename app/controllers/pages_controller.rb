@@ -11,6 +11,7 @@ class PagesController < ApplicationController
     @flight_aircraft = AircraftFamily.flight_count(logged_in?)
     @flight_airlines = Airline.flight_count(logged_in?, type: :airline)
     @flight_airports = Airport.visit_count(logged_in?)
+    @flight_routes = Route.flight_count(logged_in?)
     
     if logged_in?
       @flights = Flight.flights_table
@@ -19,7 +20,7 @@ class PagesController < ApplicationController
       Trip.where(hidden: true).map{|trip| add_message(:info, "Active Trip: #{view_context.link_to(trip.name, trip_path(trip), class: "title")}")} # Link to hidden trips
       add_message(:info, "You have boarding passes you can #{view_context.link_to("import", import_boarding_passes_path)}!") if PKPass.any?
       
-      if Route.table(logged_in?).find{|x| x[:distance_mi] < 0}
+      if Route.flight_count(logged_in?).find{|x| x[:distance_mi] < 0}
         add_message(:warning, "Some #{view_context.link_to("routes", routes_path)} don’t have distances.")
       end
        
@@ -33,14 +34,6 @@ class PagesController < ApplicationController
     if @flights.any?
     
       @map = FlightsMap.new(@flights, region: @region)
-    
-      # Create route totals hash:
-      @route_totals = Hash.new(0)
-      @flights.each do |flight|
-        airport_alphabetize = [flight.origin_iata_code,flight.destination_iata_code].sort
-        @route_totals[[airport_alphabetize[0],airport_alphabetize[1]]] += 1
-      end      
-      @route_totals = @route_totals.sort_by {|key, value| [-value, key]}
       
       # Create superlatives:
       @route_superlatives = superlatives(@flights)

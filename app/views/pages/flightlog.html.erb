@@ -63,14 +63,14 @@
       <th class="left">Route</th>
       <th class="center">Flights</th>
     </tr>
-  <% @route_totals.first(5).each do |flight_route, value| %>
+  <% @flight_routes.first(5).each do |flight_route| %>
     <tr>
-      <td class="left"><%= link_to("<span class=\"code-mono\">#{flight_route[0]}</span> &#x21C4; <span class=\"code-mono\">#{flight_route[1]}</span>".html_safe, route_path(flight_route.join("-")), :title => "View flights between #{flight_route[0]} and #{flight_route[1]}") %></td>
-      <td class="center"><%= value %></td>
+      <td class="left"><%= link_to("<span class=\"code-mono\">#{flight_route[:route][0]}</span> &#x21C4; <span class=\"code-mono\">#{flight_route[:route][1]}</span>".html_safe, route_path(flight_route[:route].join("-")), :title => "View flights between #{flight_route[:route][0]} and #{flight_route[:route][1]}") %></td>
+      <td class="center"><%= flight_route[:flight_count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@route_totals.length, 'route')}</span>".html_safe, routes_path)%></p>
+  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@flight_routes.length, 'route')}</span>".html_safe, routes_path)%></p>
 </div>
 
 <div class="intro_box column">

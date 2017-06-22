@@ -28,10 +28,10 @@ class Route < ApplicationRecord
   end
   
   # Returns an array of hashes. Each hash contains an array of two airport codes
-  # (sorted alphabetically), distance, and
-  # number of times flown. Routes which have been flown but have
+  # (sorted alphabetically), distance, and number of times flown, sorted by
+  # number of times flown descending. Routes which have been flown but have
   # not had a distance defined have a value of -1 (to allow sorting).
-  def self.table(logged_in = false)
+  def self.flight_count(logged_in = false)
     flights = logged_in ? Flight.all : Flight.visitor
     flights = flights.includes(:origin_airport, :destination_airport)
     
@@ -49,12 +49,12 @@ class Route < ApplicationRecord
     route_frequencies.each do |route, freq|
       route_array.push({
         route: route,
-        total_flights: freq,
+        flight_count: freq,
         distance_mi: route_distances[route] || -1
       })
     end
     
-    return route_array
+    return route_array.sort_by{|r| [-r[:flight_count], r[:route][0], r[:route][1]]}
     
   end
   

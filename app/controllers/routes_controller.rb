@@ -7,12 +7,12 @@ class RoutesController < ApplicationController
     @title = "Routes"
     @meta_description = "A list of the routes Paul Bogard has flown on, and how often heʼs flown on each."
         
-    @route_table = Route.table(logged_in?)     
+    @route_table = Route.flight_count(logged_in?)     
     
     if @route_table.count > 0
       
       # Find maxima for graph scaling:
-      @flights_maximum = @route_table.max_by{|i| i[:total_flights].to_i}[:total_flights]
+      @flights_maximum = @route_table.max_by{|i| i[:flight_count].to_i}[:flight_count]
       @distance_maximum = @route_table.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
   
       # Sort route table:
@@ -21,9 +21,9 @@ class RoutesController < ApplicationController
       @sort_dir   = sort_params[:direction]
       sort_mult   = (@sort_dir == :asc ? 1 : -1)
       if @sort_cat == :flights
-        @route_table = @route_table.sort_by {|value| [sort_mult*value[:total_flights], -value[:distance_mi]]}
+        @route_table = @route_table.sort_by {|value| [sort_mult*(value[:flight_count] || 0), -(value[:distance_mi] || -1)]}
       elsif @sort_cat == :distance
-        @route_table = @route_table.sort_by {|value| [sort_mult*value[:distance_mi], -value[:total_flights]]}
+        @route_table = @route_table.sort_by {|value| [sort_mult*(value[:distance_mi] || -1), -(value[:flight_count] || 0)]}
       end
     end
     
