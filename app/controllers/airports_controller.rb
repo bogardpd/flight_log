@@ -11,18 +11,12 @@ class AirportsController < ApplicationController
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
     
     if @flights.any?
-        
-      # Create airport table array:
-      @airport_table = Airport.airport_table(@flights)
       
-      # Create airports with no flights table array:
+      @airports = Airport.visit_count(logged_in?)
+      used_airport_codes = @airports.map{|a| a[:iata_code]}.uniq.compact
       if logged_in?
-        airport_ids = Airport.region_iata_codes(@flights, :world).keys
-        @airports_with_no_flights = Airport.where('id not in (?)',airport_ids)
+        @airports_with_no_flights = Airport.where.not(iata_code: used_airport_codes).order(:city)
       end
-    
-      # Find maxima for graph scaling:
-      @visits_maximum = @airport_table.max_by{|i| i[:frequency]}[:frequency]
     
       # Sort route table:
       
@@ -34,23 +28,23 @@ class AirportsController < ApplicationController
       case @sort_cat
       when :country
         if @sort_dir == :asc
-          @airport_table = @airport_table.sort_by {|airport| [airport[:country], airport[:city]]}
+          @airports = @airports.sort_by {|airport| [airport[:country], airport[:city]]}
         else
-          @airport_table = @airport_table.sort {|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
+          @airports = @airports.sort {|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
         end
       when :city
-        @airport_table = @airport_table.sort_by {|airport| airport[:city]}
-        @airport_table.reverse! if @sort_dir == :desc
+        @airports = @airports.sort_by {|airport| airport[:city]}
+        @airports.reverse! if @sort_dir == :desc
       when :code
-        @airport_table = @airport_table.sort_by {|airport| airport[:iata_code]}
-        @airport_table.reverse! if @sort_dir == :desc
+        @airports = @airports.sort_by {|airport| airport[:iata_code]}
+        @airports.reverse! if @sort_dir == :desc
       when :visits
-        @airport_table = @airport_table.sort_by { |airport| [sort_mult*airport[:frequency], airport[:city]] }
+        @airports = @airports.sort_by { |airport| [sort_mult*airport[:visit_count], airport[:city]] }
       end
       
       # Create maps:
       @region = current_region(default: :world)
-      @airports_map  = AirportsMap.new(@airport_table, region: @region)
+      @airports_map  = AirportsMap.new(Airport.where(iata_code: used_airport_codes), region: @region)
       @frequency_map = AirportFrequencyMap.new(@flights, region: @region)
       
     end

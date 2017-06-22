@@ -10,6 +10,7 @@ class PagesController < ApplicationController
     
     @flight_aircraft = AircraftFamily.flight_count(logged_in?)
     @flight_airlines = Airline.flight_count(logged_in?, type: :airline)
+    @flight_airports = Airport.visit_count(logged_in?)
     
     if logged_in?
       @flights = Flight.flights_table
@@ -33,8 +34,6 @@ class PagesController < ApplicationController
     
       @map = FlightsMap.new(@flights, region: @region)
     
-      @airport_array = Airport.airport_table(@flights)
-
       # Create route totals hash:
       @route_totals = Hash.new(0)
       @flights.each do |flight|

@@ -131,9 +131,6 @@ class FlightsController < ApplicationController
     end
     
     @in_text = params[:year].present? ? params[:year] : "this date range"
-    @new_airport_flag = false
-    @new_aircraft_flag = false
-    @new_airline_tag = false
     
     filtered_flights = Flight.where(:departure_date => @date_range)
     if logged_in?
@@ -151,16 +148,15 @@ class FlightsController < ApplicationController
     @region = current_region(default: :world)
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
-    
-    @airport_array = Airport.airport_table(@flights)
-    @airport_maximum = @airport_array.first[:frequency]
       
     # Create comparitive lists of airlines and classes:
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
-    @new_airlines = Airline.new_in_date_range(@date_range, logged_in?)    
+    @airports = Airport.visit_count(logged_in?, flights: filtered_flights) 
+    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights) 
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    @new_aircraft_families = AircraftFamily.new_in_date_range(@date_range, logged_in?)
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
+    @new_airports = Airport.new_in_date_range(@date_range, logged_in?)   
+    @new_airlines = Airline.new_in_date_range(@date_range, logged_in?)   
+    @new_aircraft_families = AircraftFamily.new_in_date_range(@date_range, logged_in?)
     @new_classes = Flight.new_class_in_date_range(@date_range, logged_in?)
     
     # Create superlatives:

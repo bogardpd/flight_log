@@ -26,15 +26,15 @@
       <th class="center">Code</th>
       <th class="center">Visits</th>
     </tr>
-  <% @airport_array.first(5).each do |airport| %>
+  <% @flight_airports.first(5).each do |airport| %>
     <tr>
       <td class="left"><%= country_flag(airport[:country]) %> <%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
       <td class="center code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-      <td class="center"><%= airport[:frequency] %></td>
+      <td class="center"><%= airport[:visit_count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to("See all <span class=\"summary_total\">#{pluralize(@airport_array.count, 'airport')}</span>".html_safe, airports_path)%></p>
+  <p><%= link_to(%Q(See all <span class="summary_total">#{pluralize(@flight_airports.count, "airport")}</span>).html_safe, airports_path)%></p>
 </div>
 
 <div class="intro_box column">

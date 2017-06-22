@@ -10,11 +10,11 @@
 	  </ul>
 	</div>
 
-	<% end %>
+<% end %>
 
-	<p>I have visited <%= pluralize(@airport_table.count, 'airport') %>.</p>
+<p>I have visited <%= pluralize(@airports.select{|a| a[:iata_code]}.count, "airport") %>.</p>
 
-	<% if @flights.any? %>
+<% if @flights.any? %>
 
 	<a name="airport_map"></a>
   <%= map_with_region_select(@airports_map, anchor: "airports-map") %>
@@ -23,41 +23,20 @@
 
 	<p class="center">A layover counts as one single visit to a given airport, even though two flights use it.</p>
 
-	<table class="flightlog">
-	  <tr>
-	    <th class="counter">#</th>
-			<th class="airport_country"><%= sort_link("<abbr title=\"Country\">Cnt</abbr>", :country, "country", :asc, "airports_list") %></th>
-			<th class="airport_city"><%= sort_link("City", :city, "city", :asc, "airports_list") %></th>
-	    <th class="airport-code"><%= sort_link("Code", :code, "code", :asc, "airports_list") %></th>
-	    <th class="airport_visits"><%= sort_link("Visits", :visits, "visits", :desc, "airports_list") %></th>	
-	  </tr>
-	<% previous_count = nil %>
-	<% @airport_table.each_with_index do |airport, index| %>
-	  <tr>
-	    <td class="counter"><%= (@sort_cat == :visits && airport[:frequency] == previous_count) ? "⋮" : index + 1 %></td>
-			<td class="airport_country"><%= country_flag(airport[:country]) %></td>
-			<td class="airport_city"><%= link_to(airport[:city], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-	    <td class="airport-code code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-	    <td class="airport_visits"><%= render "flights/graph_block", :value => airport[:frequency], :maximum => @visits_maximum %></td>
-	
-	  </tr>
-		<% previous_count = airport[:frequency] %>
-	<% end %>
-	  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@airport_table.count, 'airport') %></td></tr>
-	</table>
+  <%= render partial: "airport_count_table", locals: {airports: @airports, is_summary: false} %>
 
 	<% if (logged_in? && @airports_with_no_flights.any?) %>
-	<h2>Airports with No Flights</h2>
-	<table class="flightlog">
-	<% @airports_with_no_flights.each do |airport| %>
-	  <tr>
-	    <td class="airport_city"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %> <%= link_to(airport.city, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
-	    <td class="airport-code code-mono"><%= link_to(airport.iata_code, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
-	
-	  </tr>
-	<% end %>
-	</table>
-	<% end %>
+  	<h2>Airports with No Flights</h2>
+  	<table class="flightlog">
+  	<% @airports_with_no_flights.each do |airport| %>
+  	  <tr>
+  	    <td class="airport_city"><%= image_tag(Airport.new(:country => airport[:country]).country_flag_path, :title => airport[:country], :class => 'country_flag') %> <%= link_to(airport.city, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
+  	    <td class="airport-code code-mono"><%= link_to(airport.iata_code, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
+
+  	  </tr>
+  	<% end %>
+  	</table>
+  <% end %>
 
 	<a name="airport_frequency_map"></a>
 	<h2>Airport Frequency Map</h2>

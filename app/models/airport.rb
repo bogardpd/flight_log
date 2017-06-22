@@ -43,6 +43,58 @@ class Airport < ApplicationRecord
     return matching_flights.order(departure_date: :asc).first.departure_date
   end
   
+  # Accepts a date range, and returns the IATA code for all airports that had
+  # their first flight in this date range.
+  def self.new_in_date_range(date_range, logged_in=false)
+    flights = logged_in ? Flight.all : Flight.visitor
+    orig = flights.joins(:origin_airport).select(:iata_code, :departure_date).group(:iata_code).minimum(:departure_date)
+    dest = flights.joins(:destination_airport).select(:iata_code, :departure_date).group(:iata_code).minimum(:departure_date)
+    first_flights = orig.merge(dest){|key,o,d| [o,d].min}
+    return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
+  end
+  
+  # Returns an array of airports, with a hash for each family containing the
+  # id, airport name, IATA code, and number of visits to that airport, sorted
+  # by number of visits descending.
+  def self.visit_count(logged_in=false, flights: nil)
+    flights ||= Flight.all
+    flights = flights.visitor unless logged_in
+    flights = flights.select(:trip_id, :trip_section, "origin_airports.iata_code AS origin_iata, origin_airports.city AS origin_city, origin_airports.country AS origin_country, destination_airports.iata_code AS destination_iata, destination_airports.city AS destination_city, destination_airports.country AS destination_country").joins("INNER JOIN airports AS origin_airports ON flights.origin_airport_id = origin_airports.id INNER JOIN airports AS destination_airports ON flights.destination_airport_id = destination_airports.id").order(:trip_id, :trip_section, :departure_utc)
+    
+    visits = Hash.new(0)
+    previous_trip_section = {trip_id: nil, trip_section: nil}
+    previous_destination = nil
+    
+    flights.each do |flight|
+      current_trip_section = {trip_id: flight[:trip_id], trip_section: flight[:trip_section]
+      }
+      unless current_trip_section == previous_trip_section && flight[:origin_iata] == previous_destination
+        # This is not a layover, so count this origin airport
+        visits[[flight[:origin_iata],flight[:origin_city],flight[:origin_country]]] += 1
+      end
+      visits[[flight[:destination_iata],flight[:destination_city],flight[:destination_country]]] += 1
+      previous_trip_section = current_trip_section
+      previous_destination = flight[:destination_iata]
+      
+    end
+    
+    counts = visits.map{|k,v|
+      {iata_code: k[0], city: k[1], country: k[2], visit_count: v}
+    }.sort_by{|c| [-c[:visit_count] || 0, c[:city] || "", c[:iata_code] || ""]}
+    
+    return counts
+    
+    #counts = flights.joins(type).group(id_field, :airline_name, :iata_airline_code).count
+    #  .map{|k,v| {id: k[0], airline_name: k[1], iata_airline_code: k[2], flight_count: v}}
+    #  .sort_by{|a| [-a[:flight_count], a[:airline_name]]}
+    
+    #airline_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
+    #if flights.count > airline_sum
+    #  counts.push({id: nil, flight_count: flights.count - airline_sum})
+    #end
+    #return counts
+  end
+  
   # Take a collection of flights and a region, and return a hash of all
   # of the flights' airports that are within the given reason, with Airport
   # IDs as the keys and IATA codes as the values.
@@ -96,21 +148,6 @@ class Airport < ApplicationRecord
     
     return airport_frequency
     
-  end
-  
-  # Take a collection of flights, and return an array of hashes of airport IDs,
-  # IATA codes, cities, countries, and visit frequencies.
-  # Params:
-  # +flights+:: A collection of Flights, with flights_table applied. 
-  def self.airport_table(flights)
-    airport_frequency = Airport.frequency_hash(flights)
-    airports = Airport.find(airport_frequency.keys)
-    airport_table = Array.new
-    airports.each do |airport|
-      airport_table.push({:id => airport.id, :iata_code => airport.iata_code, :city => airport.city, :country => airport.country, :frequency => airport_frequency[airport.id]})
-    end
-    airport_table.sort_by! { |airport| [-airport[:frequency], airport[:city]] }
-    return airport_table
   end
   
   protected

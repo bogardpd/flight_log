@@ -30,7 +30,7 @@
         <%= (new_airlines.include?(airline[:id]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
           <td class="counter"><%= ((is_summary || @sort_cat == :flights) && airline[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
       		<td class="airline_airline">
-            <%= link_to(image_tag(airline_icon_path(airline[:iata_airline_code]), title: airline[:airline_name], class: "airline_icon") + airline[:airline_name], path, title: "View all flights on #{airline[:airline_name]}") %>
+            <%= link_to(image_tag(airline_icon_path(airline[:iata_airline_code]), title: airline[:airline_name], class: "airline_icon") + "#{airline[:airline_name]}#{"*" if new_airlines.include?(airline[:id])}", path, title: "View all flights on #{airline[:airline_name]}") %>
           </td>
       		<td class="airline-code code-mono">
             <%= link_to(airline[:iata_airline_code].split("-").first, path, :title => "View all flights on #{airline[:airline_name]}") %>

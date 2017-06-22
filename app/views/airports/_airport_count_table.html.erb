@@ -1,0 +1,41 @@
+<% known_airports = airports.select{|a| a[:iata_code].present?} %>
+  
+<% if known_airports.any? %>
+  <% new_airports ||= Array.new %>
+  <% legend_range ||= "this date range" %>
+  
+  <table class="flightlog">
+    <thead>
+      <tr>
+    		<th class="counter">#</th>
+        <th class="airport_country"><%= is_summary ? %Q(<abbr title="Country">Cnt</abbr>).html_safe : sort_link(%Q(<abbr title="Country">Cnt</abbr>), :country, "country", :asc, "airports_list") %></th>
+    		<th class="airport_city"><%= is_summary ? "City" : sort_link("City", :city, "city", :asc, "airports_list") %></th>
+        <th class="airport-code"><%= is_summary ? "Code" : sort_link("Code", :code, "code", :asc, "airports_list") %></th>
+        <th class="airport_visits"><%= is_summary ? "Visits" : sort_link("Visits", :visits, "visits", :desc, "airports_list") %></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% previous_count = nil %>
+
+    <% airline_maximum = known_airports.max_by{|i| i[:visit_count]}[:visit_count]%>
+    <% known_airports.each_with_index do |airport, index| %>
+      <%= (new_airports.include?(airport[:iata_code]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
+        <td class="counter"><%= ((is_summary || @sort_cat == :flights) && airport[:visit_count] == previous_count) ? "⋮" : index + 1 %></td>
+    		<td class="airport_country"><%= country_flag(airport[:country]) %></td>
+        <td class="airport_city"><%= link_to("#{airport[:city]}#{"*" if new_airports.include?(airport[:iata_code])}", airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+        <td class="airport-code code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+        <td class="airport_visits"><%= render "flights/graph_block", :value => airport[:visit_count], :maximum => airline_maximum %></td>
+      </tr>
+    	<% previous_count = airport[:visit_count] %>
+    <% end %>
+
+      <tr><td colspan="5" class="flightlog_total"><%= pluralize(known_airports.count, "airport") %></td></tr>
+    </tbody>
+
+  </table>
+
+  <% if (known_airports.map{|a| a[:iata_code]} & new_airports).any? %>
+    <p class="new-legend">* Airport first visited in <%= legend_range %></p>
+  <% end %>
+  
+<% end %>
