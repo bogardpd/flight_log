@@ -57,7 +57,7 @@ module TailNumber
   # Returns a hash of tail numbers, aircraft codes (ICAO preferred), aircraft
   # manufacturers, aircraft family/type names, airline names, airline IATA
   # codes, and flight counts
-  def self.table(logged_in=false)
+  def self.flight_count(logged_in=false)
     flights = logged_in ? Flight.all : Flight.visitor
     tail_counts = flights.joins(:aircraft_family).joins(:airline).where.not(tail_number: nil).group(:tail_number).count
     tail_details = flights.joins(:aircraft_family).joins(:airline).select(:tail_number, :iata_airline_code, :airline_name, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :family_name, :departure_utc).where.not(tail_number:nil)
@@ -80,6 +80,7 @@ module TailNumber
         manufacturer: v[:manufacturer],
         family_name:  v[:family_name]
       }}
+      .sort_by{|t| [-(t[:count] || 0), t[:tail_number] || ""]}
   end
   
 end
