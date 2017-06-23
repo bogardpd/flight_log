@@ -24,14 +24,12 @@
 
 <% unless @flights.length == 0 %>
 
-	<a name="map"></a>
-  
-  <%= map_with_region_select(@airport_map, anchor: "airport-map") %>
-	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+	<div id="map">  
+    <%= map_with_region_select(@airport_map, anchor: "airport-map") %>
+	  <%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+  </div>
 
-
-	<a name="airports"></a>
-	<h2>Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="airports">Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 
 	<p>These are the airports with which Iʼve had a direct flight from or to <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.</p>
 
@@ -66,41 +64,30 @@
 	  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
 	</table>
 
-	<a name="airlines"></a>
-	<h2>Airlines Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="airports">Airlines Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 	
-	<a name="operators"></a>
-	<h2>Operators Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="operators">Operators Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
-	<a name="aircraft"></a>
-	<h2>Aircraft Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="aircraft">Aircraft Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
-	<a name="classes"></a>
-	<h2>Classes Flown to or from <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="classes">Classes Flown to or from <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 
 	<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
-
-	<a name="sections"></a>
-	<h2>Trip Sections Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="sections">Trip Sections Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<p>This map shows the flights of all of my trip sections that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
 	<%= map_with_region_select(@sections_map, anchor: "sections-map") %>
 	<%= render 'trips/section_table' %>
 
-
-
-	<a name="trips"></a>
-	<h2>Trips Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="trips">Trips Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<p>This map shows the flights of all of my trips that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
 	<%= map_with_region_select(@trips_map, anchor: "trips-map") %>
 	<%= render "trips/trip_table" %>
 	
-	
-	<a name="flights"></a>
-	<h2><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Flight List</h2>
+	<h2 id="flights"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Flight List</h2>
 	<table class="flightlog">
 	<%= render :partial => "flights/flight_header_row" %>
 	<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>

@@ -26,9 +26,10 @@
 
 <% if @flights.any? %>
 
-	<a name="map"></a>
-  <%= map_with_region_select(@map) %>
-	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+	<div id="map">
+    <%= map_with_region_select(@map) %>
+  	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+  </div>
   
   <% if @aircraft_family.is_family? %>
     <h2 id="types"><%= @aircraft_family.family_name %> Family Subtypes</h2>

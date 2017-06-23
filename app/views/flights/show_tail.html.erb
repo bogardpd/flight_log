@@ -19,33 +19,28 @@
 
 <p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family.family_name, aircraft_family_path(@flights.last.aircraft_family), :title => "View flights on #{@flights.last.aircraft_family.manufacturer} #{@flights.last.aircraft_family.family_name} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
-<a name="map"></a>
-<%= map_with_region_select(@map) %>
-<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+<div id="map">
+  <%= map_with_region_select(@map) %>
+  <%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+</div>
 
-<a name="classes"></a>
-<h2>Classes Flown on <%= params[:tail_number] %></h2>
+<h2 id="classes">Classes Flown on <%= params[:tail_number] %></h2>
 <%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
-<a name="airlines"></a>
-<h2>Airlines Using <%= params[:tail_number] %></h2>
+<h2 id="airlines">Airlines Using <%= params[:tail_number] %></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 
-<a name="operators"></a>
-<h2>Operators Using <%= params[:tail_number] %></h2>
+<h2 id="operators">Operators Using <%= params[:tail_number] %></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
-<a name="superlatives"></a>
-<h2>Longest and Shortest Routes Flown on <%= params[:tail_number] %></h2>
+<h2 id="superlatives">Longest and Shortest Routes Flown on <%= params[:tail_number] %></h2>
 
 <%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 
-<a name="flights"></a>
-<h2><%= params[:tail_number] %> Flight List</h2>
+<h2 id="flights"><%= params[:tail_number] %> Flight List</h2>
 <%= render "flight_table" %>
 
-<a name="tracking"></a>
-<h2>Tracking</h2>
+<h2 id="tracking">Tracking</h2>
 
 <ul>
   <li>FlightAware: <%= link_to(params[:tail_number], "http://flightaware.com/live/flight/#{params[:tail_number]}", :title => "Track #{params[:tail_number]} on FlightAware")%></li>

@@ -7,24 +7,23 @@
   </ul>
 </div>
 
-<a name="airlines"></a>
+<div id="airlines">
+  <p>I have flown on <%= pluralize(@airlines.count, 'airline') %>.</p>
 
-<p>I have flown on <%= pluralize(@airlines.count, 'airline') %>.</p>
+  <% if @airlines.empty? %>
+  	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
+  		<%= render 'error_no_flights' %>
+  	<% else %>
+  		<%= render_message(:warning, "There are no flights in the flight log that include an airline!") %>
+  	<% end %>
+  <% else %>
 
-<% if @airlines.empty? %>
-	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
-		<%= render 'error_no_flights' %>
-	<% else %>
-		<%= render_message(:warning, "There are no flights in the flight log that include an airline!") %>
-	<% end %>
-<% else %>
+    <%= render partial: "airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: false} %>
 
-  <%= render partial: "airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: false} %>
+  <% end %>
+</div>
 
-<% end %>
-
-<a name="operators"></a>
-<h2>Operators</h2>
+<h2 id="operators">Operators</h2>
 
 <p>In many cases, an airline subcontracts another airline to operate flights for them. This happens especially often with small regional flights. This is a list of the airlines that actually operated my flights.</p>
 

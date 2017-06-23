@@ -15,9 +15,10 @@
 
 <p>I have flown in <span class="bold"><%= @title.downcase %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
-<a name="map"></a>
-<%= map_with_region_select(@map) %>
-<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+<div id="map">
+  <%= map_with_region_select(@map) %>
+  <%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+</div>
 
 <h2 id="airlines">Airlines with <%= @title %> Flights</h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>

@@ -15,8 +15,9 @@
 
 <p>I have flown between <span class="bold"><%= link_to(@airports_city[0], airport_path(@airports[0])) %></span> and <span class="bold"><%= link_to(@airports_city[1], airport_path(@airports[1])) %></span> <%= pluralize(@flights.length, 'time') %>.</p>
 
-<a name="map">
-<%= @route_map.draw %>
+<div id="map">
+  <%= @route_map.draw %>
+</div>
 
 <% if @pair_distance %>
 <p class="distance">
@@ -53,6 +54,5 @@
 
 <%= render 'trips/trip_table' %>
 
-<a name="flights"></a>
-<h2><abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight List</h2>
+<h2 id="flights"><abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight List</h2>
 <%= render "flights/flight_table" %>

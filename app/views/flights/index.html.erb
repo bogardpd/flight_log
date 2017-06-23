@@ -6,28 +6,30 @@
 
 <% end %>
 
-<p>I have been on <%= pluralize(@flights.length, 'commercial flight') %>.</p>
+<p>I have been on <%= pluralize(@flights.length, "commercial flight") %>.</p>
 
 <% if @flights.any? %>
 
-<%= map_with_region_select(@map, anchor: "flight-map") %>
-<%= distance_block(@total_distance, adjective: "total") %>
+  <%= map_with_region_select(@map, anchor: "flight-map") %>
+  <%= distance_block(@total_distance, adjective: "total") %>
 
-<a name="flight_list"></a>
+  <div id="flight-list">
 
-<table class="flightlog">
-<tr>
-  <th class="counter">#</th>
-	<th class="flight_flight">Flight</td>
-  <th class="flight_route">Route</td>
-  <th class="flight_date"><%= sort_link("Departure", :departure, "departure", :asc, "flight_list") %></td>
-</tr>
-<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
-<%= render :partial => "flights/flight_total_row" %>
-</table>
+    <table class="flightlog">
+    <tr>
+      <th class="counter">#</th>
+    	<th class="flight_flight">Flight</td>
+      <th class="flight_route">Route</td>
+      <th class="flight_date"><%= sort_link("Departure", :departure, "departure", :asc, "flight-list") %></td>
+    </tr>
+    <%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
+    <%= render :partial => "flights/flight_total_row" %>
+    </table>
+
+  </div>
 
 <% else %>
 
-<%= render 'error_no_flights' %>
+  <%= render "error_no_flights" %>
 
 <% end %>
