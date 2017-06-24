@@ -61,6 +61,7 @@ module TailNumber
     flights = logged_in ? Flight.all : Flight.visitor
     tail_counts = flights.joins(:aircraft_family).joins(:airline).where.not(tail_number: nil).group(:tail_number).count
     tail_details = flights.joins(:aircraft_family).joins(:airline).select(:tail_number, :iata_airline_code, :airline_name, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :family_name, :departure_utc).where.not(tail_number:nil)
+    return nil unless tail_details.any?
     tail_details.map{|t| {t.tail_number => {
       airline_code:  t.iata_airline_code,
       airline_name:  t.airline_name,

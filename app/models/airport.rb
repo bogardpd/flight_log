@@ -84,15 +84,6 @@ class Airport < ApplicationRecord
     
     return counts
     
-    #counts = flights.joins(type).group(id_field, :airline_name, :iata_airline_code).count
-    #  .map{|k,v| {id: k[0], airline_name: k[1], iata_airline_code: k[2], flight_count: v}}
-    #  .sort_by{|a| [-a[:flight_count], a[:airline_name]]}
-    
-    #airline_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
-    #if flights.count > airline_sum
-    #  counts.push({id: nil, flight_count: flights.count - airline_sum})
-    #end
-    #return counts
   end
   
   # Take a collection of flights and a region, and return a hash of all

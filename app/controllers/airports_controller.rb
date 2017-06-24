@@ -9,6 +9,7 @@ class AirportsController < ApplicationController
     @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often heʼs visited them."
     @flights = Flight.flights_table
     @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @airports = Array.new
     
     if @flights.any?
       

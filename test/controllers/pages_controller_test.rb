@@ -7,7 +7,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     @query           = "DAY-DFW/ORD"
   end
   
-  def test_root_path_works
+  def test_root_path_success
     get root_url
     assert_response :success
   end

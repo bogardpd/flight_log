@@ -1,0 +1,13 @@
+airportORD:
+  id: 1
+  iata_code: ORD
+  city: Chicago (O'Hare)
+  region_conus: Yes
+  country: United States
+  
+airportDFW:
+  id: 2
+  iata_code: DFW
+  city: Dallas/Fort Worth
+  region_conus: Yes
+  country: United States

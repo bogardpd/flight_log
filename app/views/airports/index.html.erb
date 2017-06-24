@@ -12,7 +12,7 @@
 
 <% end %>
 
-<p>I have visited <%= pluralize(@airports.select{|a| a[:iata_code]}.count, "airport") %>.</p>
+<p>I have visited <%= pluralize(@airports.count || 0, "airport") %>.</p>
 
 <% if @flights.any? %>
 
