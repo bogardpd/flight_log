@@ -1,3 +1,13 @@
-#flightORDDFW:
-#  tail_number: N12345
-#  fleet_number: 123
+flightORDDFW:
+  origin_airport_id: 2
+  destination_airport_id: 1
+  trip_id: 1
+  trip_section: 1
+  departure_date: 2015-01-01
+  departure_utc: 2015-01-01 12:00:00
+  airline_id: 1
+  aircraft_family_id: 2
+  flight_number: "1100"
+  tail_number: N12345
+  travel_class: "Y"
+  fleet_number: "123"

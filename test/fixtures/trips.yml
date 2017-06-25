@@ -1,4 +1,5 @@
 tripChicagoSeattle:
+  id: 1
   name: Chicago to Seattle
   hidden: No
   comment: This is a sample trip

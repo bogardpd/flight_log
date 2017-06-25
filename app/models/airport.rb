@@ -100,7 +100,7 @@ class Airport < ApplicationRecord
       airport_ids.push(flight[:origin_airport_id])
       airport_ids.push(flight[:destination_airport_id])
     end
-    airport_ids.uniq!.sort!
+    airport_ids = airport_ids.uniq.sort
     
     # Filter out non-CONUS airports, if necessary:
     if region == :conus

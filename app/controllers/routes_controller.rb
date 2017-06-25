@@ -33,7 +33,6 @@ class RoutesController < ApplicationController
     @airports = Array.new
     if params[:id].to_i > 0
       current_route = Route.find(params[:id])
-      #raise ActiveRecord::RecordNotFound if (current_route.nil?)
       @airports.push(Airport.find(current_route.airport1_id).iata_code)
       @airports.push(Airport.find(current_route.airport2_id).iata_code)
       @route_string = @airports.join('-')
