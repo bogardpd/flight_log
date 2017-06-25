@@ -11,3 +11,17 @@ airportORD:
   city: Chicago (O'Hare)
   region_conus: Yes
   country: United States
+  
+airportSEA:
+  id: 3
+  iata_code: SEA
+  city: Seattle/Tacoma
+  region_conus: Yes
+  country: United States
+
+airportYVR:
+  id: 4
+  iata_code: YVR
+  city: Vancouver
+  region_conus: No
+  country: Canada
