@@ -1,0 +1,14 @@
+airlineAA:
+  id: 1
+  airline_name: American Airlines
+  iata_airline_code: AA
+  icao_airline_code: AAL
+  numeric_code: "001"
+  is_only_operator: No
+  
+airlineEV:
+  id: 2
+  airline_name: ExpressJet
+  iata_airline_code: EV
+  icao_airline_code: ASQ
+  is_only_operator: Yes
