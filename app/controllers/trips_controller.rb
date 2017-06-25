@@ -84,7 +84,11 @@ class TripsController < ApplicationController
     
     @flights = Flight.flights_table.where(trip_id: @trip, trip_section: params[:section])
     @section_distance = total_distance(@flights)
-    stops = [@flights.first.origin_iata_code,@flights.last.destination_iata_code]
+    if @flights.any?
+      stops = [@flights.first.origin_iata_code,@flights.last.destination_iata_code]
+    else
+      stops = Array.new
+    end
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
     @meta_description = "Maps and lists of flights on section #{params[:section]} of Paul Bogardʼs #{@trip.name} trip."
     @title = "#{@trip.name} (Section #{params[:section]})"

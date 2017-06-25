@@ -1,2 +1,5 @@
-trip1:
-  name: My Trip
+tripChicagoSeattle:
+  name: Chicago to Seattle
+  hidden: No
+  comment: This is a sample trip
+  purpose: personal
