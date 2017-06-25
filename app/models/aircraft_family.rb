@@ -5,7 +5,7 @@ class AircraftFamily < ApplicationRecord
   
   scope :families, -> { where(parent_id: nil) }
   scope :types,    -> { where.not(parent_id: nil) }
-  scope :with_no_flights, -> { where('id not in (?)', self.uniq.joins(:flights).select("aircraft_families.id")) }
+  scope :with_no_flights, -> { where('id not in (?)', self.distinct.joins(:flights).select("aircraft_families.id")) }
     
   def self.categories_list
     categories = Hash.new

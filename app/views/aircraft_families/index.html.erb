@@ -2,32 +2,32 @@
 
 <p>This listing shows how often Iʼve flown on each particular family of airplane. Each family of airplane may have several types, but all of those types have been included in each familyʼs total.</p>
 
-<p>I have flown on <%= pluralize(@aircraft_families.count, 'aircraft family') %>.</p>
-
-<% if @aircraft_families.empty? %>
-	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
-		<%= render 'error_no_flights' %>
-	<% else %>
-    <%= render_message(:warning, "There are no flights in the flight log that include an aircraft type!") %>
-	<% end %>
+<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
+  <%= render partial: "flights/error_no_flights" %>
 <% else %>
 
-<%= render partial: "aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: false} %>
+  <p>I have flown on <%= pluralize(@aircraft_families.count, 'aircraft family') %>.</p>
 
-<% end %>
+  <% if @aircraft_families.empty? %>
+    <%= render_message(:warning, "There are no flights in the flight log that include an aircraft type!") %>
+  <% else %>
+    <%= render partial: "aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: false} %>
+  <% end %>
 
-<% if (logged_in? && @aircraft_families_with_no_flights.any?) %>
-	<h2>Aircraft Families with No Flights</h2>
-	<table class="flightlog">
-		<tr>
-			<th class="aircraft_family">Aircraft Family</th>
-			<th class="aircraft-code">Code</th>
-		</tr>
-	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
-	  <tr>
-	    <td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}".html_safe, aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
-	    <td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
-		</tr>
-	<% end %>
-	</table>
+  <% if (logged_in? && @aircraft_families_with_no_flights.any?) %>
+  	<h2>Aircraft Families with No Flights</h2>
+  	<table class="flightlog">
+  		<tr>
+  			<th class="aircraft_family">Aircraft Family</th>
+  			<th class="aircraft-code">Code</th>
+  		</tr>
+  	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
+  	  <tr>
+  	    <td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}".html_safe, aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
+  	    <td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
+  		</tr>
+  	<% end %>
+  	</table>
+  <% end %>
+  
 <% end %>
