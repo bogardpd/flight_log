@@ -48,12 +48,12 @@
   	<table class="flightlog">
   		<tr>
   			<th>Fleet Number</th>
-  			<th class="tail_aircraft">Aircraft Family</th>
+  			<th class="tail-aircraft">Aircraft Family</th>
   		</tr>
   	<% @fleet_family.each do |fleet_number, family| %>
   		<tr>
   			<td><%= link_to(image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: 'airline_icon') + "#" + fleet_number, show_fleet_number_path(@operator.iata_airline_code, fleet_number), :title => "View flights on #{@operator} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft_name"><%= @fleet_name[fleet_number] %><% end %></span></td>
-  			<td class="tail_aircraft"><%= family %></td>
+  			<td class="tail-aircraft"><%= family %></td>
   		</tr>
   	<% end %>
 	  </table>

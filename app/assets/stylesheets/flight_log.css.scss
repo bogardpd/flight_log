@@ -268,7 +268,7 @@ body {
 
 abbr {
   text-decoration: none;
-  border-bottom: 2px dotted $color-text-primary;
+  border-bottom: 1px dotted $color-text-primary;
 }
 
 /* Boarding Passes */
@@ -1146,10 +1146,13 @@ td.tail_flights, th.tail_flights {
 	text-align: center;
 }
 
-td.tail_aircraft {
+td.tail-aircraft {
 	color: $color-text-secondary;
 	font-weight: 300;
 	text-align: center;
+  abbr {
+    border-bottom-color: $color-text-secondary;
+  }
 }
 
 td.tail_airline, th.tail_airline {
