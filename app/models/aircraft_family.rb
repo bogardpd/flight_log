@@ -24,7 +24,13 @@ class AircraftFamily < ApplicationRecord
   
   CAPS_ATTRS = %w( iata_aircraft_code icao_aircraft_code )
   before_save :capitalize_codes
-    
+  
+  # Returns the aircraft's IATA aircraft code if it is an aircraft family, or
+  # the ICAO code if it is an aircraft type.
+  def code
+    return self.is_family? ? self.iata_aircraft_code : self.icao_aircraft_code
+  end
+  
   # Returns an array containing the current family's ID and the IDs of all
   # child types.
   def family_and_subtype_ids
@@ -54,6 +60,18 @@ class AircraftFamily < ApplicationRecord
   # Return true if this aircraft type is a top-level family, false otherwise.
   def is_family?
     return parent_id.nil?
+  end
+  
+  # Returns the location of illustration of a particular aircraft type, or nil
+  # if the illustration doesn't exist
+  def illustration_location
+    dir = self.is_family? ? "iata" : "icao"
+    image_location = "aircraft_illustrations/#{dir}/#{self.code}.jpg"
+    if Rails.application.assets.find_asset(image_location)
+      return image_location
+    else
+      return nil
+    end
   end
   
   # Returns the type ID for a given ICAO or IATA code
