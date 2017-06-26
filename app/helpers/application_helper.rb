@@ -36,8 +36,6 @@ module ApplicationHelper
     @messages.concat(flash.map{|k,v| {type: k.to_sym, text: v}}) if flash
     @messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text]) }.join.html_safe
   end
-    
-    
   
   def iata_airline_code_display(iata_airline_code)
     iata_airline_code.split('-').first
@@ -45,11 +43,6 @@ module ApplicationHelper
   
   def country_flag(country)
     image_tag(Airport.new(:country => country).country_flag_path, :title => country, :alt => country, :class => 'country_flag')
-  end
-  
-  def download_link(title, path)
-    html = "<ul><li>Download: " + link_to(title, path) + "</li></ul>"
-    html.html_safe
   end
   
   def distance_block(distance, adjective: nil, flight_link: nil)
@@ -76,8 +69,6 @@ module ApplicationHelper
     html = "<span class=\"code-mono\">" + code + "</span>"
     html.html_safe
   end
-  
-  
   
   def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
         
