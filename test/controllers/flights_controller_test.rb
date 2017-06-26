@@ -14,7 +14,7 @@ class FlightsControllerTest < ActionDispatch::IntegrationTest
   end
   
   def test_show_year_success
-    get show_year_path(year: 2015)
+    get show_year_path(2015)
     assert_response :success
   end
   
@@ -28,9 +28,19 @@ class FlightsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
   
-  # def test_show_tails_success
-  #   get show_tail_path("N12345")
-  #   assert_response :success
-  # end
+  def test_show_tail_success
+    get show_tail_path("N12345")
+    assert_response :success
+  end
+  
+  def test_index_tails_success
+    get classes_path
+    assert_response :success
+  end
+  
+  def test_show_class_success
+    get show_class_path("Y")
+    assert_response :success
+  end
   
 end

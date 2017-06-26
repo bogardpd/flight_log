@@ -6,6 +6,7 @@ flightORDDFW:
   departure_date: 2015-01-01
   departure_utc: 2015-01-01 12:00:00
   airline_id: 1
+  operator_id: 2
   aircraft_family_id: 2
   flight_number: "1100"
   tail_number: N12345
