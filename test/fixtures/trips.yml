@@ -4,3 +4,10 @@ tripChicagoSeattle:
   hidden: No
   comment: This is a sample trip
   purpose: personal
+
+tripHidden:
+  id: 2
+  name: Sample Hidden Trip
+  hidden: Yes
+  comment: This is a hidden trip
+  purpose: business

@@ -12,3 +12,11 @@ airlineEV:
   iata_airline_code: EV
   icao_airline_code: ASQ
   is_only_operator: Yes
+
+airlineUA:
+  id: 3
+  airline_name: United
+  iata_airline_code: UA
+  icao_airline_code: UAL
+  numeric_code: "016"
+  is_only_operator: No

@@ -13,3 +13,19 @@ aircraft737800:
   manufacturer: Boeing
   category: narrow_body
   parent_id: 1
+
+aircraftA320Family:
+  id: 3
+  family_name: A320 Family
+  iata_aircraft_code: "32S"
+  manufacturer: Airbus
+  category: narrow_body
+
+aircraftA321:
+  id: 4
+  family_name: A321
+  iata_aircraft_code: "321"
+  icao_aircraft_code: A321
+  manufacturer: Airbus
+  category: narrow_body
+  parent_id: 3

@@ -12,3 +12,63 @@ flightORDDFW:
   tail_number: N12345
   travel_class: "Y"
   fleet_number: "123"
+  
+flightDFWSEA:
+  origin_airport_id: 1
+  destination_airport_id: 3
+  trip_id: 1
+  trip_section: 1
+  departure_date: 2015-01-01
+  departure_utc: 2015-01-01 16:00:00
+  airline_id: 1
+  operator_id: 1
+  aircraft_family_id: 2
+  flight_number: "1200"
+  tail_number: N987AA
+  travel_class: "W"
+  fleet_number: "4XW"
+
+flightSEAORD:
+  origin_airport_id: 3
+  destination_airport_id: 2
+  trip_id: 1
+  trip_section: 2
+  departure_date: 2015-01-04
+  departure_utc: 2015-01-04 17:00:00
+  airline_id: 1
+  operator_id: 1
+  aircraft_family_id: 2
+  flight_number: "1400"
+  tail_number: N456AA
+  travel_class: "Y"
+  fleet_number: "456"
+  
+flightORDYVR:
+  origin_airport_id: 2
+  destination_airport_id: 4
+  trip_id: 2
+  trip_section: 1
+  departure_date: 2015-02-04
+  departure_utc: 2015-02-05 02:15:00
+  airline_id: 3
+  operator_id: 3
+  aircraft_family_id: 3
+  flight_number: "0123"
+  tail_number: N333UA
+  travel_class: "Y"
+  fleet_number: "333"
+
+flightYVRORD:
+  origin_airport_id: 4
+  destination_airport_id: 2
+  trip_id: 2
+  trip_section: 2
+  departure_date: 2015-02-08
+  departure_utc: 2015-02-08 17:30:00
+  airline_id: 3
+  operator_id: 3
+  aircraft_family_id: 4
+  flight_number: "0456"
+  tail_number: N555UA
+  travel_class: "Y"
+  fleet_number: "555"
