@@ -23,7 +23,7 @@
 
 	<div id="map">
     <%= map_with_region_select(@map) %>
-  	<%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+  	<%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: 'total', flight_link: true} %>
   </div>
 	
 	<h2 id="aircraft">Aircraft Flown on <%= @airline.airline_name %></h2>

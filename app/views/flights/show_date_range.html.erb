@@ -20,7 +20,7 @@
 
 <div id="map" class="intro_box">
   <%= map_with_region_select(@map, anchor: "flight-map") %>
-	<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
+	<%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
 </div>
 
 

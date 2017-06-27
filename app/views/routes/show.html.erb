@@ -21,8 +21,8 @@
 
 <% if @pair_distance %>
 <p class="distance">
-	<%= distance_string(@pair_distance, "per-flight") %><br/>
-	<%= distance_string(@pair_distance*@flights.length, "total") %>
+	<%= render partial: "distance_string", locals: {distance: @pair_distance, adjective: "per-flight"} %><br/>
+	<%= render partial: "distance_string", locals: {distance: @pair_distance*@flights.length, adjective: "total"} %>
 </p>
 <% end %>
 

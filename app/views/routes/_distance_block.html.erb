@@ -1,0 +1,8 @@
+<% adjective ||= nil %>
+<% flight_link ||= nil %>
+<p class="distance">
+  <%= render partial: "routes/distance_string", locals: {distance: distance, adjective: adjective} %>
+  <% if flight_link %>
+    &middot; <%= link_to('See a list of these flights', '#flights') %>
+  <% end %>
+</p>

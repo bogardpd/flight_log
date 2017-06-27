@@ -9,7 +9,7 @@
 <% end %>
 
 <%= @map.draw %>
-<%= distance_block(@trip_distance, adjective: "total") %>
+<%= render partial: "routes/distance_block", locals: {distance: @trip_distance, adjective: "total"} %>
 
 <table class="flightlog">
   <tr>

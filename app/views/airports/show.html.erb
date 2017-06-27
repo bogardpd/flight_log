@@ -26,7 +26,7 @@
 
 	<div id="map">  
     <%= map_with_region_select(@airport_map, anchor: "airport-map") %>
-	  <%= distance_block(@total_distance, adjective: 'total', flight_link: true) %>
+	  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: 'total', flight_link: true} %>
   </div>
 
 	<h2 id="airports">Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>

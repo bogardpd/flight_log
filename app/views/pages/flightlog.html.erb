@@ -12,7 +12,7 @@
 
 <div class="intro_box">
 	<%= map_with_region_select(@map) %>
-	<p class="total"><span class="distance_primary"><%= distance_string(@total_distance) %></span> &middot; <%= link_to("See all <span class=\"summary_total\">#{pluralize(@flights.length, 'flight')}</span>".html_safe, flights_path)%></p>
+	<p class="total"><span class="distance_primary"><%= render partial: "routes/distance_string", locals: {distance: @total_distance} %></span> &middot; <%= link_to("See all <span class=\"summary_total\">#{pluralize(@flights.length, 'flight')}</span>".html_safe, flights_path)%></p>
 </div>
 
 <% if @flights.any? %>

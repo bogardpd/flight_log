@@ -11,7 +11,7 @@
 <% if @flights.any? %>
 
   <%= map_with_region_select(@map, anchor: "flight-map") %>
-  <%= distance_block(@total_distance, adjective: "total") %>
+  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total"} %>
 
   <div id="flight-list">
 

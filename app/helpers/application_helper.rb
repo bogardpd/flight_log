@@ -45,20 +45,6 @@ module ApplicationHelper
     image_tag(Airport.new(:country => country).country_flag_path, :title => country, :alt => country, :class => 'country_flag')
   end
   
-  def distance_block(distance, adjective: nil, flight_link: nil)
-    html = "<p class=\"distance\">" + distance_string(distance, adjective)
-    if flight_link
-      html += " &middot; " + link_to('See a list of these flights', '#flights')
-    end
-    html += "</p>"
-    html.html_safe
-  end
-  
-  def distance_string(distance, adjective = nil)
-    html = pluralize("<span class=\"distance_primary\">" + number_with_delimiter(distance, :delimiter => ','), [adjective,'mile'].join(' ')) + "</span> <span class=\"distance_secondary\">(" + number_with_delimiter((distance*1.60934).to_i, :delimiter => ',') + " km)</span>"
-    html.html_safe
-  end
-  
   def code_mono(code)
     return nil unless code.present?
     html = "<span class=\"code-mono\">" + code + "</span>"
