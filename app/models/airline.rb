@@ -42,6 +42,10 @@ class Airline < ApplicationRecord
     return icao.nil? ? iata : icao
   end
   
+  def self.plain_code
+    return self.iata_airline_code.split('-').first
+  end
+  
   # Accepts a date range, and returns all airlines that had their
   # first flight in this date range.
   def self.new_in_date_range(date_range, logged_in=false)
