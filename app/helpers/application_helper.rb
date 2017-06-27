@@ -59,11 +59,6 @@ module ApplicationHelper
     html.html_safe
   end
   
-  def format_date(input_date) # Also see method in application controller
-    return nil unless input_date.present?
-    input_date.strftime("%e %b %Y")
-  end
-  
   def code_mono(code)
     return nil unless code.present?
     html = "<span class=\"code-mono\">" + code + "</span>"

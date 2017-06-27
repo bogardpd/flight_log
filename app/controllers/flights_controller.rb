@@ -83,7 +83,7 @@ class FlightsController < ApplicationController
     @city_pair_section_flights = Flight.where(section_where_array.join(' OR '))
     
     @title = @flight.airline.airline_name + " " + @flight.flight_number.to_s
-    @meta_description = "Details for Paul Bogardʼs #{@flight.airline.airline_name} #{@flight.flight_number} flight on #{format_date(@flight.departure_date)}."
+    @meta_description = "Details for Paul Bogardʼs #{@flight.airline.airline_name} #{@flight.flight_number} flight on #{Flight.format_date(@flight.departure_date)}."
     
     @route_distance = Route.distance_by_airport_id(@flight.origin_airport, @flight.destination_airport)
     
@@ -119,13 +119,13 @@ class FlightsController < ApplicationController
       end
 
       @date_range = (params[:start_date].to_date)..(params[:end_date].to_date)
-      add_breadcrumb "#{format_date(params[:start_date].to_date)} - #{format_date(params[:end_date].to_date)}", "flights_path(:start_date => '#{params[:start_date]}', :end_date => '#{params[:end_date]}')"
-      @date_range_text = "from #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
-      @flight_list_title = "Flight List for #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
-      @superlatives_title = "Longest and Shortest Routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
-      @superlatives_title_nav = "Longest and shortest routes for#{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
-      @title = "Flights: #{format_date(params[:start_date].to_date)} – #{format_date(params[:end_date].to_date)}"
-      @meta_description = "Maps and lists of Paul Bogardʼs flights from #{format_date(params[:start_date].to_date)} to #{format_date(params[:end_date].to_date)}"
+      add_breadcrumb "#{Flight.format_date(params[:start_date].to_date)} - #{Flight.format_date(params[:end_date].to_date)}", "flights_path(:start_date => '#{params[:start_date]}', :end_date => '#{params[:end_date]}')"
+      @date_range_text = "from #{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
+      @flight_list_title = "Flight List for #{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
+      @superlatives_title = "Longest and Shortest Routes for#{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
+      @superlatives_title_nav = "Longest and shortest routes for#{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
+      @title = "Flights: #{Flight.format_date(params[:start_date].to_date)} – #{Flight.format_date(params[:end_date].to_date)}"
+      @meta_description = "Maps and lists of Paul Bogardʼs flights from #{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
     else
       raise ArgumentError.new('No date parameters were given for a date range')
     end

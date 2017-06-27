@@ -13,7 +13,7 @@
 	<td class="flight_route<%= @top_row_style %>">
 		<%= (params[:controller] == "airports" && params[:action] == "show" && @airport.id == flight.origin_airport_id) ? code_mono(flight.origin_iata_code) : link_to(code_mono(flight.origin_iata_code), airport_path(flight.origin_iata_code), :title => "View airport details for " + flight.origin_city) %> &ndash; <%= (params[:controller] == "airports" && params[:action] == "show" && @airport.id == flight.destination_airport_id) ? code_mono(flight.destination_iata_code) : link_to(code_mono(flight.destination_iata_code), airport_path(flight.destination_iata_code), :title => "View airport details for " + flight.destination_city) %>
 	</td>
-	<td class="flight_date<%= @top_row_style %>"><%= format_date(flight.departure_date) %></td>
+	<td class="flight_date<%= @top_row_style %>"><%= Flight.format_date(flight.departure_date) %></td>
 	
 </tr>
 <% @previous_trip = flight.trip_id %>

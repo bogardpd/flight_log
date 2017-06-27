@@ -51,11 +51,6 @@ protected
     @messages.push({type: type, text: text})
   end
   
-  def format_date(input_date) # Also see method in application helper
-    return nil unless input_date.present?
-    input_date.strftime("%e %b %Y")
-  end
-  
   # Accept a sort querystring in the format "category" or "-category", and
   # return a hash in the form [category: :category, direction: ':asc|:desc'].
   # Parameters:
