@@ -107,7 +107,7 @@ class TripsController < ApplicationController
   
   
   def create
-    @trip = Trip.new(trip_params)
+    @trip = current_user.trips.new(trip_params)
     if @trip.save
       flash[:success] = "Successfully added #{params[:trip][:name]}!"
       redirect_to @trip
