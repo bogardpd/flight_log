@@ -1,5 +1,8 @@
 class Trip < ApplicationRecord
-  has_many :flights, :dependent => :destroy
+  has_many :flights, dependent: :destroy
+  belongs_to :user
+  
+  validates :user_id, presence: true
   
   def self.purposes_list
     purposes = Hash.new

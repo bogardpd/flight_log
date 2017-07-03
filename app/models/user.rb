@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
+  has_many :trips, dependent: :destroy
   
   before_save :create_remember_token
   
