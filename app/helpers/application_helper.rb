@@ -26,6 +26,13 @@ module ApplicationHelper
     end
   end
   
+  # Returns the user whose flights are being viewed. Until multiple user
+  # functionality is added to Flight Historian, this will simply return the
+  # first user.
+  def flyer
+    return User.first
+  end
+  
   def render_message(type, text)
     render partial: "layouts/message", locals: {type: type, text: text}
   end
@@ -82,6 +89,7 @@ module ApplicationHelper
   def tail_number_country_flag(tail_number)
     country_flag(TailNumber.country(tail_number))
   end
+  
   
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
   
