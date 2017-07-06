@@ -8,13 +8,9 @@ class FlightsController < ApplicationController
     @logo_used = true
     @title = "Flights"
     @region = current_region(default: :world)
-        
-    if logged_in?
-      @flights = Flight.flights_table
-    else
-      @flights = Flight.flights_table.visitor
-    end
     
+    @flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
+        
     @year_range = @flights.year_range
     
     if @flights.any?
@@ -132,16 +128,11 @@ class FlightsController < ApplicationController
     
     @in_text = params[:year].present? ? params[:year] : "this date range"
     
-    filtered_flights = Flight.where(:departure_date => @date_range)
-    if logged_in?
-      @flights = filtered_flights.flights_table
-      @year_range = Flight.year_range
-      @years_with_flights = Flight.years_with_flights
-    else
-      @flights = filtered_flights.visitor.flights_table
-      @year_range = Flight.visitor.year_range
-      @years_with_flights = Flight.visitor.years_with_flights
-    end
+    filtered_flights = Flight.where(departure_date: @date_range)
+    flyer_flights = flyer.flights(current_user)
+    @flights = flyer_flights.where(departure_date: @date_range).includes(:airline, :origin_airport, :destination_airport, :trip)
+    @year_range = flyer_flights.year_range
+    @years_with_flights = flyer_flights.years_with_flights
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
@@ -201,8 +192,7 @@ class FlightsController < ApplicationController
     @logo_used = true
     
     filtered_flights = Flight.where(:travel_class => params[:travel_class])
-    @flights = filtered_flights.flights_table
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @flights = flyer.flights(current_user).where(travel_class: params[:travel_class]).includes(:airline, :origin_airport, :destination_airport, :trip)
     
     @title = TravelClass.list[params[:travel_class]].titlecase + " Class"
     @meta_description = "Maps and lists of Paul Bogardʼs #{TravelClass.list[params[:travel_class]].downcase} class flights."
@@ -272,8 +262,7 @@ class FlightsController < ApplicationController
   def show_tail
     @logo_used = true
     filtered_flights = Flight.where(:tail_number => params[:tail_number])
-    @flights = filtered_flights.flights_table
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @flights = flyer.flights(current_user).where(tail_number: params[:tail_number]).includes(:airline, :origin_airport, :destination_airport, :trip)
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     @title = params[:tail_number]

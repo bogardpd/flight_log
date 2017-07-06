@@ -37,13 +37,13 @@ class FlightsMap < Map
         # Build arrays of city pairs
         if @region == :conus 
           conus_airports = Airport.where(region_conus: true).pluck(:iata_code)
-          if (!conus_airports.include?(flight.origin_iata_code) || !conus_airports.include?(flight.destination_iata_code))
-            pairs_outside_region.push([flight.origin_iata_code, flight.destination_iata_code].sort)
+          if (!conus_airports.include?(flight.origin_airport.iata_code) || !conus_airports.include?(flight.destination_airport.iata_code))
+            pairs_outside_region.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
           else
-            pairs_inside_region.push([flight.origin_iata_code, flight.destination_iata_code].sort)
+            pairs_inside_region.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
           end
         else
-          pairs_inside_region.push([flight.origin_iata_code, flight.destination_iata_code].sort)
+          pairs_inside_region.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
         end  
       end
 

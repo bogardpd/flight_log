@@ -46,8 +46,7 @@ class AircraftFamiliesController < ApplicationController
     @region = current_region(default: :world)
     
     filtered_flights = Flight.where(aircraft_family_id: @aircraft_family.family_and_subtype_ids)
-    @flights = filtered_flights.flights_table
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_subtype_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     add_breadcrumb 'Aircraft Families', 'aircraft_families_path'

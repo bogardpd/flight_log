@@ -25,7 +25,7 @@ class HighlightedRoutesMap < Map
     def collected_routes(flights)
       pairs = Array.new
       flights.each do |flight|
-        pairs.push([flight.origin_iata_code, flight.destination_iata_code].sort)
+        pairs.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
       end
       return compressed_routes(pairs)
     end

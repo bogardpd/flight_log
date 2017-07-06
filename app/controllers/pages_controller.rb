@@ -8,6 +8,8 @@ class PagesController < ApplicationController
     @logo_used = true
     @region = current_region(default: :conus)
     
+    @flights = flyer.flights(current_user).includes(:origin_airport, :destination_airport)
+    
     @flight_aircraft = AircraftFamily.flight_count(logged_in?)
     @flight_airlines = Airline.flight_count(logged_in?, type: :airline)
     @flight_airports = Airport.visit_count(logged_in?)
@@ -15,14 +17,11 @@ class PagesController < ApplicationController
     @flight_tails = TailNumber.flight_count(logged_in?)
     
     if logged_in?
-      @flights = Flight.flights_table
       Trip.where(hidden: true).map{|trip| add_message(:info, "Active Trip: #{view_context.link_to(trip.name, trip_path(trip), class: "title")}")} # Link to hidden trips
       add_message(:info, "You have boarding passes you can #{view_context.link_to("import", import_boarding_passes_path)}!") if PKPass.any?
       if Route.flight_count(logged_in?).find{|x| x[:distance_mi] < 0}
         add_message(:warning, "Some #{view_context.link_to("routes", routes_path)} don’t have distances.")
       end
-    else
-      @flights = Flight.visitor.flights_table
     end
     
     @total_distance = total_distance(@flights)    

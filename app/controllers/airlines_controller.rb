@@ -1,6 +1,5 @@
 class AirlinesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  #TODO: Capitalize IATA and ICAO codes on save
   add_breadcrumb 'Home', 'root_path'
   
   def index
@@ -53,7 +52,7 @@ class AirlinesController < ApplicationController
     raise ActiveRecord::RecordNotFound if (@airline.nil?) #all_flights will fail if code does not exist, so check here.
     
     filtered_flights = Flight.where(airline_id: @airline.id)
-    @flights = logged_in? ? filtered_flights.flights_table : filtered_flights.visitor.flights_table
+    @flights = flyer.flights(current_user).where(airline_id: @airline.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     @title = @airline.airline_name
@@ -92,8 +91,7 @@ class AirlinesController < ApplicationController
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     raise ActiveRecord::RecordNotFound if (@operator.nil?) #all_flights will fail if code does not exist, so check here.
     filtered_flights = Flight.where(:operator_id => @operator.id)
-    @flights = filtered_flights.flights_table.select(:fleet_number, :aircraft_name)
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  
     @title = @operator.airline_name + " (Operator)"
@@ -123,7 +121,7 @@ class AirlinesController < ApplicationController
     @fleet_name = Hash.new
     @flights.each do |flight|
       if flight.fleet_number
-        @fleet_family[flight.fleet_number] = flight.family_name
+        @fleet_family[flight.fleet_number] = flight.aircraft_family.family_name
         @fleet_name[flight.fleet_number] = flight.aircraft_name
       end
     end
@@ -139,8 +137,7 @@ class AirlinesController < ApplicationController
     @fleet_number = params[:fleet_number]
     
     filtered_flights = Flight.where(:operator_id => @operator.id, :fleet_number => @fleet_number)
-    @flights = filtered_flights.flights_table.select(:tail_number)
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @flights = flyer.flights(current_user).where(operator_id: @operator.id, fleet_number: @fleet_number).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @logo_used = true

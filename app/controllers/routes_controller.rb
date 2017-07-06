@@ -59,8 +59,8 @@ class RoutesController < ApplicationController
     @logo_used = true
     
     filtered_flights = Flight.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
-    @flights = filtered_flights.flights_table
-    @flights = @flights.visitor unless logged_in?
+    flyer_flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
+    @flights = flyer_flights.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
@@ -94,8 +94,8 @@ class RoutesController < ApplicationController
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     
     # Create flight arrays for maps of trips and sections:
-    @city_pair_trip_flights    = Flight.flights_table.where(:trip_id => trip_array)
-    @city_pair_section_flights = Flight.flights_table.where(section_where_array.join(' OR '))
+    @city_pair_trip_flights    = flyer_flights.where(:trip_id => trip_array)
+    @city_pair_section_flights = flyer_flights.where(section_where_array.join(' OR '))
     
     # Create maps:
     @route_map    = SingleFlightMap.new(@flights.first)

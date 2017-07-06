@@ -120,21 +120,21 @@ class Airport < ApplicationRecord
   # Take a collection of flights, and return a hash of with airport IDs as the
   # keys and the number of visits to each airport as the values.
   # Params:
-  # +flights+:: A collection of Flights, with flights_table applied.
+  # +flights+:: A collection of Flights.
   def self.frequency_hash(flights)
     airport_frequency = Hash.new(0) # All airports start with 0 flights
     previous_trip_id = nil;
     previous_trip_section = nil;
     previous_destination_airport_iata_code = nil;
     flights.each do |flight|
-      unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_iata_code == previous_destination_airport_iata_code)
+      unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_airport.iata_code == previous_destination_airport_iata_code)
         # This is not a layover, so count this origin airport
         airport_frequency[flight.origin_airport_id] += 1
       end
       airport_frequency[flight.destination_airport_id] += 1
       previous_trip_id = flight.trip_id
       previous_trip_section = flight.trip_section
-      previous_destination_airport_iata_code = flight.destination_iata_code
+      previous_destination_airport_iata_code = flight.destination_airport.iata_code
     end
     
     return airport_frequency

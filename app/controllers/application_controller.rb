@@ -12,6 +12,13 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  # Returns the user whose flights are being viewed. Until multiple user
+  # functionality is added to Flight Historian, this will simply return the
+  # first user.
+  def flyer
+    return User.first
+  end
+  
   def logged_in_user
     unless logged_in?
       redirect_to root_url
@@ -90,7 +97,7 @@ protected
     route_hash = Hash.new()
     Route.find_by_sql("SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_hash[[x.iata1,x.iata2]] = x.distance_mi }
     flights.each do |flight|
-      airport_alphabetize = [flight.origin_iata_code,flight.destination_iata_code].sort
+      airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
       route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_hash[[airport_alphabetize[0],airport_alphabetize[1]]] || route_hash[[airport_alphabetize[1],airport_alphabetize[0]]] || -1
     end
     return superlatives_collection(route_distances)

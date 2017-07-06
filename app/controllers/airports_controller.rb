@@ -7,8 +7,7 @@ class AirportsController < ApplicationController
     add_admin_action view_context.link_to("Add New Airport", new_airport_path)
     @title = "Airports"
     @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often heʼs visited them."
-    @flights = Flight.flights_table
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @flights = flyer.flights(current_user).includes(:origin_airport, :destination_airport)
     @airports = Array.new
     
     if @flights.any?
@@ -63,8 +62,8 @@ class AirportsController < ApplicationController
     end
     
     filtered_flights = Flight.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id)
-    @flights = filtered_flights.flights_table
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    flyer_flights = flyer.flights(current_user)
+    @flights = flyer_flights.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     trip_array = Array.new
@@ -88,23 +87,23 @@ class AirportsController < ApplicationController
     @flights.each do |flight|
       trip_array.push(flight.trip_id)
       unless (flight.trip_id == prev_trip_id && flight.trip_section == prev_section_id)
-        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip_name, :trip_section => flight.trip_section, :departure => flight.departure_date} )
+        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date} )
       end
       prev_trip_id = flight.trip_id
       prev_section_id = flight.trip_section
       section_where_array.push("(trip_id = #{flight.trip_id.to_i} AND trip_section = #{flight.trip_section.to_i})")
       
       # Create hash of the other airports on flights to/from this airport and their counts
-      if (flight.origin_iata_code == @airport.iata_code)
-        pair_totals[flight.destination_iata_code] += 1
-        pair_cities[flight.destination_iata_code] = flight.destination_city
-        pair_countries[flight.destination_iata_code] = flight.destination_country
-        pair_distances[flight.destination_iata_code] = route_hash[[flight.origin_iata_code,flight.destination_iata_code]] || route_hash[[flight.destination_iata_code,flight.origin_iata_code]] || -1
+      if (flight.origin_airport.iata_code == @airport.iata_code)
+        pair_totals[flight.destination_airport.iata_code] += 1
+        pair_cities[flight.destination_airport.iata_code] = flight.destination_airport.city
+        pair_countries[flight.destination_airport.iata_code] = flight.destination_airport.country
+        pair_distances[flight.destination_airport.iata_code] = route_hash[[flight.origin_airport.iata_code,flight.destination_airport.iata_code]] || route_hash[[flight.destination_airport.iata_code,flight.origin_airport.iata_code]] || -1
       else
-        pair_totals[flight.origin_iata_code] += 1
-        pair_cities[flight.origin_iata_code] = flight.origin_city
-        pair_countries[flight.origin_iata_code] = flight.origin_country
-        pair_distances[flight.origin_iata_code] = route_hash[[flight.origin_iata_code,flight.destination_iata_code]] || route_hash[[flight.destination_iata_code,flight.origin_iata_code]] || -1
+        pair_totals[flight.origin_airport.iata_code] += 1
+        pair_cities[flight.origin_airport.iata_code] = flight.origin_airport.city
+        pair_countries[flight.origin_airport.iata_code] = flight.origin_airport.country
+        pair_distances[flight.origin_airport.iata_code] = route_hash[[flight.origin_airport.iata_code,flight.destination_airport.iata_code]] || route_hash[[flight.destination_airport.iata_code,flight.origin_airport.iata_code]] || -1
       end
     end
     
@@ -113,8 +112,8 @@ class AirportsController < ApplicationController
 
     @trips = Flight.find_by_sql(["SELECT flights.trip_id AS id, MIN(flights.departure_date) AS departure_date, name, hidden FROM flights INNER JOIN trips on trips.id = flights.trip_id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, name, hidden ORDER BY departure_date", trip_array])
     
-    @trips_using_airport_flights = Flight.flights_table.where(:trip_id => trip_array)
-    @sections_using_airport_flights = Flight.flights_table.where(section_where_array.join(' OR '))
+    @trips_using_airport_flights = flyer_flights.where(trip_id: trip_array)
+    @sections_using_airport_flights = flyer_flights.where(section_where_array.join(' OR '))
 
     @airport_frequency = Airport.frequency_hash(@flights)[@airport.id]
    

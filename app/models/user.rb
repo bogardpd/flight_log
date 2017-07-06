@@ -24,7 +24,7 @@ class User < ApplicationRecord
       # The viewer is viewing someone else's flights, so get trips which are not hidden.
       trip_ids = self.trips.where(hidden: false).pluck(:id)
     end
-    return Flight.where(trip_id: trip_ids.sort)
+    return Flight.where(trip_id: trip_ids.sort).order(:departure_utc)
   end
     
   # Returns the hash digest of the given string.

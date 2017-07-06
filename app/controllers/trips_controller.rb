@@ -28,8 +28,8 @@ class TripsController < ApplicationController
     @logo_used = true
     @trip = Trip.find(params[:id])
     # Filter out hidden trips for visitors:
-    raise ActiveRecord::RecordNotFound if (!logged_in? && @trip.hidden)
-    @flights = Flight.flights_table.where(trip_id: @trip)
+    raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
+    @flights = Flight.where(trip_id: @trip).includes(:airline, :origin_airport, :destination_airport, :trip)
     @title = @trip.name
     @meta_description = "Maps and lists of flights on Paul Bogardʼs #{@trip.name} trip."
     
@@ -56,15 +56,15 @@ class TripsController < ApplicationController
     previous_destination = nil
     @flights.each do |flight|
       @section_count[flight.trip_section] += 1
-      @section_final_destination[flight.trip_section] = flight.destination_iata_code
+      @section_final_destination[flight.trip_section] = flight.destination_airport.iata_code
       unless flight.trip_section == previous_section  
         stops.push(previous_destination) unless previous_destination.nil?
-        stops.push(flight.origin_iata_code)
+        stops.push(flight.origin_airport.iata_code)
       end
       previous_section = flight.trip_section
-      previous_destination = flight.destination_iata_code
+      previous_destination = flight.destination_airport.iata_code
     end
-    stops.push(@flights.last.destination_iata_code) unless @flights.empty?
+    stops.push(@flights.last.destination_airport.iata_code) unless @flights.empty?
     stops.uniq!
     
     # Create map
@@ -80,12 +80,14 @@ class TripsController < ApplicationController
     @logo_used = true
     @trip = Trip.find(params[:trip])
     
+    raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
+    
     add_message(:warning, "This trip is hidden!") if @trip.hidden
     
-    @flights = Flight.flights_table.where(trip_id: @trip, trip_section: params[:section])
+    @flights = Flight.where(trip_id: @trip, trip_section: params[:section]).includes(:airline, :origin_airport, :destination_airport, :trip)
     @section_distance = total_distance(@flights)
     if @flights.any?
-      stops = [@flights.first.origin_iata_code,@flights.last.destination_iata_code]
+      stops = [@flights.first.origin_airport.iata_code,@flights.last.destination_airport.iata_code]
     else
       stops = Array.new
     end
@@ -95,6 +97,10 @@ class TripsController < ApplicationController
     add_breadcrumb 'Trips', 'trips_path'
     add_breadcrumb @trip.name, "trip_path(#{params[:trip]})"
     add_breadcrumb "Section #{params[:section]}", "show_section_path(#{params[:trip]}, #{params[:section]})"
+    
+  rescue ActiveRecord::RecordNotFound
+    flash[:warning] = "We couldnʼt find a trip with an ID of #{params[:trip]}. Instead, weʼll give you a list of trips."
+    redirect_to trips_path
   end
   
     

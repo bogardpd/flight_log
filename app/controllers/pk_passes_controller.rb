@@ -23,8 +23,7 @@ class PkPassesController < ApplicationController
     @trips = empty_trips.concat(Trip.with_departure_dates(logged_in?).reverse.map{|trip| ["#{trip.name} / #{Flight.format_date(trip.departure_date)}", trip.id]})
     @passes = PKPass.pass_summary_list
     @flight_passes = PKPass.flights_with_updated_passes
-    @flights = Flight.flights_table.where(id: @flight_passes.keys)
-    @flights = @flights.visitor if !logged_in? # Filter out hidden trips for visitors
+    @flights = flyer.flights(current_user).where(id: @flight_passes.keys)
     
     check_email_for_boarding_passes      
     
