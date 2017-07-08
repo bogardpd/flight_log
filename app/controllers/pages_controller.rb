@@ -14,7 +14,7 @@ class PagesController < ApplicationController
     @flight_airlines = Airline.flight_count(@flights, type: :airline)
     @flight_airports = Airport.visit_count(@flights)
     @flight_routes = Route.flight_count(@flights)
-    @flight_tails = TailNumber.flight_count(logged_in?)
+    @flight_tails = TailNumber.flight_count(@flights)
     
     if logged_in?
       Trip.where(hidden: true).map{|trip| add_message(:info, "Active Trip: #{view_context.link_to(trip.name, trip_path(trip), class: "title")}")} # Link to hidden trips

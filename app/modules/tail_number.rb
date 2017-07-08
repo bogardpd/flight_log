@@ -57,18 +57,17 @@ module TailNumber
   # Returns a hash of tail numbers, aircraft codes (ICAO preferred), aircraft
   # manufacturers, aircraft family/type names, airline names, airline IATA
   # codes, and flight counts
-  def self.flight_count(logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
-    tail_counts = flights.joins(:aircraft_family).joins(:airline).where.not(tail_number: nil).group(:tail_number).count
-    tail_details = flights.joins(:aircraft_family).joins(:airline).select(:tail_number, :iata_airline_code, :airline_name, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :family_name, :departure_utc).where.not(tail_number:nil)
+  def self.flight_count(flights)
+    tail_counts = flights.reorder(nil).joins(:aircraft_family).joins(:airline).where.not(tail_number: nil).group(:tail_number).count
+    tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
     return nil unless tail_details.any?
-    tail_details.map{|t| {t.tail_number => {
-      airline_code:  t.iata_airline_code,
-      airline_name:  t.airline_name,
-      aircraft_code: t.icao_aircraft_code || t.iata_aircraft_code,
-      manufacturer:  t.manufacturer,
-      family_name:   t.family_name,
-      departure_utc: t.departure_utc
+    tail_details.map{|f| {f.tail_number => {
+      airline_code:  f.airline.iata_airline_code,
+      airline_name:  f.airline.airline_name,
+      aircraft_code: f.aircraft_family.icao_aircraft_code || f.aircraft_family.iata_aircraft_code,
+      manufacturer:  f.aircraft_family.manufacturer,
+      family_name:   f.aircraft_family.family_name,
+      departure_utc: f.departure_utc
     }}}
       .reduce{|a,b| a.merge(b){|k,oldval,newval| newval[:departure_utc] > oldval[:departure_utc] ? newval : oldval}}
       .merge(tail_counts){|k,oldval,newval| oldval.store(:count, newval); oldval}
