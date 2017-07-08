@@ -56,25 +56,23 @@ class Airport < ApplicationRecord
   # Returns an array of airports, with a hash for each family containing the
   # id, airport name, IATA code, and number of visits to that airport, sorted
   # by number of visits descending.
-  def self.visit_count(logged_in=false, flights: nil)
-    flights ||= Flight.all
-    flights = flights.visitor unless logged_in
-    flights = flights.select(:trip_id, :trip_section, "origin_airports.iata_code AS origin_iata, origin_airports.city AS origin_city, origin_airports.country AS origin_country, destination_airports.iata_code AS destination_iata, destination_airports.city AS destination_city, destination_airports.country AS destination_country").joins("INNER JOIN airports AS origin_airports ON flights.origin_airport_id = origin_airports.id INNER JOIN airports AS destination_airports ON flights.destination_airport_id = destination_airports.id").order(:trip_id, :trip_section, :departure_utc)
+  def self.visit_count(flights)
+    flights = flights.reorder(:trip_id, :trip_section, :departure_utc)
     
     visits = Hash.new(0)
     previous_trip_section = {trip_id: nil, trip_section: nil}
     previous_destination = nil
     
     flights.each do |flight|
-      current_trip_section = {trip_id: flight[:trip_id], trip_section: flight[:trip_section]
+      current_trip_section = {trip_id: flight.trip_id, trip_section: flight.trip_section
       }
-      unless current_trip_section == previous_trip_section && flight[:origin_iata] == previous_destination
+      unless current_trip_section == previous_trip_section && flight.origin_airport.iata_code == previous_destination
         # This is not a layover, so count this origin airport
-        visits[[flight[:origin_iata],flight[:origin_city],flight[:origin_country]]] += 1
+        visits[[flight.origin_airport.iata_code,flight.origin_airport.city,flight.origin_airport.country]] += 1
       end
-      visits[[flight[:destination_iata],flight[:destination_city],flight[:destination_country]]] += 1
+      visits[[flight.destination_airport.iata_code,flight.destination_airport.city,flight.destination_airport.country]] += 1
       previous_trip_section = current_trip_section
-      previous_destination = flight[:destination_iata]
+      previous_destination = flight.destination_airport.iata_code
       
     end
     

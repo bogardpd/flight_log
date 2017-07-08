@@ -12,7 +12,7 @@ class PagesController < ApplicationController
     
     @flight_aircraft = AircraftFamily.flight_count(@flights)
     @flight_airlines = Airline.flight_count(@flights, type: :airline)
-    @flight_airports = Airport.visit_count(logged_in?)
+    @flight_airports = Airport.visit_count(@flights)
     @flight_routes = Route.flight_count(logged_in?)
     @flight_tails = TailNumber.flight_count(logged_in?)
     

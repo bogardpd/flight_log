@@ -141,7 +141,7 @@ class FlightsController < ApplicationController
     @total_distance = total_distance(@flights)
       
     # Create comparitive lists of airlines and classes:
-    @airports = Airport.visit_count(logged_in?, flights: filtered_flights) 
+    @airports = Airport.visit_count(@flights) 
     @airlines = Airline.flight_count(@flights, type: :airline) 
     @aircraft_families = AircraftFamily.flight_count(@flights)
     @classes = TravelClass.flight_count(@flights)
