@@ -7,7 +7,8 @@ class RoutesController < ApplicationController
     @title = "Routes"
     @meta_description = "A list of the routes Paul Bogard has flown on, and how often heʼs flown on each."
         
-    @route_table = Route.flight_count(logged_in?)     
+    flights = flyer.flights(current_user)
+    @route_table = Route.flight_count(flights)     
     
     if @route_table.count > 0
       

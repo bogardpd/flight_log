@@ -31,8 +31,7 @@ class Route < ApplicationRecord
   # (sorted alphabetically), distance, and number of times flown, sorted by
   # number of times flown descending. Routes which have been flown but have
   # not had a distance defined have a value of -1 (to allow sorting).
-  def self.flight_count(logged_in = false)
-    flights = logged_in ? Flight.all : Flight.visitor
+  def self.flight_count(flights)
     flights = flights.includes(:origin_airport, :destination_airport)
     
     route_distances = Hash.new()
