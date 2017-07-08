@@ -9,8 +9,9 @@ class AirlinesController < ApplicationController
     add_breadcrumb 'Airlines', 'airlines_path'
     add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
-    @airlines  = Airline.flight_count(logged_in?, type: :airline)
-    @operators = Airline.flight_count(logged_in?, type: :operator)
+    flights = flyer.flights(current_user)
+    @airlines  = Airline.flight_count(flights, type: :airline)
+    @operators = Airline.flight_count(flights, type: :operator)
     
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
@@ -73,8 +74,8 @@ class AirlinesController < ApplicationController
     @total_distance = total_distance(@flights)
     
     # Create comparitive lists of aircraft and classes:
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
-    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
+    @airlines = Airline.flight_count(@flights, type: :airline) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
+    @operators = Airline.flight_count(@flights, type: :operator)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     
@@ -109,7 +110,7 @@ class AirlinesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @airlines = Airline.flight_count(@flights, type: :airline)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     
@@ -144,15 +145,15 @@ class AirlinesController < ApplicationController
     @region = current_region(default: :world)
     @title = @operator.airline_name + " #" + @fleet_number
     @meta_description = "Maps and lists of Paul Bogardʼs flights operated on #{@operator.airline_name} ##{@fleet_number}."
-    add_breadcrumb 'Airlines', 'airlines_path'
-    add_breadcrumb 'Flights Operated by ' + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
-    add_breadcrumb '#' + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number)
+    add_breadcrumb "Airlines", "airlines_path"
+    add_breadcrumb "Flights Operated by #{@operator.airline_name}", show_operator_path(@operator.iata_airline_code)
+    add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number)
     
     @total_distance = total_distance(@flights)
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
+    @airlines = Airline.flight_count(@flights, type: :airline)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     

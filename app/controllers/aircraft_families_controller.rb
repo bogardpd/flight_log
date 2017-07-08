@@ -72,8 +72,8 @@ class AircraftFamiliesController < ApplicationController
     @subtypes_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft_family)
     
     # Create comparitive lists of airlines and classes:
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
-    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
+    @airlines = Airline.flight_count(@flights, type: :airline)
+    @operators = Airline.flight_count(@flights, type: :operator)
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     
     # Create superlatives:

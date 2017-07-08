@@ -88,8 +88,8 @@ class RoutesController < ApplicationController
     end
     
     # Create comparitive lists of airlines, aircraft, and classes:
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
-    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
+    @airlines = Airline.flight_count(@flights, type: :airline)
+    @operators = Airline.flight_count(@flights, type: :operator)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     

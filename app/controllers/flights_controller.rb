@@ -142,7 +142,7 @@ class FlightsController < ApplicationController
       
     # Create comparitive lists of airlines and classes:
     @airports = Airport.visit_count(logged_in?, flights: filtered_flights) 
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights) 
+    @airlines = Airline.flight_count(@flights, type: :airline) 
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     @new_airports = Airport.new_in_date_range(@date_range, logged_in?)
@@ -152,10 +152,7 @@ class FlightsController < ApplicationController
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
-    
-  rescue ArgumentError
-    redirect_to flights_path
-    
+          
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find any flights in #{@in_text}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
@@ -197,7 +194,7 @@ class FlightsController < ApplicationController
     @title = TravelClass.list[params[:travel_class]].titlecase + " Class"
     @meta_description = "Maps and lists of Paul Bogardʼs #{TravelClass.list[params[:travel_class]].downcase} class flights."
     raise ActiveRecord::RecordNotFound if @flights.length == 0
-    add_breadcrumb 'Travel Classes', 'classes_path'
+    add_breadcrumb "Travel Classes", "classes_path"
     add_breadcrumb TravelClass.list[params[:travel_class]].titlecase, show_class_path(params[:travel_class])
 
     @region = current_region(default: :world)
@@ -205,8 +202,8 @@ class FlightsController < ApplicationController
     @total_distance = total_distance(@flights)
 
     # Create comparitive lists of airlines, operators, and aircraft:
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
-    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
+    @airlines = Airline.flight_count(@flights, type: :airline)
+    @operators = Airline.flight_count(@flights, type: :operator)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
 
     # Create superlatives:
@@ -275,8 +272,8 @@ class FlightsController < ApplicationController
     @total_distance = total_distance(@flights)
     
     # Create comparitive list of airlines, operators, and classes:
-    @airlines = Airline.flight_count(logged_in?, type: :airline, flights: filtered_flights)
-    @operators = Airline.flight_count(logged_in?, type: :operator, flights: filtered_flights)
+    @airlines = Airline.flight_count(@flights, type: :airline)
+    @operators = Airline.flight_count(@flights, type: :operator)
     @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
     
     # Create superlatives:
