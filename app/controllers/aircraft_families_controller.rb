@@ -8,7 +8,8 @@ class AircraftFamiliesController < ApplicationController
     add_breadcrumb "Aircraft Families", "aircraft_families_path"
     add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
     
-    flight_count = AircraftFamily.flight_count(logged_in?)
+    flights = flyer.flights(current_user)
+    flight_count = AircraftFamily.flight_count(flights)
     @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
     
     if @aircraft_families.any?

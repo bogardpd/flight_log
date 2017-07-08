@@ -10,7 +10,7 @@ class PagesController < ApplicationController
     
     @flights = flyer.flights(current_user).includes(:origin_airport, :destination_airport)
     
-    @flight_aircraft = AircraftFamily.flight_count(logged_in?)
+    @flight_aircraft = AircraftFamily.flight_count(@flights)
     @flight_airlines = Airline.flight_count(@flights, type: :airline)
     @flight_airports = Airport.visit_count(logged_in?)
     @flight_routes = Route.flight_count(logged_in?)

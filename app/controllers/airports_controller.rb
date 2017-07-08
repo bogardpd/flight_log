@@ -61,7 +61,6 @@ class AirportsController < ApplicationController
       raise ActiveRecord::RecordNotFound if (@airport.nil?) #all_flights will fail if code does not exist, so check here.
     end
     
-    filtered_flights = Flight.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id)
     flyer_flights = flyer.flights(current_user)
     @flights = flyer_flights.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     
@@ -150,7 +149,7 @@ class AirportsController < ApplicationController
     # Create comparitive lists of airlines, aircraft, and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
     @operators = Airline.flight_count(@flights, type: :operator)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(@flights)
     @classes = TravelClass.flight_count(@flights)
     
     # Create maps:

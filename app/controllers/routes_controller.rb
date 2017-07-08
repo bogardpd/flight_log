@@ -58,7 +58,6 @@ class RoutesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}."
     @logo_used = true
     
-    filtered_flights = Flight.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
     flyer_flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
     @flights = flyer_flights.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
     
@@ -90,7 +89,7 @@ class RoutesController < ApplicationController
     # Create comparitive lists of airlines, aircraft, and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
     @operators = Airline.flight_count(@flights, type: :operator)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(@flights)
     @classes = TravelClass.flight_count(@flights)
     
     # Create flight arrays for maps of trips and sections:

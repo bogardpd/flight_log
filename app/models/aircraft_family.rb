@@ -89,10 +89,8 @@ class AircraftFamily < ApplicationRecord
   # descending. Child types are included with the parent family count. If a
   # collection of flights is provided, the count will be conducted on that
   # collection; otherwise, it will be conducted on all flights.
-  def self.flight_count(logged_in=false, flights: nil)
-    flights ||= Flight.all
-    flights = flights.visitor unless logged_in
-    family_count = flights.joins(:aircraft_family).group(:aircraft_family_id, :parent_id).count
+  def self.flight_count(flights)
+    family_count = flights.reorder(nil).joins(:aircraft_family).group(:aircraft_family_id, :parent_id).count
       .map{|k,v| {(k[1]||k[0]) => v}} # Create array of hashes with k as parent id or family id and v as count
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts
     family_count ||= Array.new

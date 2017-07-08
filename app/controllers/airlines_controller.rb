@@ -52,7 +52,6 @@ class AirlinesController < ApplicationController
     @airline = Airline.where(:iata_airline_code => params[:id]).first
     raise ActiveRecord::RecordNotFound if (@airline.nil?) #all_flights will fail if code does not exist, so check here.
     
-    filtered_flights = Flight.where(airline_id: @airline.id)
     @flights = flyer.flights(current_user).where(airline_id: @airline.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
@@ -76,7 +75,7 @@ class AirlinesController < ApplicationController
     # Create comparitive lists of aircraft and classes:
     @airlines = Airline.flight_count(@flights, type: :airline) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
     @operators = Airline.flight_count(@flights, type: :operator)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(@flights)
     @classes = TravelClass.flight_count(@flights)
     
     # Create superlatives:
@@ -91,7 +90,6 @@ class AirlinesController < ApplicationController
   def show_operator
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     raise ActiveRecord::RecordNotFound if (@operator.nil?) #all_flights will fail if code does not exist, so check here.
-    filtered_flights = Flight.where(:operator_id => @operator.id)
     @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  
@@ -111,7 +109,7 @@ class AirlinesController < ApplicationController
     
     # Create comparitive lists of airlines, aircraft and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(@flights)
     @classes = TravelClass.flight_count(@flights)
     
     # Create superlatives:
@@ -154,7 +152,7 @@ class AirlinesController < ApplicationController
     
     # Create comparitive lists of airlines, aircraft and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
-    @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
+    @aircraft_families = AircraftFamily.flight_count(@flights)
     @classes = TravelClass.flight_count(@flights)
     
     # Create superlatives:
