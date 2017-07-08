@@ -128,7 +128,6 @@ class FlightsController < ApplicationController
     
     @in_text = params[:year].present? ? params[:year] : "this date range"
     
-    filtered_flights = Flight.where(departure_date: @date_range)
     flyer_flights = flyer.flights(current_user)
     @flights = flyer_flights.where(departure_date: @date_range).includes(:airline, :origin_airport, :destination_airport, :trip)
     @year_range = flyer_flights.year_range
