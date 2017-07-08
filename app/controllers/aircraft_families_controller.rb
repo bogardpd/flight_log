@@ -74,7 +74,7 @@ class AircraftFamiliesController < ApplicationController
     # Create comparitive lists of airlines and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
     @operators = Airline.flight_count(@flights, type: :operator)
-    @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
+    @classes = TravelClass.flight_count(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

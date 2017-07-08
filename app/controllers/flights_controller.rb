@@ -144,7 +144,7 @@ class FlightsController < ApplicationController
     @airports = Airport.visit_count(logged_in?, flights: filtered_flights) 
     @airlines = Airline.flight_count(@flights, type: :airline) 
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
+    @classes = TravelClass.flight_count(@flights)
     @new_airports = Airport.new_in_date_range(@date_range, logged_in?)
     @new_airlines = Airline.new_in_date_range(@date_range, logged_in?)   
     @new_aircraft_families = AircraftFamily.new_in_date_range(@date_range, logged_in?)
@@ -162,7 +162,8 @@ class FlightsController < ApplicationController
   def index_classes
     add_breadcrumb 'Travel Classes', 'classes_path'
     
-    @classes = TravelClass.flight_count(logged_in?)
+    flights = flyer.flights(current_user)
+    @classes = TravelClass.flight_count(flights)
     
     @title = "Travel Classes"
     @meta_description = "A count of how many times Paul Bogard has flown in each class."
@@ -258,7 +259,6 @@ class FlightsController < ApplicationController
   
   def show_tail
     @logo_used = true
-    filtered_flights = Flight.where(:tail_number => params[:tail_number])
     @flights = flyer.flights(current_user).where(tail_number: params[:tail_number]).includes(:airline, :origin_airport, :destination_airport, :trip)
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
@@ -274,7 +274,7 @@ class FlightsController < ApplicationController
     # Create comparitive list of airlines, operators, and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
     @operators = Airline.flight_count(@flights, type: :operator)
-    @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
+    @classes = TravelClass.flight_count(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

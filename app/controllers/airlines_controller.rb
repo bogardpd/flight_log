@@ -77,7 +77,7 @@ class AirlinesController < ApplicationController
     @airlines = Airline.flight_count(@flights, type: :airline) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
     @operators = Airline.flight_count(@flights, type: :operator)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
+    @classes = TravelClass.flight_count(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -112,7 +112,7 @@ class AirlinesController < ApplicationController
     # Create comparitive lists of airlines, aircraft and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
+    @classes = TravelClass.flight_count(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -155,7 +155,7 @@ class AirlinesController < ApplicationController
     # Create comparitive lists of airlines, aircraft and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
     @aircraft_families = AircraftFamily.flight_count(logged_in?, flights: filtered_flights)
-    @classes = TravelClass.flight_count(logged_in?, flights: filtered_flights)
+    @classes = TravelClass.flight_count(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

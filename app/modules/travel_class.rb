@@ -2,10 +2,8 @@ module TravelClass
   
   # Returns an array of airlines, with a hash for each family containing the
   # class code and number of flights in that class.
-  def self.flight_count(logged_in=false, flights: nil)
-    flights ||= Flight.all
-    flights = flights.visitor unless logged_in
-    counts = flights.group(:travel_class).count
+  def self.flight_count(flights)
+    counts = flights.reorder(nil).group(:travel_class).count
       .map{|k,v| {class_code: k, flight_count: v}}
     
     class_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
