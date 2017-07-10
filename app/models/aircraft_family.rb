@@ -41,12 +41,12 @@ class AircraftFamily < ApplicationRecord
   end
   
   # Returns an array containing ids, family names, icao codes, and flight counts.
-  def family_and_subtype_count(logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
-    type_count = flights.where(aircraft_family_id: family_and_subtype_ids).joins(:aircraft_family)
+  def family_and_subtype_count(flights)
+    type_count = flights.reorder(nil).joins(:aircraft_family)
       .group(:aircraft_family_id, :family_name, :icao_aircraft_code, :parent_id).count
       .map{|k,v| {id: k[0], family_name: k[1], icao_aircraft_code: k[2], is_family: k[3].nil?, flight_count: v}}
       .sort_by{|a| [-a[:flight_count], a[:family_name]] }
+    return type_count
   end
   
   def format_name
@@ -54,7 +54,7 @@ class AircraftFamily < ApplicationRecord
   end
   
   def full_name
-    return self.manufacturer + " " + self.family_name
+    return "#{self.manufacturer} #{self.family_name}"
   end
   
   # Return true if this aircraft type is a top-level family, false otherwise.

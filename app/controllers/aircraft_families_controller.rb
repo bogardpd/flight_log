@@ -68,7 +68,7 @@ class AircraftFamiliesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
     
-    @subtypes = @aircraft_family.family_and_subtype_count(logged_in?)
+    @subtypes = @aircraft_family.family_and_subtype_count(@flights)
     @subtypes_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft_family)
     
     # Create comparitive lists of airlines and classes:
