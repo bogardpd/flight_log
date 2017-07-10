@@ -20,7 +20,7 @@ class PkPassesController < ApplicationController
     
     empty_trips = Trip.with_no_flights.map{|trip| [trip.name, trip.id]}
     
-    @trips = empty_trips.concat(Trip.with_departure_dates(logged_in?).reverse.map{|trip| ["#{trip.name} / #{Flight.format_date(trip.departure_date)}", trip.id]})
+    @trips = empty_trips.concat(Trip.with_departure_dates(current_user, current_user).reverse.map{|trip| ["#{trip.name} / #{Flight.format_date(trip.departure_date)}", trip.id]})
     @passes = PKPass.pass_summary_list
     @flight_passes = PKPass.flights_with_updated_passes
     @flights = flyer.flights(current_user).where(id: @flight_passes.keys)

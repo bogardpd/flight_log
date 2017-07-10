@@ -6,7 +6,7 @@ class TripsController < ApplicationController
   def index
     add_breadcrumb 'Trips', 'trips_path'
     add_admin_action view_context.link_to("Add New Trip", new_trip_path)
-    @trips = Trip.with_departure_dates(logged_in?)
+    @trips = Trip.with_departure_dates(flyer, current_user)
 
     @trips_with_no_flights = Trip.with_no_flights
     @title = "Trips"
