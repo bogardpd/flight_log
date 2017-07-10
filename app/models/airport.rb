@@ -43,10 +43,10 @@ class Airport < ApplicationRecord
     return matching_flights.order(departure_date: :asc).first.departure_date
   end
   
-  # Accepts a date range, and returns the IATA code for all airports that had
-  # their first flight in this date range.
-  def self.new_in_date_range(date_range, logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
+  # Accepts a flyer, the viewing user, and a date range, and returns the IATA
+  # code for all airports that had their first flight in this date range.
+  def self.new_in_date_range(flyer, current_user, date_range)
+    flights = flyer.flights(current_user).reorder(nil)
     orig = flights.joins(:origin_airport).select(:iata_code, :departure_date).group(:iata_code).minimum(:departure_date)
     dest = flights.joins(:destination_airport).select(:iata_code, :departure_date).group(:iata_code).minimum(:departure_date)
     first_flights = orig.merge(dest){|key,o,d| [o,d].min}

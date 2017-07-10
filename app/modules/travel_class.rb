@@ -30,10 +30,10 @@ module TravelClass
     return classes
   end
   
-  # Accepts a date range, and returns all classes that had their
-  # first flight in this date range.
-  def self.new_in_date_range(date_range, logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
+  # Accepts a flyer, the current user, and a date range, and returns all
+  # classes that had their first flight in this date range.
+  def self.new_in_date_range(flyer, current_user, date_range)
+    flights = flyer.flights(current_user).reorder(nil)
     first_flights = flights.select(:travel_class, :departure_date).where.not(travel_class: nil).group(:travel_class).minimum(:departure_date)
     return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
   end  

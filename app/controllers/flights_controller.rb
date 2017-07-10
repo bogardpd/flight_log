@@ -144,10 +144,10 @@ class FlightsController < ApplicationController
     @airlines = Airline.flight_count(@flights, type: :airline) 
     @aircraft_families = AircraftFamily.flight_count(@flights)
     @classes = TravelClass.flight_count(@flights)
-    @new_airports = Airport.new_in_date_range(@date_range, logged_in?)
-    @new_airlines = Airline.new_in_date_range(@date_range, logged_in?)   
-    @new_aircraft_families = AircraftFamily.new_in_date_range(@date_range, logged_in?)
-    @new_classes = TravelClass.new_in_date_range(@date_range, logged_in?)
+    @new_airports = Airport.new_in_date_range(flyer, current_user, @date_range)
+    @new_airlines = Airline.new_in_date_range(flyer, current_user, @date_range)   
+    @new_aircraft_families = AircraftFamily.new_in_date_range(flyer, current_user, @date_range)
+    @new_classes = TravelClass.new_in_date_range(flyer, current_user, @date_range)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

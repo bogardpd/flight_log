@@ -44,10 +44,10 @@ class Airline < ApplicationRecord
     return self.iata_airline_code.split('-').first
   end
   
-  # Accepts a date range, and returns all airlines that had their
-  # first flight in this date range.
-  def self.new_in_date_range(date_range, logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
+  # Accepts a flyer, the current user, and a date range, and returns all
+  # airlines that had their first flight in this date range.
+  def self.new_in_date_range(flyer, current_user, date_range)
+    flights = flyer.flights(current_user).reorder(nil)
     first_flights = flights.joins(:airline).select(:airline_id, :departure_date).where.not(airline_id: nil).group(:airline_id).minimum(:departure_date)
     return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
   end

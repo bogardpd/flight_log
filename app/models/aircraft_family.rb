@@ -119,10 +119,10 @@ class AircraftFamily < ApplicationRecord
       .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]} Family"].push(([{family_name: "Unknown type of #{v[:family_name]}", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
   end
   
-  # Accepts a date range, and returns all aircraft families that had their
-  # first flight in this date range.
-  def self.new_in_date_range(date_range, logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
+  # Accepts a flyer, the viewing user, and date range, and returns all aircraft
+  # families that had their first flight in this date range.
+  def self.new_in_date_range(flyer, current_user, date_range)
+    flights = flyer.flights(current_user).reorder(nil)
     first_flights = flights.joins(:aircraft_family).select(:aircraft_family_id, :parent_id, :departure_date).where.not(aircraft_family_id: nil).group(:aircraft_family_id, :parent_id).minimum(:departure_date)
     family_first_flights = first_flights.map{|k,v| {(k[1]||k[0]) => v}}
       .reduce{|a,b| a.merge(b){|k,oldval,newval| [oldval,newval].min}}
