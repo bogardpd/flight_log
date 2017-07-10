@@ -13,16 +13,6 @@ class Airport < ApplicationRecord
   validates :city, :presence => true
   validates :country, :presence => true
   
-  def all_flights(logged_in)
-    # Returns a collection of Flights that have this airport as an origin or destination.
-    if logged_in
-      flights = Flight.chronological.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => self})
-    else
-      flights = Flight.visitor.chronological.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => self})
-    end
-    return flights
-  end
-  
   def country_flag_path
     if self.country == nil
       "flags/unknown-country.png"

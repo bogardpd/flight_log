@@ -50,7 +50,7 @@ class AirlinesController < ApplicationController
   
   def show
     @airline = Airline.where(:iata_airline_code => params[:id]).first
-    raise ActiveRecord::RecordNotFound if (@airline.nil?) #all_flights will fail if code does not exist, so check here.
+    raise ActiveRecord::RecordNotFound if (@airline.nil?)
     
     @flights = flyer.flights(current_user).where(airline_id: @airline.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
@@ -89,7 +89,8 @@ class AirlinesController < ApplicationController
   
   def show_operator
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
-    raise ActiveRecord::RecordNotFound if (@operator.nil?) #all_flights will fail if code does not exist, so check here.
+    raise ActiveRecord::RecordNotFound if (@operator.nil?)
+    
     @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  

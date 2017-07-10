@@ -38,7 +38,7 @@ class AircraftFamiliesController < ApplicationController
   
   def show
     @aircraft_family = AircraftFamily.find(params[:id])
-    raise ActiveRecord::RecordNotFound if (@aircraft_family.nil?) #all_flights will fail if code does not exist, so check here.    
+    raise ActiveRecord::RecordNotFound if (@aircraft_family.nil?)
     
     @logo_used = true
     @title = @aircraft_family.full_name

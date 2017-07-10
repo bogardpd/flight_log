@@ -59,7 +59,7 @@ class AirportsController < ApplicationController
       @airport = Airport.find(params[:id])
     else
       @airport = Airport.where(:iata_code => params[:id]).first
-      raise ActiveRecord::RecordNotFound if (@airport.nil?) #all_flights will fail if code does not exist, so check here.
+      raise ActiveRecord::RecordNotFound if (@airport.nil?)
     end
     
     flyer_flights = flyer.flights(current_user)
