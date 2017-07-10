@@ -26,13 +26,6 @@ class Airport < ApplicationRecord
     end
   end
   
-  def first_visit(logged_in=false)
-    flights = logged_in ? Flight.all : Flight.visitor
-    matching_flights = flights.where("origin_airport_id = ? OR destination_airport_id = ?", self.id, self.id)
-    return nil if matching_flights.length == 0
-    return matching_flights.order(departure_date: :asc).first.departure_date
-  end
-  
   # Accepts a flyer, the viewing user, and a date range, and returns the IATA
   # code for all airports that had their first flight in this date range.
   def self.new_in_date_range(flyer, current_user, date_range)
