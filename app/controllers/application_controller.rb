@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   def flyer
     return User.first
   end
+  helper_method :flyer
   
   def logged_in_user
     unless logged_in?

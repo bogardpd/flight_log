@@ -3,8 +3,8 @@
 <p>Each plane has a <%= link_to("registration", 'http://en.wikipedia.org/wiki/Aircraft_registration') %> number, and I use it to keep track of which particular planes Iʼve flown on the most often.</p>
 <p>I have flown on <%= pluralize(@tail_numbers_table.count, 'unique tail number') %>.</p>
 
-<% if @flight_tail_numbers.empty? %>
-	<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
+<% if @tail_numbers_table.empty? %>
+	<% if @flights.empty? %>
 		<%= render 'error_no_flights' %>
 	<% else %>
 		<%= render_message(:warning, "There are no flights in the flight log that include a tail number!") %>

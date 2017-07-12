@@ -1,7 +1,7 @@
 <h1>Airlines</h1>
 
-<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
-   <%= render partial: "flights/error_no_flights" %>
+<% if @flights.empty? %>
+  <%= render partial: "flights/error_no_flights" %>
 <% else %>
 
   <div class="page_navigation">

@@ -2,7 +2,7 @@
 
 <p>This listing shows how often Iʼve flown on each particular family of airplane. Each family of airplane may have several types, but all of those types have been included in each familyʼs total.</p>
 
-<% if (logged_in? && !Flight.any?) || (!logged_in? && Flight.visitor.empty?) %>
+<% if @flights.empty? %>
   <%= render partial: "flights/error_no_flights" %>
 <% else %>
 

@@ -32,8 +32,6 @@ class Trip < ApplicationRecord
   
   validates :name, :presence => true
   
-  scope :visitor, -> { where('hidden = FALSE') }
-  
   protected
   
   def nil_if_blank

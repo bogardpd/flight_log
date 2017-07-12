@@ -9,9 +9,9 @@ class AirlinesController < ApplicationController
     add_breadcrumb 'Airlines', 'airlines_path'
     add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
-    flights = flyer.flights(current_user)
-    @airlines  = Airline.flight_count(flights, type: :airline)
-    @operators = Airline.flight_count(flights, type: :operator)
+    @flights = flyer.flights(current_user)
+    @airlines  = Airline.flight_count(@flights, type: :airline)
+    @operators = Airline.flight_count(@flights, type: :operator)
     
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?

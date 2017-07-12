@@ -33,11 +33,7 @@ class Flight < ApplicationRecord
   scope :chronological, -> {
     order('flights.departure_utc')
   }  
-  scope :visitor, -> {
-    joins(:trip).
-    where('hidden = FALSE')
-  }
-  
+    
   protected
   
   def nil_if_blank

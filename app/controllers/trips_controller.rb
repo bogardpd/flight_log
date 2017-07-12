@@ -27,7 +27,6 @@ class TripsController < ApplicationController
   def show
     @logo_used = true
     @trip = Trip.find(params[:id])
-    # Filter out hidden trips for visitors:
     raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
     @flights = Flight.where(trip_id: @trip).includes(:airline, :origin_airport, :destination_airport, :trip)
     @title = @trip.name

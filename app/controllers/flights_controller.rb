@@ -38,58 +38,28 @@ class FlightsController < ApplicationController
   
   def show
     @logo_used = true
-    if logged_in?
-      @flight = Flight.find(params[:id])
-      @city_pair_flights = Flight.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @flight.origin_airport.id, :city2 => @flight.destination_airport.id})
-      check_email_for_boarding_passes if @flight.trip.hidden?
-    else
-      @flight = Flight.visitor.find(params[:id])
-      @city_pair_flights = Flight.visitor.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @flight.origin_airport.id, :city2 => @flight.destination_airport.id})
+    @flight = flyer.flights(current_user).find(params[:id])
+
+    @title = @flight.airline.airline_name + " " + @flight.flight_number.to_s
+    @meta_description = "Details for Paul Bogardʼs #{@flight.airline.airline_name} #{@flight.flight_number} flight on #{Flight.format_date(@flight.departure_date)}."
+    add_breadcrumb 'Flights', 'flights_path'
+    add_breadcrumb @title, "flight_path(#{params[:id]})"
+    add_admin_action view_context.link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => 'warning')
+    add_admin_action view_context.link_to("Edit Flight", edit_flight_path(@flight))
+    
+    if @flight.trip.hidden? && logged_in?
+      add_message(:warning, "This flight is part of a #{view_context.link_to("hidden trip", trip_path(@flight.trip))}!")
+      check_email_for_boarding_passes
     end
     
-    add_message(:warning, "This flight is part of a #{view_context.link_to("hidden trip", trip_path(@flight.trip))}!") if @flight.trip.hidden
     updated_pass = PKPass.where(flight_id: @flight)
     if updated_pass.any?
       add_message(:info, "This flight has an #{view_context.link_to("updated boarding pass", edit_flight_with_pass_path(pass_id: updated_pass.first))} available!")
     end
     
-    # Create map:
     @map = SingleFlightMap.new(@flight)
-    
-    # Get trips sharing this city pair:
-    trip_array = Array.new
-    @city_pair_flights = Array.new
-    section_where_array = Array.new
-    @city_pair_flights.each do |flight|
-      trip_array.push(flight.trip_id)
-      @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date} )
-      section_where_array.push("(trip_id = #{flight.trip_id.to_i} AND trip_section = #{flight.trip_section.to_i})")
-    end
-    trip_array = trip_array.uniq
-    
-    # Create list of trips sorted by first flight:
-    if logged_in?
-      @trips = Trip.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
-    else
-      @trips = Trip.visitor.find(trip_array).sort_by{ |trip| trip.flights.first.departure_date }
-    end
-    
-    # Create flight arrays for maps of trips and sections:
-    @city_pair_trip_flights = Flight.where(:trip_id => trip_array)
-    @city_pair_section_flights = Flight.where(section_where_array.join(' OR '))
-    
-    @title = @flight.airline.airline_name + " " + @flight.flight_number.to_s
-    @meta_description = "Details for Paul Bogardʼs #{@flight.airline.airline_name} #{@flight.flight_number} flight on #{Flight.format_date(@flight.departure_date)}."
-    
     @route_distance = Route.distance_by_airport_id(@flight.origin_airport, @flight.destination_airport)
-    
     @boarding_pass = BoardingPass.new(@flight.boarding_pass_data, flight: @flight)
-    
-    add_breadcrumb 'Flights', 'flights_path'
-    add_breadcrumb @title, "flight_path(#{params[:id]})"
-    
-    add_admin_action view_context.link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => 'warning')
-    add_admin_action view_context.link_to("Edit Flight", edit_flight_path(@flight))
     
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
@@ -161,8 +131,8 @@ class FlightsController < ApplicationController
   def index_classes
     add_breadcrumb 'Travel Classes', 'classes_path'
     
-    flights = flyer.flights(current_user)
-    @classes = TravelClass.flight_count(flights)
+    @flights = flyer.flights(current_user)
+    @classes = TravelClass.flight_count(@flights)
     
     @title = "Travel Classes"
     @meta_description = "A count of how many times Paul Bogard has flown in each class."
@@ -215,45 +185,37 @@ class FlightsController < ApplicationController
 
   def index_tails
     add_breadcrumb 'Tail Numbers', 'tails_path'
-    if logged_in?
-      @flight_tail_numbers = Flight.where("tail_number IS NOT NULL").group("tail_number").count
-      @flight_tail_details = Flight.select(:tail_number, :iata_aircraft_code, :airline_name, :iata_airline_code, :family_name, :manufacturer).joins(:airline, :aircraft_family).chronological.where("tail_number IS NOT NULL")
-    else # Filter out hidden trips for visitors
-      @flight_tail_numbers = Flight.visitor.where("tail_number IS NOT NULL").group("tail_number").count
-      @flight_tail_details = Flight.visitor.select(:tail_number, :iata_aircraft_code, :airline_name, :iata_airline_code, :family_name, :manufacturer).joins(:airline, :aircraft_family).chronological.where("tail_number IS NOT NULL")
-    end
+    
     @title = "Tail Numbers"
     @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often heʼs flown on each."
     
     @tail_numbers_table = Array.new
-    
-    if @flight_tail_numbers.any?
-      
-      flights = flyer.flights(current_user)
-      @tail_numbers_table = TailNumber.flight_count(flights)
-    
-      # Find maxima for graph scaling:
-      @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
-    
-      # Sort tails table:
-      sort_params = sort_parse(params[:sort], %w(flights tail aircraft airline), :desc)
-      @sort_cat   = sort_params[:category]
-      @sort_dir   = sort_params[:direction]
-      sort_mult   = (@sort_dir == :asc ? 1 : -1)
-      case @sort_cat
-      when :tail
-        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| tail[:tail_number]}
-        @tail_numbers_table.reverse! if @sort_dir == :desc
-      when :flights
-        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [sort_mult*tail[:count], tail[:tail_number]]}
-      when :aircraft
-        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:aircraft], tail[:airline_name]]}
-        @tail_numbers_table.reverse! if @sort_dir == :desc
-      when :airline
-        @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:airline_name], tail[:aircraft]]}
-        @tail_numbers_table.reverse! if @sort_dir == :desc
-      end
+          
+    @flights = flyer.flights(current_user)
+    @tail_numbers_table = TailNumber.flight_count(@flights)
+  
+    # Find maxima for graph scaling:
+    @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
+  
+    # Sort tails table:
+    sort_params = sort_parse(params[:sort], %w(flights tail aircraft airline), :desc)
+    @sort_cat   = sort_params[:category]
+    @sort_dir   = sort_params[:direction]
+    sort_mult   = (@sort_dir == :asc ? 1 : -1)
+    case @sort_cat
+    when :tail
+      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| tail[:tail_number]}
+      @tail_numbers_table.reverse! if @sort_dir == :desc
+    when :flights
+      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [sort_mult*tail[:count], tail[:tail_number]]}
+    when :aircraft
+      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:aircraft], tail[:airline_name]]}
+      @tail_numbers_table.reverse! if @sort_dir == :desc
+    when :airline
+      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:airline_name], tail[:aircraft]]}
+      @tail_numbers_table.reverse! if @sort_dir == :desc
     end
+      
   end
   
   def show_tail
