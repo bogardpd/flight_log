@@ -58,15 +58,15 @@ module TailNumber
   # manufacturers, aircraft family/type names, airline names, airline IATA
   # codes, and flight counts
   def self.flight_count(flights)
-    tail_counts = flights.reorder(nil).joins(:aircraft_family).joins(:airline).where.not(tail_number: nil).group(:tail_number).count
+    tail_counts = flights.reorder(nil).where.not(tail_number: nil).group(:tail_number).count
     tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
     return nil unless tail_details.any?
     tail_details.map{|f| {f.tail_number => {
       airline_code:  f.airline.iata_airline_code,
       airline_name:  f.airline.airline_name,
-      aircraft_code: f.aircraft_family.icao_aircraft_code || f.aircraft_family.iata_aircraft_code,
-      manufacturer:  f.aircraft_family.manufacturer,
-      family_name:   f.aircraft_family.family_name,
+      aircraft_code: f.aircraft_family&.icao_aircraft_code || f.aircraft_family&.iata_aircraft_code,
+      manufacturer:  f.aircraft_family&.manufacturer,
+      family_name:   f.aircraft_family&.family_name,
       departure_utc: f.departure_utc
     }}}
       .reduce{|a,b| a.merge(b){|k,oldval,newval| newval[:departure_utc] > oldval[:departure_utc] ? newval : oldval}}
