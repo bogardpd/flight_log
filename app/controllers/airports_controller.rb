@@ -12,8 +12,7 @@ class AirportsController < ApplicationController
     
     if @flights.any?
       
-      flights = flyer.flights(current_user)
-      @airports = Airport.visit_count(flights)
+      @airports = Airport.visit_count(@flights)
       used_airport_codes = @airports.map{|a| a[:iata_code]}.uniq.compact
       if logged_in?
         @airports_with_no_flights = Airport.where.not(iata_code: used_airport_codes).order(:city)
