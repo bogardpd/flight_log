@@ -32,11 +32,11 @@ class FlightsMap < Map
       pairs_inside_region  = Array.new
       pairs_outside_region = Array.new
       routes = Hash.new
-
+      
+      conus_airports = Airport.where(region_conus: true).pluck(:iata_code)
       @flights.each do |flight|
         # Build arrays of city pairs
         if @region == :conus 
-          conus_airports = Airport.where(region_conus: true).pluck(:iata_code)
           if (!conus_airports.include?(flight.origin_airport.iata_code) || !conus_airports.include?(flight.destination_airport.iata_code))
             pairs_outside_region.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
           else
