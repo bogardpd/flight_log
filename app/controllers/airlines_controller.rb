@@ -91,7 +91,7 @@ class AirlinesController < ApplicationController
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     raise ActiveRecord::RecordNotFound if (@operator.nil?)
     
-    @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :origin_airport, :destination_airport, :trip)
+    @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :aircraft_family, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  
     @title = @operator.airline_name + " (Operator)"
