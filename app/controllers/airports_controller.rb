@@ -61,8 +61,8 @@ class AirportsController < ApplicationController
       raise ActiveRecord::RecordNotFound if (@airport.nil?)
     end
     
-    flyer_flights = flyer.flights(current_user)
-    @flights = flyer_flights.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id).includes(:airline, :origin_airport, :destination_airport, :trip)
+    flyer_flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
+    @flights = flyer_flights.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id)
     
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     trip_array = Array.new
@@ -91,7 +91,7 @@ class AirportsController < ApplicationController
       prev_trip_id = flight.trip_id
       prev_section_id = flight.trip_section
       section_where_array.push("(trip_id = #{flight.trip_id.to_i} AND trip_section = #{flight.trip_section.to_i})")
-      
+
       # Create hash of the other airports on flights to/from this airport and their counts
       if (flight.origin_airport.iata_code == @airport.iata_code)
         pair_totals[flight.destination_airport.iata_code] += 1
@@ -124,8 +124,13 @@ class AirportsController < ApplicationController
     end
     
     # Find maxima for graph scaling:
-    @flights_maximum = @flights.length == 0 ? 0 : @direct_flight_airports.max_by{|i| i[:total_flights].to_i}[:total_flights]
-    @distance_maximum = @flights.length == 0 ? 0 : @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
+    if @flights.empty? || @direct_flight_airports.empty?
+      @flights_maximum = 0
+      @distance_maximum = 0
+    else
+      @flights_maximum = @direct_flight_airports.max_by{|i| i[:total_flights].to_i}[:total_flights]
+      @distance_maximum = @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
+    end
     
     # Sort city pair table:
     sort_params = sort_parse(params[:sort], %w(flights city code distance), :desc)
