@@ -28,7 +28,7 @@ class TripsController < ApplicationController
     @logo_used = true
     @trip = Trip.find(params[:id])
     raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
-    @flights = Flight.where(trip_id: @trip).includes(:airline, :origin_airport, :destination_airport, :trip)
+    @flights = Flight.where(trip_id: @trip).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
     @title = @trip.name
     @meta_description = "Maps and lists of flights on Paul Bogardʼs #{@trip.name} trip."
     
@@ -83,7 +83,7 @@ class TripsController < ApplicationController
     
     add_message(:warning, "This trip is hidden!") if @trip.hidden
     
-    @flights = Flight.where(trip_id: @trip, trip_section: params[:section]).includes(:airline, :origin_airport, :destination_airport, :trip)
+    @flights = Flight.where(trip_id: @trip, trip_section: params[:section]).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
     @section_distance = total_distance(@flights)
     if @flights.any?
       stops = [@flights.first.origin_airport.iata_code,@flights.last.destination_airport.iata_code]
