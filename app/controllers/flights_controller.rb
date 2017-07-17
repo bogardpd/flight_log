@@ -375,9 +375,9 @@ class FlightsController < ApplicationController
     
   def edit
     @flight = Flight.find(params[:id])
-    add_breadcrumb 'Flights', 'flights_path'
-    add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", 'flight_path(@flight)'
-    add_breadcrumb "Update Flight with New Boarding Pass", 'edit_flight_path(@flight)'
+    add_breadcrumb "Flights", "flights_path"
+    add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", "flight_path(@flight)"
+    add_breadcrumb "Edit Flight", "edit_flight_path(@flight)"
     @title = "Edit Flight"
   end
   
@@ -401,7 +401,7 @@ class FlightsController < ApplicationController
     @title = "Update Flight with new Boarding Pass"
     add_breadcrumb 'Flights', 'flights_path'
     add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", 'flight_path(@flight)'
-    add_breadcrumb 'Edit Flight', 'edit_flight_with_pass_path(id: @flight, pass_id: params[:pass_id])'
+    add_breadcrumb "Update Flight with New Boarding Pass", 'edit_flight_with_pass_path(id: @flight, pass_id: params[:pass_id])'
     
     # Build array of form fields
     fields = @pass.updated_values(@flight) || {}
