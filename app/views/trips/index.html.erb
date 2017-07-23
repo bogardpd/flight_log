@@ -1,6 +1,19 @@
 <h1>Trips</h1>
 
-<p>I have taken <%= pluralize(@trips.length, 'trip') %> by air.</p>
+<% if (flyer == current_user && @trips_with_no_flights.any?) %>
+  <h2>Trips with No Flights</h2>
+  <table class="flightlog">
+  <% @trips_with_no_flights.each do |trip| %>
+    <tr>
+      <td class="trip_name"><%= %Q(<div class="hidden-marker">Hidden</div>).html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
+    </tr>
+  <% end %>
+  </table>
+
+  <h2>Trips with Flights</h2>
+<% end %>
+
+<p>I have taken <%= pluralize(@trips.length, "trip") %> by air.</p>
 
 <% if @trips.any? %>
 <table class="flightlog">
@@ -10,22 +23,11 @@
     <th class="flight_date"><%= sort_link("Departure", :departure, "departure", :desc, nil) %></th>
   </tr>
 	<%= render :partial => "trips/trip_table_body" %>
-  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@trips.length, 'trip') %></td></tr>
+  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@trips.length, "trip") %></td></tr>
 </table>
 <% end %>
 
-<% if (logged_in? && @trips_with_no_flights.any?) %>
-<h2>Trips with No Flights</h2>
-<table class="flightlog">
-<% @trips_with_no_flights.each do |trip| %>
-  <tr>
-    <td class="trip_name"><%= "<div class=\"hidden-marker\">Hidden</div>".html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
-  </tr>
-<% end %>
-</table>
-<% end %>
-
-<% if logged_in? && @trips.empty? && @trips_with_no_flights.empty? %>
+<% if flyer == current_user && @trips.empty? && @trips_with_no_flights.empty? %>
 	<%= render_message(:warning, "There are no trips in the flight log! Please #{link_to "create a trip", new_trip_path}.") %>
 <% elsif !logged_in? && @trips.empty? %>
 	<%= render_message(:warning, "There are no trips in the flight log!") %>
