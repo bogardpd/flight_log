@@ -732,6 +732,13 @@ p {
 	margin-right: $margin-paragraph;
 }
 
+p.comment {
+  border-top: 1px solid #BED4EA;
+  border-bottom: 1px solid #BED4EA;
+  background-color: #F9F9FB;
+  padding: 0.25em 0;
+}
+
 p.distance {
 	text-align: center;
 	margin-top: 0;

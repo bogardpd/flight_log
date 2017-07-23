@@ -1,7 +1,7 @@
 <h1><%= @flight.airline.airline_name %> <%= @flight.flight_number %></h1>
 
 <% if @flight.comment %>
-<p><%= @flight.comment %></p>
+  <p class="comment"><%= @flight.comment %></p>
 <% end %>
 
 <%= @map.draw %>
