@@ -4,12 +4,12 @@
 
   <p>
     <%= f.label :name, "Trip Name" %><br />
-    <%= f.text_field :name %>
+    <%= f.text_field :name, size: 60 %>
   </p>
   
   <p>
     <%= f.label :purpose %><br />
-    <%= f.select(:purpose, options_for_select(Trip.purposes_list.invert, @trip.purpose), :include_blank => true)%>
+    <%= f.select(:purpose, options_for_select(Trip.purposes_list.invert, @trip.purpose), include_blank: true)%>
   </p>
 
   <p>
@@ -18,7 +18,7 @@
 
   <p>
     <%= f.label :comment %><br />
-    <%= f.text_field :comment, :size => 60 %>
+    <%= f.text_field :comment, size: 60 %>
   </p>
 
   <p>
