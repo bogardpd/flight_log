@@ -1,10 +1,10 @@
 class FlightsController < ApplicationController
   protect_from_forgery except: :show_boarding_pass_json
   before_action :logged_in_user, :only => [:new, :new_undefined_fields, :create, :create_iata, :edit, :edit_with_pass, :update, :destroy, :index_emails, :new_undefined_fields, :create_iata]
-  add_breadcrumb 'Home', 'root_path'
+  add_breadcrumb "Home", "root_path"
   
   def index
-    add_breadcrumb 'Flights', 'flights_path'
+    add_breadcrumb "Flights", "flights_path"
     @logo_used = true
     @title = "Flights"
     @region = current_region(default: :world)
@@ -42,9 +42,9 @@ class FlightsController < ApplicationController
 
     @title = @flight.airline.airline_name + " " + @flight.flight_number.to_s
     @meta_description = "Details for Paul Bogardʼs #{@flight.airline.airline_name} #{@flight.flight_number} flight on #{Flight.format_date(@flight.departure_date)}."
-    add_breadcrumb 'Flights', 'flights_path'
+    add_breadcrumb "Flights", "flights_path"
     add_breadcrumb @title, "flight_path(#{params[:id]})"
-    add_admin_action view_context.link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => 'warning')
+    add_admin_action view_context.link_to("Delete Flight", :flight, :method => :delete, :data => {:confirm => "Are you sure you want to delete this flight?"}, :class => "warning")
     add_admin_action view_context.link_to("Edit Flight", edit_flight_path(@flight))
     
     if @flight.trip.hidden? && logged_in?
@@ -67,7 +67,7 @@ class FlightsController < ApplicationController
   end
     
   def show_date_range
-    add_breadcrumb 'Flights', 'flights_path'
+    add_breadcrumb "Flights", "flights_path"
     @logo_used = true
     
     if params[:year].present?
@@ -81,7 +81,7 @@ class FlightsController < ApplicationController
       @meta_description = "Maps and lists of Paul Bogardʼs flights in #{params[:year]}"
     elsif (params[:start_date].present? && params[:end_date].present?)
       if (params[:start_date] > params[:end_date])
-        raise ArgumentError.new('Start date cannot be later than end date')
+        raise ArgumentError.new("Start date cannot be later than end date")
       end
 
       @date_range = (params[:start_date].to_date)..(params[:end_date].to_date)
@@ -93,7 +93,7 @@ class FlightsController < ApplicationController
       @title = "Flights: #{Flight.format_date(params[:start_date].to_date)} – #{Flight.format_date(params[:end_date].to_date)}"
       @meta_description = "Maps and lists of Paul Bogardʼs flights from #{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
     else
-      raise ArgumentError.new('No date parameters were given for a date range')
+      raise ArgumentError.new("No date parameters were given for a date range")
     end
     
     @in_text = params[:year].present? ? params[:year] : "this date range"
@@ -129,7 +129,7 @@ class FlightsController < ApplicationController
   end
     
   def index_classes
-    add_breadcrumb 'Travel Classes', 'classes_path'
+    add_breadcrumb "Travel Classes", "classes_path"
     
     @flights = flyer.flights(current_user)
     @classes = TravelClass.flight_count(@flights)
@@ -184,7 +184,7 @@ class FlightsController < ApplicationController
   end
 
   def index_tails
-    add_breadcrumb 'Tail Numbers', 'tails_path'
+    add_breadcrumb "Tail Numbers", "tails_path"
     
     @title = "Tail Numbers"
     @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often heʼs flown on each."
@@ -225,7 +225,7 @@ class FlightsController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     @title = params[:tail_number]
     @meta_description = "Maps and lists of Paul Bogardʼs flights on tail number #{params[:tail_number]}."
-    add_breadcrumb 'Tail Numbers', 'tails_path'
+    add_breadcrumb "Tail Numbers", "tails_path"
     add_breadcrumb @title, show_tail_path(params[:tail_number])
     
     @region = current_region(default: :world)
@@ -288,8 +288,8 @@ class FlightsController < ApplicationController
   
   def new
     @title = "New Flight"
-    add_breadcrumb 'Flights', 'flights_path'
-    add_breadcrumb 'New Flight', 'new_flight_path'
+    add_breadcrumb "Flights", "flights_path"
+    add_breadcrumb "New Flight", "new_flight_path"
     trip = Trip.find(params[:trip_id])
     existing_trip_flights_count = trip.flights.length
     if existing_trip_flights_count > 0
@@ -340,7 +340,7 @@ class FlightsController < ApplicationController
       end
       redirect_to @flight
     else
-      render 'new'
+      render "new"
     end
   end
   
@@ -399,9 +399,9 @@ class FlightsController < ApplicationController
     end
     
     @title = "Update Flight with new Boarding Pass"
-    add_breadcrumb 'Flights', 'flights_path'
-    add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", 'flight_path(@flight)'
-    add_breadcrumb "Update Flight with New Boarding Pass", 'edit_flight_with_pass_path(id: @flight, pass_id: params[:pass_id])'
+    add_breadcrumb "Flights", "flights_path"
+    add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", "flight_path(@flight)"
+    add_breadcrumb "Update Flight with New Boarding Pass", "edit_flight_with_pass_path(id: @flight, pass_id: params[:pass_id])"
     
     # Build array of form fields
     fields = @pass.updated_values(@flight) || {}
@@ -421,17 +421,17 @@ class FlightsController < ApplicationController
     if @flight.update_attributes(flight_params)
       flash[:success] = "Successfully updated flight."
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
-        flash[:success] += " You've had prior flights on this tail!"
+        flash[:success] += " You’ve had prior flights on this tail!"
       end
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
-        flash[:warning] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they're correct?".html_safe
+        flash[:warning] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they’re correct?".html_safe
       end
       @pass = PKPass.find_by(id: params[:flight][:pass_id])
       @pass.destroy if @pass
       
       redirect_to @flight
     else
-      render 'edit'
+      render "edit"
     end
   end
     

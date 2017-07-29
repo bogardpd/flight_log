@@ -1,9 +1,9 @@
 class RoutesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb 'Home', 'root_path'
+  add_breadcrumb "Home", "root_path"
   
   def index
-    add_breadcrumb 'Routes', 'routes_path'
+    add_breadcrumb "Routes", "routes_path"
     @title = "Routes"
     @meta_description = "A list of the routes Paul Bogard has flown on, and how often heʼs flown on each."
         
@@ -36,9 +36,9 @@ class RoutesController < ApplicationController
       current_route = Route.find(params[:id])
       @airports.push(Airport.find(current_route.airport1_id).iata_code)
       @airports.push(Airport.find(current_route.airport2_id).iata_code)
-      @route_string = @airports.join('-')
+      @route_string = @airports.join("-")
     else
-      @airports = params[:id].split('-')
+      @airports = params[:id].split("-")
       @route_string = params[:id]
     end
     
@@ -52,7 +52,7 @@ class RoutesController < ApplicationController
       @airports_city[index] = airport_lookup[index].city
     end
     
-    add_breadcrumb 'Routes', 'routes_path'
+    add_breadcrumb "Routes", "routes_path"
     add_breadcrumb "#{@airports[0]} – #{@airports[1]}", route_path(@route_string)
     add_admin_action view_context.link_to("Edit Route", edit_route_path(@airports[0],@airports[1]))
     @title = "#{@airports[0]} – #{@airports[1]}"
@@ -95,7 +95,7 @@ class RoutesController < ApplicationController
     
     # Create flight arrays for maps of trips and sections:
     @city_pair_trip_flights    = flyer_flights.where(:trip_id => trip_array)
-    @city_pair_section_flights = flyer_flights.where(section_where_array.join(' OR '))
+    @city_pair_section_flights = flyer_flights.where(section_where_array.join(" OR "))
     
     # Create maps:
     @route_map    = SingleFlightMap.new(@flights.first)
@@ -110,9 +110,9 @@ class RoutesController < ApplicationController
   end
   
   def edit
-    add_breadcrumb 'Routes', 'routes_path'
+    add_breadcrumb "Routes", "routes_path"
     add_breadcrumb "#{params[:airport1]} - #{params[:airport2]}", route_path("#{params[:airport1]}-#{params[:airport2]}")
-    add_breadcrumb 'Edit', '#'
+    add_breadcrumb "Edit", "#"
     @title = "Edit #{params[:airport1]} - #{params[:airport2]}"
     
     # Get airport ids:
@@ -145,7 +145,7 @@ class RoutesController < ApplicationController
       flash[:success] = "Successfully added distance to route!"
       redirect_to route_path("#{@route.airport1.iata_code}-#{@route.airport2.iata_code}")
     else
-      render 'new'
+      render "new"
     end
   end
   
@@ -155,7 +155,7 @@ class RoutesController < ApplicationController
       flash[:success] = "Successfully updated route distance."
       redirect_to route_path("#{@route.airport1.iata_code}-#{@route.airport2.iata_code}")
     else
-      render 'edit'
+      render "edit"
     end
   end
   

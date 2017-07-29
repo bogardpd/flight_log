@@ -22,7 +22,7 @@
       <td><%= pass[:airline] %> <%= pass[:flight] %></td>
       <td><%= code_mono(pass[:from]) %> &ndash; <%= code_mono(pass[:to]) %></td>
       <td class="flight_date"><%= Flight.format_date(pass[:date]) %></td>
-      <td><%= link_to("Delete", pk_pass_path(pass[:id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{pass[:from]}-#{pass[:to]}?"}, :class => 'warning') %></td>
+      <td><%= link_to("Delete", pk_pass_path(pass[:id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{pass[:from]}-#{pass[:to]}?"}, :class => "warning") %></td>
     </tr>
   <% end %>
   </tbody>
@@ -45,7 +45,7 @@
         <%= render partial: "flights/flight_cell_flight", locals: {flight: flight, linkable: false} %>
         <%= render partial: "flights/flight_cell_route", locals: {flight: flight, linkable: false} %>
         <%= render "flights/flight_cell_departure", flight: flight %>
-        <td><%= link_to("Delete Pass", pk_pass_path(@flight_passes[flight.id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{flight.airline.airline_name} #{flight.flight_number}?"}, :class => 'warning') %></td>
+        <td><%= link_to("Delete Pass", pk_pass_path(@flight_passes[flight.id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{flight.airline.airline_name} #{flight.flight_number}?"}, :class => "warning") %></td>
       </tr>
     <% end %>
   </tbody>

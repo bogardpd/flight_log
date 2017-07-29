@@ -1,7 +1,7 @@
 <% fields ||= Hash.new %>
 
 <%= form_for(flight) do |f| %>
-  <%= render 'error_messages' %>
+  <%= render "error_messages" %>
 
   <p>Trip: <strong><%= flight.trip.name %></strong></p>
 
@@ -125,9 +125,9 @@
   <p>
   	<%= f.label :boarding_pass_data %><br />
   	<% if fields[:boarding_pass_data] %>
-      <%= f.text_area :boarding_pass_data, size: '60x5', class: "code-mono autopopulated", value: fields[:boarding_pass_data][:pass_value] %>
+      <%= f.text_area :boarding_pass_data, size: "60x5", class: "code-mono autopopulated", value: fields[:boarding_pass_data][:pass_value] %>
     <% else %>
-      <%= f.text_area :boarding_pass_data, size: '60x5', class: 'code-mono' %>
+      <%= f.text_area :boarding_pass_data, size: "60x5", class: "code-mono" %>
     <% end %>
   </p>
 

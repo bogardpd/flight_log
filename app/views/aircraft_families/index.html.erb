@@ -6,7 +6,7 @@
   <%= render partial: "flights/error_no_flights" %>
 <% else %>
 
-  <p>I have flown on <%= pluralize(@aircraft_families.count, 'aircraft family') %>.</p>
+  <p>I have flown on <%= pluralize(@aircraft_families.count, "aircraft family") %>.</p>
 
   <% if @aircraft_families.empty? %>
     <%= render_message(:warning, "There are no flights in the flight log that include an aircraft type!") %>
@@ -23,7 +23,7 @@
   		</tr>
   	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
   	  <tr>
-  	    <td class="aircraft_family"><%= link_to("<span class=\"aircraft_manufacturer\">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}".html_safe, aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
+  	    <td class="aircraft_family"><%= link_to(%Q(<span class="aircraft_manufacturer">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}).html_safe, aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
   	    <td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
   		</tr>
   	<% end %>

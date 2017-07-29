@@ -18,7 +18,7 @@ class UsersController < ApplicationController
       flash[:success] = ("User <strong>" + @user.name + "</strong> was successfully created!").html_safe
       redirect_to root_path
     else
-      render 'new'
+      render "new"
     end
   end
   

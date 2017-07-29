@@ -6,9 +6,9 @@ class Trip < ApplicationRecord
   
   def self.purposes_list
     purposes = Hash.new
-    purposes['business'] = 'Business'
-    purposes['mixed'] = 'Mixed'
-    purposes['personal'] = 'Personal'
+    purposes["business"] = "Business"
+    purposes["mixed"] = "Mixed"
+    purposes["personal"] = "Personal"
     return purposes
   end
   
@@ -24,7 +24,7 @@ class Trip < ApplicationRecord
   end
   
   def self.with_no_flights
-    return Trip.where('id not in (?)',Trip.distinct.joins(:flights).select("trips.id"))
+    return Trip.where("id not in (?)",Trip.distinct.joins(:flights).select("trips.id"))
   end
   
   NULL_ATTRS = %w( comment )

@@ -1,6 +1,6 @@
 class Route < ApplicationRecord
-  belongs_to :airport1, :class_name => 'Airport'
-  belongs_to :airport2, :class_name => 'Airport'
+  belongs_to :airport1, :class_name => "Airport"
+  belongs_to :airport2, :class_name => "Airport"
   
   # Given two IATA airport codes, returns the distance in statute miles
   # between them. This calls an SQL query, and should not be used in a loop.

@@ -1,7 +1,7 @@
 class Airline < ApplicationRecord
   has_many :flights
-  has_many :operated_flights, :class_name => 'Flight', :foreign_key => 'operator_id'
-  has_many :codeshared_flights, :class_name => 'Flight', :foreign_key => 'codeshare_airline_id'
+  has_many :operated_flights, :class_name => "Flight", :foreign_key => "operator_id"
+  has_many :codeshared_flights, :class_name => "Flight", :foreign_key => "codeshare_airline_id"
     
   validates :iata_airline_code, :presence => true, :length => { :minimum => 2 }, :uniqueness => { :case_sensitive => false }
   validates :icao_airline_code, :presence => true, :length => { is: 3 }, :uniqueness => { :case_sensitive => false }
@@ -41,7 +41,7 @@ class Airline < ApplicationRecord
   end
   
   def self.plain_code
-    return self.iata_airline_code.split('-').first
+    return self.iata_airline_code.split("-").first
   end
   
   # Accepts a flyer, the current user, and a date range, and returns all

@@ -6,6 +6,6 @@
 	<%= render_message(:warning, "There are no airports in the flight log. Please #{link_to "add an airport", new_airport_path} before trying to add a flight.") %>
 <% else %>
 
-	<%= render :partial => 'form', locals: {flight: @flight, fields: @fields} %>
+	<%= render :partial => "form", locals: {flight: @flight, fields: @fields} %>
 
 <% end %>

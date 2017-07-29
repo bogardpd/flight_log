@@ -28,13 +28,13 @@
   </tr>
   <tr>
     <td class="flight_show_label">Trip</td>
-    <td class="flight_show_trip"><%= "<div class=\"hidden-marker\">Hidden</div>".html_safe if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
+    <td class="flight_show_trip"><%= %Q(<div class="hidden-marker">Hidden</div>).html_safe if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
   </tr>
   <tr>
     <td class="flight_show_label">Route</td>
     <td class="flight_show_route">
       <% if @route_distance %>
-        <div class="supplemental-info"><span class="flight_route_distance"><%= number_with_delimiter(@route_distance, :delimiter => ',') %> mi / <%= number_with_delimiter((@route_distance*1.60934).to_i, :delimiter => ',') %> km</span></div>
+        <div class="supplemental-info"><span class="flight_route_distance"><%= number_with_delimiter(@route_distance, :delimiter => ",") %> mi / <%= number_with_delimiter((@route_distance*1.60934).to_i, :delimiter => ",") %> km</span></div>
       <% elsif logged_in? %>
         <div class="supplemental-info message-error"><%= link_to "Distance Undefined",  edit_route_path(@flight.origin_airport.iata_code,@flight.destination_airport.iata_code) %></div>
       <% end %>
@@ -45,7 +45,7 @@
     <td class="flight_show_label">Airline</td>
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.airline.iata_airline_code) %></div>
-			<%= link_to("#{image_tag(airline_icon_path(@flight.airline.iata_airline_code), alt: @flight.airline.airline_name, class: 'airline_icon')}#{@flight.airline.airline_name}".html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %>
+			<%= link_to("#{image_tag(airline_icon_path(@flight.airline.iata_airline_code), alt: @flight.airline.airline_name, class: "airline_icon")}#{@flight.airline.airline_name}".html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %>
 			</td>
   </tr>
   <% if @flight.operator %>
@@ -53,7 +53,7 @@
     <td class="flight_show_label">Operated By</td>
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.operator.iata_airline_code) %></div>
-			<%= link_to("#{image_tag(airline_icon_path(@flight.operator.iata_airline_code), alt: @flight.operator.airline_name, class: 'airline_icon')}#{@flight.operator.airline_name}".html_safe, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %>
+			<%= link_to("#{image_tag(airline_icon_path(@flight.operator.iata_airline_code), alt: @flight.operator.airline_name, class: "airline_icon")}#{@flight.operator.airline_name}".html_safe, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %>
 			<% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.iata_airline_code, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %>
 			</td>
   </tr>
@@ -63,7 +63,7 @@
     <td class="flight_show_label">Codeshare</td>
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.codeshare_airline.iata_airline_code) %></div>
-			<%= image_tag(airline_icon_path(@flight.codeshare_airline.iata_airline_code), alt: @flight.codeshare_airline.airline_name, class: 'airline_icon') %><%= @flight.codeshare_airline.airline_name %> <%= @flight.codeshare_flight_number %>
+			<%= image_tag(airline_icon_path(@flight.codeshare_airline.iata_airline_code), alt: @flight.codeshare_airline.airline_name, class: "airline_icon") %><%= @flight.codeshare_airline.airline_name %> <%= @flight.codeshare_flight_number %>
 			</td>
 		</td>
   </tr>

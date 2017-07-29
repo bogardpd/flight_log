@@ -16,7 +16,7 @@
 
 <% if @flights.any? %>
 
-<p>I took <%= pluralize(@flights.length, 'commercial flight') %> in <%= @in_text %>.</p>
+<p>I took <%= pluralize(@flights.length, "commercial flight") %> in <%= @in_text %>.</p>
 
 <div id="map" class="intro_box">
   <%= map_with_region_select(@map, anchor: "flight-map") %>

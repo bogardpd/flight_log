@@ -14,7 +14,7 @@
   <tr>
     <td>
       <div style="width: 30em;">
-        <%= render 'flights/bcbp_compact', boarding_pass: pass %>
+        <%= render "flights/bcbp_compact", boarding_pass: pass %>
       </div>
     </td>
     <td>
@@ -25,7 +25,7 @@
 <% end %>
   <tr>
     <td colspan="3" class="flightlog_total">
-      <%= pluralize(count, 'invalid boarding pass') %>
+      <%= pluralize(count, "invalid boarding pass") %>
     </td>
   </tr>
 </table>

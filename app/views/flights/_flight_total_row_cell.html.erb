@@ -1,5 +1,5 @@
 <% flyer_flights = flyer.flights(current_user) %>
-<%= pluralize(@flights.length, 'flight') %> 
+<%= pluralize(@flights.length, "flight") %> 
 <% if flyer_flights.any? %>
   <span class="total-percent">(<%= ((@flights.length.to_f/flyer_flights.length.to_f)*1000).round/10.0 %>% of all flights)</span>
 <% end %>

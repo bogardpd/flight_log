@@ -13,7 +13,7 @@ module ApplicationHelper
     if @meta_description.nil?
       ""
     else
-      "<meta name=\"description\" content=\"#{@meta_description}\" />".html_safe
+      %Q(<meta name="description" content="#{@meta_description}" />).html_safe
     end
   end
   
@@ -38,16 +38,16 @@ module ApplicationHelper
   end
   
   def iata_airline_code_display(iata_airline_code)
-    iata_airline_code.split('-').first
+    iata_airline_code.split("-").first
   end
   
   def country_flag(country)
-    image_tag(Airport.new(:country => country).country_flag_path, :title => country, :alt => country, :class => 'country_flag')
+    image_tag(Airport.new(:country => country).country_flag_path, :title => country, :alt => country, :class => "country_flag")
   end
   
   def code_mono(code)
     return nil unless code.present?
-    html = "<span class=\"code-mono\">" + code + "</span>"
+    html = %Q(<span class="code-mono">#{code}</span>)
     html.html_safe
   end
   
@@ -55,9 +55,9 @@ module ApplicationHelper
         
     if @sort_cat == sort_symbol
       if @sort_dir == :asc
-        category_sort_symbol = "<span class=\"sort_symbol\">&#x25B2;</span>" # Up Triangle
+        category_sort_symbol = %Q(<span class="sort_symbol">&#x25B2;</span>) # Up Triangle
       elsif @sort_dir == :desc
-        category_sort_symbol = "<span class=\"sort_symbol\">&#x25BC;</span>" # Down Triangle
+        category_sort_symbol = %Q(<span class="sort_symbol">&#x25BC;</span>) # Down Triangle
       end
     else
       category_sort_symbol = ""
@@ -65,11 +65,11 @@ module ApplicationHelper
     
     case default_dir
     when :asc
-      sort_dir_string = ['desc','asc']
-      sort_direction = ['-','']
+      sort_dir_string = ["desc","asc"]
+      sort_direction = ["-",""]
     else
-      sort_dir_string = ['asc','desc']
-      sort_direction = ['','-']
+      sort_dir_string = ["asc","desc"]
+      sort_direction = ["","-"]
     end
     if (@sort_cat == sort_symbol && @sort_dir == default_dir)
       sort_polarity = sort_direction[0]
@@ -106,14 +106,14 @@ module ApplicationHelper
   # Params: 
   # +region+:: The currently active region
   def gcmap_region_select_links(region, anchor: nil)
-    html = "<div class=\"region_select\">"
-    html += "<ul class=\"region_select\">"
+    html = %Q(<div class="region_select">)
+    html += %Q(<ul class="region_select">)
     if region == :conus
     	html += "<li>"
       html +=	link_to("World", url_for(region: :world, anchor: anchor, sort_category: params[:sort_category], sort_direction: params[:sort_direction]))
-      html += "</li><li class=\"selected\">Contiguous United States</li>"
+      html += %Q(</li><li class="selected">Contiguous United States</li>)
     else
-    	html += "<li class=\"selected\">World</li><li>"
+    	html += %Q(<li class="selected">World</li><li>)
       html += link_to("Contiguous United States", url_for(region: :conus, anchor: anchor, sort_category: params[:sort_category], sort_direction: params[:sort_direction]))
       html += "</li>"      	
     end

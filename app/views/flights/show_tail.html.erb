@@ -17,11 +17,11 @@
 </div>
 
 
-<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family.family_name, aircraft_family_path(@flights.last.aircraft_family), :title => "View flights on #{@flights.last.aircraft_family.manufacturer} #{@flights.last.aircraft_family.family_name} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span> <%= pluralize(@flights.length, 'time') %>.</p>
+<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family.family_name, aircraft_family_path(@flights.last.aircraft_family), :title => "View flights on #{@flights.last.aircraft_family.manufacturer} #{@flights.last.aircraft_family.family_name} aircraft") : "airplane" %> with tail number <span class="bold"><%= params[:tail_number] %></span> <%= pluralize(@flights.length, "time") %>.</p>
 
 <div id="map">
   <%= map_with_region_select(@map) %>
-  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: 'total', flight_link: true} %>
+  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
 </div>
 
 <h2 id="classes">Classes Flown on <%= params[:tail_number] %></h2>

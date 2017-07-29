@@ -42,7 +42,7 @@ protected
     @admin_actions.push(link)
   end
 
-  def add_breadcrumb name, url=''
+  def add_breadcrumb name, url=""
     @breadcrumbs ||= []
     url = eval(url) if url =~ /_path|_url|@/
     @breadcrumbs << [name, url]
@@ -60,7 +60,7 @@ protected
   end
   
   # Accept a sort querystring in the format "category" or "-category", and
-  # return a hash in the form [category: :category, direction: ':asc|:desc'].
+  # return a hash in the form [category: :category, direction: ":asc|:desc"].
   # Parameters:
   # +query+:                Sort querystring in the format "category" or
   #                         "-category"
@@ -75,7 +75,7 @@ protected
     return {category: permitted_categories.first.to_sym, direction: default_direction} if query.nil?
     result = Hash.new
     # Extract category and direction
-    if query[0] == '-'
+    if query[0] == "-"
       category = query[1..-1]
       result[:direction] = :desc
     else

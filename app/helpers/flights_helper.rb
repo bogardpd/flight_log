@@ -13,12 +13,12 @@ module FlightsHelper
         end
       },
       :selectee => lambda{|data|
-        'tpc.png' if data.to_i == 3        
+        "tpc.png" if data.to_i == 3        
       }
     }
     if path[type]
       path = path[type].call(raw)
-      return image_tag(path, class: 'airline_icon', title: interpretation).html_safe if path
+      return image_tag(path, class: "airline_icon", title: interpretation).html_safe if path
     end
     return nil
   end

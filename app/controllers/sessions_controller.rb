@@ -10,8 +10,8 @@ class SessionsController < ApplicationController
       log_in user
       redirect_to root_path
     else
-      flash.now[:error] = 'Invalid username/password combination'
-      render 'new'
+      flash.now[:error] = "Invalid username/password combination"
+      render "new"
     end
   end
   

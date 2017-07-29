@@ -1,11 +1,11 @@
 class Flight < ApplicationRecord
   belongs_to :trip
-  belongs_to :origin_airport, :class_name => 'Airport'
-  belongs_to :destination_airport, :class_name => 'Airport'
+  belongs_to :origin_airport, :class_name => "Airport"
+  belongs_to :destination_airport, :class_name => "Airport"
   belongs_to :airline
   belongs_to :aircraft_family
-  belongs_to :operator, :class_name => 'Airline'
-  belongs_to :codeshare_airline, :class_name => 'Airline'
+  belongs_to :operator, :class_name => "Airline"
+  belongs_to :codeshare_airline, :class_name => "Airline"
     
   # Returns a hash containing the AircraftFamily for the flight's family, and
   # the AircraftFamily for the flight's subtype if available
@@ -31,7 +31,7 @@ class Flight < ApplicationRecord
   validates :travel_class, :inclusion => { in: TravelClass.list.keys, message: "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
   scope :chronological, -> {
-    order('flights.departure_utc')
+    order("flights.departure_utc")
   }  
     
   protected

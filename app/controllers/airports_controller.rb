@@ -1,9 +1,9 @@
 class AirportsController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb 'Home', 'root_path'
+  add_breadcrumb "Home", "root_path"
   
   def index
-    add_breadcrumb 'Airports', 'airports_path'
+    add_breadcrumb "Airports", "airports_path"
     add_admin_action view_context.link_to("Add New Airport", new_airport_path)
     @title = "Airports"
     @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often heʼs visited them."
@@ -112,7 +112,7 @@ class AirportsController < ApplicationController
     @trips = Flight.find_by_sql(["SELECT flights.trip_id AS id, MIN(flights.departure_date) AS departure_date, name, hidden FROM flights INNER JOIN trips on trips.id = flights.trip_id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, name, hidden ORDER BY departure_date", trip_array])
     
     @trips_using_airport_flights = flyer_flights.where(trip_id: trip_array)
-    @sections_using_airport_flights = flyer_flights.where(section_where_array.join(' OR '))
+    @sections_using_airport_flights = flyer_flights.where(section_where_array.join(" OR "))
 
     @airport_frequency = Airport.frequency_hash(@flights)[@airport.id]
    
@@ -166,10 +166,10 @@ class AirportsController < ApplicationController
     @title = @airport.iata_code
     @meta_description = "Maps and lists of Paul Bogardʼs flights through #{@airport.iata_code} – #{@airport.city}."
     
-    add_breadcrumb 'Airports', 'airports_path'
+    add_breadcrumb "Airports", "airports_path"
     add_breadcrumb @title, "airport_path(@airport.iata_code)"
     
-    add_admin_action view_context.link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => "warning") if @flights.length == 0
     add_admin_action view_context.link_to("Edit Airport", edit_airport_path(@airport))
     
   rescue ActiveRecord::RecordNotFound
@@ -180,8 +180,8 @@ class AirportsController < ApplicationController
   
   def new
     @title = "New Airport"
-    add_breadcrumb 'Airports', 'airports_path'
-    add_breadcrumb 'New Airport', 'new_airport_path'
+    add_breadcrumb "Airports", "airports_path"
+    add_breadcrumb "New Airport", "new_airport_path"
     @airport = Airport.new
   end
   
@@ -192,16 +192,16 @@ class AirportsController < ApplicationController
       flash[:success] = "Successfully added #{params[:airport][:iata_code]}!"
       redirect_to @airport
     else
-      render 'new'
+      render "new"
     end
   end
   
   
   def edit
     @airport = Airport.find(params[:id])
-    add_breadcrumb 'Airports', 'airports_path'
-    add_breadcrumb @airport.iata_code, 'airport_path(@airport)'
-    add_breadcrumb 'Edit Airport', 'edit_airport_path(@airport)'
+    add_breadcrumb "Airports", "airports_path"
+    add_breadcrumb @airport.iata_code, "airport_path(@airport)"
+    add_breadcrumb "Edit Airport", "edit_airport_path(@airport)"
   end
   
   
@@ -211,7 +211,7 @@ class AirportsController < ApplicationController
       flash[:success] = "Successfully updated airport."
       redirect_to @airport
     else
-      render 'edit'
+      render "edit"
     end
   end
   

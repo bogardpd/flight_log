@@ -3,18 +3,18 @@ module BoardingPassEmail
   TYPE_PKPASS = "application/vnd.apple.pkpass"
   FILENAME_PASS = "pass.json"
   
-  require 'net/imap'
-  require 'mail'
-  require 'zip'
+  require "net/imap"
+  require "mail"
+  require "zip"
   
   include SessionsHelper
   
   # Accepts a list of email addresses, and process attachments from those
   # senders. Also deletes old emails.
   def self.process_attachments(valid_emails)
-    imap = Net::IMAP.new('imap.gmail.com',993,true)
-    imap.login(ENV['BOARDING_PASS_IMPORT_EMAIL_ADDRESS'],ENV['BOARDING_PASS_IMPORT_EMAIL_PASSWORD'])
-    imap.select('INBOX')
+    imap = Net::IMAP.new("imap.gmail.com",993,true)
+    imap.login(ENV["BOARDING_PASS_IMPORT_EMAIL_ADDRESS"],ENV["BOARDING_PASS_IMPORT_EMAIL_PASSWORD"])
+    imap.select("INBOX")
     
     delete_old_emails(imap)
     
@@ -54,10 +54,10 @@ module BoardingPassEmail
         return nil
       }
       
-      message_received = imap.uid_fetch(uid, 'ENVELOPE').first.dig('attr', 'ENVELOPE', 'date')
+      message_received = imap.uid_fetch(uid, "ENVELOPE").first.dig("attr", "ENVELOPE", "date")
       message_datetime = message_received.present? ? Time.parse(message_received).utc : nil
       
-      body = Mail.new(imap.uid_fetch(uid, 'RFC822').first.attr['RFC822'])
+      body = Mail.new(imap.uid_fetch(uid, "RFC822").first.attr["RFC822"])
       no_pkpass.call(imap, uid) unless body.attachments.present? # Email has no attachments
       
       pkpasses = body.attachments.select{|attachment| attachment.content_type.start_with?(TYPE_PKPASS)}
@@ -87,11 +87,11 @@ module BoardingPassEmail
       output = nil
       Dir.mktmpdir{|dir|
         output = attachments.map.with_index{|attachment, index|
-          File.open("#{dir}/#{index}.zip", 'wb') do |file|
+          File.open("#{dir}/#{index}.zip", "wb") do |file|
             file.write(attachment.body.decoded)
             Zip::File.open(file.path) do |zip_file|
               if zip_file.glob(FILENAME_PASS).any?
-                pass = zip_file.glob(FILENAME_PASS).first.get_input_stream.read.force_encoding('UTF-8')
+                pass = zip_file.glob(FILENAME_PASS).first.get_input_stream.read.force_encoding("UTF-8")
               end
             end   
           end

@@ -24,7 +24,7 @@
 <% if flight.trip_section != previous_section %>
 	<tr>
     <td rowspan="<%= @section_count[flight.trip_section] %>" class="flight_section">
-      <%= link_to("Section #{flight.trip_section}", show_section_path(flight.trip_id, flight.trip_section), :class => 'bold') %><% if @section_count[flight.trip_section] > 1 %><br /><span class="flight_section_route"><%= flight.origin_airport.iata_code %> – <%= @section_final_destination[flight.trip_section] %></span><% end %>
+      <%= link_to("Section #{flight.trip_section}", show_section_path(flight.trip_id, flight.trip_section), :class => "bold") %><% if @section_count[flight.trip_section] > 1 %><br /><span class="flight_section_route"><%= flight.origin_airport.iata_code %> – <%= @section_final_destination[flight.trip_section] %></span><% end %>
     </td>
 <% else %>
 	<tr class="no_top_border">

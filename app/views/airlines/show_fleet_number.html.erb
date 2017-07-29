@@ -1,4 +1,4 @@
-<div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %><%= image_tag(airline_icon_path(@operator.iata_airline_code), :title => @operator.airline_name, :class => 'airline_icon')%></div>
+<div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %><%= image_tag(airline_icon_path(@operator.iata_airline_code), :title => @operator.airline_name, :class => "airline_icon")%></div>
 
 <h1><%= @operator.airline_name %> #<%= @fleet_number %></h1>
 
@@ -18,7 +18,7 @@
 
 <div id="map">
   <%= map_with_region_select(@map) %>
-  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: 'total', flight_link: true} %>
+  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
 </div>
 
 <h2 id="airlines">Airlines with Flights Operated as <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>

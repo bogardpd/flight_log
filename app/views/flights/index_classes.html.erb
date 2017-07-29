@@ -2,7 +2,7 @@
 
 <% if @classes.reject{|tc| tc[:class_code].nil?}.empty? %>
 	<% if @flights.empty? %>
-		<%= render 'error_no_flights' %>
+		<%= render "error_no_flights" %>
 	<% else %>
 		<%= render_message(:warning, "There are no flights in the flight log that include class!") %>
 	<% end %>

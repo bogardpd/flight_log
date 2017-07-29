@@ -1,5 +1,5 @@
 <% if @airport.country %>
-<div id="title-info"><%= @airport.country %><%= image_tag(@airport.country_flag_path, title: @airport.country, class: 'country_flag') %></div>
+<div id="title-info"><%= @airport.country %><%= image_tag(@airport.country_flag_path, title: @airport.country, class: "country_flag") %></div>
 <% end %>
 
 <h1><%= @airport.city %></h1>
@@ -26,7 +26,7 @@
 
 	<div id="map">  
     <%= map_with_region_select(@airport_map, anchor: "airport-map") %>
-	  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: 'total', flight_link: true} %>
+	  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
   </div>
 
 	<h2 id="airports">Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
@@ -54,14 +54,14 @@
 						<%= index + 1 %>
 					<% end %>
 	    	</td>
-		    <td class="airport_city"><%= image_tag(Airport.new(:country => row[:country]).country_flag_path, :title => row[:country], :class => 'country_flag') %> <%= link_to(row[:city], airport_path(row[:iata_code])) %></td>
+		    <td class="airport_city"><%= image_tag(Airport.new(:country => row[:country]).country_flag_path, :title => row[:country], :class => "country_flag") %> <%= link_to(row[:city], airport_path(row[:iata_code])) %></td>
 		    <td class="airport-code code-mono"><%= link_to(row[:iata_code], airport_path(row[:iata_code])) %></td>
 				<td class="airport_distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
 		    <td class="airport_flights"><div class="graph" style="background-size: <%= row[:total_flights]*100/@flights_maximum %>% 100%;"><%= link_to(row[:total_flights], route_path("#{@airport.iata_code}-#{row[:iata_code]}")) %></div></td>
 		  </tr>
 			<% previous_count = @sort_cat == :flights ? row[:total_flights] : row[:distance_mi] %>
 		<% end %>
-	  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, 'direct flight airport') %></td></tr>
+	  <tr><td colspan="5" class="flightlog_total"><%= pluralize(@direct_flight_airports.count, "direct flight airport") %></td></tr>
 	</table>
 
 	<h2 id="airports">Airlines Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
@@ -80,7 +80,7 @@
 	<h2 id="sections">Trip Sections Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<p>This map shows the flights of all of my trip sections that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
 	<%= map_with_region_select(@sections_map, anchor: "sections-map") %>
-	<%= render 'trips/section_table' %>
+	<%= render "trips/section_table" %>
 
 	<h2 id="trips">Trips Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<p>This map shows the flights of all of my trips that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.

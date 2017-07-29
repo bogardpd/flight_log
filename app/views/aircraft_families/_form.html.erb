@@ -1,6 +1,6 @@
 <%= form_for(@aircraft_family) do |f| %>
 
-  <%= render 'error_messages' %>
+  <%= render "error_messages" %>
 
   <%= f.hidden_field(:parent_id, value: @aircraft_family.parent_id) %>
 

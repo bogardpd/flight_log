@@ -10,7 +10,7 @@ class BoardingPass
     @flight = flight
     
     begin
-      @airline_compartments = JSON.parse(File.read('app/assets/json/airline_compartments.json'))
+      @airline_compartments = JSON.parse(File.read("app/assets/json/airline_compartments.json"))
     rescue
       @airline_compartments = nil
     end
@@ -111,7 +111,7 @@ class BoardingPass
     def determine_version(data)
       return 0 unless data.present?
       version = 0
-      version_begin_loc = data.index('>')
+      version_begin_loc = data.index(">")
       if version_begin_loc && data.length >= version_begin_loc + 2
         version += data[version_begin_loc + 1].to_i
       end
@@ -121,7 +121,7 @@ class BoardingPass
     # Returns a hash of the control points (number of legs and variable field
     # sizes). Any groups which do not exist will be left out or set as nil, so
     # nil comparisons can be used to check if a group is present. If there is
-    # invalid data, its starting position will be stored in an 'invalid' key.
+    # invalid data, its starting position will be stored in an "invalid" key.
     def create_control_points(data)
       len_um    = len_group(:um)
       len_rm    = len_group(:rm)
@@ -182,7 +182,7 @@ class BoardingPass
         control[:ra].push(nil)
       else
         # Check if version ">" is in the correct position
-        invalid.call(len_um_rm) if data.index('>') != len_um_rm
+        invalid.call(len_um_rm) if data.index(">") != len_um_rm
         
         invalid.call(len_um_rm) if len_uc_rc0_ra0 < len_field(8,9,10) # Check that field 10 is available
         control.store(:uc, {start: len_um_rm, length: len_field(8,9,10)}) # Store in case next line fails
@@ -240,7 +240,7 @@ class BoardingPass
         # security field validity checks.
         
         # Check if security "^" starts at correct spot
-        invalid.call(start_remainder) if (data.index('^') != start_remainder && data.index('>',len_um_rm+1) != start_remainder)
+        invalid.call(start_remainder) if (data.index("^") != start_remainder && data.index(">",len_um_rm+1) != start_remainder)
                   
         control.store(:security, {start: start_remainder, length: len_field(25,28,29)}) # Store in case next line fails
         len_security_data  = get_field_size.call(start_remainder+len_field(25,28),len_field(29))
@@ -677,8 +677,8 @@ class BoardingPass
       code = raw.upcase
       airline = get_raw(42, leg).strip
       begin
-        ticket_class = @airline_compartments[airline][code]['name'].capitalize
-        ticket_details = @airline_compartments[airline][code]['details']
+        ticket_class = @airline_compartments[airline][code]["name"].capitalize
+        ticket_details = @airline_compartments[airline][code]["details"]
       rescue
         ticket_class = code
       end
@@ -837,7 +837,7 @@ class BoardingPass
         output = "#{day_of_year.ordinalize} day of the year "
         if matching_dates.length > 0
           matching_dates.map!{|d| d.standard_date} # Format dates
-          output += "(#{matching_dates.join(', ')})"
+          output += "(#{matching_dates.join(", ")})"
         else
           output += "(#{error_text})"
         end

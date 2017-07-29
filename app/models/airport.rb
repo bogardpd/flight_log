@@ -1,8 +1,8 @@
 class Airport < ApplicationRecord
-  has_many :originating_flights, :class_name => 'Flight', :foreign_key => 'originating_airport_id'
-  has_many :arriving_flights, :class_name => 'Flight', :foreign_key => 'destination_airport_id'
-  has_many :first_routes, :class_name => 'Route', :foreign_key => 'airport1_id'
-  has_many :second_routes, :class_name => 'Route', :foreign_key => 'airport2_id'
+  has_many :originating_flights, :class_name => "Flight", :foreign_key => "originating_airport_id"
+  has_many :arriving_flights, :class_name => "Flight", :foreign_key => "destination_airport_id"
+  has_many :first_routes, :class_name => "Route", :foreign_key => "airport1_id"
+  has_many :second_routes, :class_name => "Route", :foreign_key => "airport2_id"
   
   STRIP_ATTRS = %w( city country )
   
@@ -17,7 +17,7 @@ class Airport < ApplicationRecord
     if self.country == nil
       "flags/unknown-country.png"
     else
-      image_location = "flags/" + self.country.downcase.gsub(/\s+/, '-').gsub(/[^a-z0-9_-]/, '').squeeze('-') + ".png"
+      image_location = "flags/" + self.country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-") + ".png"
       if Rails.application.assets.find_asset(image_location)
         image_location
       else

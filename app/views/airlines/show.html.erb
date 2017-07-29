@@ -1,4 +1,4 @@
-<div id="title-info"><%= iata_airline_code_display(@airline.iata_airline_code) %> / <%= @airline.icao_airline_code %><%= image_tag(airline_icon_path(@airline.iata_airline_code), :title => @airline.airline_name, :class => 'airline_icon')%></div>
+<div id="title-info"><%= iata_airline_code_display(@airline.iata_airline_code) %> / <%= @airline.icao_airline_code %><%= image_tag(airline_icon_path(@airline.iata_airline_code), :title => @airline.airline_name, :class => "airline_icon")%></div>
 
 <h1><%= @airline.airline_name %></h1>
 
@@ -17,13 +17,13 @@
 <% end %>
 
 
-<p>I have flown <%= pluralize(@flights.length, 'flight') %> on <span class="bold"><%= @airline.airline_name %></span>.</p>
+<p>I have flown <%= pluralize(@flights.length, "flight") %> on <span class="bold"><%= @airline.airline_name %></span>.</p>
 
 <% if @flights.any? %>
 
 	<div id="map">
     <%= map_with_region_select(@map) %>
-  	<%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: 'total', flight_link: true} %>
+  	<%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
   </div>
 	
 	<h2 id="aircraft">Aircraft Flown on <%= @airline.airline_name %></h2>

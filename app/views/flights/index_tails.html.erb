@@ -1,11 +1,11 @@
 <h1>Tail Numbers</h1>
 
-<p>Each plane has a <%= link_to("registration", 'http://en.wikipedia.org/wiki/Aircraft_registration') %> number, and I use it to keep track of which particular planes Iʼve flown on the most often.</p>
-<p>I have flown on <%= pluralize(@tail_numbers_table.count, 'unique tail number') %>.</p>
+<p>Each plane has a <%= link_to("registration", "http://en.wikipedia.org/wiki/Aircraft_registration") %> number, and I use it to keep track of which particular planes Iʼve flown on the most often.</p>
+<p>I have flown on <%= pluralize(@tail_numbers_table.count, "unique tail number") %>.</p>
 
 <% if @tail_numbers_table.empty? %>
 	<% if @flights.empty? %>
-		<%= render 'error_no_flights' %>
+		<%= render "error_no_flights" %>
 	<% else %>
 		<%= render_message(:warning, "There are no flights in the flight log that include a tail number!") %>
 	<% end %>
@@ -21,11 +21,11 @@
   <tr>
     <td class="tail_number"><%= tail_number_country_flag(tail[:tail_number]) %> <%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
     <td class="tail-aircraft code-mono"><abbr title="<%= tail[:manufacturer] %> <%= tail[:family_name] %>"><%= tail[:aircraft] %></abbr></td>
-    <td class="tail_airline"><%= image_tag(airline_icon_path(tail[:airline_code]), title: tail[:airline_name], alt: tail[:airline_code], class: 'airline_icon icon_no_text') %></td>
+    <td class="tail_airline"><%= image_tag(airline_icon_path(tail[:airline_code]), title: tail[:airline_name], alt: tail[:airline_code], class: "airline_icon icon_no_text") %></td>
 		<td class="tail_flights"><div class="graph-background"><div class="graph" style="background-size: <%= tail[:count]*100/@flights_maximum %>% 100%;"><%= tail[:count] %></div></div></td>
   </tr>
 <% end %>
-  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@tail_numbers_table.count, 'unique tail number') %></td></tr>
+  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@tail_numbers_table.count, "unique tail number") %></td></tr>
 </table>
 
 <% end %>

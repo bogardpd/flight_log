@@ -13,7 +13,7 @@
   </ul>
 </div>
 
-<p>I have flown between <span class="bold"><%= link_to(@airports_city[0], airport_path(@airports[0])) %></span> and <span class="bold"><%= link_to(@airports_city[1], airport_path(@airports[1])) %></span> <%= pluralize(@flights.length, 'time') %>.</p>
+<p>I have flown between <span class="bold"><%= link_to(@airports_city[0], airport_path(@airports[0])) %></span> and <span class="bold"><%= link_to(@airports_city[1], airport_path(@airports[1])) %></span> <%= pluralize(@flights.length, "time") %>.</p>
 
 <div id="map">
   <%= @route_map.draw %>
@@ -44,7 +44,7 @@
 
 <%= @sections_map.draw %>
 
-<%= render 'trips/section_table' %>
+<%= render "trips/section_table" %>
 
 <h2 id="trips">Trips with a <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight</h2>
 
@@ -52,7 +52,7 @@
 
 <%= @trips_map.draw %>
 
-<%= render 'trips/trip_table' %>
+<%= render "trips/trip_table" %>
 
 <h2 id="flights"><abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight List</h2>
 <%= render "flights/flight_table" %>

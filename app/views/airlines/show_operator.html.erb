@@ -1,4 +1,4 @@
-<div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: 'airline_icon') %></div>
+<div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: "airline_icon") %></div>
 
 <h1>Flights Operated by <%= @operator.airline_name %></h1>
 
@@ -25,7 +25,7 @@
 
 	<div id="map">
     <%= map_with_region_select(@map) %>
-	  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: 'total', flight_link: true} %>
+	  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
   </div>
 
 	<h2 id="airlines">Airlines with Flights Operated by <%= @operator.airline_name %></h2>
@@ -52,7 +52,7 @@
   		</tr>
   	<% @fleet_family.each do |fleet_number, family| %>
   		<tr>
-  			<td><%= link_to(image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: 'airline_icon') + "#" + fleet_number, show_fleet_number_path(@operator.iata_airline_code, fleet_number), :title => "View flights on #{@operator} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft_name"><%= @fleet_name[fleet_number] %><% end %></span></td>
+  			<td><%= link_to(image_tag(airline_icon_path(@operator.iata_airline_code), title: @operator.airline_name, class: "airline_icon") + "#" + fleet_number, show_fleet_number_path(@operator.iata_airline_code, fleet_number), :title => "View flights on #{@operator} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft_name"><%= @fleet_name[fleet_number] %><% end %></span></td>
   			<td class="tail-aircraft"><%= family %></td>
   		</tr>
   	<% end %>

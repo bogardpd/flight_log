@@ -1,10 +1,10 @@
 class TripsController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb 'Home', 'root_path'
+  add_breadcrumb "Home", "root_path"
 
   
   def index
-    add_breadcrumb 'Trips', 'trips_path'
+    add_breadcrumb "Trips", "trips_path"
     add_admin_action view_context.link_to("Add New Trip", new_trip_path)
     @trips = Trip.with_departure_dates(flyer, current_user)
 
@@ -32,10 +32,10 @@ class TripsController < ApplicationController
     @title = @trip.name
     @meta_description = "Maps and lists of flights on Paul Bogardʼs #{@trip.name} trip."
     
-    add_breadcrumb 'Trips', 'trips_path'
+    add_breadcrumb "Trips", "trips_path"
     add_breadcrumb @title, "trip_path(#{params[:id]})"
     
-    add_admin_action view_context.link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => 'warning') if @flights.length == 0
+    add_admin_action view_context.link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => "warning") if @flights.length == 0
     add_admin_action view_context.link_to("Edit Trip", edit_trip_path(@trip))
     add_admin_action view_context.link_to("Add Flight", new_flight_path(:trip_id => @trip))
     add_admin_action view_context.link_to("Import Passes", import_boarding_passes_path(trip_id: @trip))
@@ -93,7 +93,7 @@ class TripsController < ApplicationController
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
     @meta_description = "Maps and lists of flights on section #{params[:section]} of Paul Bogardʼs #{@trip.name} trip."
     @title = "#{@trip.name} (Section #{params[:section]})"
-    add_breadcrumb 'Trips', 'trips_path'
+    add_breadcrumb "Trips", "trips_path"
     add_breadcrumb @trip.name, "trip_path(#{params[:trip]})"
     add_breadcrumb "Section #{params[:section]}", "show_section_path(#{params[:trip]}, #{params[:section]})"
     
@@ -105,8 +105,8 @@ class TripsController < ApplicationController
     
   def new
     @title = "New Trip"
-    add_breadcrumb 'Trips', 'trips_path'
-    add_breadcrumb 'New Trip', 'new_trip_path'
+    add_breadcrumb "Trips", "trips_path"
+    add_breadcrumb "New Trip", "new_trip_path"
     @trip = Trip.new(:hidden => true)
   end
   
@@ -117,16 +117,16 @@ class TripsController < ApplicationController
       flash[:success] = "Successfully added #{params[:trip][:name]}!"
       redirect_to @trip
     else
-      render 'new'
+      render "new"
     end
   end
   
   
   def edit
     @trip = Trip.find(params[:id])
-    add_breadcrumb 'Trips', 'trips_path'
-    add_breadcrumb @trip.name, 'trip_path(@trip)'
-    add_breadcrumb 'Edit Trip', 'edit_trip_path(@trip)'
+    add_breadcrumb "Trips", "trips_path"
+    add_breadcrumb @trip.name, "trip_path(@trip)"
+    add_breadcrumb "Edit Trip", "edit_trip_path(@trip)"
   end
   
   
@@ -136,7 +136,7 @@ class TripsController < ApplicationController
       flash[:success] = "Successfully updated trip."
       redirect_to @trip
     else
-      render 'edit'
+      render "edit"
     end
   end
   

@@ -11,10 +11,10 @@ class PKPass < ApplicationRecord
   
   # Returns the pass's barcode string
   def barcode
-    if @pass.dig('barcodes')
-      return @pass.dig('barcodes', 0, 'message')
+    if @pass.dig("barcodes")
+      return @pass.dig("barcodes", 0, "message")
     else
-      return @pass.dig('barcode', 'message')
+      return @pass.dig("barcode", "message")
     end
   end
   
@@ -60,7 +60,7 @@ class PKPass < ApplicationRecord
         output.store(:codeshare_airline_iata, marketing_carrier)
       end
       begin
-        airline_compartments = JSON.parse(File.read('app/assets/json/airline_compartments.json'))
+        airline_compartments = JSON.parse(File.read("app/assets/json/airline_compartments.json"))
         compartment_code = data.dig(:repeated, 0, :mandatory, 71, :raw)
         if compartment_code.present?
           travel_class = airline_compartments.dig(airline, compartment_code, "name")
@@ -271,7 +271,7 @@ class PKPass < ApplicationRecord
   # a number (B6) and must then be converted to ICAO (JBU).
   def self.flight_xml(airline, flight_number, departure_time)
     begin
-      client = Savon.client(wsdl: 'https://flightxml.flightaware.com/soap/FlightXML2/wsdl', basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
+      client = Savon.client(wsdl: "https://flightxml.flightaware.com/soap/FlightXML2/wsdl", basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
       
       flight_id = client.call(:get_flight_id, message: {
         ident: [airline,flight_number].join,
@@ -320,7 +320,7 @@ class PKPass < ApplicationRecord
   
     def set_values
       @pass = JSON.parse(self.pass_json)
-      self.assign_attributes({:serial_number => [@pass.dig('passTypeIdentifier'),@pass.dig('serialNumber')].join(",")})
+      self.assign_attributes({:serial_number => [@pass.dig("passTypeIdentifier"),@pass.dig("serialNumber")].join(",")})
     end
     
     def check_for_existing_flight

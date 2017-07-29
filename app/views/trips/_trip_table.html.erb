@@ -5,5 +5,5 @@
     <th class="flight_date">Departure</th>
   </tr>
 	<%= render :partial => "trips/trip_table_body" %>
-  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@trips.length, 'trip') %></td></tr>
+  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@trips.length, "trip") %></td></tr>
 </table>

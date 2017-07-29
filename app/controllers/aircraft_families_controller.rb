@@ -1,6 +1,6 @@
 class AircraftFamiliesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb 'Home', 'root_path'
+  add_breadcrumb "Home", "root_path"
   
   def index
     @title = "Aircraft"
@@ -49,19 +49,19 @@ class AircraftFamiliesController < ApplicationController
     @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_subtype_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
-    add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
+    add_breadcrumb "Aircraft Families", "aircraft_families_path"
     
     
     if @aircraft_family.is_family?
       add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
-      add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
+      add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: "warning") if @flights.length == 0
       add_admin_action view_context.link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family))
       add_admin_action view_context.link_to("Add Subtype", new_aircraft_family_path(family_id: @aircraft_family))
     else
       family = @aircraft_family.parent
       add_breadcrumb family.full_name, aircraft_family_path(family)
       add_breadcrumb @aircraft_family.family_name, aircraft_family_path(@aircraft_family)
-      add_admin_action view_context.link_to("Delete Aircraft Type", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: 'warning') if @flights.length == 0
+      add_admin_action view_context.link_to("Delete Aircraft Type", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: "warning") if @flights.length == 0
       add_admin_action view_context.link_to("Edit Aircraft Type", edit_aircraft_family_path(@aircraft_family))
     end
     
@@ -85,7 +85,7 @@ class AircraftFamiliesController < ApplicationController
   end
   
   def new
-    add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
+    add_breadcrumb "Aircraft Families", "aircraft_families_path"
     if params[:family_id]
       @parent_family = AircraftFamily.find(params[:family_id])
       @title = "New #{@parent_family.family_name} Type"
@@ -94,7 +94,7 @@ class AircraftFamiliesController < ApplicationController
       @aircraft_family = AircraftFamily.new(parent_id: @parent_family.id)
     else
       @title = "New Aircraft Family"
-      add_breadcrumb 'New Aircraft Family', 'new_aircraft_family_path'
+      add_breadcrumb "New Aircraft Family", "new_aircraft_family_path"
       @aircraft_family = AircraftFamily.new
     end
     
@@ -110,15 +110,15 @@ class AircraftFamiliesController < ApplicationController
       flash[:success] = "Successfully added #{params[:aircraft_family][:family_name]}!"
       redirect_to aircraft_family_path(@aircraft_family)
     else
-      render 'new'
+      render "new"
     end
   end
   
   def edit
     @aircraft_family = AircraftFamily.find(params[:id])
-    add_breadcrumb 'Aircraft Families', 'aircraft_families_path'
-    add_breadcrumb @aircraft_family.full_name, 'aircraft_family_path(@aircraft_family)'
-    add_breadcrumb 'Edit Aircraft Family', 'edit_aircraft_family_path(@aircraft_family)'
+    add_breadcrumb "Aircraft Families", "aircraft_families_path"
+    add_breadcrumb @aircraft_family.full_name, "aircraft_family_path(@aircraft_family)"
+    add_breadcrumb "Edit Aircraft Family", "edit_aircraft_family_path(@aircraft_family)"
   end
   
   def update
@@ -127,7 +127,7 @@ class AircraftFamiliesController < ApplicationController
       flash[:success] = "Successfully updated aircraft family."
       redirect_to aircraft_family_path(@aircraft_family)
     else
-      render 'edit'
+      render "edit"
     end
   end
   
