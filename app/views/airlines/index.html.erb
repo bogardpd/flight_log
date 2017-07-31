@@ -36,12 +36,12 @@
   	<h2>Airlines/Operators with No Flights</h2>
   	<table class="flightlog">
   		<tr>
-  			<th class="airline_airline">Airline</th>
+  			<th class="airline-airline">Airline</th>
   			<th class="airline-code">Code</th>
   		</tr>
   	<% @airlines_with_no_flights.each do |airline| %>
   	  <tr>
-  	    <td class="airline_airline"><%= image_tag(airline_icon_path(airline.iata_airline_code), :title => airline.airline_name, :class => "airline_icon")%> <%= link_to(airline.airline_name, airline_path(airline.iata_airline_code), :title => "View airline details for #{airline.airline_name}") %></td>
+  	    <td class="airline-airline"><%= image_tag(airline_icon_path(airline.iata_airline_code), :title => airline.airline_name, :class => "airline_icon")%> <%= link_to(airline.airline_name, airline_path(airline.iata_airline_code), :title => "View airline details for #{airline.airline_name}") %></td>
   	    <td class="airline-code code-mono"><%= link_to(iata_airline_code_display(airline.iata_airline_code), airline_path(airline.iata_airline_code), :title => "View airline details for #{airline.airline_name}") %></td>
   		</tr>
   	<% end %>

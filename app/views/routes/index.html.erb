@@ -9,9 +9,9 @@
 <table class="flightlog">
   <tr>
     <th class="counter">#</th>
-		<th class="route_route">Route</th>
-		<th class="route_distance"><%= sort_link("Distance", :distance, "distance", :desc, nil) %></th>
-    <th class="route_flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
+		<th class="route-route">Route</th>
+		<th class="route-distance"><%= sort_link("Distance", :distance, "distance", :desc, nil) %></th>
+    <th class="route-flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
   </tr>
 <% previous_count = nil %>
 <% @route_table.each_with_index do |row, index| %>
@@ -25,13 +25,13 @@
 				<%= index + 1 %>
 			<% end %>
 		</td>
-		<td class="route_route"><%= link_to(%Q(<span class="code-mono">#{row[:route][0]}</span> &#x21C4; <span class="code-mono">#{row[:route][1]}</span>).html_safe, route_path(row[:route].join("-")), :title => "View flights between #{row[:route][0]} and #{row[:route][1]}") %></td>
-    <td class="route_distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
-		<td class="route_flights"><%= render "flights/graph_block", :value => row[:flight_count], :maximum => @flights_maximum %></td>
+		<td class="route-route"><%= link_to(%Q(<span class="code-mono">#{row[:route][0]}</span> &#x21C4; <span class="code-mono">#{row[:route][1]}</span>).html_safe, route_path(row[:route].join("-")), :title => "View flights between #{row[:route][0]} and #{row[:route][1]}") %></td>
+    <td class="route-distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
+		<td class="route-flights"><%= render "flights/graph_block", :value => row[:flight_count], :maximum => @flights_maximum %></td>
   </tr>
 	<% previous_count = @sort_cat == :flights ? row[:flight_count] : row[:distance_mi] %>
 <% end %>
-  <tr><td colspan="4" class="flightlog_total"><%= pluralize(@route_table.count, "route") %></td></tr>
+  <tr><td colspan="4" class="flightlog-total"><%= pluralize(@route_table.count, "route") %></td></tr>
 </table>
 
 <% else %>

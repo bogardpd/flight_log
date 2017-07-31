@@ -38,11 +38,11 @@
 <table class="flightlog">
 	<tr>
 	  <th class="counter">#</th>
-		<th class="flight_flight">Flight</td>
-	  <th class="flight_route">Route</td>
-	  <th class="flight_date">Departure</td>
-	  <th class="flight_aircraft">Aircraft</td>
-		<th class="flight_tail">Tail Number</td>
+		<th class="flight-flight">Flight</td>
+	  <th class="flight-route">Route</td>
+	  <th class="flight-date">Departure</td>
+	  <th class="flight-aircraft">Aircraft</td>
+		<th class="flight-tail">Tail Number</td>
 	</tr>
 	<% @flights.each_with_index do |flight, index| %>
 		<tr>
@@ -54,5 +54,5 @@
 			<%= render "flights/flight_cell_tail", :flight => flight %>
 		</tr>
 	<% end %>
-	<tr><td colspan="6" class="flightlog_total"><%= render :partial => "flights/flight_total_row_cell" %></td></tr>
+	<tr><td colspan="6" class="flightlog-total"><%= render :partial => "flights/flight_total_row_cell" %></td></tr>
 </table>

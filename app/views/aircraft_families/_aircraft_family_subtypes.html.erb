@@ -5,23 +5,23 @@
 <table class="flightlog">
   <thead>
     <th class="counter">#</th>
-    <th class="aircraft_family">Type</th>
+    <th class="aircraft-family">Type</th>
     <th class="aircraft-code">ICAO</th>
-    <th class="aircraft_flights">Flights</th>
+    <th class="aircraft-flights">Flights</th>
   </thead>
   <tbody>
   <% previous_count = nil %>
   <% subtypes.each_with_index do |type, index| %>
     <tr>
       <td class="counter"><%= (type[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
-      <td class="aircraft_family<%= " subdued" if type[:is_family] %>"><%= type[:is_family] ? "(Unknown type of #{type[:family_name]})" : link_to(type[:family_name], aircraft_family_path(type[:id])) %></td>
+      <td class="aircraft-family<%= " subdued" if type[:is_family] %>"><%= type[:is_family] ? "(Unknown type of #{type[:family_name]})" : link_to(type[:family_name], aircraft_family_path(type[:id])) %></td>
       <td class="aircraft-code code-mono"><%= link_to(type[:icao_aircraft_code], aircraft_family_path(type[:id])) unless type[:is_family] %></td>
-      <td class="aircraft_flights"><%= render "flights/graph_block", :value => type[:flight_count], :maximum => maximum %></td>
+      <td class="aircraft-flights"><%= render "flights/graph_block", :value => type[:flight_count], :maximum => maximum %></td>
     </tr>
     <% previous_count = type[:flight_count] %>
   <% end %>
   <tr>
-    <td colspan="4" class="flightlog_total"><%= pluralize(subtypes_only.length, "known subtype") %></td>
+    <td colspan="4" class="flightlog-total"><%= pluralize(subtypes_only.length, "known subtype") %></td>
   </tr>
   </tbody>
 </table>

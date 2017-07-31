@@ -16,9 +16,9 @@
       <thead>
         <tr>
       		<th class="counter">#</th>
-          <th class="airline_airline"><%= is_summary ? "Airline" : sort_link("Airline", :airline, "airline", :asc, type.to_s.pluralize) %></th>
+          <th class="airline-airline"><%= is_summary ? "Airline" : sort_link("Airline", :airline, "airline", :asc, type.to_s.pluralize) %></th>
       		<th class="airline-code"><%= is_summary ? "Code" : sort_link("Code", :code, "code", :asc, type.to_s.pluralize) %></th>
-          <th class="airline_flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, type.to_s.pluralize) %></th>
+          <th class="airline-flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, type.to_s.pluralize) %></th>
         </tr>
       </thead>
       <tbody>
@@ -29,20 +29,20 @@
         <% path = (type == :operator) ? show_operator_path(airline[:iata_airline_code]) : airline_path(airline[:iata_airline_code]) %>
         <%= (new_airlines.include?(airline[:id]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
           <td class="counter"><%= ((is_summary || @sort_cat == :flights) && airline[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
-      		<td class="airline_airline">
+      		<td class="airline-airline">
             <%= link_to(image_tag(airline_icon_path(airline[:iata_airline_code]), title: airline[:airline_name], class: "airline_icon") + "#{airline[:airline_name]}#{"*" if new_airlines.include?(airline[:id])}", path, title: "View all flights on #{airline[:airline_name]}") %>
           </td>
       		<td class="airline-code code-mono">
             <%= link_to(airline[:iata_airline_code].split("-").first, path, :title => "View all flights on #{airline[:airline_name]}") %>
           </td>
-          <td class="airline_flights">
+          <td class="airline-flights">
             <%= render "flights/graph_block", value: airline[:flight_count], maximum: airline_maximum %>
           </td>
         </tr>
       	<% previous_count = airline[:flight_count] %>
       <% end %>
 
-        <tr><td colspan="5" class="flightlog_total"><%= pluralize(known_airlines.count, type.to_s) %></td></tr>
+        <tr><td colspan="5" class="flightlog-total"><%= pluralize(known_airlines.count, type.to_s) %></td></tr>
       </tbody>
   
     </table>

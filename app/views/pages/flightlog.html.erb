@@ -6,7 +6,7 @@
 
 <div class="intro_box">
 	<%= map_with_region_select(@map) %>
-	<p class="total"><span class="distance_primary"><%= render partial: "routes/distance_string", locals: {distance: @total_distance} %></span> &middot; <%= link_to(%Q(See all <span class="summary_total">#{pluralize(@flights.length, "flight")}</span>).html_safe, flights_path)%></p>
+	<p class="total"><span class="distance-primary"><%= render partial: "routes/distance_string", locals: {distance: @total_distance} %></span> &middot; <%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flights.length, "flight")}</span>).html_safe, flights_path)%></p>
 </div>
 
 <% if @flights.any? %>
@@ -28,7 +28,7 @@
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary_total">#{pluralize(@flight_airports.count, "airport")}</span>).html_safe, airports_path)%></p>
+  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_airports.count, "airport")}</span>).html_safe, airports_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -46,7 +46,7 @@
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary_total">#{pluralize(@flight_airlines.length, "airline")}</span>).html_safe, airlines_path)%></p>
+  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_airlines.length, "airline")}</span>).html_safe, airlines_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -64,7 +64,7 @@
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary_total">#{pluralize(@flight_routes.length, "route")}</span>).html_safe, routes_path)%></p>
+  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_routes.length, "route")}</span>).html_safe, routes_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -77,12 +77,12 @@
     </tr>
   <% @flight_aircraft.first(5).each do |aircraft| %>
     <tr>
-      <td class="left"><%= link_to(%Q(<span class="aircraft_manufacturer">#{aircraft[:manufacturer]}</span> #{aircraft[:family_name]}).html_safe, aircraft_family_path(aircraft[:id]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
+      <td class="left"><%= link_to(%Q(<span class="aircraft-manufacturer">#{aircraft[:manufacturer]}</span> #{aircraft[:family_name]}).html_safe, aircraft_family_path(aircraft[:id]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
       <td class="center"><%= aircraft[:flight_count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary_total">#{pluralize(@flight_aircraft.length, "aircraft family")}</span>).html_safe, aircraft_families_path)%></p>
+  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_aircraft.length, "aircraft family")}</span>).html_safe, aircraft_families_path)%></p>
 </div>
 
 <div class="intro_box column">
@@ -93,12 +93,12 @@
       <th class="center">Flights</th>
   <% @flight_tails.first(5).each do |tail| %>
     <tr>
-      <td class="left tail_number"><%= tail_number_country_flag(tail[:tail_number]) %> <%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
+      <td class="left tail-number"><%= tail_number_country_flag(tail[:tail_number]) %> <%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
       <td class="center"><%= tail[:count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary_total">#{pluralize(@flight_tails.count, "tail number")}</span>).html_safe, tails_path)%></p>
+  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_tails.count, "tail number")}</span>).html_safe, tails_path)%></p>
 </div>
 
 </div>
@@ -116,7 +116,7 @@
 <% end %>
 
 <p class="center">Flights from trips in progress are not shown until the trip is complete.</p>
-<p class="pre_footer">
+<p class="pre-footer">
   <%= link_to("How I made the Flight Historian", "https://www.pbogard.com/projects/flight-historian", target: "_blank")%> &emsp; 
   <%= link_to("Boarding Pass Parser", boarding_pass_path)%>
 </p>

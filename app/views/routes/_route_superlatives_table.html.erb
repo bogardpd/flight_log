@@ -2,7 +2,7 @@
 <table class="flightlog">
 	<% if superlatives[:max].length > 0 %>
 	<tr>
-		<td class="superlative_label" rowspan="<%= superlatives[:max].length %>">Longest Route</td>
+		<td class="superlative-label" rowspan="<%= superlatives[:max].length %>">Longest Route</td>
 		<%= render "routes/route_comparison_cells", :route => superlatives[:max].first %>
 	</tr>
 	<% if superlatives[:max].length > 1 %>
@@ -16,7 +16,7 @@
 	
 	<% if superlatives[:min].length > 0 %>
 	<tr>
-		<td class="superlative_label" rowspan="<%= superlatives[:min].length %>">Shortest Route</td>
+		<td class="superlative-label" rowspan="<%= superlatives[:min].length %>">Shortest Route</td>
 		<%= render "routes/route_comparison_cells", :route => superlatives[:min].first %>
 	</tr>
 	<% if superlatives[:min].length > 1 %>
@@ -30,7 +30,7 @@
 	
 	<% if superlatives[:zero].length > 0 %>
 	<tr>
-		<td class="superlative_label" rowspan="<%= superlatives[:zero].length %>">Shortest Net Distance</td>
+		<td class="superlative-label" rowspan="<%= superlatives[:zero].length %>">Shortest Net Distance</td>
 		<%= render "routes/route_comparison_cells", :route => superlatives[:zero].first %>
 	</tr>
 	<% if superlatives[:zero].length > 1 %>

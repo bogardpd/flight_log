@@ -55,9 +55,9 @@ module ApplicationHelper
         
     if @sort_cat == sort_symbol
       if @sort_dir == :asc
-        category_sort_symbol = %Q(<span class="sort_symbol">&#x25B2;</span>) # Up Triangle
+        category_sort_symbol = %Q(<span class="sort-symbol">&#x25B2;</span>) # Up Triangle
       elsif @sort_dir == :desc
-        category_sort_symbol = %Q(<span class="sort_symbol">&#x25BC;</span>) # Down Triangle
+        category_sort_symbol = %Q(<span class="sort-symbol">&#x25BC;</span>) # Down Triangle
       end
     else
       category_sort_symbol = ""

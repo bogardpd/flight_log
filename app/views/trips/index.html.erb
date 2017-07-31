@@ -20,10 +20,10 @@
   <tr>
     <th class="counter">#</th>
 		<th class="trip_name">Trip</th>
-    <th class="flight_date"><%= sort_link("Departure", :departure, "departure", :desc, nil) %></th>
+    <th class="flight-date"><%= sort_link("Departure", :departure, "departure", :desc, nil) %></th>
   </tr>
 	<%= render :partial => "trips/trip_table_body" %>
-  <tr><td colspan="3" class="flightlog_total"><%= pluralize(@trips.length, "trip") %></td></tr>
+  <tr><td colspan="3" class="flightlog-total"><%= pluralize(@trips.length, "trip") %></td></tr>
 </table>
 <% end %>
 

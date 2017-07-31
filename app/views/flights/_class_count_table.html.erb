@@ -8,9 +8,9 @@
     <thead>
       <tr>
     		<th class="counter">#</th>
-        <th class="airline_airline"><%= is_summary ? "Travel Class" : sort_link("Travel Class", :class, "class", :asc, nil) %></th>
+        <th class="airline-airline"><%= is_summary ? "Travel Class" : sort_link("Travel Class", :class, "class", :asc, nil) %></th>
     		<th class="airline-code">Code</th>
-        <th class="airline_flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, nil) %></th>
+        <th class="airline-flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, nil) %></th>
       </tr>
     </thead>
     <tbody>
@@ -20,9 +20,9 @@
       <% known_classes.each_with_index do |tc, index| %>
         <%= (new_classes.include?(tc[:class_code]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
           <td class="counter"><%= ((is_summary || @sort_cat == :flights) && tc[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
-          <td class="class_class"><%= link_to("#{TravelClass.list[tc[:class_code]]}#{"*" if new_classes.include?(tc[:class_code])}", show_class_path(tc[:class_code]), :title => "View #{TravelClass.list[tc[:class_code]].downcase} class flights") %></td>
+          <td class="class-class"><%= link_to("#{TravelClass.list[tc[:class_code]]}#{"*" if new_classes.include?(tc[:class_code])}", show_class_path(tc[:class_code]), :title => "View #{TravelClass.list[tc[:class_code]].downcase} class flights") %></td>
       		<td class="class-code code-mono"><%= link_to(tc[:class_code], show_class_path(tc[:class_code]), :title => "View #{TravelClass.list[tc[:class_code]].downcase} class flights") %></td>
-          <td class="class_flights"><%= render "flights/graph_block", value: tc[:flight_count], maximum: class_maximum %></td>
+          <td class="class-flights"><%= render "flights/graph_block", value: tc[:flight_count], maximum: class_maximum %></td>
         </tr>
       	<% previous_count = tc[:flight_count] %>
       <% end %>

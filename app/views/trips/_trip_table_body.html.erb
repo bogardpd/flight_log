@@ -2,6 +2,6 @@
   <tr>
     <td class="counter"><%= (@sort_cat == :departure && @sort_dir == :desc) ? @trips.length - index : index + 1 %></td>
 		<td class="trip_name"><%= %Q(<div class="hidden-marker">Hidden</div>).html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for " + trip.name) %></td></td>
-    <td class="flight_date"><%= Flight.format_date(trip.departure_date) %></td>
+    <td class="flight-date"><%= Flight.format_date(trip.departure_date) %></td>
   </tr>
 <% end %>
