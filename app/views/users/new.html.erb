@@ -3,7 +3,7 @@
 <%= form_for(@user) do |f| %>
 
   <% if @user.errors.any? %>
-    <div id="error_explanation">
+    <div id="error-explanation">
       <div class="message message-error">
         The form contains <%= pluralize(@user.errors.count, "error") %>.
       </div>
