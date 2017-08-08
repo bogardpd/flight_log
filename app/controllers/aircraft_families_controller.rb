@@ -27,9 +27,6 @@ class AircraftFamiliesController < ApplicationController
       when :aircraft
         @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [aircraft_family[:manufacturer]&.downcase || "", aircraft_family[:family_name]&.downcase || ""] }
         @aircraft_families.reverse! if @sort_dir == :desc
-      when :code
-        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| aircraft_family[:iata_aircraft_code] || "" }
-        @aircraft_families.reverse! if @sort_dir == :desc
       when :flights
         @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]&.downcase || ""] }
       end

@@ -12,9 +12,6 @@
     		<th class="aircraft-family">
           <%= is_summary ? "Aircraft Family" : sort_link("Aircraft Family", :aircraft, "aircraft", :asc, nil) %>
         </th>
-        <th class="aircraft-code">
-          <%= is_summary ? "Code" : sort_link("Code", :code, "code", :asc, nil) %>
-        </th>
         <th class="aircraft-flights">
           <%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, nil) %>
         </th>
@@ -29,7 +26,6 @@
       <%= (new_aircraft_families.include?(aircraft_family[:id]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
         <td class="counter"><%= ((is_summary || @sort_cat == :flights) && aircraft_family[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
     		<td class="aircraft-family"><%= link_to(%Q(<span class="aircraft-manufacturer">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}#{"*" if new_aircraft_families.include?(aircraft_family[:id])}).html_safe, aircraft_family_path(aircraft_family[:id]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} Family aircraft") %></td>
-    		<td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:id]), :title => "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} Family aircraft") %></td>
         <td class="aircraft-flights"><%= render "flights/graph_block", :value => aircraft_family[:flight_count], maximum: aircraft_maximum %></td>
       </tr>
     	<% previous_count = aircraft_family[:flight_count] %>
