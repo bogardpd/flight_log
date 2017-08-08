@@ -48,7 +48,7 @@ protected
     @breadcrumbs << [name, url]
   end
   
-  def self.add_breadcrumb name, url, options = {}
+  def self.add_breadcrumb(name, url, options = {})
     before_action options do |controller|
       controller.send(:add_breadcrumb, name, url)
     end
