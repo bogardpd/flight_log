@@ -5,11 +5,13 @@ class Airport < ApplicationRecord
   has_many :second_routes, :class_name => "Route", :foreign_key => "airport2_id"
   
   STRIP_ATTRS = %w( city country )
+  CAP_CODES = %w( iata_code icao_code )
   
-  before_save { |airport| airport.iata_code = iata_code.upcase }
+  before_save :capitalize_codes
   before_save :strip_blanks
   
-  validates :iata_code, :presence => true, :length => { :is => 3 }, :uniqueness => { :case_sensitive => false }
+  validates :iata_code, presence: true, length: { is: 3 }, uniqueness: { case_sensitive: false }
+  validates :icao_code, presence: true, length: { is: 4 }, uniqueness: { case_sensitive: false }
   validates :city, :presence => true
   validates :country, :presence => true
   
@@ -126,6 +128,10 @@ class Airport < ApplicationRecord
   
   def strip_blanks
     STRIP_ATTRS.each { |attr| self[attr] = self[attr].strip if !self[attr].blank? }
+  end
+  
+  def capitalize_codes
+    CAP_CODES.each { |code| self[code] = self[code].upcase }
   end
   
 end
