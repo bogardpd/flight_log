@@ -69,6 +69,26 @@ class Airport < ApplicationRecord
     
   end
   
+  # Take a collection of strings representing the starts of ICAO codes, and
+  # return two arrays: An array of IATA codes in the region, and an array of
+  # IATA codes not in the region.
+  # Params:
+  # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
+  def self.in_region(icao_starts)
+    icao_starts.compact!
+    icao_starts.uniq!
+    icao_starts.map!{|s| s.upcase.tr("^A-Z","")}
+    icao_starts.reject!{|s| s.empty? }
+    
+    conditions = icao_starts.map{"icao_code LIKE ?"}.join(" OR ")
+    patterns = icao_starts.map{|start| "#{start}%"}
+    matching_airports = Airport.where(conditions, *patterns)
+    
+    in_region = matching_airports.pluck(:iata_code).sort
+    out_of_region = Airport.where.not(id: matching_airports).pluck(:iata_code).sort
+    return [in_region, out_of_region]
+  end
+  
   # Take a collection of flights and a region, and return a hash of all
   # of the flights' airports that are within the given reason, with Airport
   # IDs as the keys and IATA codes as the values.
