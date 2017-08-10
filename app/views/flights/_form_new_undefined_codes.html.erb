@@ -8,6 +8,10 @@
       <%= text_field_tag (sym_base+"_iata").to_sym, iata_code, size: 3, readonly: iata_code.present?, class: "all-caps" %> 
     </p>
     <p>
+      <%= label_tag (sym_base+"_icao").to_sym, "ICAO Code" %><br />
+      <%= text_field_tag (sym_base+"_icao").to_sym, icao_code, size: 4, readonly: icao_code.present?, class: "all-caps" %> 
+    </p>
+    <p>
       <%= label_tag (sym_base+"_name").to_sym, "Airport City (Name)" %><br />
       <%= text_field_tag (sym_base+"_name").to_sym %>
     </p>

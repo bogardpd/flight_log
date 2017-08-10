@@ -236,7 +236,7 @@ class AirportsController < ApplicationController
   private
   
     def airport_params
-      params.require(:airport).permit(:city, :iata_code, :country, :region_conus)
+      params.require(:airport).permit(:city, :iata_code, :icao_code, :country, :region_conus)
     end
   
     # Take a collection of flights, and return an array of all airport IDs

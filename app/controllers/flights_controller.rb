@@ -356,7 +356,7 @@ class FlightsController < ApplicationController
         end
       when "airport"
         if params[(prefix+"iata").to_sym] && params[(prefix+"name").to_sym] && params[(prefix+"country").to_sym]
-          Airport.create(iata_code: params[(prefix+"iata").to_sym], city: params[(prefix+"name").to_sym], country: params[(prefix+"country").to_sym], region_conus: params[(prefix+"region_conus").to_sym])
+          Airport.create(iata_code: params[(prefix+"iata").to_sym], icao_code: params[(prefix+"icao").to_sym], city: params[(prefix+"name").to_sym], country: params[(prefix+"country").to_sym], region_conus: params[(prefix+"region_conus").to_sym])
         end
       when "aircraft"
         if (params[(prefix+"iata").to_sym] || params[(prefix+"iata").to_sym]) && params[(prefix+"name").to_sym] && params[(prefix+"family").to_sym]

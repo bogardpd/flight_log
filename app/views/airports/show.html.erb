@@ -20,7 +20,7 @@
 
 
 
-<p>I have visited <span class="bold"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></span> <%= pluralize(@airport_frequency, "time") %>.</p>
+<p>I have visited <span class="bold"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>"><%= @airport.icao_code %></abbr></span> <%= pluralize(@airport_frequency, "time") %>.</p>
 
 <% unless @flights.length == 0 %>
 
