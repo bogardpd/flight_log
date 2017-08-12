@@ -600,18 +600,18 @@ div.page_navigation li {
 	vertical-align: middle;
 }
 
-div.region_select {
+div.region-select {
 	text-align: center;
 	margin-bottom: -1px;
 }
 
-div.region_select ul {
+div.region-select ul {
 	padding: 0;
 	margin: 0;
 	font-size: 115%;
 }
 
-div.region_select li {
+div.region-select li {
 	list-style-type: none;
 	display: inline-block;
 	height: 100%;
@@ -620,11 +620,11 @@ div.region_select li {
 	vertical-align: middle;
 }
 
-div.region_select li.selected {
+div.region-select li.selected {
 	font-weight: 600;
 }
 
-div.region_select a {
+div.region-select a {
 	font-weight: 300;
 }
 

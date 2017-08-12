@@ -15,13 +15,6 @@ class Map
     query.present?
   end
   
-  def includes_region?(region)
-    # Returns true if this map has any flights or listed airports within the given region.
-    # Allows the region select links to decide whether to show a particular region's link.
-    # Not yet implemented, will be implemented when additional regions are added.
-    return false
-  end
-  
   # Return a hash of a map query based on a secret key
   # Params: 
   # +query+:: The query to hash

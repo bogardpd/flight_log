@@ -6,10 +6,14 @@ class ApplicationController < ActionController::Base
   
   # Returns an array of region start strings based on the querystring region
   # parameter if present, and the default if absent.
-  def current_region(default: [""])
+  def current_region(default: [])
     return default unless params[:region]
-    
-    return params[:region].split(",")
+    icao_starts = params[:region].split(/[\-,]/)
+    icao_starts.compact!
+    icao_starts.uniq!
+    icao_starts.map!{|s| s.upcase.tr("^A-Z","")}
+    #icao_starts.reject!{|s| s.empty? }
+    return icao_starts
   end
   
   # Returns the user whose flights are being viewed. Until multiple user

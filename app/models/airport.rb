@@ -83,11 +83,6 @@ class Airport < ApplicationRecord
   # Params:
   # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
   def self.in_region_hash(icao_starts)
-    icao_starts.compact!
-    icao_starts.uniq!
-    icao_starts.map!{|s| s.upcase.tr("^A-Z","")}
-    icao_starts.reject!{|s| s.empty? }
-    
     conditions = icao_starts.map{"icao_code LIKE ?"}.join(" OR ")
     patterns = icao_starts.map{|start| "#{start}%"}
     matching_airports = Airport.where(conditions, *patterns)

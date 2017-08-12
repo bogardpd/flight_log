@@ -105,18 +105,25 @@ module ApplicationHelper
   # Return a menu allowing the user to switch between regions on a map
   # Params: 
   # +region+:: The currently active region
-  def gcmap_region_select_links(region, anchor: nil)
-    html = %Q(<div class="region_select">)
-    html += %Q(<ul class="region_select">)
-    if region == :conus
-    	html += "<li>"
-      html +=	link_to("World", url_for(region: :world, anchor: anchor, sort_category: params[:sort_category], sort_direction: params[:sort_direction]))
-      html += %Q(</li><li class="selected">Contiguous United States</li>)
-    else
-    	html += %Q(<li class="selected">World</li><li>)
-      html += link_to("Contiguous United States", url_for(region: :conus, anchor: anchor, sort_category: params[:sort_category], sort_direction: params[:sort_direction]))
-      html += "</li>"      	
+  def gcmap_region_select_links(selected_region, anchor: nil)
+    regions = Hash.new
+    regions["World"]       = %w()
+    regions["USA (CONUS)"] = %w(K)
+    regions["Europe"]      = %w(B E L)
+    
+    html = %Q(<div class="region-select">)
+    html += %Q(<ul class="region-select">)
+    
+    regions.each do |name, icao|
+      if selected_region.uniq.sort == icao.uniq.sort
+        html += %Q(<li class="selected">#{name}</li>)
+      else
+        html += "<li>"
+        html += link_to(name, url_for(params.permit(:sort).merge(region: icao.join("-"), anchor: anchor)))
+        html += "</li>"
+      end 
     end
+    
     html += "</ul></div>"
   end
   
