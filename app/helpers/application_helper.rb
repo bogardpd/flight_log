@@ -96,7 +96,11 @@ module ApplicationHelper
       html += gcmap_region_select_links(@region, anchor: anchor)
       html += map.draw
     else
-      html += render_message(:warning, "When flights have been added, you’ll see a map here.")
+      if @region.length > 0
+        html += render_message(:warning, "Paul has taken no flights in #{"region".pluralize(@region.count)} #{@region.join(", ")}.")
+      else
+        html += render_message(:warning, "When flights have been added, you’ll see a map here.")
+      end
     end
     html += "</div>\n"
     html.html_safe
