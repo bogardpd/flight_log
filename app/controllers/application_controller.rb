@@ -4,12 +4,8 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   @gcmap_used = false
   
-  def current_region(default: :world)
-    if params[:region]
-      region = params[:region].to_sym
-    else
-      region = default
-    end
+  def current_region(default: "")
+    return params[:region] || default
   end
   
   # Returns the user whose flights are being viewed. Until multiple user

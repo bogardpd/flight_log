@@ -43,7 +43,7 @@ class AirportsController < ApplicationController
       end
       
       # Create maps:
-      @region = current_region(default: :world)
+      @region = current_region(default: "")
       @airports_map  = AirportsMap.new(Airport.where(iata_code: used_airport_codes), region: @region)
       @frequency_map = AirportFrequencyMap.new(@flights, region: @region)
       
@@ -158,7 +158,7 @@ class AirportsController < ApplicationController
     @classes = TravelClass.flight_count(@flights)
     
     # Create maps:
-    @region = current_region(default: :world)
+    @region = current_region(default: "")
     @airport_map  = FlightsMap.new(@flights, highlighted_airports: [@airport.iata_code], region: @region)
     @sections_map = FlightsMap.new(@sections_using_airport_flights, highlighted_airports: [@airport.iata_code], region: @region)
     @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport.iata_code], region: @region)

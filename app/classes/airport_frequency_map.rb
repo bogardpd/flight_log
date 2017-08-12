@@ -48,11 +48,9 @@ class AirportFrequencyMap < Map
           # Value is the same as previous, so no need to define ring size:
           query.push(airport[:iata_code])
         else
-         # if airport[:frequency] > 0
-            frequency_scaled = Math.sqrt((airport[:frequency].to_f / frequency_max)*(max_gcmap_ring**2)).ceil.to_i # Scale frequency range from 1..max_gcmap_ring
-            query.push("m:p:ring#{frequency_scaled}")
-            query.push(airport[:iata_code])
-         # end
+          frequency_scaled = Math.sqrt((airport[:frequency].to_f / frequency_max)*(max_gcmap_ring**2)).ceil.to_i # Scale frequency range from 1..max_gcmap_ring
+          query.push("m:p:ring#{frequency_scaled}")
+          query.push(airport[:iata_code])
         end
         previous_airport_value = airport[:frequency]
       end

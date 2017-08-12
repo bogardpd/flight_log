@@ -58,7 +58,7 @@ class AirlinesController < ApplicationController
     @title = @airline.airline_name
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@airline.airline_name}."
     @logo_used = true
-    @region = current_region(default: :world)
+    @region = current_region(default: "")
     
     add_breadcrumb "Airlines", "airlines_path"
     add_breadcrumb @title, "airline_path(@airline.iata_airline_code)"
@@ -97,7 +97,7 @@ class AirlinesController < ApplicationController
     @title = @operator.airline_name + " (Operator)"
     @meta_description = "Maps and lists of Paul Bogardʼs flights operated by #{@operator.airline_name}."
     @logo_used = true
-    @region = current_region(default: :world)
+    @region = current_region(default: "")
     
     add_breadcrumb "Airlines", "airlines_path"
     add_breadcrumb "Flights Operated by " + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
@@ -140,7 +140,7 @@ class AirlinesController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @logo_used = true
-    @region = current_region(default: :world)
+    @region = current_region(default: "")
     @title = @operator.airline_name + " #" + @fleet_number
     @meta_description = "Maps and lists of Paul Bogardʼs flights operated on #{@operator.airline_name} ##{@fleet_number}."
     add_breadcrumb "Airlines", "airlines_path"
