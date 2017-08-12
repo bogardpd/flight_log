@@ -25,7 +25,7 @@
 <% unless @flights.length == 0 %>
 
 	<div id="map">  
-    <%= map_with_region_select(@airport_map, anchor: "airport-map") %>
+    <%= map_with_region_select(@airport_map, @region, anchor: "airport-map") %>
 	  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
   </div>
 
@@ -79,12 +79,12 @@
 
 	<h2 id="sections">Trip Sections Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<p>This map shows the flights of all of my trip sections that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
-	<%= map_with_region_select(@sections_map, anchor: "sections-map") %>
+	<%= map_with_region_select(@sections_map, @region, anchor: "sections-map") %>
 	<%= render "trips/section_table" %>
 
 	<h2 id="trips">Trips Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<p>This map shows the flights of all of my trips that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
-	<%= map_with_region_select(@trips_map, anchor: "trips-map") %>
+	<%= map_with_region_select(@trips_map, @region, anchor: "trips-map") %>
 	<%= render "trips/trip_table" %>
 	
 	<h2 id="flights"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Flight List</h2>

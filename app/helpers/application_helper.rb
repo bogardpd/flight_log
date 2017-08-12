@@ -88,16 +88,17 @@ module ApplicationHelper
   
   # Return a region select menu, along with a map.
   # Params:
-  # +region+:: The currently active region
+  # +map+:: The map to show
+  # +selected_region+:: The currently active region
   # +anchor+:: If set, defines a page anchor position for the region select links to link to
-  def map_with_region_select(map, anchor: nil)
+  def map_with_region_select(map, selected_region, anchor: nil)
     html = %Q(<div id="#{anchor}">\n)
     if map && map.exists?
-      html += gcmap_region_select_links(@region, anchor: anchor)
+      html += gcmap_region_select_links(selected_region, anchor: anchor)
       html += map.draw
     else
-      if @region.length > 0
-        html += render_message(:warning, "Paul has taken no flights in #{"region".pluralize(@region.count)} #{@region.join(", ")}.")
+      if selected_region.length > 0
+        html += render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.count)} #{selected_region.join(", ")}.")
       else
         html += render_message(:warning, "When flights have been added, you’ll see a map here.")
       end
