@@ -70,11 +70,19 @@ class Airport < ApplicationRecord
   end
   
   # Take a collection of strings representing the starts of ICAO codes, and
-  # return two arrays: An array of IATA codes in the region, and an array of
-  # IATA codes not in the region.
+  # return an array of IATA codes in the region.
   # Params:
   # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
   def self.in_region(icao_starts)
+    return in_region_hash(icao_starts).values
+  end
+  
+  # Take a collection of strings representing the starts of ICAO codes, and
+  # return an a hash of airports in the region, with airport ids as keys and
+  # IATA codes as values.
+  # Params:
+  # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
+  def self.in_region_hash(icao_starts)
     icao_starts.compact!
     icao_starts.uniq!
     icao_starts.map!{|s| s.upcase.tr("^A-Z","")}
@@ -84,13 +92,15 @@ class Airport < ApplicationRecord
     patterns = icao_starts.map{|start| "#{start}%"}
     matching_airports = Airport.where(conditions, *patterns)
     
-    in_region = matching_airports.pluck(:iata_code).sort
-    out_of_region = Airport.where.not(id: matching_airports).pluck(:iata_code).sort
-    return [in_region, out_of_region]
+    iata_hash = Hash.new
+    matching_airports.each{|airport| iata_hash[airport[:id]] = airport[:iata_code]}
+    return iata_hash
   end
   
+  
+  
   # Take a collection of flights and a region, and return a hash of all
-  # of the flights' airports that are within the given reason, with Airport
+  # of the flights' airports that are within the given region, with Airport
   # IDs as the keys and IATA codes as the values.
   # Params:
   # +flights+:: A collection of Flights.
@@ -129,7 +139,7 @@ class Airport < ApplicationRecord
     previous_trip_id = nil;
     previous_trip_section = nil;
     previous_destination_airport_iata_code = nil;
-    flights.each do |flight|
+    flights.includes(:origin_airport, :destination_airport).each do |flight|
       unless (flight.trip_id == previous_trip_id && flight.trip_section == previous_trip_section && flight.origin_airport.iata_code == previous_destination_airport_iata_code)
         # This is not a layover, so count this origin airport
         airport_frequency[flight.origin_airport_id] += 1

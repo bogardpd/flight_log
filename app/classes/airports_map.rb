@@ -4,18 +4,9 @@ class AirportsMap < Map
   # Params:
   # +airports+:: A collection of Airport objects.
   # +region+:: The region to show. World map will be shown if region is left blank.
-  def initialize(airports, region: :world)
-    @region = region
-    @airports = airports
-    airport_ids = Array.new
-    airports.each do |airport|
-      airport_ids.push(airport[:id])
-    end
-    if region == :conus
-      @airport_codes = Airport.where(id: airport_ids).where(region_conus: true).order(:iata_code).pluck(:iata_code)
-    else
-      @airport_codes = Airport.where(id: airport_ids).order(:iata_code).pluck(:iata_code)
-    end
+  def initialize(airports, region: "")
+    region = region.to_s.split(",")
+    @airport_codes = airports.in_region(region)
   end
   
   private

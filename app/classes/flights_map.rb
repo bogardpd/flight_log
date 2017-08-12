@@ -5,10 +5,11 @@ class FlightsMap < Map
   # +flights+:: A collection of Flights.
   # ++highlighted_airports+:: An array of string IATA codes to highlight.
   # +region+:: The region to show. World map will be shown if region is left blank.
-  def initialize(flights, highlighted_airports: nil, include_names: false, region: :world)
+  def initialize(flights, highlighted_airports: nil, include_names: false, region: "")
     @flights = flights
     @highlighted_airports = highlighted_airports ? highlighted_airports : Array.new
-    @region = region
+    @region = region.to_s.split(",")
+    @airports_inside_region = Airport.in_region(@region)
     @routes = separate_routes_by_region
     @include_names = include_names
   end
@@ -26,6 +27,10 @@ class FlightsMap < Map
     def airports_highlighted
       return @highlighted_airports
     end
+    
+    def airports_inside_region
+      return separate_routes_by_region[:extra_airports]
+    end
   
     def separate_routes_by_region
 
@@ -33,22 +38,19 @@ class FlightsMap < Map
       pairs_outside_region = Array.new
       routes = Hash.new
       
-      conus_airports = Airport.where(region_conus: true).pluck(:iata_code)
       @flights.each do |flight|
-        # Build arrays of city pairs
-        if @region == :conus 
-          if (!conus_airports.include?(flight.origin_airport.iata_code) || !conus_airports.include?(flight.destination_airport.iata_code))
-            pairs_outside_region.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
-          else
-            pairs_inside_region.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
-          end
+        route = [flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort
+        if @airports_inside_region.include?(route[0]) && @airports_inside_region.include?(route[1])
+          pairs_inside_region.push(route)
         else
-          pairs_inside_region.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
-        end  
+          pairs_outside_region.push(route)
+        end
       end
-
-      routes[:inside_region]  = compressed_routes(pairs_inside_region)
-      routes[:outside_region] = compressed_routes(pairs_outside_region)
+      
+      routes[:inside_region]     = compressed_routes(pairs_inside_region)
+      routes[:outside_region]    = compressed_routes(pairs_outside_region)
+      routes[:used_airports]     = pairs_inside_region.flatten
+      routes[:extra_airports]    = (pairs_outside_region.flatten - pairs_inside_region.flatten) & @airports_inside_region
     
       return routes
     
