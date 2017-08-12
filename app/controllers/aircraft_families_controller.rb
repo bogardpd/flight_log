@@ -41,7 +41,7 @@ class AircraftFamiliesController < ApplicationController
     @title = @aircraft_family.full_name
     @title += " Family" if @aircraft_family.is_family?
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft."
-    @region = current_region(default: "")
+    @region = current_region(default: [""])
     
     @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_subtype_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)

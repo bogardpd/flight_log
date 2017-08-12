@@ -6,7 +6,7 @@ class PagesController < ApplicationController
     # Flight Log Index
     @meta_description = "Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history."
     @logo_used = true
-    @region = current_region(default: "K")
+    @region = current_region(default: ["K"])
     
     @flights = flyer.flights(current_user).includes(:origin_airport, :destination_airport)
     

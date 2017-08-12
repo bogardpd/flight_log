@@ -6,7 +6,7 @@ class AirportFrequencyMap < Map
   # Params:
   # +flights+:: A collection of Flights.
   # +region+:: The region to show. World map will be shown if region is left blank.
-  def initialize(flights, region: :world)
+  def initialize(flights, region: [""])
     @airport_frequencies = Airport.frequency_hash(flights)
     @airport_codes = Airport.in_region_hash(region.to_s.split(",")).select{|k,v| @airport_frequencies.keys.include?(k)}
   end

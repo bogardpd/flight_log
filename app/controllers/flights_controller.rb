@@ -7,7 +7,7 @@ class FlightsController < ApplicationController
     add_breadcrumb "Flights", "flights_path"
     @logo_used = true
     @title = "Flights"
-    @region = current_region(default: "")
+    @region = current_region(default: [""])
     
     @flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
         
@@ -105,7 +105,7 @@ class FlightsController < ApplicationController
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
-    @region = current_region(default: "")
+    @region = current_region(default: [""])
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
       
@@ -166,7 +166,7 @@ class FlightsController < ApplicationController
     add_breadcrumb "Travel Classes", "classes_path"
     add_breadcrumb TravelClass.list[params[:travel_class]].titlecase, show_class_path(params[:travel_class])
 
-    @region = current_region(default: "")
+    @region = current_region(default: [""])
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
 
@@ -228,7 +228,7 @@ class FlightsController < ApplicationController
     add_breadcrumb "Tail Numbers", "tails_path"
     add_breadcrumb @title, show_tail_path(params[:tail_number])
     
-    @region = current_region(default: "")
+    @region = current_region(default: [""])
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = total_distance(@flights)
     

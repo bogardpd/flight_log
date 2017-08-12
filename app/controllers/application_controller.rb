@@ -4,8 +4,12 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   @gcmap_used = false
   
-  def current_region(default: "")
-    return params[:region] || default
+  # Returns an array of region start strings based on the querystring region
+  # parameter if present, and the default if absent.
+  def current_region(default: [""])
+    return default unless params[:region]
+    
+    return params[:region].split(",")
   end
   
   # Returns the user whose flights are being viewed. Until multiple user
