@@ -92,39 +92,6 @@ class Airport < ApplicationRecord
     return iata_hash
   end
   
-  
-  
-  # Take a collection of flights and a region, and return a hash of all
-  # of the flights' airports that are within the given region, with Airport
-  # IDs as the keys and IATA codes as the values.
-  # Params:
-  # +flights+:: A collection of Flights.
-  # +region+:: Only returns airports from this region.
-  def self.region_iata_codes(flights, region)
-    
-    # Create array of all flights' airport IDs:
-    airport_ids = Array.new
-    flights.each do |flight|
-      airport_ids.push(flight[:origin_airport_id])
-      airport_ids.push(flight[:destination_airport_id])
-    end
-    airport_ids = airport_ids.uniq.sort
-    
-    # Filter out non-CONUS airports, if necessary:
-    if region == :conus
-      airport_ids &= Airport.where(region_conus: true).pluck(:id)
-    end
-    
-    # Get IATA codes:
-    iata_hash = Hash.new
-    airports = Airport.find(airport_ids)
-    airports.each do |airport|
-      iata_hash[airport[:id]] = airport[:iata_code]
-    end
-    
-    return iata_hash
-  end
-  
   # Take a collection of flights, and return a hash of with airport IDs as the
   # keys and the number of visits to each airport as the values.
   # Params:
