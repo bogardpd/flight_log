@@ -1,27 +1,27 @@
 airportDFW:
   id: 1
   iata_code: DFW
+  icao_code: KDFW
   city: Dallas/Fort Worth
-  region_conus: Yes
   country: United States
 
 airportORD:
   id: 2
   iata_code: ORD
+  icao_code: KORD
   city: Chicago (O'Hare)
-  region_conus: Yes
   country: United States
   
 airportSEA:
   id: 3
   iata_code: SEA
+  icao_code: KSEA
   city: Seattle/Tacoma
-  region_conus: Yes
   country: United States
 
 airportYVR:
   id: 4
   iata_code: YVR
+  icao_code: CYVR
   city: Vancouver
-  region_conus: No
   country: Canada
