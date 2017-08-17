@@ -19,9 +19,6 @@
       <%= label_tag (sym_base+"_country").to_sym, "Country" %><br />
       <%= text_field_tag (sym_base+"_country").to_sym %>
     </p>
-    <p>
-      <%= check_box_tag (sym_base+"_region_conus").to_sym %> <%= label_tag (sym_base+"_region_conus").to_sym, "CONUS" %>
-    </p>
   <% end %>
   <% if type == :airline %>
     <p>
