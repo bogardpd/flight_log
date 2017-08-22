@@ -104,6 +104,7 @@ module ApplicationHelper
       end
     end
     html += "</div>\n"
+    html += map.used_airports.to_s
     html.html_safe
   end
     

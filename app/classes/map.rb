@@ -15,6 +15,13 @@ class Map
     query.present?
   end
   
+  # Returns an array of IATA codes representing all airports used on this map.
+  def used_airports
+    used_from_airports = airports_inside_region | airports_highlighted | airports_frequency
+    used_from_routes = (routes_inside_region | routes_outside_region | routes_highlighted | routes_unhighlighted).map{|r| r.split(/[-\/]/)}.flatten
+    return (used_from_airports | used_from_routes).uniq.sort
+  end
+  
   # Return a hash of a map query based on a secret key
   # Params: 
   # +query+:: The query to hash
