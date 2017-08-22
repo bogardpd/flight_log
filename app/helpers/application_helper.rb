@@ -92,45 +92,47 @@ module ApplicationHelper
   # +selected_region+:: The currently active region
   # +anchor+:: If set, defines a page anchor position for the region select links to link to
   def map_with_region_select(map, selected_region, anchor: nil)
-    html = %Q(<div id="#{anchor}">\n)
+    html = String.new
+    html << %Q(<div id="#{anchor}">\n)
     if map && map.exists?
-      html += gcmap_region_select_links(selected_region, anchor: anchor)
-      html += map.draw
+      html << gcmap_region_select_links(map, selected_region, anchor: anchor)
+      html << map.draw
     else
       if selected_region.length > 0
-        html += render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.count)} #{selected_region.join(", ")}.")
+        html << render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.count)} #{selected_region.join(", ")}.")
       else
-        html += render_message(:warning, "When flights have been added, you’ll see a map here.")
+        html << render_message(:warning, "When flights have been added, you’ll see a map here.")
       end
     end
-    html += "</div>\n"
-    html += map.used_airports.to_s
+    html << "</div>\n"
     html.html_safe
   end
     
   # Return a menu allowing the user to switch between regions on a map
   # Params: 
   # +region+:: The currently active region
-  def gcmap_region_select_links(selected_region, anchor: nil)
+  def gcmap_region_select_links(map, selected_region, anchor: nil)
     regions = Hash.new
     regions["World"]       = %w()
     regions["USA (CONUS)"] = %w(K)
     regions["Europe"]      = %w(B E L)
     
-    html = %Q(<div class="region-select">)
-    html += %Q(<ul class="region-select">)
+    html = String.new
+    html << map.used_airports.to_s
+    html << %Q(<div class="region-select">)
+    html << %Q(<ul class="region-select">)
     
     regions.each do |name, icao|
       if selected_region.uniq.sort == icao.uniq.sort
-        html += %Q(<li class="selected">#{name}</li>)
+        html << %Q(<li class="selected">#{name}</li>)
       else
-        html += "<li>"
-        html += link_to(name, url_for(params.permit(:sort).merge(region: icao.join("-"), anchor: anchor)))
-        html += "</li>"
+        html << "<li>"
+        html << link_to(name, url_for(params.permit(:sort).merge(region: icao.join("-"), anchor: anchor)))
+        html << "</li>"
       end 
     end
     
-    html += "</ul></div>"
+    html << "</ul></div>"
   end
   
 end
