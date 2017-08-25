@@ -117,27 +117,28 @@ module ApplicationHelper
     regions["USA (CONUS)"] = %w(K)
     regions["Europe"]      = %w(B E L)
     
-    used_airports = map.used_airports
-    
-    html = String.new
-    html << %Q(<div class="region-select">)
-    html << %Q(<ul class="region-select">)
+    used_airports = map.used_airports.sort
+    tabs = Array.new
     
     regions.each do |name, icao|
       if selected_region.uniq.sort == icao.uniq.sort
-        html << %Q(<li class="selected">#{name}</li>)
+        tabs.push %Q(<li class="selected">#{name}</li>)
       else
-        unless (Airport.in_region(icao) & used_airports).empty?
-          
-          html << "<li>"
-          html << link_to(name, url_for(params.permit(:sort).merge(region: icao.join("-"), anchor: anchor)))
-          html << "</li>"
+        in_region = Airport.in_region(icao).sort
+        if ((in_region & used_airports).any? && (used_airports - in_region).any?) || icao == []
+          # This region has airports, but is not identical to world OR this region is world.
+          tabs.push "<li>#{link_to(name, url_for(params.permit(:sort).merge(region: icao.join("-"), anchor: anchor)))}</li>"
         end
-        
       end 
     end
     
-    html << "</ul></div>"
+    if tabs.length > 1
+      return %Q(<div class="region-select"><ul class="region-select">#{tabs.join}</ul></div>)
+    else
+      return ""
+    end
+    
+    
   end
   
 end
