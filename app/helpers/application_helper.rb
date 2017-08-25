@@ -117,8 +117,9 @@ module ApplicationHelper
     regions["USA (CONUS)"] = %w(K)
     regions["Europe"]      = %w(B E L)
     
+    used_airports = map.used_airports
+    
     html = String.new
-    html << map.used_airports.to_s
     html << %Q(<div class="region-select">)
     html << %Q(<ul class="region-select">)
     
@@ -126,9 +127,13 @@ module ApplicationHelper
       if selected_region.uniq.sort == icao.uniq.sort
         html << %Q(<li class="selected">#{name}</li>)
       else
-        html << "<li>"
-        html << link_to(name, url_for(params.permit(:sort).merge(region: icao.join("-"), anchor: anchor)))
-        html << "</li>"
+        unless (Airport.in_region(icao) & used_airports).empty?
+          
+          html << "<li>"
+          html << link_to(name, url_for(params.permit(:sort).merge(region: icao.join("-"), anchor: anchor)))
+          html << "</li>"
+        end
+        
       end 
     end
     
