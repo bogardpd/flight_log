@@ -9,6 +9,7 @@ class AirportFrequencyMap < Map
   def initialize(flights, region: [""])
     @airport_frequencies = Airport.frequency_hash(flights)
     @airport_codes = Airport.in_region_hash(region).select{|k,v| @airport_frequencies.keys.include?(k)}
+    @outside = Airport.in_region_hash([]).select{|k,v| @airport_frequencies.keys.include?(k)}
   end
   
   private
@@ -19,6 +20,10 @@ class AirportFrequencyMap < Map
   
     def airports_inside_region
       return @airport_codes.values
+    end
+    
+    def airports_outside_region
+      return @outside.values - @airport_codes.values
     end
     
     # Return an array of IATA codes preceeded by appropriate Great Circle
