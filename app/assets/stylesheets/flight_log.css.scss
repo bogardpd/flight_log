@@ -329,7 +329,9 @@ div.boarding-pass-fields {
       color: $color-text-error;
     }
     span {
-      @extend span.invalid;
+      color: $color-text-error;
+      background-color: lighten($color-background-status-bad, 10%);
+      text-shadow: 1px 1px $color-background-status-bad;
     }
   }
   tr.unknown {
@@ -337,7 +339,9 @@ div.boarding-pass-fields {
       color: $color-text-warning;
     }
     span {
-      @extend span.unknown;
+      color: $color-text-warning;
+      background-color: lighten($color-background-status-unknown, 10%);
+      text-shadow: 1px 1px $color-background-status-unknown;
     }
   }
 }
