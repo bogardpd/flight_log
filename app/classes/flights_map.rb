@@ -8,7 +8,7 @@ class FlightsMap < Map
   def initialize(flights, highlighted_airports: nil, include_names: false, region: [""])
     @flights = flights
     @highlighted_airports = highlighted_airports ? highlighted_airports : Array.new
-    @airports_inside_region = Airport.in_region(region)
+    @airports_inside_region = Airport.in_region(region) | @highlighted_airports
     @routes = separate_routes_by_region
     @include_names = include_names
   end
