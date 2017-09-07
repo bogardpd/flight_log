@@ -4,6 +4,10 @@
 /* Base stylesheet */
   @import "flight_log";
 
+/* Layout */
+  @import "header";
+  @import "footer";
+
 /* Components */
   @import "boarding_passes";
   @import "forms";
