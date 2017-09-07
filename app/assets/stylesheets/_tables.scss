@@ -1,0 +1,308 @@
+/* Basic table cell formatting */
+
+  td {
+  	-webkit-text-size-adjust:100%;
+  }
+
+  td a {
+  	text-shadow: 0px 1px 0px #FFFFFF;
+  }
+  
+  th {
+  	font-weight: 600;
+  }
+  
+  
+/* Table formatting */
+
+  table.flightlog {
+  	margin-left: auto;
+  	margin-right: auto;
+  	margin-top: 1em;
+  	margin-bottom: 1em;
+  	border-spacing: 0;
+  	border-collapse: collapse;
+  	border-bottom: 1px solid #BED4EA;
+  
+    a {
+    	text-decoration: none;
+    }
+  
+    td {
+    	padding: 0.5em 0.6em;
+    	white-space: nowrap;
+    	height: 28px;
+    }
+  
+    th {
+    	padding: 0.5em 0.6em;
+    	background-color: #F9F9FB;
+    	border-bottom: 2px solid $color-base;
+    	height: 28px;
+    }
+  
+    tr {
+    	border-top: 1px solid #BED4EA;
+    	background-color: $color-background-table;
+    }
+  
+    tr.no-top-border {
+    	border-top: none !important;
+    }
+  }
+
+  table.flight-large-route {
+  	margin-top: 0px;
+  	border: none;
+  	outline: none;
+    
+    td {
+      border: none;
+    }
+  }
+
+
+/* Specific cell formatting */
+
+  /* Labels */
+  
+  td.label-column {
+    /* Used to format the header column of a table */
+    background-color: #FCFCFD;
+  	border-right: 2px solid $color-base;
+  	font-weight: 600;
+  	text-align: right;
+  	vertical-align: top;
+  }
+  
+  /* Total rows */
+  
+    td.flightlog-total {
+    	-webkit-text-size-adjust:100%;
+    	background-color: #F9F9FB;
+    	border-top: 2px solid $color-base;
+    	text-align: center;
+    	font-weight: 600;
+    }
+
+    td.flightlog-total span.total-percent {
+    	font-weight: normal;
+    }
+    
+  /* Counters */
+  
+    td.counter {
+    	color: #C0C9D3;
+    	text-align: right;
+    }
+    
+    th.counter {
+    	text-align: right;
+    }
+    
+  /* Annual summaries */
+  
+    td.annual-summary, th.annual-summary {
+      width: 3em;
+      text-align: center;
+    }
+
+    td.annual-summary-undefined, th.annual-summary-undefined {
+      color: #FF0000;
+      background-color: #FFEEEE !important;
+    } 
+
+  /* Aircraft families */
+
+    td.aircraft-family, th.aircraft-family {
+    	text-align: left;
+    }
+
+    td.aircraft-flights, th.aircraft-flights {
+    	text-align: center;
+    }
+
+    td.aircraft-code, th.aircraft-code {
+    	text-align: center;
+    }
+
+    td.aircraft-name {
+    	text-align: left;
+    	font-style: italic;
+    }
+    
+    td.aircraft-type {
+      font-weight: 300;
+    }
+    
+  /* Airlines */
+
+    td.airline-airline, th.airline-airline {
+    	text-align: left;
+    }
+
+    td.airline-flights, th.airline-flights {
+    	text-align: center;
+    }
+
+    td.airline-code, th.airline-code {
+    	text-align: center;
+    }
+
+  /* Airports */
+  
+    td.airport-city, th.airport-city {
+    	text-align: left;
+    }
+
+    td.airport-country, th.airport-country {
+    	text-align: center;
+    	vertical-align: middle;
+    }
+
+    td.airport-flights, th.airport-flights {
+    	text-align: center;
+    }
+
+    td.airport-code, th.airport-code {
+    	text-align: center;
+    }
+
+    td.airport-distance, th.airport-distance {
+    	text-align: right;
+    }
+
+    td.airport-visits {
+    	text-align: center;
+    }
+    
+  /* Classes of service */
+    
+    td.class-class, th.class-class {
+    	text-align: left;
+    }
+
+    td.class-flights, th.class-flights {
+    	text-align: center;
+    }
+
+    td.class-code, th.class-code {
+    	text-align: center;
+    }
+    
+  /* Flights */
+    
+    td.flight-aircraft, th.flight-aircraft {
+    	text-align: center;
+    }
+
+    td.flight-date, th.flight-date {
+    	text-align: right;
+    }
+
+    td.flight-flight {
+    	padding-left: 0;
+    }
+
+    th.flight-flight {
+    	text-align: left;
+    }
+
+    td.flight-tail, th.flight-tail {
+    	text-align: left;
+    }
+
+    td.flight-airplane-icon {
+    	font-size: 200%;
+    	color: #333F4C;
+    	background: #FFFFFF;
+    	vertical-align: middle;
+    }
+
+    td.flight-route, th.flight-route {
+    	text-align: center;
+    	width: 6em;
+    }
+
+    td.flight-section {
+    	border-right: 2px solid $color-base;
+    	text-align: center;
+    	vertical-align: middle;
+    	line-height: 1.2;
+    }
+
+    th.flight-section {
+    	text-align: center;
+    }
+
+    td.flight-show-airport {
+    	width: 250px;
+    	line-height: 1.2;
+    	vertical-align: middle;
+    	background: #FFFFFF;
+    }
+    
+  /* Routes */
+    
+    td.route-distance, th.route-distance {
+    	text-align: right;
+    }
+
+    td.route-flights, th.route-flights {
+    	text-align: center;
+    }
+
+    td.route-route, th.route-route {
+    	text-align: left;
+    }
+    
+  /* Tail numbers */
+    
+    td.tail-flights, th.tail-flights {
+    	text-align: center;
+    }
+
+    td.tail-aircraft {
+    	color: $color-text-secondary;
+    	font-weight: 300;
+    	text-align: center;
+      abbr {
+        border-bottom-color: $color-text-secondary;
+      }
+    }
+
+    td.tail-airline, th.tail-airline {
+    	text-align: center;
+    }
+
+    td.tail-number, th.tail_number {
+    	text-align: left;
+    }
+    
+  /* Trips */
+    
+    th.trip_name {
+    	text-align: left;
+    }
+
+    
+/* Miscellaneous table cell classes */
+  
+  tr.new {
+    td {
+      background-color: #FFF5E6;
+    }
+  }
+
+  td.subdued {
+  	color: $color-text-secondary;
+    font-weight: 300;
+  }
+  
+  td.superlatives-label {
+  	background-color: #F9F9FB;
+  }
+
+  td.year_link {
+  	text-align: center;
+  }

@@ -28,6 +28,7 @@ div.boarding-pass-fields {
       text-shadow: 1px 1px darken($color-background-table, 20%);
       padding: 0 3px;
     }
+    span.valid {}    
     span.invalid {
       color: $color-text-error;
       background-color: lighten($color-background-status-bad, 10%);
@@ -51,10 +52,12 @@ div.boarding-pass-fields {
   td {
     vertical-align: top;
   }
+  
   td.description {
     width: 15em;
     white-space: normal;
   }
+  
   td.data {
     width: 22em;
     
