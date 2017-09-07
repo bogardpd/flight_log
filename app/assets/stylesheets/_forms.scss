@@ -1,0 +1,40 @@
+form {
+  input, select, button, textarea {
+  	font-family: $font-stack-sans-serif;
+  	font-size: 95%;
+  	padding: 2px 4px;
+  }
+  .all-caps {
+    text-transform: uppercase;
+  }
+  .autopopulated {
+  	background: $color-background-new;
+  	border: 1px solid hsl(45, 100%, 50%);
+  }
+  .radio-code {
+    font-weight: 300;
+    font-family: $font-stack-monospace;
+  }
+  .radio-code-block {
+    font-family: $font-stack-monospace;
+  }
+  .radio-empty {
+    font-weight: 300;
+    font-style: italic;
+  }
+  .updated {
+    background-color: $color-background-new;
+  }  
+  td.radio-button {
+    width: 20px;
+    vertical-align: top;
+  }
+  td.radio-value {
+    width: 275px;
+    vertical-align: top;
+    line-height: 120%;
+    span.label {
+      font-weight: 600;
+    }
+  }
+}

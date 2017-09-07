@@ -1,5 +1,3 @@
-/* Boarding Passes */
-
 @mixin invalid {
   color: $color-text-error;
   background-color: lighten($color-background-status-bad, 10%);
@@ -78,4 +76,9 @@ div.boarding-pass-fields {
       @include unknown;
     }
   }
+}
+
+
+div.bcbp_code {
+	width: 18em;
 }

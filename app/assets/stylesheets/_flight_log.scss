@@ -227,49 +227,6 @@ abbr {
 }
 
 
-/* Forms */
-form {
-  input, select, button, textarea {
-  	font-family: $font-stack-sans-serif;
-  	font-size: 95%;
-  	padding: 2px 4px;
-  }
-  .all-caps {
-    text-transform: uppercase;
-  }
-  .autopopulated {
-  	background: $color-background-new;
-  	border: 1px solid hsl(45, 100%, 50%);
-  }
-  .radio-code {
-    font-weight: 300;
-    font-family: $font-stack-monospace;
-  }
-  .radio-code-block {
-    font-family: $font-stack-monospace;
-  }
-  .radio-empty {
-    font-weight: 300;
-    font-style: italic;
-  }
-  .updated {
-    background-color: $color-background-new;
-  }  
-  td.radio-button {
-    width: 20px;
-    vertical-align: top;
-  }
-  td.radio-value {
-    width: 275px;
-    vertical-align: top;
-    line-height: 120%;
-    span.label {
-      font-weight: 600;
-    }
-  }
-}
-
-
 a {
 	text-decoration: none;
 	color: $color-text-link;
@@ -310,9 +267,6 @@ code {
   }
 }
 
-div.bcbp_code {
-	width: 18em;
-}
 
 div.column {
 	display: inline-block;
@@ -483,42 +437,6 @@ div.page_navigation li {
 	padding: 3px 10px;
 	vertical-align: middle;
 }
-
-
-div.tooltip {
-  height: 110px;
-	margin-left: $margin-paragraph;
-	margin-right: $margin-paragraph;
-  padding: 10px;
-  background-color: #444444;
-  color: #FFFFFF;
-  border: 1px solid #222222;
-  border-radius: 1em;
-  box-shadow: 1px 1px 2px #222222;
-  text-shadow: 1px 1px #222222;
-  opacity: 0.9;
-  
-  .bcbp_description {
-    font-weight: bold;
-  }
-  
-  .bcbp_interpreted {
-    font-weight: 300;
-    margin-left: 2px;
-  }
-  
-  .bcbp_raw_value {
-    font-family: $font-stack-monospace;
-    word-wrap: break-word;
-    line-height: $line-height-raw-bcbp;
-    span {
-      border: 1px solid #444444;
-      background-color: #000000;
-      padding: 0 3px;
-    }
-  }
-}
-
 
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1.2;

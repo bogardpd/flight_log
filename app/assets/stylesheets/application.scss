@@ -1,6 +1,10 @@
-@import "variables.scss";
+/* Variables */
+  @import "variables";
 
-@import "flight_log.scss";
+/* Base stylesheet */
+  @import "flight_log";
 
-@import "boarding_passes.scss";
-@import "regions.scss";
+/* Components */
+  @import "boarding_passes";
+  @import "forms";
+  @import "regions";
