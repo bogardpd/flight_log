@@ -272,51 +272,7 @@ div.column {
 	display: inline-block;
 }
 
-/* Message banners */
 
-div.message {
-  margin: 8px 0;
-  padding:  5px 10px;
-  box-shadow: 1px 1px 2px darken($color-background-message-default, 20%);
-  background: $color-background-message-default;
-  border: 1px solid darken($color-background-message-default, 20%);
-  .title {
-    font-weight: 600;
-  }
-  a {
-    color: darken($color-text-link, 20%);
-    text-decoration: underline;
-  }
-  a:hover {
-    color: darken($color-text-link-hover, 5%);
-  }
-}
-
-div.message-info {
-  background: $color-background-info;
-  border-color: darken($color-background-info, 20%);
-}
-
-div.message-success {
-  background: $color-background-success;
-  border-color: darken($color-background-success, 20%);
-}
-
-div.message-warning {
-  background: $color-background-warning;
-  border-color: darken($color-background-warning, 20%);
-}
-
-div.message-error, {
-  background: $color-background-error;
-  border-color: darken($color-background-error, 20%);
-  a {
-    padding: 0.2em;
-    text-shadow: none;
-    font-weight: 400;
-    color: darken($color-text-link, 20%);
-  }
-}
 
 div.field_with_errors {
 	display: inline;
