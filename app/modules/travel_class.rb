@@ -23,8 +23,8 @@ module TravelClass
   # Returns a hash of travel classes.
   def self.list
     classes = Hash.new
-    classes["F"] = "First"
-    classes["J"] = "Business"
+    classes["F"] = "International First"
+    classes["J"] = "Business / Domestic First"
     classes["W"] = "Premium Economy"
     classes["Y"] = "Economy"
     return classes
