@@ -314,7 +314,7 @@ class PKPass < ApplicationRecord
       if json_data["relevantDate"]
         fields.store(:date, Time.parse(json_data["relevantDate"]))
       elsif json_data["expirationDate"]
-        fields.store(:date, Time.parse(json_data["expiration_date"]-1.day))
+        fields.store(:date, Time.parse(json_data["expirationDate"] - 1.day))
       else
         fields.store(:date, Time.now)
       end
