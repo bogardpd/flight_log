@@ -310,7 +310,14 @@ class PKPass < ApplicationRecord
   def self.pass_summary_list
     PKPass.where(flight_id: nil).map{|pass|
       fields = BoardingPass.new(pass.barcode, interpretations: false).summary_fields
-      fields.store(:date, Time.parse(JSON.parse(pass.pass_json)["relevantDate"]))
+      json_data = JSON.parse(pass.pass_json)
+      if json_data["relevantDate"]
+        fields.store(:date, Time.parse(json_data["relevantDate"]))
+      elsif json_data["expirationDate"]
+        fields.store(:date, Time.parse(json_data["expiration_date"]-1.day))
+      else
+        fields.store(:date, Time.now)
+      end
       fields.store(:id, pass.id)
       fields
     }.sort_by{|h| h[:date]}
