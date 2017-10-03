@@ -307,7 +307,7 @@ class FlightsController < ApplicationController
       check_for_new_iata_codes(fields)
       if existing_trip_flights_count > 0
         pass_datetime = fields.dig(:departure_utc, :pass_value)
-        if pass_datetime >= last_flight.departure_utc + 1.day
+        if pass_datetime && pass_datetime >= last_flight.departure_utc + 1.day
           @default_trip_section = last_flight.trip_section + 1
         else
           @default_trip_section = last_flight.trip_section
