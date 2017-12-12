@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   include SessionsHelper
-  @gcmap_used = false
   
   # Returns an array of region start strings based on the querystring region
   # parameter if present, and the default if absent.
