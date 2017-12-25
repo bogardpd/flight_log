@@ -285,6 +285,13 @@ class FlightsController < ApplicationController
       render :json => boarding_pass.data
     end
   end
+
+  def flightxml_lookup
+    @title = "FlightXML Lookup"
+    @meta = "Look up a flight on FlightAware"
+    add_breadcrumb "Flights", "flights_path"
+    add_breadcrumb "FlightXML Lookup", "flightxml_lookup_path"
+  end
   
   def new
     @title = "New Flight"

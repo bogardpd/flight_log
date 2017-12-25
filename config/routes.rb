@@ -12,6 +12,7 @@ Portfolio::Application.routes.draw do
   delete "/logout" => "sessions#destroy"
   
   # Flights:
+  get   "/flights/lookup/"                       => "flights#flightxml_lookup", as: :flightxml_lookup
   resources :flights, :except => [:new]
   get   "/flights/new/trip/:trip_id(/pass/:pass_id)" => "flights#new",          as: :new_flight
   get   "/flights/:id/edit/pass/:pass_id"        => "flights#edit_with_pass",   as: :edit_flight_with_pass
