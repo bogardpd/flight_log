@@ -13,7 +13,7 @@ Portfolio::Application.routes.draw do
   
   # Flights:
   get   "/flights/lookup/"                       => "flights#flightxml_lookup", as: :flightxml_lookup
-  post  "/flights/select-flight/"                => "flights#flightxml_select_flight", as: :flightxml_select_flight
+  match "/flights/select-flight/" => "flights#flightxml_select_flight", via: [:get, :post], as: :flightxml_select_flight
   resources :flights, :except => [:new]
   get   "/flights/new/trip/:trip_id(/pass/:pass_id)" => "flights#new",          as: :new_flight
   get   "/flights/:id/edit/pass/:pass_id"        => "flights#edit_with_pass",   as: :edit_flight_with_pass

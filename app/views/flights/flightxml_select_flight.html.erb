@@ -2,7 +2,7 @@
 
 <% if @flights && @flights.any? %>
   <p>Flights matching <code class="bold"><%= params[:airline_icao] %><%= params[:flight_number] %></code>:</p>
-  <table class="flightlog">
+  <table class="flightlog flight-select">
     <tr>
       <th>Dep Date</th>
       <th>Departure</th>
@@ -13,20 +13,26 @@
     <% departure_time = Time.at(flight[:filed_departuretime].to_i).in_time_zone(@timezones[flight[:origin]]) %>
     <% arrival_time = Time.at(flight[:estimatedarrivaltime].to_i).in_time_zone(@timezones[flight[:destination]]) %>
     <tr>
-      <td>
+      
+      <td class="date">
         <%= departure_time.strftime("%A") %><br />
         <%= departure_time.strftime("%d %b %Y") %>
       </td>
-      <td>
-        <span class="code-mono bold"><%= flight[:origin] %></span>&ensp;<%= departure_time.strftime("%R") %> <span class="utc-offset"><%= departure_time.zone %></span><br />
-        <span class="small"><%= flight[:origin_name] %></span>
-        
+      
+      <td class="arrival-departure">
+        <span class="airport-code"><%= flight[:origin] %></span>&ensp;<span class="time"><%= departure_time.strftime("%R") %></span> <span class="timezone"><%= departure_time.zone %></span><br />
+        <span class="airport-name"><%= flight[:origin_name] %></span>
       </td>
-      <td>
-        <span class="code-mono bold"><%= flight[:destination] %></span>&ensp;<%= arrival_time.strftime("%R") %> <span class="utc-offset"><%= arrival_time.zone %></span><br />
-        <span class="small"><%= flight[:destination_name] %></span>
+      
+      <td class="arrival-departure">
+        <span class="airport-code"><%= flight[:destination] %></span>&ensp;<span class="time"><%= arrival_time.strftime("%R") %></span> <span class="timezone"><%= arrival_time.zone %></span><br />
+        <span class="airport-name"><%= flight[:destination_name] %></span>
       </td>
-      <td><%= link_to("Details…", new_flight_path(trip_id: 1, faflightid: flight[:fa_flight_id])) %></td>  
+      
+      <td>
+        <%= link_to("Details…", new_flight_path(trip_id: 1, faflightid: flight[:fa_flight_id])) %>
+      </td>
+      
     </tr>
   <% end %>
   </table>
