@@ -1,0 +1,35 @@
+<h1>Select Flight</h1>
+
+<% if @flights && @flights.any? %>
+  <p>Flights matching <code class="bold"><%= params[:airline_icao] %><%= params[:flight_number] %></code>:</p>
+  <table class="flightlog">
+    <tr>
+      <th>Dep Date</th>
+      <th>Departure</th>
+      <th>Arrival</th>
+      <th></th>
+    </tr>
+  <% @flights.each do |flight| %>
+    <% departure_time = Time.at(flight[:filed_departuretime].to_i).in_time_zone(@timezones[flight[:origin]]) %>
+    <% arrival_time = Time.at(flight[:estimatedarrivaltime].to_i).in_time_zone(@timezones[flight[:destination]]) %>
+    <tr>
+      <td>
+        <%= departure_time.strftime("%A") %><br />
+        <%= departure_time.strftime("%d %b %Y") %>
+      </td>
+      <td>
+        <span class="code-mono bold"><%= flight[:origin] %></span>&ensp;<%= departure_time.strftime("%R") %> <span class="utc-offset"><%= departure_time.zone %></span><br />
+        <span class="small"><%= flight[:origin_name] %></span>
+        
+      </td>
+      <td>
+        <span class="code-mono bold"><%= flight[:destination] %></span>&ensp;<%= arrival_time.strftime("%R") %> <span class="utc-offset"><%= arrival_time.zone %></span><br />
+        <span class="small"><%= flight[:destination_name] %></span>
+      </td>
+      <td><%= link_to("Details…", new_flight_path(trip_id: 1, faflightid: flight[:fa_flight_id])) %></td>  
+    </tr>
+  <% end %>
+  </table>
+<% else %>
+  <div class="message message-warning">We could not find any flights that matched <code><%= params[:airline_icao] %><%= params[:flight_number] %></code>.</div>
+<% end %>

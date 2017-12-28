@@ -293,6 +293,21 @@ class FlightsController < ApplicationController
     add_breadcrumb "FlightXML Lookup", "flightxml_lookup_path"
   end
   
+  def flightxml_select_flight
+    @flights = FlightXML.flight_lookup(params[:airline_icao], params[:flight_number])
+    if @flights && @flights.any?
+      origins = @flights.map{|f| f[:origin]}
+      destinations = @flights.map{|f| f[:destination]}
+      @timezones = FlightXML.airport_timezones(origins | destinations)
+    end
+    
+    @title = "Select Flight"
+    add_breadcrumb "Flights", "flights_path"
+    add_breadcrumb "FlightXML Lookup", "flightxml_lookup_path"
+    add_breadcrumb [params[:airline_icao],params[:flight_number]].join, "flightxml_select_flight_path"
+    render :flightxml_select_flight
+  end
+  
   def new
     @title = "New Flight"
     add_breadcrumb "Flights", "flights_path"
