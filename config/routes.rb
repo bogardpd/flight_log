@@ -12,8 +12,13 @@ Portfolio::Application.routes.draw do
   delete "/logout" => "sessions#destroy"
   
   # Flights:
-  get   "/flights/lookup/"                       => "flights#flightxml_lookup", as: :flightxml_lookup
+  get   "/flights/new-flight-menu/(trip/:trip_id)" => "flights#new_flight_menu", as: :new_flight_menu
+  post  "/flights/new-flight-menu/(trip/:trip_id)" => "flights#change_trip",     as: :change_new_flight_trip
+  post  "/flights/process-bcbp/"                   => "flights#process_bcbp",    as: :process_bcbp
   match "/flights/select-flight/" => "flights#flightxml_select_flight", via: [:get, :post], as: :flightxml_select_flight
+  
+  get   "/flights/lookup/"                       => "flights#flightxml_lookup", as: :flightxml_lookup
+  
   resources :flights, :except => [:new]
   get   "/flights/new/trip/:trip_id(/pass/:pass_id)" => "flights#new",          as: :new_flight
   get   "/flights/:id/edit/pass/:pass_id"        => "flights#edit_with_pass",   as: :edit_flight_with_pass

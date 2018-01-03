@@ -36,7 +36,7 @@ class PkPassesController < ApplicationController
   def destroy
     PKPass.find(params[:id]).destroy
     flash[:success] = "Pass destroyed."
-    redirect_to import_boarding_passes_path
+    redirect_to new_flight_menu_path
   end
   
   private

@@ -1,0 +1,78 @@
+<h1>Create a New Flight</h1>
+
+<div class="center">
+<%= form_tag(change_new_flight_trip_path) do %>
+  <%= label_tag :trip_id, "Which trip would you like to add a flight to?" %><br />
+  <%= select_tag(:trip_id, options_for_select(@trips, @trip.id)) %> <%= submit_tag "Change", name: nil %>
+<% end %>
+</div>
+
+<h2>Option 1: E-mail a digital boarding pass</h2>
+
+<p>To create a flight from an Apple Wallet pass, e-mail it to <%= link_to("flights@flighthistorian.com", "mailto:flights@flighthistorian.com") %>.</p>
+
+<% if @passes.any? %>
+
+<table class="flightlog">
+  <thead>
+    <th colspan="6">New Boarding Passes</th>
+  </thead>
+  <tbody>
+  <% @passes.each do |pass| %>
+    <tr>
+      <td><%= link_to "Create Flight", new_flight_path(:trip_id => @trip, :pass_id => pass[:id]) %>:</td>
+      <td class="code-mono"><%= pass[:pnr] %></td>
+      <td><%= pass[:airline] %> <%= pass[:flight] %></td>
+      <td><%= code_mono(pass[:from]) %> &ndash; <%= code_mono(pass[:to]) %></td>
+      <td class="flight-date"><%= Flight.format_date(pass[:date]) %></td>
+      <td><%= link_to("Delete", pk_pass_path(pass[:id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{pass[:from]}-#{pass[:to]}?"}, :class => "warning") %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<% else %>
+  <%= render_message(:info, "We haven’t yet received any emailed boarding passes.") %>
+<% end %>
+
+<% if (@flight_passes && @flights.any?) %>
+<table class="flightlog">
+  <thead>
+    <th colspan="6">Update Flight from Boarding Pass</th>
+  </thead>
+  <tbody>
+    <% @flights.each do |flight| %>
+      <tr>
+        <td><%= link_to "Edit", edit_flight_with_pass_path(flight, pass_id: @flight_passes[flight.id]) %>:</td>
+        <%= render partial: "flights/flight_cell_flight", locals: {flight: flight, linkable: false} %>
+        <%= render partial: "flights/flight_cell_route", locals: {flight: flight, linkable: false} %>
+        <%= render "flights/flight_cell_departure", flight: flight %>
+        <td><%= link_to("Delete Pass", pk_pass_path(@flight_passes[flight.id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{flight.airline.airline_name} #{flight.flight_number}?"}, :class => "warning") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% else %>
+  <%= render_message(:info, "No flights have updated passes.") %>
+<% end %>
+
+<h2>Option 2: Paste a barcode</h2>
+
+<%= form_tag({controller: :flights, action: :process_bcbp}, method: :post) do %>
+  <%= label_tag(:bcbp, "Use a barcode scanner to read your boarding pass, and paste the barcode data here:") %><br/>
+  <%= text_area_tag(:bcbp, nil, size: "60x5", class: "code-mono") %><br/>
+  <%= submit_tag("Submit") %>
+<% end %>
+
+<h2>Option 3: Search for a flight number</h2>
+
+<%= form_tag({controller: :flights, action: :flightxml_select_flight}, method: :post) do %>
+  
+  <%= label_tag(:airline_icao, "Airline") %> / <%= label_tag(:flight_number) %><br />
+  <%= collection_select(nil, :airline_icao, Airline.where(is_only_operator: false).where.not(icao_airline_code: nil).order("LOWER(airline_name)"), :icao_airline_code, :format_name, {include_blank: true}, class: "") %> <%= text_field_tag(:flight_number, nil, size: 5, maxlength: 5) %>
+  
+  <%= submit_tag("Search") %>
+
+<% end %>
+
+<h2>Option 4: Create a flight manually</h2>
+<p><%= link_to("New flight…", new_flight_path(trip_id: @trip))%></p>

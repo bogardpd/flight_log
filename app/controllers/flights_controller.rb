@@ -308,6 +308,41 @@ class FlightsController < ApplicationController
     render :flightxml_select_flight
   end
   
+  # Shows a set of forms to allow the user to choose how they will enter their new flight.
+  def new_flight_menu
+    @title = "Create a New Flight"
+    add_breadcrumb "Flights", "flights_path"
+    add_breadcrumb "New Flight", "new_flight_menu_path"
+    
+    # Determine an appropriate trip to use:
+    begin
+      @trip = Trip.find(params[:trip_id])
+    rescue ActiveRecord::RecordNotFound
+      if Trip.where(hidden: true).any?
+        @trip = Trip.where(hidden: true).order(:created_at).last
+      elsif Trip.any?
+        @trip = Trip.order(:created_at).last
+      else
+        flash[:warning] = "You have no trips to put a flight in, so we can’t create a new flight. Please create a trip."
+        redirect_to new_trip_path
+      end
+    end
+    empty_trips = Trip.with_no_flights.map{|trip| [trip.name, trip.id]}
+    @trips = empty_trips.concat(Trip.with_departure_dates(current_user, current_user).reverse.map{|trip| ["#{trip.name} / #{Flight.format_date(trip.departure_date)}", trip.id]})
+    
+    # Get PKPasses:
+    check_email_for_boarding_passes
+    @passes = PKPass.pass_summary_list
+    @flight_passes = PKPass.flights_with_updated_passes
+    @flights = flyer.flights(current_user).where(id: @flight_passes.keys)
+        
+  end
+  
+  # Changes the trip on the new_flight_menu
+  def change_trip
+    redirect_to new_flight_menu_path(trip_id: params[:trip_id])
+  end
+  
   def new
     @title = "New Flight"
     add_breadcrumb "Flights", "flights_path"
