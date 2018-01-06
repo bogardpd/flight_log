@@ -9,7 +9,7 @@
 
 <h2>Option 1: E-mail a digital boarding pass</h2>
 
-<p>To create a flight from an Apple Wallet pass, e-mail it to <%= link_to("flights@flighthistorian.com", "mailto:flights@flighthistorian.com") %>.</p>
+<p>To create a flight from an Apple Wallet pass, e-mail the pass to <%= link_to("flights@flighthistorian.com", "mailto:flights@flighthistorian.com") %>.</p>
 
 <% if @passes.any? %>
 
@@ -57,14 +57,18 @@
 
 <h2>Option 2: Paste a barcode</h2>
 
+<div class="center">
 <%= form_tag({controller: :flights, action: :process_bcbp}, method: :post) do %>
+  <%= hidden_field_tag(:trip_id, @trip.id) %>
   <%= label_tag(:bcbp, "Use a barcode scanner to read your boarding pass, and paste the barcode data here:") %><br/>
   <%= text_area_tag(:bcbp, nil, size: "60x5", class: "code-mono") %><br/>
-  <%= submit_tag("Submit") %>
+  <%= submit_tag("Submit barcode data") %>
 <% end %>
+</div>
 
 <h2>Option 3: Search for a flight number</h2>
 
+<div class="center">
 <%= form_tag({controller: :flights, action: :flightxml_select_flight}, method: :post) do %>
   
   <%= label_tag(:airline_icao, "Airline") %> / <%= label_tag(:flight_number) %><br />
@@ -73,6 +77,7 @@
   <%= submit_tag("Search") %>
 
 <% end %>
+</div>
 
 <h2>Option 4: Create a flight manually</h2>
-<p><%= link_to("New flight…", new_flight_path(trip_id: @trip))%></p>
+<p class="center bold"><%= link_to("New flight", new_flight_path(trip_id: @trip))%></p>
