@@ -37,9 +37,8 @@ module FlightXML
         how_many: 15,
         offset: 0
         }).to_hash[:flight_info_ex_results][:flight_info_ex_result][:flights]
-        
       
-      return flights
+      return Array.wrap(flights) # Ensure result is an array even if it's a single flight
     rescue
       return nil
     end

@@ -295,15 +295,16 @@ class FlightsController < ApplicationController
   
   def flightxml_select_flight
     @flights = FlightXML.flight_lookup(params[:airline_icao], params[:flight_number])
+
     if @flights && @flights.any?
       origins = @flights.map{|f| f[:origin]}
       destinations = @flights.map{|f| f[:destination]}
       @timezones = FlightXML.airport_timezones(origins | destinations)
     end
-    
+
     @title = "Select Flight"
     add_breadcrumb "Flights", "flights_path"
-    add_breadcrumb "FlightXML Lookup", "flightxml_lookup_path"
+    add_breadcrumb "New Flight", "new_flight_menu_path"
     add_breadcrumb [params[:airline_icao],params[:flight_number]].join, "flightxml_select_flight_path"
     render :flightxml_select_flight
   end
@@ -313,6 +314,7 @@ class FlightsController < ApplicationController
     @title = "Create a New Flight"
     add_breadcrumb "Flights", "flights_path"
     add_breadcrumb "New Flight", "new_flight_menu_path"
+    clear_new_flight_variables
     
     # Determine an appropriate trip to use:
     begin
@@ -341,6 +343,28 @@ class FlightsController < ApplicationController
   # Changes the trip on the new_flight_menu
   def change_trip
     redirect_to new_flight_menu_path(trip_id: params[:trip_id])
+  end
+  
+  # Extracts flight info from BCBP data and passes it along to select a flight
+  def process_bcbp
+    pass = BoardingPass.new(params[:bcbp])
+    session[:bcbp] = params[:bcbp]
+    error_message = "We could not determine the airline and flight number from the boarding pass barcode data you provided."
+    if pass.is_valid?
+      airline_iata = pass.summary_fields[:airline]
+      flight_number = pass.summary_fields[:flight]
+      if airline_iata && flight_number
+        airline_icao = Airline.convert_iata_to_icao(airline_iata)
+        redirect_to flightxml_select_flight_path(airline_icao: airline_icao, flight_number: flight_number, trip_id: params[:trip_id])
+      else
+        flash[:error] = error_message
+        redirect_to new_flight_menu_path(trip_id: params[:trip_id])
+      end
+    else
+      flash[:error] = error_message
+      redirect_to new_flight_menu_path(trip_id: params[:trip_id])
+    end
+    
   end
   
   def new
@@ -501,7 +525,11 @@ class FlightsController < ApplicationController
   end
     
   private
-  
+    
+    def clear_new_flight_variables
+      session[:bcbp] = nil
+    end
+    
     def flight_params
       params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section, :pass_serial_number)
     end

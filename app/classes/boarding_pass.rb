@@ -24,7 +24,8 @@ class BoardingPass
   
   # Return false if any fields have valid equal to false or nil
   def is_valid?
-    extract_detail(:valid).reduce(:&)
+    return false if @raw_data.blank?
+    return extract_detail(:valid).reduce(:&)
   end
   
   def raw
@@ -38,6 +39,7 @@ class BoardingPass
   # Returns an array of a particular detail (:raw, :valid, etc.), in the order
   # that it would show up in the boarding pass raw data.
   def extract_detail(detail)
+    return nil unless ordered_groups
     ordered_groups.map{|g| g[:fields].map{|k,v| v[detail.to_sym]}}.flatten
   end
     
@@ -47,6 +49,7 @@ class BoardingPass
     set_group = proc{|title, fields|
       output.push({title: title, fields: fields})
     }
+    return nil unless @control
     if @control[:um]
       set_group.call("Unique Mandatory", @structured_data.dig(:unique, :mandatory))
     end
