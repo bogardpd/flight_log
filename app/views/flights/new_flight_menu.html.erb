@@ -70,7 +70,7 @@
 
 <div class="center">
 <%= form_tag({controller: :flights, action: :flightxml_select_flight}, method: :post) do %>
-  
+  <%= hidden_field_tag(:trip_id, @trip.id) %>
   <%= label_tag(:airline_icao, "Airline") %> / <%= label_tag(:flight_number) %><br />
   <%= collection_select(nil, :airline_icao, Airline.where(is_only_operator: false).where.not(icao_airline_code: nil).order("LOWER(airline_name)"), :icao_airline_code, :format_name, {include_blank: true}, class: "") %> <%= text_field_tag(:flight_number, nil, size: 5, maxlength: 5) %>
   
