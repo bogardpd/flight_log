@@ -377,8 +377,9 @@ class FlightsController < ApplicationController
       last_flight = trip.flights.chronological.last
     end
     @flight = trip.flights.new
-    
     @pass = PKPass.find_by(id: params[:pass_id])
+    @lookup_fields = Flight.lookup_form_fields(pk_pass: @pass, fa_flight_id: params[:faflightid])
+    
     if @pass.nil?
       @fields = Hash.new
       @default_trip_section = 1 unless existing_trip_flights_count > 0

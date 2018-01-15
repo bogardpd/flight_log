@@ -80,6 +80,27 @@ class Flight < ApplicationRecord
     input_date.strftime("%e %b %Y")
   end
   
+  # Accepts an optional PKPass object and/or FlightXML faFlightID string, and
+  # returns a hash of all form fields with known values.
+  def self.lookup_form_fields(pk_pass: nil, fa_flight_id: nil)
+    fields = Hash.new
+    
+    # Guess trip section:
+    #TODO
+    
+    # Look up fields from PK Pass, if any:
+    if pk_pass
+      fields[:pk_pass] = pk_pass.id
+    end
+    
+    # Look up fields on FlightAware, if known:
+    if fa_flight_id
+      fields[:fa_flight_id] = fa_flight_id
+    end
+    
+    return fields
+  end
+  
   # For a given flight collection, return a range of the years that contain
   # flights.
   def self.year_range
