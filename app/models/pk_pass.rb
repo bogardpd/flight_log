@@ -37,23 +37,10 @@ class PKPass < ApplicationRecord
   # Returns a hash of form default values for this pass
   def form_values
     output = Hash.new
-    data = BoardingPass.new(barcode, interpretations: false).data
+    
     output.store(:serial_number, serial_number)
+    output.store(:boarding_pass_data, barcode)
     
-    origin_airport_iata = data.dig(:repeated, 0, :mandatory, 26, :raw)
-    output.store(:origin_airport_iata, origin_airport_iata)
-    origin_airport = Airport.find_by(iata_code: origin_airport_iata)
-    if origin_airport
-      output.store(:origin_airport_id, origin_airport.id)
-    end
-    
-    destination_airport_iata = data.dig(:repeated, 0, :mandatory, 38, :raw)
-    output.store(:destination_airport_iata, destination_airport_iata)
-    destination_airport = Airport.find_by(iata_code: destination_airport_iata)
-    if destination_airport
-      output.store(:destination_airport_id, destination_airport.id)
-    end
-
     rel_date = @pass.dig("relevantDate")
     if rel_date.present?
       begin
@@ -63,34 +50,12 @@ class PKPass < ApplicationRecord
       end
     end
     
-    airline_iata = data.dig(:repeated, 0, :mandatory, 42, :raw)&.strip
-        
-    if airline_iata.present?
-      output.store(:airline_iata, airline_iata)
-      airline = Airline.find_by(iata_airline_code: airline_iata)
-      if airline
-        output.store(:airline_id, airline.id)
-      end
-      
-      bp_issuer = data.dig(:unique, :conditional, 21, :raw)&.strip
-      marketing_carrier = data.dig(:repeated, 0, :conditional, 19, :raw)&.strip
-      if (bp_issuer.present? && airline_iata != bp_issuer)
-        output.store(:codeshare_airline_iata, bp_issuer)
-      elsif (marketing_carrier.present? && airline_iata != marketing_carrier)
-        output.store(:codeshare_airline_iata, marketing_carrier)
-      end
-      begin
-        airline_compartments = JSON.parse(File.read("app/assets/json/airline_compartments.json"))
-        compartment_code = data.dig(:repeated, 0, :mandatory, 71, :raw)
-        if compartment_code.present?
-          travel_class = airline_compartments.dig(airline_iata, compartment_code, "name")
-          output.store(:travel_class, TravelClass.get_class_id(travel_class))
-        end
-      rescue Errno::ENOENT
-      end
+    # Look up data from BCBP fields:
+    pass = BoardingPass.new(barcode, interpretations: false)
+    if pass.is_valid?
+      output.merge!(pass.form_values)
     end
-    output.store(:flight_number, data.dig(:repeated, 0, :mandatory, 43, :raw)&.strip&.gsub(/^0*/, ""))
-    output.store(:boarding_pass_data, barcode)
+            
     return output
   end
   

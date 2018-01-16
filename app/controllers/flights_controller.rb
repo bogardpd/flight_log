@@ -378,7 +378,7 @@ class FlightsController < ApplicationController
     end
     @flight = trip.flights.new
     @pass = PKPass.find_by(id: params[:pass_id])
-    @lookup_fields = Flight.lookup_form_fields(pk_pass: @pass, fa_flight_id: params[:faflightid])
+    @lookup_fields = Flight.lookup_form_fields(pk_pass: @pass, bcbp_data: session[:bcbp], fa_flight_id: params[:faflightid])
     
     if @pass.nil?
       @fields = Hash.new

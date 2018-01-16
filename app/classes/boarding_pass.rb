@@ -36,6 +36,54 @@ class BoardingPass
     return @structured_data
   end
   
+  # Returns a hash of form field values extracted from this barcode.
+  def form_values
+    fields = Hash.new
+    
+    origin_airport_iata = data.dig(:repeated, 0, :mandatory, 26, :raw)
+    fields.store(:origin_airport_iata, origin_airport_iata)
+    origin_airport = Airport.find_by(iata_code: origin_airport_iata)
+    if origin_airport
+      fields.store(:origin_airport_id, origin_airport.id)
+    end
+    
+    destination_airport_iata = data.dig(:repeated, 0, :mandatory, 38, :raw)
+    fields.store(:destination_airport_iata, destination_airport_iata)
+    destination_airport = Airport.find_by(iata_code: destination_airport_iata)
+    if destination_airport
+      fields.store(:destination_airport_id, destination_airport.id)
+    end
+    
+    airline_iata = data.dig(:repeated, 0, :mandatory, 42, :raw)&.strip
+    if airline_iata.present?
+      fields.store(:airline_iata, airline_iata)
+      airline = Airline.find_by(iata_airline_code: airline_iata)
+      if airline
+        fields.store(:airline_id, airline.id)
+      end
+      
+      bp_issuer = data.dig(:unique, :conditional, 21, :raw)&.strip
+      marketing_carrier = data.dig(:repeated, 0, :conditional, 19, :raw)&.strip
+      if (bp_issuer.present? && airline_iata != bp_issuer)
+        fields.store(:codeshare_airline_iata, bp_issuer)
+      elsif (marketing_carrier.present? && airline_iata != marketing_carrier)
+        fields.store(:codeshare_airline_iata, marketing_carrier)
+      end
+      begin
+        airline_compartments = JSON.parse(File.read("app/assets/json/airline_compartments.json"))
+        compartment_code = data.dig(:repeated, 0, :mandatory, 71, :raw)
+        if compartment_code.present?
+          travel_class = airline_compartments.dig(airline_iata, compartment_code, "name")
+          fields.store(:travel_class, TravelClass.get_class_id(travel_class))
+        end
+      rescue Errno::ENOENT
+      end
+    end
+    fields.store(:flight_number, data.dig(:repeated, 0, :mandatory, 43, :raw)&.strip&.gsub(/^0*/, ""))
+    
+    return fields
+  end
+  
   # Returns an array of a particular detail (:raw, :valid, etc.), in the order
   # that it would show up in the boarding pass raw data.
   def extract_detail(detail)

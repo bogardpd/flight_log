@@ -82,7 +82,7 @@ class Flight < ApplicationRecord
   
   # Accepts an optional PKPass object and/or FlightXML faFlightID string, and
   # returns a hash of all form fields with known values.
-  def self.lookup_form_fields(pk_pass: nil, fa_flight_id: nil)
+  def self.lookup_form_fields(pk_pass: nil, bcbp_data: nil, fa_flight_id: nil)
     fields = Hash.new
     
     # Guess trip section:
@@ -93,6 +93,12 @@ class Flight < ApplicationRecord
       fields[:pk_pass_id] = pk_pass.id
       pass_data = pk_pass.form_values
       fields.merge!(pass_data) if pass_data
+    elsif bcbp_data
+      fields[:boarding_pass_data] = bcbp_data
+      pass = BoardingPass.new(bcbp_data, interpretations: false)
+      if pass.is_valid?
+        fields.merge!(pass.form_values)
+      end
     end
     
     # Look up fields on FlightAware, if known:
