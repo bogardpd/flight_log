@@ -2,9 +2,12 @@
 
 <h1>New Flight</h1>
 
-<div class="message message-info">
-  Lookup Fields:<br/>
-  <%= @lookup_fields %>
+<div>
+  <table border="1">
+  <% @lookup_fields.each do |k,v| %>
+    <tr><td><%= k %></td><td><%= v %></td></tr>
+  <% end %>
+  </table>
 </div>
 
 <% if !Airport.any? %>

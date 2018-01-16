@@ -90,12 +90,15 @@ class Flight < ApplicationRecord
     
     # Look up fields from PK Pass, if any:
     if pk_pass
-      fields[:pk_pass] = pk_pass.id
+      fields[:pk_pass_id] = pk_pass.id
+      pass_data = pk_pass.form_values
+      fields.merge!(pass_data) if pass_data
     end
     
     # Look up fields on FlightAware, if known:
     if fa_flight_id
       fields[:fa_flight_id] = fa_flight_id
+      #TODO
     end
     
     return fields
