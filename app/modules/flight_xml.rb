@@ -97,6 +97,8 @@ module FlightXML
       end
     end
     
+    fields.store(:departure_utc, Time.at(flight_info_ex[:filed_departuretime].to_i).utc) if flight_info_ex[:filed_departuretime]
+    
     fields.store(:tail_number, airline_flight_info[:tailnumber]) if airline_flight_info[:tailnumber]
     
     return fields
