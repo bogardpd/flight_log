@@ -81,10 +81,10 @@ module FlightXML
     
     aircraft_type_icao = flight_info_ex[:aircrafttype]
     if aircraft_type_icao
-      fields.store(:aircraft_type_icao, flight_info_ex[:aircrafttype])
+      fields.store(:aircraft_family_icao, flight_info_ex[:aircrafttype])
       aircraft_type = AircraftFamily.find_by(icao_aircraft_code: aircraft_type_icao)
       if aircraft_type
-        fields.store(:aircraft_type_id, aircraft_type.id)
+        fields.store(:aircraft_family_id, aircraft_type.id)
       end
     end
     
@@ -98,7 +98,6 @@ module FlightXML
     end
     
     fields.store(:tail_number, airline_flight_info[:tailnumber]) if airline_flight_info[:tailnumber]
-    fields.store(:codeshares, Array.wrap(airline_flight_info[:codeshares])) if airline_flight_info[:codeshares]
     
     return fields
   end

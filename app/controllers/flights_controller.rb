@@ -295,7 +295,11 @@ class FlightsController < ApplicationController
   
   def flightxml_select_flight
     @flights = FlightXML.flight_lookup(params[:airline_icao], params[:flight_number])
-
+    
+    session[:flight_number] = params[:flight_number]
+    airline = Airline.find_by(icao_airline_code: params[:airline_icao])
+    session[:airline_id] = airline.id if airline
+    
     if @flights && @flights.any?
       origins = @flights.map{|f| f[:origin]}
       destinations = @flights.map{|f| f[:destination]}
@@ -379,7 +383,8 @@ class FlightsController < ApplicationController
     end
     @flight = trip.flights.new
     @pass = PKPass.find_by(id: params[:pass_id])
-    @lookup_fields = Flight.lookup_form_fields(pk_pass: @pass, bcbp_data: session[:bcbp], fa_flight_id: params[:faflightid])
+    departure_date = params[:departure_date] ? Date.parse(params[:departure_date]) : nil
+    @lookup_fields = Flight.lookup_form_fields(pk_pass: @pass, bcbp_data: session[:bcbp], fa_flight_id: params[:faflightid], departure_date: departure_date, airline_id: session[:airline_id], flight_number: session[:flight_number])
     
     if @pass.nil?
       @fields = Hash.new
@@ -529,7 +534,9 @@ class FlightsController < ApplicationController
   private
     
     def clear_new_flight_variables
+      session[:airline_id] = nil
       session[:bcbp] = nil
+      session[:flight_number] = nil
     end
     
     def flight_params

@@ -30,7 +30,7 @@
       </td>
       
       <td>
-        <%= link_to("Select", new_flight_path(trip_id: params[:trip_id], faflightid: flight[:fa_flight_id])) %>
+        <%= link_to("Select", new_flight_path(trip_id: params[:trip_id], faflightid: flight[:fa_flight_id], departure_date: departure_time.strftime("%F"))) %>
       </td>
       
     </tr>
