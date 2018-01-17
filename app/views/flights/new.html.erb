@@ -4,7 +4,7 @@
 
 <div>
   <table border="1">
-  <% @lookup_fields.each do |k,v| %>
+  <% @lookup_fields.sort_by{|k,v| k}.each do |k,v| %>
     <tr><td><%= k %></td><td><%= v %></td></tr>
   <% end %>
   </table>

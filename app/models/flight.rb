@@ -88,6 +88,14 @@ class Flight < ApplicationRecord
     # Guess trip section:
     #TODO
     
+    # Look up fields on FlightAware, if known:
+    if fa_flight_id
+      fields[:fa_flight_id] = fa_flight_id
+      flightxml_data = FlightXML.form_values(fa_flight_id)
+      
+      fields.merge!(flightxml_data)
+    end
+    
     # Look up fields from PK Pass, if any:
     if pk_pass
       fields[:pk_pass_id] = pk_pass.id
@@ -101,11 +109,7 @@ class Flight < ApplicationRecord
       end
     end
     
-    # Look up fields on FlightAware, if known:
-    if fa_flight_id
-      fields[:fa_flight_id] = fa_flight_id
-      #TODO
-    end
+    
     
     return fields
   end

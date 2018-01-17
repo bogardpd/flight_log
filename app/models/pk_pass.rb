@@ -36,16 +36,16 @@ class PKPass < ApplicationRecord
   
   # Returns a hash of form default values for this pass
   def form_values
-    output = Hash.new
+    fields = Hash.new
     
-    output.store(:serial_number, serial_number)
-    output.store(:boarding_pass_data, barcode)
+    fields.store(:pk_pass_serial_number, serial_number)
+    fields.store(:boarding_pass_data, barcode)
     
     rel_date = @pass.dig("relevantDate")
     if rel_date.present?
       begin
-        output.store(:departure_date, Date.parse(rel_date))
-        output.store(:departure_utc, Time.parse(rel_date).utc)
+        fields.store(:departure_date, Date.parse(rel_date))
+        fields.store(:departure_utc, Time.parse(rel_date).utc)
       rescue ArgumentError
       end
     end
@@ -53,10 +53,10 @@ class PKPass < ApplicationRecord
     # Look up data from BCBP fields:
     pass = BoardingPass.new(barcode, interpretations: false)
     if pass.is_valid?
-      output.merge!(pass.form_values)
+      fields.merge!(pass.form_values)
     end
             
-    return output
+    return fields
   end
   
   # Accepts a Flight, and returns a hash of flight values compared to boarding

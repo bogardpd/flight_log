@@ -370,7 +370,8 @@ class FlightsController < ApplicationController
   def new
     @title = "New Flight"
     add_breadcrumb "Flights", "flights_path"
-    add_breadcrumb "New Flight", "new_flight_path"
+    add_breadcrumb "New Flight", "new_flight_menu_path"
+    add_breadcrumb "Enter Flight Data", "new_flight_path"
     trip = Trip.find(params[:trip_id])
     existing_trip_flights_count = trip.flights.length
     if existing_trip_flights_count > 0
