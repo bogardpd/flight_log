@@ -394,7 +394,6 @@ class FlightsController < ApplicationController
     )
     
     #fields = @pass.updated_values(@flight, true) || {}
-    #add_message(:warning, fields[:error][:label]) if fields[:error] #TODO: check that errors are transmitted with new lookup
     #check_for_new_iata_codes(fields)
     
     # Guess trip section:
@@ -411,6 +410,8 @@ class FlightsController < ApplicationController
     end
     
     #@fields = fields.reject{|k,v| v[:pass_value].nil?}
+    
+    add_message(:warning, @lookup_fields[:error]) if @lookup_fields[:error]
     
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "We could not find a trip with an ID of #{params[:trip_id]}. Please select another trip."

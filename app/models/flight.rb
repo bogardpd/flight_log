@@ -87,15 +87,15 @@ class Flight < ApplicationRecord
     
     fields.store(:departure_date, departure_date) if departure_date
     
-    # Guess trip section:
-    #TODO
-    
     # Look up fields on FlightAware, if known:
     if fa_flight_id
       fields[:fa_flight_id] = fa_flight_id
       flightxml_data = FlightXML.form_values(fa_flight_id)
-      
-      fields.merge!(flightxml_data)
+      if flightxml_data
+        fields.merge!(flightxml_data)
+      else
+        fields.store(:error, "We ran into an error finding your flight data on FlightAware. You will have to manually enter some fields.")
+      end
     end
     
     # Look up fields from PK Pass, if any:
