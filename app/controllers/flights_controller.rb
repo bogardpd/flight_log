@@ -376,35 +376,46 @@ class FlightsController < ApplicationController
     add_breadcrumb "Flights", "flights_path"
     add_breadcrumb "New Flight", "new_flight_menu_path"
     add_breadcrumb "Enter Flight Data", "new_flight_path"
+    
     trip = Trip.find(params[:trip_id])
-    existing_trip_flights_count = trip.flights.length
-    if existing_trip_flights_count > 0
-      last_flight = trip.flights.chronological.last
-    end
+    trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
     @flight = trip.flights.new
     @pass = PKPass.find_by(id: params[:pass_id])
     departure_date = params[:departure_date] ? Date.parse(params[:departure_date]) : nil
-    @lookup_fields = Flight.lookup_form_fields(pk_pass: @pass, bcbp_data: session[:bcbp], fa_flight_id: params[:faflightid], departure_date: departure_date, airline_id: session[:airline_id], flight_number: session[:flight_number])
     
-    if @pass.nil?
-      @fields = Hash.new
-      @default_trip_section = 1 unless existing_trip_flights_count > 0
-    else
-      fields = @pass.updated_values(@flight, true) || {}
-      add_message(:warning, fields[:error][:label]) if fields[:error]
-      check_for_new_iata_codes(fields)
-      if existing_trip_flights_count > 0
-        pass_datetime = fields.dig(:departure_utc, :pass_value)
-        if pass_datetime && pass_datetime >= last_flight.departure_utc + 1.day
-          @default_trip_section = last_flight.trip_section + 1
-        else
-          @default_trip_section = last_flight.trip_section
-        end
+    # Prefill fields based on any known flight information:
+    @lookup_fields = Flight.lookup_form_fields(
+      pk_pass: @pass,
+      bcbp_data: session[:bcbp],
+      fa_flight_id: params[:faflightid],
+      departure_date: departure_date,
+      airline_id: session[:airline_id],
+      flight_number: session[:flight_number]
+    )
+    
+    #fields = @pass.updated_values(@flight, true) || {}
+    #add_message(:warning, fields[:error][:label]) if fields[:error] #TODO: check that errors are transmitted with new lookup
+    #check_for_new_iata_codes(fields)
+    
+    # Guess trip section:
+    if trip_has_existing_flights
+      last_flight = trip.flights.chronological.last
+      departure_utc = @lookup_fields.dig(:departure_utc)
+      if departure_utc && departure_utc >= last_flight.departure_utc + 1.day
+        @default_trip_section = last_flight.trip_section + 1
       else
-        @default_trip_section = 1
+        @default_trip_section = last_flight.trip_section
       end
-      @fields = fields.reject{|k,v| v[:pass_value].nil?}
+    else
+      @default_trip_section = 1
     end
+    
+    #@fields = fields.reject{|k,v| v[:pass_value].nil?}
+    
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = "We could not find a trip with an ID of #{params[:trip_id]}. Please select another trip."
+    redirect_to new_flight_menu_path
+    
   end
   
   def new_undefined_fields
