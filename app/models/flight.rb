@@ -82,7 +82,7 @@ class Flight < ApplicationRecord
   
   # Accepts an optional PKPass object and/or FlightXML faFlightID string, and
   # returns a hash of all form fields with known values.
-  def self.lookup_form_fields(pk_pass: nil, bcbp_data: nil, fa_flight_id: nil, departure_date: nil, airline_id: nil, flight_number: nil)
+  def self.lookup_form_fields(pk_pass: nil, bcbp_data: nil, fa_flight_id: nil, departure_date: nil, airline_icao: nil, flight_number: nil)
     fields = Hash.new
     
     fields.store(:departure_date, departure_date) if departure_date
@@ -111,7 +111,7 @@ class Flight < ApplicationRecord
       end
     end
     
-    fields.store(:airline_id, airline_id) if airline_id
+    fields.store(:airline_icao, airline_icao) if airline_icao
     fields.store(:flight_number, flight_number) if flight_number
     
     return fields

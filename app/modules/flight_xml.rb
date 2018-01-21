@@ -61,44 +61,14 @@ module FlightXML
       return nil
     end
     
-    origin_airport_icao = flight_info_ex[:origin]
-    if origin_airport_icao
-      fields.store(:origin_airport_icao, flight_info_ex[:origin])
-      origin_airport = Airport.find_by(icao_code: origin_airport_icao)
-      if origin_airport
-        fields.store(:origin_airport_id, origin_airport.id)
-      end
-    end
-    
-    destination_airport_icao = flight_info_ex[:destination]
-    if destination_airport_icao
-      fields.store(:destination_airport_icao, flight_info_ex[:destination])
-      destination_airport = Airport.find_by(icao_code: destination_airport_icao)
-      if destination_airport
-        fields.store(:destination_airport_id, destination_airport.id)
-      end
-    end
-    
-    aircraft_type_icao = flight_info_ex[:aircrafttype]
-    if aircraft_type_icao
-      fields.store(:aircraft_family_icao, flight_info_ex[:aircrafttype])
-      aircraft_type = AircraftFamily.find_by(icao_aircraft_code: aircraft_type_icao)
-      if aircraft_type
-        fields.store(:aircraft_family_id, aircraft_type.id)
-      end
-    end
+    fields.store(:origin_airport_icao, flight_info_ex[:origin]) if flight_info_ex[:origin]
+    fields.store(:destination_airport_icao, flight_info_ex[:destination]) if flight_info_ex[:destination]
+    fields.store(:aircraft_family_icao, flight_info_ex[:aircrafttype]) if flight_info_ex[:aircrafttype]
     
     operator_icao = flight_info_ex[:ident][0,3] if flight_info_ex[:ident]
-    if operator_icao
-      fields.store(:operator_icao, flight_info_ex[:ident][0,3])
-      operator = Airline.find_by(icao_airline_code: operator_icao)
-      if operator
-        fields.store(:operator_id, operator.id)
-      end
-    end
+    fields.store(:operator_icao, flight_info_ex[:ident][0,3]) if operator_icao
     
     fields.store(:departure_utc, Time.at(flight_info_ex[:filed_departuretime].to_i).utc) if flight_info_ex[:filed_departuretime]
-    
     fields.store(:tail_number, airline_flight_info[:tailnumber]) if airline_flight_info[:tailnumber]
     
     return fields

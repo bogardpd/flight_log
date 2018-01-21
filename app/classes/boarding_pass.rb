@@ -42,25 +42,13 @@ class BoardingPass
     
     origin_airport_iata = data.dig(:repeated, 0, :mandatory, 26, :raw)
     fields.store(:origin_airport_iata, origin_airport_iata)
-    origin_airport = Airport.find_by(iata_code: origin_airport_iata)
-    if origin_airport
-      fields.store(:origin_airport_id, origin_airport.id)
-    end
     
     destination_airport_iata = data.dig(:repeated, 0, :mandatory, 38, :raw)
     fields.store(:destination_airport_iata, destination_airport_iata)
-    destination_airport = Airport.find_by(iata_code: destination_airport_iata)
-    if destination_airport
-      fields.store(:destination_airport_id, destination_airport.id)
-    end
     
     airline_iata = data.dig(:repeated, 0, :mandatory, 42, :raw)&.strip
     if airline_iata.present?
       fields.store(:airline_iata, airline_iata)
-      airline = Airline.find_by(iata_airline_code: airline_iata)
-      if airline
-        fields.store(:airline_id, airline.id)
-      end
       
       bp_issuer = data.dig(:unique, :conditional, 21, :raw)&.strip
       marketing_carrier = data.dig(:repeated, 0, :conditional, 19, :raw)&.strip

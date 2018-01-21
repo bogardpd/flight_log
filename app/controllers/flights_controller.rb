@@ -297,8 +297,9 @@ class FlightsController < ApplicationController
     @flights = FlightXML.flight_lookup(params[:airline_icao], params[:flight_number])
     
     session[:flight_number] = params[:flight_number]
-    airline = Airline.find_by(icao_airline_code: params[:airline_icao])
-    session[:airline_id] = airline.id if airline
+    session[:airline_icao] = params[:airline_icao]
+    #airline = Airline.find_by(icao_airline_code: params[:airline_icao])
+    #session[:airline_id] = airline.id if airline
     
     if @flights && @flights.any?
       origins = @flights.map{|f| f[:origin]}
@@ -389,12 +390,15 @@ class FlightsController < ApplicationController
       bcbp_data: session[:bcbp],
       fa_flight_id: params[:faflightid],
       departure_date: departure_date,
-      airline_id: session[:airline_id],
+      airline_icao: session[:airline_icao],
       flight_number: session[:flight_number]
     )
     
     #fields = @pass.updated_values(@flight, true) || {}
     #check_for_new_iata_codes(fields)
+    
+    id_fields = get_or_create_ids_from_codes(@lookup_fields)
+    @lookup_fields.merge!(id_fields) if id_fields
     
     # Guess trip section:
     if trip_has_existing_flights
@@ -546,7 +550,7 @@ class FlightsController < ApplicationController
   private
     
     def clear_new_flight_variables
-      session[:airline_id] = nil
+      session[:airline_icao] = nil
       session[:bcbp] = nil
       session[:flight_number] = nil
     end
@@ -567,6 +571,92 @@ class FlightsController < ApplicationController
         render "new_undefined_fields"
       end
       return true
+    end
+    
+    # Accepts a hash of form fields, and uses ICAO or IATA codes to determine
+    # AircraftFamily, Airline, and Airport IDs, returning them in a hash. If
+    # any ICAO or IATA codes are not found, this method redirects to a form
+    # allowing the user to create new AircraftFamilies, Airlines, or Airports
+    # as needed.
+    def get_or_create_ids_from_codes(fields)
+      
+      ids = Hash.new
+      
+      new_airports = Array.new
+      new_aircraft = Array.new
+      new_airlines = Array.new
+      
+      # AIRPORTS
+      
+      if fields[:origin_airport_id].blank? && (fields[:origin_airport_icao] || fields[:origin_airport_iata])
+        if fields[:origin_airport_icao] && origin_airport = Airport.find_by(icao_code: fields[:origin_airport_icao])
+          ids.store(:origin_airport_id, origin_airport.id)
+        elsif fields[:origin_airport_iata] && origin_airport = Airport.find_by(iata_code: fields[:origin_airport_iata])
+          ids.store(:origin_airport_id, origin_airport.id)
+        else
+          new_airports.push({icao: fields[:origin_airport_icao], iata: fields[:origin_airport_iata]})
+        end
+      end
+      
+      if fields[:destination_airport_id].blank? && (fields[:destination_airport_icao] || fields[:destination_airport_iata])
+        if fields[:destination_airport_icao] && destination_airport = Airport.find_by(icao_code: fields[:destination_airport_icao])
+          ids.store(:destination_airport_id, destination_airport.id)
+        elsif fields[:destination_airport_iata] && destination_airport = Airport.find_by(iata_code: fields[:destination_airport_iata])
+          ids.store(:destination_airport_id, destination_airport.id)
+        else
+          new_airports.push({icao: fields[:destination_airport_icao], iata: fields[:destination_airport_iata]})
+        end
+      end
+      
+      # AIRCRAFT FAMILIES
+      
+      if fields[:aircraft_family_id].blank? && fields[:aircraft_family_icao]
+        if fields[:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_aircraft_code: fields[:aircraft_family_icao])
+          ids.store(:aircraft_family_id, aircraft_family.id)
+        else
+          new_aircraft.push({icao: fields[:aircraft_family_icao]})
+        end
+      end
+      
+      # AIRLINES
+      
+      if fields[:airline_id].blank? && (fields[:airline_icao] || fields[:airline_iata])
+        if fields[:airline_icao] && airline = Airline.find_by(icao_airline_code: fields[:airline_icao])
+          ids.store(:airline_id, airline.id)
+        elsif fields[:airline_iata] && airline = Airline.find_by(iata_airline_code: fields[:airline_iata])
+          ids.store(:airline_id, airline.id)
+        else
+          new_airlines.push({icao: fields[:airline_icao], iata: fields[:airline_iata]})
+        end
+      end
+      
+      if fields[:operator_id].blank? && fields[:operator_icao]
+        if fields[:operator_icao] && operator = Airline.find_by(icao_airline_code: fields[:operator_icao])
+          ids.store(:operator_id, operator.id)
+        else
+          new_airlines.push({icao: fields[:operator_icao]})
+        end
+      end
+      
+      if fields[:codeshare_airline_id].blank? && fields[:codeshare_airline_iata]
+        if fields[:codeshare_airline_iata] && codeshare_airline = Airline.find_by(icao_airline_code: fields[:codeshare_airline_iata])
+          ids.store(:codeshare_airline_id, codeshare_airline.id)
+        else
+          new_airlines.push({iata: fields[:codeshare_airline_iata]})
+        end
+      end
+      
+      ids.store(:NEW_AIRPORTS, new_airports)
+      ids.store(:NEW_AIRCRAFT, new_aircraft)
+      ids.store(:NEW_AIRLINES, new_airlines)
+      
+      if new_airports.any? || new_aircraft.any? || new_airlines.any?
+        # Remove duplicates from arrays
+        # Redirect to form
+      end
+            
+      return ids
+      
     end
     
     
