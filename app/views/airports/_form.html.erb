@@ -4,12 +4,20 @@
 
   <p>
     <%= f.label :iata_code, "IATA Code" %><br />
-    <%= f.text_field :iata_code, size: 3, maxlength: 3, class: "code-mono all-caps" %>
+    <% if @lookup_fields && @lookup_fields[:iata_code] %>
+      <%= f.text_field :iata_code, readonly: true, value: @lookup_fields[:iata_code], size: 3, maxlength: 3, class: "code-mono all-caps" %>
+    <% else %>
+      <%= f.text_field :iata_code, size: 3, maxlength: 3, class: "code-mono all-caps" %>
+    <% end %>
   </p>
 
   <p>
     <%= f.label :icao_code, "ICAO Code" %><br />
-    <%= f.text_field :icao_code, size: 4, maxlength: 4, class: "code-mono all-caps" %>
+    <% if @lookup_fields && @lookup_fields[:icao_code] %>
+      <%= f.text_field :icao_code, readonly: true, value: @lookup_fields[:icao_code], size: 4, maxlength: 4, class: "code-mono all-caps" %>
+    <% else %>
+      <%= f.text_field :icao_code, size: 4, maxlength: 4, class: "code-mono all-caps" %>
+    <% end %>
   </p>
 
   <p>

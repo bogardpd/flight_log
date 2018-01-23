@@ -384,15 +384,19 @@ class FlightsController < ApplicationController
     @pass = PKPass.find_by(id: params[:pass_id])
     departure_date = params[:departure_date] ? Date.parse(params[:departure_date]) : nil
     
-    # Prefill fields based on any known flight information:
-    @lookup_fields = Flight.lookup_form_fields(
-      pk_pass: @pass,
-      bcbp_data: session[:bcbp],
-      fa_flight_id: params[:faflightid],
-      departure_date: departure_date,
-      airline_icao: session[:airline_icao],
-      flight_number: session[:flight_number]
-    )
+    if session[:lookup_fields]
+      @lookup_fields = session[:lookup_fields]
+    else
+      # Prefill fields based on any known flight information:
+      @lookup_fields = Flight.lookup_form_fields(
+        pk_pass: @pass,
+        bcbp_data: session[:bcbp],
+        fa_flight_id: params[:faflightid],
+        departure_date: departure_date,
+        airline_icao: session[:airline_icao],
+        flight_number: session[:flight_number]
+      )
+    end
     
     #fields = @pass.updated_values(@flight, true) || {}
     #check_for_new_iata_codes(fields)
@@ -553,6 +557,7 @@ class FlightsController < ApplicationController
       session[:airline_icao] = nil
       session[:bcbp] = nil
       session[:flight_number] = nil
+      session[:lookup_fields] = nil
     end
     
     def flight_params
@@ -581,10 +586,7 @@ class FlightsController < ApplicationController
     def get_or_create_ids_from_codes(fields)
       
       ids = Hash.new
-      
-      new_airports = Array.new
-      new_aircraft = Array.new
-      new_airlines = Array.new
+      session[:lookup_fields] = fields
       
       # AIRPORTS
       
@@ -594,7 +596,8 @@ class FlightsController < ApplicationController
         elsif fields[:origin_airport_iata] && origin_airport = Airport.find_by(iata_code: fields[:origin_airport_iata])
           ids.store(:origin_airport_id, origin_airport.id)
         else
-          new_airports.push({icao: fields[:origin_airport_icao], iata: fields[:origin_airport_iata]})
+          input_new_undefined_airport(fields[:origin_airport_iata], fields[:origin_airport_icao])
+          return
         end
       end
       
@@ -604,7 +607,8 @@ class FlightsController < ApplicationController
         elsif fields[:destination_airport_iata] && destination_airport = Airport.find_by(iata_code: fields[:destination_airport_iata])
           ids.store(:destination_airport_id, destination_airport.id)
         else
-          new_airports.push({icao: fields[:destination_airport_icao], iata: fields[:destination_airport_iata]})
+          input_new_undefined_airport(fields[:destination_airport_iata], fields[:destination_airport_icao])
+          return
         end
       end
       
@@ -614,7 +618,8 @@ class FlightsController < ApplicationController
         if fields[:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_aircraft_code: fields[:aircraft_family_icao])
           ids.store(:aircraft_family_id, aircraft_family.id)
         else
-          new_aircraft.push({icao: fields[:aircraft_family_icao]})
+          input_new_undefined_aircraft_family(fields[:aircraft_family_icao])
+          return
         end
       end
       
@@ -626,7 +631,8 @@ class FlightsController < ApplicationController
         elsif fields[:airline_iata] && airline = Airline.find_by(iata_airline_code: fields[:airline_iata])
           ids.store(:airline_id, airline.id)
         else
-          new_airlines.push({icao: fields[:airline_icao], iata: fields[:airline_iata]})
+          input_new_undefined_airline(fields[:airline_iata], fields[:airline_icao])
+          return
         end
       end
       
@@ -634,7 +640,8 @@ class FlightsController < ApplicationController
         if fields[:operator_icao] && operator = Airline.find_by(icao_airline_code: fields[:operator_icao])
           ids.store(:operator_id, operator.id)
         else
-          new_airlines.push({icao: fields[:operator_icao]})
+          input_new_undefined_airline(nil, fields[:operator_icao])
+          return
         end
       end
       
@@ -642,21 +649,37 @@ class FlightsController < ApplicationController
         if fields[:codeshare_airline_iata] && codeshare_airline = Airline.find_by(icao_airline_code: fields[:codeshare_airline_iata])
           ids.store(:codeshare_airline_id, codeshare_airline.id)
         else
-          new_airlines.push({iata: fields[:codeshare_airline_iata]})
+          input_new_undefined_airline(fields[:codeshare_airline_iata], nil)
+          return
         end
       end
-      
-      ids.store(:NEW_AIRPORTS, new_airports)
-      ids.store(:NEW_AIRCRAFT, new_aircraft)
-      ids.store(:NEW_AIRLINES, new_airlines)
-      
-      if new_airports.any? || new_aircraft.any? || new_airlines.any?
-        # Remove duplicates from arrays
-        # Redirect to form
-      end
-            
+                        
       return ids
       
+    end
+    
+    def input_new_undefined_airport(iata, icao)
+      @airport = Airport.new
+      @title = "New Flight - Undefined Airport"
+      @lookup_fields = {iata_code: iata, icao_code: icao}
+      session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
+      render "new_undefined_airport"
+    end
+    
+    def input_new_undefined_aircraft_family(icao)
+      @aircraft_family = AircraftFamily.new
+      @title = "New Flight - Undefined Aircraft Family"
+      @lookup_fields = {icao_code: icao}
+      session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
+      render "new_undefined_aircraft_family"
+    end
+    
+    def input_new_undefined_airline(iata, icao)
+      @airline = Airline.new
+      @title = "New Flight - Undefined Airline"
+      @lookup_fields = {iata_code: iata, icao_code: icao}
+      session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
+      render "new_undefined_airline"
     end
     
     

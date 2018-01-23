@@ -164,6 +164,7 @@ class AirlinesController < ApplicationController
   end
   
   def new
+    session[:form_location] = nil
     @title = "New Airline"
     add_breadcrumb "Airlines", "airlines_path"
     add_breadcrumb "New Airline", "new_airline_path"
@@ -174,17 +175,28 @@ class AirlinesController < ApplicationController
     @airline = Airline.new(airline_params)
     if @airline.save
       flash[:success] = "Successfully added #{params[:airline][:airline_name]}!"
-      if @airline.is_only_operator
-        redirect_to show_operator_path(@airline.iata_airline_code)
+      if session[:form_location]
+        form_location = session[:form_location]
+        session[:form_location] = nil
+        redirect_to form_location
       else
-        redirect_to airline_path(@airline.iata_airline_code)
+        if @airline.is_only_operator
+          redirect_to show_operator_path(@airline.iata_airline_code)
+        else
+          redirect_to airline_path(@airline.iata_airline_code)
+        end
       end
     else
-      render "new"
+      if session[:form_location]
+        render "flights/new_undefined_airline"
+      else
+        render "new"
+      end
     end
   end
   
   def edit
+    session[:form_location] = nil
     @airline = Airline.find(params[:id])
     add_breadcrumb "Airlines", "airlines_path"
     add_breadcrumb @airline.airline_name, "airline_path(@airline.iata_airline_code)"

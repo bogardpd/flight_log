@@ -82,6 +82,7 @@ class AircraftFamiliesController < ApplicationController
   end
   
   def new
+    session[:form_location] = nil
     add_breadcrumb "Aircraft Families", "aircraft_families_path"
     if params[:family_id]
       @parent_family = AircraftFamily.find(params[:family_id])
@@ -105,13 +106,24 @@ class AircraftFamiliesController < ApplicationController
     @aircraft_family = AircraftFamily.new(aircraft_family_params)
     if @aircraft_family.save
       flash[:success] = "Successfully added #{params[:aircraft_family][:family_name]}!"
-      redirect_to aircraft_family_path(@aircraft_family)
+      if session[:form_location]
+        form_location = session[:form_location]
+        session[:form_location] = nil
+        redirect_to form_location
+      else
+        redirect_to aircraft_family_path(@aircraft_family)
+      end
     else
-      render "new"
+      if session[:form_location]
+        render "flights/new_undefined_aircraft_family"
+      else
+        render "new"
+      end
     end
   end
   
   def edit
+    session[:form_location] = nil
     @aircraft_family = AircraftFamily.find(params[:id])
     add_breadcrumb "Aircraft Families", "aircraft_families_path"
     add_breadcrumb @aircraft_family.full_name, "aircraft_family_path(@aircraft_family)"

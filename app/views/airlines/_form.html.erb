@@ -9,14 +9,22 @@
 
   <p>
     <%= f.label :iata_airline_code, "IATA Airline Code" %><br />
-    <%= f.text_field :iata_airline_code, size: 15, class: "code-mono" %><br />
+    <% if @lookup_fields && @lookup_fields[:iata_code] %>
+      <%= f.text_field :iata_airline_code, value: @lookup_fields[:iata_code], size: 15, class: "code-mono" %><br />
+    <% else %>
+      <%= f.text_field :iata_airline_code, size: 15, class: "code-mono" %><br />
+    <% end %>
   	If not unique, append a hyphen and the airline name, with spaces converted to hyphens.<br />
   	Example: <span class="code-mono">OH-psa-airlines</span>
   </p>
   
   <p>
     <%= f.label :icao_airline_code, "ICAO Airline Code" %><br />
-    <%= f.text_field :icao_airline_code, size: 3, maxlength: 3, class: "code-mono all-caps" %>
+    <% if @lookup_fields && @lookup_fields[:icao_code] %>
+      <%= f.text_field :icao_airline_code, value: @lookup_fields[:icao_code], readonly: true, size: 3, maxlength: 3, class: "code-mono all-caps" %>
+    <% else %>
+      <%= f.text_field :icao_airline_code, size: 3, maxlength: 3, class: "code-mono all-caps" %>
+    <% end %>
   </p>
   
   <p>

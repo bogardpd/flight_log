@@ -179,6 +179,7 @@ class AirportsController < ApplicationController
   
   
   def new
+    session[:form_location] = nil
     @title = "New Airport"
     add_breadcrumb "Airports", "airports_path"
     add_breadcrumb "New Airport", "new_airport_path"
@@ -190,14 +191,25 @@ class AirportsController < ApplicationController
     @airport = Airport.new(airport_params)
     if @airport.save
       flash[:success] = "Successfully added #{params[:airport][:iata_code]}!"
-      redirect_to @airport
+      if session[:form_location]
+        form_location = session[:form_location]
+        session[:form_location] = nil
+        redirect_to form_location
+      else
+        redirect_to @airport
+      end
     else
-      render "new"
+      if session[:form_location]
+        render "flights/new_undefined_airport"
+      else
+        render "new"
+      end
     end
   end
   
   
   def edit
+    session[:form_location] = nil
     @airport = Airport.find(params[:id])
     add_breadcrumb "Airports", "airports_path"
     add_breadcrumb @airport.iata_code, "airport_path(@airport)"

@@ -1,0 +1,51 @@
+<% provide(:button_text, "Continue") %>
+
+<h1>New Flight: Create New Aircraft Family</h1>
+
+<p>The aircraft family used in your flight is not in our database. Please add the new aircraft family:</p>
+
+<%= form_for(@aircraft_family) do |f| %>
+
+  <%= render "error_messages" %>
+  
+  <p>
+    <%= f.label :parent_id, "Aircraft Family" %><br/>
+    <%= f.select(:parent_id, options_for_select(AircraftFamily.family_select_options, @aircraft_family.parent_id)) %><br/>
+    <%= link_to "New aircraft family", new_aircraft_family_path, target: "_blank" %> (opens in new tab)
+  </p>
+
+  <p>
+    <%= f.label :manufacturer %><br/>
+    <%= f.text_field :manufacturer, size: 25 %>
+  </p>
+  
+  <p>
+     <%= f.label :family_name, "Aircraft Type Name" %><br />
+     <%= f.text_field :family_name, size: 25 %>
+  </p>
+
+  <p>
+    <%= f.label :iata_aircraft_code, "IATA Aircraft Code" %><br />
+    <%= f.text_field :iata_aircraft_code, size: 3, maxlength: 3, class: "code-mono all-caps" %><br />
+  </p>
+  
+  <p>
+    <%= f.label :icao_aircraft_code, "ICAO Aircraft Code" %><br />
+    <% if @lookup_fields && @lookup_fields[:icao_code] %>
+      <%= f.text_field :icao_aircraft_code, value: @lookup_fields[:icao_code], readonly: true, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
+    <% else %>
+      <%= f.text_field :icao_aircraft_code, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
+    <% end %>
+  </p>
+  
+  <p>
+    <%= f.label :category %><br />
+  	<%= f.select(:category, options_for_select(AircraftFamily.categories_list.invert, @aircraft_family.category), :include_blank => true)%>
+  	</p>
+  </p>
+
+  <p>
+    <%= f.submit yield(:button_text) %>
+  </p>
+  
+<% end %>
