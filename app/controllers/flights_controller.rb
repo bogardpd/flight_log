@@ -553,6 +553,7 @@ class FlightsController < ApplicationController
     
   private
     
+    # Clears all session variables associated with creating a new flight.
     def clear_new_flight_variables
       session[:airline_icao] = nil
       session[:bcbp] = nil

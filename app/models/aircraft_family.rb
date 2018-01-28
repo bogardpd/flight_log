@@ -112,8 +112,8 @@ class AircraftFamily < ApplicationRecord
   # Returns a nested array of families and types in a format ready for
   # grouped_options_for_select
   def self.grouped_types
-    types = self.types.map{|f| {family_id: f.parent_id, family_name: f.family_name, id: f.id}}
-    families = self.families.order(:manufacturer, :family_name)
+    types = self.types.map{|f| {family_id: f.parent_id, family_name: f.family_name, id: f.id}}.sort_by{|f| f[:family_name]}
+    families = self.families.sort_by{|f| [f[:manufacturer].downcase, f[:family_name].downcase]}
     return families.map{|f| {f.id => {family_name: f.family_name, manufacturer: f.manufacturer}}}
       .reduce{|a,b| a.merge(b)}
       .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]} Family"].push(([{family_name: "Unknown type of #{v[:family_name]}", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
