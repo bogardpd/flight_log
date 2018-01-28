@@ -1,6 +1,6 @@
 class FlightsController < ApplicationController
   protect_from_forgery except: :show_boarding_pass_json
-  before_action :logged_in_user, :only => [:new, :new_undefined_fields, :create, :create_iata, :edit, :edit_with_pass, :update, :destroy, :index_emails, :new_undefined_fields, :create_iata]
+  before_action :logged_in_user, :only => [:new, :create, :create_iata, :edit, :update, :destroy, :index_emails, :create_iata]
   add_breadcrumb "Home", "root_path"
   
   def index
@@ -340,8 +340,6 @@ class FlightsController < ApplicationController
     # Get PKPasses:
     check_email_for_boarding_passes
     @passes = PKPass.pass_summary_list
-    @flight_passes = PKPass.flights_with_updated_passes
-    @flights = flyer.flights(current_user).where(id: @flight_passes.keys)
         
   end
   
@@ -398,9 +396,6 @@ class FlightsController < ApplicationController
       )
     end
     
-    #fields = @pass.updated_values(@flight, true) || {}
-    #check_for_new_iata_codes(fields)
-    
     id_fields = get_or_create_ids_from_codes(@lookup_fields)
     @lookup_fields.merge!(id_fields) if id_fields
     
@@ -427,10 +422,6 @@ class FlightsController < ApplicationController
     
   end
   
-  def new_undefined_fields
-    
-  end
-    
   def create
     @flight = Trip.find(params[:flight][:trip_id]).flights.new(flight_params)
     if @flight.save
@@ -452,35 +443,6 @@ class FlightsController < ApplicationController
     end
   end
   
-  def create_iata_icao
-    (0..(params[:count].to_i-1)).each do |index|
-      type = params["type_#{index}".to_sym]
-      next if type.nil?
-      prefix = "#{type}_#{index}_"
-      case type
-      when "airline"
-        if params[(prefix+"iata").to_sym] && params[(prefix+"name").to_sym]
-          Airline.create(iata_airline_code: params[(prefix+"iata").to_sym], airline_name: params[(prefix+"name").to_sym], icao_airline_code: params[(prefix+"icao_code").to_sym], numeric_code: params[(prefix+"numeric_code").to_sym], is_only_operator: false)
-        end
-      when "airport"
-        if params[(prefix+"iata").to_sym] && params[(prefix+"name").to_sym] && params[(prefix+"country").to_sym]
-          Airport.create(iata_code: params[(prefix+"iata").to_sym], icao_code: params[(prefix+"icao").to_sym], city: params[(prefix+"name").to_sym], country: params[(prefix+"country").to_sym])
-        end
-      when "aircraft"
-        if (params[(prefix+"iata").to_sym] || params[(prefix+"iata").to_sym]) && params[(prefix+"name").to_sym] && params[(prefix+"family").to_sym]
-          parent = AircraftFamily.find_by(parent_id: params[(prefix+"family").to_sym])
-          if parent
-            manufacturer = parent.manufacturer
-            category = parent.category
-          end
-          AircraftFamily.create(iata_aircraft_code: params[(prefix+"iata").to_sym], icao_aircraft_code: params[(prefix+"icao").to_sym], family_name: params[(prefix+"name").to_sym], parent_id: params[(prefix+"family").to_sym], manufacturer: manufacturer, category: category)
-        end
-      end
-    end
-    
-    redirect_to session[:form_location]
-  end
-    
   def edit
     @flight = Flight.find(params[:id])
     add_breadcrumb "Flights", "flights_path"
@@ -489,41 +451,6 @@ class FlightsController < ApplicationController
     @title = "Edit Flight"
   end
   
-  def edit_with_pass
-    begin
-      @flight = Flight.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
-      redirect_to flights_path
-      return
-    end
-    
-    begin
-      @pass = PKPass.find(params[:pass_id])
-    rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "We couldnʼt find a pass with an ID of #{params[:id]}."
-      redirect_to import_boarding_passes_path
-      return
-    end
-    
-    @title = "Update Flight with new Boarding Pass"
-    add_breadcrumb "Flights", "flights_path"
-    add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", "flight_path(@flight)"
-    add_breadcrumb "Update Flight with New Boarding Pass", "edit_flight_with_pass_path(id: @flight, pass_id: params[:pass_id])"
-    
-    # Build array of form fields
-    fields = @pass.updated_values(@flight) || {}
-    check_for_new_iata_codes(fields)
-    @changed_fields = fields.reject{|k,v| v[:current_value] == v[:pass_value]}
-    
-    if @changed_fields.empty?
-      flash[:warning] = "The updated boarding pass had no changes to make to the saved flight data."
-      @pass.destroy
-      redirect_to flight_path(@flight)
-    end
-      
-  end
-    
   def update
     @flight = Flight.find(params[:id])
     if @flight.update_attributes(flight_params)
@@ -565,20 +492,6 @@ class FlightsController < ApplicationController
       params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section, :pass_serial_number)
     end
       
-    # Accepts the output of PKPass.updated_values, and detects any airport or
-    # airline IATA codes that don't already exist in the database. If there are
-    # any unknown codes, it redirects to a form allowing the user to enter the codes.
-    def check_for_new_iata_codes(fields)
-      return nil if fields.nil?
-      @undefined_codes = fields.map{|k,v| v[:lookup]}.compact.sort_by{|h| h[:type]}
-      if @undefined_codes.any?
-        @title = "New Flight - Undefined Fields"
-        session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
-        render "new_undefined_fields"
-      end
-      return true
-    end
-    
     # Accepts a hash of form fields, and uses ICAO or IATA codes to determine
     # AircraftFamily, Airline, and Airport IDs, returning them in a hash. If
     # any ICAO or IATA codes are not found, this method redirects to a form

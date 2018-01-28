@@ -38,7 +38,6 @@ class TripsController < ApplicationController
     add_admin_action view_context.link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => "warning") if @flights.length == 0
     add_admin_action view_context.link_to("Edit Trip", edit_trip_path(@trip))
     add_admin_action view_context.link_to("Add Flight", new_flight_menu_path(:trip_id => @trip))
-    add_admin_action view_context.link_to("Import Passes", import_boarding_passes_path(trip_id: @trip))
     
     if logged_in? && @trip.hidden
       check_email_for_boarding_passes

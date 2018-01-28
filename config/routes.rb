@@ -16,13 +16,9 @@ Portfolio::Application.routes.draw do
   post  "/flights/new-flight-menu/(trip/:trip_id)" => "flights#change_trip",     as: :change_new_flight_trip
   post  "/flights/process-bcbp/"                   => "flights#process_bcbp",    as: :process_bcbp
   match "/flights/select-flight/" => "flights#flightxml_select_flight", via: [:get, :post], as: :flightxml_select_flight
-  
   get   "/flights/lookup/"                       => "flights#flightxml_lookup", as: :flightxml_lookup
-  
   resources :flights, :except => [:new]
   get   "/flights/new/trip/:trip_id(/pass/:pass_id)" => "flights#new",          as: :new_flight
-  get   "/flights/:id/edit/pass/:pass_id"        => "flights#edit_with_pass",   as: :edit_flight_with_pass
-  post  "/flights/create-iata-icao/"             => "flights#create_iata_icao", as: :create_iata_icao
   get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range",  as: :show_date_range
   get   "/flights/year/:year"                    => "flights#show_date_range",  as: :show_year
   
@@ -57,8 +53,6 @@ Portfolio::Application.routes.draw do
   
   # Boarding pass import pages:
   resources :pk_passes, :only => [:destroy]
-  get   "/boarding-pass/import(/trip/:trip_id)" => "pk_passes#index",        as: :import_boarding_passes
-  post  "/boarding-pass/import(/trip/:trip_id)" => "pk_passes#change_trip",  as: :change_boarding_pass_trip
   
   # Boarding pass parser pages:
   get   "/boarding-pass" => "flights#input_boarding_pass"
