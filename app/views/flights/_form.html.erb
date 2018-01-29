@@ -133,7 +133,6 @@
 
   <%= f.hidden_field(:trip_id, :value => flight.trip.id) %>
   <%= f.hidden_field(:pass_id, :value => params[:pass_id]) if params[:pass_id] %>
-  <%= f.hidden_field(:pass_serial_number, :value => @pass.serial_number) if @pass %>
 
   <p>
     <%= f.submit yield(:button_text) %>

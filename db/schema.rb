@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170817220550) do
+ActiveRecord::Schema.define(version: 20180129013803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 20170817220550) do
     t.integer  "codeshare_airline_id"
     t.text     "boarding_pass_data"
     t.integer  "aircraft_family_id"
-    t.string   "pass_serial_number"
   end
 
   create_table "pk_passes", force: :cascade do |t|
@@ -78,7 +77,6 @@ ActiveRecord::Schema.define(version: 20170817220550) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "flight_id"
-    t.index ["serial_number"], name: "index_pk_passes_on_serial_number", using: :btree
   end
 
   create_table "routes", force: :cascade do |t|
