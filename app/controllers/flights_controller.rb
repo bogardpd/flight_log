@@ -412,8 +412,6 @@ class FlightsController < ApplicationController
       @default_trip_section = 1
     end
     
-    #@fields = fields.reject{|k,v| v[:pass_value].nil?}
-    
     add_message(:warning, @lookup_fields[:error]) if @lookup_fields[:error]
     
   rescue ActiveRecord::RecordNotFound
