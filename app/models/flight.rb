@@ -87,17 +87,6 @@ class Flight < ApplicationRecord
     
     fields.store(:departure_date, departure_date) if departure_date
     
-    # Look up fields on FlightAware, if known:
-    if fa_flight_id
-      fields[:fa_flight_id] = fa_flight_id
-      flightxml_data = FlightXML.form_values(fa_flight_id)
-      if flightxml_data
-        fields.merge!(flightxml_data)
-      else
-        fields.store(:error, "We ran into an error finding your flight data on FlightAware. You will have to manually enter some fields.")
-      end
-    end
-    
     # Look up fields from PK Pass, if any:
     if pk_pass
       fields[:pk_pass_id] = pk_pass.id
@@ -110,6 +99,21 @@ class Flight < ApplicationRecord
         fields.merge!(pass.form_values)
       end
     end
+    
+    fa_flight_id ||= fields[:fa_flight_id]
+        
+    # Look up fields on FlightAware, if known:
+    if fa_flight_id
+      fields[:fa_flight_id] = fa_flight_id
+      flightxml_data = FlightXML.form_values(fa_flight_id)
+      if flightxml_data
+        fields.reverse_merge!(flightxml_data)
+      else
+        fields.store(:error, "We ran into an error finding your flight data on FlightAware. You will have to manually enter some fields.")
+      end
+    end
+    
+    
     
     fields.store(:airline_icao, airline_icao) if airline_icao
     fields.store(:flight_number, flight_number) if flight_number

@@ -74,4 +74,19 @@ module FlightXML
     return fields
   end
   
+  def self.get_flight_id(airline, flight_number, departure_utc)
+    return nil unless airline && flight_number && departure_utc
+    ident = [airline, flight_number].join
+    
+    begin
+      flight_id = client.call(:get_flight_id, message: {
+        ident: ident,
+        departure_time: departure_utc.to_i
+      })
+      return flight_id.to_hash[:get_flight_id_results][:get_flight_id_result]
+    rescue
+      return nil
+    end
+  end
+  
 end
