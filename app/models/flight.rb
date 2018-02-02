@@ -107,13 +107,11 @@ class Flight < ApplicationRecord
       fields[:fa_flight_id] = fa_flight_id
       flightxml_data = FlightXML.form_values(fa_flight_id)
       if flightxml_data
-        fields.reverse_merge!(flightxml_data)
+        fields.merge!(flightxml_data)
       else
-        fields.store(:error, "We ran into an error finding your flight data on FlightAware. You will have to manually enter some fields.")
+        fields.store(:error, FlightXML::ERROR)
       end
     end
-    
-    
     
     fields.store(:airline_icao, airline_icao) if airline_icao
     fields.store(:flight_number, flight_number) if flight_number

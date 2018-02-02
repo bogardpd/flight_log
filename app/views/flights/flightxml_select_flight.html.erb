@@ -1,7 +1,7 @@
 <h1>Select Flight</h1>
 
 <% if @flights && @flights.any? %>
-  <p>Flights matching <code class="bold"><%= params[:airline_icao] %><%= params[:flight_number] %></code>:</p>
+  <p>Flights matching <code class="bold"><%= @ident %></code>:</p>
   <table class="flightlog flight-select">
     <tr>
       <th>Dep Date</th>

@@ -42,8 +42,13 @@ class PKPass < ApplicationRecord
       fields.merge!(pass.form_values)
     end
     
+    airline_icao = Airline.convert_iata_to_icao(fields[:airline_iata])
+    if airline_icao && fields[:flight_number]
+      fields.store(:ident, [airline_icao, fields[:flight_number]].join)
+    end
+
     # Try to determine FlightXML faFlightID:
-    flight_id = FlightXML.get_flight_id(Airline.convert_iata_to_icao(fields[:airline_iata]), fields[:flight_number], fields[:departure_utc])
+    flight_id = FlightXML.get_flight_id(fields[:ident], fields[:departure_utc])
     fields.store(:fa_flight_id, flight_id) if flight_id
             
     return fields

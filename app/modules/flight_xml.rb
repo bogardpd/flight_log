@@ -2,6 +2,8 @@
 
 module FlightXML
   
+  ERROR = "We ran into an error finding your flight data on FlightAware. You will have to manually enter some fields."
+  
   # Defines the Savon client to connect to the FlightXML API.
   def self.client
     return Savon.client(wsdl: "https://flightxml.flightaware.com/soap/FlightXML2/wsdl", basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
@@ -29,11 +31,11 @@ module FlightXML
   # an array of flights.
   # Airline can be ICAO or IATA, but if IATA it may not contain
   # a number (B6) and must then be converted to ICAO (JBU).
-  def self.flight_lookup(airline, flight_number)
+  def self.flight_lookup(ident)
     begin
      
       flights = client.call(:flight_info_ex, message: {
-        ident: [airline,flight_number].join,
+        ident: ident,
         how_many: 15,
         offset: 0
         }).to_hash[:flight_info_ex_results][:flight_info_ex_result][:flights]
@@ -74,9 +76,8 @@ module FlightXML
     return fields
   end
   
-  def self.get_flight_id(airline, flight_number, departure_utc)
-    return nil unless airline && flight_number && departure_utc
-    ident = [airline, flight_number].join
+  def self.get_flight_id(ident, departure_utc)
+    return nil unless ident && departure_utc
     
     begin
       flight_id = client.call(:get_flight_id, message: {

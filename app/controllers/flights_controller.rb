@@ -294,12 +294,15 @@ class FlightsController < ApplicationController
   end
   
   def flightxml_select_flight
-    @flights = FlightXML.flight_lookup(params[:airline_icao], params[:flight_number])
+    if session[:ident]
+      @ident = session[:ident]
+    elsif params[:airline_icao] && params[:flight_number]
+      @ident = [params[:airline_icao], params[:flight_number]].join
+      session[:flight_number] = params[:flight_number]
+      session[:airline_icao] = params[:airline_icao]
+    end
     
-    session[:flight_number] = params[:flight_number]
-    session[:airline_icao] = params[:airline_icao]
-    #airline = Airline.find_by(icao_airline_code: params[:airline_icao])
-    #session[:airline_id] = airline.id if airline
+    @flights = @ident ? FlightXML.flight_lookup(@ident) : nil
     
     if @flights && @flights.any?
       origins = @flights.map{|f| f[:origin]}
@@ -384,6 +387,15 @@ class FlightsController < ApplicationController
     
     if session[:lookup_fields]
       @lookup_fields = session[:lookup_fields]
+      if params[:faflightid]
+        flightxml_data = FlightXML.form_values(params[:faflightid])
+        if flightxml_data
+          @lookup_fields.merge!(flightxml_data)
+          @lookup_fields.store(:departure_date, departure_date) if departure_date
+        else
+          @lookup_fields.store(:error, FlightXML::ERROR)
+        end
+      end
     else
       # Prefill fields based on any known flight information:
       @lookup_fields = Flight.lookup_form_fields(
@@ -394,6 +406,11 @@ class FlightsController < ApplicationController
         airline_icao: session[:airline_icao],
         flight_number: session[:flight_number]
       )
+    end
+    
+    if @pass && @lookup_fields[:ident] && @lookup_fields[:fa_flight_id].nil?
+      session[:ident] = @lookup_fields[:ident]
+      redirect_to flightxml_select_flight_path(trip_id: params[:trip_id])
     end
     
     id_fields = get_or_create_ids_from_codes(@lookup_fields)
@@ -480,9 +497,10 @@ class FlightsController < ApplicationController
     
     # Clears all session variables associated with creating a new flight.
     def clear_new_flight_variables
-      session[:airline_icao] = nil
-      session[:bcbp] = nil
+      session[:airline_icao]  = nil
+      session[:bcbp]          = nil
       session[:flight_number] = nil
+      session[:ident]         = nil
       session[:lookup_fields] = nil
     end
     
