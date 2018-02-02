@@ -62,14 +62,12 @@ class PKPass < ApplicationRecord
       json_data = JSON.parse(pass.pass_json)
       if json_data["relevantDate"]
         fields.store(:date, Time.parse(json_data["relevantDate"]))
-      elsif json_data["expirationDate"]
-        fields.store(:date, Time.parse(json_data["expirationDate"]) - 1.day)
       else
-        fields.store(:date, Time.now)
+        fields.store(:date, nil)
       end
       fields.store(:id, pass.id)
       fields
-    }.sort_by{|h| h[:date]}
+    }.sort_by{|h| h[:date] || 0}
   end
   
   protected
