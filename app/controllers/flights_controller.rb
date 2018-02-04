@@ -382,12 +382,20 @@ class FlightsController < ApplicationController
     session_params = [:airline_icao, :bcbp, :codeshare_airline_icao, :codeshare_flight_number, :departure_date_local, :departure_utc, :destination_icao, :fa_flight_id, :flight_number, :origin_icao, :pk_pass_id, :trip_id]
     session_params.map{ |p| session[:new_flight][p] ||= params[p] if params[p] }
     
-    # Create flight:
+    # Locate trip:
     trip = Trip.find(session[:new_flight][:trip_id])
+    
+    # Get flight data from PKPass:
+    if (session[:new_flight][:completed_pk_pass] != true && pass = PKPass.find_by(id: session[:new_flight][:pk_pass_id]))
+      pass_values = pass.form_values
+      session[:new_flight][:bcbp] = pass_values[:boarding_pass_data]
+      session[:new_flight][:departure_utc] = pass_values[:departure_utc] if pass_values[:departure_utc]
+      session[:new_flight][:completed_pk_pass] = true
+    end
+    
+    # Create flight:
     trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
     @flight = trip.flights.new
-    
-    
     
     # Render new flight form:
     @title = "New Flight"
