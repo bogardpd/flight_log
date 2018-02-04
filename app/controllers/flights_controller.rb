@@ -374,17 +374,29 @@ class FlightsController < ApplicationController
   end
   
   def new
-    @title = "New Flight"
     add_breadcrumb "Flights", "flights_path"
     add_breadcrumb "New Flight", "new_flight_menu_path"
-    
+        
+    # Save form parameters to session:
     session[:new_flight] ||= Hash.new
+    session_params = [:airline_icao, :bcbp, :codeshare_airline_icao, :codeshare_flight_number, :departure_date_local, :departure_utc, :destination_icao, :fa_flight_id, :flight_number, :origin_icao, :pk_pass_id, :trip_id]
+    session_params.map{ |p| session[:new_flight][p] ||= params[p] if params[p] }
     
-    trip = Trip.find(params[:trip_id])
+    # Create flight:
+    trip = Trip.find(session[:new_flight][:trip_id])
     trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
     @flight = trip.flights.new
     
+    
+    
+    # Render new flight form:
+    @title = "New Flight"
+    add_breadcrumb "Enter Flight Data", "new_flight_path"
+    
 =begin    
+    @title = "New Flight"
+    add_breadcrumb "Flights", "flights_path"
+    add_breadcrumb "New Flight", "new_flight_menu_path"
     add_breadcrumb "Enter Flight Data", "new_flight_path"
     
     trip = Trip.find(params[:trip_id])
@@ -506,11 +518,12 @@ class FlightsController < ApplicationController
     
     # Clears all session variables associated with creating a new flight.
     def clear_new_flight_variables
-      session[:airline_icao]  = nil
-      session[:bcbp]          = nil
-      session[:flight_number] = nil
-      session[:ident]         = nil
-      session[:lookup_fields] = nil
+      session[:new_flight] = nil
+      # session[:airline_icao]  = nil
+      # session[:bcbp]          = nil
+      # session[:flight_number] = nil
+      # session[:ident]         = nil
+      # session[:lookup_fields] = nil
     end
     
     def flight_params
