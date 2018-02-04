@@ -18,7 +18,7 @@ Portfolio::Application.routes.draw do
   match "/flights/select-flight/" => "flights#flightxml_select_flight", via: [:get, :post], as: :flightxml_select_flight
   get   "/flights/lookup/"                       => "flights#flightxml_lookup", as: :flightxml_lookup
   resources :flights, :except => [:new]
-  get   "/flights/new/trip/:trip_id(/pass/:pass_id)" => "flights#new",          as: :new_flight
+  post  "/flights/new/(trip/:trip_id(/pass/:pass_id))" => "flights#new",          as: :new_flight
   get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range",  as: :show_date_range
   get   "/flights/year/:year"                    => "flights#show_date_range",  as: :show_year
   

@@ -377,6 +377,14 @@ class FlightsController < ApplicationController
     @title = "New Flight"
     add_breadcrumb "Flights", "flights_path"
     add_breadcrumb "New Flight", "new_flight_menu_path"
+    
+    session[:new_flight] ||= Hash.new
+    
+    trip = Trip.find(params[:trip_id])
+    trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
+    @flight = trip.flights.new
+    
+=begin    
     add_breadcrumb "Enter Flight Data", "new_flight_path"
     
     trip = Trip.find(params[:trip_id])
@@ -430,7 +438,8 @@ class FlightsController < ApplicationController
     end
     
     add_message(:warning, @lookup_fields[:error]) if @lookup_fields[:error]
-    
+=end
+        
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "We could not find a trip with an ID of #{params[:trip_id]}. Please select another trip."
     redirect_to new_flight_menu_path

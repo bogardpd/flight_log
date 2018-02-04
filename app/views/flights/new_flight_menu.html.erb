@@ -20,12 +20,18 @@
   <tbody>
   <% @passes.each do |pass| %>
     <tr>
-      <td><%= link_to "Create Flight", new_flight_path(:trip_id => @trip, :pass_id => pass[:id]) %>:</td>
+      <td>
+        <%= form_tag(new_flight_path, method: :post) do %>
+          <%= hidden_field_tag(:trip_id, @trip.id) %>
+          <%= hidden_field_tag(:pk_pass_id, pass[:id]) %>
+          <%= submit_tag("Create this flight") %>
+        <% end %>
+      </td>
       <td class="code-mono"><%= pass[:pnr] %></td>
       <td><%= pass[:airline] %> <%= pass[:flight] %></td>
       <td><%= code_mono(pass[:from]) %> &ndash; <%= code_mono(pass[:to]) %></td>
       <td class="flight-date"><%= Flight.format_date(pass[:date]) %></td>
-      <td><%= link_to("Delete", pk_pass_path(pass[:id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{pass[:from]}-#{pass[:to]}?"}, :class => "warning") %></td>
+      <td><%= link_to("Delete", pk_pass_path(pass[:id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{pass[:from]}-#{pass[:to]}?"}, :class => "warning") %></td>    
     </tr>
   <% end %>
   </tbody>
@@ -37,7 +43,7 @@
 <h2>Option 2: Paste a barcode</h2>
 
 <div class="center">
-<%= form_tag({controller: :flights, action: :process_bcbp}, method: :post) do %>
+<%= form_tag(new_flight_path, method: :post) do %>
   <%= hidden_field_tag(:trip_id, @trip.id) %>
   <%= label_tag(:bcbp, "Use a barcode scanner to read your boarding pass, and paste the barcode data here:") %><br/>
   <%= text_area_tag(:bcbp, nil, size: "60x5", class: "code-mono") %><br/>
@@ -48,15 +54,18 @@
 <h2>Option 3: Search for a flight number</h2>
 
 <div class="center">
-<%= form_tag({controller: :flights, action: :flightxml_select_flight}, method: :post) do %>
+<%= form_tag(new_flight_path, method: :post) do %>
   <%= hidden_field_tag(:trip_id, @trip.id) %>
   <%= label_tag(:airline_icao, "Airline") %> / <%= label_tag(:flight_number) %><br />
   <%= collection_select(nil, :airline_icao, Airline.where(is_only_operator: false).where.not(icao_airline_code: nil).order("LOWER(airline_name)"), :icao_airline_code, :format_name, {include_blank: true}, class: "") %> <%= text_field_tag(:flight_number, nil, size: 5, maxlength: 5) %>
-  
   <%= submit_tag("Search") %>
-
 <% end %>
 </div>
 
 <h2>Option 4: Create a flight manually</h2>
-<p class="center bold"><%= link_to("New flight", new_flight_path(trip_id: @trip))%></p>
+<div class="center">
+<%= form_tag(new_flight_path, method: :post) do %>
+  <%= hidden_field_tag(:trip_id, @trip.id) %>
+  <%= submit_tag("Create a new flight") %>
+<% end %>
+</div>
