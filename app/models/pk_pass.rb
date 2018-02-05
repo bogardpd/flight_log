@@ -47,9 +47,9 @@ class PKPass < ApplicationRecord
       fields.store(:ident, [airline_icao, fields[:flight_number]].join)
     end
 
-    # Try to determine FlightXML faFlightID:
-    flight_id = FlightXML.get_flight_id(fields[:ident], fields[:departure_utc])
-    fields.store(:fa_flight_id, flight_id) if flight_id
+    # Try to determine FlightXML faFlightID: TODO Check if still needed or delete
+    # flight_id = FlightXML.get_flight_id(fields[:ident], fields[:departure_utc])
+    # fields.store(:fa_flight_id, flight_id) if flight_id
             
     return fields
   end

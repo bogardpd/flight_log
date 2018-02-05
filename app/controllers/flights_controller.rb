@@ -386,12 +386,22 @@ class FlightsController < ApplicationController
     trip = Trip.find(session[:new_flight][:trip_id])
     
     # Get flight data from PKPass:
-    if (session[:new_flight][:completed_pk_pass] != true && pass = PKPass.find_by(id: session[:new_flight][:pk_pass_id]))
-      pass_values = pass.form_values
-      session[:new_flight][:bcbp] = pass_values[:boarding_pass_data]
-      session[:new_flight][:departure_utc] = pass_values[:departure_utc] if pass_values[:departure_utc]
-      session[:new_flight][:completed_pk_pass] = true
+    if (session[:new_flight][:completed_pk_pass] != true && pk_pass = PKPass.find_by(id: session[:new_flight][:pk_pass_id]))
+      pk_pass_values = pk_pass.form_values
+      session[:new_flight][:bcbp] = pk_pass_values[:boarding_pass_data]
+      session[:new_flight][:departure_utc] = pk_pass_values[:departure_utc] if pk_pass_values[:departure_utc]
     end
+    session[:new_flight][:completed_pk_pass] = true
+    
+    # Get flight data from BCBP:
+    if (session[:new_flight][:completed_bcbp] != true && session[:new_flight][:bcbp])
+      boarding_pass = BoardingPass.new(session[:new_flight][:bcbp], interpretations: false)
+      if boarding_pass.is_valid?
+        boarding_pass_values = boarding_pass.form_values(session[:new_flight][:departure_utc]) || Hash.new
+        session[:new_flight].merge!(boarding_pass_values.reject{ |k,v| v.nil? })
+      end
+    end
+    session[:new_flight][:completed_bcbp] = true
     
     # Create flight:
     trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight

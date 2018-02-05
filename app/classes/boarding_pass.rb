@@ -36,9 +36,25 @@ class BoardingPass
     return @structured_data
   end
   
+  # Returns the most likely flight date given a known UTC Date
+  def flight_date(known_date)
+    candidate_years = *(known_date.year-1..known_date.year+1)
+    flight_date = data.dig(:repeated, 0, :mandatory, 46, :raw).to_i
+    return candidate_years.map{ |y|
+      year_date = Date.gregorian_leap?(y) ? Date.ordinal(y,flight_date) : Date.ordinal(y,[365,flight_date].min)
+      [year_date, (known_date - year_date).to_i.abs]
+     }.min{|a,b| a.last <=> b.last }.first
+  end
+  
   # Returns a hash of form field values extracted from this barcode.
-  def form_values
+  def form_values(departure_utc_time = nil)
+    return nil if data.nil?
     fields = Hash.new
+    
+    if departure_utc_time
+      departure_date_local = flight_date(departure_utc_time.to_date)
+      fields.store(:departure_date_local, departure_date_local)
+    end
     
     origin_airport_iata = data.dig(:repeated, 0, :mandatory, 26, :raw)
     fields.store(:origin_airport_iata, origin_airport_iata)
