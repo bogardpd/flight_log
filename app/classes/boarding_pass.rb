@@ -47,15 +47,14 @@ class BoardingPass
   end
   
   # Returns a hash of form field values extracted from this barcode.
-  def form_values(departure_utc_time = nil)
+  def form_values(departure_utc_time=nil)
     return nil if data.nil?
     fields = Hash.new
     
-    if departure_utc_time
-      departure_date_local = flight_date(departure_utc_time.to_date)
-      fields.store(:departure_date_local, departure_date_local)
-    end
-    
+    utc_date = departure_utc_time ? departure_utc_time.to_date : Date.today
+    departure_date_local = flight_date(utc_date)
+    fields.store(:departure_date_local, departure_date_local)
+
     origin_airport_iata = data.dig(:repeated, 0, :mandatory, 26, :raw)
     fields.store(:origin_airport_iata, origin_airport_iata)
     
