@@ -1,41 +1,59 @@
-<h1>Select Flight</h1>
+<h1>Which Flight is Yours?</h1>
 
-<% if @flights && @flights.any? %>
-  <p>Flights matching <code class="bold"><%= @ident %></code>:</p>
-  <table class="flightlog flight-select">
-    <tr>
-      <th>Dep Date</th>
-      <th>Departure</th>
-      <th>Arrival</th>
-      <th></th>
-    </tr>
-  <% @flights.each do |flight| %>
+<p>Flights matching <code class="bold"><%= session[:new_flight][:ident] %></code>:</p>
+<table class="flightlog flight-select">
+  <tr>
+    <th></th>
+    <th>Dep Date</th>
+    <th>Departure</th>
+    <th>Arrival</th>
+  </tr>
+  <% @fa_flights.each do |flight| %>
+    <% ident = session[:new_flight][:ident] %>
     <% departure_time = Time.at(flight[:filed_departuretime].to_i).in_time_zone(@timezones[flight[:origin]]) %>
     <% arrival_time = Time.at(flight[:estimatedarrivaltime].to_i).in_time_zone(@timezones[flight[:destination]]) %>
     <tr>
       
+      <td>
+        <%= form_tag(new_flight_path, method: :post) do %>
+          <%= hidden_field_tag(:departure_date_local, departure_time.strftime("%F")) %>
+          <%= hidden_field_tag(:departure_utc, Time.at(flight[:filed_departuretime].to_i).utc) %>
+          <%= hidden_field_tag(:destination_airport_icao, flight[:destination]) %>
+          <%= hidden_field_tag(:fa_flight_id, flight[:fa_flight_id]) %>
+          <%= hidden_field_tag(:origin_airport_icao, flight[:origin]) %>
+          <% if ident[0..2] != flight[:fa_flight_id][0..2] %>
+            <%= hidden_field_tag(:airline_icao, flight[:fa_flight_id][0..2]) %>
+            <%= hidden_field_tag(:flight_number, flight[:fa_flight_id][3..(flight[:fa_flight_id].index("-")-1)]) %>
+            <%= hidden_field_tag(:codeshare_airline_icao, ident[0..2]) %>
+            <%= hidden_field_tag(:codeshare_flight_number, ident[3..-1]) %>
+          <% end %>
+          <%= submit_tag("Select") %>
+        <% end %>
+      </td>
       <td class="date">
         <%= departure_time.strftime("%A") %><br />
         <%= departure_time.strftime("%d %b %Y") %>
       </td>
-      
+    
       <td class="arrival-departure">
         <span class="airport-code"><%= flight[:origin] %></span>&ensp;<span class="time"><%= departure_time.strftime("%R") %></span> <span class="timezone"><%= departure_time.zone %></span><br />
         <span class="airport-name"><%= flight[:origin_name] %></span>
       </td>
-      
+    
       <td class="arrival-departure">
         <span class="airport-code"><%= flight[:destination] %></span>&ensp;<span class="time"><%= arrival_time.strftime("%R") %></span> <span class="timezone"><%= arrival_time.zone %></span><br />
         <span class="airport-name"><%= flight[:destination_name] %></span>
       </td>
-      
-      <td>
-        <%= link_to("Select", new_flight_path(trip_id: params[:trip_id], faflightid: flight[:fa_flight_id], departure_date: departure_time.strftime("%F"))) %>
-      </td>
-      
+    
     </tr>
+ 
   <% end %>
-  </table>
-<% else %>
-  <div class="message message-warning">We could not find any flights that matched <code><%= params[:airline_icao] %><%= params[:flight_number] %></code>.</div>
-<% end %>
+  <tr>
+    <td colspan="4" class="center">
+      <%= form_tag(new_flight_path, method: :post) do %>
+        <%= hidden_field_tag(:completed_flight_xml, true) %>
+        <%= submit_tag("My flight isn’t any of the above") %>
+      <% end %>
+    </td>
+  </tr>
+</table>

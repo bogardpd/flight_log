@@ -379,8 +379,9 @@ class FlightsController < ApplicationController
         
     # Save form parameters to session:
     session[:new_flight] ||= Hash.new
-    session_params = [:airline_icao, :bcbp, :codeshare_airline_icao, :codeshare_flight_number, :departure_date_local, :departure_utc, :destination_icao, :fa_flight_id, :flight_number, :origin_icao, :pk_pass_id, :trip_id]
-    session_params.map{ |p| session[:new_flight][p] ||= params[p] if params[p] }
+    session_params = [:airline_icao, :bcbp, :codeshare_airline_icao, :codeshare_flight_number, :departure_date_local, :departure_utc, :destination_airport_icao, :fa_flight_id, :flight_number, :origin_airport_icao, :pk_pass_id, :trip_id]
+    session_params.map{ |p| session[:new_flight][p] = params[p] if params[p] }
+    session[:new_flight][:completed_flight_xml] = true if params[:completed_flight_xml]
     
     # Locate trip:
     trip = Trip.find(session[:new_flight][:trip_id])
@@ -402,6 +403,34 @@ class FlightsController < ApplicationController
       end
     end
     session[:new_flight][:completed_bcbp] = true
+    
+    # Get flight data from FlightXML:
+    if (session[:new_flight][:completed_flight_xml] != true)
+      if session[:new_flight][:fa_flight_id]
+        set_flight_xml_data(session[:new_flight][:fa_flight_id])
+      elsif session[:new_flight][:flight_number]
+        session[:new_flight][:airline_icao] ||= Airline.convert_iata_to_icao(session[:new_flight][:airline_iata])
+        if session[:new_flight][:airline_icao]
+          session[:new_flight][:ident] = [session[:new_flight][:airline_icao],session[:new_flight][:flight_number]].join
+          if session[:new_flight][:departure_utc]
+            fa_flight_id = FlightXML.get_flight_id(session[:new_flight][:ident], session[:new_flight][:departure_utc])
+            set_flight_xml_data(fa_flight_id)
+          else
+            @fa_flights = FlightXML.flight_lookup(session[:new_flight][:ident])
+            if @fa_flights && @fa_flights.any?
+              airports = (@fa_flights.map{|f| f[:origin]} | @fa_flights.map{|f| f[:destination]})
+              @timezones = FlightXML.airport_timezones(airports)
+              add_breadcrumb "Select Flight", "new_flight_menu_path"
+              render "flightxml_select_flight"
+              return
+            else
+              session[:new_flight][:error] = FlightXML::ERROR + " (Searched for #{session[:new_flight][:ident]})"
+            end
+          end
+        end
+      end
+    end
+    session[:new_flight][:completed_flight_xml] = true
     
     # Create flight:
     trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
@@ -652,5 +681,15 @@ class FlightsController < ApplicationController
       render "new_undefined_airline"
     end
     
+    def set_flight_xml_data(fa_flight_id)
+      flightxml_data = FlightXML.form_values(fa_flight_id)
+      if flightxml_data
+        session[:new_flight].merge!(flightxml_data.reject{ |k,v| v.nil? })
+      else
+        ident = session[:new_flight][:ident]
+        session[:new_flight][:error] = FlightXML::ERROR
+        session[:new_flight][:error] += " (Searched for #{ident})" if ident
+      end
+    end
     
 end
