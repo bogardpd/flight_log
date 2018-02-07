@@ -30,10 +30,11 @@
     <%= map_with_region_select(@map, @region) %>
   	<%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
   </div>
+<% end %>
   
   <% if @aircraft_family.is_family? %>
     <h2 id="types"><%= @aircraft_family.family_name %> Family Subtypes</h2>
-    <%= render partial: "aircraft_family_subtypes", locals: {subtypes: @subtypes} %>
+    <%= render partial: "aircraft_family_subtypes", locals: {subtypes: @subtypes} if @flights.any? %>
     <% if logged_in? && @subtypes_with_no_flights.any? %>
       <table class="flightlog">
         <thead>
@@ -52,6 +53,8 @@
       </table>
     <% end %>
   <% end %>
+  
+<% if @flights.any? %>
   
 	<h2 id="airlines">Airlines with <%= @aircraft_family.family_name %><%= " Family" if @aircraft_family.is_family? %> Flights</h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: true} %>

@@ -664,6 +664,7 @@ class FlightsController < ApplicationController
     def input_new_undefined_airport(iata, icao)
       @airport = Airport.new
       @title = "New Flight - Undefined Airport"
+      add_breadcrumb "Create New Airport", "new_flight_path"
       @lookup_fields = {iata_code: iata, icao_code: icao}
       session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
       render "new_undefined_airport"
@@ -672,6 +673,7 @@ class FlightsController < ApplicationController
     def input_new_undefined_aircraft_family(icao)
       @aircraft_family = AircraftFamily.new
       @title = "New Flight - Undefined Aircraft Family"
+      add_breadcrumb "Create New Aircraft Family", "new_flight_path"
       @lookup_fields = {icao_code: icao}
       session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
       render "new_undefined_aircraft_family"
@@ -680,6 +682,7 @@ class FlightsController < ApplicationController
     def input_new_undefined_airline(iata, icao)
       @airline = Airline.new
       @title = "New Flight - Undefined Airline"
+      add_breadcrumb "Create New Airline", "new_flight_path"
       @lookup_fields = {iata_code: iata, icao_code: icao}
       session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
       render "new_undefined_airline"
