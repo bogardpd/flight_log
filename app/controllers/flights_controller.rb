@@ -383,8 +383,10 @@ class FlightsController < ApplicationController
     session_params.map{ |p| session[:new_flight][p] = params[p] if params[p] }
     session[:new_flight][:completed_flight_xml] = true if params[:completed_flight_xml]
     
-    # Locate trip:
+    # Locate trip and create flight:
     trip = Trip.find(session[:new_flight][:trip_id])
+    trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
+    @flight = trip.flights.new
     
     # Get flight data from PKPass:
     if (session[:new_flight][:completed_pk_pass] != true && pk_pass = PKPass.find_by(id: session[:new_flight][:pk_pass_id]))
@@ -432,13 +434,16 @@ class FlightsController < ApplicationController
     end
     session[:new_flight][:completed_flight_xml] = true
     
-    # Create flight:
-    trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
-    @flight = trip.flights.new
+    # Convert IATA and ICAO codes to database IDs
+    id_fields = get_or_create_ids_from_codes
+    session[:new_flight].merge!(id_fields) if id_fields
+    
+    
     
     # Render new flight form:
     @title = "New Flight"
     add_breadcrumb "Enter Flight Data", "new_flight_path"
+    add_message(:warning, session[:new_flight][:error]) if session[:new_flight][:error]
     
 =begin    
     @title = "New Flight"
@@ -577,78 +582,77 @@ class FlightsController < ApplicationController
       params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
     end
       
-    # Accepts a hash of form fields, and uses ICAO or IATA codes to determine
+    # Uses ICAO or IATA codes in session[:new_flights] to determine
     # AircraftFamily, Airline, and Airport IDs, returning them in a hash. If
     # any ICAO or IATA codes are not found, this method redirects to a form
     # allowing the user to create new AircraftFamilies, Airlines, or Airports
     # as needed.
-    def get_or_create_ids_from_codes(fields)
+    def get_or_create_ids_from_codes
       
       ids = Hash.new
-      session[:lookup_fields] = fields
-      
+            
       # AIRPORTS
       
-      if fields[:origin_airport_id].blank? && (fields[:origin_airport_icao] || fields[:origin_airport_iata])
-        if fields[:origin_airport_icao] && origin_airport = Airport.find_by(icao_code: fields[:origin_airport_icao])
+      if session[:new_flight][:origin_airport_id].blank? && (session[:new_flight][:origin_airport_icao] || session[:new_flight][:origin_airport_iata])
+        if session[:new_flight][:origin_airport_icao] && origin_airport = Airport.find_by(icao_code: session[:new_flight][:origin_airport_icao])
           ids.store(:origin_airport_id, origin_airport.id)
-        elsif fields[:origin_airport_iata] && origin_airport = Airport.find_by(iata_code: fields[:origin_airport_iata])
+        elsif session[:new_flight][:origin_airport_iata] && origin_airport = Airport.find_by(iata_code: session[:new_flight][:origin_airport_iata])
           ids.store(:origin_airport_id, origin_airport.id)
         else
-          input_new_undefined_airport(fields[:origin_airport_iata], fields[:origin_airport_icao])
+          input_new_undefined_airport(session[:new_flight][:origin_airport_iata], session[:new_flight][:origin_airport_icao])
           return
         end
       end
       
-      if fields[:destination_airport_id].blank? && (fields[:destination_airport_icao] || fields[:destination_airport_iata])
-        if fields[:destination_airport_icao] && destination_airport = Airport.find_by(icao_code: fields[:destination_airport_icao])
+      if session[:new_flight][:destination_airport_id].blank? && (session[:new_flight][:destination_airport_icao] || session[:new_flight][:destination_airport_iata])
+        if session[:new_flight][:destination_airport_icao] && destination_airport = Airport.find_by(icao_code: session[:new_flight][:destination_airport_icao])
           ids.store(:destination_airport_id, destination_airport.id)
-        elsif fields[:destination_airport_iata] && destination_airport = Airport.find_by(iata_code: fields[:destination_airport_iata])
+        elsif session[:new_flight][:destination_airport_iata] && destination_airport = Airport.find_by(iata_code: session[:new_flight][:destination_airport_iata])
           ids.store(:destination_airport_id, destination_airport.id)
         else
-          input_new_undefined_airport(fields[:destination_airport_iata], fields[:destination_airport_icao])
+          input_new_undefined_airport(session[:new_flight][:destination_airport_iata], session[:new_flight][:destination_airport_icao])
           return
         end
       end
       
       # AIRCRAFT FAMILIES
       
-      if fields[:aircraft_family_id].blank? && fields[:aircraft_family_icao]
-        if fields[:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_aircraft_code: fields[:aircraft_family_icao])
+      if session[:new_flight][:aircraft_family_id].blank? && session[:new_flight][:aircraft_family_icao]
+        if session[:new_flight][:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_aircraft_code: session[:new_flight][:aircraft_family_icao])
           ids.store(:aircraft_family_id, aircraft_family.id)
         else
-          input_new_undefined_aircraft_family(fields[:aircraft_family_icao])
+          input_new_undefined_aircraft_family(session[:new_flight][:aircraft_family_icao])
           return
         end
       end
       
       # AIRLINES
       
-      if fields[:airline_id].blank? && (fields[:airline_icao] || fields[:airline_iata])
-        if fields[:airline_icao] && airline = Airline.find_by(icao_airline_code: fields[:airline_icao])
+      if session[:new_flight][:airline_id].blank? && (session[:new_flight][:airline_icao] || session[:new_flight][:airline_iata])
+        if session[:new_flight][:airline_icao] && airline = Airline.find_by(icao_airline_code: session[:new_flight][:airline_icao])
           ids.store(:airline_id, airline.id)
-        elsif fields[:airline_iata] && airline = Airline.find_by(iata_airline_code: fields[:airline_iata])
+        elsif session[:new_flight][:airline_iata] && airline = Airline.find_by(iata_airline_code: session[:new_flight][:airline_iata])
           ids.store(:airline_id, airline.id)
         else
-          input_new_undefined_airline(fields[:airline_iata], fields[:airline_icao])
+          input_new_undefined_airline(session[:new_flight][:airline_iata], session[:new_flight][:airline_icao])
           return
         end
       end
       
-      if fields[:operator_id].blank? && fields[:operator_icao]
-        if fields[:operator_icao] && operator = Airline.find_by(icao_airline_code: fields[:operator_icao])
+      if session[:new_flight][:operator_id].blank? && session[:new_flight][:operator_icao]
+        if session[:new_flight][:operator_icao] && operator = Airline.find_by(icao_airline_code: session[:new_flight][:operator_icao])
           ids.store(:operator_id, operator.id)
         else
-          input_new_undefined_airline(nil, fields[:operator_icao])
+          input_new_undefined_airline(nil, session[:new_flight][:operator_icao])
           return
         end
       end
       
-      if fields[:codeshare_airline_id].blank? && fields[:codeshare_airline_iata]
-        if fields[:codeshare_airline_iata] && codeshare_airline = Airline.find_by(icao_airline_code: fields[:codeshare_airline_iata])
+      if session[:new_flight][:codeshare_airline_id].blank? && session[:new_flight][:codeshare_airline_iata]
+        if session[:new_flight][:codeshare_airline_iata] && codeshare_airline = Airline.find_by(icao_airline_code: session[:new_flight][:codeshare_airline_iata])
           ids.store(:codeshare_airline_id, codeshare_airline.id)
         else
-          input_new_undefined_airline(fields[:codeshare_airline_iata], nil)
+          input_new_undefined_airline(session[:new_flight][:codeshare_airline_iata], nil)
           return
         end
       end
