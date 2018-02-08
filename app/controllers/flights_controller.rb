@@ -442,6 +442,11 @@ class FlightsController < ApplicationController
     
     # Guess origin airport (if not set) from last destination airport:
     session[:new_flight][:origin_airport_id] ||= Flight.chronological.last.destination_airport_id
+    
+    # Guess departure date and departure UTC (if not set) from the current time:
+    now = Time.now.utc
+    session[:new_flight][:departure_utc] ||= now
+    session[:new_flight][:departure_date_local] ||= now.to_date
         
     # Render new flight form:
     @title = "New Flight"
