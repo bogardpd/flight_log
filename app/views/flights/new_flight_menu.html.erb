@@ -45,8 +45,8 @@
 <div class="center">
 <%= form_tag(new_flight_path, method: :post) do %>
   <%= hidden_field_tag(:trip_id, @trip.id) %>
-  <%= label_tag(:bcbp, "Use a barcode scanner to read your boarding pass, and paste the barcode data here:") %><br/>
-  <%= text_area_tag(:bcbp, nil, size: "60x5", class: "code-mono") %><br/>
+  <%= label_tag(:boarding_pass_data, "Use a barcode scanner to read your boarding pass, and paste the barcode data here:") %><br/>
+  <%= text_area_tag(:boarding_pass_data, nil, size: "60x5", class: "code-mono") %><br/>
   <%= submit_tag("Submit barcode data") %>
 <% end %>
 </div>

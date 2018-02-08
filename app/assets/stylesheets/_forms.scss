@@ -3,6 +3,7 @@ form {
   	font-family: $font-stack-sans-serif;
   	font-size: 95%;
   	padding: 2px 4px;
+    border: 1px solid lighten($color-text-primary, 50%);
   }
   .all-caps {
     text-transform: uppercase;
@@ -35,6 +36,14 @@ form {
     line-height: 120%;
     span.label {
       font-weight: 600;
+    }
+  }
+  
+  .field_with_errors {
+    color: $color-text-error;
+    input, select, option {
+      color: $color-text-error;
+      background-color: $color-background-error;
     }
   }
 }

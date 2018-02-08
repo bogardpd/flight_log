@@ -7,10 +7,10 @@
 
   <p>
     <%= f.label :trip_section, "Trip Section" %><br />
-    <% if @default_trip_section %>
-      <%= f.telephone_field(:trip_section, :size => 1, value: @default_trip_section, class: "autopopulated") %>
+    <% if fields[:trip_section] %>
+      <%= f.telephone_field(:trip_section, size: 1, value: fields[:trip_section], class: "autopopulated") %>
     <% else %>
-      <%= f.telephone_field(:trip_section, :size => 1) %>
+      <%= f.telephone_field(:trip_section, size: 1) %>
     <% end %>
   </p>
 
@@ -19,10 +19,8 @@
     
     <% if fields[:origin_airport_id] %>
       <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:origin_airport_id]}, class: "autopopulated") %>
-    <% elsif flight.errors.any? || params[:id] || Flight.chronological.empty? %>
-      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}) %>
     <% else %>
-      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: Flight.chronological.last.destination_airport_id}, class: "autopopulated") %>    
+      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}) %>    
     <% end %>  
     &rarr;
     <% if fields[:destination_airport_id] %>
@@ -53,24 +51,24 @@
   <p>
     <%= f.label :airline_id %> / <%= f.label :flight_number, "Flight Number" %><br />
     <% if fields[:airline_id] %>
-      <%= f.collection_select(:airline_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true, :selected => fields[:airline_id]}, :class => "autopopulated") %>
+      <%= f.collection_select(:airline_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true, selected: fields[:airline_id]}, class: "autopopulated") %>
     <% else %>
       <%= f.collection_select(:airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %>
     <% end %>
     
     <% if fields[:flight_number] %>
-      <%= f.text_field(:flight_number, :size => 6, :value => fields[:flight_number], class: "autopopulated") %>
+      <%= f.text_field(:flight_number, size: 6, value: fields[:flight_number], class: "autopopulated") %>
     <% else %>
-      <%= f.text_field(:flight_number, :size => 6) %>
+      <%= f.text_field(:flight_number, size: 6) %>
     <% end %>
   </p>
 
   <p>
     <%= f.label :codeshare_airline_id, "Codeshare Airline" %> / <%= f.label :codeshare_flight_number, "Codeshare Flight Number" %><br />
     <% if fields[:codeshare_airline_id] %>
-      <%= f.collection_select(:codeshare_airline_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {:include_blank => true, :selected => fields[:codeshare_airline_id]}, class: "autopopulated") %>
+      <%= f.collection_select(:codeshare_airline_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true, selected: fields[:codeshare_airline_id]}, class: "autopopulated") %>
     <% else %>
-      <%= f.collection_select(:codeshare_airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {:include_blank => true}) %>
+      <%= f.collection_select(:codeshare_airline_id, Airline.where(is_only_operator: false).order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %>
     <% end %>
     <% if fields[:codeshare_flight_number] %>
       <%= f.text_field :codeshare_flight_number, value: fields[:codeshare_flight_number], size: 6, class: "autopopulated" %>
@@ -105,7 +103,7 @@
     <% else %>
       <%= f.collection_select(:operator_id, Airline.order("LOWER(airline_name)"), :id, :format_name, {include_blank: true}) %>
     <% end %>
-    <%= f.text_field :fleet_number, :size => 8 %>
+    <%= f.text_field :fleet_number, size: 8 %>
   </p>
 
   <p>
@@ -119,7 +117,7 @@
 
   <p>
     <%= f.label :comment %><br />
-    <%= f.text_field :comment, :size => 60 %>
+    <%= f.text_field :comment, size: 60 %>
   </p>
 
   <p>
@@ -131,8 +129,7 @@
     <% end %>
   </p>
 
-  <%= f.hidden_field(:trip_id, :value => flight.trip.id) %>
-  <%= f.hidden_field(:pass_id, :value => params[:pass_id]) if params[:pass_id] %>
+  <%= f.hidden_field(:trip_id, value: flight.trip.id) %>
 
   <p>
     <%= f.submit yield(:button_text) %>

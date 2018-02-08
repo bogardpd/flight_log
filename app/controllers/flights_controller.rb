@@ -353,8 +353,8 @@ class FlightsController < ApplicationController
   
   # Extracts flight info from BCBP data and passes it along to select a flight
   def process_bcbp
-    pass = BoardingPass.new(params[:bcbp])
-    session[:bcbp] = params[:bcbp]
+    pass = BoardingPass.new(params[:boarding_pass_data])
+    session[:boarding_pass_data] = params[:boarding_pass_data]
     error_message = "We could not determine the airline and flight number from the boarding pass barcode data you provided."
     if pass.is_valid?
       airline_iata = pass.summary_fields[:airline]
@@ -376,12 +376,13 @@ class FlightsController < ApplicationController
   def new
     add_breadcrumb "Flights", "flights_path"
     add_breadcrumb "New Flight", "new_flight_menu_path"
-        
+    
     # Save form parameters to session:
     session[:new_flight] ||= Hash.new
-    session_params = [:airline_icao, :bcbp, :codeshare_airline_icao, :codeshare_flight_number, :departure_date_local, :departure_utc, :destination_airport_icao, :fa_flight_id, :flight_number, :origin_airport_icao, :pk_pass_id, :trip_id]
+    session_params = [:airline_icao, :boarding_pass_data, :codeshare_airline_icao, :codeshare_flight_number, :departure_utc, :destination_airport_icao, :fa_flight_id, :flight_number, :origin_airport_icao, :pk_pass_id, :trip_id]
     session_params.map{ |p| session[:new_flight][p] = params[p] if params[p] }
     session[:new_flight][:completed_flight_xml] = true if params[:completed_flight_xml]
+    session[:new_flight][:departure_date] = params[:departure_date].to_date if params[:departure_date]
     
     # Locate trip and create flight:
     trip = Trip.find(session[:new_flight][:trip_id])
@@ -390,21 +391,21 @@ class FlightsController < ApplicationController
     # Get flight data from PKPass:
     if (session[:new_flight][:completed_pk_pass] != true && pk_pass = PKPass.find_by(id: session[:new_flight][:pk_pass_id]))
       pk_pass_values = pk_pass.form_values
-      session[:new_flight][:bcbp] = pk_pass_values[:boarding_pass_data]
+      session[:new_flight][:boarding_pass_data] = pk_pass_values[:boarding_pass_data]
       session[:new_flight][:departure_utc] = pk_pass_values[:departure_utc] if pk_pass_values[:departure_utc]
     end
     session[:new_flight][:completed_pk_pass] = true
-    
+  
     # Get flight data from BCBP:
-    if (session[:new_flight][:completed_bcbp] != true && session[:new_flight][:bcbp])
-      boarding_pass = BoardingPass.new(session[:new_flight][:bcbp], interpretations: false)
+    if (session[:new_flight][:completed_bcbp] != true && session[:new_flight][:boarding_pass_data])
+      boarding_pass = BoardingPass.new(session[:new_flight][:boarding_pass_data], interpretations: false)
       if boarding_pass.is_valid?
         boarding_pass_values = boarding_pass.form_values(session[:new_flight][:departure_utc]) || Hash.new
         session[:new_flight].merge!(boarding_pass_values.reject{ |k,v| v.nil? })
       end
     end
     session[:new_flight][:completed_bcbp] = true
-    
+  
     # Get flight data from FlightXML:
     if (session[:new_flight][:completed_flight_xml] != true)
       if session[:new_flight][:fa_flight_id]
@@ -432,86 +433,27 @@ class FlightsController < ApplicationController
       end
     end
     session[:new_flight][:completed_flight_xml] = true
-    
+  
     # Convert IATA and ICAO codes to database IDs:
     id_fields = get_or_create_ids_from_codes
     session[:new_flight].merge!(id_fields) if id_fields
-    
+  
     # Guess trip section:
     session[:new_flight][:trip_section] = trip.estimated_trip_section(session[:new_flight][:departure_utc])
-    
+  
     # Guess origin airport (if not set) from last destination airport:
     session[:new_flight][:origin_airport_id] ||= Flight.chronological.last.destination_airport_id
-    
+  
     # Guess departure date and departure UTC (if not set) from the current time:
     now = Time.now.utc
     session[:new_flight][:departure_utc] ||= now
-    session[:new_flight][:departure_date_local] ||= now.to_date
-        
+    session[:new_flight][:departure_date] ||= now.to_date
+
     # Render new flight form:
     @title = "New Flight"
     add_breadcrumb "Enter Flight Data", "new_flight_path"
     add_message(:warning, session[:new_flight][:error]) if session[:new_flight][:error]
-    
-=begin    
-    @title = "New Flight"
-    add_breadcrumb "Flights", "flights_path"
-    add_breadcrumb "New Flight", "new_flight_menu_path"
-    add_breadcrumb "Enter Flight Data", "new_flight_path"
-    
-    trip = Trip.find(params[:trip_id])
-    trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
-    @flight = trip.flights.new
-    @pass = PKPass.find_by(id: params[:pass_id])
-    departure_date = params[:departure_date] ? Date.parse(params[:departure_date]) : nil
-    
-    if session[:lookup_fields]
-      @lookup_fields = session[:lookup_fields]
-      if params[:faflightid]
-        flightxml_data = FlightXML.form_values(params[:faflightid])
-        if flightxml_data
-          @lookup_fields.merge!(flightxml_data)
-          @lookup_fields.store(:departure_date, departure_date) if departure_date
-        else
-          @lookup_fields.store(:error, FlightXML::ERROR)
-        end
-      end
-    else
-      # Prefill fields based on any known flight information:
-      @lookup_fields = Flight.lookup_form_fields(
-        pk_pass: @pass,
-        bcbp_data: session[:bcbp],
-        fa_flight_id: params[:faflightid],
-        departure_date: departure_date,
-        airline_icao: session[:airline_icao],
-        flight_number: session[:flight_number]
-      )
-    end
-    
-    if @pass && @lookup_fields[:ident] && @lookup_fields[:fa_flight_id].nil?
-      session[:ident] = @lookup_fields[:ident]
-      redirect_to flightxml_select_flight_path(trip_id: params[:trip_id])
-    end
-    
-    id_fields = get_or_create_ids_from_codes(@lookup_fields)
-    @lookup_fields.merge!(id_fields) if id_fields
-    
-    # Guess trip section:
-    if trip_has_existing_flights
-      last_flight = trip.flights.chronological.last
-      departure_utc = @lookup_fields.dig(:departure_utc)
-      if departure_utc && departure_utc >= last_flight.departure_utc + 1.day
-        @default_trip_section = last_flight.trip_section + 1
-      else
-        @default_trip_section = last_flight.trip_section
-      end
-    else
-      @default_trip_section = 1
-    end
-    
-    add_message(:warning, @lookup_fields[:error]) if @lookup_fields[:error]
-=end
-        
+      
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "We could not find a trip with an ID of #{params[:trip_id]}. Please select another trip."
     redirect_to new_flight_menu_path
@@ -519,6 +461,7 @@ class FlightsController < ApplicationController
   end
   
   def create
+    clear_new_flight_variables
     @flight = Trip.find(params[:flight][:trip_id]).flights.new(flight_params)
     if @flight.save
       flash[:success] = "Successfully added #{@flight.airline.airline_name} #{@flight.flight_number}."
@@ -535,6 +478,10 @@ class FlightsController < ApplicationController
       end
       redirect_to @flight
     else
+      @title = "New Flight"
+      add_breadcrumb "Flights", "flights_path"
+      add_breadcrumb "New Flight", "new_flight_menu_path"
+      add_breadcrumb "Enter Flight Data", "new_flight_path"
       render "new"
     end
   end
@@ -578,12 +525,7 @@ class FlightsController < ApplicationController
     
     # Clears all session variables associated with creating a new flight.
     def clear_new_flight_variables
-      session[:new_flight] = nil
-      # session[:airline_icao]  = nil
-      # session[:bcbp]          = nil
-      # session[:flight_number] = nil
-      # session[:ident]         = nil
-      # session[:lookup_fields] = nil
+      session[:new_flight] = Hash.new
     end
     
     def flight_params
@@ -656,8 +598,10 @@ class FlightsController < ApplicationController
         end
       end
       
-      if session[:new_flight][:codeshare_airline_id].blank? && session[:new_flight][:codeshare_airline_iata]
-        if session[:new_flight][:codeshare_airline_iata] && codeshare_airline = Airline.find_by(icao_airline_code: session[:new_flight][:codeshare_airline_iata])
+      if session[:new_flight][:codeshare_airline_id].blank? && session[:new_flight][:codeshare_airline_icao] || session[:new_flight][:codeshare_airline_iata]
+        if session[:new_flight][:codeshare_airline_icao] && codeshare_airline = Airline.find_by(icao_airline_code: session[:new_flight][:codeshare_airline_icao])
+          ids.store(:codeshare_airline_id, codeshare_airline.id)
+        elsif session[:new_flight][:codeshare_airline_iata] && codeshare_airline = Airline.find_by(iata_airline_code: session[:new_flight][:codeshare_airline_iata])
           ids.store(:codeshare_airline_id, codeshare_airline.id)
         else
           input_new_undefined_airline(session[:new_flight][:codeshare_airline_iata], nil)

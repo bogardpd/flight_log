@@ -53,7 +53,7 @@ class BoardingPass
     
     utc_date = departure_utc_time ? departure_utc_time.to_date : Date.today
     departure_date_local = flight_date(utc_date)
-    fields.store(:departure_date_local, departure_date_local)
+    fields.store(:departure_date, departure_date_local)
 
     origin_airport_iata = data.dig(:repeated, 0, :mandatory, 26, :raw)
     fields.store(:origin_airport_iata, origin_airport_iata)

@@ -16,7 +16,7 @@
       
       <td>
         <%= form_tag(new_flight_path, method: :post) do %>
-          <%= hidden_field_tag(:departure_date_local, departure_time.strftime("%F")) %>
+          <%= hidden_field_tag(:departure_date, departure_time.strftime("%F").to_date) %>
           <%= hidden_field_tag(:departure_utc, Time.at(flight[:filed_departuretime].to_i).utc) %>
           <%= hidden_field_tag(:destination_airport_icao, flight[:destination]) %>
           <%= hidden_field_tag(:fa_flight_id, flight[:fa_flight_id]) %>
