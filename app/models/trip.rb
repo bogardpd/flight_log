@@ -4,6 +4,22 @@ class Trip < ApplicationRecord
   
   validates :user_id, presence: true
   
+  # Takes a flight departure time, and returns the trip section this flight
+  # most likely belongs to.
+  def estimated_trip_section(departure_utc)
+    flights = self.flights.chronological
+    if flights.any?
+      last_flight = self.flights.chronological.last
+      if departure_utc && departure_utc >= last_flight.departure_utc + 1.day
+        return last_flight.trip_section + 1
+      else
+        return last_flight.trip_section
+      end
+    else
+      return 1
+    end
+  end
+  
   def self.purposes_list
     purposes = Hash.new
     purposes["business"] = "Business"

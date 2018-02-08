@@ -385,7 +385,6 @@ class FlightsController < ApplicationController
     
     # Locate trip and create flight:
     trip = Trip.find(session[:new_flight][:trip_id])
-    trip_has_existing_flights = (trip.flights.size > 0) # Must check before creating new flight
     @flight = trip.flights.new
     
     # Get flight data from PKPass:
@@ -434,12 +433,16 @@ class FlightsController < ApplicationController
     end
     session[:new_flight][:completed_flight_xml] = true
     
-    # Convert IATA and ICAO codes to database IDs
+    # Convert IATA and ICAO codes to database IDs:
     id_fields = get_or_create_ids_from_codes
     session[:new_flight].merge!(id_fields) if id_fields
     
+    # Guess trip section:
+    session[:new_flight][:trip_section] = trip.estimated_trip_section(session[:new_flight][:departure_utc])
     
-    
+    # Guess origin airport (if not set) from last destination airport:
+    session[:new_flight][:origin_airport_id] ||= Flight.chronological.last.destination_airport_id
+        
     # Render new flight form:
     @title = "New Flight"
     add_breadcrumb "Enter Flight Data", "new_flight_path"
