@@ -473,8 +473,8 @@ class FlightsController < ApplicationController
         flash[:warning] = "Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?".html_safe
       end
       # If pass exists, delete pass 
-      if params[:flight][:pass_id]
-        pass = PKPass.find(params[:flight][:pass_id])
+      if params[:flight][:pk_pass_id]
+        pass = PKPass.find_by(id: params[:flight][:pk_pass_id])
         pass.destroy if pass
       end
       redirect_to @flight
