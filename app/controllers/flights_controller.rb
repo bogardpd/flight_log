@@ -383,6 +383,7 @@ class FlightsController < ApplicationController
     session_params.map{ |p| session[:new_flight][p] = params[p] if params[p] }
     session[:new_flight][:completed_flight_xml] = true if params[:completed_flight_xml]
     session[:new_flight][:departure_date] = params[:departure_date].to_date if params[:departure_date]
+    session[:new_flight][:departure_utc] = params[:departure_utc].to_time(:utc) if params[:departure_utc]
     
     # Locate trip and create flight:
     trip = Trip.find(session[:new_flight][:trip_id])

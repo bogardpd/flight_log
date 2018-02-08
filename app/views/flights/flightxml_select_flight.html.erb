@@ -20,13 +20,7 @@
           <%= hidden_field_tag(:departure_utc, Time.at(flight[:filed_departuretime].to_i).utc) %>
           <%= hidden_field_tag(:destination_airport_icao, flight[:destination]) %>
           <%= hidden_field_tag(:fa_flight_id, flight[:fa_flight_id]) %>
-          <%= hidden_field_tag(:origin_airport_icao, flight[:origin]) %>
-          <% if ident[0..2] != flight[:fa_flight_id][0..2] %>
-            <%= hidden_field_tag(:airline_icao, flight[:fa_flight_id][0..2]) %>
-            <%= hidden_field_tag(:flight_number, flight[:fa_flight_id][3..(flight[:fa_flight_id].index("-")-1)]) %>
-            <%= hidden_field_tag(:codeshare_airline_icao, ident[0..2]) %>
-            <%= hidden_field_tag(:codeshare_flight_number, ident[3..-1]) %>
-          <% end %>
+          <%= hidden_field_tag(:origin_airport_icao) %>
           <%= submit_tag("Select") %>
         <% end %>
       </td>
@@ -44,7 +38,6 @@
         <span class="airport-code"><%= flight[:destination] %></span>&ensp;<span class="time"><%= arrival_time.strftime("%R") %></span> <span class="timezone"><%= arrival_time.zone %></span><br />
         <span class="airport-name"><%= flight[:destination_name] %></span>
       </td>
-    
     </tr>
  
   <% end %>
