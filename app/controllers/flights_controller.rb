@@ -351,28 +351,6 @@ class FlightsController < ApplicationController
     redirect_to new_flight_menu_path(trip_id: params[:trip_id])
   end
   
-  # Extracts flight info from BCBP data and passes it along to select a flight
-  def process_bcbp
-    pass = BoardingPass.new(params[:boarding_pass_data])
-    session[:boarding_pass_data] = params[:boarding_pass_data]
-    error_message = "We could not determine the airline and flight number from the boarding pass barcode data you provided."
-    if pass.is_valid?
-      airline_iata = pass.summary_fields[:airline]
-      flight_number = pass.summary_fields[:flight]
-      if airline_iata && flight_number
-        airline_icao = Airline.convert_iata_to_icao(airline_iata)
-        redirect_to flightxml_select_flight_path(airline_icao: airline_icao, flight_number: flight_number, trip_id: params[:trip_id])
-      else
-        flash[:error] = error_message
-        redirect_to new_flight_menu_path(trip_id: params[:trip_id])
-      end
-    else
-      flash[:error] = error_message
-      redirect_to new_flight_menu_path(trip_id: params[:trip_id])
-    end
-    
-  end
-  
   def new
     add_breadcrumb "Flights", "flights_path"
     add_breadcrumb "New Flight", "new_flight_menu_path"

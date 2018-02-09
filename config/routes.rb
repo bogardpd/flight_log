@@ -14,12 +14,10 @@ Portfolio::Application.routes.draw do
   # Flights:
   get   "/flights/new-flight-menu/(trip/:trip_id)" => "flights#new_flight_menu", as: :new_flight_menu
   post  "/flights/new-flight-menu/(trip/:trip_id)" => "flights#change_trip",     as: :change_new_flight_trip
-  post  "/flights/process-bcbp/"                   => "flights#process_bcbp",    as: :process_bcbp
   match "/flights/select-flight/" => "flights#flightxml_select_flight", via: [:get, :post], as: :flightxml_select_flight
-  get   "/flights/lookup/"                       => "flights#flightxml_lookup", as: :flightxml_lookup
-  match "/flights/new/(trip/:trip_id(/pass/:pass_id))" => "flights#new", via: [:get, :post], as: :new_flight
+  get   "/flights/lookup/"                         => "flights#flightxml_lookup", as: :flightxml_lookup
+  match "/flights/new/"                            => "flights#new", via: [:get, :post], as: :new_flight
   resources :flights, :except => [:new]
-  
   get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range",  as: :show_date_range
   get   "/flights/year/:year"                    => "flights#show_date_range",  as: :show_year
   
