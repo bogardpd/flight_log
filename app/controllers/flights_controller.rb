@@ -415,7 +415,7 @@ class FlightsController < ApplicationController
       if session[:new_flight][:fa_flight_id]
         set_flight_xml_data(session[:new_flight][:fa_flight_id])
       elsif session[:new_flight][:flight_number]
-        session[:new_flight][:airline_icao] ||= Airline.convert_iata_to_icao(session[:new_flight][:airline_iata])
+        session[:new_flight][:airline_icao] ||= Airline.convert_iata_to_icao(session[:new_flight][:airline_iata], false)
         if session[:new_flight][:airline_icao]
           session[:new_flight][:ident] = [session[:new_flight][:airline_icao],session[:new_flight][:flight_number]].join
           if session[:new_flight][:departure_utc]
@@ -436,11 +436,13 @@ class FlightsController < ApplicationController
         end
       end
     end
-    session[:new_flight][:completed_flight_xml] = true
+    
   
     # Convert IATA and ICAO codes to database IDs:
     id_fields = get_or_create_ids_from_codes
+    return if id_fields.nil?
     session[:new_flight].merge!(id_fields) if id_fields
+    session[:new_flight][:completed_flight_xml] = true # Do this after codes so we can look up new codes if need be
   
     # Guess trip section:
     session[:new_flight][:trip_section] = trip.estimated_trip_section(session[:new_flight][:departure_utc])
@@ -457,7 +459,6 @@ class FlightsController < ApplicationController
     @title = "New Flight"
     add_breadcrumb "Enter Flight Data", "new_flight_path"
     session[:new_flight][:warnings].each{|w| add_message(:warning, w) }
-    #add_message(:warning, session[:new_flight][:error]) if session[:new_flight][:error]
       
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "We could not find a trip with an ID of #{params[:trip_id]}. Please select another trip."
@@ -554,8 +555,7 @@ class FlightsController < ApplicationController
         elsif session[:new_flight][:origin_airport_iata] && origin_airport = Airport.find_by(iata_code: session[:new_flight][:origin_airport_iata])
           ids.store(:origin_airport_id, origin_airport.id)
         else
-          input_new_undefined_airport(session[:new_flight][:origin_airport_iata], session[:new_flight][:origin_airport_icao])
-          return
+          input_new_undefined_airport(session[:new_flight][:origin_airport_iata], session[:new_flight][:origin_airport_icao]) and return nil
         end
       end
       
@@ -565,8 +565,7 @@ class FlightsController < ApplicationController
         elsif session[:new_flight][:destination_airport_iata] && destination_airport = Airport.find_by(iata_code: session[:new_flight][:destination_airport_iata])
           ids.store(:destination_airport_id, destination_airport.id)
         else
-          input_new_undefined_airport(session[:new_flight][:destination_airport_iata], session[:new_flight][:destination_airport_icao])
-          return
+          input_new_undefined_airport(session[:new_flight][:destination_airport_iata], session[:new_flight][:destination_airport_icao]) and return nil
         end
       end
       
@@ -576,8 +575,7 @@ class FlightsController < ApplicationController
         if session[:new_flight][:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_aircraft_code: session[:new_flight][:aircraft_family_icao])
           ids.store(:aircraft_family_id, aircraft_family.id)
         else
-          input_new_undefined_aircraft_family(session[:new_flight][:aircraft_family_icao])
-          return
+          input_new_undefined_aircraft_family(session[:new_flight][:aircraft_family_icao]) and return nil
         end
       end
       
@@ -589,8 +587,7 @@ class FlightsController < ApplicationController
         elsif session[:new_flight][:airline_iata] && airline = Airline.find_by(iata_airline_code: session[:new_flight][:airline_iata])
           ids.store(:airline_id, airline.id)
         else
-          input_new_undefined_airline(session[:new_flight][:airline_iata], session[:new_flight][:airline_icao])
-          return
+          input_new_undefined_airline(session[:new_flight][:airline_iata], session[:new_flight][:airline_icao]) and return nil
         end
       end
       
@@ -598,8 +595,7 @@ class FlightsController < ApplicationController
         if session[:new_flight][:operator_icao] && operator = Airline.find_by(icao_airline_code: session[:new_flight][:operator_icao])
           ids.store(:operator_id, operator.id)
         else
-          input_new_undefined_airline(nil, session[:new_flight][:operator_icao])
-          return
+          input_new_undefined_airline(nil, session[:new_flight][:operator_icao]) and return nil
         end
       end
       
@@ -609,8 +605,7 @@ class FlightsController < ApplicationController
         elsif session[:new_flight][:codeshare_airline_iata] && codeshare_airline = Airline.find_by(iata_airline_code: session[:new_flight][:codeshare_airline_iata])
           ids.store(:codeshare_airline_id, codeshare_airline.id)
         else
-          input_new_undefined_airline(session[:new_flight][:codeshare_airline_iata], nil)
-          return
+          input_new_undefined_airline(session[:new_flight][:codeshare_airline_iata], nil) and return nil
         end
       end
                         
@@ -624,7 +619,7 @@ class FlightsController < ApplicationController
       add_breadcrumb "Create New Airport", "new_flight_path"
       @lookup_fields = {iata_code: iata, icao_code: icao}
       session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
-      render "new_undefined_airport"
+      render "new_undefined_airport" and return true
     end
     
     def input_new_undefined_aircraft_family(icao)
@@ -633,7 +628,7 @@ class FlightsController < ApplicationController
       add_breadcrumb "Create New Aircraft Family", "new_flight_path"
       @lookup_fields = {icao_code: icao}
       session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
-      render "new_undefined_aircraft_family"
+      render "new_undefined_aircraft_family" and return true
     end
     
     def input_new_undefined_airline(iata, icao)
@@ -642,7 +637,7 @@ class FlightsController < ApplicationController
       add_breadcrumb "Create New Airline", "new_flight_path"
       @lookup_fields = {iata_code: iata, icao_code: icao}
       session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
-      render "new_undefined_airline"
+      render "new_undefined_airline" and return true
     end
     
     def set_flight_xml_data(fa_flight_id)

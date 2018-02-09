@@ -32,12 +32,15 @@ class Airline < ApplicationRecord
   end
   
   # Accepts an ICAO code, and attempts to look up the ICAO code. If it does not
-  # find an ICAO code, it returns the provided IATA code.
-  def self.convert_iata_to_icao(iata)
+  # find an ICAO code and keep_iata is true, it returns the provided IATA code.
+  def self.convert_iata_to_icao(iata, keep_iata=true)
     airline = Airline.find_by(iata_airline_code: iata)
-    return iata if airline.nil?
+    if airline.nil?
+       return keep_iata ? iata : nil
+    end
     icao = airline.icao_airline_code
-    return icao.nil? ? iata : icao
+    return icao if icao
+    return keep_iata ? iata : nil
   end
   
   def self.plain_code
