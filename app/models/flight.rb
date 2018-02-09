@@ -80,45 +80,6 @@ class Flight < ApplicationRecord
     input_date.strftime("%e %b %Y")
   end
   
-  # Accepts an optional PKPass object and/or FlightXML faFlightID string, and
-  # returns a hash of all form fields with known values.
-  def self.lookup_form_fields(pk_pass: nil, bcbp_data: nil, fa_flight_id: nil, departure_date: nil, airline_icao: nil, flight_number: nil)
-    fields = Hash.new
-    
-    fields.store(:departure_date, departure_date) if departure_date
-    
-    # Look up fields from PK Pass, if any:
-    if pk_pass
-      fields[:pk_pass_id] = pk_pass.id
-      pass_data = pk_pass.form_values
-      fields.merge!(pass_data) if pass_data
-    elsif bcbp_data
-      fields[:boarding_pass_data] = bcbp_data
-      pass = BoardingPass.new(bcbp_data, interpretations: false)
-      if pass.is_valid?
-        fields.merge!(pass.form_values)
-      end
-    end
-    
-    fa_flight_id ||= fields[:fa_flight_id]
-        
-    # Look up fields on FlightAware, if known:
-    if fa_flight_id
-      fields[:fa_flight_id] = fa_flight_id
-      flightxml_data = FlightXML.form_values(fa_flight_id)
-      if flightxml_data
-        fields.merge!(flightxml_data)
-      else
-        fields.store(:error, FlightXML::ERROR)
-      end
-    end
-    
-    fields.store(:airline_icao, airline_icao) if airline_icao
-    fields.store(:flight_number, flight_number) if flight_number
-    
-    return fields
-  end
-  
   # For a given flight collection, return a range of the years that contain
   # flights.
   def self.year_range
