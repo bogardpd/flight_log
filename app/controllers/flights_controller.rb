@@ -404,6 +404,8 @@ class FlightsController < ApplicationController
       if boarding_pass.is_valid?
         boarding_pass_values = boarding_pass.form_values(session[:new_flight][:departure_utc]) || Hash.new
         session[:new_flight].merge!(boarding_pass_values.reject{ |k,v| v.nil? })
+      else
+        session[:new_flight][:warnings].push(BoardingPass::ERROR)
       end
     end
     session[:new_flight][:completed_bcbp] = true

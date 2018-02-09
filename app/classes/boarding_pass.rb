@@ -5,6 +5,8 @@
 class BoardingPass
   include ActionView::Helpers::TextHelper
   
+  ERROR = "We were unable to parse the data in the boarding pass barcode."
+  
   def initialize(boarding_pass_data, flight: nil, interpretations: true)
     @raw_data = boarding_pass_data
     @flight = flight
