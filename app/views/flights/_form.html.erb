@@ -31,7 +31,7 @@
   </p>
 
   <p>
-    <%= f.label :departure_date, "Departure Date (Local)" %><br />
+    <%= f.label :departure_date, "Departure Date (origin airport local time)" %><br />
     <% if fields[:departure_date] %>
       <%= f.date_select(:departure_date, {start_year: 2000, selected: fields[:departure_date]}, class: "autopopulated") %>
     <% else %>
