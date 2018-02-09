@@ -379,6 +379,7 @@ class FlightsController < ApplicationController
     
     # Save form parameters to session:
     session[:new_flight] ||= Hash.new
+    session[:new_flight][:warnings] = Array.new
     session_params = [:airline_icao, :boarding_pass_data, :codeshare_airline_icao, :codeshare_flight_number, :departure_utc, :destination_airport_icao, :fa_flight_id, :flight_number, :origin_airport_icao, :pk_pass_id, :trip_id]
     session_params.map{ |p| session[:new_flight][p] = params[p] if params[p] }
     session[:new_flight][:completed_flight_xml] = true if params[:completed_flight_xml]
@@ -427,7 +428,7 @@ class FlightsController < ApplicationController
               render "flightxml_select_flight"
               return
             else
-              session[:new_flight][:error] = FlightXML::ERROR + " (Searched for #{session[:new_flight][:ident]})"
+              session[:new_flight][:warnings].push(FlightXML::ERROR + " (Searched for #{session[:new_flight][:ident]})")
             end
           end
         end
@@ -453,7 +454,8 @@ class FlightsController < ApplicationController
     # Render new flight form:
     @title = "New Flight"
     add_breadcrumb "Enter Flight Data", "new_flight_path"
-    add_message(:warning, session[:new_flight][:error]) if session[:new_flight][:error]
+    session[:new_flight][:warnings].each{|w| add_message(:warning, w) }
+    #add_message(:warning, session[:new_flight][:error]) if session[:new_flight][:error]
       
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "We could not find a trip with an ID of #{params[:trip_id]}. Please select another trip."
@@ -646,9 +648,11 @@ class FlightsController < ApplicationController
       if flightxml_data
         session[:new_flight].merge!(flightxml_data.reject{ |k,v| v.nil? })
       else
-        ident = session[:new_flight][:ident]
-        session[:new_flight][:error] = FlightXML::ERROR
-        session[:new_flight][:error] += " (Searched for #{ident})" if ident
+        if session[:new_flight][:ident] && session[:new_flight][:departure_utc]
+          session[:new_flight][:warnings].push(FlightXML::ERROR + " (Searched for #{session[:new_flight][:ident]} / #{session[:new_flight][:departure_utc].strftime("%-d %b %Y %R")} UTC)")
+        else
+          session[:new_flight][:warnings].push(FlightXML::ERROR)
+        end
       end
     end
     

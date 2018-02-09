@@ -2,7 +2,7 @@
 
 module FlightXML
   
-  ERROR = "We ran into an error finding your flight data on FlightAware. You will have to manually enter some fields."
+  ERROR = "We couldn’t find your flight data on FlightAware. You will have to manually enter some fields."
   
   # Defines the Savon client to connect to the FlightXML API.
   def self.client
