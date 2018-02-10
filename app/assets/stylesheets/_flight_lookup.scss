@@ -1,9 +1,21 @@
 table.flight-select {
   
-  td {
+  td, th {
     line-height: 1.4;
     padding-left: 1em;
     padding-right: 1em;
+  }
+  
+  td.arrival-departure {
+    div {
+      width: 10em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  
+  th {
+    text-align: left;
   }
   
   span.airport-code {

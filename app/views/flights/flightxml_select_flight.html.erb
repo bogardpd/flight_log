@@ -5,8 +5,8 @@
   <tr>
     <th></th>
     <th>Dep Date</th>
-    <th>Departure</th>
-    <th>Arrival</th>
+    <th class="arrival-departure">Departure</th>
+    <th class="arrival-departure">Arrival</th>
   </tr>
   <% @fa_flights.each do |flight| %>
     <% ident = session[:new_flight][:ident] %>
@@ -30,13 +30,19 @@
       </td>
     
       <td class="arrival-departure">
-        <span class="airport-code"><%= flight[:origin] %></span>&ensp;<span class="time"><%= departure_time.strftime("%R") %></span> <span class="timezone"><%= departure_time.zone %></span><br />
-        <span class="airport-name"><%= flight[:origin_name] %></span>
+        <div>
+          <span class="airport-code"><%= flight[:origin] %></span>&ensp;<span class="time"><%= departure_time.strftime("%R") %></span> <span class="timezone"><%= departure_time.zone %></span><br />
+          <span class="airport-name"><%= flight[:origin_city] %></span><br/>
+          <span class="airport-name"><%= flight[:origin_name] %></span>
+        </div>
       </td>
     
       <td class="arrival-departure">
-        <span class="airport-code"><%= flight[:destination] %></span>&ensp;<span class="time"><%= arrival_time.strftime("%R") %></span> <span class="timezone"><%= arrival_time.zone %></span><br />
-        <span class="airport-name"><%= flight[:destination_name] %></span>
+        <div>
+          <span class="airport-code"><%= flight[:destination] %></span>&ensp;<span class="time"><%= arrival_time.strftime("%R") %></span> <span class="timezone"><%= arrival_time.zone %></span><br />
+          <span class="airport-name"><%= flight[:destination_city] %></span><br/>
+          <span class="airport-name"><%= flight[:destination_name] %></span>
+        </div>
       </td>
     </tr>
  
