@@ -286,37 +286,6 @@ class FlightsController < ApplicationController
     end
   end
 
-  def flightxml_lookup
-    @title = "FlightXML Lookup"
-    @meta = "Look up a flight on FlightAware"
-    add_breadcrumb "Flights", "flights_path"
-    add_breadcrumb "FlightXML Lookup", "flightxml_lookup_path"
-  end
-  
-  def flightxml_select_flight
-    if session[:ident]
-      @ident = session[:ident]
-    elsif params[:airline_icao] && params[:flight_number]
-      @ident = [params[:airline_icao], params[:flight_number]].join
-      session[:flight_number] = params[:flight_number]
-      session[:airline_icao] = params[:airline_icao]
-    end
-    
-    @flights = @ident ? FlightXML.flight_lookup(@ident) : nil
-    
-    if @flights && @flights.any?
-      origins = @flights.map{|f| f[:origin]}
-      destinations = @flights.map{|f| f[:destination]}
-      @timezones = FlightXML.airport_timezones(origins | destinations)
-    end
-
-    @title = "Select Flight"
-    add_breadcrumb "Flights", "flights_path"
-    add_breadcrumb "New Flight", "new_flight_menu_path"
-    add_breadcrumb [params[:airline_icao],params[:flight_number]].join, "flightxml_select_flight_path"
-    render :flightxml_select_flight
-  end
-  
   # Shows a set of forms to allow the user to choose how they will enter their new flight.
   def new_flight_menu
     @title = "Create a New Flight"
