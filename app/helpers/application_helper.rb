@@ -116,6 +116,7 @@ module ApplicationHelper
     regions["World"]       = %w()
     regions["USA (CONUS)"] = %w(K)
     regions["Europe"]      = %w(B E L)
+    regions["Oceania"]     = %w(N PH Y)
     
     used_airports = map.used_airports.sort
     tabs = Array.new
