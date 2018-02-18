@@ -99,15 +99,15 @@ module TailNumber
   
   # Identifies the country associated with a given tail number.
   def self.country(tail_number)
-    tail_number = tail_number.upcase.gsub("-","")
-    country = countries.select{|k,v| k.match(tail_number) }.values.first
+    tail_number = tail_number.upcase.gsub(/[\s\-]/,"")
+    country = countries.find{|k,v| k.match(tail_number) }&.last
     return country.nil? ? nil : country[:country]
   end
   
   # Takes a tail number and adds dashes as appropriate.
   def self.format(tail_number)
-    tail_number = tail_number.upcase.gsub("-","")
-    country_format = countries.select{|k,v| k.match(tail_number) }.values.first
+    tail_number = tail_number.upcase.gsub(/[\s\-]/,"")
+    country_format = countries.find{|k,v| k.match(tail_number) }&.last
     return tail_number if country_format.nil? || country_format[:dash].nil? || country_format[:dash] == 0
     return "#{tail_number[0...country_format[:dash]]}-#{tail_number[country_format[:dash]..-1]}"
   end
