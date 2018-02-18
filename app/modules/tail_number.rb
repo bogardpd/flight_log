@@ -1,99 +1,77 @@
 module TailNumber
   
   def self.countries
-    formats = Hash.new
-    formats[/^N[1-9]((\d{0,4})|(\d{0,3}[A-HJ-NP-Z])|(\d{0,2}[A-HJ-NP-Z]{2}))$/] = {
-      country: "United States",
-      dash: 0
-    }
-    formats[/^VH[A-Z]{3}$/] = {
-      country: "Australia",
-      dash: 2
-    }
-    formats[/^C[FGI][A-Z]{3}$/] = {
-      country: "Canada",
-      dash: 1
-    }
-    formats[/^B((1[5-9]\d{2})|([2-9]\d{3}))$/] = {
-      country: "China",
-      dash: 1
-    }
-    formats[/^F[A-Z]{4}$/] = {
-      country: "France",
-      dash: 1
-    }
-    formats[/^D(([A-CE-IK-O][A-Z]{3})|(\d{4}))$/] = {
-      country: "Germany",
-      dash: 1
-    }
-    formats[/^9G[A-Z]{3}$/] = {
-      country: "Ghana",
-      dash: 2
-    }
-    formats[/^SX[A-Z]{3}$/] = {
-      country: "Greece",
-      dash: 2
-    }
-    formats[/^B[HKL][A-Z]{2}$/] = {
-      country: "Hong Kong",
-      dash: 1
-    }
-    formats[/^TF(([A-Z]{3})|([1-9]\d{2}))$/] = {
-      country: "Iceland",
-      dash: 2
-    }
-    formats[/^VT[A-Z]{3}$/] = {
-      country: "India",
-      dash: 2
-    }
-    formats[/^4X[A-Z]{3}$/] = {
-      country: "Israel",
-      dash: 2
-    }
-    formats[/^JA((\d{4})|(\d{3}[A-Z])|(\d{2}[A-Z]{2})|(A\d{3}))$/] = {
-      country: "Japan",
-      dash: 0
-    }
-    formats[/^JY[A-Z]{3}$/] = {
-      country: "Jordan",
-      dash: 2
-    }
-    formats[/^9M[A-Z]{3}$/] = {
-      country: "Malaysia",
-      dash: 2
-    }
-    formats[/^PH(([A-Z]{3})|(1[A-Z]{2})|(\d[A-Z]\d)|([1-9]\d{2,3}))$/] = {
-      country: "Netherlands",
-      dash: 2
-    }
-    formats[/^ZK[A-Z]{3}$/] = {
-      country: "New Zealand",
-      dash: 2
-    }
-    formats[/^9V[A-Z]{3}$/] = {
-      country: "Singapore",
-      dash: 2
-    }
-    formats[/^B((\d(0\d{3}|1[0-4]\d{2}))|([1-9]\d{4}))$/] = {
-      country: "Taiwan",
-      dash: 1
-    }
-    formats[/^HS[A-Z]{3}$/] = {
-      country: "Thailand",
-      dash: 2
-    }
-    formats[/^UR(([A-Z]{3,4})|([1-9]\d{4}))$/] = {
-      country: "Ukraine",
-      dash: 2
-    }
-    formats[/^A6[A-Z]{3}$/] = {
-      country: "United Arab Emirates",
-      dash: 2
-    }
-    formats[/^G(([A-Z]{4})|(\d{1,2}\d{1,2}))$/] = {
-      country: "United Kingdom",
-      dash: 1
-    }
+    formats = {
+      /^N[1-9]((\d{0,4})|(\d{0,3}[A-HJ-NP-Z])|(\d{0,2}[A-HJ-NP-Z]{2}))$/ => {
+        country: "United States",
+        dash: 0 },
+      /^VH[A-Z]{3}$/ => {
+        country: "Australia",
+        dash: 2 },
+      /^C[FGI][A-Z]{3}$/ => {
+        country: "Canada",
+        dash: 1 },
+      /^B((1[5-9]\d{2})|([2-9]\d{3}))$/ => {
+        country: "China",
+        dash: 1 },
+      /^F[A-Z]{4}$/ => {
+        country: "France",
+        dash: 1 },
+      /^D(([A-CE-IK-O][A-Z]{3})|(\d{4}))$/ => {
+        country: "Germany",
+        dash: 1 },
+      /^9G[A-Z]{3}$/ => {
+        country: "Ghana",
+        dash: 2 },
+      /^SX[A-Z]{3}$/ => {
+        country: "Greece",
+        dash: 2 },
+      /^B[HKL][A-Z]{2}$/ => {
+        country: "Hong Kong",
+        dash: 1 },
+      /^TF(([A-Z]{3})|([1-9]\d{2}))$/ => {
+        country: "Iceland",
+        dash: 2 },
+      /^VT[A-Z]{3}$/ => {
+        country: "India",
+        dash: 2 },
+      /^4X[A-Z]{3}$/ => {
+        country: "Israel",
+        dash: 2 },
+      /^JA((\d{4})|(\d{3}[A-Z])|(\d{2}[A-Z]{2})|(A\d{3}))$/ => {
+        country: "Japan",
+        dash: 0 },
+      /^JY[A-Z]{3}$/ => {
+        country: "Jordan",
+        dash: 2 },
+      /^9M[A-Z]{3}$/ => {
+        country: "Malaysia",
+        dash: 2 },
+      /^PH(([A-Z]{3})|(1[A-Z]{2})|(\d[A-Z]\d)|([1-9]\d{2,3}))$/ => {
+        country: "Netherlands",
+        dash: 2 },
+      /^ZK[A-Z]{3}$/ => {
+        country: "New Zealand",
+        dash: 2 },
+      /^9V[A-Z]{3}$/ => {
+        country: "Singapore",
+        dash: 2 },
+      /^B((\d(0\d{3}|1[0-4]\d{2}))|([1-9]\d{4}))$/ => {
+        country: "Taiwan",
+        dash: 1 },
+      /^HS[A-Z]{3}$/ => {
+        country: "Thailand",
+        dash: 2 },
+      /^UR(([A-Z]{3,4})|([1-9]\d{4}))$/ => {
+        country: "Ukraine",
+        dash: 2 },
+      /^A6[A-Z]{3}$/ => {
+        country: "United Arab Emirates",
+        dash: 2 },
+      /^G(([A-Z]{4})|(\d{1,2}\d{1,2}))$/ => {
+        country: "United Kingdom",
+        dash: 1 }
+      }
     return formats
   end
   
