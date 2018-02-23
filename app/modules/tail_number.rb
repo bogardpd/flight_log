@@ -1,12 +1,18 @@
 module TailNumber
   
   def self.countries
-    formats = {
+    tail_formats = {
       /^N[1-9]((\d{0,4})|(\d{0,3}[A-HJ-NP-Z])|(\d{0,2}[A-HJ-NP-Z]{2}))$/ => {
         country: "United States",
         dash: 0 },
       /^VH[A-Z]{3}$/ => {
         country: "Australia",
+        dash: 2 },
+      /^OE([A-LV-X][A-Z]{2}|[0-59]\d{3})$/ => {
+        country: "Austria",
+        dash: 2 },
+      /^P[PRSTU][A-Z]{3}$/ => {
+        country: "Brazil",
         dash: 2 },
       /^C[FGI][A-Z]{3}$/ => {
         country: "Canada",
@@ -14,6 +20,9 @@ module TailNumber
       /^B((1[5-9]\d{2})|([2-9]\d{3}))$/ => {
         country: "China",
         dash: 1 },
+      /^OY[A-Z]{3}$/ => {
+        country: "Denmark",
+        dash: 2 },
       /^F[A-Z]{4}$/ => {
         country: "France",
         dash: 1 },
@@ -68,11 +77,11 @@ module TailNumber
       /^A6[A-Z]{3}$/ => {
         country: "United Arab Emirates",
         dash: 2 },
-      /^G(([A-Z]{4})|(\d{1,2}\d{1,2}))$/ => {
+      /^G[A-Z]{4}$/ => { # Deliberately ignoring UK test aircraft format
         country: "United Kingdom",
         dash: 1 }
       }
-    return formats
+    return tail_formats
   end
   
   # Identifies the country associated with a given tail number.
