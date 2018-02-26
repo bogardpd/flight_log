@@ -90,8 +90,13 @@ module TailNumber
     return tail_formats
   end
   
+  # Capitalizes and strips non-alphanumeric characters
+  def self.simplify(tail_number)
+    return tail_number.upcase.gsub(/[^A-Z0-9]/,"")
+  end
+  
   def self.country_format(tail_number)
-    tail_number = tail_number.upcase.gsub(/[\s\-]/,"")
+    tail_number = simplify(tail_number)
     country = countries.find{|k,v| k.match(tail_number) }&.last
     return {country: nil, tail: tail_number} if country.nil?
     return {country: country[:country], tail: tail_number} if country[:dash] == 0

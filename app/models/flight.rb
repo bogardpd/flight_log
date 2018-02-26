@@ -17,11 +17,11 @@ class Flight < ApplicationRecord
   
   NULL_ATTRS = %w( flight_number aircraft_name tail_number travel_class comment fleet_number boarding_pass_data )
   STRIP_ATTRS = %w( operator fleet_number aircraft_family aircraft_name tail_number )
-  CAPS_ATTRS = %w( tail_number )
+  SIMPLIFY_ATTRS = %w( tail_number )
   
   before_save :nil_if_blank
   before_save :strip_blanks
-  before_save :capitalize
+  before_save :simplify_tail
   
   validates :origin_airport_id, :presence => true
   validates :destination_airport_id, :presence => true
@@ -46,8 +46,8 @@ class Flight < ApplicationRecord
     STRIP_ATTRS.each { |attr| self[attr] = self[attr].strip if !self[attr].blank? }
   end
   
-  def capitalize
-    CAPS_ATTRS.each { |attr| self[attr] = self[attr].upcase if !self[attr].blank? }
+  def simplify_tail
+    SIMPLIFY_ATTRS.each { |attr| self[attr] = TailNumber.simplify(self[attr]) if !self[attr].blank? }
   end
   
   # For a given flight collection, return a hash with years as the keys, and
