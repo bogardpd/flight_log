@@ -2,33 +2,48 @@ module TailNumber
   
   def self.countries
     tail_formats = {
+      # Highest numbers of aircraft:
       /^N[1-9]((\d{0,4})|(\d{0,3}[A-HJ-NP-Z])|(\d{0,2}[A-HJ-NP-Z]{2}))$/ => {
         country: "United States",
         dash: 0 },
+      /^B((1[5-9]\d{2})|([2-9]\d{3}))$/ => {
+        country: "China",
+        dash: 1 },
+      /^C[FGI][A-Z]{3}$/ => {
+        country: "Canada",
+        dash: 1 },
+      /^D(([A-CE-IK-O][A-Z]{3})|(\d{4}))$/ => {
+        country: "Germany",
+        dash: 1 },
+      /^G[A-Z]{4}$/ => { # Deliberately ignoring UK test aircraft format
+        country: "United Kingdom",
+        dash: 1 },
+      /^F[A-Z]{4}$/ => {
+        country: "France",
+        dash: 1 },
+      /^JA((\d{4})|(\d{3}[A-Z])|(\d{2}[A-Z]{2})|(A\d{3}))$/ => {
+        country: "Japan",
+        dash: 0 },
+      /^P[PRSTU][A-Z]{3}$/ => {
+        country: "Brazil",
+        dash: 2 },
+      /^EC[A-WY][A-Z]{2}$/ => {
+        country: "Spain",
+        dash: 2 },
+      /^VT[A-Z]{3}$/ => {
+        country: "India",
+        dash: 2 },
+        
+      # Other countries:
       /^VH[A-Z]{3}$/ => {
         country: "Australia",
         dash: 2 },
       /^OE([A-LV-X][A-Z]{2}|[0-59]\d{3})$/ => {
         country: "Austria",
         dash: 2 },
-      /^P[PRSTU][A-Z]{3}$/ => {
-        country: "Brazil",
-        dash: 2 },
-      /^C[FGI][A-Z]{3}$/ => {
-        country: "Canada",
-        dash: 1 },
-      /^B((1[5-9]\d{2})|([2-9]\d{3}))$/ => {
-        country: "China",
-        dash: 1 },
       /^OY[A-Z]{3}$/ => {
         country: "Denmark",
         dash: 2 },
-      /^F[A-Z]{4}$/ => {
-        country: "France",
-        dash: 1 },
-      /^D(([A-CE-IK-O][A-Z]{3})|(\d{4}))$/ => {
-        country: "Germany",
-        dash: 1 },
       /^9G[A-Z]{3}$/ => {
         country: "Ghana",
         dash: 2 },
@@ -41,15 +56,9 @@ module TailNumber
       /^TF(([A-Z]{3})|([1-9]\d{2}))$/ => {
         country: "Iceland",
         dash: 2 },
-      /^VT[A-Z]{3}$/ => {
-        country: "India",
-        dash: 2 },
       /^4X[A-Z]{3}$/ => {
         country: "Israel",
         dash: 2 },
-      /^JA((\d{4})|(\d{3}[A-Z])|(\d{2}[A-Z]{2})|(A\d{3}))$/ => {
-        country: "Japan",
-        dash: 0 },
       /^JY[A-Z]{3}$/ => {
         country: "Jordan",
         dash: 2 },
@@ -76,27 +85,28 @@ module TailNumber
         dash: 2 },
       /^A6[A-Z]{3}$/ => {
         country: "United Arab Emirates",
-        dash: 2 },
-      /^G[A-Z]{4}$/ => { # Deliberately ignoring UK test aircraft format
-        country: "United Kingdom",
-        dash: 1 }
+        dash: 2 }
       }
     return tail_formats
   end
   
-  # Identifies the country associated with a given tail number.
-  def self.country(tail_number)
+  def self.country_format(tail_number)
     tail_number = tail_number.upcase.gsub(/[\s\-]/,"")
     country = countries.find{|k,v| k.match(tail_number) }&.last
-    return country.nil? ? nil : country[:country]
+    return {country: nil, tail: tail_number} if country.nil?
+    return {country: country[:country], tail: tail_number} if country[:dash] == 0
+    tail = "#{tail_number[0...country[:dash]]}-#{tail_number[country[:dash]..-1]}"
+    return {country: country[:country], tail: tail}
+  end
+  
+  # Identifies the country associated with a given tail number.
+  def self.country(tail_number)
+    return country_format(tail_number)[:country]
   end
   
   # Takes a tail number and adds dashes as appropriate.
   def self.format(tail_number)
-    tail_number = tail_number.upcase.gsub(/[\s\-]/,"")
-    country_format = countries.find{|k,v| k.match(tail_number) }&.last
-    return tail_number if country_format.nil? || country_format[:dash].nil? || country_format[:dash] == 0
-    return "#{tail_number[0...country_format[:dash]]}-#{tail_number[country_format[:dash]..-1]}"
+    return country_format(tail_number)[:tail]
   end
   
   # Returns a hash of tail numbers, aircraft codes (ICAO preferred), aircraft
