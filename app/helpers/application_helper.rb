@@ -83,6 +83,16 @@ module ApplicationHelper
     country_flag(TailNumber.country(tail_number))
   end
   
+  def tail_number_with_country_flag(tail_number, show_flag_without_country=true)
+    country_format = TailNumber.country_format(tail_number)
+    tail_link = link_to(country_format[:tail], show_tail_path(tail_number), title: "View flights on tail number #{country_format[:tail]}")
+    if country_format[:country] || show_flag_without_country
+      return "#{country_flag(country_format[:country])} #{tail_link}".html_safe
+    else
+      return tail_link.html_safe
+    end
+  end
+  
   
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
   

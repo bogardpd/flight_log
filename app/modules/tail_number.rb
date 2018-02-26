@@ -15,7 +15,7 @@ module TailNumber
       /^D(([A-CE-IK-O][A-Z]{3})|(\d{4}))$/ => {
         country: "Germany",
         dash: 1 },
-      /^G[A-Z]{4}$/ => { # Deliberately ignoring UK test aircraft format
+      /^G[A-Z]{4}$/ => {
         country: "United Kingdom",
         dash: 1 },
       /^F[A-Z]{4}$/ => {

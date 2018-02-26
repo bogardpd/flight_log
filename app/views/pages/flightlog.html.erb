@@ -93,7 +93,7 @@
       <th class="center">Flights</th>
   <% @flight_tails.first(5).each do |tail| %>
     <tr>
-      <td class="left tail-number"><%= tail_number_country_flag(tail[:tail_number]) %> <%= link_to(tail[:tail_number], show_tail_path(tail[:tail_number]), :title => "View flights on tail number #{tail[:tail_number]}") %></td>
+      <td class="left tail-number"><%= tail_number_with_country_flag(tail[:tail_number]) %></td>
       <td class="center"><%= tail[:count] %></td>
     </tr>
   <% end %>

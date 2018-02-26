@@ -220,13 +220,14 @@ class FlightsController < ApplicationController
   
   def show_tail
     @logo_used = true
-    @flights = flyer.flights(current_user).where(tail_number: params[:tail_number]).includes(:airline, :origin_airport, :destination_airport, :trip)
-    
+    @flights = flyer.flights(current_user).where(tail_number: TailNumber.simplify(params[:tail_number])).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if @flights.length == 0
-    @title = params[:tail_number]
-    @meta_description = "Maps and lists of Paul Bogardʼs flights on tail number #{params[:tail_number]}."
+    
+    @tail_number = TailNumber.format(params[:tail_number])
+    @title = @tail_number
+    @meta_description = "Maps and lists of Paul Bogardʼs flights on tail number #{@tail_number}."
     add_breadcrumb "Tail Numbers", "tails_path"
-    add_breadcrumb @title, show_tail_path(params[:tail_number])
+    add_breadcrumb @title, show_tail_path(TailNumber.simplify(params[:tail_number]))
     
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
