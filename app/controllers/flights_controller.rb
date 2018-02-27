@@ -349,7 +349,7 @@ class FlightsController < ApplicationController
     # Get flight data from BCBP:
     if (session[:new_flight][:completed_bcbp] != true && session[:new_flight][:boarding_pass_data])
       boarding_pass = BoardingPass.new(session[:new_flight][:boarding_pass_data], interpretations: false)
-      if boarding_pass.is_valid?
+      if boarding_pass.data.present?
         boarding_pass_values = boarding_pass.form_values(session[:new_flight][:departure_utc]) || Hash.new
         session[:new_flight].merge!(boarding_pass_values.reject{ |k,v| v.nil? })
       else

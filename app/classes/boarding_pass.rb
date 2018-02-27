@@ -58,10 +58,10 @@ class BoardingPass
     fields.store(:departure_date, departure_date_local)
 
     origin_airport_iata = data.dig(:repeated, 0, :mandatory, 26, :raw)
-    fields.store(:origin_airport_iata, origin_airport_iata)
+    fields.store(:origin_airport_iata, origin_airport_iata) if origin_airport_iata.present?
     
     destination_airport_iata = data.dig(:repeated, 0, :mandatory, 38, :raw)
-    fields.store(:destination_airport_iata, destination_airport_iata)
+    fields.store(:destination_airport_iata, destination_airport_iata) if destination_airport_iata.present?
     
     airline_iata = data.dig(:repeated, 0, :mandatory, 42, :raw)&.strip
     if airline_iata.present?
@@ -85,7 +85,8 @@ class BoardingPass
       rescue Errno::ENOENT
       end
     end
-    fields.store(:flight_number, data.dig(:repeated, 0, :mandatory, 43, :raw)&.strip&.gsub(/^0*/, ""))
+    flight_number = data.dig(:repeated, 0, :mandatory, 43, :raw)
+    fields.store(:flight_number, flight_number&.strip&.gsub(/^0*/, "")) if flight_number.present?
     
     return fields
   end
