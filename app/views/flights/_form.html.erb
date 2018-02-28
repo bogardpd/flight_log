@@ -89,7 +89,9 @@
   <p>
     <%= f.label :tail_number, "Tail Number" %> / <%= f.label :aircraft_name %><br />
     <% if fields[:tail_number] %>
-      <%= f.text_field :tail_number, size: 10, value: fields[:tail_number], class: "autopopulated all-caps" %>
+      <%= f.text_field :tail_number, size: 10, value: TailNumber.format(fields[:tail_number]), class: "autopopulated all-caps" %>
+    <% elsif flight.tail_number %>
+      <%= f.text_field :tail_number, size: 10, value: TailNumber.format(flight.tail_number), class: "all-caps" %>
     <% else %>
       <%= f.text_field :tail_number, size: 10, class: "all-caps" %>
     <% end %>
