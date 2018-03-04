@@ -26,6 +26,10 @@ module ApplicationHelper
     end
   end
   
+  def format_airport_name(airport_name)
+    return airport_name.gsub(" (", %Q(&ensp;<small class="airport-name">)).gsub(")", "</small>").html_safe
+  end
+  
   def render_message(type, text)
     render partial: "layouts/message", locals: {type: type, text: text}
   end

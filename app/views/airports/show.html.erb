@@ -2,7 +2,7 @@
 <div id="title-info"><%= @airport.country %><%= image_tag(@airport.country_flag_path, title: @airport.country, class: "country_flag") %></div>
 <% end %>
 
-<h1><%= @airport.city %></h1>
+<h1><%= format_airport_name(@airport.city) %></h1>
 
 <div class="page_navigation">
   <ul>
