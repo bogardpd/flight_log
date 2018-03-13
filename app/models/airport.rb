@@ -28,6 +28,18 @@ class Airport < ApplicationRecord
     end
   end
   
+  # Accepts an IATA code, and attempts to look up the ICAO code. If it does not
+  # find an ICAO code and keep_iata is true, it returns the provided IATA code.
+  def self.convert_iata_to_icao(iata, keep_iata=true)
+    airport = Airport.find_by(iata_code: iata)
+    if airport.nil?
+       return keep_iata ? iata : nil
+    end
+    icao = airport.icao_code
+    return icao if icao
+    return keep_iata ? iata : nil
+  end
+  
   # Accepts a flyer, the viewing user, and a date range, and returns the IATA
   # code for all airports that had their first flight in this date range.
   def self.new_in_date_range(flyer, current_user, date_range)

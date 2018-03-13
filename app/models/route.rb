@@ -2,6 +2,9 @@ class Route < ApplicationRecord
   belongs_to :airport1, :class_name => "Airport"
   belongs_to :airport2, :class_name => "Airport"
   
+  ARROW_ONE_WAY = "&#8594;".html_safe
+  ARROW_TWO_WAY = "&#8596;".html_safe
+  
   # Given two IATA airport codes, returns the distance in statute miles
   # between them. This calls an SQL query, and should not be used in a loop.
   def self.distance_by_iata(iata1, iata2)

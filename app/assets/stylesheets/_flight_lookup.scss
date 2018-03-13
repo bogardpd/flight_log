@@ -18,6 +18,12 @@ table.flight-select {
     text-align: left;
   }
   
+  tr.suggestion {
+    td {
+      background-color: $color-background-status-good;
+    }
+  }
+  
   span.airport-code {
     font-family: $font-stack-monospace;
     font-weight: 600;

@@ -6,17 +6,27 @@
     <th></th>
     <th>Dep Date</th>
     <th class="arrival-departure">Departure</th>
+    <th></th>
     <th class="arrival-departure">Arrival</th>
   </tr>
   <% @fa_flights.each do |flight| %>
     <% ident = session[:new_flight][:ident] %>
     <% departure_time = Time.at(flight[:filed_departuretime].to_i).in_time_zone(@timezones[flight[:origin]]) %>
+    <% departure_date = departure_time.strftime("%F").to_date %>
     <% arrival_time = Time.at(flight[:estimatedarrivaltime].to_i).in_time_zone(@timezones[flight[:destination]]) %>
-    <tr>
+    <% if session[:new_flight][:departure_date] && session[:new_flight][:departure_date] == departure_date %>
+      <% if session[:new_flight][:origin_airport_iata] && Airport.convert_iata_to_icao(session[:new_flight][:origin_airport_iata]) != flight[:origin] %>
+        <tr>
+      <% else %>
+        <tr class="suggestion">
+      <% end %>
+    <% else %>
+      <tr>
+    <% end %>
       
       <td>
         <%= form_tag(new_flight_path, method: :post) do %>
-          <%= hidden_field_tag(:departure_date, departure_time.strftime("%F").to_date) %>
+          <%= hidden_field_tag(:departure_date, departure_date) %>
           <%= hidden_field_tag(:departure_utc, Time.at(flight[:filed_departuretime].to_i).utc) %>
           <%= hidden_field_tag(:destination_airport_icao, flight[:destination]) %>
           <%= hidden_field_tag(:fa_flight_id, flight[:fa_flight_id]) %>
@@ -36,7 +46,9 @@
           <span class="airport-name"><%= flight[:origin_name] %></span>
         </div>
       </td>
-    
+      
+      <td><%= Route::ARROW_ONE_WAY %></td>
+      
       <td class="arrival-departure">
         <div>
           <span class="airport-code"><%= flight[:destination] %></span>&ensp;<span class="time"><%= arrival_time.strftime("%R") %></span> <span class="timezone"><%= arrival_time.zone %></span><br />
@@ -48,7 +60,7 @@
  
   <% end %>
   <tr>
-    <td colspan="4" class="center">
+    <td colspan="5" class="center">
       <%= form_tag(new_flight_path, method: :post) do %>
         <%= hidden_field_tag(:completed_flight_xml, true) %>
         <%= submit_tag("My flight isn’t any of the above") %>

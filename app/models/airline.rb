@@ -31,7 +31,7 @@ class Airline < ApplicationRecord
     return counts
   end
   
-  # Accepts an ICAO code, and attempts to look up the ICAO code. If it does not
+  # Accepts an IATA code, and attempts to look up the ICAO code. If it does not
   # find an ICAO code and keep_iata is true, it returns the provided IATA code.
   def self.convert_iata_to_icao(iata, keep_iata=true)
     airline = Airline.find_by(iata_airline_code: iata)
