@@ -59,7 +59,7 @@
     </tr>
   <% @flight_routes.first(5).each do |flight_route| %>
     <tr>
-      <td class="left"><%= link_to(%Q(<span class="code-mono">#{flight_route[:route][0]}</span> &#x21C4; <span class="code-mono">#{flight_route[:route][1]}</span>).html_safe, route_path(flight_route[:route].join("-")), :title => "View flights between #{flight_route[:route][0]} and #{flight_route[:route][1]}") %></td>
+      <td class="left"><%= link_to(%Q(<span class="code-mono">#{flight_route[:route][0]}</span> #{Route::ARROW_TWO_WAY_PLAINTEXT} <span class="code-mono">#{flight_route[:route][1]}</span>).html_safe, route_path(flight_route[:route].join("-")), :title => "View flights between #{flight_route[:route][0]} and #{flight_route[:route][1]}") %></td>
       <td class="center"><%= flight_route[:flight_count] %></td>
     </tr>
   <% end %>

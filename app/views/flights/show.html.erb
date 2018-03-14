@@ -38,7 +38,7 @@
       <% elsif logged_in? %>
         <div class="supplemental-info message-error"><%= link_to "Distance Undefined",  edit_route_path(@flight.origin_airport.iata_code,@flight.destination_airport.iata_code) %></div>
       <% end %>
-      <%= link_to("#{@flight.origin_airport.iata_code} &#x21C4; #{@flight.destination_airport.iata_code}".html_safe, route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %>
+      <%= link_to("#{@flight.origin_airport.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@flight.destination_airport.iata_code}".html_safe, route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %>
     </td>
   </tr>
   <tr>

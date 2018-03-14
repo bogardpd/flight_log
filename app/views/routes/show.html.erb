@@ -1,15 +1,15 @@
-<h1><%= @airports[0] %> &#x21C4; <%= @airports[1] %></h1>
+<h1><%= @airports[0] %> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= @airports[1] %></h1>
 
 <div class="page_navigation">
   <ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airports[0]} - #{@airports[1]}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airports[0]} - #{@airports[1]}") %></li>
-		<li><%= link_to("Operators", "#operators", :title => "Operators using #{@airports[0]} - #{@airports[1]}") %></li>
-		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airports[0]} - #{@airports[1]}") %></li>
-		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@airports[0]} - #{@airports[1]}") %></li>
-		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections with a #{@airports[0]} - #{@airports[1]} flight") %></li>
-		<li><%= link_to("Trips", "#trips", :title => "Trips with a #{@airports[0]} - #{@airports[1]} flight") %></li>
-		<li><%= link_to("Flight List", "#flights", :title => "Flights using #{@airports[0]} - #{@airports[1]}") %></li>
+		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %></li>
+		<li><%= link_to("Operators", "#operators", :title => "Operators using #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %></li>
+		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %></li>
+		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections with a #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]} flight") %></li>
+		<li><%= link_to("Trips", "#trips", :title => "Trips with a #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]} flight") %></li>
+		<li><%= link_to("Flight List", "#flights", :title => "Flights using #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %></li>
   </ul>
 </div>
 
@@ -26,19 +26,19 @@
 </p>
 <% end %>
 
-<h2 id="airlines">Airlines Using <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr></h2>
+<h2 id="airlines">Airlines Using <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 
-<h2 id="operators">Operators Using <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr></h2>
+<h2 id="operators">Operators Using <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
-<h2 id="aircraft">Aircraft Using <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr></h2>
+<h2 id="aircraft">Aircraft Using <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr></h2>
 <%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
-<h2 id="classes">Classes Flown on <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr></h2>
+<h2 id="classes">Classes Flown on <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr></h2>
 <%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
-<h2 id="sections">Trip Sections with a <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight</h2>
+<h2 id="sections">Trip Sections with a <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight</h2>
 
 <p>This map shows the flights of all of my trip sections with a segment from <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> to <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> or from <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> to <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr>.</p>
 
@@ -46,7 +46,7 @@
 
 <%= render "trips/section_table" %>
 
-<h2 id="trips">Trips with a <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight</h2>
+<h2 id="trips">Trips with a <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight</h2>
 
 <p>This map shows the flights of all of my trips with a segment from from <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> to <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> or from <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> to <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr>.</p>
 
@@ -54,5 +54,5 @@
 
 <%= render "trips/trip_table" %>
 
-<h2 id="flights"><abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> &#x21C4; <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight List</h2>
+<h2 id="flights"><abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> Flight List</h2>
 <%= render "flights/flight_table" %>

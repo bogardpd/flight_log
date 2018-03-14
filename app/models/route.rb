@@ -2,8 +2,10 @@ class Route < ApplicationRecord
   belongs_to :airport1, :class_name => "Airport"
   belongs_to :airport2, :class_name => "Airport"
   
-  ARROW_ONE_WAY = "&#8594;".html_safe
-  ARROW_TWO_WAY = "&#8596;".html_safe
+  ARROW_ONE_WAY_PLAINTEXT = "→"
+  ARROW_TWO_WAY_PLAINTEXT = "↔"
+  ARROW_ONE_WAY_HTML = %Q(<span class="route-arrow">#{ARROW_ONE_WAY_PLAINTEXT}</span>).html_safe
+  ARROW_TWO_WAY_HTML = %Q(<span class="route-arrow">#{ARROW_TWO_WAY_PLAINTEXT}</span>).html_safe
   
   # Given two IATA airport codes, returns the distance in statute miles
   # between them. This calls an SQL query, and should not be used in a loop.

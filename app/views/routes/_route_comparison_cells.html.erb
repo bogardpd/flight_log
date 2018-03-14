@@ -1,2 +1,2 @@
-<td class="route-route"><%= link_to(code_mono(route[0][0]) + " &#x21C4; ".html_safe + code_mono(route[0][1]), route_path(route[0].join("-")), :title => "View flights between #{route[0][0]} and #{route[0][1]}") %></td>
+<td class="route-route"><%= link_to("#{code_mono(route[0][0])} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{code_mono(route[0][1])}".html_safe, route_path(route[0].join("-")), :title => "View flights between #{route[0][0]} and #{route[0][1]}") %></td>
 <td class="route-distance"><%= number_with_delimiter(route[1], :delimiter => ",") %> <span class="measurement-unit">mi</span></td>

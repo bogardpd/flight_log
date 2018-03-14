@@ -53,9 +53,9 @@ class RoutesController < ApplicationController
     end
     
     add_breadcrumb "Routes", "routes_path"
-    add_breadcrumb "#{@airports[0]} – #{@airports[1]}", route_path(@route_string)
+    add_breadcrumb "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}", route_path(@route_string)
     add_admin_action view_context.link_to("Edit Route", edit_route_path(@airports[0],@airports[1]))
-    @title = "#{@airports[0]} – #{@airports[1]}"
+    @title = "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}"
     @meta_description = "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}."
     @logo_used = true
     
@@ -111,9 +111,9 @@ class RoutesController < ApplicationController
   
   def edit
     add_breadcrumb "Routes", "routes_path"
-    add_breadcrumb "#{params[:airport1]} - #{params[:airport2]}", route_path("#{params[:airport1]}-#{params[:airport2]}")
+    add_breadcrumb "#{params[:airport1]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{params[:airport2]}", route_path("#{params[:airport1]}-#{params[:airport2]}")
     add_breadcrumb "Edit", "#"
-    @title = "Edit #{params[:airport1]} - #{params[:airport2]}"
+    @title = "Edit #{params[:airport1]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{params[:airport2]}"
     
     # Get airport ids:
     @airport_ids = Array.new
