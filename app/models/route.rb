@@ -2,8 +2,8 @@ class Route < ApplicationRecord
   belongs_to :airport1, :class_name => "Airport"
   belongs_to :airport2, :class_name => "Airport"
   
-  ARROW_ONE_WAY_PLAINTEXT = "→"
-  ARROW_TWO_WAY_PLAINTEXT = "↔"
+  ARROW_ONE_WAY_PLAINTEXT = "⇒"
+  ARROW_TWO_WAY_PLAINTEXT = "⇔"
   ARROW_ONE_WAY_HTML = %Q(<span class="route-arrow">#{ARROW_ONE_WAY_PLAINTEXT}</span>).html_safe
   ARROW_TWO_WAY_HTML = %Q(<span class="route-arrow">#{ARROW_TWO_WAY_PLAINTEXT}</span>).html_safe
   
