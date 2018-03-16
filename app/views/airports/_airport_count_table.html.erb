@@ -8,10 +8,10 @@
     <thead>
       <tr>
     		<th class="counter">#</th>
-        <th class="airport-country"><%= is_summary ? %Q(<abbr title="Country">Cnt</abbr>).html_safe : sort_link(%Q(<abbr title="Country">Cnt</abbr>), :country, "country", :asc, "airports_list") %></th>
-    		<th class="airport-city"><%= is_summary ? "City" : sort_link("City", :city, "city", :asc, "airports_list") %></th>
-        <th class="airport-code"><%= is_summary ? "Code" : sort_link("Code", :code, "code", :asc, "airports_list") %></th>
-        <th class="airport-visits"><%= is_summary ? "Visits" : sort_link("Visits", :visits, "visits", :desc, "airports_list") %></th>
+        <th class="airport-country"><%= is_summary ? %Q(<abbr title="Country">Cnt</abbr>).html_safe : sort_link(%Q(<abbr title="Country">Cnt</abbr>), :country, "country", :asc, "airports-list") %></th>
+    		<th class="airport-city"><%= is_summary ? "City" : sort_link("City", :city, "city", :asc, "airports-list") %></th>
+        <th class="airport-code"><%= is_summary ? "Code" : sort_link("Code", :code, "code", :asc, "airports-list") %></th>
+        <th class="airport-visits"><%= is_summary ? "Visits" : sort_link("Visits", :visits, "visits", :desc, "airports-list") %></th>
       </tr>
     </thead>
     <tbody>
