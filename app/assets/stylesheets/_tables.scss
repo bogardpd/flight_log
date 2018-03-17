@@ -58,6 +58,7 @@
     
     td {
       border: none;
+      background-color: $color-background-container;
     }
   }
 
@@ -238,7 +239,6 @@
     	width: 250px;
     	line-height: 1.2;
     	vertical-align: middle;
-    	background: #FFFFFF;
     }
     
   /* Routes */

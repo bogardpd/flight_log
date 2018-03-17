@@ -19,7 +19,7 @@ body {
 	width: 800px;
 	margin-left: auto;
 	margin-right: auto;
-	background: #FFFFFF;
+	background: $color-background-container;
 	padding: 0;
 }
 
@@ -339,7 +339,7 @@ span.flight-section-route {
 }
 
 span.route-arrow {
-  color: $color-text-secondary;
+  color: $color-text-tertiary;
   font-weight: 300;
 }
 
