@@ -1,3 +1,5 @@
+<div id="title-info"><%= image_tag(airline_icon_path(@flight.airline.iata_airline_code), title: @flight.airline.airline_name, class: "airline_icon") %></div>
+
 <h1><%= @flight.airline.airline_name %> <%= @flight.flight_number %></h1>
 
 <% if @flight.comment %>
