@@ -121,6 +121,15 @@
 	border-right: 1px solid $color-border-page;
 	border-bottom: 1px solid $color-border-page;
 	font-weight: 300;
+  color: $color-text-secondary;
+  
+  span.breadcrumb-separator {
+    color: $color-text-tertiary;
+  }
+  
+  span.breadcrumb-title {
+    font-weight: 400;
+  }
 }
 
 #admin-actions {

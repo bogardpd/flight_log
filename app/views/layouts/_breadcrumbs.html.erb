@@ -1,9 +1,9 @@
 <% if (!(params[:controller] == "pages" && params[:action] == "flightlog") && (@breadcrumbs || @admin_actions.present?)) %>
 <div id="breadcrumbs">
   <% @breadcrumbs[0..-2].uniq.each do |txt, path| %>
-    <%= link_to(h(txt), path) %> &gt;
+    <%= link_to(h(txt), path) %> <span class="breadcrumb-separator">▸</span> 
   <% end %>
-  <span class="breadcrumb_title"><%= h(@breadcrumbs.last.first) %></span>
+  <span class="breadcrumb-title"><%= h(@breadcrumbs.last.first) %></span>
 	<% if (logged_in? && @admin_actions.present?) %>
   <div id="admin-actions">
     <%= @admin_actions.join("&emsp;").html_safe %>
