@@ -32,15 +32,17 @@ class Route < ApplicationRecord
     end
   end
   
-  # Accepts two coordinates, and returns the great circle distance between
-  # them (in integer miles) using the haversine fomula.
-  def self.distance_by_coordinates(lat1, lon1, lat2, lon2)
+  # Accepts two coordinates (floating point [latitude,longitude] arrays), and
+  # returns the great circle distance between them (in integer miles) using
+  # the haversine fomula.
+  def self.distance_by_coordinates(coord_orig, coord_dest)
+    return nil unless coord_orig.present? && coord_dest.present?
     deg_to_rad = Math::PI / 180
     radius = 3958.7613 # mean radius (miles)
-    phi_1 = lat1 * deg_to_rad
-    phi_2 = lat2 * deg_to_rad
-    delta_phi = (lat2-lat1) * deg_to_rad
-    delta_lambda = (lon2-lon1) * deg_to_rad
+    phi_1 = coord_orig[0] * deg_to_rad
+    phi_2 = coord_dest[0] * deg_to_rad
+    delta_phi = (coord_dest[0]-coord_orig[0]) * deg_to_rad
+    delta_lambda = (coord_dest[1]-coord_orig[1]) * deg_to_rad
     
     a = Math.sin(delta_phi/2)**2 + Math.cos(phi_1) * Math.cos(phi_2) * Math.sin(delta_lambda/2)**2
     distance = 2 * radius * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
