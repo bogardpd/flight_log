@@ -9,7 +9,20 @@ module FlightXML
     return Savon.client(wsdl: "https://flightxml.flightaware.com/soap/FlightXML2/wsdl", basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
   end
   
-  # Accepts an airport ICAO string, and returns its TZInfo Timezone
+  # Accepts an airport ICAO string, and returns an array containing its
+  # latitude and longitude.
+  def self.airport_coordinates(airport_icao)
+    begin
+      pos = client.call(:airport_info, message: {
+        airport_code: airport_icao
+        }).to_hash[:airport_info_results][:airport_info_result]
+      return [pos[:latitude].to_f, pos[:longitude].to_f]
+    rescue
+      return nil
+    end
+  end
+  
+  # Accepts an airport ICAO string, and returns its TZInfo Timezone.
   def self.airport_timezone(airport_icao)
     begin
       tz = client.call(:airport_info, message: {
