@@ -32,6 +32,22 @@ class Route < ApplicationRecord
     end
   end
   
+  # Accepts two coordinates, and returns the great circle distance between
+  # them (in integer miles) using the haversine fomula.
+  def self.distance_by_coordinates(lat1, lon1, lat2, lon2)
+    deg_to_rad = Math::PI / 180
+    radius = 3958.7613 # mean radius (miles)
+    phi_1 = lat1 * deg_to_rad
+    phi_2 = lat2 * deg_to_rad
+    delta_phi = (lat2-lat1) * deg_to_rad
+    delta_lambda = (lon2-lon1) * deg_to_rad
+    
+    a = Math.sin(delta_phi/2)**2 + Math.cos(phi_1) * Math.cos(phi_2) * Math.sin(delta_lambda/2)**2
+    distance = 2 * radius * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+    
+    return distance.to_i
+  end
+  
   # Returns an array of hashes. Each hash contains an array of two airport codes
   # (sorted alphabetically), distance, and number of times flown, sorted by
   # number of times flown descending. Routes which have been flown but have

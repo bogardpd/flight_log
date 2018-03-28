@@ -89,6 +89,7 @@ module FlightXML
     return fields
   end
   
+  # Accepts a FlightXML ident and a departure time, and returns a FlightXML ID.
   def self.get_flight_id(ident, departure_utc)
     return nil unless ident && departure_utc
     
