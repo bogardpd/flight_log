@@ -190,6 +190,7 @@ class AirportsController < ApplicationController
   def create
     @airport = Airport.new(airport_params)
     if @airport.save
+      @airport.coordinates # Look up coordinates for new airport
       flash[:success] = "Successfully added #{params[:airport][:iata_code]}!"
       if session[:form_location]
         form_location = session[:form_location]
