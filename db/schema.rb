@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180129013803) do
+ActiveRecord::Schema.define(version: 20180331204717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 20180129013803) do
     t.datetime "updated_at", null: false
     t.string   "country"
     t.string   "icao_code"
+    t.float    "latitude"
+    t.float    "longitude"
     t.index ["iata_code"], name: "index_airports_on_iata_code", unique: true, using: :btree
   end
 

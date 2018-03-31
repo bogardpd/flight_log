@@ -12,8 +12,8 @@ class Airport < ApplicationRecord
   
   validates :iata_code, presence: true, length: { is: 3 }, uniqueness: { case_sensitive: false }
   validates :icao_code, presence: true, length: { is: 4 }, uniqueness: { case_sensitive: false }
-  validates :city, :presence => true
-  validates :country, :presence => true
+  validates :city, presence: true
+  validates :country, presence: true
   
   def country_flag_path
     if self.country == nil

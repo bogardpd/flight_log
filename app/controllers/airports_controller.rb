@@ -1,5 +1,5 @@
 class AirportsController < ApplicationController
-  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   add_breadcrumb "Home", "root_path"
   
   def index
@@ -248,7 +248,7 @@ class AirportsController < ApplicationController
   private
   
     def airport_params
-      params.require(:airport).permit(:city, :iata_code, :icao_code, :country)
+      params.require(:airport).permit(:city, :iata_code, :icao_code, :country, :latitude, :longitude)
     end
   
     # Take a collection of flights, and return an array of all airport IDs
