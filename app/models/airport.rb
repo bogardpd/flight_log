@@ -15,6 +15,27 @@ class Airport < ApplicationRecord
   validates :city, presence: true
   validates :country, presence: true
   
+  # Returns the airport's latitude and longitude in an array of floats. If the
+  # latitude and longitude aren't defined, this method attempts to look them up
+  # using the FlightXML API and save them, before returning the coordinate
+  # array. If this is not successful, returns nil.
+  def coordinates
+    if self.latitude.present? && self.longitude.present?
+      return [self.latitude, self.longitude]
+    elsif self.icao_code.present?
+      # Try to look up coordinates on FlightXML
+      coordinates = FlightXML.airport_coordinates(self.icao_code)
+      return nil unless coordinates.present?
+      # Save coordinates to instance
+      self.latitude = coordinates[0]
+      self.longitude = coordinates[1]
+      self.save
+      return coordinates
+    else
+      return nil
+    end
+  end
+  
   def country_flag_path
     if self.country == nil
       "flags/unknown-country.png"

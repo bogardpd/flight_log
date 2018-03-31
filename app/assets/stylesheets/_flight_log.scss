@@ -130,6 +130,15 @@ div.column {
 	display: inline-block;
 }
 
+div.coordinates {
+  float: right;
+  margin-right: 0.5em;
+  text-align: right;
+  color: $color-text-secondary;
+  font-size: $font-size-small;
+  line-height: 1.25;
+}
+
 div.field_with_errors {
 	display: inline;
 	margin-left: 10px;
