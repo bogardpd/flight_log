@@ -3,7 +3,7 @@
 <h1><%= @airline.airline_name %></h1>
 
 <% if @flights.any? %>
-	<div class="page_navigation">
+	<div class="page-navigation">
 	  <ul>
 			<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@airline.airline_name}") %></li>
 			<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft flown on #{@airline.airline_name}") %></li>

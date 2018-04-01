@@ -1,6 +1,6 @@
 <h1><%= @title %></h1>
 
-<div class="page_navigation">
+<div class="page-navigation">
   <ul>
 		<li><%= link_to("Map", "#map", :title => "Map of flights visited in " + @in_text) %></li>
 		<li><%= link_to("Airports", "#airports", :title => "Airports visited in " + @in_text) %></li>
@@ -18,7 +18,7 @@
 
 <p>I took <%= pluralize(@flights.length, "commercial flight") %> in <%= @in_text %>.</p>
 
-<div id="map" class="intro_box">
+<div id="map" class="intro-box">
   <%= map_with_region_select(@map, @region, anchor: "flight-map") %>
 	<%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
 </div>

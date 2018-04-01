@@ -1,11 +1,19 @@
-<% if @airport.country %>
-<div id="title-info"><%= @airport.country %><%= image_tag(@airport.country_flag_path, title: @airport.country, class: "country_flag") %></div>
+<% if @airport.country || @airport.coordinates %>
+<div id="title-info">
+  <% if @airport.coordinates %>
+    <div><%= format_coordinates(@airport.coordinates) %></div>
+  <% end %>
+  <% if @airport.country %>
+    <div>
+      <%= @airport.country %><%= image_tag(@airport.country_flag_path, title: @airport.country, class: "country_flag") %>
+    </div>
+  <% end %>
+</div>
 <% end %>
 
 <h1><%= format_airport_name(@airport.city) %></h1>
 
-
-<div class="page_navigation">
+<div class="page-navigation">
   <ul>
 		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Airports", "#airports", :title => "Origin and destination airports for #{@airport.iata_code}") %></li>
@@ -18,10 +26,6 @@
 		<li><%= link_to("Flight List", "#flights", :title => "Flights using #{@airport.iata_code}") %></li>
   </ul>
 </div>
-
-<% if @airport.coordinates %>
-  <div class="coordinates"><%= format_coordinates(@airport.coordinates) %></div>
-<% end %>
 
 <p>I have visited <span class="bold"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>"><%= @airport.icao_code %></abbr></span> <%= pluralize(@airport_frequency, "time") %>.</p>
 

@@ -1,6 +1,6 @@
 <h1><%= @airports[0] %> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= @airports[1] %></h1>
 
-<div class="page_navigation">
+<div class="page-navigation">
   <ul>
 		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %></li>
 		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %></li>

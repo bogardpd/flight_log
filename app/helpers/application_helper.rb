@@ -31,7 +31,7 @@ module ApplicationHelper
   end
   
   def format_coordinates(coordinates)
-    return "#{"%.5f" % coordinates[0].abs}° #{coordinates[0] < 0 ? "S" : "N"}<br/>#{"%.5f" % coordinates[1].abs}° #{coordinates[1] < 0 ? "W" : "E"}".html_safe
+    return "#{"%.5f" % coordinates[0].abs}° #{coordinates[0] < 0 ? "S" : "N"}&ensp;#{"%.5f" % coordinates[1].abs}° #{coordinates[1] < 0 ? "W" : "E"}".html_safe
   end
   
   def render_message(type, text)

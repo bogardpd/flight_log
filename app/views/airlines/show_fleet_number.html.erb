@@ -2,7 +2,7 @@
 
 <h1><%= @operator.airline_name %> #<%= @fleet_number %></h1>
 
-<div class="page_navigation">
+<div class="page-navigation">
   <ul>
 		<li><%= link_to("Map", "#map", :title => "Map of flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
 		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>

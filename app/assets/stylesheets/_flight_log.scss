@@ -32,12 +32,14 @@ body {
 
 #title-info {
 	float: right;
-	padding-top: 6px;
+  margin-bottom: 0.75em;
 	font-weight: 300;
+  text-align: right;
 	-webkit-text-size-adjust:100%;
 	
 	img {
 		margin-left: $margin-icon-to-text;
+    margin-right: 0;
 	}
 }
 
@@ -130,15 +132,6 @@ div.column {
 	display: inline-block;
 }
 
-div.coordinates {
-  float: right;
-  margin-right: 0.5em;
-  text-align: right;
-  color: $color-text-secondary;
-  font-size: $font-size-small;
-  line-height: 1.25;
-}
-
 div.field_with_errors {
 	display: inline;
 	margin-left: 10px;
@@ -192,51 +185,52 @@ div.supplemental-info {
 	margin-left: $margin-icon-to-text;
 }
 
-div.intro_box {
+div.intro-box {
 	padding: 10px;
 	margin: 2px;
 	text-align: center;
 	vertical-align: top;
+
+  h2 {
+  	margin: 0;
+  	font-size: 140%;
+  }
+  
+  p {
+  	margin: 0;
+  	text-align: center;
+  	font-weight: 400;
+  	-webkit-text-size-adjust:100%;
+  }
+  
+  table {
+  	margin: 3px 0;
+  }
 }
 
-div.intro_box h2 {
-	margin: 0;
-	font-size: 140%;
-}
-
-div.intro_box p {
-	margin: 0;
-	text-align: center;
-	font-weight: 400;
-	-webkit-text-size-adjust:100%;
-}
-
-div.intro_box table {
-	margin: 3px 0;
-}
-
-div.page_navigation {
-	padding: 0;
+div.page-navigation {
+	clear: both;
+  padding: 0;
 	margin-top: -15px;
 	margin-bottom: 10px;
 	margin-left: 5px;
 	margin-right: 5px;
 	text-align: left;
 	border-bottom: 1px solid $color-background-page;
-}
-
-div.page_navigation ul {
-	padding: 0;
-	margin: 0;
-}
-
-div.page_navigation li {
-	list-style-type: none;
-	display: inline-block;
-	height: 100%;
-	margin: 0 -5px;
-	padding: 3px 10px;
-	vertical-align: middle;
+  
+  ul {
+  	padding: 0;
+  	margin: 0;
+  }
+  
+  li {
+  	list-style-type: none;
+  	display: inline-block;
+  	height: 100%;
+  	margin: 0 -5px;
+  	padding: 3px 10px;
+  	vertical-align: middle;
+  }
 }
 
 
