@@ -58,7 +58,7 @@ class FlightsController < ApplicationController
     end
     
     @map = SingleFlightMap.new(@flight)
-    @route_distance = Route.distance_by_airport_id(@flight.origin_airport, @flight.destination_airport)
+    @route_distance = Route.distance_by_airport(@flight.origin_airport, @flight.destination_airport)
     @boarding_pass = BoardingPass.new(@flight.boarding_pass_data, flight: @flight)
     
   rescue ActiveRecord::RecordNotFound

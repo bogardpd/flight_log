@@ -17,18 +17,34 @@ class Route < ApplicationRecord
     if current_route.present?
       return current_route.first.distance_mi
     else
-      return false
+      distance = distance_by_airport(Airport.find(airport_ids[0]), Airport.find(airport_ids[1]))
+      return distance.present? ? distance : false
     end
   end
   
-  # Given two airport IDs, returns the distance in statute miles between them.
+  # Given two airports, returns the distance in statute miles between them.
   # This calls an SQL query, and should not be used in a loop.
-  def self.distance_by_airport_id(airport1_id, airport2_id)
-    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport1_id, airport2_id, airport2_id, airport1_id)
+  def self.distance_by_airport(airport_1, airport_2)
+    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport_1, airport_2, airport_2, airport_1)
     if current_route.present?
       return current_route.first.distance_mi
     else
-      return false
+      coordinates_1 = airport_1.coordinates
+      coordinates_2 = airport_2.coordinates
+      return false unless coordinates_1.present? && coordinates_2.present?
+      
+      distance = distance_by_coordinates(coordinates_1, coordinates_2)
+      return false unless distance.present?
+      
+      # Try to save new route:
+      new_route = Route.new
+      airport_ids = [airport_1.id, airport_2.id].sort
+      new_route.airport1_id = airport_ids.first
+      new_route.airport2_id = airport_ids.last
+      new_route.distance_mi = distance
+      new_route.save      
+      
+      return distance
     end
   end
   
@@ -72,7 +88,7 @@ class Route < ApplicationRecord
       route_array.push({
         route: route,
         flight_count: freq,
-        distance_mi: route_distances[route] || -1
+        distance_mi: route_distances[route] || distance_by_iata(route.first, route.last) || -1
       })
     end
     
