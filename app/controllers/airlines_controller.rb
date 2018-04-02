@@ -70,7 +70,7 @@ class AirlinesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     
     # Calculate total flight distance:
-    @total_distance = total_distance(@flights)
+    @total_distance = Route.total_distance(@flights)
     
     # Create comparitive lists of aircraft and classes:
     @airlines = Airline.flight_count(@flights, type: :airline) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
@@ -105,7 +105,7 @@ class AirlinesController < ApplicationController
     add_admin_action view_context.link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: "warning") if @flights.length == 0
     add_admin_action view_context.link_to("Edit Airline", edit_airline_path(@operator))
     
-    @total_distance = total_distance(@flights)
+    @total_distance = Route.total_distance(@flights)
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
@@ -147,7 +147,7 @@ class AirlinesController < ApplicationController
     add_breadcrumb "Flights Operated by #{@operator.airline_name}", show_operator_path(@operator.iata_airline_code)
     add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number)
     
-    @total_distance = total_distance(@flights)
+    @total_distance = Route.total_distance(@flights)
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:

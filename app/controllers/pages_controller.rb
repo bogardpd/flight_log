@@ -24,7 +24,7 @@ class PagesController < ApplicationController
       end
     end
     
-    @total_distance = total_distance(@flights)    
+    @total_distance = Route.total_distance(@flights)    
     
     if @flights.any?
       @map = FlightsMap.new(@flights, region: @region)

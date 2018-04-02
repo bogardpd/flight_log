@@ -76,7 +76,7 @@ class AirportsController < ApplicationController
     prev_trip_id = nil
     prev_section_id = nil
     
-    @total_distance = total_distance(@flights)
+    @total_distance = Route.total_distance(@flights)
     
     # Calculate distances to direct flight airports:
     direct_flight_airports = @flights.pluck(:origin_airport_id).concat(@flights.pluck(:destination_airport_id)).uniq

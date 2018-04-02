@@ -96,4 +96,9 @@ class Route < ApplicationRecord
     
   end
   
+  # Given a collection of Flights, returns their total distance.
+  def self.total_distance(flights)
+    return flight_count(flights).reduce(0){|sum, r| sum + r[:flight_count] * r[:distance_mi]}
+  end
+  
 end

@@ -123,11 +123,6 @@ protected
     return route_superlatives
   end
   
-  # Given a collection of Flights, returns their total distance.
-  def total_distance(flights)
-    return Route.flight_count(flights).reduce(0){|sum, r| sum + r[:flight_count] * r[:distance_mi]}
-  end
-  
   def json_request?
     request.format.json?
   end
