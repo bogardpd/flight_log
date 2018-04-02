@@ -108,8 +108,10 @@ protected
     
   end
   
+  # Accept a hash of distances in format distances[[airport1,airport2]] = distance
+  # and return a hash of hashes of superlative distances
   def superlatives_collection(route_distances)
-    # accept a hash of distances in format distances[[airport1,airport2]] = distance and return a hash of hashes of superlative distances
+    
     return false if route_distances.length == 0
     route_max = route_distances.max_by{|k,v| v}[1]
     route_non_zero = route_distances.select{|k,v| v > 0}
@@ -123,37 +125,7 @@ protected
   
   # Given a collection of Flights, returns their total distance.
   def total_distance(flights)
-    
-    # Get set of airports used in flights and select all routes with at least one of those airports
-    used_airport_ids = Set.new
-    flights.each do |flight|
-      used_airport_ids << flight.origin_airport_id
-      used_airport_ids << flight.destination_airport_id
-    end
-    route_envelope = Route.where("airport1_id IN (?) OR airport2_id IN (?)", used_airport_ids, used_airport_ids)
-    
-    # Sort airports numerically and create hash of airport distances
-    distances = Hash.new(0)
-    route_envelope.each do |route|
-      airport_id = Array.new
-      airport_id[0] = route.airport1_id
-      airport_id[1] = route.airport2_id
-      airport_id.sort!
-      distances[airport_id] = route.distance_mi
-    end
-    
-    # Loop through flights and sum distances
-    total_distance = 0
-    flights.each do |flight|
-      airport_id = Array.new
-      airport_id[0] = flight.origin_airport_id
-      airport_id[1] = flight.destination_airport_id
-      airport_id.sort!
-      total_distance += distances[airport_id]
-    end
-    
-    return total_distance
-    
+    return Route.flight_count(flights).reduce(0){|sum, r| sum + r[:flight_count] * r[:distance_mi]}
   end
   
   def json_request?
