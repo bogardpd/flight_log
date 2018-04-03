@@ -63,7 +63,7 @@ class PKPass < ApplicationRecord
       end
       fields.store(:id, pass.id)
       fields
-    }.sort_by{|h| h[:date] || 0}
+    }.sort_by{|h| h[:date] || Time.at(0)}
   end
   
   protected
