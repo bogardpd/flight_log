@@ -24,7 +24,7 @@ module TravelClass
   def self.list
     classes = Hash.new
     classes["F"] = "International First"
-    classes["J"] = "Business / Domestic First"
+    classes["J"] = "Int’l. Business / Domestic First"
     classes["W"] = "Premium Economy"
     classes["Y"] = "Economy"
     return classes
