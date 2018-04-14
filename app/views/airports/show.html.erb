@@ -27,6 +27,19 @@
   </ul>
 </div>
 
+<% if ExternalImage.exists?(@airport.terminal_silhouette_path) %>
+  <div class="illustration-container">
+    <% if ExternalImage.exists?(@airport.terminal_silhouette_large_path) %>
+      <%= link_to(image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette"), @airport.terminal_silhouette_large_path, target: :_blank) %>
+    <% else %>
+      <%= image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette") %>
+    <% end %>
+  </div>
+  <div class="credit illustration-credit">
+    Terminal silhouette created by <%= link_to("Paul Bogard", "https://www.pbogard.com/projects/terminal-silhouettes", target: :_blank) %>
+  </div>
+<% end %>
+
 <p>I have visited <span class="bold"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>"><%= @airport.icao_code %></abbr></span> <%= pluralize(@airport_frequency, "time") %>.</p>
 
 <% unless @flights.length == 0 %>

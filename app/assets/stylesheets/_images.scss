@@ -1,6 +1,6 @@
-div.illustration_container {
+div.illustration-container {
 	text-align: center;
-	margin: 5px;
+	margin: 0;
 	
 	img {
 		max-width: 720px;
@@ -17,13 +17,15 @@ div.credit {
 	opacity: 0.6;
 }
 
-div.illustration_credit {
-	margin: 5px;
+div.illustration-credit {
+	margin: 0;
 }
 
-div.map_credit {
-  margin: -0.5em 0 0.5em 0;
+div.map-credit {
+  margin: 0 0 0.75em 0;
 }
+
+// ICONS
 
 img.airline_icon {
 	width: 48px;
@@ -51,6 +53,12 @@ img.icon_right {
   margin-right: 0;
 }
 
+// IMAGES
+
+img.aircraft-illustration {
+  margin-bottom: 0.5em;
+}
+
 img.country_flag {
 	width: 32px;
 	height: 22px;
@@ -69,4 +77,8 @@ img.logo {
 img.map {
 	border: 1px solid $color-base;
   margin: 0;
+}
+
+img.terminal-silhouette {
+  
 }

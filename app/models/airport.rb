@@ -49,6 +49,16 @@ class Airport < ApplicationRecord
     end
   end
   
+  # Returns the image path for this airport's terminal silhouette.
+  def terminal_silhouette_path
+    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png-flight-historian/#{self.iata_code}.png"
+  end
+  
+  # Returns the image path for this airport's complete terminal silhouette.
+  def terminal_silhouette_large_path
+    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png/#{self.iata_code}.png"
+  end
+  
   # Accepts an IATA code, and attempts to look up the ICAO code. If it does not
   # find an ICAO code and keep_iata is true, it returns the provided IATA code.
   def self.convert_iata_to_icao(iata, keep_iata=true)
