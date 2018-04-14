@@ -74,6 +74,7 @@ class FlightsController < ApplicationController
       @date_range = ("#{params[:year]}-01-01".to_date)..("#{params[:year]}-12-31".to_date)
       add_breadcrumb params[:year], "flights_path(:year => #{params[:year]})"
       @date_range_text = "in #{params[:year]}"
+      @took_taken = params[:year].to_i == Date.today.year ? "have taken" : "took"
       @flight_list_title = params[:year] + " Flight List"
       @superlatives_title = params[:year] + " Longest and Shortest Routes"
       @superlatives_title_nav = @superlatives_title.downcase
@@ -87,6 +88,7 @@ class FlightsController < ApplicationController
       @date_range = (params[:start_date].to_date)..(params[:end_date].to_date)
       add_breadcrumb "#{Flight.format_date(params[:start_date].to_date)} - #{Flight.format_date(params[:end_date].to_date)}", "flights_path(:start_date => '#{params[:start_date]}', :end_date => '#{params[:end_date]}')"
       @date_range_text = "from #{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
+      @took_taken = @date_range.cover?(Date.today) ? "have taken" : "took"
       @flight_list_title = "Flight List for #{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
       @superlatives_title = "Longest and Shortest Routes for#{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
       @superlatives_title_nav = "Longest and shortest routes for#{Flight.format_date(params[:start_date].to_date)} to #{Flight.format_date(params[:end_date].to_date)}"
