@@ -33,7 +33,9 @@ body {
 #title-info {
 	float: right;
   margin-bottom: 0.75em;
-	font-weight: 300;
+  margin-top: -0.75em;
+	font-weight: 400;
+  font-size: $font-size-small;
   text-align: right;
 	-webkit-text-size-adjust:100%;
 	
