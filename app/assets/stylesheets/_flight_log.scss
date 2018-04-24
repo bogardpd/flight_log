@@ -24,7 +24,7 @@ body {
 }
 
 #body {
-	padding: 10px;
+	padding: 1px 10px;
 	border-left: 1px solid $color-border-page;
 	border-right: 1px solid $color-border-page;
 	border-bottom: 1px solid $color-border-page;
@@ -32,9 +32,9 @@ body {
 
 #title-info {
 	float: right;
-  margin-bottom: 0.75em;
-  margin-top: -0.75em;
-	font-weight: 400;
+  margin-bottom: 15px;
+  margin-top:     0;
+	font-weight:  400;
   font-size: $font-size-small;
   text-align: right;
 	-webkit-text-size-adjust:100%;
@@ -244,8 +244,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-	font-size: 200%;
-	margin-top: 10px;
+	font-size:    200%;
+  padding-top:   10px; // Padding is needed to lower h1 without lowering title-info boxes
+	margin-top:     5px;
 	margin-bottom: 20px;
 }
 h2 { font-size: 160%; }
