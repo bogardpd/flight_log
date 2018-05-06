@@ -18,11 +18,11 @@ module ApplicationHelper
   end
   
   def airline_icon_path(iata_airline_code)
-    image_location = "airline_icons/" + iata_airline_code + ".png"
-    if Rails.application.assets.find_asset(image_location)
-      image_location
+    image_location = "#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{iata_airline_code}.png"
+    if ExternalImage.exists?(image_location)
+      return image_location
     else
-      "airline_icons/unknown-airline.png"
+      return "#{ExternalImage::ROOT_PATH}/flights/airline-icons/unknown-airline.png"
     end
   end
   

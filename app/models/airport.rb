@@ -37,14 +37,15 @@ class Airport < ApplicationRecord
   end
   
   def country_flag_path
+    flags_root = "#{ExternalImage::ROOT_PATH}/flights/country-flags"
     if self.country == nil
-      "flags/unknown-country.png"
+      return "#{flags_root}/unknown-country.png"
     else
-      image_location = "flags/" + self.country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-") + ".png"
-      if Rails.application.assets.find_asset(image_location)
-        image_location
+      image_location = "#{flags_root}/#{self.country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png"
+      if ExternalImage.exists?(image_location)
+        return image_location
       else
-        "flags/unknown-country.png"
+        return "#{flags_root}/unknown-country.png"
       end
     end
   end
