@@ -146,7 +146,7 @@ module ApplicationHelper
         in_region = Airport.in_region(icao).sort
         if ((in_region & used_airports).any? && (used_airports - in_region).any?) || icao == []
           # This region has airports, but is not identical to world OR this region is world.
-          tabs.push "<li>#{link_to(name, url_for(params.permit(:sort).merge(region: icao.join("-"), anchor: anchor)))}</li>"
+          tabs.push "<li>#{link_to(name, url_for(params.permit(:id, :sort).merge(region: icao.join("-"), anchor: anchor)))}</li>"
         end
       end 
     end
