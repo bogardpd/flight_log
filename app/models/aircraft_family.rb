@@ -66,7 +66,7 @@ class AircraftFamily < ApplicationRecord
   # if the illustration doesn't exist
   def illustration_location
     dir = self.is_family? ? "iata" : "icao"
-    image_location = "#{ExternalImage::ROOT_PATH}/projects/flight-historian/aircraft-illustrations/#{dir}/#{self.code}.jpg"
+    image_location = "#{ExternalImage::ROOT_PATH}/flights/aircraft-illustrations/#{dir}/#{self.code}.jpg"
     if ExternalImage.exists?(image_location)
       return image_location
     else
