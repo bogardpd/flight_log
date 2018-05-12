@@ -197,6 +197,8 @@ class FlightsController < ApplicationController
           
     @flights = flyer.flights(current_user)
     @tail_numbers_table = TailNumber.flight_count(@flights)
+    countries = @tail_numbers_table.pluck(:country).uniq
+    @country_flags = countries.map{|c| [c, Airport.new(country: c).country_flag_path]}.to_h
   
     # Find maxima for graph scaling:
     @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]

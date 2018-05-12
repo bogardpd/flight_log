@@ -134,6 +134,7 @@ module TailNumber
       .map{|k,v| {
         tail_number:  k,
         count:        v[:count],
+        country:      country(k),
         aircraft:     v[:aircraft_code] || "",
         airline_name: v[:airline_name] || "",
         airline_code: v[:airline_code] || "",

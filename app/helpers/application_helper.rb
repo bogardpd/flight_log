@@ -50,7 +50,7 @@ module ApplicationHelper
   end
   
   def country_flag(country)
-    image_tag(Airport.new(:country => country).country_flag_path, :title => country, :alt => country, :class => "country_flag")
+    image_tag(Airport.new(:country => country).country_flag_path, :title => country, :alt => country, :class => "country-flag")
   end
   
   def code_mono(code)

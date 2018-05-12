@@ -9,6 +9,8 @@ module ExternalImage
     req = Net::HTTP.new(url.host)
     res = req.request_head(url.path)
     return (res.code.to_i == 200)
+  rescue SocketError
+    return false
   end
   
 end
