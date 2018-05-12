@@ -7,9 +7,9 @@ module FlightsHelper
       :airline => lambda{|data|
         if raw =~ /^\d{3}$/
           airline = Airline.where(numeric_code: data)
-          airline_icon_path(airline.first.iata_airline_code) if airline.length > 0
+          Airline.icon_path(airline.first.iata_airline_code) if airline.length > 0
         else
-          airline_icon_path(data.strip)
+          Airline.icon_path(data.strip)
         end
       },
       :selectee => lambda{|data|

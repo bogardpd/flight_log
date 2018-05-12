@@ -17,15 +17,6 @@ module ApplicationHelper
     end
   end
   
-  def airline_icon_path(iata_airline_code)
-    image_location = "#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{iata_airline_code}.png"
-    if ExternalImage.exists?(image_location)
-      return image_location
-    else
-      return "#{ExternalImage::ROOT_PATH}/flights/airline-icons/unknown-airline.png"
-    end
-  end
-  
   def format_airport_name(airport_name)
     return airport_name.gsub(" (", %Q(&ensp;<small class="airport-name">)).gsub(")", "</small>").html_safe
   end

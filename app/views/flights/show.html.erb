@@ -1,4 +1,4 @@
-<div id="title-info"><%= image_tag(airline_icon_path(@flight.airline.iata_airline_code), title: @flight.airline.airline_name, class: "airline_icon") %></div>
+<div id="title-info"><%= image_tag(Airline.icon_path(@flight.airline.iata_airline_code), title: @flight.airline.airline_name, class: "airline_icon") %></div>
 
 <h1><%= @flight.airline.airline_name %> <%= @flight.flight_number %></h1>
 
@@ -47,7 +47,7 @@
     <td class="label-column">Airline</td>
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.airline.iata_airline_code) %></div>
-			<%= link_to("#{image_tag(airline_icon_path(@flight.airline.iata_airline_code), alt: @flight.airline.airline_name, class: "airline_icon")}#{@flight.airline.airline_name}".html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %>
+			<%= link_to("#{image_tag(Airline.icon_path(@flight.airline.iata_airline_code), alt: @flight.airline.airline_name, class: "airline_icon")}#{@flight.airline.airline_name}".html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %>
 			</td>
   </tr>
   <% if @flight.operator %>
@@ -55,7 +55,7 @@
     <td class="label-column">Operated By</td>
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.operator.iata_airline_code) %></div>
-			<%= link_to("#{image_tag(airline_icon_path(@flight.operator.iata_airline_code), alt: @flight.operator.airline_name, class: "airline_icon")}#{@flight.operator.airline_name}".html_safe, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %>
+			<%= link_to("#{image_tag(Airline.icon_path(@flight.operator.iata_airline_code), alt: @flight.operator.airline_name, class: "airline_icon")}#{@flight.operator.airline_name}".html_safe, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %>
 			<% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.iata_airline_code, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %>
 			</td>
   </tr>
@@ -65,7 +65,7 @@
     <td class="label-column">Codeshare</td>
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.codeshare_airline.iata_airline_code) %></div>
-			<%= image_tag(airline_icon_path(@flight.codeshare_airline.iata_airline_code), alt: @flight.codeshare_airline.airline_name, class: "airline_icon") %><%= @flight.codeshare_airline.airline_name %> <%= @flight.codeshare_flight_number %>
+			<%= image_tag(Airline.icon_path(@flight.codeshare_airline.iata_airline_code), alt: @flight.codeshare_airline.airline_name, class: "airline_icon") %><%= @flight.codeshare_airline.airline_name %> <%= @flight.codeshare_flight_number %>
 			</td>
 		</td>
   </tr>
