@@ -41,7 +41,7 @@ module ApplicationHelper
   end
   
   def airline_icon(iata_code, title: nil, css_class: nil)
-    return "" unless iata_code
+    return image_tag("/assets/blank.png", class: "airline-icon") unless iata_code
     iata_code = iata_code.split("-")
     iata_code[0].upcase!
     iata_code[1].downcase! if iata_code.count > 1
@@ -53,7 +53,7 @@ module ApplicationHelper
   end
   
   def country_flag_icon(country, title: nil)
-    return "" unless country
+    return image_tag("/assets/blank.png", class: "country-flag-icon") unless country
     title ||= country
     return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: "country-flag-icon", onerror: "this.src='assets/blank.png';this.onerror='';").html_safe
     html += %Q(</span>)
