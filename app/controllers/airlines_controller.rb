@@ -12,7 +12,7 @@ class AirlinesController < ApplicationController
     @flights = flyer.flights(current_user)
     @airlines  = Airline.flight_count(@flights, type: :airline)
     @operators = Airline.flight_count(@flights, type: :operator)
-    
+        
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
     

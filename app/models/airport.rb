@@ -36,20 +36,6 @@ class Airport < ApplicationRecord
     end
   end
   
-  def country_flag_path
-    flags_root = "#{ExternalImage::ROOT_PATH}/flights/country-flags"
-    if self.country == nil
-      return "#{flags_root}/unknown-country.png"
-    else
-      image_location = "#{flags_root}/#{self.country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png"
-      if ExternalImage.exists?(image_location)
-        return image_location
-      else
-        return "#{flags_root}/unknown-country.png"
-      end
-    end
-  end
-  
   # Returns the image path for this airport's terminal silhouette.
   def terminal_silhouette_path
     return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png-flight-historian/#{self.iata_code}.png"

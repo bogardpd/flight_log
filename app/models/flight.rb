@@ -50,6 +50,11 @@ class Flight < ApplicationRecord
     SIMPLIFY_ATTRS.each { |attr| self[attr] = TailNumber.simplify(self[attr]) if !self[attr].blank? }
   end
   
+  # Accepts a collection of flights, and returns an array of airline IATA codes
+  def self.airlines(flights)
+    flights.map{|f| f.airline.iata_airline_code}.uniq
+  end
+  
   # For a given flight collection, return a hash with years as the keys, and
   # hashes of counts of business, mixed, and personal flights as the values.
   # by_year[2009] = {business: 35, mixed: 4, personal: 7}

@@ -27,16 +27,24 @@ div.map-credit {
 
 // ICONS
 
-img.airline_icon {
-	width: 48px;
-	height: 24px;
-	margin-top: 0;
-	margin-bottom: 0;
-	margin-left: 0;
-	margin-right: $margin-icon-to-text;
-	vertical-align: middle;
-	border: none;
+img.airline-icon {
+  width: 48px;
+  height: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: $margin-icon-to-text;
+  vertical-align: middle;
+  border: none;
   border-radius: 4px;
+}
+
+img.country-flag-icon {
+  width: 32px;
+  height: 22px;
+  margin: 1px 3px;
+  vertical-align: middle;
+  border: none;
 }
 
 img.icon_between_text {
@@ -44,7 +52,7 @@ img.icon_between_text {
 	margin-right: $margin-icon-to-text;
 }
 
-img.icon_no_text {
+img.icon-no-text {
 	margin: 0;
 }
 
@@ -57,14 +65,6 @@ img.icon_right {
 
 img.aircraft-illustration {
   margin-bottom: 0.5em;
-}
-
-img.country-flag {
-	width: 32px;
-	height: 22px;
-	margin: 1px 3px;
-	vertical-align: middle;
-	border: none;
 }
 
 img.logo {

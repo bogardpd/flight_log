@@ -22,7 +22,7 @@
     </tr>
   <% @flight_airports.first(5).each do |airport| %>
     <tr>
-      <td class="left"><%= country_flag(airport[:country]) %> <%= link_to(format_airport_name(airport[:city]).html_safe, airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+      <td class="left"><%= country_flag_icon(airport[:country]) %> <%= link_to(format_airport_name(airport[:city]).html_safe, airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
       <td class="center code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
       <td class="center"><%= airport[:visit_count] %></td>
     </tr>
@@ -41,7 +41,7 @@
   <% @flight_airlines.first(5).each do |airline| %>
     <tr>
       <td class="left">
-      <%= link_to(image_tag(Airline.icon_path(airline[:iata_airline_code]), alt: airline[:iata_airline_code], class: "airline_icon") + airline[:airline_name], airline_path(airline[:iata_airline_code]), :title => "View flights on #{airline[:airline_name]}") %></td>
+      <%= link_to(airline_icon(airline[:iata_airline_code], title: airline[:airline_name]) + airline[:airline_name], airline_path(airline[:iata_airline_code]), :title => "View flights on #{airline[:airline_name]}") %></td>
       <td class="center"><%= airline[:flight_count] %></td>
     </tr>
   <% end %>

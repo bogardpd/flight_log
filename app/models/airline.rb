@@ -55,15 +55,6 @@ class Airline < ApplicationRecord
     return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
   end
   
-  def self.icon_path(iata_airline_code)
-    image_location = "#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{iata_airline_code}.png"
-    if ExternalImage.exists?(image_location)
-      return image_location
-    else
-      return "#{ExternalImage::ROOT_PATH}/flights/airline-icons/unknown-airline.png"
-    end
-  end
-  
   protected
   
   def capitalize_codes

@@ -43,5 +43,5 @@
 <h2 id="tracking">Tracking</h2>
 
 <ul>
-  <li>FlightAware: <%= link_to(TailNumber.format(@tail_number), "http://flightaware.com/live/flight/#{@tail_number}", :title => "Track #{TailNumber.format(@tail_number)} on FlightAware")%></li>
+  <li>FlightAware: <%= link_to(TailNumber.format(@tail_number), "http://flightaware.com/live/flight/#{@tail_number}", title: "Track #{TailNumber.format(@tail_number)} on FlightAware", target: :_blank)%></li>
 </ul>

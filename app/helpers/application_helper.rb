@@ -40,8 +40,23 @@ module ApplicationHelper
     iata_airline_code.split("-").first
   end
   
-  def country_flag(country)
-    image_tag(Airport.new(:country => country).country_flag_path, :title => country, :alt => country, :class => "country-flag")
+  def airline_icon(iata_code, title: nil, css_class: nil)
+    return "" unless iata_code
+    iata_code = iata_code.split("-")
+    iata_code[0].upcase!
+    iata_code[1].downcase! if iata_code.count > 1
+    title ||= iata_code[0]
+    iata_code = iata_code.join("-")
+    class_array = ["airline-icon"]
+    class_array |= css_class.split(" ") if css_class
+    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{iata_code}.png", title: title, class: class_array.join(" "), onerror: "this.src='assets/blank.png';this.onerror='';").html_safe
+  end
+  
+  def country_flag_icon(country, title: nil)
+    return "" unless country
+    title ||= country
+    return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: "country-flag-icon", onerror: "this.src='assets/blank.png';this.onerror='';").html_safe
+    html += %Q(</span>)
   end
   
   def code_mono(code)
@@ -79,14 +94,14 @@ module ApplicationHelper
   end
   
   def tail_number_country_flag(tail_number)
-    country_flag(TailNumber.country(tail_number))
+    country_flag_icon(TailNumber.country(tail_number))
   end
   
   def tail_number_with_country_flag(tail_number, show_flag_without_country=true)
     country_format = TailNumber.country_format(tail_number)
     tail_link = link_to(country_format[:tail], show_tail_path(tail_number), title: "View flights on tail number #{country_format[:tail]}")
     if country_format[:country] || show_flag_without_country
-      return "#{country_flag(country_format[:country])} #{tail_link}".html_safe
+      return "#{country_flag_icon(country_format[:country])} #{tail_link}".html_safe
     else
       return tail_link.html_safe
     end

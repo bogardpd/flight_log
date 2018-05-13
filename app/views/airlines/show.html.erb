@@ -1,4 +1,4 @@
-<div id="title-info"><%= iata_airline_code_display(@airline.iata_airline_code) %> / <%= @airline.icao_airline_code %><%= image_tag(Airline.icon_path(@airline.iata_airline_code), :title => @airline.airline_name, :class => "airline_icon")%></div>
+<div id="title-info"><%= iata_airline_code_display(@airline.iata_airline_code) %> / <%= @airline.icao_airline_code %><%= airline_icon(@airline.iata_airline_code, :title => @airline.airline_name)%></div>
 
 <h1><%= @airline.airline_name %></h1>
 
