@@ -1,0 +1,54 @@
+{
+  "AA" : {
+    "G" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
+    "L" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
+    "Q" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
+    "R" : { "code" : "J", "name" : "business", "details" : "upgrade" },
+    "T" : { "code" : "Y", "name" : "economy", "details" : "award" },
+    "X" : { "code" : "F", "name" : "first", "details" : "upgrade" },
+    "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" },
+    "Z" : { "code" : "F", "name" : "first", "details" : "award" }
+  },
+  "AB" : {
+      "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" }
+    },
+  "AC" : {
+    "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" }
+  },
+  "AS" : {
+    "Q" : { "code" : "Y", "name" : "economy", "details" : "restricted" },
+    "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" }
+  },
+  "BA" : {
+    "M" : { "code" : "Y", "name" : "economy", "details" : "restricted" }
+  },
+  "B6" : {
+    "P" : { "code" : "Y", "name" : "economy" }
+  },
+  "DL" : {
+    "W" : { "code" : "Y", "name" : "premium economy" },
+    "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" }
+  },
+  "FI" : {
+    "M" : { "code" : "Y", "name" : "economy" }
+  },
+  "HA" : {
+    "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" }
+  },
+  "UA" : {
+    "F" : { "code" : "F", "name" : "first" },
+    "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" }
+  },
+  "US" : {
+    "N" : { "code" : "Y", "name" : "economy", "details" : "award" },
+    "Y" : { "code" : "Y", "name" : "economy", "details" : "unrestricted" }
+  },
+  "WN" : {
+    "M" : { "code" : "Y", "name" : "economy", "details" : "Wanna Get Away" },
+    "N" : { "code" : "Y", "name" : "economy", "details" : "Wanna Get Away" },
+    "R" : { "code" : "Y", "name" : "economy", "details" : "Anytime" },
+    "T" : { "code" : "Y", "name" : "economy", "details" : "Wanna Get Away" },
+    "W" : { "code" : "Y", "name" : "economy"},
+    "Y" : { "code" : "Y", "name" : "economy", "details" : "Anytime" }
+  }
+}

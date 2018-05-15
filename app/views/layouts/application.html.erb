@@ -11,7 +11,8 @@
 	<%= stylesheet_link_tag "application", :media => "all" %>
   <meta name="viewport" content="width=820, user-scalable:yes" />
   
-  <%= csrf_meta_tags %>
+  <%= csrf_meta_tag %>
+  <%= javascript_include_tag :application %>
 	<%= render "layouts/shim" %>
   <meta name="author" content="Paul Bogard" />
   <%= meta_description %>

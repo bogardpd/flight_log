@@ -31,7 +31,7 @@
     	<table class="flightlog">
     	<% @airports_with_no_flights.each do |airport| %>
     	  <tr>
-    	    <td class="airport-city"><%= image_tag(Airport.flag_path(airport[:country]), title: airport[:country], class: "country-flag") %> <%= link_to(format_airport_name(airport.city).html_safe, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
+    	    <td class="airport-city"><%= country_flag_icon(airport[:country]) %> <%= link_to(format_airport_name(airport.city).html_safe, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
     	    <td class="airport-code code-mono"><%= link_to(airport.iata_code, airport_path(airport[:iata_code]), :title => "View airport details for #{airport.city}") %></td>
 
     	  </tr>
