@@ -3,22 +3,16 @@ module FlightsHelper
   # Accepts a type and returns an icon
   def display_icon(type, raw, interpretation=nil)
     return nil unless raw && type
-    path = {
-      :airline => lambda{|data|
-        if raw =~ /^\d{3}$/
-          airline = Airline.where(numeric_code: data)
-          Airline.icon_path(airline.first.iata_airline_code) if airline.length > 0
-        else
-          Airline.icon_path(data.strip)
-        end
-      },
-      :selectee => lambda{|data|
-        "tpc.png" if data.to_i == 3        
-      }
-    }
-    if path[type]
-      path = path[type].call(raw)
-      return image_tag(path, class: "airline_icon", title: interpretation).html_safe if path
+    if type == :airline
+      if raw =~ /^\d{3}$/
+        airline = Airline.where(numeric_code: raw)
+        return airline_icon(airline.first.iata_airline_code) if airline.length > 0
+      else
+        return airline_icon(raw) 
+      end
+      return airline_icon(raw) 
+    elsif type == :selectee
+      return image_tag("tpc.png", title: interpretation, class: "airline-icon") if raw.to_i == 3
     end
     return nil
   end

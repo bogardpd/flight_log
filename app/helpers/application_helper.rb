@@ -42,7 +42,7 @@ module ApplicationHelper
   
   def airline_icon(iata_code, title: nil, css_class: nil)
     return image_tag("/assets/blank.png", class: "airline-icon") unless iata_code
-    iata_code = iata_code.split("-")
+    iata_code = iata_code.strip.split("-")
     iata_code[0].upcase!
     iata_code[1].downcase! if iata_code.count > 1
     title ||= iata_code[0]
