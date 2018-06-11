@@ -122,7 +122,7 @@ module TailNumber
     tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
     return nil unless tail_details.any?
     tail_details.map{|f| {f.tail_number => {
-      airline_code:  f.airline.iata_airline_code,
+      airline_code:  f.airline.icao_airline_code,
       airline_name:  f.airline.airline_name,
       aircraft_code: f.aircraft_family&.icao_aircraft_code || f.aircraft_family&.iata_aircraft_code,
       manufacturer:  f.aircraft_family&.manufacturer,

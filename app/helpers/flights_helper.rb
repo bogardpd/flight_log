@@ -5,12 +5,12 @@ module FlightsHelper
     return nil unless raw && type
     if type == :airline
       if raw =~ /^\d{3}$/
-        airline = Airline.where(numeric_code: raw)
-        return airline_icon(airline.first.iata_airline_code) if airline.length > 0
+        airline = Airline.find_by(numeric_code: raw)
       else
-        return airline_icon(raw) 
+        airline = Airline.find_by(iata_airline_code: raw.strip.upcase)
       end
-      return airline_icon(raw) 
+      return nil unless airline
+      return airline_icon(airline.icao_airline_code, title: airline.airline_name)
     elsif type == :selectee
       return image_tag("tpc.png", title: interpretation, class: "airline-icon") if raw.to_i == 3
     end

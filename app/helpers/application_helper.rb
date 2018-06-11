@@ -40,16 +40,13 @@ module ApplicationHelper
     iata_airline_code.split("-").first
   end
   
-  def airline_icon(iata_code, title: nil, css_class: nil)
-    return image_tag("/assets/blank.png", class: "airline-icon") unless iata_code
-    iata_code = iata_code.strip.split("-")
-    iata_code[0].upcase!
-    iata_code[1].downcase! if iata_code.count > 1
-    title ||= iata_code[0]
-    iata_code = iata_code.join("-")
+  def airline_icon(icao_code, title: nil, css_class: nil)
+    return image_tag("assets/blank.png", class: "airline-icon") unless icao_code
+    icao_code = icao_code.upcase
+    title ||= icao_code
     class_array = ["airline-icon"]
     class_array |= css_class.split(" ") if css_class
-    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{iata_code}.png", title: title, class: class_array.join(" "), onerror: "this.src='assets/blank.png';this.onerror='';").html_safe
+    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/icao/#{icao_code}.png", title: title, alt: icao_code, class: class_array.join(" "), onerror: "this.src='assets/blank.png';this.onerror='';").html_safe
   end
   
   def country_flag_icon(country, title: nil)

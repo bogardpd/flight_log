@@ -41,7 +41,7 @@
   <% @flight_airlines.first(5).each do |airline| %>
     <tr>
       <td class="left">
-      <%= link_to(airline_icon(airline[:iata_airline_code], title: airline[:airline_name]) + airline[:airline_name], airline_path(airline[:iata_airline_code]), :title => "View flights on #{airline[:airline_name]}") %></td>
+      <%= link_to(airline_icon(airline[:icao_airline_code], title: airline[:airline_name]) + airline[:airline_name], airline_path(airline[:iata_airline_code]), :title => "View flights on #{airline[:airline_name]}") %></td>
       <td class="center"><%= airline[:flight_count] %></td>
     </tr>
   <% end %>

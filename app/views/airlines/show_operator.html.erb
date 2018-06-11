@@ -1,4 +1,4 @@
-<div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.iata_airline_code, title: @operator.airline_name) %></div>
+<div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.icao_airline_code, title: @operator.airline_name) %></div>
 
 <h1>Flights Operated by <%= @operator.airline_name %></h1>
 
@@ -52,7 +52,7 @@
   		</tr>
   	<% @fleet_family.each do |fleet_number, family| %>
   		<tr>
-  			<td><%= link_to(airline_icon(@operator.iata_airline_code, title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") + "#" + fleet_number, show_fleet_number_path(@operator.iata_airline_code, fleet_number), title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft-name"><%= @fleet_name[fleet_number] %><% end %></span></td>
+  			<td><%= link_to(airline_icon(@operator.icao_airline_code, title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") + "#" + fleet_number, show_fleet_number_path(@operator.iata_airline_code, fleet_number), title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft-name"><%= @fleet_name[fleet_number] %><% end %></span></td>
   			<td class="tail-aircraft"><%= family %></td>
   		</tr>
   	<% end %>
