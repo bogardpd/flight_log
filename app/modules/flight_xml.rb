@@ -61,6 +61,7 @@ module FlightXML
   
   # Accepts a FlightXML fa_flight_id, and returns information about the flight.
   def self.form_values(fa_flight_id)
+    return nil unless fa_flight_id
     fields = Hash.new
     
     begin

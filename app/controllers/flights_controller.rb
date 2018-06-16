@@ -370,8 +370,7 @@ class FlightsController < ApplicationController
         session[:new_flight][:airline_icao] ||= Airline.convert_iata_to_icao(session[:new_flight][:airline_iata], false)
         if session[:new_flight][:airline_icao]
           session[:new_flight][:ident] = [session[:new_flight][:airline_icao],session[:new_flight][:flight_number]].join
-          if session[:new_flight][:departure_utc]
-            fa_flight_id = FlightXML.get_flight_id(session[:new_flight][:ident], session[:new_flight][:departure_utc])
+          if session[:new_flight][:departure_utc] && fa_flight_id = FlightXML.get_flight_id(session[:new_flight][:ident], session[:new_flight][:departure_utc])
             set_flight_xml_data(fa_flight_id)
           else
             @fa_flights = FlightXML.flight_lookup(session[:new_flight][:ident])
