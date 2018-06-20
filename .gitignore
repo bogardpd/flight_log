@@ -5,3 +5,4 @@ tmp/**/*
 database.yml
 config/local_env.yml
 vendor/bundle
+certbot.log
