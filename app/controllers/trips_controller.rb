@@ -39,12 +39,12 @@ class TripsController < ApplicationController
     add_admin_action view_context.link_to("Edit Trip", edit_trip_path(@trip))
     add_admin_action view_context.link_to("Add Flight", new_flight_menu_path(:trip_id => @trip))
     
+    add_message(:warning, "This trip is hidden!") if @trip.hidden
+
     if logged_in? && @trip.hidden
       check_email_for_boarding_passes
+      add_message(:info, "You have boarding passes you can #{view_context.link_to("import", new_flight_menu_path(trip_id: @trip))}!") if PKPass.where(flight_id: nil).any?
     end
-    
-    add_message(:warning, "This trip is hidden!") if @trip.hidden
-    add_message(:info, "You have boarding passes you can #{view_context.link_to("import", new_flight_menu_path(trip_id: @trip))}!") if PKPass.where(flight_id: nil).any?
     
     @trip_distance = Route.total_distance(@flights)
     @section_count = Hash.new(0) # Holds a count of the number of flights in each section
