@@ -25,5 +25,7 @@ Portfolio::Application.configure do
   
   config.eager_load = false
   config.assets.js_compressor = :uglifier
+
+  config.assets.compile = true
 end
 
