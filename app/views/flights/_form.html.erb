@@ -15,14 +15,14 @@
   </p>
 
   <p>
-    <%= f.label :origin_airport_id, "Origin" %> &rarr; <%= f.label :destination_airport_id, "Destination" %><br />
+    <%= f.label :origin_airport_id, "Origin" %> <%= Route::ARROW_ONE_WAY_PLAINTEXT %> <%= f.label :destination_airport_id, "Destination" %><br />
     
     <% if fields[:origin_airport_id] %>
       <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:origin_airport_id]}, class: "autopopulated") %>
     <% else %>
       <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}) %>    
     <% end %>  
-    &rarr;
+    <%= Route::ARROW_ONE_WAY_PLAINTEXT %> 
     <% if fields[:destination_airport_id] %>
       <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:destination_airport_id]}, class: "autopopulated") %>
     <% else %>
