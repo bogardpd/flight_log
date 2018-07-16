@@ -23,6 +23,13 @@ class FlightsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  def test_show_date_range_with_leading_zero_success
+    # Leading 0s in date strings can be confused for an octal number,
+    # which is a problem if subsequent digits are greater than 7.
+    get show_date_range_path(start_date: "2014-09-01", end_date: "2015-06-30")
+    assert_response :success
+  end
+
   def test_index_tails_success
     get tails_path
     assert_response :success
