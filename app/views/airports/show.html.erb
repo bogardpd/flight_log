@@ -84,7 +84,7 @@
 	  <tr><td colspan="5" class="flightlog-total"><%= pluralize(@direct_flight_airports.count, "direct flight airport") %></td></tr>
 	</table>
 
-	<h2 id="airports">Airlines Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="airlines">Airlines Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 	
 	<h2 id="operators">Operators Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
