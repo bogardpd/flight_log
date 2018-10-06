@@ -181,6 +181,12 @@
     
     td.class-class, th.class-class {
       text-align: left;
+      line-height: $line-height-small;
+      span.class-description {
+        font-size: $font-size-small;
+        font-weight: 300;
+        color: $color-text-secondary;
+      }
     }
 
     td.class-flights, th.class-flights {

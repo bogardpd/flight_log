@@ -1,7 +1,7 @@
 module TravelClass
   
   # Returns an array of airlines, with a hash for each family containing the
-  # class code and number of flights in that class.
+  # class code and number of flights in that class, sorted by class quality descending.
   def self.flight_count(flights)
     counts = flights.reorder(nil).group(:travel_class).count
       .map{|k,v| {class_code: k, flight_count: v}}
@@ -10,7 +10,7 @@ module TravelClass
     if flights.count > class_sum
       counts.push({class_code: nil, flight_count: flights.count - class_sum})
     end
-    return counts.sort_by{|tc| tc[:class_code] || ""}
+    return counts.sort_by{|tc| list[tc[:class_code]]&.dig(:quality) || -1}.reverse
   end
   
   # Given a travel class string, gets the travel class code.
@@ -24,23 +24,28 @@ module TravelClass
   def self.list
     classes = Hash.new
     classes["first"] = {
-      name: "International First",
+      name: "First",
+      description: "Highest class on planes with both First and Business",
       quality: 5
     }
     classes["business"] = {
-      name: "Int’l. Business / Domestic First",
+      name: "Business",
+      description: "Highest class on planes without separate First and Business",
       quality: 4
     }
     classes["premium-economy"] = {
       name: "Premium Economy",
+      description: "Economy with extra legroom and seat width",
       quality: 3
     }
     classes["economy-extra"] = {
       name: "Economy Extra",
+      description: "Economy with extra legroom",
       quality: 2
     }
     classes["economy"] = {
       name: "Economy",
+      description: "Standard main cabin seat",
       quality: 1
     }
     return classes

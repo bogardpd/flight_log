@@ -144,13 +144,13 @@ class FlightsController < ApplicationController
     if @classes.any?
                 
       # Sort aircraft table:
-      sort_params = sort_parse(params[:sort], %w(class flights), :asc)
+      sort_params = sort_parse(params[:sort], %w(quality flights), :desc)
       @sort_cat   = sort_params[:category]
       @sort_dir   = sort_params[:direction]
       sort_mult   = (@sort_dir == :asc ? 1 : -1)
       case @sort_cat
-      when :class
-        @classes = @classes.sort_by { |tc| tc[:class_code] || "" }
+      when :quality
+        @classes = @classes.sort_by { |tc| TravelClass.list[tc[:class_code]]&.dig(:quality) || -1 }
         @classes.reverse! if @sort_dir == :desc
       when :flights
         @classes = @classes.sort_by { |tc| [sort_mult*tc[:flight_count], tc[:class_code] || ""] }

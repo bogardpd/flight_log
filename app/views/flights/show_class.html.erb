@@ -1,4 +1,4 @@
-<h1><%= @title %></h1>
+<h1><%= @title %><br><small><%= TravelClass.list[params[:travel_class]][:description] %></small></h1>
 
 <div class="page-navigation">
   <ul>
@@ -10,8 +10,6 @@
 		<li><%= link_to("Flight List", "#flights", :title => "Flights flown in #{@title.downcase}") %></li>
   </ul>
 </div>
-
-
 
 <p>I have flown in <span class="bold"><%= @title.downcase %></span> <%= pluralize(@flights.length, "time") %>.</p>
 
