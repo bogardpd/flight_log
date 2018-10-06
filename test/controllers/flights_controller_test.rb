@@ -46,7 +46,7 @@ class FlightsControllerTest < ActionDispatch::IntegrationTest
   end
   
   def test_show_class_success
-    get show_class_path("Y")
+    get show_class_path("economy")
     assert_response :success
   end
   

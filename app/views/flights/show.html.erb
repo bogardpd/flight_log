@@ -75,7 +75,7 @@
     <td class="label-column">Travel Class</td>
     <td>
 			<div class="supplemental-code"><%= @flight.travel_class %></div>
-			<%= link_to(TravelClass.list[@flight.travel_class].titlecase, show_class_path(@flight.travel_class.titlecase), :title => "View #{TravelClass.list[@flight.travel_class].downcase} class flights") %>
+			<%= link_to(TravelClass.list[@flight.travel_class][:name].titlecase, show_class_path(@flight.travel_class), :title => "View #{TravelClass.list[@flight.travel_class][:name].downcase} class flights") %>
 			</td>
 		</td>
   </tr>

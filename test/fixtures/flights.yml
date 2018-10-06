@@ -10,7 +10,7 @@ flightORDDFW:
   aircraft_family_id: 2
   flight_number: "1100"
   tail_number: N12345
-  travel_class: "Y"
+  travel_class: "economy"
   fleet_number: "123"
   
 flightDFWSEA:
@@ -25,7 +25,7 @@ flightDFWSEA:
   aircraft_family_id: 2
   flight_number: "1200"
   tail_number: N987AA
-  travel_class: "W"
+  travel_class: "premium-economy"
   fleet_number: "4XW"
 
 flightSEAORD:
@@ -40,7 +40,7 @@ flightSEAORD:
   aircraft_family_id: 2
   flight_number: "1400"
   tail_number: N456AA
-  travel_class: "Y"
+  travel_class: "economy"
   fleet_number: "456"
   
 flightORDYVR:
@@ -55,7 +55,7 @@ flightORDYVR:
   aircraft_family_id: 3
   flight_number: "0123"
   tail_number: N333UA
-  travel_class: "Y"
+  travel_class: "economy"
   fleet_number: "333"
 
 flightYVRORD:
@@ -70,5 +70,5 @@ flightYVRORD:
   aircraft_family_id: 4
   flight_number: "0456"
   tail_number: N555UA
-  travel_class: "Y"
+  travel_class: "economy"
   fleet_number: "555"

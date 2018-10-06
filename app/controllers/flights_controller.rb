@@ -164,11 +164,11 @@ class FlightsController < ApplicationController
     
     @flights = flyer.flights(current_user).where(travel_class: params[:travel_class]).includes(:airline, :origin_airport, :destination_airport, :trip)
     
-    @title = TravelClass.list[params[:travel_class]].titlecase + " Class"
-    @meta_description = "Maps and lists of Paul Bogardʼs #{TravelClass.list[params[:travel_class]].downcase} class flights."
+    @title = TravelClass.list[params[:travel_class]][:name].titlecase + " Class"
+    @meta_description = "Maps and lists of Paul Bogardʼs #{TravelClass.list[params[:travel_class]][:name].downcase} class flights."
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     add_breadcrumb "Travel Classes", "classes_path"
-    add_breadcrumb TravelClass.list[params[:travel_class]].titlecase, show_class_path(params[:travel_class])
+    add_breadcrumb TravelClass.list[params[:travel_class]][:name].titlecase, show_class_path(params[:travel_class])
 
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
