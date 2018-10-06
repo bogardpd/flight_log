@@ -43,6 +43,15 @@
       <%= link_to("#{@flight.origin_airport.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@flight.destination_airport.iata_code}".html_safe, route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %>
     </td>
   </tr>
+  <% if @flight.travel_class %>
+  <tr>
+    <td class="label-column">Travel Class</td>
+    <td>
+			<%= quality_stars(TravelClass.list[@flight.travel_class][:quality], inline: :left) %><%= link_to(TravelClass.list[@flight.travel_class][:name].titlecase, show_class_path(@flight.travel_class), :title => "View #{TravelClass.list[@flight.travel_class][:name].downcase} class flights") %>
+			</td>
+		</td>
+  </tr>
+  <% end %>
   <tr>
     <td class="label-column">Airline</td>
     <td class="flight_show_airline">
@@ -66,16 +75,6 @@
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.codeshare_airline.iata_airline_code) %></div>
 			<%= airline_icon(@flight.codeshare_airline.icao_airline_code, title: @flight.codeshare_airline.airline_name) %><%= @flight.codeshare_airline.airline_name %> <%= @flight.codeshare_flight_number %>
-			</td>
-		</td>
-  </tr>
-  <% end %>
-  <% if @flight.travel_class %>
-  <tr>
-    <td class="label-column">Travel Class</td>
-    <td>
-			<div class="supplemental-code"><%= @flight.travel_class %></div>
-			<%= link_to(TravelClass.list[@flight.travel_class][:name].titlecase, show_class_path(@flight.travel_class), :title => "View #{TravelClass.list[@flight.travel_class][:name].downcase} class flights") %>
 			</td>
 		</td>
   </tr>

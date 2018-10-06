@@ -32,11 +32,14 @@ module FlightsHelper
   end
 
   # Accepts a number 1-5 and returns a star rating
-  def quality_stars(quality)
+  def quality_stars(quality, inline: nil)
     quality = quality.to_i
     quality = 0 if quality < 0
     quality = 5 if quality > 5
-    html = image_tag("stars/#{quality}.svg", title: "#{quality} out of 5 stars", alt: "#{quality} out of 5 stars", class: "star-rating")
+    classes = %w(star-rating)
+    inline_classes = {left: "icon-left", right: "icon-right", both: "icon-between-text"}
+    classes.push(inline_classes[inline]) if inline_classes[inline]
+    html = image_tag("stars/#{quality}.svg", title: "#{quality} out of 5 stars", alt: "#{quality} out of 5 stars", class: classes.join(" "))
     return html.html_safe
   end
 end

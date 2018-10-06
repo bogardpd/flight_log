@@ -56,6 +56,11 @@ img.icon-no-text {
 	margin: 0;
 }
 
+img.icon-left {
+	margin-left: 0;
+	margin-right: $margin-icon-to-text;
+}
+
 img.icon_right {
   margin-left: $margin-icon-to-text;
   margin-right: 0;
