@@ -50,6 +50,10 @@ module TravelClass
     }
     return classes
   end
+
+  def self.dropdown
+    return self.list.map{|k,v| ["#{v[:name]} (#{v[:description]})", k]}
+  end
   
   # Accepts a flyer, the current user, and a date range, and returns all
   # classes that had their first flight in this date range.

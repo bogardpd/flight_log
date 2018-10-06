@@ -111,9 +111,9 @@
   <p>
     <%= f.label :travel_class, "Travel Class" %><br />
     <% if fields[:travel_class] %>
-      <%= f.select(:travel_class, options_for_select(TravelClass.list.invert, fields[:travel_class]), {include_blank: true}, class: "autopopulated") %>
+      <%= f.select(:travel_class, options_for_select(TravelClass.dropdown, fields[:travel_class]), {include_blank: true}, class: "autopopulated") %>
     <% else %>
-      <%= f.select(:travel_class, options_for_select(TravelClass.list.invert, flight.travel_class), include_blank: true) %>
+      <%= f.select(:travel_class, options_for_select(TravelClass.dropdown, flight.travel_class), include_blank: true) %>
     <% end %>
   </p>
 
