@@ -9,7 +9,7 @@
       <tr>
     		<th class="counter">#</th>
         <th class="airline-airline"><%= is_summary ? "Travel Class" : sort_link("Travel Class", :class, "class", :asc, nil) %></th>
-    		<th class="airline-code">Code</th>
+    		<th class="airline-code">Quality</th>
         <th class="airline-flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, nil) %></th>
       </tr>
     </thead>
@@ -21,7 +21,7 @@
         <%= (new_classes.include?(tc[:class_code]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
           <td class="counter"><%= ((is_summary || @sort_cat == :flights) && tc[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
           <td class="class-class"><%= link_to("#{TravelClass.list[tc[:class_code]][:name]}#{"*" if new_classes.include?(tc[:class_code])}", show_class_path(tc[:class_code]), :title => "View #{TravelClass.list[tc[:class_code]][:name].downcase} class flights") %></td>
-      		<td class="class-code code-mono"><%= link_to(tc[:class_code], show_class_path(tc[:class_code]), :title => "View #{TravelClass.list[tc[:class_code]][:name].downcase} class flights") %></td>
+      		<td class="class-quality"><%= quality_stars(TravelClass.list[tc[:class_code]][:quality]) %></td>
           <td class="class-flights"><%= render "flights/graph_block", value: tc[:flight_count], maximum: class_maximum %></td>
         </tr>
       	<% previous_count = tc[:flight_count] %>

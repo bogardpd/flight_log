@@ -30,4 +30,13 @@ module FlightsHelper
     end
     return [label, text].join("<br/>")
   end
+
+  # Accepts a number 1-5 and returns a star rating
+  def quality_stars(quality)
+    quality = quality.to_i
+    quality = 0 if quality < 0
+    quality = 5 if quality > 5
+    html = image_tag("stars/#{quality}.svg", title: "#{quality} out of 5 stars", alt: "#{quality} out of 5 stars", class: "star-rating")
+    return html.html_safe
+  end
 end

@@ -24,19 +24,24 @@ module TravelClass
   def self.list
     classes = Hash.new
     classes["first"] = {
-      name: "International First"
+      name: "International First",
+      quality: 5
     }
     classes["business"] = {
-      name: "Int’l. Business / Domestic First"
+      name: "Int’l. Business / Domestic First",
+      quality: 4
     }
     classes["premium-economy"] = {
-      name: "Premium Economy"
+      name: "Premium Economy",
+      quality: 3
     }
     classes["economy-extra"] = {
-      name: "Economy Extra"
+      name: "Economy Extra",
+      quality: 2
     }
     classes["economy"] = {
-      name: "Economy"
+      name: "Economy",
+      quality: 1
     }
     return classes
   end

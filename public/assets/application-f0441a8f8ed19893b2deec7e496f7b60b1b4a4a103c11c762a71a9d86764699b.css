@@ -812,12 +812,12 @@ img.icon_right {
   margin-right: 0;
 }
 
-/* line 66, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_images.scss */
+/* line 68, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_images.scss */
 img.aircraft-illustration {
   margin-bottom: 0.5em;
 }
 
-/* line 70, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_images.scss */
+/* line 72, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_images.scss */
 img.logo {
   border: none;
   width: 361px;
@@ -825,7 +825,7 @@ img.logo {
   margin-top: 6px;
 }
 
-/* line 77, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_images.scss */
+/* line 79, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_images.scss */
 img.map {
   border: 1px solid #9EC7F3;
   margin: 0;
@@ -1132,50 +1132,51 @@ td.class-flights, th.class-flights {
 }
 
 /* line 190, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
-td.class-code, th.class-code {
+td.class-quality, th.class-quality {
   text-align: center;
+  background-color: red;
 }
 
 /* Flights */
-/* line 196, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 197, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.flight-aircraft, th.flight-aircraft {
   text-align: center;
 }
 
-/* line 200, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 201, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.flight-date, th.flight-date {
   text-align: right;
   width: 5.5em;
 }
 
-/* line 205, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 206, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.flight-flight {
   padding-left: 0;
 }
 
-/* line 209, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 210, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 th.flight-flight {
   text-align: left;
 }
 
-/* line 213, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 214, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.flight-tail, th.flight-tail {
   text-align: left;
 }
 
-/* line 217, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 218, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.flight-airplane-icon {
   font-size: 200%;
   vertical-align: middle;
 }
 
-/* line 222, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 223, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.flight-route, th.flight-route {
   text-align: center;
   width: 6em;
 }
 
-/* line 227, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 228, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.flight-section {
   border-right: 2px solid #9EC7F3;
   text-align: center;
@@ -1183,12 +1184,12 @@ td.flight-section {
   line-height: 1.2;
 }
 
-/* line 234, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 235, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 th.flight-section {
   text-align: center;
 }
 
-/* line 238, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 239, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.flight-show-airport {
   width: 250px;
   line-height: 1.2;
@@ -1196,72 +1197,72 @@ td.flight-show-airport {
 }
 
 /* Routes */
-/* line 246, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 247, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.route-distance, th.route-distance {
   text-align: right;
 }
 
-/* line 250, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 251, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.route-flights, th.route-flights {
   text-align: center;
 }
 
-/* line 254, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 255, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.route-route, th.route-route {
   text-align: left;
 }
 
 /* Tail numbers */
-/* line 260, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 261, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.tail-flights, th.tail-flights {
   text-align: center;
 }
 
-/* line 264, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 265, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.tail-aircraft {
   color: #52667a;
   font-weight: 300;
   text-align: center;
 }
-/* line 268, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 269, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.tail-aircraft abbr {
   border-bottom-color: #52667a;
 }
 
-/* line 273, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 274, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.tail-airline, th.tail-airline {
   text-align: center;
 }
 
-/* line 277, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 278, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.tail-number, th.tail_number {
   text-align: left;
 }
 
 /* Trips */
-/* line 283, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 284, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 th.trip_name {
   text-align: left;
 }
 
 /* Miscellaneous table cell classes */
-/* line 291, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 292, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 tr.new td {
   background-color: #FFF5E6;
 }
 
-/* line 296, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 297, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.subdued {
   color: #52667a;
   font-weight: 300;
 }
 
-/* line 301, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 302, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.superlatives-label {
   background-color: #F9F9FB;
 }
 
-/* line 305, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
+/* line 306, /Users/paulbogard/Sites/flight_log/app/assets/stylesheets/_tables.scss */
 td.year_link {
   text-align: center;
 }
