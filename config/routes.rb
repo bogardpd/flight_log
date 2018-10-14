@@ -59,7 +59,7 @@ Portfolio::Application.routes.draw do
    :show_boarding_pass_json
   
   # Admin pages:
-  get   "/admin"                         => "admin#admin"
+  get   "/admin"                         => "admin#admin", as: :admin
   get   "/admin/boarding-pass-validator" => "admin#boarding_pass_validator", as: :boarding_pass_validator
   get   "/admin/annual-summary"          => "admin#annual_flight_summary",   as: :annual_flight_summary
   
