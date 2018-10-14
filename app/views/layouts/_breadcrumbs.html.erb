@@ -1,4 +1,5 @@
 <% if (!(params[:controller] == "pages" && params[:action] == "flightlog") && (@breadcrumbs || @admin_actions.present?)) %>
+
 <div id="breadcrumbs">
   <% @breadcrumbs[0..-2].uniq.each do |txt, path| %>
     <%= link_to(h(txt), path) %> <span class="breadcrumb-separator">▸</span> 

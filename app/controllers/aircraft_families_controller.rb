@@ -1,11 +1,10 @@
 class AircraftFamiliesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb "Home", "root_path"
   
   def index
     @title = "Aircraft"
     @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often heʼs flown on each."
-    add_breadcrumb "Aircraft Families", "aircraft_families_path"
+    add_breadcrumb "Aircraft Families", aircraft_families_path
     add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
     
     @flights = flyer.flights(current_user)
@@ -46,7 +45,7 @@ class AircraftFamiliesController < ApplicationController
     @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_subtype_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
-    add_breadcrumb "Aircraft Families", "aircraft_families_path"
+    add_breadcrumb "Aircraft Families", aircraft_families_path
     
     
     if @aircraft_family.is_family?
@@ -83,7 +82,7 @@ class AircraftFamiliesController < ApplicationController
   
   def new
     session[:form_location] = nil
-    add_breadcrumb "Aircraft Families", "aircraft_families_path"
+    add_breadcrumb "Aircraft Families", aircraft_families_path
     if params[:family_id]
       @parent_family = AircraftFamily.find(params[:family_id])
       @title = "New #{@parent_family.family_name} Type"
@@ -92,7 +91,7 @@ class AircraftFamiliesController < ApplicationController
       @aircraft_family = AircraftFamily.new(parent_id: @parent_family.id)
     else
       @title = "New Aircraft Family"
-      add_breadcrumb "New Aircraft Family", "new_aircraft_family_path"
+      add_breadcrumb "New Aircraft Family", new_aircraft_family_path
       @aircraft_family = AircraftFamily.new
     end
     
@@ -125,9 +124,9 @@ class AircraftFamiliesController < ApplicationController
   def edit
     session[:form_location] = nil
     @aircraft_family = AircraftFamily.find(params[:id])
-    add_breadcrumb "Aircraft Families", "aircraft_families_path"
-    add_breadcrumb @aircraft_family.full_name, "aircraft_family_path(@aircraft_family)"
-    add_breadcrumb "Edit Aircraft Family", "edit_aircraft_family_path(@aircraft_family)"
+    add_breadcrumb "Aircraft Families", aircraft_families_path
+    add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
+    add_breadcrumb "Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family)
   end
   
   def update

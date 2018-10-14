@@ -1,9 +1,8 @@
 class RoutesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb "Home", "root_path"
   
   def index
-    add_breadcrumb "Routes", "routes_path"
+    add_breadcrumb "Routes", routes_path
     @title = "Routes"
     @meta_description = "A list of the routes Paul Bogard has flown on, and how often heʼs flown on each."
         
@@ -52,7 +51,7 @@ class RoutesController < ApplicationController
       @airports_city[index] = airport_lookup[index].city
     end
     
-    add_breadcrumb "Routes", "routes_path"
+    add_breadcrumb "Routes", routes_path
     add_breadcrumb "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}", route_path(@route_string)
     add_admin_action view_context.link_to("Edit Route", edit_route_path(@airports[0],@airports[1]))
     @title = "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}"
@@ -110,9 +109,9 @@ class RoutesController < ApplicationController
   end
   
   def edit
-    add_breadcrumb "Routes", "routes_path"
+    add_breadcrumb "Routes", routes_path
     add_breadcrumb "#{params[:airport1]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{params[:airport2]}", route_path("#{params[:airport1]}-#{params[:airport2]}")
-    add_breadcrumb "Edit", "#"
+    add_breadcrumb "Edit", edit_route_path(airport1: params[:airport1], airport2: params[:airport2])
     @title = "Edit #{params[:airport1]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{params[:airport2]}"
     
     # Get airport ids:

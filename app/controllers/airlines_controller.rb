@@ -1,12 +1,11 @@
 class AirlinesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb "Home", "root_path"
   
   def index
     @logo_used = true
     @title = "Airlines"
     @meta_description = "A list of the airlines on which Paul Bogard has flown, and how often heʼs flown on each."
-    add_breadcrumb "Airlines", "airlines_path"
+    add_breadcrumb "Airlines", airlines_path
     add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
     @flights = flyer.flights(current_user)
@@ -60,8 +59,8 @@ class AirlinesController < ApplicationController
     @logo_used = true
     @region = current_region(default: [])
     
-    add_breadcrumb "Airlines", "airlines_path"
-    add_breadcrumb @title, "airline_path(@airline.iata_airline_code)"
+    add_breadcrumb "Airlines", airlines_path
+    add_breadcrumb @title, airline_path(@airline.iata_airline_code)
     
     add_admin_action view_context.link_to("Delete Airline", @airline, method: :delete, data: {:confirm => "Are you sure you want to delete #{@airline.airline_name}?"}, class: "warning") if @flights.length == 0
     add_admin_action view_context.link_to("Edit Airline", edit_airline_path(@airline))
@@ -99,7 +98,7 @@ class AirlinesController < ApplicationController
     @logo_used = true
     @region = current_region(default: [])
     
-    add_breadcrumb "Airlines", "airlines_path"
+    add_breadcrumb "Airlines", airlines_path
     add_breadcrumb "Flights Operated by " + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
     
     add_admin_action view_context.link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: "warning") if @flights.length == 0
@@ -143,7 +142,7 @@ class AirlinesController < ApplicationController
     @region = current_region(default: [])
     @title = @operator.airline_name + " #" + @fleet_number
     @meta_description = "Maps and lists of Paul Bogardʼs flights operated on #{@operator.airline_name} ##{@fleet_number}."
-    add_breadcrumb "Airlines", "airlines_path"
+    add_breadcrumb "Airlines", airlines_path
     add_breadcrumb "Flights Operated by #{@operator.airline_name}", show_operator_path(@operator.iata_airline_code)
     add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number)
     
@@ -166,8 +165,8 @@ class AirlinesController < ApplicationController
   def new
     session[:form_location] = nil
     @title = "New Airline"
-    add_breadcrumb "Airlines", "airlines_path"
-    add_breadcrumb "New Airline", "new_airline_path"
+    add_breadcrumb "Airlines", airlines_path
+    add_breadcrumb "New Airline", new_airline_path
     @airline = Airline.new
   end
   
@@ -198,9 +197,9 @@ class AirlinesController < ApplicationController
   def edit
     session[:form_location] = nil
     @airline = Airline.find(params[:id])
-    add_breadcrumb "Airlines", "airlines_path"
-    add_breadcrumb @airline.airline_name, "airline_path(@airline.iata_airline_code)"
-    add_breadcrumb "Edit Airline", "edit_airport_path(@airline)"
+    add_breadcrumb "Airlines", airlines_path
+    add_breadcrumb @airline.airline_name, airline_path(@airline.iata_airline_code)
+    add_breadcrumb "Edit Airline", edit_airport_path(@airline)
   end
   
   def update

@@ -37,24 +37,19 @@ class ApplicationController < ActionController::Base
       flash.now[:warning] = "Could not get new passes from email (#{details})"
     end
   end
+
+  
   
 protected
+
+  def add_breadcrumb(text, path)
+    @breadcrumbs ||= [["Home", root_path]]
+    @breadcrumbs.push([text, path])
+  end
 
   def add_admin_action(link)
     @admin_actions ||= Array.new
     @admin_actions.push(link)
-  end
-
-  def add_breadcrumb name, url=""
-    @breadcrumbs ||= []
-    url = eval(url) if url =~ /_path|_url|@/
-    @breadcrumbs << [name, url]
-  end
-  
-  def self.add_breadcrumb(name, url, options = {})
-    before_action options do |controller|
-      controller.send(:add_breadcrumb, name, url)
-    end
   end
   
   def add_message(type, text)

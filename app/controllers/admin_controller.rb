@@ -1,8 +1,7 @@
 class AdminController < ApplicationController
   before_action :logged_in_user
   
-  add_breadcrumb "Home", "root_path"
-  add_breadcrumb "Admin", "admin_path"
+  add_breadcrumb "Admin", admin_path
   
   def admin
     

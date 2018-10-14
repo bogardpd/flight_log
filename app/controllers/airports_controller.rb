@@ -1,9 +1,8 @@
 class AirportsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
-  add_breadcrumb "Home", "root_path"
   
   def index
-    add_breadcrumb "Airports", "airports_path"
+    add_breadcrumb "Airports", airports_path
     add_admin_action view_context.link_to("Add New Airport", new_airport_path)
     @title = "Airports"
     @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often heʼs visited them."
@@ -166,8 +165,8 @@ class AirportsController < ApplicationController
     @title = @airport.iata_code
     @meta_description = "Maps and lists of Paul Bogardʼs flights through #{@airport.iata_code} – #{@airport.city}."
     
-    add_breadcrumb "Airports", "airports_path"
-    add_breadcrumb @title, "airport_path(@airport.iata_code)"
+    add_breadcrumb "Airports", airports_path
+    add_breadcrumb @title, airport_path(@airport.iata_code)
     
     add_admin_action view_context.link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => "warning") if @flights.length == 0
     add_admin_action view_context.link_to("Edit Airport", edit_airport_path(@airport))
@@ -181,8 +180,8 @@ class AirportsController < ApplicationController
   def new
     session[:form_location] = nil
     @title = "New Airport"
-    add_breadcrumb "Airports", "airports_path"
-    add_breadcrumb "New Airport", "new_airport_path"
+    add_breadcrumb "Airports", airports_path
+    add_breadcrumb "New Airport", new_airport_path
     @airport = Airport.new
   end
   
@@ -212,9 +211,9 @@ class AirportsController < ApplicationController
   def edit
     session[:form_location] = nil
     @airport = Airport.find(params[:id])
-    add_breadcrumb "Airports", "airports_path"
-    add_breadcrumb @airport.iata_code, "airport_path(@airport)"
-    add_breadcrumb "Edit Airport", "edit_airport_path(@airport)"
+    add_breadcrumb "Airports", airports_path
+    add_breadcrumb @airport.iata_code, airport_path(@airport)
+    add_breadcrumb "Edit Airport", edit_airport_path(@airport)
   end
   
   
