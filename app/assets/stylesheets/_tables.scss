@@ -25,7 +25,7 @@
   	border-bottom: 1px solid #BED4EA;
   
     a {
-    	text-decoration: none;
+    	text-decoration: underline;
     }
   
     td {
@@ -38,7 +38,11 @@
     	padding: 0.5em 0.6em;
     	background-color: #F9F9FB;
     	border-bottom: 2px solid $color-base;
-    	height: 28px;
+      height: 28px;
+      
+      a {
+        text-decoration: none;
+      }
     }
   
     tr {
@@ -281,7 +285,10 @@
     }
 
     td.tail-number, th.tail_number {
-    	text-align: left;
+      text-align: left;
+      img.country-flag-icon {
+        margin-right: $margin-icon-to-text;
+      }
     }
     
   /* Trips */

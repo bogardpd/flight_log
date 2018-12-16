@@ -89,7 +89,7 @@ abbr {
 
 
 a {
-	text-decoration: none;
+	text-decoration: underline;
 	color: $color-text-link;
 }
 
@@ -103,6 +103,7 @@ a:hover {
 
 a.sort {
 	color: $color-background-menu-primary;
+	text-decoration: none;
 }
 
 a.sort:hover {
