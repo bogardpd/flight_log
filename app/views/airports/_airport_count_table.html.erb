@@ -22,7 +22,7 @@
       <%= (new_airports.include?(airport[:iata_code]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
         <td class="counter"><%= ((is_summary || @sort_cat == :flights) && airport[:visit_count] == previous_count) ? "⋮" : index + 1 %></td>
     		<td class="airport-country"><%= country_flag_icon(airport[:country]) %></td>
-        <td class="airport-city"><%= link_to("#{format_airport_name(airport[:city])}#{"*" if new_airports.include?(airport[:iata_code])}".html_safe, airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+        <td class="airport-city"><%= link_to(format_airport_name(airport[:city]).html_safe, airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %><% if new_airports.include?(airport[:iata_code]) %>*<% end %></td>
         <td class="airport-code code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
         <td class="airport-visits"><%= render "flights/graph_block", :value => airport[:visit_count], :maximum => airline_maximum %></td>
       </tr>

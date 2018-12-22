@@ -21,7 +21,7 @@
         <%= (new_classes.include?(tc[:class_code]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
           <td class="counter"><%= ((is_summary || @sort_cat == :flights) && tc[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
           <td class="class-quality"><%= quality_stars(TravelClass.list[tc[:class_code]][:quality]) %></td>
-          <td class="class-class"><%= link_to("#{TravelClass.list[tc[:class_code]][:name]}#{"*" if new_classes.include?(tc[:class_code])}", show_class_path(tc[:class_code]), :title => "View #{TravelClass.list[tc[:class_code]][:name].downcase} class flights") %><br><span class="class-description"><%= TravelClass.list[tc[:class_code]][:description] %></span></td>
+          <td class="class-class"><%= link_to(TravelClass.list[tc[:class_code]][:name], show_class_path(tc[:class_code]), :title => "View #{TravelClass.list[tc[:class_code]][:name].downcase} class flights") %><% if new_classes.include?(tc[:class_code]) %>*<% end %><br><span class="class-description"><%= TravelClass.list[tc[:class_code]][:description] %></span></td>
       		<td class="class-flights"><%= render "flights/graph_block", value: tc[:flight_count], maximum: class_maximum %></td>
         </tr>
       	<% previous_count = tc[:flight_count] %>
