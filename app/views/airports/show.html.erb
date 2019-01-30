@@ -15,30 +15,18 @@
 
 <div class="page-navigation">
   <ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@airport.iata_code}") %></li>
-		<li><%= link_to("Airports", "#airports", :title => "Origin and destination airports for #{@airport.iata_code}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@airport.iata_code}") %></li>
-		<li><%= link_to("Operators", "#operators", :title => "Operators using #{@airport.iata_code}") %></li>
-		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@airport.iata_code}") %></li>
-		<li><%= link_to("Classes", "#classes", :title => "Classes flown to or from #{@airport.iata_code}") %></li>
-		<li><%= link_to("Trip Sections", "#sections", :title => "Trip sections using #{@airport.iata_code}") %></li>
-		<li><%= link_to("Trips", "#trips", :title => "Trips using #{@airport.iata_code}") %></li>
-		<li><%= link_to("Flight List", "#flights", :title => "Flights using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Map", "#map", title: "Map of flights using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Airports", "#airports", title: "Origin and destination airports for #{@airport.iata_code}") %></li>
+		<li><%= link_to("Airlines", "#airlines", title: "Airlines using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Operators", "#operators", title: "Operators using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", title: "Aircraft using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Classes", "#classes", title: "Classes flown to or from #{@airport.iata_code}") %></li>
+		<li><%= link_to("Trip Sections", "#sections", title: "Trip sections using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Trips", "#trips", title: "Trips using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Flight List", "#flights", title: "Flights using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Terminal", "#terminal", title: "Terminal silhouette of #{@airport.iata_code}") %></li>
   </ul>
 </div>
-
-<% if ExternalImage.exists?(@airport.terminal_silhouette_path) %>
-  <div class="illustration-container">
-    <% if ExternalImage.exists?(@airport.terminal_silhouette_large_path) %>
-      <%= link_to(image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette"), @airport.terminal_silhouette_large_path, target: :_blank) %>
-    <% else %>
-      <%= image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette") %>
-    <% end %>
-  </div>
-  <div class="credit illustration-credit">
-    Terminal silhouette created by <%= link_to("Paul Bogard", "https://www.pbogard.com/projects/terminal-silhouettes", target: :_blank) %>
-  </div>
-<% end %>
 
 <p>I have visited <span class="bold"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>"><%= @airport.icao_code %></abbr></span> <%= pluralize(@airport_frequency, "time") %>.</p>
 
@@ -115,5 +103,21 @@
 	</table>
 
 	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
+
+	<h2 id="terminal">Terminal Silhouette</h2>
+
+	<% if ExternalImage.exists?(@airport.terminal_silhouette_path) %>
+  <div class="illustration-container">
+    <% if ExternalImage.exists?(@airport.terminal_silhouette_large_path) %>
+      <%= link_to(image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette"), @airport.terminal_silhouette_large_path, target: :_blank) %>
+    <% else %>
+      <%= image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette") %>
+    <% end %>
+  </div>
+  <div class="credit illustration-credit">
+    Terminal silhouette created by <%= link_to("Paul Bogard", "https://www.pbogard.com/projects/terminal-silhouettes", target: :_blank) %>
+  </div>
+<% end %>
+
 
 <% end %>
