@@ -1,3 +1,9 @@
+<% if @layover_ratio  %>
+<div id="title-info">
+  <%= link_to "Layover Ratio", "https://onehundredairports.com/2019/02/07/my-worst-layovers/", target: :_blank %>: <%= @layover_ratio %>
+</div>
+<% end %>
+
 <h1><%= @title %></h1>
 
 <p class="center">Part of the <%= link_to(@trip.name, @trip, :class => "bold") %> trip.</p>

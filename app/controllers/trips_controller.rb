@@ -66,9 +66,9 @@ class TripsController < ApplicationController
     # Create map
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
 
-    rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
-      redirect_to trips_path
+  rescue ActiveRecord::RecordNotFound
+    flash[:warning] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
+    redirect_to trips_path
   end
   
   
@@ -84,6 +84,9 @@ class TripsController < ApplicationController
     @section_distance = Route.total_distance(@flights)
     if @flights.any?
       stops = [@flights.first.origin_airport.iata_code,@flights.last.destination_airport.iata_code]
+      if @flights.count > 1 && stops.first != stops.last
+        @layover_ratio = (@section_distance.to_f/Route.distance_by_iata(*stops).to_f).round(3)
+      end
     else
       stops = Array.new
     end
