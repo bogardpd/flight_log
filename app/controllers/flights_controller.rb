@@ -64,6 +64,10 @@ class FlightsController < ApplicationController
     flash[:warning] = "We couldnʼt find a flight with an ID of #{params[:id]}. Instead, weʼll give you a list of flights."
     redirect_to flights_path
   end
+
+  def show_flight_kml
+    render xml: KMLData.new(flights: flyer.flights(current_user)).xml
+  end
     
   def show_date_range
     add_breadcrumb "Flights", flights_path

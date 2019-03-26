@@ -1,4 +1,6 @@
 class KMLData
+  include ActionView::Helpers
+  include ActionView::Context
 
   # Initialize a KML file.
   # Params:
@@ -13,11 +15,16 @@ class KMLData
 
   # Return the XML for a KML document.
   def xml
-    
+    output = %Q(<?xml version="1.0" encoding="UTF-8" ?>).html_safe
+    output += content_tag(:kml, xmlns: "http://www.opengis.net/kml/2.2") do
+
+    end
+    return output
   end
 
   private
 
+  # Given a collection of flights, return a hash (IATA codes as keys; city, latitude, longitude as values)
   def airports(flights)
     airport_ids = flights.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq.sort
     airport_details = Airport.find(airport_ids).pluck(:iata_code, :city, :latitude, :longitude).sort_by{|x| x[0]}
@@ -27,6 +34,6 @@ class KMLData
     end
     return airport_hash
   end
-    
+  
 
 end
