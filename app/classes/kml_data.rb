@@ -8,7 +8,7 @@ class KMLData
   def initialize(flights: nil)
     @flights = flights
     if flights
-      @routes = flights.includes(:origin_airport, :destination_airport).map{|f| [f.origin_airport.iata_code, f.destination_airport.iata_code].sort}.uniq
+      @routes = flights.includes(:origin_airport, :destination_airport).map{|f| [f.origin_airport.iata_code, f.destination_airport.iata_code].sort}.uniq.sort
       @airports = airports(flights)
     end
   end
@@ -25,6 +25,7 @@ class KMLData
         concat kml_camera
         concat content_tag(:open, "1")
         concat kml_airports(@airports)
+        concat kml_routes(@routes, @airports)
       end
     end
     return output
@@ -45,7 +46,7 @@ class KMLData
     return airport_hash
   end
 
-  # Create KML for a specific Airport point
+  # Create KML for a specific airport Point
   # Params:
   # +iata+:: IATA code
   # +city+:: City
@@ -79,6 +80,53 @@ class KMLData
       concat content_tag(:latitude, "39.828175")
       concat content_tag(:altitude, "5000000")
       concat content_tag(:altitudeMode, "absolute")
+    end
+  end
+
+  # Create KML for a specific route LineString
+  # Params:
+  # +lat1+:: Latitude of first airport
+  # +lon1+:: Longitude of first airport
+  # +lat2+:: Latitude of second airport
+  # +lon2+:: Longitude of second airport
+  def kml_line_string (lat1, lat2, lon1, lon2)
+    return content_tag(:LineString) do
+      concat content_tag(:tessellate, "1")
+      concat content_tag(:coordinates, "#{lon1},#{lat1},0 #{lon2},#{lat2},0")
+    end
+  end
+
+  # Create KML for a specific route
+  # Params:
+  # +iata1+:: IATA code of first airport
+  # +lat1+:: Latitude of first airport
+  # +lon1+:: Longitude of first airport
+  # +iata2+:: IATA code of second airport
+  # +lat2+:: Latitude of second airport
+  # +lon2+:: Longitude of second airport
+  def kml_route(iata1, lat1, lon1, iata2, lat2, lon2)
+    return content_tag(:Placemark) do
+      concat content_tag(:name, "#{iata1}–#{iata2}")
+      concat content_tag(:styleUrl, "#flightPath")
+      concat kml_line_string(lat1, lat2, lon1, lon2)
+    end
+  end
+
+  # Create KML for route LineStrings
+  # Params:
+  # +routes+:: An array IATA string pair arrays
+  # +airports+:: An airport details hash
+  def kml_routes(routes, airports)
+    return content_tag(:Folder) do
+      concat content_tag(:name, "Flight Routes")
+      routes.each do |route|
+        iata1, iata2 = route
+        lat1 = airports[iata1][:latitude]
+        lon1 = airports[iata1][:longitude]
+        lat2 = airports[iata2][:latitude]
+        lon2 = airports[iata2][:longitude]
+        concat kml_route(iata1, lat1, lon1, iata2, lat2, lon2)
+      end
     end
   end
   
