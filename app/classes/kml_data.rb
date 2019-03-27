@@ -17,7 +17,13 @@ class KMLData
   def xml
     output = %Q(<?xml version="1.0" encoding="UTF-8" ?>).html_safe
     output += content_tag(:kml, xmlns: "http://www.opengis.net/kml/2.2") do
-
+      content_tag(:Document) do
+        concat content_tag(:name, "Flights")
+        concat content_tag(:description, "Paul Bogard’s Flight History")
+        concat kml_styles
+        concat kml_camera
+        concat content_tag(:open, "1")
+      end
     end
     return output
   end
@@ -34,6 +40,30 @@ class KMLData
     end
     return airport_hash
   end
+
+  # Define KML camera
+  def kml_camera
+    content_tag(:Camera) do
+      concat content_tag(:longitude, "-98.5795")
+      concat content_tag(:latitude, "39.828175")
+      concat content_tag(:altitude, "5000000")
+      concat content_tag(:altitudeMode, "absolute")
+    end
+  end
   
+  # Define KML styles
+  def kml_styles
+    output = content_tag(:Style, id: "airportMarker") do
+      content_tag(:Icon) do
+        content_tag(:href, "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png")
+      end
+    end
+    output += content_tag(:Style, id: "flightPath") do
+      content_tag(:LineStyle) do
+        concat content_tag(:color, "ff0000ff")
+        concat content_tag(:width, "2")
+      end
+    end
+  end
 
 end
