@@ -135,7 +135,7 @@ module ApplicationHelper
   def gcmap_region_select_links(map, selected_region, anchor: nil)
     regions = Hash.new
     regions["World"]       = %w()
-    regions["USA (CONUS)"] = %w(K)
+    regions["North America"] = %w(C K M T)
     regions["Europe"]      = %w(B E L)
     regions["Pacific/Oceania"]     = %w(A N PH R Y)
     
