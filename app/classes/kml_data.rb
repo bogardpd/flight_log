@@ -54,8 +54,8 @@ class KMLData
   # +lon+:: Longitude
   def kml_airport(iata, city, lat, lon)
     return content_tag(:Placemark) do
-      concat content_tag(:name, iata)
-      concat content_tag(:description, city)
+      concat content_tag(:name, city)
+      concat content_tag(:description, iata)
       concat content_tag(:styleUrl, "#airportMarker")
       concat content_tag(:Point, content_tag(:coordinates, "#{lon},#{lat},0"))
     end
