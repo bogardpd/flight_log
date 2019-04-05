@@ -12,6 +12,10 @@ class Map
     return html.html_safe
     
   end
+
+  def gcmap
+    return routes_normal
+  end
   
   def exists?
     query.present?
