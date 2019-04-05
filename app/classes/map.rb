@@ -13,8 +13,19 @@ class Map
     
   end
 
+  # Returns a SafeBuffer containing HTML for a Great Circle Mapper map.
   def gcmap
-    return routes_normal
+    return airport_details
+  end
+
+  # Returns a SafeBuffer contining XML data for a GPX file.
+  def gpx
+
+  end
+
+  # Returns a SafeBuffer containing XML data for a KML file.
+  def kml
+
   end
   
   def exists?
@@ -39,37 +50,63 @@ class Map
 
     # Returns a hash of airport details in the form of {airport_id => {latitude: 0, longitude: 0, city: "City", country: "Country", iata: "AAA", icao: "AAAA"}}
     def airport_details
-      return Hash.new
+      details = Hash.new
+
+      airport_ids = Array.new
+      airport_ids |= airports_normal
+      airport_ids |= airports_highlighted
+      airport_ids |= airports_out_of_region
+      airport_ids |= routes_normal.flatten
+      airport_ids |= routes_highlighted.flatten
+      airport_ids |= routes_out_of_region.flatten
+      airport_ids = airport_ids.uniq.sort
+
+      airports = Airport.where(id: airport_ids)
+      airports.each do |airport|
+        details[airport.id] = {iata: airport.iata_code, icao: airport.icao_code, latitude: airport.latitude, longitude: airport.longitude, city: airport.city, country: airport.country, visits: airport_frequencies[airport.id]}
+      end
+
+      return details
     end
 
-    # Returns an array of airports in the form of [{airport_id: 1, visits: 1}]
+    # Returns an array of airport IDs
     def airports_normal
       return Array.new
     end
 
-    # Returns an array of airports in the form of [{airport_id: 1, visits: 1}]
+    # Returns an array of airport IDs
     def airports_highlighted
       return Array.new
     end
 
-    # Returns an array of airports in the form of [{airport_id: 1, visits: 1}]
+    # Returns an array of airport IDs
     def airports_out_of_region
       return Array.new
     end
 
-    # Returns an array of routes in the form of [{airport_id_1: 1, airport_id_2: 2, flights: 1}]
+    # Returns a hash of airport frequencies in the form of {airport_id => frequency}
+    def airport_frequencies
+      return Hash.new
+    end
+
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted.
     def routes_normal
       return Array.new
     end
 
-    # Returns an array of routes in the form of [{airport_id_1: 1, airport_id_2: 2, flights: 1}]
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted.
     def routes_highlighted
       return Array.new
     end
 
-    # Returns an array of routes in the form of [{airport_id_1: 1, airport_id_2: 2, flights: 1}]
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted.
     def routes_out_of_region
       return Array.new
+    end
+
+    # Returns a hash of route frequencies in the form of {[airport_1_id, airport_2_id] => frequency}
+    def route_frequencies
+      return Hash.new
     end
 
     # Old methods:
