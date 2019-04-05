@@ -32,6 +32,43 @@ class Map
   end
   
   private
+
+    # Returns a hash of airport details in the form of {airport_id => {latitude: 0, longitude: 0, city: "City", country: "Country", iata: "AAA", icao: "AAAA"}}
+    def airport_details
+      return Hash.new
+    end
+
+    # Returns an array of airports in the form of [{airport_id: 1, visits: 1}]
+    def airports_normal
+      return Array.new
+    end
+
+    # Returns an array of airports in the form of [{airport_id: 1, visits: 1}]
+    def airports_highlighted
+      return Array.new
+    end
+
+    # Returns an array of airports in the form of [{airport_id: 1, visits: 1}]
+    def airports_out_of_region
+      return Array.new
+    end
+
+    # Returns an array of routes in the form of [{airport_id_1: 1, airport_id_2: 2, flights: 1}]
+    def routes_normal
+      return Array.new
+    end
+
+    # Returns an array of routes in the form of [{airport_id_1: 1, airport_id_2: 2, flights: 1}]
+    def routes_highlighted
+      return Array.new
+    end
+
+    # Returns an array of routes in the form of [{airport_id_1: 1, airport_id_2: 2, flights: 1}]
+    def routes_out_of_region
+      return Array.new
+    end
+
+    # Old methods:
   
     def airport_options
       return "b:disc5:black"
