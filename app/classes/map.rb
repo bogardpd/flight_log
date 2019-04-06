@@ -22,18 +22,40 @@ class Map
 
   # TODO: remove
   def test_output
+    @airport_details = airport_details
     return gcmap_route_string(routes_normal)
   end
   
   def exists?
-    query.present?
+    gcmap_query.present?
   end
   
-  # Returns an array of IATA codes representing all airports used on this map.
-  def used_airports
-    used_from_airports = airports_inside_region | airports_outside_region | airports_highlighted | airports_frequency
-    used_from_routes = (routes_inside_region | routes_outside_region | routes_highlighted | routes_unhighlighted).map{|r| r.split(/[-\/]/)}.flatten
-    return (used_from_airports | used_from_routes).uniq.sort
+  # # Returns an array of IATA codes representing all airports used on this map.
+  # def used_airports
+  #   used_from_airports = airports_inside_region | airports_outside_region | airports_highlighted | airports_frequency
+  #   used_from_routes = (routes_inside_region | routes_outside_region | routes_highlighted | routes_unhighlighted).map{|r| r.split(/[-\/]/)}.flatten
+  #   return (used_from_airports | used_from_routes).uniq.sort
+  # end
+
+  # Returns a hash of airport details in the form of {airport_id => {latitude: 0, longitude: 0, city: "City", country: "Country", iata: "AAA", icao: "AAAA"}}
+  def airport_details
+    details = Hash.new
+
+    airport_ids = Array.new
+    airport_ids |= airports_normal
+    airport_ids |= airports_highlighted
+    airport_ids |= airports_out_of_region
+    airport_ids |= routes_normal.flatten
+    airport_ids |= routes_highlighted.flatten
+    airport_ids |= routes_out_of_region.flatten
+    airport_ids = airport_ids.uniq.sort
+
+    airports = Airport.where(id: airport_ids)
+    airports.each do |airport|
+      details[airport.id] = {iata: airport.iata_code, icao: airport.icao_code, latitude: airport.latitude, longitude: airport.longitude, city: airport.city, country: airport.country, visits: airport_frequencies[airport.id]}
+    end
+
+    return details
   end
   
   # Return a hash of a map query based on a secret key
@@ -45,26 +67,7 @@ class Map
   
   private
 
-    # Returns a hash of airport details in the form of {airport_id => {latitude: 0, longitude: 0, city: "City", country: "Country", iata: "AAA", icao: "AAAA"}}
-    def airport_details
-      details = Hash.new
-
-      airport_ids = Array.new
-      airport_ids |= airports_normal
-      airport_ids |= airports_highlighted
-      airport_ids |= airports_out_of_region
-      airport_ids |= routes_normal.flatten
-      airport_ids |= routes_highlighted.flatten
-      airport_ids |= routes_out_of_region.flatten
-      airport_ids = airport_ids.uniq.sort
-
-      airports = Airport.where(id: airport_ids)
-      airports.each do |airport|
-        details[airport.id] = {iata: airport.iata_code, icao: airport.icao_code, latitude: airport.latitude, longitude: airport.longitude, city: airport.city, country: airport.country, visits: airport_frequencies[airport.id]}
-      end
-
-      return details
-    end
+    
 
     # Returns an array of airport IDs
     def airports_normal
@@ -123,6 +126,7 @@ class Map
     end
 
     def gcmap_query
+      @airport_details = airport_details
       query_sections = Array.new
       
       if routes_out_of_region.any? || routes_unhighlighted.any?
@@ -188,7 +192,20 @@ class Map
 
     # Accepts an array of airport id pairs (from one of the routes_ methods) and returns a string of IATA code pairs.
     def gcmap_route_string(routes)
-      return routes.map{|r| r.map{|a| airport_details[a][:iata]}.sort.join("-")}.join(",")
+      # Generate an array of airport IDs, sorted by most used to least used:
+      frequency_order = routes.flatten.each_with_object(Hash.new(0)){|key, hash| hash[key] += 1}.sort_by{|k,v| -v}.map{|x| x[0]}
+      
+      route_groups = Array.new
+      # Loop through ordered airport IDs and generate gcmap querystring for it
+      frequency_order.each do |airport_id|
+        break if routes.empty?
+        # Save all routes with this airport id to matching, and retain only the  routes that don't match:
+        matching, routes = routes.partition{|x| x[0] == airport_id || x[1] == airport_id}
+        if matching.any?
+          route_groups.push(@airport_details[airport_id][:iata] + "-" + matching.map{|x| @airport_details[x[0] == airport_id ? x[1] : x[0]][:iata]}.sort.join("/"))
+        end
+      end
+      return route_groups.join(",")
     end
 
     # Old methods:

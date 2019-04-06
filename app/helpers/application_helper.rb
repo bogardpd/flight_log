@@ -117,7 +117,7 @@ module ApplicationHelper
     html << %Q(<div id="#{anchor}">\n)
     if map && map.exists?
       html << gcmap_region_select_links(map, selected_region, anchor: anchor)
-      html << map.draw
+      html << map.gcmap
     else
       if selected_region.length > 0
         html << render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.count)} #{selected_region.join(", ")}.")
@@ -139,7 +139,7 @@ module ApplicationHelper
     regions["Europe"]      = %w(B E L)
     regions["Pacific/Oceania"]     = %w(A N PH R Y)
     
-    used_airports = map.used_airports.sort
+    used_airports = map.airport_details.keys
     tabs = Array.new
     
     regions.each do |name, icao|
