@@ -52,15 +52,15 @@ class TripsController < ApplicationController
     previous_destination = nil
     @flights.each do |flight|
       @section_count[flight.trip_section] += 1
-      @section_final_destination[flight.trip_section] = flight.destination_airport.iata_code
+      @section_final_destination[flight.trip_section] = flight.destination_airport
       unless flight.trip_section == previous_section  
         stops.push(previous_destination) unless previous_destination.nil?
-        stops.push(flight.origin_airport.iata_code)
+        stops.push(flight.origin_airport)
       end
       previous_section = flight.trip_section
-      previous_destination = flight.destination_airport.iata_code
+      previous_destination = flight.destination_airport
     end
-    stops.push(@flights.last.destination_airport.iata_code) unless @flights.empty?
+    stops.push(@flights.last.destination_airport) unless @flights.empty?
     stops.uniq!
     
     # Create map
@@ -83,9 +83,9 @@ class TripsController < ApplicationController
     @flights = Flight.where(trip_id: @trip, trip_section: params[:section]).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
     @section_distance = Route.total_distance(@flights)
     if @flights.any?
-      stops = [@flights.first.origin_airport.iata_code,@flights.last.destination_airport.iata_code]
+      stops = [@flights.first.origin_airport,@flights.last.destination_airport]
       if @flights.count > 1 && stops.first != stops.last
-        @layover_ratio = (@section_distance.to_f/Route.distance_by_iata(*stops).to_f).round(3)
+        @layover_ratio = (@section_distance.to_f/Route.distance_by_airport(*stops).to_f).round(3)
       end
     else
       stops = Array.new

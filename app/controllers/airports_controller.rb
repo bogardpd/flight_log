@@ -158,9 +158,9 @@ class AirportsController < ApplicationController
     
     # Create maps:
     @region = current_region(default: [])
-    @airport_map  = FlightsMap.new(@flights, highlighted_airports: [@airport.iata_code], region: @region)
-    @sections_map = FlightsMap.new(@sections_using_airport_flights, highlighted_airports: [@airport.iata_code], region: @region)
-    @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport.iata_code], region: @region)
+    @airport_map  = FlightsMap.new(@flights, highlighted_airports: [@airport], region: @region)
+    @sections_map = FlightsMap.new(@sections_using_airport_flights, highlighted_airports: [@airport], region: @region)
+    @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport], region: @region)
     
     @title = @airport.iata_code
     @meta_description = "Maps and lists of Paul Bogardʼs flights through #{@airport.iata_code} – #{@airport.city}."

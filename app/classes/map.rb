@@ -89,22 +89,22 @@ class Map
       return Hash.new
     end
 
-    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted.
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
     def routes_normal
       return Array.new
     end
 
-    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted.
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
     def routes_highlighted
       return Array.new
     end
 
-    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted.
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
     def routes_unhighlighted
       return Array.new
     end
 
-    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted.
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
     def routes_out_of_region
       return Array.new
     end
@@ -175,7 +175,7 @@ class Map
         else
           query_sections.push("m:p:ring11:black")
         end
-        query_sections.push(airports_highlighted)
+        query_sections.push(airports_highlighted.map{|a| @airport_details[a][:iata]}.join(","))
       end
       
       # Add frequency rings:
@@ -202,7 +202,8 @@ class Map
         # Save all routes with this airport id to matching, and retain only the  routes that don't match:
         matching, routes = routes.partition{|x| x[0] == airport_id || x[1] == airport_id}
         if matching.any?
-          route_groups.push(@airport_details[airport_id][:iata] + "-" + matching.map{|x| @airport_details[x[0] == airport_id ? x[1] : x[0]][:iata]}.sort.join("/"))
+          # Create querystring:
+          route_groups.push(@airport_details[airport_id][:iata] + "-" + matching.map{|x| @airport_details[x[0] == airport_id ? x[1] : x[0]][:iata]}.sort.join("/")) # The map with ternary statement is used to ensure we keep routes where both airports are the same; otherwise we could just use flatten and reject.
         end
       end
       return route_groups.join(",")

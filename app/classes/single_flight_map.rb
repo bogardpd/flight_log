@@ -10,7 +10,7 @@ class SingleFlightMap < Map
   
   private
 
-  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted.
+  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
   def routes_normal
     return [[@flight.origin_airport_id, @flight.destination_airport_id].sort]
   end

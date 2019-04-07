@@ -7,7 +7,7 @@ class FlightsMap < Map
   # +region+:: The region to show. World map will be shown if region is left blank.
   def initialize(flights, highlighted_airports: nil, include_names: false, region: [""])
     @flights = flights
-    @highlighted_airports = highlighted_airports ? highlighted_airports : Array.new
+    @highlighted_airports = highlighted_airports ? highlighted_airports.pluck(:id) : Array.new
     @airports_inside_region = Airport.in_region_hash(region).keys | @highlighted_airports
     @routes = separate_routes_by_region
     @include_names = include_names
@@ -15,10 +15,17 @@ class FlightsMap < Map
   
   private
   
+  # Returns an array of airport IDs
+  def airports_highlighted
+    return @highlighted_airports
+  end
+
+  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
   def routes_normal
     return @routes[:inside_region]
   end
 
+  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
   def routes_out_of_region
     return @routes[:outside_region]
   end

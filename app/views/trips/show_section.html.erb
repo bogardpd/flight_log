@@ -8,7 +8,7 @@
 
 <p class="center">Part of the <%= link_to(@trip.name, @trip, :class => "bold") %> trip.</p>
 
-<%= @map.draw %>
+<%= @map.gcmap %>
 <%= render partial: "routes/distance_block", locals: {distance: @section_distance, adjective: "section"} %>
 
 <table class="flightlog">

@@ -8,7 +8,7 @@
   <p class="comment"><%= @trip.comment %></p>
 <% end %>
 
-<%= @map.draw %>
+<%= @map.gcmap %>
 <%= render partial: "routes/distance_block", locals: {distance: @trip_distance, adjective: "total"} %>
 
 <table class="flightlog">
@@ -24,7 +24,7 @@
 <% if flight.trip_section != previous_section %>
 	<tr>
     <td rowspan="<%= @section_count[flight.trip_section] %>" class="flight-section">
-      <%= link_to("Section #{flight.trip_section}", show_section_path(flight.trip_id, flight.trip_section), :class => "bold") %><% if @section_count[flight.trip_section] > 1 %><br /><span class="flight-section-route"><%= flight.origin_airport.iata_code %> <%= Route::ARROW_ONE_WAY_HTML %> <%= @section_final_destination[flight.trip_section] %></span><% end %>
+      <%= link_to("Section #{flight.trip_section}", show_section_path(flight.trip_id, flight.trip_section), :class => "bold") %><% if @section_count[flight.trip_section] > 1 %><br /><span class="flight-section-route"><%= flight.origin_airport.iata_code %> <%= Route::ARROW_ONE_WAY_HTML %> <%= @section_final_destination[flight.trip_section].iata_code %></span><% end %>
     </td>
 <% else %>
 	<tr class="no-top-border">
