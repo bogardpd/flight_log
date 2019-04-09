@@ -170,7 +170,7 @@ class Map
       
       # Add airports:
       if airports_normal.any?
-        query_sections.push(airports_inside_region.join(","))
+        query_sections.push(gcmap_airport_string(airports_normal))
       end
       
       # Add highlighted airports:
@@ -180,7 +180,7 @@ class Map
         else
           query_sections.push("m:p:ring11:black")
         end
-        query_sections.push(airports_highlighted.map{|a| @airport_details[a][:iata]}.join(","))
+        query_sections.push(gcmap_airport_string(airports_highlighted))
       end
       
       # Add frequency rings:
@@ -213,6 +213,11 @@ class Map
         end
       end
       return route_groups.join(",")
+    end
+
+    # Accepts an array of airport ID pairs and returns a string of IATA codes.
+    def gcmap_airport_string(airports)
+      return airports.map{|a| @airport_details[a][:iata]}.join(",")
     end
 
     # Old methods:

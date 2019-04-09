@@ -16,6 +16,11 @@ class FlightsMap < Map
   private
   
   # Returns an array of airport IDs
+  def airports_normal
+    return @routes[:extra_airports]
+  end
+
+  # Returns an array of airport IDs
   def airports_highlighted
     return @highlighted_airports
   end
@@ -52,9 +57,7 @@ class FlightsMap < Map
     
     routes[:inside_region]     = pairs_inside_region.uniq
     routes[:outside_region]    = pairs_outside_region.uniq
-    routes[:used_airports]     = pairs_inside_region.flatten.uniq
-    routes[:extra_airports]    = ((pairs_outside_region.flatten - pairs_inside_region.flatten) & @airports_inside_region).uniq
-  
+    routes[:extra_airports]    = ((pairs_outside_region.flatten - pairs_inside_region.flatten) & @airports_inside_region).uniq # Airports that are in the region, but only have routes to outside of the region.
     return routes
   
   end
