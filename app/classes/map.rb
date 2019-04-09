@@ -125,6 +125,11 @@ class Map
       return "b:disc5:black"
     end
 
+    # Returns true if highlighted airports should display names, fals otherwise
+    def gcmap_include_highlighted_airport_names?
+      return false
+    end
+
     def gcmap_query
       @airport_details = airport_details
       query_sections = Array.new
@@ -170,7 +175,7 @@ class Map
       
       # Add highlighted airports:
       if airports_highlighted.any?
-        if @include_names
+        if gcmap_include_highlighted_airport_names?
           query_sections.push(%Q(m:p:ring11:black%2B"%25N"12r%3A%23666))
         else
           query_sections.push("m:p:ring11:black")
@@ -199,7 +204,7 @@ class Map
       # Loop through ordered airport IDs and generate gcmap querystring for it
       frequency_order.each do |airport_id|
         break if routes.empty?
-        # Save all routes with this airport id to matching, and retain only the  routes that don't match:
+        # Save all routes with this airport id to matching, and retain only the routes that don't match:
         matching, routes = routes.partition{|x| x[0] == airport_id || x[1] == airport_id}
         if matching.any?
           # Create querystring:

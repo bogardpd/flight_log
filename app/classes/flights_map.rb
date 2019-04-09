@@ -20,6 +20,11 @@ class FlightsMap < Map
     return @highlighted_airports
   end
 
+  # Returns true if highlighted airports should display names, fals otherwise
+  def gcmap_include_highlighted_airport_names?
+    return @include_names
+  end
+
   # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
   def routes_normal
     return @routes[:inside_region]
@@ -53,24 +58,5 @@ class FlightsMap < Map
     return routes
   
   end
-
-
-#     def routes_inside_region
-#       return @routes[:inside_region]
-#     end
-  
-#     def routes_outside_region
-#       return @routes[:outside_region]
-#     end
-    
-#     def airports_highlighted
-#       return @highlighted_airports
-#     end
-    
-#     def airports_inside_region
-#       return separate_routes_by_region[:extra_airports]
-#     end
-  
-#     
   
 end
