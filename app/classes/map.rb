@@ -140,8 +140,8 @@ class Map
         
         # Add routes outside region:
         if routes_out_of_region.any?
-          query_sections.push("o:noext")
-          query_sections.push(routes_outside_region.join(",o:noext,"))
+          #query_sections.push("o:noext")
+          query_sections.push(gcmap_route_string(routes_out_of_region, noext: true))
         end
       
         # Add unhighlighted routes:
@@ -196,7 +196,7 @@ class Map
     end
 
     # Accepts an array of airport id pairs (from one of the routes_ methods) and returns a string of IATA code pairs.
-    def gcmap_route_string(routes)
+    def gcmap_route_string(routes, noext: false)
       # Generate an array of airport IDs, sorted by most used to least used:
       frequency_order = routes.flatten.each_with_object(Hash.new(0)){|key, hash| hash[key] += 1}.sort_by{|k,v| -v}.map{|x| x[0]}
       
@@ -208,6 +208,7 @@ class Map
         matching, routes = routes.partition{|x| x[0] == airport_id || x[1] == airport_id}
         if matching.any?
           # Create querystring:
+          route_groups.push("o:noext") if noext
           route_groups.push(@airport_details[airport_id][:iata] + "-" + matching.map{|x| @airport_details[x[0] == airport_id ? x[1] : x[0]][:iata]}.sort.join("/")) # The map with ternary statement is used to ensure we keep routes where both airports are the same; otherwise we could just use flatten and reject.
         end
       end

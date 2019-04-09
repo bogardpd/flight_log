@@ -103,8 +103,16 @@ class Airport < ApplicationRecord
   # return an array of IATA codes in the region.
   # Params:
   # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
-  def self.in_region(icao_starts)
+  def self.in_region_iata_codes(icao_starts)
     return in_region_hash(icao_starts).values
+  end
+
+  # Take a collection of strings representing the starts of ICAO codes, and
+  # return an array of airport IDs in the region.
+  # Params:
+  # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
+  def self.in_region_ids(icao_starts)
+    return in_region_hash(icao_starts).keys
   end
   
   # Take a collection of strings representing the starts of ICAO codes, and

@@ -113,20 +113,18 @@ module ApplicationHelper
   # +selected_region+:: The currently active region
   # +anchor+:: If set, defines a page anchor position for the region select links to link to
   def map_with_region_select(map, selected_region, anchor: nil)
-    html = String.new
-    html << %Q(<div id="#{anchor}">\n)
-    if map && map.exists?
-      html << gcmap_region_select_links(map, selected_region, anchor: anchor)
-      html << map.gcmap
-    else
-      if selected_region.length > 0
-        html << render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.count)} #{selected_region.join(", ")}.")
+    return content_tag(:div, id: anchor) do
+      if map && map.exists?
+        concat gcmap_region_select_links(map, selected_region, anchor: anchor)
+        concat map.gcmap
       else
-        html << render_message(:warning, "When flights have been added, you’ll see a map here.")
+        if selected_region.length > 0
+          concat render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.count)} #{selected_region.join(", ")}.")
+        else
+          concat render_message(:warning, "When flights have been added, you’ll see a map here.")
+        end
       end
     end
-    html << "</div>\n"
-    html.html_safe
   end
     
   # Return a menu allowing the user to switch between regions on a map
@@ -144,18 +142,18 @@ module ApplicationHelper
     
     regions.each do |name, icao|
       if selected_region.uniq.sort == icao.uniq.sort
-        tabs.push %Q(<li class="selected">#{name}</li>)
+        tabs.push(content_tag(:li, name, class: "selected"))
       else
-        in_region = Airport.in_region(icao).sort
+        in_region = Airport.in_region_ids(icao).sort
         if ((in_region & used_airports).any? && (used_airports - in_region).any?) || icao == []
           # This region has airports, but is not identical to world OR this region is world.
-          tabs.push "<li>#{link_to(name, url_for(params.permit(:id, :sort).merge(region: icao.join("-"), anchor: anchor)))}</li>"
+          tabs.push(content_tag(:li, link_to(name, url_for(params.permit(:id, :sort).merge(region: icao.join("-"), anchor: anchor)))))
         end
       end 
     end
     
     if tabs.length > 1
-      return %Q(<div class="region-select"><ul class="region-select">#{tabs.join}</ul></div>)
+      return content_tag(:div, content_tag(:ul, safe_join(tabs), class: "region-select"), class: "region-select")
     else
       return ""
     end

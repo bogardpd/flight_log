@@ -5,7 +5,7 @@ class AirportsMap < Map
   # +airports+:: A collection of Airport objects.
   # +region+:: The region to show. World map will be shown if region is left blank.
   def initialize(airports, region: [""])
-    @airport_codes = airports.in_region(region)
+    @airport_codes = airports.in_region_iata_codes(region)
     @outside = airports.pluck(:iata_code) - @airport_codes
   end
   
