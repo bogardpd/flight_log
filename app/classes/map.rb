@@ -183,15 +183,57 @@ class Map
       end
       
       # Add frequency rings:
-      # if airports_frequency.any?
-      #   query_sections.push(airports_frequency.join(","))
-      # end
+      if airport_frequencies.any?
+        query_sections.push(gcmap_airport_frequency_rings_string(airport_frequencies))
+      end
       
       if query_sections.length > 0
         return query_sections.join(",")
       else
         return " "
       end
+    end
+
+    # Accepts an array of airport ID pairs and returns a string of IATA codes.
+    def gcmap_airport_string(airports)
+      return airports.map{|a| @airport_details[a][:iata]}.join(",")
+    end
+
+    # Return an array of IATA codes preceeded by appropriate Great Circle
+    # Mapper-formatted airport disc sizes.
+    def gcmap_airport_frequency_rings_string(frequencies)
+      
+      max_gcmap_ring = 99 # Define the maximum ring size gcmap will allow
+      previous_airport_value = nil
+      frequency_max = 1.0
+      frequency_scaled = 0
+      
+      query = Array.new      
+      region_frequencies = Array.new
+      
+      airports_normal.each do |airport|
+        region_frequencies.push(iata_code: @airport_details[airport][:iata], frequency: frequencies[airport])
+      end
+      region_frequencies.sort_by! { |airport| [-airport[:frequency], airport[:iata_code]] }
+      
+      region_frequencies.each do |airport|
+        if airport == region_frequencies.first
+          # This is the first circle, so define its color:
+          query.push("m:p:ring#{max_gcmap_ring}:black")
+          query.push(airport[:iata_code])
+          frequency_max = airport[:frequency].to_f
+        elsif airport[:frequency] == previous_airport_value
+          # Value is the same as previous, so no need to define ring size:
+          query.push(airport[:iata_code])
+        else
+          frequency_scaled = Math.sqrt((airport[:frequency].to_f / frequency_max)*(max_gcmap_ring**2)).ceil.to_i # Scale frequency range from 1..max_gcmap_ring
+          query.push("m:p:ring#{frequency_scaled}")
+          query.push(airport[:iata_code])
+        end
+        previous_airport_value = airport[:frequency]
+      end
+      
+      return query.join(",")
     end
 
     # Accepts an array of airport id pairs (from one of the routes_ methods) and returns a string of IATA code pairs.
@@ -214,10 +256,7 @@ class Map
       return route_groups.join(",")
     end
 
-    # Accepts an array of airport ID pairs and returns a string of IATA codes.
-    def gcmap_airport_string(airports)
-      return airports.map{|a| @airport_details[a][:iata]}.join(",")
-    end
+    
 
     # Old methods:
   

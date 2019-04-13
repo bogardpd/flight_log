@@ -8,62 +8,37 @@ class AirportFrequencyMap < Map
   # +region+:: The region to show. World map will be shown if region is left blank.
   def initialize(flights, region: [""])
     @airport_frequencies = Airport.frequency_hash(flights)
-    @airport_codes = Airport.in_region_hash(region).select{|k,v| @airport_frequencies.keys.include?(k)}
-    @outside = Airport.in_region_hash([]).select{|k,v| @airport_frequencies.keys.include?(k)}
+    @airports_in_region = Airport.in_region_hash(region).select{|k,v| @airport_frequencies.keys.include?(k)}
+    @airports_all = Airport.in_region_hash([]).select{|k,v| @airport_frequencies.keys.include?(k)}
+  end
+
+  def test_output
+    return airport_frequencies
   end
   
   private
-  
-    def airport_options
+
+    # Returns a string of Great Circle Mapper airport options.
+    def gcmap_airport_options
       return "b:disc5:red"
     end
-  
-    def airports_inside_region
-      return @airport_codes.values
+
+    # Returns an array of airport IDs
+    def airports_normal
+      return @airports_in_region.keys
+    end
+
+    # Returns an array of airport IDs
+    def airports_out_of_region
+      return @airports_all.keys - @airports_in_region.keys
+    end
+
+    # Returns a hash of airport frequencies in the form of {airport_id => frequency}
+    def airport_frequencies
+      return @airport_frequencies
     end
     
-    def airports_outside_region
-      return @outside.values - @airport_codes.values
-    end
-    
-    # Return an array of IATA codes preceeded by appropriate Great Circle
-    # Mapper-formatted airport disc sizes.
-    def airports_frequency
-      
-      max_gcmap_ring = 99 # Define the maximum ring size gcmap will allow
-      previous_airport_value = nil
-      frequency_max = 1.0
-      frequency_scaled = 0
-      
-      query = Array.new      
-      region_frequencies = Array.new
-      
-      @airport_codes.each do |airport, code|
-        region_frequencies.push(iata_code: code, frequency: @airport_frequencies[airport])
-      end
-      region_frequencies.sort_by! { |airport| [-airport[:frequency], airport[:iata_code]] }
-      
-      region_frequencies.each do |airport|
-        if airport == region_frequencies.first
-          # This is the first circle, so define its color:
-          query.push("m:p:ring#{max_gcmap_ring}:black")
-          query.push(airport[:iata_code])
-          frequency_max = airport[:frequency].to_f
-        elsif airport[:frequency] == previous_airport_value
-          # Value is the same as previous, so no need to define ring size:
-          query.push(airport[:iata_code])
-        else
-          frequency_scaled = Math.sqrt((airport[:frequency].to_f / frequency_max)*(max_gcmap_ring**2)).ceil.to_i # Scale frequency range from 1..max_gcmap_ring
-          query.push("m:p:ring#{frequency_scaled}")
-          query.push(airport[:iata_code])
-        end
-        previous_airport_value = airport[:frequency]
-      end
-      
-      return query
-    end
-    
-    def alt_tag
+    def map_description
       return "Map of airport locations and number of visits"
     end
     
