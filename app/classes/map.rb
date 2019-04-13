@@ -140,7 +140,6 @@ class Map
         
         # Add routes outside region:
         if routes_out_of_region.any?
-          #query_sections.push("o:noext")
           query_sections.push(gcmap_route_string(routes_out_of_region, noext: true))
         end
       
