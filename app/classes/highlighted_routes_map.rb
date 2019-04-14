@@ -6,28 +6,28 @@ class HighlightedRoutesMap < Map
   # +highlighted_route: A collection of Flights whose routes will be highlighted.
   def initialize(flights, highlighted_routes)
     @flights = flights
-    @highlighted_routes = highlighted_routes
+
+    @highlighted_routes = collected_routes(highlighted_routes)
+    @unhighlighted_routes = collected_routes(flights) - @highlighted_routes
   end
-  
+
   private
-  
+
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
     def routes_highlighted
-      return collected_routes(@highlighted_routes)
+      return @highlighted_routes
     end
     
+    # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
     def routes_unhighlighted
-      return collected_routes(@flights)
+      return @unhighlighted_routes
     end
     
     # Compile a Flight collection into a compressed set of routes.
     # Params:
     # +flights+:: A collection of Flights
     def collected_routes(flights)
-      pairs = Array.new
-      flights.each do |flight|
-        pairs.push([flight.origin_airport.iata_code, flight.destination_airport.iata_code].sort)
-      end
-      return compressed_routes(pairs)
+      return flights.map{|flight| [flight.origin_airport_id, flight.destination_airport_id].sort}.uniq
     end
   
 end

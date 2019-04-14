@@ -16,7 +16,7 @@
 <p>I have flown between <span class="bold"><%= link_to(@airports_city[0], airport_path(@airports[0])) %></span> and <span class="bold"><%= link_to(@airports_city[1], airport_path(@airports[1])) %></span> <%= pluralize(@flights.length, "time") %>.</p>
 
 <div id="map">
-  <%= @route_map.draw %>
+  <%= @route_map.gcmap %>
 </div>
 
 <% if @pair_distance %>
@@ -42,7 +42,7 @@
 
 <p>This map shows the flights of all of my trip sections with a segment from <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> to <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> or from <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> to <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr>.</p>
 
-<%= @sections_map.draw %>
+<%= @sections_map.gcmap %>
 
 <%= render "trips/section_table" %>
 
@@ -50,7 +50,7 @@
 
 <p>This map shows the flights of all of my trips with a segment from from <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr> to <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> or from <abbr title="<%= @airports_city[1] %>"><%= @airports[1] %></abbr> to <abbr title="<%= @airports_city[0] %>"><%= @airports[0] %></abbr>.</p>
 
-<%= @trips_map.draw %>
+<%= @trips_map.gcmap %>
 
 <%= render "trips/trip_table" %>
 
