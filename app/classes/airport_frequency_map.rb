@@ -5,7 +5,7 @@ class AirportFrequencyMap < Map
   # to each airport.
   # Params:
   # +flights+:: A collection of Flights.
-  # +region+:: The region to show. World map will be shown if region is left blank.
+  # +region+:: The ICAO regions to show. World map will be shown if region is left blank.
   def initialize(flights, region: [""])
     @airport_frequencies = Airport.frequency_hash(flights)
     @airports_in_region = Airport.in_region_hash(region).select{|k,v| @airport_frequencies.keys.include?(k)}
@@ -18,30 +18,28 @@ class AirportFrequencyMap < Map
   
   private
 
-    # Returns a string of Great Circle Mapper airport options.
-    def gcmap_airport_options
-      return "b:disc5:red"
-    end
+  # Returns an array of airport IDs
+  def airports_normal
+    return @airports_in_region.keys
+  end
 
-    # Returns an array of airport IDs
-    def airports_normal
-      return @airports_in_region.keys
-    end
+  # Returns an array of airport IDs
+  def airports_out_of_region
+    return @airports_all.keys - @airports_in_region.keys
+  end
 
-    # Returns an array of airport IDs
-    def airports_out_of_region
-      return @airports_all.keys - @airports_in_region.keys
-    end
+  # Returns a hash of airport frequencies in the form of {airport_id => frequency}
+  def airport_frequencies
+    return @airport_frequencies
+  end
 
-    # Returns a hash of airport frequencies in the form of {airport_id => frequency}
-    def airport_frequencies
-      return @airport_frequencies
-    end
-    
-    def map_description
-      return "Map of airport locations and number of visits"
-    end
-    
-   
+  # Returns a string of Great Circle Mapper airport options.
+  def gcmap_airport_options
+    return "b:disc5:red"
+  end
+  
+  def map_description
+    return "Map of airport locations and number of visits"
+  end
   
 end

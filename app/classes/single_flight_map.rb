@@ -10,18 +10,18 @@ class SingleFlightMap < Map
   
   private
 
-  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
-  def routes_normal
-    return [[@flight.origin_airport_id, @flight.destination_airport_id].sort]
+  # Returns a string of Great Circle Mapper airport options.
+  def gcmap_airport_options
+    return "*"
   end
 
   def map_description
     "Map of flight route between #{@codes[0]} and #{@codes[1]}"
   end
 
-  # Returns a string of Great Circle Mapper airport options.
-  def gcmap_airport_options
-    return "*"
+  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
+  def routes_normal
+    return [[@flight.origin_airport_id, @flight.destination_airport_id].sort]
   end
   
 end

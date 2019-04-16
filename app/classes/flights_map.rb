@@ -3,8 +3,8 @@ class FlightsMap < Map
   # Initialize a map of flight routes.
   # Params:
   # +flights+:: A collection of Flights.
-  # ++highlighted_airports+:: An array of string IATA codes to highlight.
-  # +region+:: The region to show. World map will be shown if region is left blank.
+  # ++highlighted_airports+:: A collection of Airports to highlight.
+  # +region+:: The ICAO regions to show. World map will be shown if region is left blank.
   def initialize(flights, highlighted_airports: nil, include_names: false, region: [""])
     @flights = flights
     @highlighted_airports = highlighted_airports ? highlighted_airports.pluck(:id) : Array.new
@@ -28,6 +28,10 @@ class FlightsMap < Map
   # Returns true if highlighted airports should display names, fals otherwise
   def gcmap_include_highlighted_airport_names?
     return @include_names
+  end
+
+  def map_description
+    return "Map of flight routes"
   end
 
   # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
@@ -55,9 +59,9 @@ class FlightsMap < Map
       end
     end
     
-    routes[:inside_region]     = pairs_inside_region.uniq
-    routes[:outside_region]    = pairs_outside_region.uniq
-    routes[:extra_airports]    = ((pairs_outside_region.flatten - pairs_inside_region.flatten) & @airports_inside_region).uniq # Airports that are in the region, but only have routes to outside of the region.
+    routes[:inside_region]  = pairs_inside_region.uniq
+    routes[:outside_region] = pairs_outside_region.uniq
+    routes[:extra_airports] = ((pairs_outside_region.flatten - pairs_inside_region.flatten) & @airports_inside_region).uniq # Airports that are in the region, but only have routes to outside of the region.
     return routes
   
   end
