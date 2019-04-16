@@ -1,5 +1,5 @@
 class FlightsMap < Map
-  
+
   # Initialize a map of flight routes.
   # Params:
   # +flights+:: A collection of Flights.

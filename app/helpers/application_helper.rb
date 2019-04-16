@@ -131,25 +131,15 @@ module ApplicationHelper
   # Params: 
   # +region+:: The currently active region
   def gcmap_region_select_links(map, selected_region, anchor: nil)
-    regions = Hash.new
-    regions["World"]       = %w()
-    regions["North America"] = %w(C K M T)
-    regions["Europe"]      = %w(B E L)
-    regions["Pacific/Oceania"]     = %w(A N PH R Y)
-    
-    used_airports = map.airport_details.keys
+    region_hash = map.gcmap_regions(selected_region)
     tabs = Array.new
     
-    regions.each do |name, icao|
-      if selected_region.uniq.sort == icao.uniq.sort
-        tabs.push(content_tag(:li, name, class: "selected"))
+    region_hash.each do |region, values|
+      if values[:selected]
+        tabs.push(content_tag(:li, region, class: "selected"))
       else
-        in_region = Airport.in_region_ids(icao).sort
-        if ((in_region & used_airports).any? && (used_airports - in_region).any?) || icao == []
-          # This region has airports, but is not identical to world OR this region is world.
-          tabs.push(content_tag(:li, link_to(name, url_for(params.permit(:id, :sort).merge(region: icao.join("-"), anchor: anchor)))))
-        end
-      end 
+        tabs.push(content_tag(:li, link_to(region, url_for(params.permit(:id, :sort).merge(region: values[:icao].join("-"), anchor: anchor)))))
+      end
     end
     
     if tabs.length > 1
