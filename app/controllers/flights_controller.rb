@@ -66,7 +66,8 @@ class FlightsController < ApplicationController
   end
 
   def show_flight_kml
-    render xml: KMLData.new(flights: flyer.flights(current_user)).xml
+    flights = flyer.flights(current_user)
+    render xml: FlightsMap.new(flights).kml
   end
     
   def show_date_range
