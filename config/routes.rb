@@ -15,6 +15,7 @@ Portfolio::Application.routes.draw do
   get   "/flights/new-flight-menu/(trip/:trip_id)" => "flights#new_flight_menu", as: :new_flight_menu
   post  "/flights/new-flight-menu/(trip/:trip_id)" => "flights#change_trip",     as: :change_new_flight_trip
   match "/flights/new/"                            => "flights#new", via: [:get, :post], as: :new_flight
+  get   "/flights/flights.gpx"                     => "flights#show_flight_gpx",  as: :show_flight_gpx
   get   "/flights/flights.kml"                     => "flights#show_flight_kml",  as: :show_flight_kml
   resources :flights, :except => [:new]
   get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range",  as: :show_date_range

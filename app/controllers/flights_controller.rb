@@ -65,6 +65,11 @@ class FlightsController < ApplicationController
     redirect_to flights_path
   end
 
+  def show_flight_gpx
+    flights = flyer.flights(current_user)
+    render xml: FlightsMap.new(flights).gpx
+  end
+
   def show_flight_kml
     flights = flyer.flights(current_user)
     render xml: FlightsMap.new(flights).kml

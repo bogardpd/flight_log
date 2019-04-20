@@ -40,7 +40,7 @@ class Map
 
   # Returns a SafeBuffer contining XML data for a GPX file.
   def gpx
-
+    return ""
   end
 
   # Returns a SafeBuffer containing XML data for a KML file.
