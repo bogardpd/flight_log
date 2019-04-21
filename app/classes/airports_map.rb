@@ -22,7 +22,7 @@ class AirportsMap < Map
   end
   
   def map_description
-    return "Map of airport locations"
+    return "Map of airport locations, created by Paul Bogard’s Flight Historian"
   end
   
 end

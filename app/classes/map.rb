@@ -8,6 +8,7 @@ class Map
     "Europe":           %w(B E L),
     "Pacific/Oceania":  %w(A N PH R Y)
   }
+  XML_PROLOG = %Q(<?xml version="1.0" encoding="UTF-8" ?>).html_safe
   
   # Returns a SafeBuffer containing HTML for a Great Circle Mapper map.
   def gcmap
@@ -40,17 +41,31 @@ class Map
 
   # Returns a SafeBuffer contining XML data for a GPX file.
   def gpx
-    return ""
+    @airport_details ||= airport_details
+    used_airports = @airport_details.keys
+    output = XML_PROLOG
+    output += content_tag(:gpx, xmlns: "http://www.topografix.com/GPX/1/1", version: "1.1") do
+      concat (content_tag(:metadata) do
+        concat content_tag(:name, map_name)
+        concat content_tag(:desc, map_description)
+        concat (content_tag(:author) do
+          concat content_tag(:name, "Paul Bogard’s Flight Historian")
+          concat content_tag(:link, content_tag(:text, "Paul Bogard’s Flight Historian"), href: "https://www.flighthistorian.com")
+        end)
+      end)
+      concat gpx_airports(used_airports)
+    end
+    return output
   end
 
   # Returns a SafeBuffer containing XML data for a KML file.
   def kml
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
-    output = %Q(<?xml version="1.0" encoding="UTF-8" ?>).html_safe
+    output = XML_PROLOG
     output += content_tag(:kml, xmlns: "http://www.opengis.net/kml/2.2") do
       content_tag(:Document) do
-        concat content_tag(:name, "Flights")
+        concat content_tag(:name, map_name)
         concat content_tag(:description, map_description)
         concat kml_styles
         concat kml_airports(used_airports)
@@ -142,8 +157,14 @@ class Map
     return Hash.new
   end
 
+  # Returns a string of the map name
+  def map_name
+    return "Flights"
+  end
+
+  # Returns a string of the map description
   def map_description
-    return "Map of flight routes"
+    return "Map of flight routes, created by Paul Bogard’s Flight Historian"
   end
 
   # GREAT CIRCLE MAPPER METHODS
@@ -282,6 +303,27 @@ class Map
       end
     end
     return route_groups.join(",")
+  end
+
+  # GPX METHODS
+
+  # Create a GPX waypoint for a specific airport.
+  # Params:
+  # +airport_id+:: An airport ID
+  def gpx_airport(airport_id)
+    detail = @airport_details[airport_id]
+    return content_tag(:wpt, lat: detail[:latitude], lon: detail[:longitude]) do
+      concat content_tag(:name, detail[:iata] + " / " + detail[:icao])
+      concat content_tag(:description, detail[:city])
+    end
+  end
+
+  # Create GPX waypoints for a collection of airport IDs.
+  # Params: 
+  # +airports+:: An array of airport IDs
+  def gpx_airports(airports)
+    airports = airports.sort_by{|a| @airport_details[a][:iata]}
+    return safe_join(airports.map{|a| gpx_airport(a)})
   end
 
   # KML METHODS

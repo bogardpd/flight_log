@@ -39,7 +39,7 @@ class AirportFrequencyMap < Map
   end
   
   def map_description
-    return "Map of airport locations and number of visits"
+    return "Map of airport locations and number of visits, created by Paul Bogard’s Flight Historian"
   end
   
 end

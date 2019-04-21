@@ -21,7 +21,7 @@ class HighlightedRoutesMap < Map
   end
 
   def map_description
-    return "Map of flight routes with some routes emphasized"
+    return "Map of flight routes with some routes emphasized, created by Paul Bogard’s Flight Historian"
   end
 
   # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.

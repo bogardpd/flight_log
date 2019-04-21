@@ -16,7 +16,7 @@ class SingleFlightMap < Map
   end
 
   def map_description
-    "Map of flight route between #{@codes[0]} and #{@codes[1]}"
+    "Map of flight route between #{@codes[0]} and #{@codes[1]}, created by Paul Bogard’s Flight Historian"
   end
 
   # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
