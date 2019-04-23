@@ -54,6 +54,7 @@ class Map
         end)
       end)
       concat gpx_airports(used_airports)
+      concat gpx_routes(routes_normal | routes_out_of_region | routes_highlighted | routes_unhighlighted)
     end
     return output
   end
@@ -310,9 +311,10 @@ class Map
   # Create a GPX waypoint for a specific airport.
   # Params:
   # +airport_id+:: An airport ID
-  def gpx_airport(airport_id)
+  # +wpt_type+:: A symbol representing the GPX waypoint type to use (e.g. :wpt, :rtept, :trkpt)
+  def gpx_airport(airport_id, wpt_type)
     detail = @airport_details[airport_id]
-    return content_tag(:wpt, lat: detail[:latitude], lon: detail[:longitude]) do
+    return content_tag(wpt_type, lat: detail[:latitude], lon: detail[:longitude]) do
       concat content_tag(:name, detail[:iata] + " / " + detail[:icao])
       concat content_tag(:description, detail[:city])
     end
@@ -323,7 +325,30 @@ class Map
   # +airports+:: An array of airport IDs
   def gpx_airports(airports)
     airports = airports.sort_by{|a| @airport_details[a][:iata]}
-    return safe_join(airports.map{|a| gpx_airport(a)})
+    return safe_join(airports.map{|a| gpx_airport(a, :wpt)})
+  end
+
+  # Create a GPX rte
+  # Params:
+  # +airport_pair+:: An array containing two airport IDs
+  def gpx_route(airport_pair)
+    detail = airport_pair.map{|a| @airport_details[a]}
+    return content_tag(:rte) do
+      concat content_tag(:name, detail.map{|a| a[:iata]}.join("–"))
+      concat content_tag(:desc, detail.map{|a| a[:city]}.join(" – "))
+      concat content_tag(:link, nil, href: "https://www.flighthistorian.com/routes/#{detail[0][:iata]}-#{detail[1][:iata]}")
+      concat safe_join(airport_pair.map{|a| gpx_airport(a, :rtept)})
+    end
+  end
+
+  # Create GPX routes
+  # Params:
+  # +routes+:: An array of airport ID pair arrays
+  # +name+:: A string representing the folder name
+  def gpx_routes(routes)
+    return nil unless routes.any?
+    routes = routes.map{|r| r.sort_by{|x| @airport_details[x][:iata]}}.uniq.sort_by{|y| [@airport_details[y[0]][:iata], @airport_details[y[1]][:iata]]}
+    return safe_join(routes.map{|r| gpx_route(r)})
   end
 
   # KML METHODS
