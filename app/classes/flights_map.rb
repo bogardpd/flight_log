@@ -1,10 +1,14 @@
 class FlightsMap < Map
 
   # Initialize a map of flight routes.
-  # Params:
-  # +flights+:: A collection of Flights.
-  # ++highlighted_airports+:: A collection of Airports to highlight.
-  # +region+:: The ICAO regions to show. World map will be shown if region is left blank.
+  # 
+  # @param flights [Array<Flight>] a collection of Flights
+  # @option [Array<Airport>] :highlighted_airports a collection of Airports to
+  #   highlight
+  # @option [Boolean] :include_names (false) whether or not to show city names
+  #   on highlighted airports
+  # @option [Array<String>] :region The ICAO prefixes to show (e.g.
+  #   ["K","PH"]). World map will be shown if region is left blank.
   def initialize(flights, highlighted_airports: nil, include_names: false, region: [""])
     @flights = flights
     @highlighted_airports = highlighted_airports ? highlighted_airports.pluck(:id) : Array.new
@@ -15,35 +19,60 @@ class FlightsMap < Map
   
   private
   
-  # Returns an array of airport IDs
+ # Returns an array of airport IDs for airports with no special formatting
+  #
+  # @return [Array<Number>] airport IDs
   def airports_normal
     return @routes[:extra_airports]
   end
 
-  # Returns an array of airport IDs
+  # Returns an array of airport IDs for airports that should be emphasized
+  #
+  # @return [Array<Number>] airport IDs
   def airports_highlighted
     return @highlighted_airports
   end
 
-  # Returns true if highlighted airports should display names, fals otherwise
+  # Returns true if highlighted airports should display names, false otherwise
+  #
+  # @return [Boolean] whether to display names on highlighted airports
   def gcmap_include_highlighted_airport_names?
     return @include_names
   end
 
+  # Returns the map description
+  #
+  # @return [String] the map description
   def map_description
     return "Map of flight routes, created by Paul Bogard’s Flight Historian"
   end
 
-  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
+  # Creates an array of numerically-sorted pairs of airport IDs for routes with
+  # no special formatting.
+  # 
+  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
+  #   airport_2_id]].
   def routes_normal
     return @routes[:inside_region]
   end
 
-  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
+  # Creates an array of numerically-sorted pairs of airport IDs for routes that
+  # are not in the current region.
+  # 
+  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
+  #   airport_2_id]].
   def routes_out_of_region
     return @routes[:outside_region]
   end
 
+  # Splits routes into those entirely within the map region, and those with at
+  # least one airport outside of it.
+  #
+  # @return [Hash{symbol => Array}] A hash with three keys. :inside_region and
+  #   :outside_region each contain an array of routes in the form of
+  #   [[airport_1_id, airport_2_id]]. :extra_airports contains an array of
+  #   airport IDs which are in the region, but only have routes to airports
+  #   outside of the region.
   def separate_routes_by_region
 
     pairs_inside_region  = Array.new

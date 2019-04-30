@@ -10,7 +10,9 @@ class Map
   }
   XML_PROLOG = %Q(<?xml version="1.0" encoding="UTF-8" ?>).html_safe
   
-  # Returns a SafeBuffer containing HTML for a Great Circle Mapper map.
+  # Creates HTML for a Great Circle Mapper map.
+  # 
+  # @return [ActiveSupport::SafeBuffer] HTML for a Great Circle Mapper map.
   def gcmap
     return content_tag(:div, class: "center") do
       concat link_to(image_tag(Rails.application.routes.url_helpers.gcmap_image_path(gcmap_airport_options, gcmap_query.gsub("/","_"), Map.hash_image_query(gcmap_query)), alt: map_description, class: "map"), "http://www.gcmap.com/mapui?PM=#{gcmap_airport_options}&MP=r&MS=wls2&P=#{gcmap_query}", target: "_blank")
@@ -18,7 +20,16 @@ class Map
     end
   end
 
-  # Returns a hash of region details for this particular map, used by ApplicationHelper.gcmap_region_select_links.
+  # Returns all regions contained in the current map, used for generating
+  # region selection tabs above a Great Circle Mapper map image. Includes name
+  # and ICAO prefixes for each region, and a boolean indicating whether this
+  # region's button should be selected (true if this region is the currently
+  # selected region).
+  #
+  # @param selected_region [Array] an array of ICAO prefixes (e.g. ["K","PH"])
+  # @return [Hash{String => Boolean, Array}] region names, selected status, and
+  #   ICAO prefixes in the format {"Europe": {selected: false, icao:
+  #   ["B","E","L"]}}
   def gcmap_regions(selected_region)
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
@@ -39,7 +50,9 @@ class Map
     return region_hash
   end
 
-  # Returns a SafeBuffer contining XML data for a GPX file.
+  # Creates XML for a GPX map.
+  #
+  # @return [ActiveSupport::Safebuffer] XML for a GPX map.
   def gpx
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
@@ -59,7 +72,9 @@ class Map
     return output
   end
 
-  # Returns a SafeBuffer containing XML data for a KML file.
+  # Creates XML for a KML map.
+  #
+  # @return [ActiveSupport::Safebuffer] XML for a KML map.
   def kml
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
@@ -82,16 +97,22 @@ class Map
     gcmap_query.present?
   end
   
-  # Return a hash of a map query based on a secret key
-  # Params: 
-  # +query+:: The query to hash
+  # Creates a hash of a map query based on a secret key
+  # 
+  # @param query [String] the query to hash
+  # @return [String] a hash of the query
   def self.hash_image_query(query)
     Digest::MD5.hexdigest(query + ENV["IMAGE_KEY"])
   end
   
   private
 
-  # Returns a hash of airport details in the form of {airport_id => {latitude: 0, longitude: 0, city: "City", country: "Country", iata: "AAA", icao: "AAAA"}}.
+  # Creates a hash for looking up airport details by airport ID.
+  #
+  # @return [Hash{Number => Number, Number, String, String, String, String}] a
+  #   hash of airport details in the form of {airport_id => {latitude: 0,
+  #   longitude: 0, city: "City", country: "Country", iata: "AAA", icao:
+  #   "AAAA"}}.
   def airport_details
     details = Hash.new
 
@@ -113,73 +134,116 @@ class Map
     return details
   end
 
-  # Returns an array of airport IDs
+  # Returns an array of airport IDs for airports with no special formatting
+  #
+  # @return [Array<Number>] airport IDs
   def airports_normal
     return Array.new
   end
 
-  # Returns an array of airport IDs
+  # Returns an array of airport IDs for airports that should be emphasized
+  #
+  # @return [Array<Number>] airport IDs
   def airports_highlighted
     return Array.new
   end
 
-  # Returns an array of airport IDs
+  # Returns an array of airport IDs for airports that are not in the current
+  # region.
+  #
+  # @return [Array<Number>] airport IDs
   def airports_out_of_region
     return Array.new
   end
-
-  # Returns a hash of airport frequencies in the form of {airport_id => frequency}
+  
+  # Create a hash for looking up the number of times an airport has been
+  # visited by airport ID.
+  #
+  # @return [Hash{Number => Number}] a hash of airport frequencies in the form
+  #   of {airport_id => frequency}
   def airport_frequencies
     return Hash.new
   end
 
-  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
+  # Creates an array of numerically-sorted pairs of airport IDs for routes with
+  # no special formatting.
+  # 
+  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
+  #   airport_2_id]].
   def routes_normal
     return Array.new
   end
 
-  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
+  # Creates an array of numerically-sorted pairs of airport IDs for routes that
+  # should be emphasized.
+  # 
+  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
+  #   airport_2_id]].
   def routes_highlighted
     return Array.new
   end
 
-  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
+  # Creates an array of numerically-sorted pairs of airport IDs for routes that
+  # should be de-emphasized.
+  # 
+  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
+  #   airport_2_id]].
   def routes_unhighlighted
     return Array.new
   end
 
-  # Returns an array of routes in the form of [[airport_1_id, airport_2_id]]. The IDs should be sorted within each pair.
+  # Creates an array of numerically-sorted pairs of airport IDs for routes that
+  # are not in the current region.
+  # 
+  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
+  #   airport_2_id]].
   def routes_out_of_region
     return Array.new
   end
 
-  # Returns a hash of route frequencies in the form of {[airport_1_id, airport_2_id] => frequency}
+  # Create a hash for looking up the number of times an route has been flown
+  # by numerically-sorted pairs of airport ID.
+  #
+  # @return [Hash{Array<Number, Number> => Number}] a hash of route frequencies
+  #   in the form of {[airport_1_id, airport_2_id] => frequency}.
   def route_frequencies
     return Hash.new
   end
 
-  # Returns a string of the map name
+  # Returns the map name
+  #
+  # @return [String] the map name
   def map_name
     return "Flights"
   end
 
-  # Returns a string of the map description
+  # Returns the map description
+  #
+  # @return [String] the map description
   def map_description
     return "Map of flight routes, created by Paul Bogard’s Flight Historian"
   end
 
   # GREAT CIRCLE MAPPER METHODS
 
-  # Returns a string of Great Circle Mapper airport options.
+  # Returns Great Circle Mapper airport options.
+  #
+  # @return [String] Great Circle Mapper airport options
   def gcmap_airport_options
     return "b:disc5:black"
   end
 
-  # Returns true if highlighted airports should display names, fals otherwise
+  # Returns true if highlighted airports should display names, false otherwise
+  #
+  # @return [Boolean] whether or not highlighted airports should display names
   def gcmap_include_highlighted_airport_names?
     return false
   end
 
+  # Creates a Great Circle Mapper querystring based on the airports, routes,
+  # and options associated with this Map instance.
+  # 
+  # @return [String] a Great Circle Mapper querystring
   def gcmap_query
     @airport_details ||= airport_details
     query_sections = Array.new
@@ -244,13 +308,20 @@ class Map
     end
   end
 
-  # Accepts an array of airport ID pairs and returns a string of IATA codes.
+  # Creates a Great Circle Mapper querystring from a list of airports.
+  #
+  # @param airports [Array<Number>] airport IDs
+  # @return [String] a comma-separated string of IATA codes
   def gcmap_airport_string(airports)
     return airports.map{|a| @airport_details[a][:iata]}.join(",")
   end
 
-  # Return an array of IATA codes preceeded by appropriate Great Circle
+  # Create an array of IATA codes preceeded by appropriate Great Circle
   # Mapper-formatted airport disc sizes.
+  #
+  # @param frequencies [Hash{Number => Number}] A hash with airport IDs for
+  #   keys and number of visits for values
+  # @return [String] a Great Circle Mapper querystring
   def gcmap_airport_frequency_rings_string(frequencies)
     
     max_gcmap_ring = 99 # Define the maximum ring size gcmap will allow
@@ -286,7 +357,14 @@ class Map
     return query.join(",")
   end
 
-  # Accepts an array of airport id pairs (from one of the routes_ methods) and returns a string of IATA code pairs.
+  # Create a Great Circle Mapper querystring from a list of routes.
+  #
+  # @param routes [Array<Array>] an array of routes in the form of
+  #   [[airport_1_id, airport_2_id]]
+  # @option [Boolean] :noext (false) whether or not to apply the Great
+  #   Circle Mapper "noext" option to these routes, which means they're not
+  #   considered when defining the latitude and longitude ranges of the map
+  # @return [String] comma-separated sets of hyphen-separated IATA code pairs
   def gcmap_route_string(routes, noext: false)
     # Generate an array of airport IDs, sorted by most used to least used:
     frequency_order = routes.flatten.each_with_object(Hash.new(0)){|key, hash| hash[key] += 1}.sort_by{|k,v| -v}.map{|x| x[0]}
@@ -309,9 +387,11 @@ class Map
   # GPX METHODS
 
   # Create a GPX waypoint for a specific airport.
-  # Params:
-  # +airport_id+:: An airport ID
-  # +wpt_type+:: A symbol representing the GPX waypoint type to use (e.g. :wpt, :rtept, :trkpt)
+  #
+  # @param airport_id [Number] an airport ID
+  # @param wpt_type [Symbol] the GPX waypoint type to use (e.g. :wpt, :rtept,
+  #   :trkpt)
+  # @return [ActiveSupport::SafeBuffer] XML for a waypoint
   def gpx_airport(airport_id, wpt_type)
     detail = @airport_details[airport_id]
     return content_tag(wpt_type, lat: detail[:latitude], lon: detail[:longitude]) do
@@ -320,17 +400,19 @@ class Map
     end
   end
 
-  # Create GPX waypoints for a collection of airport IDs.
-  # Params: 
-  # +airports+:: An array of airport IDs
+  # Create GPX waypoints for a collection of airports.
+  # 
+  # @param airports [Array<Number>] airport IDs
+  # @return [ActiveSupport::SafeBuffer] XML for multiple waypoints
   def gpx_airports(airports)
     airports = airports.sort_by{|a| @airport_details[a][:iata]}
     return safe_join(airports.map{|a| gpx_airport(a, :wpt)})
   end
 
-  # Create a GPX rte
-  # Params:
-  # +airport_pair+:: An array containing two airport IDs
+  # Create a specific GPX route.
+  # 
+  # @param airport_pair [Array<Number>] two airport IDs
+  # @return [ActiveSupport::SafeBuffer] XML for a route
   def gpx_route(airport_pair)
     detail = airport_pair.map{|a| @airport_details[a]}
     return content_tag(:rte) do
@@ -341,10 +423,11 @@ class Map
     end
   end
 
-  # Create GPX routes
-  # Params:
-  # +routes+:: An array of airport ID pair arrays
-  # +name+:: A string representing the folder name
+  # Create a collection of GPX routes.
+  # 
+  # @param routes [Array<Array>] an array of routes in the form of
+  #   [[airport_1_id, airport_2_id]]
+  # @return [ActiveSupport::SafeBuffer] XML for multiple routes
   def gpx_routes(routes)
     return nil unless routes.any?
     routes = routes.map{|r| r.sort_by{|x| @airport_details[x][:iata]}}.uniq.sort_by{|y| [@airport_details[y[0]][:iata], @airport_details[y[1]][:iata]]}
@@ -353,9 +436,10 @@ class Map
 
   # KML METHODS
 
-  # Create KML for a specific airport Point
-  # Params:
-  # +airport_id+:: An airport ID
+  # Create KML for a specific airport.
+  # 
+  # @param airport_id [Number] an airport ID
+  # @return [ActiveSupport::SafeBuffer] XML for a Placemark
   def kml_airport(airport_id)
     detail = @airport_details[airport_id]
     return content_tag(:Placemark) do
@@ -366,9 +450,10 @@ class Map
     end
   end
 
-  # Create KML placemarks for a collection of airport IDs.
-  # Params: 
-  # +airports+:: An array of airport IDs
+  # Create KML for a collection of airports.
+  # 
+  # @param airports [Array<Number>] airport IDs
+  # @return [ActiveSupport::SafeBuffer] XML for a folder of Placemarks
   def kml_airports(airports)
     airports = airports.sort_by{|a| @airport_details[a][:iata]}
     return content_tag(:Folder) do
@@ -377,9 +462,10 @@ class Map
     end
   end
 
-  # Create KML for a specific route
-  # Params:
-  # +airport_pair+:: An array containing two airport IDs
+  # Create KML for a specific route.
+  # 
+  # @param airport_pair [Array<Number>] two airport IDs
+  # @return [ActiveSupport::SafeBuffer] XML for a LineString
   def kml_route(airport_pair)
     detail = airport_pair.map{|a| @airport_details[a]}
     return content_tag(:Placemark) do
@@ -392,10 +478,12 @@ class Map
     end
   end
 
-  # Create KML for route LineStrings
-  # Params:
-  # +routes+:: An array of airport ID pair arrays
-  # +name+:: A string representing the folder name
+  # Create KML for a collection of routes.
+  # 
+  # @param routes [Array<Number>] an array of routes in the form of
+  #   [[airport_1_id, airport_2_id]]
+  # @param name+ [String] the folder name
+  # @return [ActiveSupport::SafeBuffer] XML for a folder of LineStrings
   def kml_routes(routes, name)
     return nil unless routes.any?
     routes = routes.map{|r| r.sort_by{|x| @airport_details[x][:iata]}}.uniq.sort_by{|y| [@airport_details[y[0]][:iata], @airport_details[y[1]][:iata]]}
@@ -406,6 +494,8 @@ class Map
   end
 
   # Define KML styles
+  # 
+  # @return [ActiveSupport::SafeBuffer] XML for KML styles
   def kml_styles
   output = content_tag(:Style, id: "airportMarker") do
     content_tag(:Icon) do
