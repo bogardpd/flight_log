@@ -107,11 +107,13 @@ module ApplicationHelper
   
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
   
-  # Return a region select menu, along with a map.
-  # Params:
-  # +map+:: The map to show
-  # +selected_region+:: The currently active region
-  # +anchor+:: If set, defines a page anchor position for the region select links to link to
+  # Create HTML for a map with region select tabs.
+  # 
+  # @param map [Map] the map to show
+  # @param selected_region [Array] the currently active region as an array of
+  #   ICAO prefixes (e.g. ["K","PH"])
+  # @option [String] :anchor (nil) a page anchor position for the region select links to link to
+  # @return [ActiveSupport::SafeBuffer] HTML for a map with region select tabs
   def map_with_region_select(map, selected_region, anchor: nil)
     return content_tag(:div, id: anchor) do
       if map && map.exists?
@@ -127,9 +129,13 @@ module ApplicationHelper
     end
   end
     
-  # Return a menu allowing the user to switch between regions on a map
-  # Params: 
-  # +region+:: The currently active region
+  # Create region select tabs.
+  # 
+  # @param map [Map] the map to show
+  # @param selected_region [Array] the currently active region as an array of
+  #   ICAO prefixes (e.g. ["K","PH"])
+  # @option [String] :anchor (nil) a page anchor position for the region select links to link to
+  # @return [ActiveSupport::SafeBuffer] HTML region select tabs
   def gcmap_region_select_links(map, selected_region, anchor: nil)
     region_hash = map.gcmap_regions(selected_region)
     tabs = Array.new
