@@ -11,7 +11,7 @@
 | Version | Date |
 | --- | --- |
 | [2.3: Automatic Distance Calculations and GPX/KML Maps](https://github.com/bogardpd/flight_log/releases/tag/v2.3) | 30 Apr 2019 |
-| [2.2: Regions and Flight Lookup](https://github.com/bogardpd/flight_log/releases/tag/2.2) | 15 Mar 2017 |
+| [2.2: Regions and Flight Lookup](https://github.com/bogardpd/flight_log/releases/tag/2.2) | 15 Mar 2018 |
 | [2.1: Import Boarding Passes from Digital Boarding Passes](https://github.com/bogardpd/flight_log/releases/tag/v2.1) | 29 Apr 2017 |
 | [2.0: Flight Historian](https://github.com/bogardpd/flight_log/releases/tag/v2.0) | 31 Jan 2016 |
 | [1.3: Distances and Annual Summaries](https://onehundredairports.com/2015/02/14/flight-log-version-1-3-distances-and-annual-summaries/) | 14 Feb 2015 |
