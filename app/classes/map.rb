@@ -497,17 +497,17 @@ class Map
   # 
   # @return [ActiveSupport::SafeBuffer] XML for KML styles
   def kml_styles
-  output = content_tag(:Style, id: "airportMarker") do
-    content_tag(:Icon) do
-      content_tag(:href, "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png")
+    output = content_tag(:Style, id: "airportMarker") do
+      content_tag(:Icon) do
+        content_tag(:href, "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png")
+      end
+    end
+    output += content_tag(:Style, id: "flightPath") do
+      content_tag(:LineStyle) do
+        concat content_tag(:color, "ff0000ff")
+        concat content_tag(:width, "2")
+      end
     end
   end
-  output += content_tag(:Style, id: "flightPath") do
-    content_tag(:LineStyle) do
-      concat content_tag(:color, "ff0000ff")
-      concat content_tag(:width, "2")
-    end
-  end
-end
   
 end
