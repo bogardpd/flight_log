@@ -470,7 +470,7 @@ class Map
     detail = airport_pair.map{|a| @airport_details[a]}
     return content_tag(:Placemark) do
       concat content_tag(:name, detail.map{|a| a[:iata]}.join("–"))
-      concat content_tag(:styleURL, "#flightPath")
+      concat content_tag(:styleUrl, "#flightPath")
       concat (content_tag(:LineString) do
         concat content_tag(:tessellate, "1")
         concat content_tag(:coordinates, detail.map{|a| "#{a[:longitude]},#{a[:latitude]},0"}.join(" "))
