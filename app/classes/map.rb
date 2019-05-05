@@ -28,7 +28,7 @@ class Map
   #
   # @param selected_region [Array] an array of ICAO prefixes (e.g. ["K","PH"])
   # @return [Hash{String => Boolean, Array}] region names, selected status, and
-  #   ICAO prefixes in the format {"Europe": {selected: false, icao:
+  #   ICAO prefixes in the format !{"Europe": {selected: false, icao:
   #   ["B","E","L"]}}
   def gcmap_regions(selected_region)
     @airport_details ||= airport_details
@@ -482,7 +482,7 @@ class Map
   # 
   # @param routes [Array<Number>] an array of routes in the form of
   #   [[airport_1_id, airport_2_id]]
-  # @param name+ [String] the folder name
+  # @param name [String] the folder name
   # @return [ActiveSupport::SafeBuffer] XML for a folder of LineStrings
   def kml_routes(routes, name)
     return nil unless routes.any?

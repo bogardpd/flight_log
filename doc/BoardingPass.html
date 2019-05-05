@@ -107,8 +107,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Defines a Boarding Pass based on IATA BarCoded Boarding Pass (BCBP) data.  
-#</p>
+<p>Defines a Boarding Pass based on
+<a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP)">IATA Bar Coded Boarding Pass (BCBP)</a> data.</p>
 
 
   </div>
@@ -150,7 +150,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#data-instance_method" title="#data (instance method)">#<strong>data</strong>  &#x21d2; Object </a>
+      <a href="#data-instance_method" title="#data (instance method)">#<strong>data</strong>  &#x21d2; Hash{Symbol=&gt;Hash} </a>
     
 
     
@@ -164,7 +164,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a hash of barcode fields and data.</p>
+</div></span>
   
 </li>
 
@@ -172,7 +174,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#extract_detail-instance_method" title="#extract_detail (instance method)">#<strong>extract_detail</strong>(detail)  &#x21d2; Object </a>
+      <a href="#extract_detail-instance_method" title="#extract_detail (instance method)">#<strong>extract_detail</strong>(detail)  &#x21d2; Array </a>
     
 
     
@@ -197,7 +199,7 @@ that it would show up in the boarding pass raw data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#flight_date-instance_method" title="#flight_date (instance method)">#<strong>flight_date</strong>(known_date)  &#x21d2; Object </a>
+      <a href="#flight_date-instance_method" title="#flight_date (instance method)">#<strong>flight_date</strong>(known_date)  &#x21d2; Date </a>
     
 
     
@@ -221,7 +223,7 @@ that it would show up in the boarding pass raw data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#form_values-instance_method" title="#form_values (instance method)">#<strong>form_values</strong>(departure_utc_time = nil)  &#x21d2; Object </a>
+      <a href="#form_values-instance_method" title="#form_values (instance method)">#<strong>form_values</strong>(departure_utc_time = nil)  &#x21d2; Hash{Symbol=&gt;String,Date,nil} </a>
     
 
     
@@ -262,7 +264,7 @@ that it would show up in the boarding pass raw data.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>A new instance of BoardingPass.</p>
+<p>Initialize a boarding pass.</p>
 </div></span>
   
 </li>
@@ -286,7 +288,8 @@ that it would show up in the boarding pass raw data.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Return false if any fields have valid equal to false or nil.</p>
+<p>Returns whether or not the boarding pass data is valid under the IATA BCBP
+standard.</p>
 </div></span>
   
 </li>
@@ -295,7 +298,7 @@ that it would show up in the boarding pass raw data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#ordered_groups-instance_method" title="#ordered_groups (instance method)">#<strong>ordered_groups</strong>  &#x21d2; Object </a>
+      <a href="#ordered_groups-instance_method" title="#ordered_groups (instance method)">#<strong>ordered_groups</strong>  &#x21d2; Array&lt;Hash&gt; </a>
     
 
     
@@ -319,29 +322,7 @@ that it would show up in the boarding pass raw data.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#raw-instance_method" title="#raw (instance method)">#<strong>raw</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#summary_fields-instance_method" title="#summary_fields (instance method)">#<strong>summary_fields</strong>  &#x21d2; Object </a>
+      <a href="#raw-instance_method" title="#raw (instance method)">#<strong>raw</strong>  &#x21d2; String </a>
     
 
     
@@ -356,7 +337,31 @@ that it would show up in the boarding pass raw data.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns a hash of PNR.</p>
+<p>Returns the IATA BCBP barcode.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#summary_fields-instance_method" title="#summary_fields (instance method)">#<strong>summary_fields</strong>  &#x21d2; Hash{Symbol=&gt;String} </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a hash containing basic flight details.</p>
 </div></span>
   
 </li>
@@ -381,13 +386,68 @@ that it would show up in the boarding pass raw data.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a new instance of BoardingPass</p>
+<p>Initialize a boarding pass.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>boarding_pass_data</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>barcode string in IATA Bar Coded Boarding Pass format (see
+<a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="BCBP Implementation Guide">BCBP Implementation Guide</a> Section 4.2)</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>flight</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a Flight that this boarding pass is associated with. Used to provide exact
+dates rather than an estimate from the BCBP data.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>interpretations</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether or not the Boarding Pass should try to provide interpretations of
+what the BCBP data means</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 
 </div><table class="source_code">
   <tr>
@@ -395,14 +455,6 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-10
-11
-12
-13
-14
-15
-16
-17
 18
 19
 20
@@ -410,10 +462,18 @@ that it would show up in the boarding pass raw data.</p>
 22
 23
 24
-25</pre>
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_boarding_pass_data'>boarding_pass_data</span><span class='comma'>,</span> <span class='label'>flight:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>interpretations:</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='ivar'>@raw_data</span> <span class='op'>=</span> <span class='id identifier rubyid_boarding_pass_data'>boarding_pass_data</span>
@@ -446,24 +506,53 @@ that it would show up in the boarding pass raw data.</p>
       <div class="method_details first">
   <h3 class="signature first" id="data-instance_method">
   
-    #<strong>data</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>data</strong>  &#x21d2; <tt>Hash{Symbol=&gt;Hash}</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a hash of barcode fields and data.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash{Symbol=&gt;Hash}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>barcode fields and data</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-37
-38
-39</pre>
+54
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_data'>data</span>
   <span class='kw'>return</span> <span class='ivar'>@structured_data</span>
@@ -476,7 +565,7 @@ that it would show up in the boarding pass raw data.</p>
       <div class="method_details ">
   <h3 class="signature " id="extract_detail-instance_method">
   
-    #<strong>extract_detail</strong>(detail)  &#x21d2; <tt>Object</tt> 
+    #<strong>extract_detail</strong>(detail)  &#x21d2; <tt>Array</tt> 
   
 
   
@@ -492,7 +581,45 @@ that it would show up in the boarding pass raw data.</p>
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>detail</span>
+      
+      
+        <span class='type'>(<tt>Symbol</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the detail type to look up (:raw, :valid, etc.)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>all values of the provided detail type.</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -500,13 +627,13 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-96
-97
-98
-99</pre>
+124
+125
+126
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 96</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 124</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract_detail'>extract_detail</span><span class='lparen'>(</span><span class='id identifier rubyid_detail'>detail</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
@@ -520,7 +647,7 @@ that it would show up in the boarding pass raw data.</p>
       <div class="method_details ">
   <h3 class="signature " id="flight_date-instance_method">
   
-    #<strong>flight_date</strong>(known_date)  &#x21d2; <tt>Object</tt> 
+    #<strong>flight_date</strong>(known_date)  &#x21d2; <tt>Date</tt> 
   
 
   
@@ -529,13 +656,52 @@ that it would show up in the boarding pass raw data.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the most likely flight date given a known UTC Date</p>
+<p>Returns the most likely flight date given a known UTC Date.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>known_date</span>
+      
+      
+        <span class='type'>(<tt>Date</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an initial date (UTC) to base the flight date estimate on (usually today,
+unless a better date is known)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Date</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the most likely date (UTC) this barcode&#39;s flight took place</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -543,17 +709,17 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-42
-43
-44
-45
-46
-47
-48
-49</pre>
+63
+64
+65
+66
+67
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flight_date'>flight_date</span><span class='lparen'>(</span><span class='id identifier rubyid_known_date'>known_date</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_candidate_years'>candidate_years</span> <span class='op'>=</span> <span class='op'>*</span><span class='lparen'>(</span><span class='id identifier rubyid_known_date'>known_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='op'>-</span><span class='int'>1</span><span class='op'>..</span><span class='id identifier rubyid_known_date'>known_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='op'>+</span><span class='int'>1</span><span class='rparen'>)</span>
@@ -571,7 +737,7 @@ that it would show up in the boarding pass raw data.</p>
       <div class="method_details ">
   <h3 class="signature " id="form_values-instance_method">
   
-    #<strong>form_values</strong>(departure_utc_time = nil)  &#x21d2; <tt>Object</tt> 
+    #<strong>form_values</strong>(departure_utc_time = nil)  &#x21d2; <tt>Hash{Symbol=&gt;String,Date,nil}</tt> 
   
 
   
@@ -580,13 +746,54 @@ that it would show up in the boarding pass raw data.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a hash of form field values extracted from this barcode.</p>
+<p>Returns a hash of form field values extracted from this barcode. Used to
+prepopulate the New Flight or Edit Flight forms.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>departure_utc_time</span>
+      
+      
+        <span class='type'>(<tt>DateTime</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the UTC departure date and time for this flight, if known</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash{Symbol=&gt;String,Date,nil}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a hash of form field names and values</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -594,31 +801,6 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
 77
 78
 79
@@ -634,10 +816,35 @@ that it would show up in the boarding pass raw data.</p>
 89
 90
 91
-92</pre>
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_form_values'>form_values</span><span class='lparen'>(</span><span class='id identifier rubyid_departure_utc_time'>departure_utc_time</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -697,7 +904,8 @@ that it would show up in the boarding pass raw data.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Return false if any fields have valid equal to false or nil</p>
+<p>Returns whether or not the boarding pass data is valid under the IATA BCBP
+standard.</p>
 
 
   </div>
@@ -714,6 +922,11 @@ that it would show up in the boarding pass raw data.</p>
       
       
       
+        &mdash;
+        <div class='inline'>
+<p>false if any fields have valid equal to false or nil, true otherwise</p>
+</div>
+      
     </li>
   
 </ul>
@@ -724,13 +937,13 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-28
-29
-30
-31</pre>
+39
+40
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 28</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 39</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_is_valid?'>is_valid?</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='ivar'>@raw_data</span><span class='period'>.</span><span class='id identifier rubyid_blank?'>blank?</span>
@@ -744,7 +957,7 @@ that it would show up in the boarding pass raw data.</p>
       <div class="method_details ">
   <h3 class="signature " id="ordered_groups-instance_method">
   
-    #<strong>ordered_groups</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>ordered_groups</strong>  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
   
 
   
@@ -753,13 +966,31 @@ that it would show up in the boarding pass raw data.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Return an array of group titles and fields</p>
+<p>Return an array of group titles and fields.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>An array of hashes, each containing group titles and fields.</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -767,36 +998,6 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
 132
 133
 134
@@ -816,10 +1017,40 @@ that it would show up in the boarding pass raw data.</p>
 148
 149
 150
-151</pre>
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 132</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -879,24 +1110,53 @@ that it would show up in the boarding pass raw data.</p>
       <div class="method_details ">
   <h3 class="signature " id="raw-instance_method">
   
-    #<strong>raw</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>raw</strong>  &#x21d2; <tt>String</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the IATA BCBP barcode.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>IATA BCBP-formatted barcode data</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-33
-34
-35</pre>
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_raw'>raw</span>
   <span class='kw'>return</span> <span class='ivar'>@raw_data</span>
@@ -909,7 +1169,7 @@ that it would show up in the boarding pass raw data.</p>
       <div class="method_details ">
   <h3 class="signature " id="summary_fields-instance_method">
   
-    #<strong>summary_fields</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>summary_fields</strong>  &#x21d2; <tt>Hash{Symbol=&gt;String}</tt> 
   
 
   
@@ -918,13 +1178,33 @@ that it would show up in the boarding pass raw data.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a hash of PNR</p>
+<p>Returns a hash containing basic flight details.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash{Symbol=&gt;String}</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a hash containing the Passenger Name Record (PNR) number, airline IATA
+code, flight number, origin airport IATA code, and destination airport IATA
+code</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -932,19 +1212,19 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163</pre>
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 154</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 186</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_summary_fields'>summary_fields</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -966,7 +1246,7 @@ that it would show up in the boarding pass raw data.</p>
 </div>
 
       <div id="footer">
-  Generated on Sun May  5 15:23:33 2019 by
+  Generated on Sun May  5 16:58:35 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
