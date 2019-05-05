@@ -197,7 +197,10 @@ class BoardingPass
   
   private
     
-  # Determine the version number (or 0 if unknown):
+  # Determine the BCBP version number (or 0 if unknown)
+  #
+  # @param data [String] IATA BCBP-formatted data
+  # @return [Number] the IATA BCBP version number, or 0 if unknown
   def determine_version(data)
     return 0 unless data.present?
     version = 0
@@ -212,6 +215,9 @@ class BoardingPass
   # sizes). Any groups which do not exist will be left out or set as nil, so
   # nil comparisons can be used to check if a group is present. If there is
   # invalid data, its starting position will be stored in an "invalid" key.
+  #
+  # @param data [String] IATA BCBP-formatted data
+  # @return [Hash] a hash of control points
   def create_control_points(data)
     len_um    = len_group(:um)
     len_rm    = len_group(:rm)
@@ -351,6 +357,11 @@ class BoardingPass
 
   # Returns a hash of possible fields. If a version is detected, only fields
   # available in that BCBP version will be included.
+  #
+  # @param version [Number] an optional IATA BCBP version number to use.
+  # @return [Hash] all possible fields for this IATA BCBP version. If no
+  #   version is specified, returns all possible fields that are common across
+  #   all versions.
   def create_fields(version=0)
     version ||= 0
     fields = Hash.new
@@ -537,11 +548,13 @@ class BoardingPass
     return fields
   end
   
-  # Accepts a field ID string, and an optional leg number (zero-indexed).
-  # Leg number is ignored on unique fields, but needed for repeated fields.
-  # Returns the raw string from the given field (and leg). The results of
-  # create_control_points need to be saved to @control, and the raw
-  # data to @raw_data.
+  # Returns raw data for a specified IATA BCBP field ID and itinerary leg.
+  # Before calling this method, the results of create_control_points need to
+  # be saved to @control, and the raw data to @raw_data.
+  #
+  # @param field_id [String] an IATA BCBP field ID number
+  # @param leg [Number] the itinerary leg to use for repeated fields
+  # @return [String] the raw string from the given field (and leg).
   def get_raw(field_id, leg=nil)
     return nil unless (field_id.present? && @control.present? && @raw_data.present?)
     
@@ -572,7 +585,7 @@ class BoardingPass
     return nil
   end
   
-  # Create a nested hash of fields and values.
+  # Create a nested hash of fields and values, in the format:
   # unique
   #   mandatory
   #     field {field data}
@@ -589,6 +602,12 @@ class BoardingPass
   #     field {field data}
   # ]
   # unknown
+  #
+  # @param control [Hash] the output of {create_control_points}
+  # @param fields [Hash] the output of {create_fields}
+  # @param interpretations [Boolean]  whether or not the Boarding Pass should
+  #   try to provide interpretations of what the BCBP data means
+  # @return [Hash] a nested hash IATA BCBP data
   def build_structured_data(control, fields, interpretations)
     populate_group = proc{|group, leg=nil|
       group_fields = Hash.new
@@ -682,22 +701,31 @@ class BoardingPass
     return output
   end
   
-  # Returns the total length of all field ids listed in *args. Variable size
+  # Returns the total length of all field ids listed in *args.
+  #
+  # @param args [Array<String>] any number of IATA BCBP field IDs
+  # @return [Number] the total length of the specified fields. Variable size
   # fields and undefined fields will be counted as zero length.
   def len_field(*args)
     args.map{|id| @fields.dig(id, :length) || 0}.reduce(0, :+)
   end
   
   # Returns the total length of all fields in all group symbols listed in
-  # *args. Variable size fields and undefined fields will be counted as zero
-  # length.
+  # *args. 
+  #
+  # @param args [Array<Symbol>] any number of group symbols
+  # @return [Number] the total length of the specified groups. Variable size
+  #   fields and undefined fields will be counted as zero length.
   def len_group(*args)
     args.map{|group|
       @fields.select{|k,v| v[:group] == group}.map{|k,v| v[:length] || 0}.reduce(0,:+)
     }.reduce(0,:+)
   end
   
-  # Returns a field hash in the format {0 => {description: "Unknown", raw: raw, interpretation: "..."}}
+  # Returns a field details hash.
+  #
+  # @param raw [String] raw field data
+  # @return [Hash] a hash in the format !{0 => {description: "Unknown", raw: raw, interpretation: "..."}}
   def unknown_field(raw)
     return {0 => {description: "Unknown Data", raw: raw, interpretation: "We don’t know what this data means."}}
   end
@@ -709,6 +737,10 @@ class BoardingPass
 # return nil of an interpretation cannot be determined.                       #
 ###############################################################################
   
+  # Interprets an airline code.
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] an airline name
   def interpret_airline_code(raw)
     return nil unless raw.present?
 
@@ -728,6 +760,10 @@ class BoardingPass
 
   end
   
+  # Interprets an airport code.
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] an airport name
   def interpret_airport_code(raw)
     airport = Airport.where(iata_code: raw) 
     if airport.length > 0
@@ -737,6 +773,10 @@ class BoardingPass
     end
   end
   
+  # Interprets a baggage tag.
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a comma-separated list of baggage tag numbers
   def interpret_baggage_tag(raw)
     return nil unless raw.present?
     leading_digit = {"0": "interline", "1": "fall-back", "2": "interline rush"}[raw[0].to_sym]
@@ -757,11 +797,21 @@ class BoardingPass
     return output
   end
   
+  # Interprets a checkin sequence number
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a text description of the checkin sequence position
   def interpret_checkin_sequence_number(raw)
     return nil unless raw.present?
     return "#{raw.strip().to_i.ordinalize} person to check in for this flight"
   end
   
+  # Interprets a compartment code
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @param leg [Number] an itinerary leg number
+  # @return [String, nil] an estimate for what cabin/class this boarding pass
+  #   is for
   def interpret_compartment_code(raw, leg)
     return nil unless raw.present? && leg.present?
     code = raw.upcase
@@ -777,6 +827,11 @@ class BoardingPass
     return output
   end
   
+  # Interprets a document type
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] whether or not this is a boarding pass or itinerary
+  #   receipt
   def interpret_document_type(raw)
     map = {
       "B" => "Boarding pass",
@@ -785,20 +840,37 @@ class BoardingPass
     return map[raw]
   end
   
+  # Interprets an electronic ticket indicator
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String] whether or not this is an electronic ticket
   def interpret_electronic_ticket_indicator(raw)
     return raw == "E" ? "Electronic ticket" : "Not an electronic ticket"
   end
   
+  # Interprets a field size
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a text description of the length of a field in
+  #   hexadecimal and decimal
   def interpret_field_size(raw)
     return nil unless raw.present?
     return "#{raw.upcase} hexadecimal = #{raw.to_i(16)} decimal characters"
   end
   
+  # Interprets a flight number
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a flight number
   def interpret_flight_number(raw)
     return nil unless raw.present?
     return "Flight #{raw[0..3].to_i}#{raw[4].strip}"
   end
   
+  # Interprets a format code
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] an IATA BCBP format code
   def interpret_format_code(raw)
     map = {
       "M" => "IATA BCBP Format M"
@@ -806,6 +878,11 @@ class BoardingPass
     return map[raw]
   end
   
+  # Interprets a free baggage allowance
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] the number of pieces, pounds, or kilograms of free
+  #   luggage permitted
   def interpret_free_baggage_allowance(raw)
     return nil unless raw.present?
     return pluralize(raw[0].to_i, "piece") if raw[0] =~ /\d/ && raw[1..2] == "PC" # "xPC" = x pieces
@@ -814,6 +891,10 @@ class BoardingPass
     return nil
   end
   
+  # Interprets an ID/AD indicator
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] an ID/AD indicator
   def interpret_id_ad_indicator(raw)
     map = {
       "0" => "IDN1 positive space",
@@ -836,6 +917,10 @@ class BoardingPass
     return map[raw]
   end
   
+  # Interprets international verification
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] details about international verification
   def interpret_international_documentation(raw)
     map = {
       "0" => "Travel document verification not required",
@@ -845,6 +930,11 @@ class BoardingPass
     return map[raw]
   end
   
+  # Interprets an ordinal date and returns the best estimates for what date it
+  # represents.
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [Array<Date>, nil] an array of Dates that might potentially match
   def interpret_ordinal_date(raw)
     return nil unless raw.present?
     
@@ -962,6 +1052,10 @@ class BoardingPass
     end
   end
   
+  # Interprets a passenger description
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a passenger description
   def interpret_passenger_description(raw)
     map = {
       "0" => "Adult",
@@ -976,6 +1070,10 @@ class BoardingPass
     return map[raw]
   end
   
+  # Interprets a passenger status
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a passenger status
   def interpret_passenger_status(raw)
     map = {
       "0" => "Ticket issuance/passenger not checked in",
@@ -993,17 +1091,29 @@ class BoardingPass
     return map[raw]
   end
   
+  # Interprets a Passenger Name Record (PNR) code
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a PNR code
   def interpret_pnr_code(raw)
     return nil unless raw.present?
     return "Passenger Name Record/record locator: #{raw.strip}"
   end
   
+  # Interprets a seat number
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a seat number
   def interpret_seat_number(raw)
     return nil unless raw.present?
     return "Infant seat" if raw =~ /INF/
     return "Seat #{raw[0..2].to_i}#{raw[3].strip}"
   end
   
+  # Interprets selectee status
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] selectee status
   def interpret_selectee_indicator(raw)
     map = {
       "0" => "Not selectee",
@@ -1013,6 +1123,10 @@ class BoardingPass
     return map[raw]
   end
   
+  # Interprets a source of boarding pass issuance
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a source of boarding pass issuance
   def interpret_source_of_boarding_pass_issuance(raw)
     map = {
       "W" => "Web printed",
@@ -1028,6 +1142,10 @@ class BoardingPass
     return map[raw]
   end
 
+  # Interprets a source of checkin
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] a source of checkin
   def interpret_source_of_checkin(raw)
     map = {
       "W" => "Web",
@@ -1041,13 +1159,21 @@ class BoardingPass
     return map[raw]
   end
   
+  # Interprets a ticket number
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @param leg [Number] an itinerary leg number
+  # @return [String, nil] a ticket number (and an airline numeric code if known)
   def interpret_ticket_number(raw, leg)
     return nil unless raw.present?
     airline_numeric = get_raw(142, leg)
     return "Ticket number: (#{airline_numeric}) #{raw}" if airline_numeric
     return "Ticket number: #{raw}"
   end
-  
+  # Interprets an IATA BCBP version number
+  #
+  # @param raw [String] raw IATA BCBP data
+  # @return [String, nil] an IATA BCBP version number
   def interpret_version_number(raw)
     return nil unless raw.present?
     return "IATA BCBP Version #{raw}"
