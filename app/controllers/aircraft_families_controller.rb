@@ -1,6 +1,9 @@
+# Controls {AircraftFamily} pages.
+
 class AircraftFamiliesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   
+  # Shows a table of all {AircraftFamily AircraftFamilies} flown.
   def index
     @title = "Aircraft"
     @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often heʼs flown on each."
@@ -32,6 +35,10 @@ class AircraftFamiliesController < ApplicationController
     end     
   end
   
+  # Shows a {FlightsMap} and table of all flights using a specified
+  # {AircraftFamily} (either a parent aircraft family or a child aircraft
+  # type). If the specified {AircraftFamily} is a parent aircraft family, this
+  # method also shows a table of its child aircraft types. 
   def show
     @aircraft_family = AircraftFamily.find(params[:id])
     raise ActiveRecord::RecordNotFound if (@aircraft_family.nil?)
@@ -80,6 +87,8 @@ class AircraftFamiliesController < ApplicationController
       redirect_to aircraft_families_path
   end
   
+  # Shows a form that allows a verified user to add an {AircraftFamily} (either
+  # a parent aircraft family or a child aircraft type).
   def new
     session[:form_location] = nil
     add_breadcrumb "Aircraft Families", aircraft_families_path
@@ -101,6 +110,8 @@ class AircraftFamiliesController < ApplicationController
       redirect_to aircraft_families_path
   end
   
+  # Creates a new {AircraftFamily} (either a parent aircraft family or a child
+  # aircraft type). Can only be performed by a verified user.
   def create
     @aircraft_family = AircraftFamily.new(aircraft_family_params)
     if @aircraft_family.save
@@ -121,6 +132,8 @@ class AircraftFamiliesController < ApplicationController
     end
   end
   
+  # Shows a form that allows a verified user to edit an {AircraftFamily} (either
+  # a parent aircraft family or a child aircraft type).
   def edit
     session[:form_location] = nil
     @aircraft_family = AircraftFamily.find(params[:id])
@@ -129,6 +142,8 @@ class AircraftFamiliesController < ApplicationController
     add_breadcrumb "Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family)
   end
   
+  # Updates an existing {AircraftFamily} (either a parent aircraft family or a
+  # child aircraft type). Can only be performed by a verified user.
   def update
     @aircraft_family = AircraftFamily.find(params[:id])
     if @aircraft_family.update_attributes(aircraft_family_params)
@@ -139,6 +154,8 @@ class AircraftFamiliesController < ApplicationController
     end
   end
   
+  # Deletes an existing {AircraftFamily} (either a parent aircraft family or a
+  # child aircraft type). Can only be performed by a verified user.
   def destroy
     @aircraft_family = AircraftFamily.find(params[:id])
     if @aircraft_family.flights.any?
@@ -153,8 +170,9 @@ class AircraftFamiliesController < ApplicationController
   
   private
   
-    def aircraft_family_params
-      params.require(:aircraft_family).permit(:family_name, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :category, :parent_id)
-    end
+  # Defines permitted {AircraftFamily} parameters.
+  def aircraft_family_params
+    params.require(:aircraft_family).permit(:family_name, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :category, :parent_id)
+  end
   
 end
