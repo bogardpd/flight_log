@@ -103,7 +103,19 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Controls administrative pages. Users must be logged in to view any of these
+pages.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -135,7 +147,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows the administrative main menu.</p>
+</div></span>
   
 </li>
 
@@ -157,7 +171,10 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows a table of the total count of business, mixed, and personal <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s
+for each calendar year.</p>
+</div></span>
   
 </li>
 
@@ -179,7 +196,10 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows the boarding pass data of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s with invalid boarding pass
+data.</p>
+</div></span>
   
 </li>
 
@@ -225,18 +245,29 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows the administrative main menu.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-4
-5
-6</pre>
+7
+8
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 4</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_admin'>admin</span>
   <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Admin</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_admin_path'>admin_path</span>
@@ -255,21 +286,33 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows a table of the total count of business, mixed, and personal <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s
+for each calendar year.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-8
-9
-10
-11
-12
-13</pre>
+13
+14
+15
+16
+17
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 13</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_annual_flight_summary'>annual_flight_summary</span>
   <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Admin</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_admin_path'>admin_path</span>
@@ -291,21 +334,33 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows the boarding pass data of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s with invalid boarding pass
+data.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-15
-16
-17
-18
-19
-20</pre>
+22
+23
+24
+25
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 22</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_boarding_pass_validator'>boarding_pass_validator</span>
   <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Admin</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_admin_path'>admin_path</span>
@@ -323,7 +378,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu May  9 19:11:27 2019 by
+  Generated on Thu May  9 19:27:09 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
