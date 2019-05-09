@@ -114,9 +114,10 @@ module ApplicationHelper
   #   ICAO prefixes (e.g. ["K","PH"])
   # @option [String] :anchor (nil) a page anchor position for the region select links to link to
   # @return [ActiveSupport::SafeBuffer] HTML for a map with region select tabs
-  def map_with_region_select(map, selected_region, anchor: nil)
+  # @see Map#gcmap_regions
+  def gcmap_with_region_select(map, selected_region, anchor: nil)
     return content_tag(:div, id: anchor) do
-      if map && map.exists?
+      if map && map.gcmap_exists?
         concat gcmap_region_select_links(map, selected_region, anchor: anchor)
         concat map.gcmap
       else
@@ -136,6 +137,7 @@ module ApplicationHelper
   #   ICAO prefixes (e.g. ["K","PH"])
   # @option [String] :anchor (nil) a page anchor position for the region select links to link to
   # @return [ActiveSupport::SafeBuffer] HTML region select tabs
+  # @see Map#gcmap_regions
   def gcmap_region_select_links(map, selected_region, anchor: nil)
     region_hash = map.gcmap_regions(selected_region)
     tabs = Array.new

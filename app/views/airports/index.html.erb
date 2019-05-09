@@ -17,7 +17,7 @@
 <% if @flights.any? %>
 
 	<div id="airport-map">
-    <%= map_with_region_select(@airports_map, @region, anchor: "airports-map") %>
+    <%= gcmap_with_region_select(@airports_map, @region, anchor: "airports-map") %>
   </div>
 
 	<div id="airports-list">
@@ -44,7 +44,7 @@
 
 	<p>This map shows how often Iʼve visited each airport. The area of the black rings centered on each red airport represents the number of times Iʼve visited that airport.</p>
 
-  <%= map_with_region_select(@frequency_map, @region, anchor: "frequency-map") %>
+  <%= gcmap_with_region_select(@frequency_map, @region, anchor: "frequency-map") %>
 
 <% else %>
 

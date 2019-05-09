@@ -1,10 +1,13 @@
+# Defines a map of a collection of {Airport}s (showing no {Flight}s between them).
+
 class AirportsMap < Map
   
-  # Initialize a map of a collection of airports (showing no routes between them)
+  # Initialize a map of a collection of {Airport}s (showing no {Flight}s between them).
   # 
-  # @param airports [Array<Airport>] a collection of Airports
-  # @option [Array<String>] :region The ICAO prefixes to show (e.g.
-  #   ["K","PH"]). World map will be shown if region is left blank.
+  # @param airports [Array<Airport>] a collection of {Airport}s
+  # @param region [Array<String>] the ICAO prefixes to show (e.g. ["K","PH"]).
+  #   World map will be shown if region is left blank.
+  # @see Map#gcmap_regions
   def initialize(airports, region: [""])
     @airport_normal_ids = airports.in_region_ids(region)
     @airport_out_of_region_ids = airports.pluck(:id) - @airport_normal_ids
@@ -12,7 +15,7 @@ class AirportsMap < Map
   
   private
 
-  # Returns an array of airport IDs for airports with no special formatting
+  # Returns an array of airport IDs for airports with no special formatting.
   #
   # @return [Array<Number>] airport IDs
   def airports_normal
@@ -27,7 +30,7 @@ class AirportsMap < Map
     return @airport_out_of_region_ids
   end
   
-  # Returns the map description
+  # Returns the map description.
   #
   # @return [String] the map description
   def map_description

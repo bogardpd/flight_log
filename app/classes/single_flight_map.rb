@@ -1,8 +1,10 @@
+# Defines a map of a single {Flight}.
+
 class SingleFlightMap < Map
   
-  # Initialize a map of a single flight route.
+  # Initialize a map of a single {Flight}.
   # 
-  # @param flight [Flight] the Flight to map
+  # @param flight [Flight] the {Flight} to map
   def initialize(flight)
     @codes = [flight.origin_airport.iata_code, flight.destination_airport.iata_code]
     @flight = flight
@@ -17,7 +19,7 @@ class SingleFlightMap < Map
     return "*"
   end
 
-  # Returns the map description
+  # Returns the map description.
   #
   # @return [String] the map description
   def map_description

@@ -17,7 +17,7 @@
 <p><span class="bold"><%= link_to(@operator.airline_name, show_operator_path(@operator.iata_airline_code), :title => "View flights operated by #{@operator.airline_name}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
 
 <div id="map">
-  <%= map_with_region_select(@map, @region) %>
+  <%= gcmap_with_region_select(@map, @region) %>
   <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
 </div>
 

@@ -1,14 +1,17 @@
+# Defines a map of multple {Flight}s.
+
 class FlightsMap < Map
 
-  # Initialize a map of flight routes.
+  # Initialize a map of multiple {Flight}s.
   # 
-  # @param flights [Array<Flight>] a collection of Flights
-  # @option [Array<Airport>] :highlighted_airports a collection of Airports to
+  # @param flights [Array<Flight>] a collection of {Flight}s
+  # @param highlighted_airports [Array<Airport>] a collection of {Airport}s to
   #   highlight
-  # @option [Boolean] :include_names (false) whether or not to show city names
-  #   on highlighted airports
-  # @option [Array<String>] :region The ICAO prefixes to show (e.g.
-  #   ["K","PH"]). World map will be shown if region is left blank.
+  # @param include_names [Boolean] whether or not to show city names
+  #   on highlighted {Airport}s
+  # @param region [Array<String>] the ICAO prefixes to show (e.g. ["K","PH"]).
+  #   World map will be shown if region is left blank.
+  # @see Map#gcmap_regions
   def initialize(flights, highlighted_airports: nil, include_names: false, region: [""])
     @flights = flights
     @highlighted_airports = highlighted_airports ? highlighted_airports.pluck(:id) : Array.new
@@ -19,28 +22,28 @@ class FlightsMap < Map
   
   private
   
- # Returns an array of airport IDs for airports with no special formatting
+  # Returns an array of airport IDs for airports with no special formatting.
   #
   # @return [Array<Number>] airport IDs
   def airports_normal
     return @routes[:extra_airports]
   end
 
-  # Returns an array of airport IDs for airports that should be emphasized
+  # Returns an array of airport IDs for airports that should be emphasized.
   #
   # @return [Array<Number>] airport IDs
   def airports_highlighted
     return @highlighted_airports
   end
 
-  # Returns true if highlighted airports should display names, false otherwise
+  # Returns true if highlighted airports should display names, false otherwise.
   #
   # @return [Boolean] whether to display names on highlighted airports
   def gcmap_include_highlighted_airport_names?
     return @include_names
   end
 
-  # Returns the map description
+  # Returns the map description.
   #
   # @return [String] the map description
   def map_description

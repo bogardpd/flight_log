@@ -1,3 +1,7 @@
+# Defines a map of various combinations of {Flight} and {Airport} objects,
+# with the ability to generate {http://www.gcmap.com/ Great Circle Mapper},
+# {https://www.topografix.com/gpx.asp GPX}, and
+# {https://developers.google.com/kml/ KML} maps.
 class Map
   include ActionView::Helpers
   include ActionView::Context
@@ -10,9 +14,10 @@ class Map
   }
   XML_PROLOG = %Q(<?xml version="1.0" encoding="UTF-8" ?>).html_safe
   
-  # Creates HTML for a Great Circle Mapper map.
+  # Creates HTML for a {http://www.gcmap.com/ Great Circle Mapper} map.
   # 
-  # @return [ActiveSupport::SafeBuffer] HTML for a Great Circle Mapper map.
+  # @return [ActiveSupport::SafeBuffer] HTML for a {http://www.gcmap.com/ Great
+  #   Circle Mapper} map.
   def gcmap
     return content_tag(:div, class: "center") do
       concat link_to(image_tag(Rails.application.routes.url_helpers.gcmap_image_path(gcmap_airport_options, gcmap_query.gsub("/","_"), Map.hash_image_query(gcmap_query)), alt: map_description, class: "map"), "http://www.gcmap.com/mapui?PM=#{gcmap_airport_options}&MP=r&MS=wls2&P=#{gcmap_query}", target: "_blank")
@@ -20,16 +25,31 @@ class Map
     end
   end
 
-  # Returns all regions contained in the current map, used for generating
-  # region selection tabs above a Great Circle Mapper map image. Includes name
-  # and ICAO prefixes for each region, and a boolean indicating whether this
-  # region's button should be selected (true if this region is the currently
-  # selected region).
+  # Checks whether or not this map contains enough data to create a
+  # {http://www.gcmap.com/ Great Circle Mapper} map.
   #
-  # @param selected_region [Array] an array of ICAO prefixes (e.g. ["K","PH"])
-  # @return [Hash{String => Boolean, Array}] region names, selected status, and
-  #   ICAO prefixes in the format !{"Europe": {selected: false, icao:
-  #   ["B","E","L"]}}
+  # @return [Boolean] whether or not this map has a non-blank
+  #   {http://www.gcmap.com/ Great Circle Mapper} querystring
+  def gcmap_exists?
+    gcmap_query.present?
+  end
+
+  # Returns all regions contained in the current map. Used for generating
+  # region selection tabs above a {http://www.gcmap.com/ Great Circle Mapper}
+  # map image.
+  #
+  # Regions are defined by an array of ICAO code prefixes (e.g. ["K","PH"]).
+  # {Airport}s are considered to be in a region if their ICAO code starts with
+  # any of the elements of the prefix array (e.g. KATL, PHNL), and {Flight}s
+  # are considered to be in a region if _both_ of their airports are in the
+  # region.
+  #
+  # @param selected_region [Array] an array of ICAO prefixes (e.g. ["K","PH"]).
+  # @return [Hash{String => Boolean, Array}] name and ICAO prefixes for each
+  #   region, and a boolean indicating whether this region's button should be
+  #   selected (true if this region is the currently selected region) in the
+  #   format !{"Europe": {selected: false, icao: ["B","E","L"]}}
+  # @see ApplicationHelper#gcmap_with_region_select
   def gcmap_regions(selected_region)
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
@@ -50,9 +70,10 @@ class Map
     return region_hash
   end
 
-  # Creates XML for a GPX map.
+  # Creates XML for a {https://www.topografix.com/gpx.asp GPX} map.
   #
-  # @return [ActiveSupport::Safebuffer] XML for a GPX map.
+  # @return [ActiveSupport::Safebuffer] XML for a
+  #   {https://www.topografix.com/gpx.asp GPX} map.
   def gpx
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
@@ -72,9 +93,10 @@ class Map
     return output
   end
 
-  # Creates XML for a KML map.
+  # Creates XML for a {https://developers.google.com/kml/ KML} map.
   #
-  # @return [ActiveSupport::Safebuffer] XML for a KML map.
+  # @return [ActiveSupport::Safebuffer] XML for a
+  #   {https://developers.google.com/kml/ KML} map.
   def kml
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
@@ -92,15 +114,12 @@ class Map
     end
     return output
   end
-
-  def exists?
-    gcmap_query.present?
-  end
   
-  # Creates a hash of a map query based on a secret key
+  # Creates a hash of a map query based on a secret key.
   # 
   # @param query [String] the query to hash
   # @return [String] a hash of the query
+  # @see PagesController#gcmap_image_proxy
   def self.hash_image_query(query)
     Digest::MD5.hexdigest(query + ENV["IMAGE_KEY"])
   end
@@ -134,14 +153,14 @@ class Map
     return details
   end
 
-  # Returns an array of airport IDs for airports with no special formatting
+  # Returns an array of airport IDs for airports with no special formatting.
   #
   # @return [Array<Number>] airport IDs
   def airports_normal
     return Array.new
   end
 
-  # Returns an array of airport IDs for airports that should be emphasized
+  # Returns an array of airport IDs for airports that should be emphasized.
   #
   # @return [Array<Number>] airport IDs
   def airports_highlighted
@@ -210,14 +229,14 @@ class Map
     return Hash.new
   end
 
-  # Returns the map name
+  # Returns the map name.
   #
   # @return [String] the map name
   def map_name
     return "Flights"
   end
 
-  # Returns the map description
+  # Returns the map description.
   #
   # @return [String] the map description
   def map_description
@@ -233,7 +252,7 @@ class Map
     return "b:disc5:black"
   end
 
-  # Returns true if highlighted airports should display names, false otherwise
+  # Returns true if highlighted airports should display names, false otherwise.
   #
   # @return [Boolean] whether or not highlighted airports should display names
   def gcmap_include_highlighted_airport_names?
@@ -493,7 +512,7 @@ class Map
     end
   end
 
-  # Define KML styles
+  # Define KML styles.
   # 
   # @return [ActiveSupport::SafeBuffer] XML for KML styles
   def kml_styles

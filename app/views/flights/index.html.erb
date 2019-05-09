@@ -10,7 +10,7 @@
 
 <% if @flights.any? %>
 
-  <%= map_with_region_select(@map, @region, anchor: "flight-map") %>
+  <%= gcmap_with_region_select(@map, @region, anchor: "flight-map") %>
   <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total"} %>
 
   <div id="flight-list">

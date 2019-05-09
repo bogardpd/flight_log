@@ -1,12 +1,17 @@
+# Defines a map of a collection of {Airport}s (showing no {Flight}s between
+# them), surrounded by rings with area proportional to the number of visits
+# to each airport.
+
 class AirportFrequencyMap < Map
   
-  # Initialize a map of a collection of airports (showing no routes between
+  # Initialize a map of a collection of {Airport}s (showing no {Flight}s between
   # them), surrounded by rings with area proportional to the number of visits
   # to each airport.
   # 
-  # @param flights [Array<Flight>] a collection of Flights
-  # @option [Array<String>] :region The ICAO prefixes to show (e.g.
-  #   ["K","PH"]). World map will be shown if region is left blank.
+  # @param flights [Array<Flight>] a collection of {Flight}s
+  # @param region [Array<String>] the ICAO prefixes to show (e.g. ["K","PH"]).
+  #   World map will be shown if region is left blank.
+  # @see Map#gcmap_regions
   def initialize(flights, region: [""])
     @airport_frequencies = Airport.frequency_hash(flights)
     @airports_in_region = Airport.in_region_hash(region).select{|k,v| @airport_frequencies.keys.include?(k)}
@@ -15,7 +20,7 @@ class AirportFrequencyMap < Map
   
   private
 
-  # Returns an array of airport IDs for airports with no special formatting
+  # Returns an array of airport IDs for airports with no special formatting.
   #
   # @return [Array<Number>] airport IDs
   def airports_normal
@@ -46,7 +51,7 @@ class AirportFrequencyMap < Map
     return "b:disc5:red"
   end
   
-  # Returns the map description
+  # Returns the map description.
   #
   # @return [String] the map description
   def map_description

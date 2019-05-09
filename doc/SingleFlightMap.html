@@ -101,7 +101,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Defines a map of a single <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
   <h2>Constant Summary</h2>
@@ -142,7 +153,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Initialize a map of a single flight route.</p>
+<p>Initialize a map of a single <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 </div></span>
   
 </li>
@@ -161,7 +172,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Map.html" title="Map (class)">Map</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Map.html#exists%3F-instance_method" title="Map#exists? (method)">#exists?</a></span>, <span class='object_link'><a href="Map.html#gcmap-instance_method" title="Map#gcmap (method)">#gcmap</a></span>, <span class='object_link'><a href="Map.html#gcmap_regions-instance_method" title="Map#gcmap_regions (method)">#gcmap_regions</a></span>, <span class='object_link'><a href="Map.html#gpx-instance_method" title="Map#gpx (method)">#gpx</a></span>, <span class='object_link'><a href="Map.html#hash_image_query-class_method" title="Map.hash_image_query (method)">hash_image_query</a></span>, <span class='object_link'><a href="Map.html#kml-instance_method" title="Map#kml (method)">#kml</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Map.html#gcmap-instance_method" title="Map#gcmap (method)">#gcmap</a></span>, <span class='object_link'><a href="Map.html#gcmap_exists%3F-instance_method" title="Map#gcmap_exists? (method)">#gcmap_exists?</a></span>, <span class='object_link'><a href="Map.html#gcmap_regions-instance_method" title="Map#gcmap_regions (method)">#gcmap_regions</a></span>, <span class='object_link'><a href="Map.html#gpx-instance_method" title="Map#gpx (method)">#gpx</a></span>, <span class='object_link'><a href="Map.html#hash_image_query-class_method" title="Map.hash_image_query (method)">hash_image_query</a></span>, <span class='object_link'><a href="Map.html#kml-instance_method" title="Map#kml (method)">#kml</a></span></p>
 
   
   <div id="constructor_details" class="method_details_list">
@@ -179,7 +190,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Initialize a map of a single flight route.</p>
+<p>Initialize a map of a single <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 
 
   </div>
@@ -199,7 +210,7 @@
       
         &mdash;
         <div class='inline'>
-<p>the Flight to map</p>
+<p>the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> to map</p>
 </div>
       
     </li>
@@ -213,13 +224,13 @@
       <pre class="lines">
 
 
-6
-7
 8
-9</pre>
+9
+10
+11</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/single_flight_map.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'app/classes/single_flight_map.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_flight'>flight</span><span class='rparen'>)</span>
   <span class='ivar'>@codes</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_origin_airport'>origin_airport</span><span class='period'>.</span><span class='id identifier rubyid_iata_code'>iata_code</span><span class='comma'>,</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport'>destination_airport</span><span class='period'>.</span><span class='id identifier rubyid_iata_code'>iata_code</span><span class='rbracket'>]</span>
@@ -236,7 +247,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun May  5 17:52:19 2019 by
+  Generated on Wed May  8 22:23:07 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

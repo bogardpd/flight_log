@@ -101,7 +101,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Defines a map of multple <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
   <h2>Constant Summary</h2>
@@ -142,7 +153,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Initialize a map of flight routes.</p>
+<p>Initialize a map of multiple <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s.</p>
 </div></span>
   
 </li>
@@ -161,7 +172,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Map.html" title="Map (class)">Map</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Map.html#exists%3F-instance_method" title="Map#exists? (method)">#exists?</a></span>, <span class='object_link'><a href="Map.html#gcmap-instance_method" title="Map#gcmap (method)">#gcmap</a></span>, <span class='object_link'><a href="Map.html#gcmap_regions-instance_method" title="Map#gcmap_regions (method)">#gcmap_regions</a></span>, <span class='object_link'><a href="Map.html#gpx-instance_method" title="Map#gpx (method)">#gpx</a></span>, <span class='object_link'><a href="Map.html#hash_image_query-class_method" title="Map.hash_image_query (method)">hash_image_query</a></span>, <span class='object_link'><a href="Map.html#kml-instance_method" title="Map#kml (method)">#kml</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Map.html#gcmap-instance_method" title="Map#gcmap (method)">#gcmap</a></span>, <span class='object_link'><a href="Map.html#gcmap_exists%3F-instance_method" title="Map#gcmap_exists? (method)">#gcmap_exists?</a></span>, <span class='object_link'><a href="Map.html#gcmap_regions-instance_method" title="Map#gcmap_regions (method)">#gcmap_regions</a></span>, <span class='object_link'><a href="Map.html#gpx-instance_method" title="Map#gpx (method)">#gpx</a></span>, <span class='object_link'><a href="Map.html#hash_image_query-class_method" title="Map.hash_image_query (method)">hash_image_query</a></span>, <span class='object_link'><a href="Map.html#kml-instance_method" title="Map#kml (method)">#kml</a></span></p>
 
   
   <div id="constructor_details" class="method_details_list">
@@ -179,7 +190,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Initialize a map of flight routes.</p>
+<p>Initialize a map of multiple <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s.</p>
 
 
   </div>
@@ -199,71 +210,69 @@
       
         &mdash;
         <div class='inline'>
-<p>a collection of Flights</p>
+<p>a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>[Array&lt;Airport&gt;]</span>
+        <span class='name'>highlighted_airports</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>&gt;</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>a customizable set of options</p>
+<p>a collection of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>s to highlight</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>[Boolean]</span>
+        <span class='name'>include_names</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Boolean</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>a customizable set of options</p>
+<p>whether or not to show city names on highlighted <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>s</p>
 </div>
       
     </li>
   
     <li>
       
-        <span class='name'>[Array&lt;String&gt;]</span>
+        <span class='name'>region</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>a customizable set of options</p>
+<p>the ICAO prefixes to show (e.g. [“K”,“PH”]). World map will be shown if
+region is left blank.</p>
 </div>
       
     </li>
   
 </ul>
 
-  
-    
-    
-    
-    
-    
-    
-    
-    
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="Map.html#gcmap_regions-instance_method" title="Map#gcmap_regions (method)">Map#gcmap_regions</a></span></li>
+    
+  </ul>
 
 </div><table class="source_code">
   <tr>
@@ -271,16 +280,16 @@
       <pre class="lines">
 
 
-12
-13
-14
 15
 16
 17
-18</pre>
+18
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/flights_map.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'app/classes/flights_map.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='label'>highlighted_airports:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>include_names:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>region:</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='ivar'>@flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span>
@@ -300,7 +309,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun May  5 17:52:19 2019 by
+  Generated on Wed May  8 22:23:06 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

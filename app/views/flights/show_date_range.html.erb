@@ -19,7 +19,7 @@
 <p>I <%= @took_taken %> <%= pluralize(@flights.length, "commercial flight") %> <%= @date_range_text %>.</p>
 
 <div id="map" class="intro-box">
-  <%= map_with_region_select(@map, @region, anchor: "flight-map") %>
+  <%= gcmap_with_region_select(@map, @region, anchor: "flight-map") %>
 	<%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
 </div>
 

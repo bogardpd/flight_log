@@ -104,7 +104,21 @@
   
 </div>
 
-<div id="subclasses">
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Defines a map of various combinations of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> and <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> objects,
+with the ability to generate <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a>,
+<a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX">GPX</a>, and
+<a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> maps.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><div id="subclasses">
   <h2>Direct Known Subclasses</h2>
   <p class="children"><span class='object_link'><a href="AirportFrequencyMap.html" title="AirportFrequencyMap (class)">AirportFrequencyMap</a></span>, <span class='object_link'><a href="AirportsMap.html" title="AirportsMap (class)">AirportsMap</a></span>, <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>, <span class='object_link'><a href="HighlightedRoutesMap.html" title="HighlightedRoutesMap (class)">HighlightedRoutesMap</a></span>, <span class='object_link'><a href="SingleFlightMap.html" title="SingleFlightMap (class)">SingleFlightMap</a></span></p>
 </div>
@@ -185,28 +199,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#exists%3F-instance_method" title="#exists? (instance method)">#<strong>exists?</strong>  &#x21d2; Boolean </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#gcmap-instance_method" title="#gcmap (instance method)">#<strong>gcmap</strong>  &#x21d2; ActiveSupport::SafeBuffer </a>
     
 
@@ -222,7 +214,32 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates HTML for a Great Circle Mapper map.</p>
+<p>Creates HTML for a <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#gcmap_exists%3F-instance_method" title="#gcmap_exists? (instance method)">#<strong>gcmap_exists?</strong>  &#x21d2; Boolean </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Checks whether or not this map contains enough data to create a
+<a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
 </div></span>
   
 </li>
@@ -246,8 +263,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns all regions contained in the current map, used for generating
-region selection tabs above a Great Circle Mapper map image.</p>
+<p>Returns all regions contained in the current map.</p>
 </div></span>
   
 </li>
@@ -271,7 +287,7 @@ region selection tabs above a Great Circle Mapper map image.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates XML for a GPX map.</p>
+<p>Creates XML for a <a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX">GPX</a> map.</p>
 </div></span>
   
 </li>
@@ -295,7 +311,7 @@ region selection tabs above a Great Circle Mapper map image.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates XML for a KML map.</p>
+<p>Creates XML for a <a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> map.</p>
 </div></span>
   
 </li>
@@ -324,7 +340,7 @@ region selection tabs above a Great Circle Mapper map image.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates a hash of a map query based on a secret key</p>
+<p>Creates a hash of a map query based on a secret key.</p>
 
 
   </div>
@@ -370,18 +386,25 @@ region selection tabs above a Great Circle Mapper map image.</p>
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="PagesController.html#gcmap_image_proxy-instance_method" title="PagesController#gcmap_image_proxy (method)">PagesController#gcmap_image_proxy</a></span></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-104
-105
-106</pre>
+123
+124
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 104</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_hash_image_query'>hash_image_query</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span><span class='rparen'>)</span>
   <span class='const'>Digest</span><span class='op'>::</span><span class='const'>MD5</span><span class='period'>.</span><span class='id identifier rubyid_hexdigest'>hexdigest</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span> <span class='op'>+</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>IMAGE_KEY</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -398,59 +421,7 @@ region selection tabs above a Great Circle Mapper map image.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="exists?-instance_method">
-  
-    #<strong>exists?</strong>  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-96
-97
-98</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 96</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_exists?'>exists?</span>
-  <span class='id identifier rubyid_gcmap_query'>gcmap_query</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="gcmap-instance_method">
+  <h3 class="signature first" id="gcmap-instance_method">
   
     #<strong>gcmap</strong>  &#x21d2; <tt>ActiveSupport::SafeBuffer</tt> 
   
@@ -461,7 +432,7 @@ region selection tabs above a Great Circle Mapper map image.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates HTML for a Great Circle Mapper map.</p>
+<p>Creates HTML for a <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
 
 
   </div>
@@ -480,7 +451,7 @@ region selection tabs above a Great Circle Mapper map image.</p>
       
         &mdash;
         <div class='inline'>
-<p>HTML for a Great Circle Mapper map.</p>
+<p>HTML for a <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
 </div>
       
     </li>
@@ -493,21 +464,81 @@ region selection tabs above a Great Circle Mapper map image.</p>
       <pre class="lines">
 
 
-16
-17
-18
-19
-20
-21</pre>
+21
+22
+23
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap'>gcmap</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>center</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
     <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_link_to'>link_to</span><span class='lparen'>(</span><span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_routes'>routes</span><span class='period'>.</span><span class='id identifier rubyid_url_helpers'>url_helpers</span><span class='period'>.</span><span class='id identifier rubyid_gcmap_image_path'>gcmap_image_path</span><span class='lparen'>(</span><span class='id identifier rubyid_gcmap_airport_options'>gcmap_airport_options</span><span class='comma'>,</span> <span class='id identifier rubyid_gcmap_query'>gcmap_query</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>/</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="" title="Map (class)">Map</a></span></span><span class='period'>.</span><span class='id identifier rubyid_hash_image_query'><span class='object_link'><a href="#hash_image_query-class_method" title="Map.hash_image_query (method)">hash_image_query</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_gcmap_query'>gcmap_query</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>alt:</span> <span class='id identifier rubyid_map_description'>map_description</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>map</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.gcmap.com/mapui?PM=</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_gcmap_airport_options'>gcmap_airport_options</span><span class='embexpr_end'>}</span><span class='tstring_content'>&amp;MP=r&amp;MS=wls2&amp;P=</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_gcmap_query'>gcmap_query</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>target:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_blank</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
     <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='const'>ActiveSupport</span><span class='op'>::</span><span class='const'>SafeBuffer</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Map generated by </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_link_to'>link_to</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Great Circle Mapper</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.gcmap.com/</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>target:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_blank</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>credit</span><span class='words_sep'> </span><span class='tstring_content'>map-credit</span><span class='words_sep'>)</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="gcmap_exists?-instance_method">
+  
+    #<strong>gcmap_exists?</strong>  &#x21d2; <tt>Boolean</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Checks whether or not this map contains enough data to create a
+<a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether or not this map has a non-blank <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> querystring</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+33
+34
+35</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 33</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_gcmap_exists?'>gcmap_exists?</span>
+  <span class='id identifier rubyid_gcmap_query'>gcmap_query</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -526,11 +557,15 @@ region selection tabs above a Great Circle Mapper map image.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns all regions contained in the current map, used for generating
-region selection tabs above a Great Circle Mapper map image. Includes name
-and ICAO prefixes for each region, and a boolean indicating whether this
-region&#39;s button should be selected (true if this region is the
-currently selected region).</p>
+<p>Returns all regions contained in the current map. Used for generating
+region selection tabs above a <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a>
+map image.</p>
+
+<p>Regions are defined by an array of ICAO code prefixes (e.g. [“K”,“PH”]).
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>s are considered to be in a region if their ICAO code starts with
+any of the elements of the prefix array (e.g. KATL, PHNL), and <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s
+are considered to be in a region if <em>both</em> of their airports are in
+the region.</p>
 
 
   </div>
@@ -550,7 +585,7 @@ currently selected region).</p>
       
         &mdash;
         <div class='inline'>
-<p>an array of ICAO prefixes (e.g. [“K”,“PH”])</p>
+<p>an array of ICAO prefixes (e.g. [“K”,“PH”]).</p>
 </div>
       
     </li>
@@ -569,13 +604,22 @@ currently selected region).</p>
       
         &mdash;
         <div class='inline'>
-<p>region names, selected status, and ICAO prefixes in the format {“Europe”:
-{selected: false, icao: [“B”,“E”,“L”]}}</p>
+<p>name and ICAO prefixes for each region, and a boolean indicating whether
+this region&#39;s button should be selected (true if this region is the
+currently selected region) in the format {“Europe”: {selected: false,
+icao: [“B”,“E”,“L”]}}</p>
 </div>
       
     </li>
   
 </ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="ApplicationHelper.html#gcmap_with_region_select-instance_method" title="ApplicationHelper#gcmap_with_region_select (method)">ApplicationHelper#gcmap_with_region_select</a></span></li>
+    
+  </ul>
 
 </div><table class="source_code">
   <tr>
@@ -583,28 +627,28 @@ currently selected region).</p>
       <pre class="lines">
 
 
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51</pre>
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -642,7 +686,7 @@ currently selected region).</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates XML for a GPX map.</p>
+<p>Creates XML for a <a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX">GPX</a> map.</p>
 
 
   </div>
@@ -661,7 +705,7 @@ currently selected region).</p>
       
         &mdash;
         <div class='inline'>
-<p>XML for a GPX map.</p>
+<p>XML for a <a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX">GPX</a> map.</p>
 </div>
       
     </li>
@@ -674,27 +718,27 @@ currently selected region).</p>
       <pre class="lines">
 
 
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73</pre>
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gpx'>gpx</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -731,7 +775,7 @@ currently selected region).</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates XML for a KML map.</p>
+<p>Creates XML for a <a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> map.</p>
 
 
   </div>
@@ -750,7 +794,7 @@ currently selected region).</p>
       
         &mdash;
         <div class='inline'>
-<p>XML for a KML map.</p>
+<p>XML for a <a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> map.</p>
 </div>
       
     </li>
@@ -763,26 +807,26 @@ currently selected region).</p>
       <pre class="lines">
 
 
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94</pre>
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 100</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kml'>kml</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -811,7 +855,7 @@ currently selected region).</p>
 </div>
 
       <div id="footer">
-  Generated on Sun May  5 17:52:18 2019 by
+  Generated on Wed May  8 22:23:06 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
