@@ -101,7 +101,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Defines a Date with specific formatting.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -119,7 +130,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#standard_date-instance_method" title="#standard_date (instance method)">#<strong>standard_date</strong>  &#x21d2; Object </a>
+      <a href="#standard_date-instance_method" title="#standard_date (instance method)">#<strong>standard_date</strong>  &#x21d2; String </a>
     
 
     
@@ -133,7 +144,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Defines a standard date format string to use throughout the application.</p>
+</div></span>
   
 </li>
 
@@ -151,24 +164,53 @@
       <div class="method_details first">
   <h3 class="signature first" id="standard_date-instance_method">
   
-    #<strong>standard_date</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>standard_date</strong>  &#x21d2; <tt>String</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Defines a standard date format string to use throughout the application.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a formatted date</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-3
-4
-5</pre>
+7
+8
+9</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/formatted_date.rb', line 3</span>
+      <pre class="code"><span class="info file"># File 'app/classes/formatted_date.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_standard_date'>standard_date</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%-d %b %Y</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -183,7 +225,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed May  8 22:23:07 2019 by
+  Generated on Thu May  9 19:11:26 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
