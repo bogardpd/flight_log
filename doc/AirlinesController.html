@@ -103,7 +103,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Controls <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> pages.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -135,7 +146,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Creates a new <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -157,7 +170,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Deletes an existing <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -179,7 +194,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows a form to edit an existing <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -201,7 +218,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows a table of all <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span> flown.</p>
+</div></span>
   
 </li>
 
@@ -223,7 +242,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows a form to add an <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -245,7 +266,10 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown under a particular
+<span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>&#39;s brand.</p>
+</div></span>
   
 </li>
 
@@ -267,7 +291,10 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> associated with a particular
+<span class='object_link'><a href="#show_operator-instance_method" title="AirlinesController#show_operator (method)">operator</a></span> and fleet number combination.</p>
+</div></span>
   
 </li>
 
@@ -289,7 +316,11 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> associated with a particular operator
+(the <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> which actually operates the flight, which may or may not be
+the same as the <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> which brands the flight).</p>
+</div></span>
   
 </li>
 
@@ -311,7 +342,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Updates an existing <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -357,38 +390,51 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creates a new <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195</pre>
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 203</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_airline_params'>airline_params</span><span class='rparen'>)</span>
@@ -427,26 +473,39 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Deletes an existing <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229</pre>
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 219</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 258</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -473,22 +532,35 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows a form to edit an existing <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-197
-198
-199
-200
-201
-202
-203</pre>
+230
+231
+232
+233
+234
+235
+236</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 197</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 230</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -511,15 +583,23 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows a table of all <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span> flown.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-4
-5
-6
 7
 8
 9
@@ -561,10 +641,13 @@
 45
 46
 47
-48</pre>
+48
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 4</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_index'>index</span>
   <span class='ivar'>@logo_used</span> <span class='op'>=</span> <span class='kw'>true</span>
@@ -625,22 +708,35 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows a form to add an <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-165
-166
-167
-168
-169
-170
-171</pre>
+192
+193
+194
+195
+196
+197
+198</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 165</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 192</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -663,20 +759,27 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown under a particular
+<span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>&#39;s brand. Includes a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>, a table of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, the total distance flown, a table of <span class='object_link'><a href="#show_operator-instance_method" title="AirlinesController#show_operator (method)">operators</a></span>,
+a table of <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamilies</a></span>, a table of
+<span class='object_link'><a href="FlightsController.html#show_class-instance_method" title="FlightsController#show_class (method)">classes</a></span>, and the longest and shortest
+<span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
-56
-57
 58
 59
 60
@@ -706,10 +809,18 @@
 84
 85
 86
-87</pre>
+87
+88
+89
+90
+91
+92
+93
+94
+95</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -763,45 +874,62 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> associated with a particular
+<span class='object_link'><a href="#show_operator-instance_method" title="AirlinesController#show_operator (method)">operator</a></span> and fleet number combination. Includes a
+<span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>, a table of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> (including the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span>
+and <span class='object_link'><a href="FlightsController.html#show_tail-instance_method" title="FlightsController#show_tail (method)">tail number</a></span> of each <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>), the total
+distance flown, a table of <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span> marketing these <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, a table of <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamilies</a></span>, a table of
+<span class='object_link'><a href="FlightsController.html#show_class-instance_method" title="FlightsController#show_class (method)">classes</a></span>, and the longest and shortest
+<span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
 158
 159
 160
 161
 162
-163</pre>
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 158</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_fleet_number'>show_fleet_number</span>
   <span class='ivar'>@operator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:operator</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -847,28 +975,29 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> associated with a particular operator
+(the <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> which actually operates the flight, which may or may not be
+the same as the <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> which brands the flight). Includes a
+<span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>, a table of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, the total distance flown, a
+table of <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span> marketing these <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, a table of
+<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamilies</a></span>, a table of <span class='object_link'><a href="FlightsController.html#show_class-instance_method" title="FlightsController#show_class (method)">classes</a></span>, a table of <span class='object_link'><a href="#show_fleet_number-instance_method" title="AirlinesController#show_fleet_number (method)">fleet numbers</a></span>, and the longest
+and shortest <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
 105
 106
 107
@@ -896,10 +1025,26 @@
 129
 130
 131
-132</pre>
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 89</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_operator'>show_operator</span>
   <span class='ivar'>@operator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:operator</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -959,28 +1104,41 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Updates an existing <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217</pre>
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 205</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 241</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1005,7 +1163,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu May  9 19:51:15 2019 by
+  Generated on Thu May  9 21:09:22 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

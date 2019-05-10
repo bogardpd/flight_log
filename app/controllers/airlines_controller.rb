@@ -1,6 +1,9 @@
+# Controls {Airline} pages.
+
 class AirlinesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   
+  # Shows a table of all {Airline Airlines} flown.
   def index
     @logo_used = true
     @title = "Airlines"
@@ -47,6 +50,11 @@ class AirlinesController < ApplicationController
      
   end
   
+  # Shows data for all {Flight Flights} flown under a particular {Airline}'s
+  # brand. Includes a {FlightsMap}, a table of {Flight Flights}, the total
+  # distance flown, a table of {#show_operator operators}, a table of
+  # {AircraftFamily AircraftFamilies}, a table of {FlightsController#show_class
+  # classes}, and the longest and shortest {Flight Flights}.
   def show
     @airline = Airline.where(:iata_airline_code => params[:id]).first
     raise ActiveRecord::RecordNotFound if (@airline.nil?)
@@ -86,6 +94,14 @@ class AirlinesController < ApplicationController
       
   end
   
+  # Shows data for all {Flight Flights} associated with a particular operator
+  # (the {Airline} which actually operates the flight, which may or may not be
+  # the same as the {Airline} which brands the flight). Includes a
+  # {FlightsMap}, a table of {Flight Flights}, the total distance flown, a
+  # table of {Airline Airlines} marketing these {Flight Flights}, a table of
+  # {AircraftFamily AircraftFamilies}, a table of {FlightsController#show_class
+  # classes}, a table of {#show_fleet_number fleet numbers}, and the longest
+  # and shortest {Flight Flights}.
   def show_operator
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     raise ActiveRecord::RecordNotFound if (@operator.nil?)
@@ -131,6 +147,14 @@ class AirlinesController < ApplicationController
     redirect_to airlines_path
   end
   
+  # Shows data for all {Flight Flights} associated with a particular
+  # {#show_operator operator} and fleet number combination. Includes a
+  # {FlightsMap}, a table of {Flight Flights} (including the {AircraftFamily}
+  # and {FlightsController#show_tail tail number} of each {Flight}), the total
+  # distance flown, a table of {Airline Airlines} marketing these {Flight
+  # Flights}, a table of {AircraftFamily AircraftFamilies}, a table of
+  # {FlightsController#show_class classes}, and the longest and shortest
+  # {Flight Flights}.
   def show_fleet_number
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     @fleet_number = params[:fleet_number]
@@ -162,6 +186,9 @@ class AirlinesController < ApplicationController
     redirect_to airlines_path
   end
   
+  # Shows a form to add an {Airline}.
+  #
+  # This action can only be performed by a verified user.
   def new
     session[:form_location] = nil
     @title = "New Airline"
@@ -170,6 +197,9 @@ class AirlinesController < ApplicationController
     @airline = Airline.new
   end
   
+  # Creates a new {Airline}.
+  #
+  # This action can only be performed by a verified user.
   def create
     @airline = Airline.new(airline_params)
     if @airline.save
@@ -194,6 +224,9 @@ class AirlinesController < ApplicationController
     end
   end
   
+  # Shows a form to edit an existing {Airline}.
+  #
+  # This action can only be performed by a verified user.
   def edit
     session[:form_location] = nil
     @airline = Airline.find(params[:id])
@@ -202,6 +235,9 @@ class AirlinesController < ApplicationController
     add_breadcrumb "Edit Airline", edit_airport_path(@airline)
   end
   
+  # Updates an existing {Airline}.
+  #
+  # This action can only be performed by a verified user.
   def update
     @airline = Airline.find(params[:id])
     if @airline.update_attributes(airline_params)
@@ -216,6 +252,9 @@ class AirlinesController < ApplicationController
     end
   end
   
+  # Deletes an existing {Airline}.
+  #
+  # This action can only be performed by a verified user.
   def destroy
     @airline = Airline.find(params[:id])
     if @airline.flights.any?
@@ -230,8 +269,9 @@ class AirlinesController < ApplicationController
   
   private
   
-    def airline_params
-      params.require(:airline).permit(:iata_airline_code, :icao_airline_code, :airline_name, :numeric_code, :is_only_operator)
-    end
+  # Defines permitted {Airline} parameters.
+  def airline_params
+    params.require(:airline).permit(:iata_airline_code, :icao_airline_code, :airline_name, :numeric_code, :is_only_operator)
+  end
   
 end

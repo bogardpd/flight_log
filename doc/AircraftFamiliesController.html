@@ -197,8 +197,8 @@ child aircraft type).</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Shows a form that allows a verified user to edit an <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span>
-(either a parent aircraft family or a child aircraft type).</p>
+<p>Shows a form to edit an existing <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft
+family or a child aircraft type).</p>
 </div></span>
   
 </li>
@@ -246,8 +246,8 @@ child aircraft type).</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Shows a form that allows a verified user to add an <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either
-a parent aircraft family or a child aircraft type).</p>
+<p>Shows a form to add an <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft family or
+a child aircraft type).</p>
 </div></span>
   
 </li>
@@ -271,9 +271,8 @@ a parent aircraft family or a child aircraft type).</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Shows a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span> and table of all flights using a specified
-<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft family or a child aircraft
-type).</p>
+<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown on a particular <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span>
+(either a parent aircraft family or a child aircraft type).</p>
 </div></span>
   
 </li>
@@ -349,7 +348,9 @@ child aircraft type).</p>
   <div class="discussion">
     
 <p>Creates a new <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft family or a child
-aircraft type). Can only be performed by a verified user.</p>
+aircraft type).</p>
+
+<p>This action can only be performed by a verified user.</p>
 
 
   </div>
@@ -363,14 +364,6 @@ aircraft type). Can only be performed by a verified user.</p>
       <pre class="lines">
 
 
-115
-116
-117
-118
-119
-120
-121
-122
 123
 124
 125
@@ -381,10 +374,18 @@ aircraft type). Can only be performed by a verified user.</p>
 130
 131
 132
-133</pre>
+133
+134
+135
+136
+137
+138
+139
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 123</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@aircraft_family</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_aircraft_family_params'>aircraft_family_params</span><span class='rparen'>)</span>
@@ -423,7 +424,9 @@ aircraft type). Can only be performed by a verified user.</p>
   <div class="discussion">
     
 <p>Deletes an existing <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft family or a
-child aircraft type). Can only be performed by a verified user.</p>
+child aircraft type).</p>
+
+<p>This action can only be performed by a verified user.</p>
 
 
   </div>
@@ -437,20 +440,20 @@ child aircraft type). Can only be performed by a verified user.</p>
       <pre class="lines">
 
 
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169</pre>
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@aircraft_family</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -480,8 +483,10 @@ child aircraft type). Can only be performed by a verified user.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Shows a form that allows a verified user to edit an <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span>
-(either a parent aircraft family or a child aircraft type).</p>
+<p>Shows a form to edit an existing <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft
+family or a child aircraft type).</p>
+
+<p>This action can only be performed by a verified user.</p>
 
 
   </div>
@@ -495,16 +500,16 @@ child aircraft type). Can only be performed by a verified user.</p>
       <pre class="lines">
 
 
-137
-138
-139
-140
-141
-142
-143</pre>
+147
+148
+149
+150
+151
+152
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 147</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -625,8 +630,10 @@ child aircraft type). Can only be performed by a verified user.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Shows a form that allows a verified user to add an <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either
-a parent aircraft family or a child aircraft type).</p>
+<p>Shows a form to add an <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft family or
+a child aircraft type).</p>
+
+<p>This action can only be performed by a verified user.</p>
 
 
   </div>
@@ -640,12 +647,6 @@ a parent aircraft family or a child aircraft type).</p>
       <pre class="lines">
 
 
-92
-93
-94
-95
-96
-97
 98
 99
 100
@@ -659,10 +660,16 @@ a parent aircraft family or a child aircraft type).</p>
 108
 109
 110
-111</pre>
+111
+112
+113
+114
+115
+116
+117</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 92</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -701,10 +708,13 @@ a parent aircraft family or a child aircraft type).</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Shows a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span> and table of all flights using a specified
-<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft family or a child aircraft
-type). If the specified <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> is a parent aircraft family, this
-method also shows a table of its child aircraft types.</p>
+<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown on a particular <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span>
+(either a parent aircraft family or a child aircraft type). Includes a side
+profile illustration of the aircraft, a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>, a table of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, the total distance flown, a table of <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span>, a table
+of <span class='object_link'><a href="AirlinesController.html#show_operator-instance_method" title="AirlinesController#show_operator (method)">operators</a></span>, a table of
+<span class='object_link'><a href="FlightsController.html#show_class-instance_method" title="FlightsController#show_class (method)">classes</a></span>, and the longest and shortest
+<span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>. If the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> is a parent aircraft family, this
+action also includes a table of its child aircraft types.</p>
 
 
   </div>
@@ -718,10 +728,6 @@ method also shows a table of its child aircraft types.</p>
       <pre class="lines">
 
 
-42
-43
-44
-45
 46
 47
 48
@@ -764,10 +770,14 @@ method also shows a table of its child aircraft types.</p>
 85
 86
 87
-88</pre>
+88
+89
+90
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
   <span class='ivar'>@aircraft_family</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -834,7 +844,9 @@ method also shows a table of its child aircraft types.</p>
   <div class="discussion">
     
 <p>Updates an existing <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft family or a
-child aircraft type). Can only be performed by a verified user.</p>
+child aircraft type).</p>
+
+<p>This action can only be performed by a verified user.</p>
 
 
   </div>
@@ -848,18 +860,18 @@ child aircraft type). Can only be performed by a verified user.</p>
       <pre class="lines">
 
 
-147
-148
-149
-150
-151
-152
-153
-154
-155</pre>
+159
+160
+161
+162
+163
+164
+165
+166
+167</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 159</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@aircraft_family</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -880,7 +892,7 @@ child aircraft type). Can only be performed by a verified user.</p>
 </div>
 
       <div id="footer">
-  Generated on Thu May  9 19:51:16 2019 by
+  Generated on Thu May  9 21:09:22 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
