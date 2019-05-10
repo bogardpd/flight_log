@@ -284,18 +284,4 @@ class AirportsController < ApplicationController
     params.require(:airport).permit(:city, :iata_code, :icao_code, :country, :latitude, :longitude)
   end
   
-  # Take a collection of flights, and return an array of all airport IDs
-  # associated with those flights.
-  # 
-  # @param flights [Array<Flight>] a collection of Flights
-  # @return [Array<Number>] airport IDs
-  def airports_with_flights(flights)
-    airport_ids = Array.new
-    flights.each do |flight|
-      airport_ids.push(flight[:origin_airport_id])
-      airport_ids.push(flight[:destination_airport_id])
-    end
-    return airport_ids.uniq.sort
-  end
-  
 end
