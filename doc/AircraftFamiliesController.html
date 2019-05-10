@@ -271,8 +271,9 @@ a child aircraft type).</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown on a particular <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span>
-(either a parent aircraft family or a child aircraft type).</p>
+<p>Shows details for a particular <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft
+family or a child aircraft type) and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown on
+it.</p>
 </div></span>
   
 </li>
@@ -364,16 +365,6 @@ aircraft type).</p>
       <pre class="lines">
 
 
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
 133
 134
 135
@@ -382,10 +373,20 @@ aircraft type).</p>
 138
 139
 140
-141</pre>
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@aircraft_family</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_aircraft_family_params'>aircraft_family_params</span><span class='rparen'>)</span>
@@ -440,20 +441,20 @@ child aircraft type).</p>
       <pre class="lines">
 
 
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183</pre>
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 183</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@aircraft_family</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -500,16 +501,16 @@ family or a child aircraft type).</p>
       <pre class="lines">
 
 
-147
-148
-149
-150
-151
-152
-153</pre>
+157
+158
+159
+160
+161
+162
+163</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 157</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -647,16 +648,6 @@ a child aircraft type).</p>
       <pre class="lines">
 
 
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
 108
 109
 110
@@ -666,10 +657,20 @@ a child aircraft type).</p>
 114
 115
 116
-117</pre>
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 108</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -708,13 +709,37 @@ a child aircraft type).</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Shows data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown on a particular <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span>
-(either a parent aircraft family or a child aircraft type). Includes a side
-profile illustration of the aircraft, a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>, a table of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, the total distance flown, a table of <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span>, a table
-of <span class='object_link'><a href="AirlinesController.html#show_operator-instance_method" title="AirlinesController#show_operator (method)">operators</a></span>, a table of
-<span class='object_link'><a href="FlightsController.html#show_class-instance_method" title="FlightsController#show_class (method)">classes</a></span>, and the longest and shortest
-<span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>. If the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> is a parent aircraft family, this
-action also includes a table of its child aircraft types.</p>
+<p>Shows details for a particular <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> (either a parent aircraft
+family or a child aircraft type) and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown on
+it.</p>
+
+<p><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> details:</p>
+<ul><li>
+<p>a side profile <a href="http://www.norebbo.com/" target="_parent" title="illustration">illustration</a> of the aircraft</p>
+</li><li>
+<p>IATA code (if the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> is a parent aircraft family) or ICAO
+code (if the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> is a child aircraft type)</p>
+</li><li>
+<p>a table of child aircraft types (if the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> is a parent
+aircraft family)</p>
+</li></ul>
+
+<p><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> data:</p>
+<ul><li>
+<p>a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span></p>
+</li><li>
+<p>a table of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span></p>
+</li><li>
+<p>the total distance flown</p>
+</li><li>
+<p>a table of <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span></p>
+</li><li>
+<p>a table of <span class='object_link'><a href="AirlinesController.html#show_operator-instance_method" title="AirlinesController#show_operator (method)">operators</a></span></p>
+</li><li>
+<p>a table of <span class='object_link'><a href="FlightsController.html#show_class-instance_method" title="FlightsController#show_class (method)">classes</a></span></p>
+</li><li>
+<p>the longest and shortest <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></p>
+</li></ul>
 
 
   </div>
@@ -722,22 +747,19 @@ action also includes a table of its child aircraft types.</p>
 <div class="tags">
   
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="http://www.norebbo.com/" target="_parent" title="Norebbo Stock Illustration and Design">Norebbo Stock Illustration and Design</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
 56
 57
 58
@@ -774,10 +796,20 @@ action also includes a table of its child aircraft types.</p>
 89
 90
 91
-92</pre>
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
   <span class='ivar'>@aircraft_family</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -860,18 +892,18 @@ child aircraft type).</p>
       <pre class="lines">
 
 
-159
-160
-161
-162
-163
-164
-165
-166
-167</pre>
+169
+170
+171
+172
+173
+174
+175
+176
+177</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 169</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@aircraft_family</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -892,7 +924,7 @@ child aircraft type).</p>
 </div>
 
       <div id="footer">
-  Generated on Thu May  9 21:09:22 2019 by
+  Generated on Thu May  9 22:18:07 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

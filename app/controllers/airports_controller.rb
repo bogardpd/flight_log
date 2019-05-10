@@ -1,6 +1,9 @@
+# Controls {Airport} pages.
+
 class AirportsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   
+  # Shows a table of all {Airport Airports} visited.
   def index
     add_breadcrumb "Airports", airports_path
     add_admin_action view_context.link_to("Add New Airport", new_airport_path)
@@ -50,7 +53,26 @@ class AirportsController < ApplicationController
     
   end
   
-  
+  # Shows details for a particular {Airport} and data for all {Flight Flights}
+  # which use it.
+  # 
+  # {Airport} details:
+  # * city (and name if needed for disambiguation)
+  # * latitude and longitude
+  # * IATA and ICAO codes
+  # * a {https://www.pbogard.com/projects/terminal-silhouettes terminal silhouette}
+  # 
+  # {Flight} data:
+  # * a table of {Flight Flights} with a {FlightsMap}
+  # * the total distance flown
+  # * a table of {TripsController#show_section trip sections} with a {FlightsMap} of all {Flight Flights} in those sections
+  # * a table of {Trip Trips} with a {FlightsMap} of all {Flight Flights} in those trips
+  # * a table of {Airline Airlines}
+  # * a table of {AirlinesController#show_operator operators}
+  # * a table of {AircraftFamily AircraftFamilies}
+  # * a table of {FlightsController#show_class classes}
+  # * the longest and shortest {Flight}
+  # @see https://www.pbogard.com/projects/terminal-silhouettes Terminal Silhouettes
   def show
     @logo_used = true
     if params[:id].to_i > 0
@@ -176,7 +198,9 @@ class AirportsController < ApplicationController
     redirect_to airports_path
   end
   
-  
+  # Shows a form to add an {Airport}.
+  #
+  # This action can only be performed by a verified user.
   def new
     session[:form_location] = nil
     @title = "New Airport"
@@ -185,7 +209,9 @@ class AirportsController < ApplicationController
     @airport = Airport.new
   end
   
-  
+  # Creates a new {Airport}.
+  #
+  # This action can only be performed by a verified user.
   def create
     @airport = Airport.new(airport_params)
     if @airport.save
@@ -207,7 +233,9 @@ class AirportsController < ApplicationController
     end
   end
   
-  
+  # Shows a form to edit an existing {Airport}.
+  #
+  # This action can only be performed by a verified user.
   def edit
     session[:form_location] = nil
     @airport = Airport.find(params[:id])
@@ -216,7 +244,9 @@ class AirportsController < ApplicationController
     add_breadcrumb "Edit Airport", edit_airport_path(@airport)
   end
   
-  
+  # Updates an existing {Airport}.
+  #
+  # This action can only be performed by a verified user.
   def update
     @airport = Airport.find(params[:id])
     if @airport.update_attributes(airport_params)
@@ -227,7 +257,9 @@ class AirportsController < ApplicationController
     end
   end
   
-  
+  # Deletes an existing {Airline}.
+  #
+  # This action can only be performed by a verified user.
   def destroy
     @flights = Flight.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => params[:id]})
     if @flights.any?
@@ -247,21 +279,23 @@ class AirportsController < ApplicationController
   
   private
   
-    def airport_params
-      params.require(:airport).permit(:city, :iata_code, :icao_code, :country, :latitude, :longitude)
-    end
+  # Defines permitted {Airline} parameters.
+  def airport_params
+    params.require(:airport).permit(:city, :iata_code, :icao_code, :country, :latitude, :longitude)
+  end
   
-    # Take a collection of flights, and return an array of all airport IDs
-    # associated with those flights.
-    # Params:
-    # +flights+:: A collection of Flights.
-    def airports_with_flights(flights)
-      airport_ids = Array.new
-      flights.each do |flight|
-        airport_ids.push(flight[:origin_airport_id])
-        airport_ids.push(flight[:destination_airport_id])
-      end
-      return airport_ids.uniq.sort
+  # Take a collection of flights, and return an array of all airport IDs
+  # associated with those flights.
+  # 
+  # @param flights [Array<Flight>] a collection of Flights
+  # @return [Array<Number>] airport IDs
+  def airports_with_flights(flights)
+    airport_ids = Array.new
+    flights.each do |flight|
+      airport_ids.push(flight[:origin_airport_id])
+      airport_ids.push(flight[:destination_airport_id])
     end
+    return airport_ids.uniq.sort
+  end
   
 end

@@ -50,11 +50,22 @@ class AirlinesController < ApplicationController
      
   end
   
-  # Shows data for all {Flight Flights} flown under a particular {Airline}'s
-  # brand. Includes a {FlightsMap}, a table of {Flight Flights}, the total
-  # distance flown, a table of {#show_operator operators}, a table of
-  # {AircraftFamily AircraftFamilies}, a table of {FlightsController#show_class
-  # classes}, and the longest and shortest {Flight Flights}.
+  # Shows details for a particular {Airline} and data for all {Flight Flights}
+  # flown under its brand.
+  # 
+  # {Airline} details:
+  # * name
+  # * logo
+  # * IATA and ICAO codes
+  # 
+  # {Flight} data:
+  # * a {FlightsMap}
+  # * a table of {Flight Flights}
+  # * the total distance flown
+  # * a table of {#show_operator operators}
+  # * a table of {AircraftFamily AircraftFamilies}
+  # * a table of {FlightsController#show_class classes}
+  # * the longest and shortest {Flight}
   def show
     @airline = Airline.where(:iata_airline_code => params[:id]).first
     raise ActiveRecord::RecordNotFound if (@airline.nil?)
@@ -94,14 +105,24 @@ class AirlinesController < ApplicationController
       
   end
   
-  # Shows data for all {Flight Flights} associated with a particular operator
-  # (the {Airline} which actually operates the flight, which may or may not be
-  # the same as the {Airline} which brands the flight). Includes a
-  # {FlightsMap}, a table of {Flight Flights}, the total distance flown, a
-  # table of {Airline Airlines} marketing these {Flight Flights}, a table of
-  # {AircraftFamily AircraftFamilies}, a table of {FlightsController#show_class
-  # classes}, a table of {#show_fleet_number fleet numbers}, and the longest
-  # and shortest {Flight Flights}.
+  # Shows details for a particular operator (the {Airline} which actually
+  # operates a flight, which may or may not be the same as the {Airline} which
+  # brands the flight) and data for all {Flight Flights} operated by it.
+  # 
+  # Operator ({Airline}) details:
+  # * name
+  # * logo
+  # * IATA and ICAO codes
+  # 
+  # {Flight} data:
+  # * a {FlightsMap}
+  # * a table of {Flight Flights}
+  # * the total distance flown
+  # * a table of {Airline Airlines} marketing these {Flight Flights}
+  # * a table of {AircraftFamily AircraftFamilies}
+  # * a table of {FlightsController#show_class classes}
+  # * a table of {#show_fleet_number fleet numbers}
+  # * the longest and shortest {Flight}
   def show_operator
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     raise ActiveRecord::RecordNotFound if (@operator.nil?)
@@ -148,13 +169,16 @@ class AirlinesController < ApplicationController
   end
   
   # Shows data for all {Flight Flights} associated with a particular
-  # {#show_operator operator} and fleet number combination. Includes a
-  # {FlightsMap}, a table of {Flight Flights} (including the {AircraftFamily}
-  # and {FlightsController#show_tail tail number} of each {Flight}), the total
-  # distance flown, a table of {Airline Airlines} marketing these {Flight
-  # Flights}, a table of {AircraftFamily AircraftFamilies}, a table of
-  # {FlightsController#show_class classes}, and the longest and shortest
-  # {Flight Flights}.
+  # {#show_operator operator} and fleet number combination.
+  #
+  # {Flight} data:
+  # * a {FlightsMap}
+  # * a table of {Flight Flights} (including the {AircraftFamily} and {FlightsController#show_tail tail number} of each {Flight})
+  # * the total distance flown
+  # * a table of {Airline Airlines} marketing these {Flight Flights}
+  # * a table of {AircraftFamily AircraftFamilies}
+  # * a table of {FlightsController#show_class classes}
+  # * the longest and shortest {Flight}
   def show_fleet_number
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     @fleet_number = params[:fleet_number]

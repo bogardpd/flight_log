@@ -103,7 +103,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Controls <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pages.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -135,7 +146,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Creates a new <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -157,7 +170,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Deletes an existing <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -179,7 +194,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows a form to edit an existing <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -201,7 +218,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows a table of all <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> visited.</p>
+</div></span>
   
 </li>
 
@@ -223,7 +242,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows a form to add an <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -245,7 +266,10 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Shows details for a particular <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>
+which use it.</p>
+</div></span>
   
 </li>
 
@@ -267,7 +291,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Updates an existing <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -313,35 +339,48 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creates a new <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208</pre>
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 189</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 215</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@airport</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_airport_params'>airport_params</span><span class='rparen'>)</span>
@@ -377,30 +416,43 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Deletes an existing <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245</pre>
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 231</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 263</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@flights</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>origin_airport_id = :airport_id OR destination_airport_id = :airport_id</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:airport_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -431,22 +483,35 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows a form to edit an existing <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-211
-212
-213
-214
-215
-216
-217</pre>
+239
+240
+241
+242
+243
+244
+245</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 211</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 239</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -469,15 +534,23 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows a table of all <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> visited.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-4
-5
-6
 7
 8
 9
@@ -522,10 +595,13 @@
 48
 49
 50
-51</pre>
+51
+52
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 4</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 7</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_index'>index</span>
   <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Airports</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_airports_path'>airports_path</span>
@@ -589,22 +665,35 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows a form to add an <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-180
-181
-182
-183
-184
-185
-186</pre>
+204
+205
+206
+207
+208
+209
+210</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 180</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 204</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -627,34 +716,65 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Shows details for a particular <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>
+which use it.</p>
+
+<p><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> details:</p>
+<ul><li>
+<p>city (and name if needed for disambiguation)</p>
+</li><li>
+<p>latitude and longitude</p>
+</li><li>
+<p>IATA and ICAO codes</p>
+</li><li>
+<p>a <a href="https://www.pbogard.com/projects/terminal-silhouettes" target="_parent" title="terminal silhouette">terminal silhouette</a></p>
+</li></ul>
+
+<p><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> data:</p>
+<ul><li>
+<p>a table of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> with a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span></p>
+</li><li>
+<p>the total distance flown</p>
+</li><li>
+<p>a table of <span class='object_link'><a href="TripsController.html#show_section-instance_method" title="TripsController#show_section (method)">trip sections</a></span> with a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>
+of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in those sections</p>
+</li><li>
+<p>a table of <span class='object_link'><a href="Trip.html" title="Trip (class)">Trips</a></span> with a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span> of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in
+those trips</p>
+</li><li>
+<p>a table of <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span></p>
+</li><li>
+<p>a table of <span class='object_link'><a href="AirlinesController.html#show_operator-instance_method" title="AirlinesController#show_operator (method)">operators</a></span></p>
+</li><li>
+<p>a table of <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamilies</a></span></p>
+</li><li>
+<p>a table of <span class='object_link'><a href="FlightsController.html#show_class-instance_method" title="FlightsController#show_class (method)">classes</a></span></p>
+</li><li>
+<p>the longest and shortest <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://www.pbogard.com/projects/terminal-silhouettes" target="_parent" title="Terminal Silhouettes">Terminal Silhouettes</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
 76
 77
 78
@@ -756,10 +876,32 @@
 174
 175
 176
-177</pre>
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
   <span class='ivar'>@logo_used</span> <span class='op'>=</span> <span class='kw'>true</span>
@@ -899,24 +1041,37 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Updates an existing <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+
+<p>This action can only be performed by a verified user.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-220
-221
-222
-223
-224
-225
-226
-227
-228</pre>
+250
+251
+252
+253
+254
+255
+256
+257
+258</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 220</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 250</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@airport</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -937,7 +1092,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu May  9 21:09:22 2019 by
+  Generated on Thu May  9 22:18:06 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
