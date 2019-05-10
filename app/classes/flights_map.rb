@@ -1,14 +1,14 @@
-# Defines a map of multple {Flight}s.
+# Defines a map of multple {Flight Flights}.
 
 class FlightsMap < Map
 
-  # Initialize a map of multiple {Flight}s.
+  # Initialize a map of multiple {Flight Flights}.
   # 
-  # @param flights [Array<Flight>] a collection of {Flight}s
-  # @param highlighted_airports [Array<Airport>] a collection of {Airport}s to
+  # @param flights [Array<Flight>] a collection of {Flight Flights}
+  # @param highlighted_airports [Array<Airport>] a collection of {Airport Airports} to
   #   highlight
   # @param include_names [Boolean] whether or not to show city names
-  #   on highlighted {Airport}s
+  #   on highlighted {Airport Airports}
   # @param region [Array<String>] the ICAO prefixes to show (e.g. ["K","PH"]).
   #   World map will be shown if region is left blank.
   # @see Map#gcmap_regions

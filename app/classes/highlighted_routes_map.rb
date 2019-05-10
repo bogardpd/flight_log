@@ -1,12 +1,12 @@
-# Defines a map of {Flight}s with some flights highlighted.
+# Defines a map of {Flight Flights} with some flights highlighted.
 
 class HighlightedRoutesMap < Map
   
-  # Initialize a map of {Flight}s with some flights highlighted.
+  # Initialize a map of {Flight Flights} with some flights highlighted.
   # 
-  # @param flights [Array<Flight>] a collection of {Flight}s to show
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to show
   #   unhighlighted
-  # @param highlighted_routes [Array<Flight>] a collection of {Flight}s whose
+  # @param highlighted_routes [Array<Flight>] a collection of {Flight Flights} whose
   #   routes will be highlighted
   def initialize(flights, highlighted_routes)
     @flights = flights

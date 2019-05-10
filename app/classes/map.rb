@@ -1,7 +1,17 @@
-# Defines a map of various combinations of {Flight} and {Airport} objects,
-# with the ability to generate {http://www.gcmap.com/ Great Circle Mapper},
-# {https://www.topografix.com/gpx.asp GPX}, and
+# Defines a map of various combinations of {Flight Flights} and {Airport
+# Airports}, with the ability to generate {http://www.gcmap.com/ Great Circle
+# Mapper}, {https://www.topografix.com/gpx.asp GPX}, and
 # {https://developers.google.com/kml/ KML} maps.
+#
+# While Map can be used for class methods, instances of Map are not intended
+# to be used directly (which is why it specifies no constructor method).
+# Instead, the subclasses which provide specific map types should be used to
+# create new maps.
+#
+# @see http://www.gcmap.com/ Great Circle Mapper
+# @see https://www.topografix.com/gpx.asp GPX: the GPS Exchange Format
+# @see https://www.topografix.com/gpx.asp Keyhole Markup Language
+
 class Map
   include ActionView::Helpers
   include ActionView::Context
@@ -18,6 +28,7 @@ class Map
   # 
   # @return [ActiveSupport::SafeBuffer] HTML for a {http://www.gcmap.com/ Great
   #   Circle Mapper} map.
+  # @see http://www.gcmap.com/ Great Circle Mapper
   def gcmap
     return content_tag(:div, class: "center") do
       concat link_to(image_tag(Rails.application.routes.url_helpers.gcmap_image_path(gcmap_airport_options, gcmap_query.gsub("/","_"), Map.hash_image_query(gcmap_query)), alt: map_description, class: "map"), "http://www.gcmap.com/mapui?PM=#{gcmap_airport_options}&MP=r&MS=wls2&P=#{gcmap_query}", target: "_blank")
@@ -30,6 +41,7 @@ class Map
   #
   # @return [Boolean] whether or not this map has a non-blank
   #   {http://www.gcmap.com/ Great Circle Mapper} querystring
+  # @see http://www.gcmap.com/ Great Circle Mapper
   def gcmap_exists?
     gcmap_query.present?
   end
@@ -39,8 +51,8 @@ class Map
   # map image.
   #
   # Regions are defined by an array of ICAO code prefixes (e.g. ["K","PH"]).
-  # {Airport}s are considered to be in a region if their ICAO code starts with
-  # any of the elements of the prefix array (e.g. KATL, PHNL), and {Flight}s
+  # {Airport Airports} are considered to be in a region if their ICAO code starts with
+  # any of the elements of the prefix array (e.g. KATL, PHNL), and {Flight Flights}
   # are considered to be in a region if _both_ of their airports are in the
   # region.
   #
@@ -50,6 +62,7 @@ class Map
   #   selected (true if this region is the currently selected region) in the
   #   format !{"Europe": {selected: false, icao: ["B","E","L"]}}
   # @see ApplicationHelper#gcmap_with_region_select
+  # @see http://www.gcmap.com/ Great Circle Mapper
   def gcmap_regions(selected_region)
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
@@ -74,6 +87,7 @@ class Map
   #
   # @return [ActiveSupport::Safebuffer] XML for a
   #   {https://www.topografix.com/gpx.asp GPX} map.
+  # @see https://www.topografix.com/gpx.asp GPX: the GPS Exchange Format
   def gpx
     @airport_details ||= airport_details
     used_airports = @airport_details.keys
@@ -97,6 +111,7 @@ class Map
   #
   # @return [ActiveSupport::Safebuffer] XML for a
   #   {https://developers.google.com/kml/ KML} map.
+  # @see https://www.topografix.com/gpx.asp Keyhole Markup Language
   def kml
     @airport_details ||= airport_details
     used_airports = @airport_details.keys

@@ -10,7 +10,7 @@ class AdminController < ApplicationController
     add_breadcrumb "Admin", admin_path
   end
   
-  # Shows a table of the total count of business, mixed, and personal {Flight}s
+  # Shows a table of the total count of business, mixed, and personal {Flight Flights}
   # for each calendar year.
   #
   # This action can only be performed by a verified user.
@@ -21,7 +21,7 @@ class AdminController < ApplicationController
     @flight_summary = Flight.by_year
   end
   
-  # Shows the boarding pass data of all {Flight}s with invalid boarding pass
+  # Shows the boarding pass data of all {Flight Flights} with invalid boarding pass
   # data.
   #
   # This action can only be performed by a verified user.

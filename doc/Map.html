@@ -107,16 +107,30 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Defines a map of various combinations of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> and <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> objects,
-with the ability to generate <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a>,
-<a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX">GPX</a>, and
+<p>Defines a map of various combinations of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> and <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>, with the ability to generate <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a>, <a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX">GPX</a>, and
 <a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> maps.</p>
+
+<p>While Map can be used for class methods, instances of Map are not intended
+to be used directly (which is why it specifies no constructor method).
+Instead, the subclasses which provide specific map types should be used to
+create new maps.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a></li>
+    
+      <li><a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX: the GPS Exchange Format">GPX: the GPS Exchange Format</a></li>
+    
+      <li><a href="https://www.topografix.com/gpx.asp" target="_parent" title="Keyhole Markup Language">Keyhole Markup Language</a></li>
+    
+  </ul>
 
 </div><div id="subclasses">
   <h2>Direct Known Subclasses</h2>
@@ -399,12 +413,12 @@ with the ability to generate <a href="http://www.gcmap.com/" target="_parent" ti
       <pre class="lines">
 
 
-123
-124
-125</pre>
+138
+139
+140</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 138</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_hash_image_query'>hash_image_query</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span><span class='rparen'>)</span>
   <span class='const'>Digest</span><span class='op'>::</span><span class='const'>MD5</span><span class='period'>.</span><span class='id identifier rubyid_hexdigest'>hexdigest</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span> <span class='op'>+</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>IMAGE_KEY</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -458,21 +472,28 @@ with the ability to generate <a href="http://www.gcmap.com/" target="_parent" ti
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-21
-22
-23
-24
-25
-26</pre>
+32
+33
+34
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap'>gcmap</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>center</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -524,18 +545,25 @@ with the ability to generate <a href="http://www.gcmap.com/" target="_parent" ti
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-33
-34
-35</pre>
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_exists?'>gcmap_exists?</span>
   <span class='id identifier rubyid_gcmap_query'>gcmap_query</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
@@ -562,10 +590,10 @@ region selection tabs above a <a href="http://www.gcmap.com/" target="_parent" t
 map image.</p>
 
 <p>Regions are defined by an array of ICAO code prefixes (e.g. [“K”,“PH”]).
-<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>s are considered to be in a region if their ICAO code starts with
-any of the elements of the prefix array (e.g. KATL, PHNL), and <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>s
-are considered to be in a region if <em>both</em> of their airports are in
-the region.</p>
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> are considered to be in a region if their ICAO code
+starts with any of the elements of the prefix array (e.g. KATL, PHNL), and
+<span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> are considered to be in a region if <em>both</em> of their
+airports are in the region.</p>
 
 
   </div>
@@ -619,6 +647,8 @@ icao: [“B”,“E”,“L”]}}</p>
     
       <li><span class='object_link'><a href="ApplicationHelper.html#gcmap_with_region_select-instance_method" title="ApplicationHelper#gcmap_with_region_select (method)">ApplicationHelper#gcmap_with_region_select</a></span></li>
     
+      <li><a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a></li>
+    
   </ul>
 
 </div><table class="source_code">
@@ -627,28 +657,28 @@ icao: [“B”,“E”,“L”]}}</p>
       <pre class="lines">
 
 
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
 66
 67
 68
 69
 70
-71</pre>
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -712,33 +742,40 @@ icao: [“B”,“E”,“L”]}}</p>
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX: the GPS Exchange Format">GPX: the GPS Exchange Format</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
 91
 92
 93
-94</pre>
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 91</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gpx'>gpx</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -801,32 +838,39 @@ icao: [“B”,“E”,“L”]}}</p>
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://www.topografix.com/gpx.asp" target="_parent" title="Keyhole Markup Language">Keyhole Markup Language</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
 115
-116</pre>
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kml'>kml</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -855,7 +899,7 @@ icao: [“B”,“E”,“L”]}}</p>
 </div>
 
       <div id="footer">
-  Generated on Thu May  9 22:18:03 2019 by
+  Generated on Thu May  9 23:00:22 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

@@ -1,10 +1,10 @@
-# Defines a map of a collection of {Airport}s (showing no {Flight}s between them).
+# Defines a map of a collection of {Airport Airports} (showing no {Flight Flights} between them).
 
 class AirportsMap < Map
   
-  # Initialize a map of a collection of {Airport}s (showing no {Flight}s between them).
+  # Initialize a map of a collection of {Airport Airports} (showing no {Flight Flights} between them).
   # 
-  # @param airports [Array<Airport>] a collection of {Airport}s
+  # @param airports [Array<Airport>] a collection of {Airport Airports}
   # @param region [Array<String>] the ICAO prefixes to show (e.g. ["K","PH"]).
   #   World map will be shown if region is left blank.
   # @see Map#gcmap_regions

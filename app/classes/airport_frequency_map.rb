@@ -1,14 +1,14 @@
-# Defines a map of a collection of {Airport}s (showing no {Flight}s between
+# Defines a map of a collection of {Airport Airports} (showing no {Flight Flights} between
 # them), surrounded by rings with area proportional to the number of visits
 # to each airport.
 
 class AirportFrequencyMap < Map
   
-  # Initialize a map of a collection of {Airport}s (showing no {Flight}s between
+  # Initialize a map of a collection of {Airport Airports} (showing no {Flight Flights} between
   # them), surrounded by rings with area proportional to the number of visits
   # to each airport.
   # 
-  # @param flights [Array<Flight>] a collection of {Flight}s
+  # @param flights [Array<Flight>] a collection of {Flight Flights}
   # @param region [Array<String>] the ICAO prefixes to show (e.g. ["K","PH"]).
   #   World map will be shown if region is left blank.
   # @see Map#gcmap_regions

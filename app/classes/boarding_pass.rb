@@ -1,5 +1,10 @@
 # Defines a Boarding Pass based on {https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
-# IATA Bar Coded Boarding Pass (BCBP)} data.
+# IATA Bar Coded Boarding Pass (BCBP)} data. Used to parse boarding pass
+# barcode text received by email or entered into a form.
+# @see BoardingPassEmail
+# @see FlightXML
+# @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
+#   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
 
 class BoardingPass
   include ActionView::Helpers::TextHelper
@@ -36,6 +41,8 @@ class BoardingPass
   # standard.
   #
   # @return [Boolean] false if any fields have valid equal to false or nil, true otherwise
+  # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
+  #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
   def is_valid?
     return false if @raw_data.blank?
     return extract_detail(:valid).reduce(:&)
@@ -57,9 +64,15 @@ class BoardingPass
   
   # Returns the most likely flight date given a known UTC Date.
   #
+  # The BCBP standard does not include a year in the barcode data, so we have
+  # to estimate the date by assuming it's probably in the provided date's year,
+  # or the previous or next year.
+  #
   # @param known_date [Date] an initial date (UTC) to base the flight date estimate
   #   on (usually today, unless a better date is known)
   # @return [Date] the most likely date (UTC) this barcode's flight took place
+  # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
+  #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
   def flight_date(known_date)
     candidate_years = *(known_date.year-1..known_date.year+1)
     flight_date = data.dig(:repeated, 0, :mandatory, 46, :raw).to_i
@@ -127,8 +140,19 @@ class BoardingPass
   end
     
   # Return an array of group titles and fields.
+  # 
+  # Groups can be one of the following, from the IATA BCBP standard:
+  # * :um (unique mandatory)
+  # * :rm (repeated mandatory, for specified leg)
+  # * :uc (unique conditional)
+  # * :rc (repeated conditional, for specified leg)
+  # * :ra (repeated airline use, for specified leg)
+  # * :security (unique security)
+  # * :unknown (any fields not recognized)
   #
-  # @return [Array<Hash>] An array of hashes, each containing group titles and fields.
+  # @return [Array<Hash>, nil] An array of hashes, each containing group titles and fields.
+  # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
+  #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
   def ordered_groups
     output = Array.new
     set_group = proc{|title, fields|

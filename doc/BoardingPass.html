@@ -108,13 +108,25 @@
   <div class="discussion">
     
 <p>Defines a Boarding Pass based on
-<a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP)">IATA Bar Coded Boarding Pass (BCBP)</a> data.</p>
+<a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP)">IATA Bar Coded Boarding Pass (BCBP)</a> data. Used to parse boarding pass
+barcode text received by email or entered into a form.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="BoardingPassEmail.html" title="BoardingPassEmail (module)">BoardingPassEmail</a></span></li>
+    
+      <li><span class='object_link'><a href="FlightXML.html" title="FlightXML (module)">FlightXML</a></span></li>
+    
+      <li><a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP) Implementation Guide">IATA Bar Coded Boarding Pass (BCBP) Implementation Guide</a></li>
+    
+  </ul>
 
 </div>
   
@@ -298,7 +310,7 @@ standard.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#ordered_groups-instance_method" title="#ordered_groups (instance method)">#<strong>ordered_groups</strong>  &#x21d2; Array&lt;Hash&gt; </a>
+      <a href="#ordered_groups-instance_method" title="#ordered_groups (instance method)">#<strong>ordered_groups</strong>  &#x21d2; Array&lt;Hash&gt;<sup>?</sup> </a>
     
 
     
@@ -455,11 +467,6 @@ what the BCBP data means</p>
       <pre class="lines">
 
 
-18
-19
-20
-21
-22
 23
 24
 25
@@ -470,10 +477,15 @@ what the BCBP data means</p>
 30
 31
 32
-33</pre>
+33
+34
+35
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 23</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_boarding_pass_data'>boarding_pass_data</span><span class='comma'>,</span> <span class='label'>flight:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>interpretations:</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='ivar'>@raw_data</span> <span class='op'>=</span> <span class='id identifier rubyid_boarding_pass_data'>boarding_pass_data</span>
@@ -547,12 +559,12 @@ what the BCBP data means</p>
       <pre class="lines">
 
 
-54
-55
-56</pre>
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_data'>data</span>
   <span class='kw'>return</span> <span class='ivar'>@structured_data</span>
@@ -627,13 +639,13 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-124
-125
-126
-127</pre>
+137
+138
+139
+140</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 124</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 137</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract_detail'>extract_detail</span><span class='lparen'>(</span><span class='id identifier rubyid_detail'>detail</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
@@ -657,6 +669,10 @@ that it would show up in the boarding pass raw data.</p>
   <div class="discussion">
     
 <p>Returns the most likely flight date given a known UTC Date.</p>
+
+<p>The BCBP standard does not include a year in the barcode data, so we have
+to estimate the date by assuming it&#39;s probably in the provided
+date&#39;s year, or the previous or next year.</p>
 
 
   </div>
@@ -703,23 +719,30 @@ unless a better date is known)</p>
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP) Implementation Guide">IATA Bar Coded Boarding Pass (BCBP) Implementation Guide</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-63
-64
-65
-66
-67
-68
-69
-70</pre>
+76
+77
+78
+79
+80
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flight_date'>flight_date</span><span class='lparen'>(</span><span class='id identifier rubyid_known_date'>known_date</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_candidate_years'>candidate_years</span> <span class='op'>=</span> <span class='op'>*</span><span class='lparen'>(</span><span class='id identifier rubyid_known_date'>known_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='op'>-</span><span class='int'>1</span><span class='op'>..</span><span class='id identifier rubyid_known_date'>known_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='op'>+</span><span class='int'>1</span><span class='rparen'>)</span>
@@ -801,19 +824,6 @@ prepopulate the New Flight or Edit Flight forms.</p>
       <pre class="lines">
 
 
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
 90
 91
 92
@@ -841,10 +851,23 @@ prepopulate the New Flight or Edit Flight forms.</p>
 114
 115
 116
-117</pre>
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_form_values'>form_values</span><span class='lparen'>(</span><span class='id identifier rubyid_departure_utc_time'>departure_utc_time</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -931,19 +954,26 @@ standard.</p>
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP) Implementation Guide">IATA Bar Coded Boarding Pass (BCBP) Implementation Guide</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-39
-40
-41
-42</pre>
+46
+47
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_is_valid?'>is_valid?</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='ivar'>@raw_data</span><span class='period'>.</span><span class='id identifier rubyid_blank?'>blank?</span>
@@ -957,7 +987,7 @@ standard.</p>
       <div class="method_details ">
   <h3 class="signature " id="ordered_groups-instance_method">
   
-    #<strong>ordered_groups</strong>  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
+    #<strong>ordered_groups</strong>  &#x21d2; <tt>Array&lt;Hash&gt;</tt><sup>?</sup> 
   
 
   
@@ -967,6 +997,23 @@ standard.</p>
   <div class="discussion">
     
 <p>Return an array of group titles and fields.</p>
+
+<p>Groups can be one of the following, from the IATA BCBP standard:</p>
+<ul><li>
+<p>:um (unique mandatory)</p>
+</li><li>
+<p>:rm (repeated mandatory, for specified leg)</p>
+</li><li>
+<p>:uc (unique conditional)</p>
+</li><li>
+<p>:rc (repeated conditional, for specified leg)</p>
+</li><li>
+<p>:ra (repeated airline use, for specified leg)</p>
+</li><li>
+<p>:security (unique security)</p>
+</li><li>
+<p>:unknown (any fields not recognized)</p>
+</li></ul>
 
 
   </div>
@@ -979,7 +1026,7 @@ standard.</p>
     <li>
       
       
-        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>)</span>
+        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>, <tt>nil</tt>)</span>
       
       
       
@@ -992,36 +1039,19 @@ standard.</p>
   
 </ul>
 
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP) Implementation Guide">IATA Bar Coded Boarding Pass (BCBP) Implementation Guide</a></li>
+    
+  </ul>
+
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
 156
 157
 158
@@ -1047,10 +1077,34 @@ standard.</p>
 178
 179
 180
-181</pre>
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 132</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 156</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1151,12 +1205,12 @@ standard.</p>
       <pre class="lines">
 
 
-47
-48
-49</pre>
+54
+55
+56</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_raw'>raw</span>
   <span class='kw'>return</span> <span class='ivar'>@raw_data</span>
@@ -1212,19 +1266,19 @@ code</p>
       <pre class="lines">
 
 
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195</pre>
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 186</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 210</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_summary_fields'>summary_fields</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1246,7 +1300,7 @@ code</p>
 </div>
 
       <div id="footer">
-  Generated on Thu May  9 22:18:04 2019 by
+  Generated on Thu May  9 23:00:23 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
