@@ -106,7 +106,18 @@
   
 </div>
 
-<div id="subclasses">
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Provides controller methods for the entire application.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><div id="subclasses">
   <h2>Direct Known Subclasses</h2>
   <p class="children"><span class='object_link'><a href="AdminController.html" title="AdminController (class)">AdminController</a></span>, <span class='object_link'><a href="AircraftFamiliesController.html" title="AircraftFamiliesController (class)">AircraftFamiliesController</a></span>, <span class='object_link'><a href="AirlinesController.html" title="AirlinesController (class)">AirlinesController</a></span>, <span class='object_link'><a href="AirportsController.html" title="AirportsController (class)">AirportsController</a></span>, <span class='object_link'><a href="FlightsController.html" title="FlightsController (class)">FlightsController</a></span>, <span class='object_link'><a href="PagesController.html" title="PagesController (class)">PagesController</a></span>, <span class='object_link'><a href="PkPassesController.html" title="PkPassesController (class)">PkPassesController</a></span>, <span class='object_link'><a href="RoutesController.html" title="RoutesController (class)">RoutesController</a></span>, <span class='object_link'><a href="SessionsController.html" title="SessionsController (class)">SessionsController</a></span>, <span class='object_link'><a href="TripsController.html" title="TripsController (class)">TripsController</a></span>, <span class='object_link'><a href="UsersController.html" title="UsersController (class)">UsersController</a></span></p>
 </div>
@@ -128,7 +139,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#check_email_for_boarding_passes-instance_method" title="#check_email_for_boarding_passes (instance method)">#<strong>check_email_for_boarding_passes</strong>  &#x21d2; Object </a>
+      <a href="#check_email_for_boarding_passes-instance_method" title="#check_email_for_boarding_passes (instance method)">#<strong>check_email_for_boarding_passes</strong>  &#x21d2; nil </a>
     
 
     
@@ -143,7 +154,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Get attachments from boarding pass emails.</p>
+<p>Gets attachments from boarding pass emails.</p>
 </div></span>
   
 </li>
@@ -152,7 +163,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#current_region-instance_method" title="#current_region (instance method)">#<strong>current_region</strong>(default: [])  &#x21d2; Object </a>
+      <a href="#current_region-instance_method" title="#current_region (instance method)">#<strong>current_region</strong>(default: [])  &#x21d2; Array&lt;String&gt; </a>
     
 
     
@@ -167,8 +178,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of region start strings based on the querystring region
-parameter if present, and the default if absent.</p>
+<p>Returns an array of region ICAO code prefixes (e.g. [“K”,“PH”]) based on
+the region parameter in the URL if present, and the default if absent.</p>
 </div></span>
   
 </li>
@@ -177,7 +188,7 @@ parameter if present, and the default if absent.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#flyer-instance_method" title="#flyer (instance method)">#<strong>flyer</strong>  &#x21d2; Object </a>
+      <a href="#flyer-instance_method" title="#flyer (instance method)">#<strong>flyer</strong>  &#x21d2; User </a>
     
 
     
@@ -192,7 +203,7 @@ parameter if present, and the default if absent.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the user whose flights are being viewed.</p>
+<p>Returns the <span class='object_link'><a href="User.html" title="User (class)">User</a></span> whose flights are being viewed.</p>
 </div></span>
   
 </li>
@@ -201,7 +212,7 @@ parameter if present, and the default if absent.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#logged_in_user-instance_method" title="#logged_in_user (instance method)">#<strong>logged_in_user</strong>  &#x21d2; Object </a>
+      <a href="#logged_in_user-instance_method" title="#logged_in_user (instance method)">#<strong>logged_in_user</strong>  &#x21d2; nil </a>
     
 
     
@@ -215,7 +226,9 @@ parameter if present, and the default if absent.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Redirects to the root page unless the user is logged in.</p>
+</div></span>
   
 </li>
 
@@ -244,7 +257,7 @@ parameter if present, and the default if absent.</p>
       <div class="method_details first">
   <h3 class="signature first" id="check_email_for_boarding_passes-instance_method">
   
-    #<strong>check_email_for_boarding_passes</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>check_email_for_boarding_passes</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -253,13 +266,26 @@ parameter if present, and the default if absent.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Get attachments from boarding pass emails</p>
+<p>Gets attachments from boarding pass emails.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -267,16 +293,16 @@ parameter if present, and the default if absent.</p>
       <pre class="lines">
 
 
-33
-34
-35
-36
-37
-38
-39</pre>
+45
+46
+47
+48
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 33</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_check_email_for_boarding_passes'>check_email_for_boarding_passes</span>
   <span class='kw'>begin</span>
@@ -293,7 +319,7 @@ parameter if present, and the default if absent.</p>
       <div class="method_details ">
   <h3 class="signature " id="current_region-instance_method">
   
-    #<strong>current_region</strong>(default: [])  &#x21d2; <tt>Object</tt> 
+    #<strong>current_region</strong>(default: [])  &#x21d2; <tt>Array&lt;String&gt;</tt> 
   
 
   
@@ -302,14 +328,53 @@ parameter if present, and the default if absent.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of region start strings based on the querystring region
-parameter if present, and the default if absent.</p>
+<p>Returns an array of region ICAO code prefixes (e.g. [“K”,“PH”]) based on
+the region parameter in the URL if present, and the default if absent.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>default</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a set of region ICAO code prefixes to use if params does not contain a
+region.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the parameter region if present, otherwise the provided default region</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -317,18 +382,17 @@ parameter if present, and the default if absent.</p>
       <pre class="lines">
 
 
-8
-9
-10
-11
-12
-13
 14
 15
-16</pre>
+16
+17
+18
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_region'>current_region</span><span class='lparen'>(</span><span class='label'>default:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_default'>default</span> <span class='kw'>unless</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:region</span><span class='rbracket'>]</span>
@@ -336,8 +400,7 @@ parameter if present, and the default if absent.</p>
   <span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='period'>.</span><span class='id identifier rubyid_compact!'>compact!</span>
   <span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='period'>.</span><span class='id identifier rubyid_uniq!'>uniq!</span>
   <span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='period'>.</span><span class='id identifier rubyid_map!'>map!</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>^A-Z</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rbrace'>}</span>
-  <span class='comment'>#icao_starts.reject!{|s| s.empty? }
-</span>  <span class='kw'>return</span> <span class='id identifier rubyid_icao_starts'>icao_starts</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_icao_starts'>icao_starts</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -347,7 +410,7 @@ parameter if present, and the default if absent.</p>
       <div class="method_details ">
   <h3 class="signature " id="flyer-instance_method">
   
-    #<strong>flyer</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>flyer</strong>  &#x21d2; <tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt> 
   
 
   
@@ -356,7 +419,7 @@ parameter if present, and the default if absent.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the user whose flights are being viewed. Until multiple user
+<p>Returns the <span class='object_link'><a href="User.html" title="User (class)">User</a></span> whose flights are being viewed. Until multiple user
 functionality is added to Flight Historian, this will simply return the
 first user.</p>
 
@@ -365,6 +428,24 @@ first user.</p>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the <span class='object_link'><a href="User.html" title="User (class)">User</a></span> whose flights are being viewed</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -372,12 +453,12 @@ first user.</p>
       <pre class="lines">
 
 
-21
-22
-23</pre>
+28
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flyer'>flyer</span>
   <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="User.html" title="User (class)">User</a></span></span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -390,26 +471,50 @@ first user.</p>
       <div class="method_details ">
   <h3 class="signature " id="logged_in_user-instance_method">
   
-    #<strong>logged_in_user</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>logged_in_user</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Redirects to the root page unless the user is logged in.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-26
-27
-28
-29
-30</pre>
+36
+37
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_logged_in_user'>logged_in_user</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_logged_in?'>logged_in?</span>
@@ -426,7 +531,7 @@ first user.</p>
 </div>
 
       <div id="footer">
-  Generated on Thu May  9 23:00:25 2019 by
+  Generated on Sat May 18 15:36:47 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
