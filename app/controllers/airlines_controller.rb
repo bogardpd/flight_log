@@ -1,9 +1,11 @@
-# Controls {Airline} pages.
+# Controls {Airline} pages, including {#show_operator operators} and {#show_fleet_number fleet numbers}.
 
 class AirlinesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   
   # Shows a table of all {Airline Airlines} flown.
+  #
+  # @return [nil]
   def index
     @logo_used = true
     @title = "Airlines"
@@ -66,6 +68,8 @@ class AirlinesController < ApplicationController
   # * a table of {AircraftFamily AircraftFamilies}
   # * a table of {FlightsController#show_class classes}
   # * the longest and shortest {Flight}
+  #
+  # @return [nil]
   def show
     @airline = Airline.where(:iata_airline_code => params[:id]).first
     raise ActiveRecord::RecordNotFound if (@airline.nil?)
@@ -123,6 +127,8 @@ class AirlinesController < ApplicationController
   # * a table of {FlightsController#show_class classes}
   # * a table of {#show_fleet_number fleet numbers}
   # * the longest and shortest {Flight}
+  #
+  # @return [nil]
   def show_operator
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     raise ActiveRecord::RecordNotFound if (@operator.nil?)
@@ -179,6 +185,8 @@ class AirlinesController < ApplicationController
   # * a table of {AircraftFamily AircraftFamilies}
   # * a table of {FlightsController#show_class classes}
   # * the longest and shortest {Flight}
+  #
+  # @return [nil]
   def show_fleet_number
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     @fleet_number = params[:fleet_number]
@@ -213,6 +221,8 @@ class AirlinesController < ApplicationController
   # Shows a form to add an {Airline}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def new
     session[:form_location] = nil
     @title = "New Airline"
@@ -224,6 +234,8 @@ class AirlinesController < ApplicationController
   # Creates a new {Airline}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def create
     @airline = Airline.new(airline_params)
     if @airline.save
@@ -251,6 +263,8 @@ class AirlinesController < ApplicationController
   # Shows a form to edit an existing {Airline}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def edit
     session[:form_location] = nil
     @airline = Airline.find(params[:id])
@@ -262,6 +276,8 @@ class AirlinesController < ApplicationController
   # Updates an existing {Airline}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def update
     @airline = Airline.find(params[:id])
     if @airline.update_attributes(airline_params)
@@ -279,6 +295,8 @@ class AirlinesController < ApplicationController
   # Deletes an existing {Airline}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def destroy
     @airline = Airline.find(params[:id])
     if @airline.flights.any?
@@ -294,6 +312,8 @@ class AirlinesController < ApplicationController
   private
   
   # Defines permitted {Airline} parameters.
+  #
+  # @return [ActionController::Parameters]
   def airline_params
     params.require(:airline).permit(:iata_airline_code, :icao_airline_code, :airline_name, :numeric_code, :is_only_operator)
   end

@@ -4,6 +4,8 @@ class AirportsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   
   # Shows a table of all {Airport Airports} visited.
+  #
+  # @return [nil]
   def index
     add_breadcrumb "Airports", airports_path
     add_admin_action view_context.link_to("Add New Airport", new_airport_path)
@@ -72,6 +74,8 @@ class AirportsController < ApplicationController
   # * a table of {AircraftFamily AircraftFamilies}
   # * a table of {FlightsController#show_class classes}
   # * the longest and shortest {Flight}
+  #
+  # @return [nil]
   # @see https://www.pbogard.com/projects/terminal-silhouettes Terminal Silhouettes
   def show
     @logo_used = true
@@ -201,6 +205,8 @@ class AirportsController < ApplicationController
   # Shows a form to add an {Airport}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def new
     session[:form_location] = nil
     @title = "New Airport"
@@ -212,6 +218,8 @@ class AirportsController < ApplicationController
   # Creates a new {Airport}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def create
     @airport = Airport.new(airport_params)
     if @airport.save
@@ -236,6 +244,8 @@ class AirportsController < ApplicationController
   # Shows a form to edit an existing {Airport}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def edit
     session[:form_location] = nil
     @airport = Airport.find(params[:id])
@@ -247,6 +257,8 @@ class AirportsController < ApplicationController
   # Updates an existing {Airport}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def update
     @airport = Airport.find(params[:id])
     if @airport.update_attributes(airport_params)
@@ -257,9 +269,11 @@ class AirportsController < ApplicationController
     end
   end
   
-  # Deletes an existing {Airline}.
+  # Deletes an existing {Airport}.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def destroy
     @flights = Flight.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => params[:id]})
     if @flights.any?
@@ -279,7 +293,9 @@ class AirportsController < ApplicationController
   
   private
   
-  # Defines permitted {Airline} parameters.
+  # Defines permitted {Airport} parameters.
+  #
+  # @return [ActionController::Parameters]
   def airport_params
     params.require(:airport).permit(:city, :iata_code, :icao_code, :country, :latitude, :longitude)
   end

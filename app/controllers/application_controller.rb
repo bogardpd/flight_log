@@ -54,8 +54,8 @@ class ApplicationController < ActionController::Base
 
   # Adds a navigation breadcrumb.
   #
-  # @param [String] the link's text
-  # @param [Rails::Paths::Path] the link's path
+  # @param text [String] the link's text
+  # @param path [Rails::Paths::Path] the link's path
   # @return [nil]
   def add_breadcrumb(text, path)
     @breadcrumbs ||= [["Home", root_path]]

@@ -106,7 +106,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Controls <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> pages.</p>
+<p>Controls <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> pages, including <span class='object_link'><a href="#show_operator-instance_method" title="AirlinesController#show_operator (method)">operators</a></span> and
+<span class='object_link'><a href="#show_fleet_number-instance_method" title="AirlinesController#show_fleet_number (method)">fleet numbers</a></span>.</p>
 
 
   </div>
@@ -132,7 +133,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#create-instance_method" title="#create (instance method)">#<strong>create</strong>  &#x21d2; Object </a>
+      <a href="#create-instance_method" title="#create (instance method)">#<strong>create</strong>  &#x21d2; nil </a>
     
 
     
@@ -156,7 +157,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#destroy-instance_method" title="#destroy (instance method)">#<strong>destroy</strong>  &#x21d2; Object </a>
+      <a href="#destroy-instance_method" title="#destroy (instance method)">#<strong>destroy</strong>  &#x21d2; nil </a>
     
 
     
@@ -180,7 +181,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#edit-instance_method" title="#edit (instance method)">#<strong>edit</strong>  &#x21d2; Object </a>
+      <a href="#edit-instance_method" title="#edit (instance method)">#<strong>edit</strong>  &#x21d2; nil </a>
     
 
     
@@ -204,7 +205,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#index-instance_method" title="#index (instance method)">#<strong>index</strong>  &#x21d2; Object </a>
+      <a href="#index-instance_method" title="#index (instance method)">#<strong>index</strong>  &#x21d2; nil </a>
     
 
     
@@ -228,7 +229,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#new-instance_method" title="#new (instance method)">#<strong>new</strong>  &#x21d2; Object </a>
+      <a href="#new-instance_method" title="#new (instance method)">#<strong>new</strong>  &#x21d2; nil </a>
     
 
     
@@ -252,7 +253,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#show-instance_method" title="#show (instance method)">#<strong>show</strong>  &#x21d2; Object </a>
+      <a href="#show-instance_method" title="#show (instance method)">#<strong>show</strong>  &#x21d2; nil </a>
     
 
     
@@ -277,7 +278,7 @@ flown under its brand.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#show_fleet_number-instance_method" title="#show_fleet_number (instance method)">#<strong>show_fleet_number</strong>  &#x21d2; Object </a>
+      <a href="#show_fleet_number-instance_method" title="#show_fleet_number (instance method)">#<strong>show_fleet_number</strong>  &#x21d2; nil </a>
     
 
     
@@ -302,7 +303,7 @@ flown under its brand.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#show_operator-instance_method" title="#show_operator (instance method)">#<strong>show_operator</strong>  &#x21d2; Object </a>
+      <a href="#show_operator-instance_method" title="#show_operator (instance method)">#<strong>show_operator</strong>  &#x21d2; nil </a>
     
 
     
@@ -328,7 +329,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#update-instance_method" title="#update (instance method)">#<strong>update</strong>  &#x21d2; Object </a>
+      <a href="#update-instance_method" title="#update (instance method)">#<strong>update</strong>  &#x21d2; nil </a>
     
 
     
@@ -384,7 +385,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <div class="method_details first">
   <h3 class="signature first" id="create-instance_method">
   
-    #<strong>create</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>create</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -402,6 +403,19 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -409,18 +423,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
 239
 240
 241
@@ -431,10 +433,22 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 246
 247
 248
-249</pre>
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 227</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 239</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_airline_params'>airline_params</span><span class='rparen'>)</span>
@@ -467,7 +481,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <div class="method_details ">
   <h3 class="signature " id="destroy-instance_method">
   
-    #<strong>destroy</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>destroy</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -485,6 +499,19 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -492,20 +519,20 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-282
-283
-284
-285
-286
-287
-288
-289
-290
-291
-292</pre>
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 282</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 300</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -526,7 +553,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <div class="method_details ">
   <h3 class="signature " id="edit-instance_method">
   
-    #<strong>edit</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>edit</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -544,6 +571,19 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -551,16 +591,16 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-254
-255
-256
-257
-258
-259
-260</pre>
+268
+269
+270
+271
+272
+273
+274</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 254</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 268</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -577,7 +617,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <div class="method_details ">
   <h3 class="signature " id="index-instance_method">
   
-    #<strong>index</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>index</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -593,6 +633,19 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -600,8 +653,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-7
-8
 9
 10
 11
@@ -644,10 +695,12 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 48
 49
 50
-51</pre>
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_index'>index</span>
   <span class='ivar'>@logo_used</span> <span class='op'>=</span> <span class='kw'>true</span>
@@ -702,7 +755,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <div class="method_details ">
   <h3 class="signature " id="new-instance_method">
   
-    #<strong>new</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>new</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -720,6 +773,19 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -727,16 +793,16 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-216
-217
-218
-219
-220
-221
-222</pre>
+226
+227
+228
+229
+230
+231
+232</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 216</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 226</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -753,7 +819,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <div class="method_details ">
   <h3 class="signature " id="show-instance_method">
   
-    #<strong>show</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>show</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -796,6 +862,19 @@ flown under its brand.</p>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -803,10 +882,6 @@ flown under its brand.</p>
       <pre class="lines">
 
 
-69
-70
-71
-72
 73
 74
 75
@@ -840,10 +915,14 @@ flown under its brand.</p>
 103
 104
 105
-106</pre>
+106
+107
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 73</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -891,7 +970,7 @@ flown under its brand.</p>
       <div class="method_details ">
   <h3 class="signature " id="show_fleet_number-instance_method">
   
-    #<strong>show_fleet_number</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>show_fleet_number</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -926,6 +1005,19 @@ flown under its brand.</p>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -933,14 +1025,6 @@ flown under its brand.</p>
       <pre class="lines">
 
 
-182
-183
-184
-185
-186
-187
-188
-189
 190
 191
 192
@@ -962,10 +1046,18 @@ flown under its brand.</p>
 208
 209
 210
-211</pre>
+211
+212
+213
+214
+215
+216
+217
+218
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 182</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 190</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_fleet_number'>show_fleet_number</span>
   <span class='ivar'>@operator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:operator</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -1005,7 +1097,7 @@ flown under its brand.</p>
       <div class="method_details ">
   <h3 class="signature " id="show_operator-instance_method">
   
-    #<strong>show_operator</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>show_operator</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -1051,6 +1143,19 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1058,12 +1163,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-126
-127
-128
-129
-130
-131
 132
 133
 134
@@ -1101,10 +1200,16 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 166
 167
 168
-169</pre>
+169
+170
+171
+172
+173
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 126</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 132</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_operator'>show_operator</span>
   <span class='ivar'>@operator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:operator</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -1158,7 +1263,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <div class="method_details ">
   <h3 class="signature " id="update-instance_method">
   
-    #<strong>update</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>update</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -1176,6 +1281,19 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -1183,22 +1301,22 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-265
-266
-267
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277</pre>
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 265</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 281</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1223,7 +1341,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 
       <div id="footer">
-  Generated on Sat May 18 15:36:47 2019 by
+  Generated on Sun May 19 16:53:36 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

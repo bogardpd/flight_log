@@ -1,7 +1,12 @@
+# Controls {Flight} pages. Also controls pages for {TravelClass classes}, {TailNumber tail numbers}, and {BoardingPass} parsing.
+
 class FlightsController < ApplicationController
   protect_from_forgery except: :show_boarding_pass_json
   before_action :logged_in_user, :only => [:new, :new_flight_menu, :change_trip, :create, :create_iata, :edit, :update, :destroy, :index_emails, :create_iata]
   
+  # Shows a table of all {Flight Flights} flown.
+  #
+  # @return [nil]
   def index
     add_breadcrumb "Flights", flights_path
     @logo_used = true
@@ -35,6 +40,24 @@ class FlightsController < ApplicationController
   
   end
   
+  # Shows details for a particular {Flight}.
+  #
+  # {Flight} details:
+  # * a {SingleFlightMap}
+  # * the flight distance
+  # * the marketing {Airline}, codeshare {Airline}, and {AirlinesController#show_operator operator}
+  # * the flight number
+  # * the {Trip} name and {TripsController#show_section section}
+  # * the departure date
+  # * the origin and destination {Airport Airports}
+  # * the {AircraftFamily} and type
+  # * the {TailNumber tail number}
+  # * the {AirlinesController#show_fleet_number fleet number} and aircraft name
+  # * the {TravelClass travel class}
+  # * any comments
+  # * a table of {BoardingPass} data and interpretations, if the user is a verified user
+  #
+  # @return [nil]
   def show
     @logo_used = true
     @flight = flyer.flights(current_user).find(params[:id])
@@ -65,16 +88,40 @@ class FlightsController < ApplicationController
     redirect_to flights_path
   end
 
+  # Shows a {https://www.topografix.com/gpx.asp GPX}-formatted XML document
+  # representing a map of all flights the user has permission to view.
+  #
+  # @return [nil]
+  # @see https://www.topografix.com/gpx.asp GPX: the GPS Exchange Format
   def show_flight_gpx
     flights = flyer.flights(current_user)
     render xml: FlightsMap.new(flights).gpx
   end
 
+  # Shows a {https://developers.google.com/kml/ KML}-formatted XML document
+  # representing a map of all flights the user has permission to view.
+  #
+  # @return [nil]
+  # @see https://www.topografix.com/gpx.asp Keyhole Markup Language
   def show_flight_kml
     flights = flyer.flights(current_user)
     render xml: FlightsMap.new(flights).kml
   end
-    
+  
+  # Shows data for all {Flight Flights} flown in a particular year or date
+  # range.
+  #
+  # {Flight} data:
+  # * a {FlightsMap}
+  # * a table of {Flight Flights}
+  # * the total distance flown
+  # * a table of {Airport Airports}, highlighting airports first flown during this date range
+  # * a table of {Airline Airlines}, highlighting airlines first flown during this date range
+  # * a table of {AircraftFamily AircraftFamilies}, highlighting families first flown during this date range
+  # * a table of {TravelClass travel classes}, highlighting classes first flown during this date range
+  # * the longest and shortest {Flight}
+  #
+  # @return [nil]
   def show_date_range
     add_breadcrumb "Flights", flights_path
     @logo_used = true
@@ -140,7 +187,10 @@ class FlightsController < ApplicationController
     redirect_to flights_path
     
   end
-    
+  
+  # Shows a table of all {TravelClass travel classes} flown.
+  #
+  # @return [nil]
   def index_classes
     add_breadcrumb "Travel Classes", classes_path
     
@@ -168,6 +218,23 @@ class FlightsController < ApplicationController
     end
   end
   
+  # Shows details for a particular {TravelClass travel class} and data for all
+  # {Flight Flights} flown in that class.
+  #
+  # {TravelClass Travel class} details:
+  # * name
+  # * description
+  #
+  # {Flight} data:
+  # * a {FlightsMap}
+  # * a table of {Flight Flights}
+  # * the total distance flown
+  # * a table of {Airline Airlines}
+  # * a table of {AirlinesController#show_operator operators}
+  # * a table of {AircraftFamily AircraftFamilies}
+  # * the longest and shortest {Flight}
+  #
+  # @return [nil]
   def show_class
     @logo_used = true
     
@@ -196,6 +263,9 @@ class FlightsController < ApplicationController
     redirect_to classes_path
   end
 
+  # Shows a table of all {TailNumber tail numbers} flown.
+  #
+  # @return [nil]
   def index_tails
     add_breadcrumb "Tail Numbers", tails_path
     
@@ -231,6 +301,25 @@ class FlightsController < ApplicationController
       
   end
   
+  # Shows details for a particular {TailNumber tail number} and data for all
+  # {Flight Flights} flown on that tail number.
+  # 
+  # {TailNumber Tail number} details:
+  # * the {AircraftFamily aircraft type}
+  # * the country registering this tail
+  # * a link to {https://flightaware.com/ FlightAware's} live flight tracking for this tail
+  # 
+  # {Flight} data:
+  # * a {FlightsMap}
+  # * a table of {Flight Flights}
+  # * the total distance flown
+  # * a table of {TravelClass travel classes}
+  # * a table of {Airline Airlines}
+  # * a table of {AirlinesController#show_operator operators}
+  # * the longest and shortest {Flight}
+  #
+  # @return [nil]
+  # @see https://flightaware.com/ FlightAware
   def show_tail
     @logo_used = true
     @flights = flyer.flights(current_user).where(tail_number: TailNumber.simplify(params[:tail_number])).includes(:airline, :origin_airport, :destination_airport, :trip)
@@ -259,12 +348,23 @@ class FlightsController < ApplicationController
     redirect_to tails_path
   end
   
+  # Shows a form to enter BCBP-formatted {BoardingPass} data for parsing.
+  #
+  # @return [nil]
+  # @see #build_boarding_pass
+  # @see #show_boarding_pass
   def input_boarding_pass
     @title = "Boarding Pass Parser"
     @meta_description = "A boarding pass barcode parser."
     add_breadcrumb @title, boarding_pass_path
   end
   
+  # Checks whether a boarding pass is present. Redirects to
+  # {#show_boarding_pass} (if present) or {#input_boarding_pass} (if absent).
+  #
+  # @return [nil]
+  # @see #input_boarding_pass
+  # @see #show_boarding_pass
   def build_boarding_pass
     if params[:data].present?
       redirect_to show_boarding_pass_path(params[:data])
@@ -274,6 +374,11 @@ class FlightsController < ApplicationController
     end
   end
   
+  # Shows parsed BCBP-formatted {BoardingPass} data.
+  #
+  # @return [nil]
+  # @see #input_boarding_pass
+  # @see #build_boarding_pass
   def show_boarding_pass
     @title = "Boarding Pass Results"
     @meta_description = "Results from the boarding pass barcode parser."
@@ -291,6 +396,9 @@ class FlightsController < ApplicationController
     
   end
   
+  # Shows a JSON document representing parsed BCBP-formatted {BoardingPass} data.
+  #
+  # @return [nil]
   def show_boarding_pass_json
     boarding_pass = BoardingPass.new(params[:data])
     if params[:callback]
@@ -300,7 +408,19 @@ class FlightsController < ApplicationController
     end
   end
 
-  # Shows a set of forms to allow the user to choose how they will enter their new flight.
+  # Shows a set of forms to allow the user to choose how they will enter their
+  # new flight. Allows the user to provide an Apple Wallet {PKPass}, to provide
+  # IATA BCBP-formatted {BoardingPass} barcode data, to provide an {Airline}
+  # and flight number to look up with {FlightXML}, or to choose to manually
+  # enter all flight data. 
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
+  # @see https://developer.apple.com/documentation/passkit/wallet Wallet | Apple Developer Documentation
+  # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
+  #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
+  # @see https://flightaware.com/commercial/flightxml/documentation2.rvt FlightXML 2.0 Documentation
   def new_flight_menu
     @title = "Create a New Flight"
     add_breadcrumb "Flights", flights_path
@@ -329,11 +449,26 @@ class FlightsController < ApplicationController
         
   end
   
-  # Changes the trip on the new_flight_menu
+  # Changes the {Trip} form field on the {#new_flight_menu}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def change_trip
     redirect_to new_flight_menu_path(trip_id: params[:trip_id])
   end
   
+  # Shows a form to add a {Flight} to a specified {Trip}. This form is
+  # prepopulated with any known {PKPass}, {BoardingPass}, and {FlightXML} data extracted
+  # from information provided in the {#new_flight_menu}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
+  # @see https://developer.apple.com/documentation/passkit/wallet Wallet | Apple Developer Documentation
+  # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
+  #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
+  # @see https://flightaware.com/commercial/flightxml/documentation2.rvt FlightXML 2.0 Documentation
   def new
     add_breadcrumb "Flights", flights_path
     add_breadcrumb "New Flight", new_flight_menu_path
@@ -426,6 +561,11 @@ class FlightsController < ApplicationController
     
   end
   
+  # Creates a new {Flight}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def create
     clear_new_flight_variables
     @flight = Trip.find(params[:flight][:trip_id]).flights.new(flight_params)
@@ -452,6 +592,11 @@ class FlightsController < ApplicationController
     end
   end
   
+  # Shows a form to edit an existing {Flight}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def edit
     @flight = Flight.find(params[:id])
     add_breadcrumb "Flights", flights_path
@@ -460,6 +605,11 @@ class FlightsController < ApplicationController
     @title = "Edit Flight"
   end
   
+  # Updates an existing {Flight}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def update
     @flight = Flight.find(params[:id])
     if @flight.update_attributes(flight_params)
@@ -478,7 +628,12 @@ class FlightsController < ApplicationController
       render "edit"
     end
   end
-    
+  
+  # Deletes an existing {Flight}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def destroy
     flight = Flight.find(params[:id])
     trip = flight.trip
@@ -489,128 +644,152 @@ class FlightsController < ApplicationController
     
   private
     
-    # Clears all session variables associated with creating a new flight.
-    def clear_new_flight_variables
-      session[:new_flight] = Hash.new
-    end
+  # Clears all session variables associated with creating a new flight.
+  #
+  # @return [Hash]
+  def clear_new_flight_variables
+    session[:new_flight] = Hash.new
+  end
+  
+  def flight_params
+    params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
+  end
     
-    def flight_params
-      params.require(:flight).permit(:aircraft_family_id, :aircraft_name, :airline_id, :boarding_pass_data, :codeshare_airline_id, :codeshare_flight_number, :comment, :departure_date, :departure_utc, :destination_airport_id, :fleet_number, :flight_number, :operator_id, :origin_airport_id, :tail_number, :travel_class, :trip_id, :trip_section)
-    end
-      
-    # Uses ICAO or IATA codes in session[:new_flights] to determine
-    # AircraftFamily, Airline, and Airport IDs, returning them in a hash. If
-    # any ICAO or IATA codes are not found, this method redirects to a form
-    # allowing the user to create new AircraftFamilies, Airlines, or Airports
-    # as needed.
-    def get_or_create_ids_from_codes
-      
-      ids = Hash.new
-            
-      # AIRPORTS
-      
-      if session[:new_flight][:origin_airport_id].blank? && (session[:new_flight][:origin_airport_icao] || session[:new_flight][:origin_airport_iata])
-        if session[:new_flight][:origin_airport_icao] && origin_airport = Airport.find_by(icao_code: session[:new_flight][:origin_airport_icao])
-          ids.store(:origin_airport_id, origin_airport.id)
-        elsif session[:new_flight][:origin_airport_iata] && origin_airport = Airport.find_by(iata_code: session[:new_flight][:origin_airport_iata])
-          ids.store(:origin_airport_id, origin_airport.id)
-        else
-          input_new_undefined_airport(session[:new_flight][:origin_airport_iata], session[:new_flight][:origin_airport_icao]) and return nil
-        end
-      end
-      
-      if session[:new_flight][:destination_airport_id].blank? && (session[:new_flight][:destination_airport_icao] || session[:new_flight][:destination_airport_iata])
-        if session[:new_flight][:destination_airport_icao] && destination_airport = Airport.find_by(icao_code: session[:new_flight][:destination_airport_icao])
-          ids.store(:destination_airport_id, destination_airport.id)
-        elsif session[:new_flight][:destination_airport_iata] && destination_airport = Airport.find_by(iata_code: session[:new_flight][:destination_airport_iata])
-          ids.store(:destination_airport_id, destination_airport.id)
-        else
-          input_new_undefined_airport(session[:new_flight][:destination_airport_iata], session[:new_flight][:destination_airport_icao]) and return nil
-        end
-      end
-      
-      # AIRCRAFT FAMILIES
-      
-      if session[:new_flight][:aircraft_family_id].blank? && session[:new_flight][:aircraft_family_icao]
-        if session[:new_flight][:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_aircraft_code: session[:new_flight][:aircraft_family_icao])
-          ids.store(:aircraft_family_id, aircraft_family.id)
-        else
-          input_new_undefined_aircraft_family(session[:new_flight][:aircraft_family_icao]) and return nil
-        end
-      end
-      
-      # AIRLINES
-      
-      if session[:new_flight][:airline_id].blank? && (session[:new_flight][:airline_icao] || session[:new_flight][:airline_iata])
-        if session[:new_flight][:airline_icao] && airline = Airline.find_by(icao_airline_code: session[:new_flight][:airline_icao])
-          ids.store(:airline_id, airline.id)
-        elsif session[:new_flight][:airline_iata] && airline = Airline.find_by(iata_airline_code: session[:new_flight][:airline_iata])
-          ids.store(:airline_id, airline.id)
-        else
-          input_new_undefined_airline(session[:new_flight][:airline_iata], session[:new_flight][:airline_icao]) and return nil
-        end
-      end
-      
-      if session[:new_flight][:operator_id].blank? && session[:new_flight][:operator_icao]
-        if session[:new_flight][:operator_icao] && operator = Airline.find_by(icao_airline_code: session[:new_flight][:operator_icao])
-          ids.store(:operator_id, operator.id)
-        else
-          input_new_undefined_airline(nil, session[:new_flight][:operator_icao]) and return nil
-        end
-      end
-      
-      if session[:new_flight][:codeshare_airline_id].blank? && session[:new_flight][:codeshare_airline_icao] || session[:new_flight][:codeshare_airline_iata]
-        if session[:new_flight][:codeshare_airline_icao] && codeshare_airline = Airline.find_by(icao_airline_code: session[:new_flight][:codeshare_airline_icao])
-          ids.store(:codeshare_airline_id, codeshare_airline.id)
-        elsif session[:new_flight][:codeshare_airline_iata] && codeshare_airline = Airline.find_by(iata_airline_code: session[:new_flight][:codeshare_airline_iata])
-          ids.store(:codeshare_airline_id, codeshare_airline.id)
-        else
-          input_new_undefined_airline(session[:new_flight][:codeshare_airline_iata], nil) and return nil
-        end
-      end
-                        
-      return ids
-      
-    end
+  # Uses ICAO or IATA codes in session[:new_flights] to determine
+  # {AircraftFamily}, {Airline}, and {Airport} IDs, returning them in a hash.
+  # If any ICAO or IATA codes are not found, this method redirects to a form
+  # allowing the user to create new {AircraftFamily AircraftFamilies}, {Airline
+  # Airlines}, or {Airport Airports} as needed.
+  #
+  # @return [Hash] a hash of {AircraftFamily}, {Airline}, and {Airport} IDs
+  def get_or_create_ids_from_codes
     
-    def input_new_undefined_airport(iata, icao)
-      @airport = Airport.new
-      @title = "New Flight - Undefined Airport"
-      add_breadcrumb "Create New Airport", new_flight_path
-      @lookup_fields = {iata_code: iata, icao_code: icao}
-      session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
-      render "new_undefined_airport" and return true
-    end
+    ids = Hash.new
+          
+    # AIRPORTS
     
-    def input_new_undefined_aircraft_family(icao)
-      @aircraft_family = AircraftFamily.new
-      @title = "New Flight - Undefined Aircraft Family"
-      add_breadcrumb "Create New Aircraft Family", new_flight_path
-      @lookup_fields = {icao_code: icao}
-      session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
-      render "new_undefined_aircraft_family" and return true
-    end
-    
-    def input_new_undefined_airline(iata, icao)
-      @airline = Airline.new
-      @title = "New Flight - Undefined Airline"
-      add_breadcrumb "Create New Airline", new_flight_path
-      @lookup_fields = {iata_code: iata, icao_code: icao}
-      session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
-      render "new_undefined_airline" and return true
-    end
-    
-    def set_flight_xml_data(fa_flight_id)
-      flightxml_data = FlightXML.form_values(fa_flight_id)
-      if flightxml_data
-        session[:new_flight].merge!(flightxml_data.reject{ |k,v| v.nil? })
+    if session[:new_flight][:origin_airport_id].blank? && (session[:new_flight][:origin_airport_icao] || session[:new_flight][:origin_airport_iata])
+      if session[:new_flight][:origin_airport_icao] && origin_airport = Airport.find_by(icao_code: session[:new_flight][:origin_airport_icao])
+        ids.store(:origin_airport_id, origin_airport.id)
+      elsif session[:new_flight][:origin_airport_iata] && origin_airport = Airport.find_by(iata_code: session[:new_flight][:origin_airport_iata])
+        ids.store(:origin_airport_id, origin_airport.id)
       else
-        if session[:new_flight][:ident] && session[:new_flight][:departure_utc]
-          session[:new_flight][:warnings].push(FlightXML::ERROR + " (Searched for #{session[:new_flight][:ident]} / #{session[:new_flight][:departure_utc].strftime("%-d %b %Y %R")} UTC)")
-        else
-          session[:new_flight][:warnings].push(FlightXML::ERROR)
-        end
+        input_new_undefined_airport(session[:new_flight][:origin_airport_iata], session[:new_flight][:origin_airport_icao]) and return nil
       end
     end
     
+    if session[:new_flight][:destination_airport_id].blank? && (session[:new_flight][:destination_airport_icao] || session[:new_flight][:destination_airport_iata])
+      if session[:new_flight][:destination_airport_icao] && destination_airport = Airport.find_by(icao_code: session[:new_flight][:destination_airport_icao])
+        ids.store(:destination_airport_id, destination_airport.id)
+      elsif session[:new_flight][:destination_airport_iata] && destination_airport = Airport.find_by(iata_code: session[:new_flight][:destination_airport_iata])
+        ids.store(:destination_airport_id, destination_airport.id)
+      else
+        input_new_undefined_airport(session[:new_flight][:destination_airport_iata], session[:new_flight][:destination_airport_icao]) and return nil
+      end
+    end
+    
+    # AIRCRAFT FAMILIES
+    
+    if session[:new_flight][:aircraft_family_id].blank? && session[:new_flight][:aircraft_family_icao]
+      if session[:new_flight][:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_aircraft_code: session[:new_flight][:aircraft_family_icao])
+        ids.store(:aircraft_family_id, aircraft_family.id)
+      else
+        input_new_undefined_aircraft_family(session[:new_flight][:aircraft_family_icao]) and return nil
+      end
+    end
+    
+    # AIRLINES
+    
+    if session[:new_flight][:airline_id].blank? && (session[:new_flight][:airline_icao] || session[:new_flight][:airline_iata])
+      if session[:new_flight][:airline_icao] && airline = Airline.find_by(icao_airline_code: session[:new_flight][:airline_icao])
+        ids.store(:airline_id, airline.id)
+      elsif session[:new_flight][:airline_iata] && airline = Airline.find_by(iata_airline_code: session[:new_flight][:airline_iata])
+        ids.store(:airline_id, airline.id)
+      else
+        input_new_undefined_airline(session[:new_flight][:airline_iata], session[:new_flight][:airline_icao]) and return nil
+      end
+    end
+    
+    if session[:new_flight][:operator_id].blank? && session[:new_flight][:operator_icao]
+      if session[:new_flight][:operator_icao] && operator = Airline.find_by(icao_airline_code: session[:new_flight][:operator_icao])
+        ids.store(:operator_id, operator.id)
+      else
+        input_new_undefined_airline(nil, session[:new_flight][:operator_icao]) and return nil
+      end
+    end
+    
+    if session[:new_flight][:codeshare_airline_id].blank? && session[:new_flight][:codeshare_airline_icao] || session[:new_flight][:codeshare_airline_iata]
+      if session[:new_flight][:codeshare_airline_icao] && codeshare_airline = Airline.find_by(icao_airline_code: session[:new_flight][:codeshare_airline_icao])
+        ids.store(:codeshare_airline_id, codeshare_airline.id)
+      elsif session[:new_flight][:codeshare_airline_iata] && codeshare_airline = Airline.find_by(iata_airline_code: session[:new_flight][:codeshare_airline_iata])
+        ids.store(:codeshare_airline_id, codeshare_airline.id)
+      else
+        input_new_undefined_airline(session[:new_flight][:codeshare_airline_iata], nil) and return nil
+      end
+    end
+                      
+    return ids
+    
+  end
+  
+  # Shows a form to create a new {Airport} from an unrecognized IATA or ICAO
+  # airport code in {PKPass}, {BoardingPass}, or {FlightXML} data.
+  #
+  # @param iata [String] an IATA airport code
+  # @param icao [String] an ICAO airport code
+  # @return [nil]
+  def input_new_undefined_airport(iata, icao)
+    @airport = Airport.new
+    @title = "New Flight - Undefined Airport"
+    add_breadcrumb "Create New Airport", new_flight_path
+    @lookup_fields = {iata_code: iata, icao_code: icao}
+    session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
+    render "new_undefined_airport" and return true
+  end
+  
+  # Shows a form to create a new {AircraftFamily} from an unrecognized ICAO
+  # aircraft type code in {PKPass}, {BoardingPass}, or {FlightXML} data.
+  #
+  # @param icao [String] an ICAO aircraft type code
+  # @return [nil]
+  def input_new_undefined_aircraft_family(icao)
+    @aircraft_family = AircraftFamily.new
+    @title = "New Flight - Undefined Aircraft Family"
+    add_breadcrumb "Create New Aircraft Family", new_flight_path
+    @lookup_fields = {icao_code: icao}
+    session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
+    render "new_undefined_aircraft_family" and return true
+  end
+  
+  # Shows a form to create a new {Airline} from an unrecognized IATA or ICAO
+  # airline code in {PKPass}, {BoardingPass}, or {FlightXML} data.
+  #
+  # @param iata [String] an IATA airline code
+  # @param icao [String] an ICAO airline code
+  # @return [nil]
+  def input_new_undefined_airline(iata, icao)
+    @airline = Airline.new
+    @title = "New Flight - Undefined Airline"
+    add_breadcrumb "Create New Airline", new_flight_path
+    @lookup_fields = {iata_code: iata, icao_code: icao}
+    session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
+    render "new_undefined_airline" and return true
+  end
+  
+  # Add non-blank {FlightXML} data to the {#new} {Flight} form prepopulated data hash.
+  # 
+  # @return [Hash]
+  def set_flight_xml_data(fa_flight_id)
+    flightxml_data = FlightXML.form_values(fa_flight_id)
+    if flightxml_data
+      session[:new_flight].merge!(flightxml_data.reject{ |k,v| v.nil? })
+    else
+      if session[:new_flight][:ident] && session[:new_flight][:departure_utc]
+        session[:new_flight][:warnings].push(FlightXML::ERROR + " (Searched for #{session[:new_flight][:ident]} / #{session[:new_flight][:departure_utc].strftime("%-d %b %Y %R")} UTC)")
+      else
+        session[:new_flight][:warnings].push(FlightXML::ERROR)
+      end
+    end
+  end
+  
 end

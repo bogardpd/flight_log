@@ -4,6 +4,8 @@ class AircraftFamiliesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   
   # Shows a table of all {AircraftFamily AircraftFamilies} flown.
+  #
+  # @return [nil]
   def index
     @title = "Aircraft"
     @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often heʼs flown on each."
@@ -52,6 +54,8 @@ class AircraftFamiliesController < ApplicationController
   # * a table of {AirlinesController#show_operator operators}
   # * a table of {FlightsController#show_class classes}
   # * the longest and shortest {Flight}
+  #
+  # @return [nil]
   # @see http://www.norebbo.com/ Norebbo Stock Illustration and Design
   def show
     @aircraft_family = AircraftFamily.find(params[:id])
@@ -105,6 +109,8 @@ class AircraftFamiliesController < ApplicationController
   # a child aircraft type).
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def new
     session[:form_location] = nil
     add_breadcrumb "Aircraft Families", aircraft_families_path
@@ -130,6 +136,8 @@ class AircraftFamiliesController < ApplicationController
   # aircraft type).
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def create
     @aircraft_family = AircraftFamily.new(aircraft_family_params)
     if @aircraft_family.save
@@ -154,6 +162,8 @@ class AircraftFamiliesController < ApplicationController
   # family or a child aircraft type).
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def edit
     session[:form_location] = nil
     @aircraft_family = AircraftFamily.find(params[:id])
@@ -166,6 +176,8 @@ class AircraftFamiliesController < ApplicationController
   # child aircraft type).
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def update
     @aircraft_family = AircraftFamily.find(params[:id])
     if @aircraft_family.update_attributes(aircraft_family_params)
@@ -180,6 +192,8 @@ class AircraftFamiliesController < ApplicationController
   # child aircraft type).
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def destroy
     @aircraft_family = AircraftFamily.find(params[:id])
     if @aircraft_family.flights.any?
@@ -195,6 +209,8 @@ class AircraftFamiliesController < ApplicationController
   private
   
   # Defines permitted {AircraftFamily} parameters.
+  #
+  # @return [ActionController::Parameters]
   def aircraft_family_params
     params.require(:aircraft_family).permit(:family_name, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :category, :parent_id)
   end

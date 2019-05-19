@@ -6,6 +6,8 @@ class AdminController < ApplicationController
   # Shows the administrative main menu.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def admin
     add_breadcrumb "Admin", admin_path
   end
@@ -14,6 +16,8 @@ class AdminController < ApplicationController
   # for each calendar year.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def annual_flight_summary
     add_breadcrumb "Admin", admin_path
     add_breadcrumb "Annual Flight Summary", annual_flight_summary_path
@@ -25,6 +29,8 @@ class AdminController < ApplicationController
   # data.
   #
   # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def boarding_pass_validator
     add_breadcrumb "Admin", admin_path
     add_breadcrumb "Boarding Pass Validator", boarding_pass_validator_path
