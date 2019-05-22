@@ -82,7 +82,7 @@ class TripsController < ApplicationController
     
     @flights = Flight.where(trip_id: @trip, trip_section: params[:section]).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
     @section_distance = Route.total_distance(@flights)
-    if @flights.any?
+    if @section_distance && @flights.any?
       stops = [@flights.first.origin_airport,@flights.last.destination_airport]
       if @flights.count > 1 && stops.first != stops.last
         @layover_ratio = (@section_distance.to_f/Route.distance_by_airport(*stops).to_f).round(3)

@@ -31,10 +31,10 @@ class Route < ApplicationRecord
     else
       coordinates_1 = airport_1.coordinates
       coordinates_2 = airport_2.coordinates
-      return false unless coordinates_1.present? && coordinates_2.present?
+      return nil unless coordinates_1.present? && coordinates_2.present?
       
       distance = distance_by_coordinates(coordinates_1, coordinates_2)
-      return false unless distance.present?
+      return nil unless distance.present?
       
       # Try to save new route:
       new_route = Route.new

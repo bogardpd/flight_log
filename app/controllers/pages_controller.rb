@@ -1,9 +1,15 @@
-# encoding: UTF-8
-
+# Controls pages which don't fall under a specific model.
 class PagesController < ApplicationController
 
+  # Shows the front page for Flight Historian, including summaries of all {Flight Flights}.
+  #
+  # Includes:
+  # * a {FlightsMap}
+  # * the top 5 {Airport Airports}, {Airline Airlines}, {Route Routes}, {AircraftFamily AircraftFamilies}, and {TailNumber TailNumbers}
+  # * the longest and shortest {Flight}
+  #
+  # @return [nil]
   def flightlog
-    # Flight Log Index
     @meta_description = "Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history."
     @logo_used = true
     @region = current_region(default: [])
@@ -33,10 +39,27 @@ class PagesController < ApplicationController
 
   end
   
+  # Responds to a Let's Encrypt query. Used to renew SSL certificates.
+  #
+  # @return [nil]
+  # @see https://letsencrypt.org Let's Encrypt
   def letsencrypt
     render text: ENV["LETS_ENCRYPT_KEY"]
   end
   
+  # Takes a {http://www.gcmap.com/ Great Circle Mapper} map
+  # image and serves it from the Flight Historian server. This is needed
+  # because the Great Circle Mapper is HTTP only while Flight Historian is
+  # HTTPS, and browsers will give certificate errors if an HTTP image is
+  # embedded in an HTTPS page.
+  # 
+  # In order to prevent other sites from using this proxy, this method will
+  # only render an image if the parameters include a valid checksum generated
+  # by {Map.hash_image_query}, and will otherwise return a Not Found error.
+  #
+  # @return [nil]
+  # @see Map.hash_image_query
+  # @see http://www.gcmap.com/ Great Circle Mapper
   def gcmap_image_proxy
     require "open-uri"
     

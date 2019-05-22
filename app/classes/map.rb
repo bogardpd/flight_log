@@ -130,7 +130,8 @@ class Map
     return output
   end
   
-  # Creates a hash of a map query based on a secret key.
+  # Creates a hash of a map query based on a secret key in the environment
+  # variables.
   # 
   # @param query [String] the query to hash
   # @return [String] a hash of the query
