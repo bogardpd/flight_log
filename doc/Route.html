@@ -349,10 +349,10 @@ This calls an SQL query, and should not be used in a loop.</p>
   <span class='kw'>else</span>
     <span class='id identifier rubyid_coordinates_1'>coordinates_1</span> <span class='op'>=</span> <span class='id identifier rubyid_airport_1'>airport_1</span><span class='period'>.</span><span class='id identifier rubyid_coordinates'>coordinates</span>
     <span class='id identifier rubyid_coordinates_2'>coordinates_2</span> <span class='op'>=</span> <span class='id identifier rubyid_airport_2'>airport_2</span><span class='period'>.</span><span class='id identifier rubyid_coordinates'>coordinates</span>
-    <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id identifier rubyid_coordinates_1'>coordinates_1</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_coordinates_2'>coordinates_2</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+    <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_coordinates_1'>coordinates_1</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_coordinates_2'>coordinates_2</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
     
     <span class='id identifier rubyid_distance'>distance</span> <span class='op'>=</span> <span class='id identifier rubyid_distance_by_coordinates'>distance_by_coordinates</span><span class='lparen'>(</span><span class='id identifier rubyid_coordinates_1'>coordinates_1</span><span class='comma'>,</span> <span class='id identifier rubyid_coordinates_2'>coordinates_2</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id identifier rubyid_distance'>distance</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+    <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_distance'>distance</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
     
     <span class='comment'># Try to save new route:
 </span>    <span class='id identifier rubyid_new_route'>new_route</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -629,7 +629,7 @@ not had a distance defined have a value of -1 (to allow sorting).</p>
 </div>
 
       <div id="footer">
-  Generated on Tue May 21 18:12:23 2019 by
+  Generated on Tue May 21 20:25:50 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
