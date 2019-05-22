@@ -106,8 +106,8 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Controls <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> pages, including <span class='object_link'><a href="#show_operator-instance_method" title="AirlinesController#show_operator (method)">operators</a></span> and
-<span class='object_link'><a href="#show_fleet_number-instance_method" title="AirlinesController#show_fleet_number (method)">fleet numbers</a></span>.</p>
+<p>Controls <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> pages and actions, including <span class='object_link'><a href="#show_operator-instance_method" title="AirlinesController#show_operator (method)">operators</a></span>
+and <span class='object_link'><a href="#show_fleet_number-instance_method" title="AirlinesController#show_fleet_number (method)">fleet numbers</a></span>.</p>
 
 
   </div>
@@ -423,7 +423,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-239
 240
 241
 242
@@ -445,10 +444,11 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 258
 259
 260
-261</pre>
+261
+262</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 239</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 240</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_airline_params'>airline_params</span><span class='rparen'>)</span>
@@ -519,7 +519,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-300
 301
 302
 303
@@ -529,10 +528,11 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 307
 308
 309
-310</pre>
+310
+311</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 300</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 301</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -591,16 +591,16 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-268
 269
 270
 271
 272
 273
-274</pre>
+274
+275</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 268</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 269</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -653,7 +653,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-9
 10
 11
 12
@@ -697,10 +696,11 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 50
 51
 52
-53</pre>
+53
+54</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_index'>index</span>
   <span class='ivar'>@logo_used</span> <span class='op'>=</span> <span class='kw'>true</span>
@@ -793,16 +793,16 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-226
 227
 228
 229
 230
 231
-232</pre>
+232
+233</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 226</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 227</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -882,7 +882,6 @@ flown under its brand.</p>
       <pre class="lines">
 
 
-73
 74
 75
 76
@@ -919,10 +918,11 @@ flown under its brand.</p>
 107
 108
 109
-110</pre>
+110
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 74</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -1025,7 +1025,6 @@ flown under its brand.</p>
       <pre class="lines">
 
 
-190
 191
 192
 193
@@ -1054,10 +1053,11 @@ flown under its brand.</p>
 216
 217
 218
-219</pre>
+219
+220</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 190</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 191</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_fleet_number'>show_fleet_number</span>
   <span class='ivar'>@operator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:operator</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -1163,7 +1163,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-132
 133
 134
 135
@@ -1206,10 +1205,11 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 172
 173
 174
-175</pre>
+175
+176</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 132</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_operator'>show_operator</span>
   <span class='ivar'>@operator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:operator</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -1301,7 +1301,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-281
 282
 283
 284
@@ -1313,10 +1312,11 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 290
 291
 292
-293</pre>
+293
+294</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 281</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 282</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1341,7 +1341,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 
       <div id="footer">
-  Generated on Tue May 21 21:18:58 2019 by
+  Generated on Tue May 21 21:28:42 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

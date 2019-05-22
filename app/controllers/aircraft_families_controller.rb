@@ -1,4 +1,4 @@
-# Controls {AircraftFamily} pages.
+# Controls {AircraftFamily} pages and actions.
 
 class AircraftFamiliesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]

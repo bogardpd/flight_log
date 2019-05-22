@@ -1,4 +1,5 @@
-# Controls {Airline} pages, including {#show_operator operators} and {#show_fleet_number fleet numbers}.
+# Controls {Airline} pages and actions, including {#show_operator operators}
+# and {#show_fleet_number fleet numbers}.
 
 class AirlinesController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]

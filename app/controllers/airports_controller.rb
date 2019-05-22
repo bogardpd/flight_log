@@ -1,4 +1,4 @@
-# Controls {Airport} pages.
+# Controls {Airport} pages and actions.
 
 class AirportsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]

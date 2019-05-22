@@ -1,4 +1,4 @@
-# Controls {Route} pages.
+# Controls {Route} pages and actions.
 #
 # Note that this specifically refers to flight routes, and not routes in the
 # Ruby on Rails routing sense.

@@ -1,4 +1,5 @@
-# Controls {Flight} pages. Also controls pages for {TravelClass classes}, {TailNumber tail numbers}, and {BoardingPass} parsing.
+# Controls {Flight} pages and actions. Also controls pages for {TravelClass
+# classes}, {TailNumber tail numbers}, and {BoardingPass} parsing.
 
 class FlightsController < ApplicationController
   protect_from_forgery except: :show_boarding_pass_json
