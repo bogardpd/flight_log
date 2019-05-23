@@ -1,6 +1,10 @@
+# Controls {Trip} pages and actions, including {#show_section trip sections}.
 class TripsController < ApplicationController
   before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
   
+  # Shows a table of all {Trip Trips} flown.
+  #
+  # @return [nil]
   def index
     add_breadcrumb "Trips", trips_path
     add_admin_action view_context.link_to("Add New Trip", new_trip_path)
@@ -21,7 +25,17 @@ class TripsController < ApplicationController
     end
   end
 
-  
+  # Shows details for a particular {Trip} and its {Flight Flights}.
+  # 
+  # {Trip} details:
+  # * comments
+  # 
+  # {Flight} data:
+  # * a {FlightsMap}
+  # * a table of {Flight Flights}, separated by {#show_section trip section}
+  # * the total distance flown
+  #
+  # @return [nil]
   def show
     @logo_used = true
     @trip = Trip.find(params[:id])
@@ -71,7 +85,26 @@ class TripsController < ApplicationController
     redirect_to trips_path
   end
   
-  
+  # Shows flight data for a particular section of a {Trip}.
+  #
+  # Trip sections are used to distinguish between layovers and multiple visits
+  # to a given airport within a given {Trip}, in the situation where two
+  # flights are chronologically consecutive and the destination {Airport} of
+  # the first flight is the same as the origin of the second. If these two
+  # flights share the same {Trip} and trip section, then the time between the
+  # two flights is a layover and only counts as one visit to shared {Airport}.
+  # Otherwise, the traveler left the airport in between the flights, and it
+  # counts as two visits to the shared {Airport}.
+  # 
+  # {Flight} data:
+  # * a {FlightsMap}
+  # * a table of {Flight Flights}
+  # * the total distance flown
+  # * the layover ratio (the total distance flown divided by the distance
+  #   between the first origin and final destination {Airport Airports}), if
+  #   this section has more than one flight.
+  #
+  # @return [nil]
   def show_section
     @logo_used = true
     @trip = Trip.find(params[:trip])
@@ -102,7 +135,11 @@ class TripsController < ApplicationController
     redirect_to trips_path
   end
   
-    
+  # Shows a form to add a {Trip}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def new
     @title = "New Trip"
     add_breadcrumb "Trips", trips_path
@@ -110,7 +147,11 @@ class TripsController < ApplicationController
     @trip = Trip.new(:hidden => true)
   end
   
-  
+  # Creates a new {Trip}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def create
     @trip = current_user.trips.new(trip_params)
     if @trip.save
@@ -121,7 +162,11 @@ class TripsController < ApplicationController
     end
   end
   
-  
+  # Shows a form to edit an existing {Trip}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def edit
     @trip = Trip.find(params[:id])
     add_breadcrumb "Trips", trips_path
@@ -129,7 +174,11 @@ class TripsController < ApplicationController
     add_breadcrumb "Edit Trip", edit_trip_path(@trip)
   end
   
-  
+  # Updates an existing {Trip}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def update
     @trip = Trip.find(params[:id])
     if @trip.update_attributes(trip_params)
@@ -140,7 +189,11 @@ class TripsController < ApplicationController
     end
   end
   
-  
+  # Deletes an existing {Trip}.
+  #
+  # This action can only be performed by a verified user.
+  #
+  # @return [nil]
   def destroy
     @flights = Flight.where("trip_id = :trip_id", {:trip_id => params[:id]})
     if @flights.any?
@@ -153,11 +206,13 @@ class TripsController < ApplicationController
     end
   end
   
-  
   private
   
-    def trip_params
-      params.require(:trip).permit(:comment, :hidden, :name, :purpose)
-    end
+  # Defines permitted {Airline} parameters.
+  #
+  # @return [ActionController::Parameters]
+  def trip_params
+    params.require(:trip).permit(:comment, :hidden, :name, :purpose)
+  end
     
 end
