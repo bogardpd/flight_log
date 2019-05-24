@@ -88,7 +88,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Defines helper methods dealing with managing the login status of <span class='object_link'><a href="User.html" title="User (class)">Users</a></span>.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -106,7 +117,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#current_user-instance_method" title="#current_user (instance method)">#<strong>current_user</strong>  &#x21d2; Object </a>
+      <a href="#current_user-instance_method" title="#current_user (instance method)">#<strong>current_user</strong>  &#x21d2; User<sup>?</sup> </a>
     
 
     
@@ -120,7 +131,10 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the current logged-in <span class='object_link'><a href="User.html" title="User (class)">User</a></span>, or nil if the current visitor is not
+a logged-in <span class='object_link'><a href="User.html" title="User (class)">User</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -128,7 +142,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#current_user=-instance_method" title="#current_user= (instance method)">#<strong>current_user=</strong>(user)  &#x21d2; Object </a>
+      <a href="#current_user=-instance_method" title="#current_user= (instance method)">#<strong>current_user=</strong>(user)  &#x21d2; User </a>
     
 
     
@@ -142,7 +156,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Sets the current logged-in <span class='object_link'><a href="User.html" title="User (class)">User</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -150,7 +166,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#log_in-instance_method" title="#log_in (instance method)">#<strong>log_in</strong>(user)  &#x21d2; Object </a>
+      <a href="#log_in-instance_method" title="#log_in (instance method)">#<strong>log_in</strong>(user)  &#x21d2; User </a>
     
 
     
@@ -164,7 +180,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Creates a new session by logging a <span class='object_link'><a href="User.html" title="User (class)">User</a></span> in.</p>
+</div></span>
   
 </li>
 
@@ -172,7 +190,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#log_out-instance_method" title="#log_out (instance method)">#<strong>log_out</strong>  &#x21d2; Object </a>
+      <a href="#log_out-instance_method" title="#log_out (instance method)">#<strong>log_out</strong>  &#x21d2; nil </a>
     
 
     
@@ -186,7 +204,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Ends a session by logging the current <span class='object_link'><a href="User.html" title="User (class)">User</a></span> out.</p>
+</div></span>
   
 </li>
 
@@ -208,7 +228,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Determines whether the current site visitor is a logged-in <span class='object_link'><a href="User.html" title="User (class)">User</a></span>.</p>
+</div></span>
   
 </li>
 
@@ -225,25 +247,55 @@
       <div class="method_details first">
   <h3 class="signature first" id="current_user-instance_method">
   
-    #<strong>current_user</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>current_user</strong>  &#x21d2; <tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt><sup>?</sup> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the current logged-in <span class='object_link'><a href="User.html" title="User (class)">User</a></span>, or nil if the current visitor is not
+a logged-in <span class='object_link'><a href="User.html" title="User (class)">User</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the current logged-in user</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-16
-17
-18
-19</pre>
+32
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_user'>current_user</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_cookies'>cookies</span><span class='lbracket'>[</span><span class='symbol'>:remember_token</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -257,24 +309,73 @@
       <div class="method_details ">
   <h3 class="signature " id="current_user=-instance_method">
   
-    #<strong>current_user=</strong>(user)  &#x21d2; <tt>Object</tt> 
+    #<strong>current_user=</strong>(user)  &#x21d2; <tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sets the current logged-in <span class='object_link'><a href="User.html" title="User (class)">User</a></span>.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the user to set the current user to</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the user that was set</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-12
-13
-14</pre>
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 12</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_current_user='>current_user=</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
   <span class='ivar'>@current_user</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span>
@@ -287,25 +388,74 @@
       <div class="method_details ">
   <h3 class="signature " id="log_in-instance_method">
   
-    #<strong>log_in</strong>(user)  &#x21d2; <tt>Object</tt> 
+    #<strong>log_in</strong>(user)  &#x21d2; <tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Creates a new session by logging a <span class='object_link'><a href="User.html" title="User (class)">User</a></span> in.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the user to log in</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="User.html" title="User (class)">User</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the user that was logged in</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-3
-4
-5
-6</pre>
+8
+9
+10
+11</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 3</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_log_in'>log_in</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_cookies'>cookies</span><span class='period'>.</span><span class='id identifier rubyid_permanent'>permanent</span><span class='lbracket'>[</span><span class='symbol'>:remember_token</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_remember_token'>remember_token</span>
@@ -319,25 +469,49 @@
       <div class="method_details ">
   <h3 class="signature " id="log_out-instance_method">
   
-    #<strong>log_out</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>log_out</strong>  &#x21d2; <tt>nil</tt> 
   
 
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Ends a session by logging the current <span class='object_link'><a href="User.html" title="User (class)">User</a></span> out.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-21
-22
-23
-24</pre>
+40
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_log_out'>log_out</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_current_user'>current_user</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -360,6 +534,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
+<p>Determines whether the current site visitor is a logged-in <span class='object_link'><a href="User.html" title="User (class)">User</a></span>.</p>
+
 
   </div>
 </div>
@@ -375,6 +551,11 @@
       
       
       
+        &mdash;
+        <div class='inline'>
+<p>whether or not the current site visitor is a logged-in user</p>
+</div>
+      
     </li>
   
 </ul>
@@ -385,12 +566,12 @@
       <pre class="lines">
 
 
-8
-9
-10</pre>
+16
+17
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/sessions_helper.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_logged_in?'>logged_in?</span>
   <span class='op'>!</span><span class='id identifier rubyid_current_user'>current_user</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -405,7 +586,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu May 23 20:42:00 2019 by
+  Generated on Thu May 23 20:52:30 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
