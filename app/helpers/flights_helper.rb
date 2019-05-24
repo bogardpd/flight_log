@@ -1,6 +1,16 @@
+# Defines helper methods for {Flight} views.
 module FlightsHelper
   
-  # Accepts a type and returns an icon
+  # Accepts an icon type and a raw BCBP value, and returns an image_tag for an
+  # icon. Used to augment BCBP interpretations in a {BoardingPass} table, such
+  # as on {FlightsController#show} or {FlightsController#show_boarding_pass}.
+  #
+  # @param type [:airline, :selectee] whether this icon should be for an
+  #   airline logo, or for TSA PreCheck selectee status
+  # @return [ActiveSupport::SafeBuffer, nil] an image tag for the appropriate
+  #   icon
+  # 
+  # @see BoardingPass
   def display_icon(type, raw, interpretation=nil)
     return nil unless raw && type
     if type == :airline
@@ -17,6 +27,16 @@ module FlightsHelper
     return nil
   end
   
+  # Renders a radio button. Used to select between old or new values when
+  # updating an existing {Flight} with a new {BoardingPass}.
+  #
+  # @param label [String] the name of the field for which data is being chosen,
+  #   along with "current" or "updated" as appropriate
+  # @param text_hash [Hash{Symbol => String}] a hash of any :code_block, :code,
+  #   and :text associated with this field of the boarding pass
+  # @return [ActiveSupport::SafeBuffer] HTML for a radio button and label
+  # 
+  # @see BoardingPass
   def format_radio_text(label, text_hash)
     label = %Q(<span class="label">#{label}</span>)
     if text_hash.nil?
@@ -31,7 +51,15 @@ module FlightsHelper
     return [label, text].join("<br/>")
   end
 
-  # Accepts a number 1-5 and returns a star rating
+  # Renders a star rating image based on a number between 0 and 5, inclusive.
+  # Used for visually depicting the quality of different {TravelClass
+  # TravelClasses}.
+  # 
+  # @param quality [Integer] A number of stars rating (0 through 5, inclusive)
+  # @param inline [:left, :right, :both, :nil] Defines whether the image is
+  #   inline to the left of text, to the right of text, in between text, or not
+  #   inline. Used to determine margin styles.
+  # @return [ActiveSupport::SafeBuffer] an image_tag for a star rating
   def quality_stars(quality, inline: nil)
     quality = quality.to_i
     quality = 0 if quality < 0
