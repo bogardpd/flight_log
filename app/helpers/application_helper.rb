@@ -1,5 +1,10 @@
+# Defines helper methods for the entire application.
 module ApplicationHelper
   
+  # Returns a title defined in a view's \@title variable, or a default title if
+  # \@title is nil.
+  #
+  # @return [String] a page title
   def title_flight_log
     base_title = "Paul Bogardʼs Flight Historian"
     if @title.nil?
@@ -9,6 +14,10 @@ module ApplicationHelper
     end
   end  
   
+  # Returns a description <meta> tag with content provided by a view's
+  # \@meta_description variable, or a blank string if \@meta_description is nil.
+  #
+  # @return [ActiveSupport::SafeBuffer, String] HTML for a <meta> tag
   def meta_description
     if @meta_description.nil?
       ""
@@ -17,18 +26,46 @@ module ApplicationHelper
     end
   end
   
-  def format_airport_name(airport_name)
-    return airport_name.gsub(" (", %Q(&ensp;<small class="airport-name">)).gsub(")", "</small>").html_safe
+  # Formats the airport name portion of an city name. Anything contained
+  # between a pair of parentheses is considered the airport name. Not all
+  # cities will have airport names; airport names are only used for
+  # disambiguation when a city has multiple airports.
+  # 
+  # @param city_airport_name [String] a city name which may or may not contain
+  #   an airport name.
+  # @return [ActiveSupport::SafeBuffer] A city name with any present airport
+  #   name formatted.
+  def format_airport_name(city_airport_name)
+    return city_airport_name.gsub(" (", %Q(&ensp;<small class="airport-name">)).gsub(")", "</small>").html_safe
   end
   
+  # Formats a pair of decimal coordinates into a string pair of coordinates
+  # with cardinal directions and 5 decimal places.
+  # 
+  # @param coordinates [Array<Number>] an array containing latitude and
+  #   longitude, each in decimal degrees.
+  # @return [ActiveSupport::SafeBuffer] a string pair of decimal degree
+  #   coordinates with N/S and E/W hemispheres and 5 decimal places.
   def format_coordinates(coordinates)
     return "#{"%.5f" % coordinates[0].abs}° #{coordinates[0] < 0 ? "S" : "N"}&ensp;#{"%.5f" % coordinates[1].abs}° #{coordinates[1] < 0 ? "W" : "E"}".html_safe
   end
   
+  # Renders a message <div> containing an info box, success message, warning
+  # message, or error message.
+  #
+  # @param type [:error, :warning, :success, :info] the type of message to
+  #   provide. Used to determine the style of the message.
+  # @param text [String] the message text
+  # @return [ActiveSupport::SafeBuffer] a message <div>
   def render_message(type, text)
     render partial: "layouts/message", locals: {type: type, text: text}
   end
   
+  # Renders all messages (contained in \@messages) and flash messages for a
+  # view, grouped by type.
+  # 
+  # @return [ActiveSupport::SafeBuffer] a number of message <div>s
+  # @see #render_message
   def render_messages
     order = [:error, :warning, :success, :info]
     @messages ||= []
@@ -36,10 +73,29 @@ module ApplicationHelper
     @messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text]) }.join.html_safe
   end
   
+  # Takes an IATA airline code which may or may not contain a
+  # disambiguation string, and returns only the IATA code.
+  # 
+  # Since IATA airline codes are limited and thus may not be unique, non-unique
+  # codes will contain a hyphen followed by an airline name when used as a
+  # parameter. This method removes everything except the IATA code from the
+  # string.
+  # 
+  # @param iata_airline_code [String] an IATA airline code and possibly an airline name
+  # @return [String] an IATA airline code
   def iata_airline_code_display(iata_airline_code)
     iata_airline_code.split("-").first
   end
   
+  # Renders an image containing an icon for an airline's logo.
+  # 
+  # @param icao_code [String] the ICAO code for the airline whose logo is to be
+  #   displayed
+  # @param title [String] an optional title attribute for the logo image. If
+  #   not provided, the airline's ICAO code will be used.
+  # @param css_class [String] an optional space-separated set of CSS classes to
+  #   apply to the logo image.
+  # @return [ActiveSupport::SafeBuffer] an image_tag for an airline logo
   def airline_icon(icao_code, title: nil, css_class: nil)
     return image_tag("assets/blank.png", class: "airline-icon") unless icao_code
     icao_code = icao_code.upcase
@@ -49,6 +105,12 @@ module ApplicationHelper
     return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/icao/#{icao_code}.png", title: title, alt: icao_code, class: class_array.join(" "), onerror: "this.src='assets/blank.png';this.onerror='';").html_safe
   end
   
+  # Renders an image containing a country flag.
+  # 
+  # @param country [String] the country whose flag is to be displayed
+  # @param title [String] an optional title attribute for the flag image. If
+  #   not provided, the country's name will be used.
+  # @return [ActiveSupport::SafeBuffer] an image_tag for a country flag
   def country_flag_icon(country, title: nil)
     return image_tag("/assets/blank.png", class: "country-flag-icon") unless country
     title ||= country
@@ -56,12 +118,33 @@ module ApplicationHelper
     html += %Q(</span>)
   end
   
+  # Provides monospace formatting for a string. Generally used for formatting IATA and ICAO codes.
+  #
+  # @param code [ActiveSupport::SafeBuffer, String] the text to format
+  # @return [ActiveSupport::SafeBuffer] HTML text formatted with a monospace font
   def code_mono(code)
     return nil unless code.present?
     html = %Q(<span class="code-mono">#{code}</span>)
     html.html_safe
   end
   
+  # Renders a link which the user can click on to sort a table column. Used in
+  # table headers. Includes an arrow showing the direction of the sort if the
+  # table is already sorted by this column.
+  #
+  # @param title_string [String] the text to use for the link
+  # @param sort_symbol [Symbol] a symbol representing the name of the sortable
+  #   column this link sorts. Compared to @sort_cat to determine if the table
+  #   is already sorted by this column.
+  # @param sort_string [String] a string representing the name of the sortable
+  #   column this link sorts. Generally should match the sort_symbol. Used in
+  #   the parameters for the link URL to specify the sort category.
+  # @param default_dir [:asc, :desc] The direction to sort this column, if a
+  #   direction is not provided in the page URL parameters.
+  # @param page_anchor [String] The ID of the table to sort, so that the table
+  #   remains in view when a sort link is clicked.
+  # @return [ActiveSupport::SafeBuffer] a link_to tag for sorting a table
+  #   column.
   def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
         
     if @sort_cat == sort_symbol
@@ -87,17 +170,33 @@ module ApplicationHelper
     else
       sort_polarity = sort_direction[1]
     end
-    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(region: params[:region],  sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
+    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(region: params[:region], sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
   end
-  
+
+  # Takes a tail number and renders an image_tag for the country flag of the
+  # matching country.
+  # 
+  # @param tail_number [String] an aircraft tail number
+  # @return [ActiveSupport::SafeBuffer] an image_tag for a country flag
+  # @see TailNumber.country
   def tail_number_country_flag(tail_number)
     country_flag_icon(TailNumber.country(tail_number))
   end
   
-  def tail_number_with_country_flag(tail_number, show_flag_without_country=true)
+  # Takes a tail number and prepends an image_tag for the appropriate country
+  # flag to it.
+  # 
+  # @param tail_number [String] an aircraft tail number
+  # @param show_blank_flag [Boolean] whether or not to show a blank placeholder
+  #   flag image if the country cannot be determined
+  # @return [ActiveSupport::SafeBuffer] an image_tag for a country flag, and
+  #   the provided tail number
+  # @see TailNumber.country
+  # @see TailNumber.country_format
+  def tail_number_with_country_flag(tail_number, show_blank_flag=true)
     country_format = TailNumber.country_format(tail_number)
     tail_link = link_to(country_format[:tail], show_tail_path(tail_number), title: "View flights on tail number #{country_format[:tail]}")
-    if country_format[:country] || show_flag_without_country
+    if country_format[:country] || show_blank_flag
       return "#{country_flag_icon(country_format[:country])} #{tail_link}".html_safe
     else
       return tail_link.html_safe
@@ -107,7 +206,7 @@ module ApplicationHelper
   
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
   
-  # Create HTML for a map with region select tabs.
+  # Creates HTML for a map with region select tabs.
   # 
   # @param map [Map] the map to show
   # @param selected_region [Array] the currently active region as an array of
@@ -130,7 +229,7 @@ module ApplicationHelper
     end
   end
     
-  # Create region select tabs.
+  # Creates region select tabs.
   # 
   # @param map [Map] the map to show
   # @param selected_region [Array] the currently active region as an array of
