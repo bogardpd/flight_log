@@ -67,7 +67,7 @@ class AircraftFamiliesController < ApplicationController
     @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft."
     @region = current_region(default: [])
     
-    @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_subtype_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
+    @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_type_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     add_breadcrumb "Aircraft Families", aircraft_families_path
@@ -89,7 +89,7 @@ class AircraftFamiliesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = Route.total_distance(@flights)
     
-    @subtypes = @aircraft_family.family_and_subtype_count(@flights)
+    @subtypes = @aircraft_family.family_and_type_count(@flights)
     @subtypes_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft_family)
     
     # Create comparitive lists of airlines and classes:

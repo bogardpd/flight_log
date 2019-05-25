@@ -80,9 +80,9 @@
   <p>
     <%= f.label :aircraft_family_id, "Aircraft Family/Type" %><br />
     <% if fields[:aircraft_family_id] %>
-      <%= f.select(:aircraft_family_id, grouped_options_for_select(AircraftFamily.grouped_types, fields[:aircraft_family_id]), {include_blank: true}, class: "autopopulated") %>
+      <%= f.select(:aircraft_family_id, grouped_options_for_select(AircraftFamily.grouped_type_select_options, fields[:aircraft_family_id]), {include_blank: true}, class: "autopopulated") %>
     <% else %>
-      <%= f.select(:aircraft_family_id, grouped_options_for_select(AircraftFamily.grouped_types, flight.aircraft_family_id), {include_blank: true}) %>
+      <%= f.select(:aircraft_family_id, grouped_options_for_select(AircraftFamily.grouped_type_select_options, flight.aircraft_family_id), {include_blank: true}) %>
     <% end %>
   </p>
 
