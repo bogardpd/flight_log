@@ -83,6 +83,7 @@ module ApplicationHelper
   # 
   # @param iata_airline_code [String] an IATA airline code and possibly an airline name
   # @return [String] an IATA airline code
+  # @see Airline#plain_code
   def iata_airline_code_display(iata_airline_code)
     iata_airline_code.split("-").first
   end

@@ -92,7 +92,7 @@ class AircraftFamily < ApplicationRecord
     return type_count
   end
   
-  # Formats the name this family/type.
+  # Formats the name of this family/type.
   #
   # This method currently applies no additional formatting; it's used as a
   # placeholder in case formatting is needed in the future.
@@ -203,7 +203,7 @@ class AircraftFamily < ApplicationRecord
   # as part of their parent family and are not listed separately. Used on
   # \{FlightsController#show_date_range} to highlight new aircraft families.
   #
-  # @param flyer [User] the {User} whose flights we're searching
+  # @param flyer [User] the {User} whose flights should be searched
   # @param current_user [User, nil] the {User} viewing the flights
   # @param date_range [Range<Date>] the date range to search
   # @return [Array<Integer>] an array of AircraftFamily IDs

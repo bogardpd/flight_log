@@ -1,3 +1,25 @@
+# Defines a model for airlines.
+#
+# Airlines can be used in multiple ways in this application:
+# 
+# * *Marketing* *airline*: The entity responsible for marketing and selling a
+#   {Flight}. This is generally the airline who provides the livery for the
+#   plane, the branding at the gate, the airline name on the airport flight
+#   status screens, and so on.
+# * *Operator*: The entity which actually operates a {Flight}. Sometimes this
+#   will be the same as the marketing airline, and sometimes the marketing
+#   airline will contract this flight to another airline which operates the
+#   flight under the marketing airline's branding.
+# * *Codeshare*: An Airline which sold a ticket on second airline's {Flight}.
+#   Often used when the airline the ticket is purchased from doesn't serve one
+#   or more of the airports on the itinerary. The second airline may
+#   potentially also be the operator of the flight, or they may further
+#   contract it to a third airline which flies under the second airline’s
+#   branding.
+#
+# Thus, the {Flight} model has Airline ID columns for each of the above types.
+# The (marketing) airline ID is required, and the operator and codeshare
+# airline IDs are optional.
 class Airline < ApplicationRecord
   has_many :flights
   has_many :operated_flights, :class_name => "Flight", :foreign_key => "operator_id"
@@ -11,13 +33,42 @@ class Airline < ApplicationRecord
   CAPS_ATTRS = %w( icao_airline_code )
   before_save :capitalize_codes
   
+  # Formats the name of this Airline.
+  #
+  # This method currently applies no additional formatting; it's used as a
+  # placeholder in case formatting is needed in the future.
+  # 
+  # @return [String] the Airline name
   def format_name
     return self.airline_name
   end
+
+  # Returns this airline's IATA code without any disambiguation strings.
+  # 
+  # Since IATA airline codes are limited and thus may not be unique, non-unique
+  # codes will contain a hyphen followed by an airline name when used as a
+  # parameter. This method removes everything except the IATA code from the
+  # string.
+  # 
+  # @return [String] an IATA airline code
+  # @see ApplicationHelper#iata_airline_code_display
+  def plain_code
+    return self.iata_airline_code.split("-").first
+  end
   
-  # Returns an array of airlines, with a hash for each family containing the
-  # id, airline name, IATA code, and number of flights on that airline, sorted
-  # by number of flights descending.
+  # Returns an array of Airlines, with a hash for each Airline containing the
+  # id, airline name, IATA code, and number of {Flight Flights} flown by that
+  # Airline, sorted by number of flights descending.
+  # 
+  # Used on various "show" views to generate a table of airlines and
+  # their flight counts.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to
+  #   calculate Airline flight counts for
+  # @param type [:airline, :operator] whether to calculate {Flight} counts for
+  #   Airlines marketing flights (:airline) or Airlines operating flights
+  #   (:operator)
+  # @return [Array<Hash>] details for each Airline flown
   def self.flight_count(flights, type: :airline)
     id_field = (type == :airline) ? :airline_id : :operator_id
     counts = flights.reorder(nil).joins(type).group(id_field, :airline_name, :iata_airline_code, :icao_airline_code).count
@@ -31,8 +82,13 @@ class Airline < ApplicationRecord
     return counts
   end
   
-  # Accepts an IATA code, and attempts to look up the ICAO code. If it does not
-  # find an ICAO code and keep_iata is true, it returns the provided IATA code.
+  # Accepts an airline IATA code, and returns the matching ICAO code.
+  #
+  # @param iata [String] the airline IATA code to look up
+  # @param keep_iata [Boolean] whether or not to return the provided IATA code
+  #   if an ICAO code is not found. If this is false, the method will return
+  #   nil if an ICAO code is not found.
+  # @return [String, nil] a matching ICAO code if found, the provided IATA code or nil if not found
   def self.convert_iata_to_icao(iata, keep_iata=true)
     airline = Airline.find_by(iata_airline_code: iata)
     if airline.nil?
@@ -43,12 +99,14 @@ class Airline < ApplicationRecord
     return keep_iata ? iata : nil
   end
   
-  def self.plain_code
-    return self.iata_airline_code.split("-").first
-  end
-  
   # Accepts a flyer, the current user, and a date range, and returns all
-  # airlines that had their first flight in this date range.
+  # airlines that had their first marketed flight in this date range. Used on
+  # \{FlightsController#show_date_range} to highlight new airlines.
+  #
+  # @param flyer [User] the {User} whose flights should be searched
+  # @param current_user [User, nil] the {User} viewing the flights
+  # @param date_range [Range<Date>] the date range to search
+  # @return [Array<Integer>] an array of Airline IDs
   def self.new_in_date_range(flyer, current_user, date_range)
     flights = flyer.flights(current_user).reorder(nil)
     first_flights = flights.joins(:airline).select(:airline_id, :departure_date).where.not(airline_id: nil).group(:airline_id).minimum(:departure_date)
@@ -57,6 +115,9 @@ class Airline < ApplicationRecord
   
   protected
   
+  # Capitalizes form fields before saving them to the database.
+  #
+  # @return [Hash]
   def capitalize_codes
     CAPS_ATTRS.each { |attr| self[attr] = self[attr].upcase if !self[attr].blank? }
   end
