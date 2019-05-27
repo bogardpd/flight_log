@@ -44,6 +44,9 @@ module TailNumber
       /^OY[A-Z]{3}$/ => {
         country: "Denmark",
         dash: 2 },
+      /^OH(([A-Z]{3})|(G|U)?(\d{2}[1-9]|\d[1-9]\d|[1-9]\d{2}))$/ => {
+        country: "Finland",
+        dash: 2 },
       /^9G[A-Z]{3}$/ => {
         country: "Ghana",
         dash: 2 },
@@ -71,10 +74,19 @@ module TailNumber
       /^ZK[A-Z]{3}$/ => {
         country: "New Zealand",
         dash: 2 },
+      /^LN[A-Z]{3}$/ => {
+        country: "Norway",
+        dash: 2 },
       /^9V[A-Z]{3}$/ => {
         country: "Singapore",
         dash: 2 },
-      /^B((\d(0\d{3}|1[0-4]\d{2}))|([1-9]\d{4}))$/ => {
+      /^HL[0-9C]\d{3}$/ => {
+        country: "South Korea",
+        dash: 0 },
+      /^SE[A-Z]([A-Z0-9][A-Z1-9]|[A-Z1-9][A-Z0-9])$/ => {
+        country: "Sweden",
+        dash: 2 },
+      /^B\d{5}$/ => {
         country: "Taiwan",
         dash: 1 },
       /^HS[A-Z]{3}$/ => {
