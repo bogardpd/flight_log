@@ -1,3 +1,4 @@
+# Defines a model for airports.
 class Airport < ApplicationRecord
   has_many :originating_flights, :class_name => "Flight", :foreign_key => "originating_airport_id"
   has_many :arriving_flights, :class_name => "Flight", :foreign_key => "destination_airport_id"
@@ -15,10 +16,12 @@ class Airport < ApplicationRecord
   validates :city, presence: true
   validates :country, presence: true
   
-  # Returns the airport's latitude and longitude in an array of floats. If the
+  # Returns the airport's latitude and longitude in decimal degrees. If the
   # latitude and longitude aren't defined, this method attempts to look them up
-  # using the FlightXML API and save them, before returning the coordinate
+  # using the FlightXML API and save them, and then returns the coordinate
   # array. If this is not successful, returns nil.
+  #
+  # @return [Array<Float>, nil] the latitude and longitude in decimal degrees
   def coordinates
     if self.latitude.present? && self.longitude.present?
       return [self.latitude, self.longitude]
@@ -36,18 +39,28 @@ class Airport < ApplicationRecord
     end
   end
   
-  # Returns the image path for this airport's terminal silhouette.
+  # Returns the image path for this airport's cropped terminal silhouette.
+  # This image is always 1440px wide, and is up to 810px tall.
+  #
+  # @return [String] an image path
   def terminal_silhouette_path
     return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png-flight-historian/#{self.iata_code}.png"
   end
   
-  # Returns the image path for this airport's complete terminal silhouette.
+  # Returns the image path for this airport's uncropped terminal silhouette.
+  #
+  # @return [String] an image path
   def terminal_silhouette_large_path
     return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png/#{self.iata_code}.png"
   end
   
-  # Accepts an IATA code, and attempts to look up the ICAO code. If it does not
-  # find an ICAO code and keep_iata is true, it returns the provided IATA code.
+  # Accepts an airport IATA code, and returns the matching ICAO code.
+  #
+  # @param iata [String] the airport IATA code to look up
+  # @param keep_iata [Boolean] whether or not to return the provided IATA code
+  #   if an ICAO code is not found. If this is false, the method will return
+  #   nil if an ICAO code is not found.
+  # @return [String, nil] a matching ICAO code if found, the provided IATA code or nil if not found
   def self.convert_iata_to_icao(iata, keep_iata=true)
     airport = Airport.find_by(iata_code: iata)
     if airport.nil?
@@ -68,9 +81,16 @@ class Airport < ApplicationRecord
     return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
   end
   
-  # Returns an array of airports, with a hash for each family containing the
+  # Returns an array of Airports, with a hash for each Airport containing the
   # id, airport name, IATA code, and number of visits to that airport, sorted
   # by number of visits descending.
+  #
+  # Used on various "show" views to generate a table of airports and their
+  # flight counts.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to
+  #   calculate Airport visit counts for
+  # @return [Array<Hash>] details for each Airport visited
   def self.visit_count(flights)
     flights = flights.reorder(:trip_id, :trip_section, :departure_utc)
     
@@ -100,26 +120,36 @@ class Airport < ApplicationRecord
   end
   
   # Take a collection of strings representing the starts of ICAO codes, and
-  # return an array of IATA codes in the region.
-  # Params:
-  # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
+  # return all IATA codes whose airport ICAO codes start with any of the
+  # provided strings.
+  # 
+  # @param icao_starts [Array<String>] an array of strings of the start of
+  #   ICAO codes (i.e. EG, K)
+  # @return [Array<String>] ICAO codes in the region
   def self.in_region_iata_codes(icao_starts)
     return in_region_hash(icao_starts).values
   end
 
   # Take a collection of strings representing the starts of ICAO codes, and
-  # return an array of airport IDs in the region.
-  # Params:
-  # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
+  # return all airport IDs whose airport ICAO codes start with any of the
+  # provided strings.
+  # 
+  # @param icao_starts [Array<String>] an array of strings of the start of
+  #   ICAO codes (i.e. EG, K)
+  # @return [Array<String>] ICAO codes in the region
   def self.in_region_ids(icao_starts)
     return in_region_hash(icao_starts).keys
   end
   
   # Take a collection of strings representing the starts of ICAO codes, and
-  # return an a hash of airports in the region, with airport ids as keys and
-  # IATA codes as values.
+  # return an a hash of all Airports whose airport ICAO codes start with any of
+  # the provided strings.
+  # 
   # Params:
-  # +icao_starts+:: An array of strings of the start of ICAO codes (i.e. EG, K)
+  # @param icao_starts [Array<String>] an array of strings of the start of
+  #   ICAO codes (i.e. EG, K)
+  # @return [Hash<Integer,String>] a hash of airports with matching ICAO codes,
+  #   with airport IDs as keys and IATA codes as values
   def self.in_region_hash(icao_starts)
     conditions = icao_starts.map{"icao_code LIKE ?"}.join(" OR ")
     patterns = icao_starts.map{|start| "#{start}%"}
@@ -130,10 +160,19 @@ class Airport < ApplicationRecord
     return iata_hash
   end
   
-  # Take a collection of flights, and return a hash of with airport IDs as the
-  # keys and the number of visits to each airport as the values.
-  # Params:
-  # +flights+:: A collection of Flights.
+  # Take a collection of {Flight Flights}, and return a hash of airport IDs and
+  # number of visits.
+  #
+  # If two flights are chronologically consecutive, the destination {Airport}
+  # of the first flight is the same as the origin of the second, and these two
+  # flights share the same {Trip} and trip section, then the time between the
+  # two flights is a layover and only counts as one visit to shared {Airport}.
+  # Otherwise, the traveler left the airport in between the flights, and it
+  # counts as two separate visits to the shared {Airport}.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights}
+  # @return [Hash<Integer,Integer>] a hash with airport IDs as keys and number
+  #   of visits as values
   def self.frequency_hash(flights)
     airport_frequency = Hash.new(0) # All airports start with 0 flights
     previous_trip_id = nil;
@@ -156,10 +195,17 @@ class Airport < ApplicationRecord
   
   protected
   
+  # Removes leading and trailing whitespace from form fields before saving them
+  # to the database.
+  #
+  # @return [Hash]
   def strip_blanks
     STRIP_ATTRS.each { |attr| self[attr] = self[attr].strip if !self[attr].blank? }
   end
   
+  # Capitalizes form fields before saving them to the database.
+  #
+  # @return [Hash]
   def capitalize_codes
     CAP_CODES.each { |code| self[code] = self[code].upcase }
   end

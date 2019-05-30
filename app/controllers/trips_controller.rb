@@ -94,7 +94,7 @@ class TripsController < ApplicationController
   # flights share the same {Trip} and trip section, then the time between the
   # two flights is a layover and only counts as one visit to shared {Airport}.
   # Otherwise, the traveler left the airport in between the flights, and it
-  # counts as two visits to the shared {Airport}.
+  # counts as two separate visits to the shared {Airport}.
   # 
   # {Flight} data:
   # * a {FlightsMap}

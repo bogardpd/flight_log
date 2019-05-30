@@ -103,7 +103,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Defines a model for airports.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
   
     <h2>
       Constant Summary
@@ -142,7 +153,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#convert_iata_to_icao-class_method" title="convert_iata_to_icao (class method)">.<strong>convert_iata_to_icao</strong>(iata, keep_iata = true)  &#x21d2; Object </a>
+      <a href="#convert_iata_to_icao-class_method" title="convert_iata_to_icao (class method)">.<strong>convert_iata_to_icao</strong>(iata, keep_iata = true)  &#x21d2; String<sup>?</sup> </a>
     
 
     
@@ -157,7 +168,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Accepts an IATA code, and attempts to look up the ICAO code.</p>
+<p>Accepts an airport IATA code, and returns the matching ICAO code.</p>
 </div></span>
   
 </li>
@@ -166,7 +177,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#frequency_hash-class_method" title="frequency_hash (class method)">.<strong>frequency_hash</strong>(flights)  &#x21d2; Object </a>
+      <a href="#frequency_hash-class_method" title="frequency_hash (class method)">.<strong>frequency_hash</strong>(flights)  &#x21d2; Hash&lt;Integer,Integer&gt; </a>
     
 
     
@@ -181,8 +192,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Take a collection of flights, and return a hash of with airport IDs as the
-keys and the number of visits to each airport as the values.</p>
+<p>Take a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, and return a hash of airport IDs and
+number of visits.</p>
 </div></span>
   
 </li>
@@ -191,7 +202,7 @@ keys and the number of visits to each airport as the values.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#in_region_hash-class_method" title="in_region_hash (class method)">.<strong>in_region_hash</strong>(icao_starts)  &#x21d2; Object </a>
+      <a href="#in_region_hash-class_method" title="in_region_hash (class method)">.<strong>in_region_hash</strong>(icao_starts)  &#x21d2; Hash&lt;Integer,String&gt; </a>
     
 
     
@@ -207,8 +218,8 @@ keys and the number of visits to each airport as the values.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Take a collection of strings representing the starts of ICAO codes, and
-return an a hash of airports in the region, with airport ids as keys and
-IATA codes as values.</p>
+return an a hash of all Airports whose airport ICAO codes start with any of
+the provided strings.</p>
 </div></span>
   
 </li>
@@ -217,7 +228,7 @@ IATA codes as values.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#in_region_iata_codes-class_method" title="in_region_iata_codes (class method)">.<strong>in_region_iata_codes</strong>(icao_starts)  &#x21d2; Object </a>
+      <a href="#in_region_iata_codes-class_method" title="in_region_iata_codes (class method)">.<strong>in_region_iata_codes</strong>(icao_starts)  &#x21d2; Array&lt;String&gt; </a>
     
 
     
@@ -233,7 +244,8 @@ IATA codes as values.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Take a collection of strings representing the starts of ICAO codes, and
-return an array of IATA codes in the region.</p>
+return all IATA codes whose airport ICAO codes start with any of the
+provided strings.</p>
 </div></span>
   
 </li>
@@ -242,7 +254,7 @@ return an array of IATA codes in the region.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#in_region_ids-class_method" title="in_region_ids (class method)">.<strong>in_region_ids</strong>(icao_starts)  &#x21d2; Object </a>
+      <a href="#in_region_ids-class_method" title="in_region_ids (class method)">.<strong>in_region_ids</strong>(icao_starts)  &#x21d2; Array&lt;String&gt; </a>
     
 
     
@@ -258,7 +270,8 @@ return an array of IATA codes in the region.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Take a collection of strings representing the starts of ICAO codes, and
-return an array of airport IDs in the region.</p>
+return all airport IDs whose airport ICAO codes start with any of the
+provided strings.</p>
 </div></span>
   
 </li>
@@ -292,7 +305,7 @@ code for all airports that had their first flight in this date range.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#visit_count-class_method" title="visit_count (class method)">.<strong>visit_count</strong>(flights)  &#x21d2; Object </a>
+      <a href="#visit_count-class_method" title="visit_count (class method)">.<strong>visit_count</strong>(flights)  &#x21d2; Array&lt;Hash&gt; </a>
     
 
     
@@ -307,7 +320,7 @@ code for all airports that had their first flight in this date range.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of airports, with a hash for each family containing the
+<p>Returns an array of Airports, with a hash for each Airport containing the
 id, airport name, IATA code, and number of visits to that airport, sorted
 by number of visits descending.</p>
 </div></span>
@@ -327,7 +340,7 @@ by number of visits descending.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#coordinates-instance_method" title="#coordinates (instance method)">#<strong>coordinates</strong>  &#x21d2; Object </a>
+      <a href="#coordinates-instance_method" title="#coordinates (instance method)">#<strong>coordinates</strong>  &#x21d2; Array&lt;Float&gt;<sup>?</sup> </a>
     
 
     
@@ -342,7 +355,7 @@ by number of visits descending.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the airport&#39;s latitude and longitude in an array of floats.</p>
+<p>Returns the airport&#39;s latitude and longitude in decimal degrees.</p>
 </div></span>
   
 </li>
@@ -351,7 +364,7 @@ by number of visits descending.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#terminal_silhouette_large_path-instance_method" title="#terminal_silhouette_large_path (instance method)">#<strong>terminal_silhouette_large_path</strong>  &#x21d2; Object </a>
+      <a href="#terminal_silhouette_large_path-instance_method" title="#terminal_silhouette_large_path (instance method)">#<strong>terminal_silhouette_large_path</strong>  &#x21d2; String </a>
     
 
     
@@ -366,7 +379,8 @@ by number of visits descending.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the image path for this airport&#39;s complete terminal silhouette.</p>
+<p>Returns the image path for this airport&#39;s uncropped terminal
+silhouette.</p>
 </div></span>
   
 </li>
@@ -375,7 +389,7 @@ by number of visits descending.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#terminal_silhouette_path-instance_method" title="#terminal_silhouette_path (instance method)">#<strong>terminal_silhouette_path</strong>  &#x21d2; Object </a>
+      <a href="#terminal_silhouette_path-instance_method" title="#terminal_silhouette_path (instance method)">#<strong>terminal_silhouette_path</strong>  &#x21d2; String </a>
     
 
     
@@ -390,7 +404,7 @@ by number of visits descending.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the image path for this airport&#39;s terminal silhouette.</p>
+<p>Returns the image path for this airport&#39;s cropped terminal silhouette.</p>
 </div></span>
   
 </li>
@@ -415,7 +429,7 @@ by number of visits descending.</p>
       <div class="method_details first">
   <h3 class="signature first" id="convert_iata_to_icao-class_method">
   
-    .<strong>convert_iata_to_icao</strong>(iata, keep_iata = true)  &#x21d2; <tt>Object</tt> 
+    .<strong>convert_iata_to_icao</strong>(iata, keep_iata = true)  &#x21d2; <tt>String</tt><sup>?</sup> 
   
 
   
@@ -424,14 +438,71 @@ by number of visits descending.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Accepts an IATA code, and attempts to look up the ICAO code. If it does not
-find an ICAO code and keep_iata is true, it returns the provided IATA code.</p>
+<p>Accepts an airport IATA code, and returns the matching ICAO code.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>iata</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the airport IATA code to look up</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>keep_iata</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether or not to return the provided IATA code if an ICAO code is not
+found. If this is false, the method will return nil if an ICAO code is not
+found.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a matching ICAO code if found, the provided IATA code or nil if not found</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -439,18 +510,18 @@ find an ICAO code and keep_iata is true, it returns the provided IATA code.</p>
       <pre class="lines">
 
 
-51
-52
-53
-54
-55
-56
-57
-58
-59</pre>
+64
+65
+66
+67
+68
+69
+70
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_convert_iata_to_icao'>convert_iata_to_icao</span><span class='lparen'>(</span><span class='id identifier rubyid_iata'>iata</span><span class='comma'>,</span> <span class='id identifier rubyid_keep_iata'>keep_iata</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_airport'>airport</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>iata_code:</span> <span class='id identifier rubyid_iata'>iata</span><span class='rparen'>)</span>
@@ -469,7 +540,7 @@ find an ICAO code and keep_iata is true, it returns the provided IATA code.</p>
       <div class="method_details ">
   <h3 class="signature " id="frequency_hash-class_method">
   
-    .<strong>frequency_hash</strong>(flights)  &#x21d2; <tt>Object</tt> 
+    .<strong>frequency_hash</strong>(flights)  &#x21d2; <tt>Hash&lt;Integer,Integer&gt;</tt> 
   
 
   
@@ -478,18 +549,59 @@ find an ICAO code and keep_iata is true, it returns the provided IATA code.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Take a collection of flights, and return a hash of with airport IDs as the
-keys and the number of visits to each airport as the values. Params:</p>
-<dl class="rdoc-list note-list"><dt><code>flights</code>
-<dd>
-<p>A collection of Flights.</p>
-</dd></dl>
+<p>Take a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, and return a hash of airport IDs and
+number of visits.</p>
+
+<p>If two flights are chronologically consecutive, the destination <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>
+of the first flight is the same as the origin of the second, and these two
+flights share the same <span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span> and trip section, then the time between the
+two flights is a layover and only counts as one visit to shared <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>.
+Otherwise, the traveler left the airport in between the flights, and it
+counts as two separate visits to the shared <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>flights</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Integer,Integer&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a hash with airport IDs as keys and number of visits as values</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -497,28 +609,28 @@ keys and the number of visits to each airport as the values. Params:</p>
       <pre class="lines">
 
 
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155</pre>
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 176</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_frequency_hash'>frequency_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_airport_frequency'>airport_frequency</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span> <span class='comment'># All airports start with 0 flights
@@ -547,7 +659,7 @@ keys and the number of visits to each airport as the values. Params:</p>
       <div class="method_details ">
   <h3 class="signature " id="in_region_hash-class_method">
   
-    .<strong>in_region_hash</strong>(icao_starts)  &#x21d2; <tt>Object</tt> 
+    .<strong>in_region_hash</strong>(icao_starts)  &#x21d2; <tt>Hash&lt;Integer,String&gt;</tt> 
   
 
   
@@ -557,18 +669,55 @@ keys and the number of visits to each airport as the values. Params:</p>
   <div class="discussion">
     
 <p>Take a collection of strings representing the starts of ICAO codes, and
-return an a hash of airports in the region, with airport ids as keys and
-IATA codes as values. Params:</p>
-<dl class="rdoc-list note-list"><dt><code>icao_starts</code>
-<dd>
-<p>An array of strings of the start of ICAO codes (i.e. EG, K)</p>
-</dd></dl>
+return an a hash of all Airports whose airport ICAO codes start with any of
+the provided strings.</p>
+
+<p>Params:</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>icao_starts</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an array of strings of the start of ICAO codes (i.e. EG, K)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash&lt;Integer,String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a hash of airports with matching ICAO codes, with airport IDs as keys and
+IATA codes as values</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -576,18 +725,18 @@ IATA codes as values. Params:</p>
       <pre class="lines">
 
 
-123
-124
-125
-126
-127
-128
-129
-130
-131</pre>
+153
+154
+155
+156
+157
+158
+159
+160
+161</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 153</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_in_region_hash'>in_region_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_conditions'>conditions</span> <span class='op'>=</span> <span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>icao_code LIKE ?</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> OR </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -606,7 +755,7 @@ IATA codes as values. Params:</p>
       <div class="method_details ">
   <h3 class="signature " id="in_region_iata_codes-class_method">
   
-    .<strong>in_region_iata_codes</strong>(icao_starts)  &#x21d2; <tt>Object</tt> 
+    .<strong>in_region_iata_codes</strong>(icao_starts)  &#x21d2; <tt>Array&lt;String&gt;</tt> 
   
 
   
@@ -616,17 +765,52 @@ IATA codes as values. Params:</p>
   <div class="discussion">
     
 <p>Take a collection of strings representing the starts of ICAO codes, and
-return an array of IATA codes in the region. Params:</p>
-<dl class="rdoc-list note-list"><dt><code>icao_starts</code>
-<dd>
-<p>An array of strings of the start of ICAO codes (i.e. EG, K)</p>
-</dd></dl>
+return all IATA codes whose airport ICAO codes start with any of the
+provided strings.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>icao_starts</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an array of strings of the start of ICAO codes (i.e. EG, K)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>ICAO codes in the region</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -634,12 +818,12 @@ return an array of IATA codes in the region. Params:</p>
       <pre class="lines">
 
 
-106
-107
-108</pre>
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 106</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 129</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_in_region_iata_codes'>in_region_iata_codes</span><span class='lparen'>(</span><span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_in_region_hash'>in_region_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span>
@@ -652,7 +836,7 @@ return an array of IATA codes in the region. Params:</p>
       <div class="method_details ">
   <h3 class="signature " id="in_region_ids-class_method">
   
-    .<strong>in_region_ids</strong>(icao_starts)  &#x21d2; <tt>Object</tt> 
+    .<strong>in_region_ids</strong>(icao_starts)  &#x21d2; <tt>Array&lt;String&gt;</tt> 
   
 
   
@@ -662,17 +846,52 @@ return an array of IATA codes in the region. Params:</p>
   <div class="discussion">
     
 <p>Take a collection of strings representing the starts of ICAO codes, and
-return an array of airport IDs in the region. Params:</p>
-<dl class="rdoc-list note-list"><dt><code>icao_starts</code>
-<dd>
-<p>An array of strings of the start of ICAO codes (i.e. EG, K)</p>
-</dd></dl>
+return all airport IDs whose airport ICAO codes start with any of the
+provided strings.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>icao_starts</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an array of strings of the start of ICAO codes (i.e. EG, K)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>ICAO codes in the region</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -680,12 +899,12 @@ return an array of airport IDs in the region. Params:</p>
       <pre class="lines">
 
 
-114
-115
-116</pre>
+140
+141
+142</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 114</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 140</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_in_region_ids'>in_region_ids</span><span class='lparen'>(</span><span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_in_region_hash'>in_region_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_icao_starts'>icao_starts</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span>
@@ -722,16 +941,16 @@ code for all airports that had their first flight in this date range.</p>
       <pre class="lines">
 
 
-63
-64
-65
-66
-67
-68
-69</pre>
+76
+77
+78
+79
+80
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 76</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new_in_date_range'>new_in_date_range</span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='comma'>,</span> <span class='id identifier rubyid_date_range'>date_range</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
@@ -748,7 +967,7 @@ code for all airports that had their first flight in this date range.</p>
       <div class="method_details ">
   <h3 class="signature " id="visit_count-class_method">
   
-    .<strong>visit_count</strong>(flights)  &#x21d2; <tt>Object</tt> 
+    .<strong>visit_count</strong>(flights)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
   
 
   
@@ -757,15 +976,56 @@ code for all airports that had their first flight in this date range.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of airports, with a hash for each family containing the
+<p>Returns an array of Airports, with a hash for each Airport containing the
 id, airport name, IATA code, and number of visits to that airport, sorted
 by number of visits descending.</p>
+
+<p>Used on various “show” views to generate a table of airports and their
+flight counts.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>flights</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> to calculate Airport visit counts for</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>details for each Airport visited</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -773,36 +1033,36 @@ by number of visits descending.</p>
       <pre class="lines">
 
 
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
 94
 95
 96
 97
 98
 99
-100</pre>
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_visit_count'>visit_count</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='symbol'>:trip_id</span><span class='comma'>,</span> <span class='symbol'>:trip_section</span><span class='comma'>,</span> <span class='symbol'>:departure_utc</span><span class='rparen'>)</span>
@@ -845,7 +1105,7 @@ by number of visits descending.</p>
       <div class="method_details first">
   <h3 class="signature first" id="coordinates-instance_method">
   
-    #<strong>coordinates</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>coordinates</strong>  &#x21d2; <tt>Array&lt;Float&gt;</tt><sup>?</sup> 
   
 
   
@@ -854,9 +1114,9 @@ by number of visits descending.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the airport&#39;s latitude and longitude in an array of floats. If
-the latitude and longitude aren&#39;t defined, this method attempts to look
-them up using the FlightXML API and save them, before returning the
+<p>Returns the airport&#39;s latitude and longitude in decimal degrees. If the
+latitude and longitude aren&#39;t defined, this method attempts to look
+them up using the FlightXML API and save them, and then returns the
 coordinate array. If this is not successful, returns nil.</p>
 
 
@@ -864,6 +1124,24 @@ coordinate array. If this is not successful, returns nil.</p>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;Float&gt;</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the latitude and longitude in decimal degrees</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -871,9 +1149,6 @@ coordinate array. If this is not successful, returns nil.</p>
       <pre class="lines">
 
 
-22
-23
-24
 25
 26
 27
@@ -886,10 +1161,13 @@ coordinate array. If this is not successful, returns nil.</p>
 34
 35
 36
-37</pre>
+37
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_coordinates'>coordinates</span>
   <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span> <span class='op'>&amp;&amp;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
@@ -915,7 +1193,7 @@ coordinate array. If this is not successful, returns nil.</p>
       <div class="method_details ">
   <h3 class="signature " id="terminal_silhouette_large_path-instance_method">
   
-    #<strong>terminal_silhouette_large_path</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>terminal_silhouette_large_path</strong>  &#x21d2; <tt>String</tt> 
   
 
   
@@ -924,13 +1202,32 @@ coordinate array. If this is not successful, returns nil.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the image path for this airport&#39;s complete terminal silhouette.</p>
+<p>Returns the image path for this airport&#39;s uncropped terminal
+silhouette.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an image path</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -938,12 +1235,12 @@ coordinate array. If this is not successful, returns nil.</p>
       <pre class="lines">
 
 
-45
-46
-47</pre>
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_terminal_silhouette_large_path'>terminal_silhouette_large_path</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="ExternalImage.html" title="ExternalImage (module)">ExternalImage</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="ExternalImage.html#ROOT_PATH-constant" title="ExternalImage::ROOT_PATH (constant)">ROOT_PATH</a></span></span><span class='embexpr_end'>}</span><span class='tstring_content'>/projects/terminal-silhouettes/png/</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_iata_code'>iata_code</span><span class='embexpr_end'>}</span><span class='tstring_content'>.png</span><span class='tstring_end'>&quot;</span></span>
@@ -956,7 +1253,7 @@ coordinate array. If this is not successful, returns nil.</p>
       <div class="method_details ">
   <h3 class="signature " id="terminal_silhouette_path-instance_method">
   
-    #<strong>terminal_silhouette_path</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>terminal_silhouette_path</strong>  &#x21d2; <tt>String</tt> 
   
 
   
@@ -965,13 +1262,32 @@ coordinate array. If this is not successful, returns nil.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the image path for this airport&#39;s terminal silhouette.</p>
+<p>Returns the image path for this airport&#39;s cropped terminal silhouette.
+This image is always 1440px wide, and is up to 810px tall.</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an image path</p>
+</div>
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -979,12 +1295,12 @@ coordinate array. If this is not successful, returns nil.</p>
       <pre class="lines">
 
 
-40
-41
-42</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_terminal_silhouette_path'>terminal_silhouette_path</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="ExternalImage.html" title="ExternalImage (module)">ExternalImage</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="ExternalImage.html#ROOT_PATH-constant" title="ExternalImage::ROOT_PATH (constant)">ROOT_PATH</a></span></span><span class='embexpr_end'>}</span><span class='tstring_content'>/projects/terminal-silhouettes/png-flight-historian/</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_iata_code'>iata_code</span><span class='embexpr_end'>}</span><span class='tstring_content'>.png</span><span class='tstring_end'>&quot;</span></span>
@@ -999,7 +1315,7 @@ coordinate array. If this is not successful, returns nil.</p>
 </div>
 
       <div id="footer">
-  Generated on Sun May 26 16:27:26 2019 by
+  Generated on Wed May 29 22:59:32 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
