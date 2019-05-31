@@ -30,6 +30,7 @@ class Airline < ApplicationRecord
   validates :airline_name, :presence => true
   validates :numeric_code, :length => { :is => 3, :allow_blank => true }
   
+  # Form fields which should be saved capitalized.
   CAPS_ATTRS = %w( icao_airline_code )
   before_save :capitalize_codes
   

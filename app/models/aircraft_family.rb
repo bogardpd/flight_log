@@ -48,6 +48,7 @@ class AircraftFamily < ApplicationRecord
   validates :manufacturer, presence: true
   validates :category, inclusion: { in: categories_list.keys, message: "%{value} is not a valid category" }, allow_nil: false, allow_blank: false
   
+  # Form fields which should be saved capitalized.
   CAPS_ATTRS = %w( iata_aircraft_code icao_aircraft_code )
   before_save :capitalize_codes
   

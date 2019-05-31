@@ -5,7 +5,10 @@ class Airport < ApplicationRecord
   has_many :first_routes, :class_name => "Route", :foreign_key => "airport1_id"
   has_many :second_routes, :class_name => "Route", :foreign_key => "airport2_id"
   
+  # Form fields which should be saved with leading and trailing whitespace
+  # removed.
   STRIP_ATTRS = %w( city country )
+  # Form fields which should be saved capitalized.
   CAP_CODES = %w( iata_code icao_code )
   
   before_save :capitalize_codes
