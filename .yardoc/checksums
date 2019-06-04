@@ -1,5 +1,5 @@
 app/classes/map.rb cf2c0d0bac147dcb362ac467981232fb473ab9af
-app/models/trip.rb 9d9f650e7e25d552c5de7fde5610a05c14cabb2b
+app/models/trip.rb ff1ac9047478e3223c5684d51139184f1fa372db
 app/models/user.rb 5cb53f7f035761b55b7fea40d6637735c81dd7f6
 app/models/route.rb 851aa45aee57515baab7f14cbf976c223cd7fced
 app/models/flight.rb 33595d4cf159f7d4f64c4aa58a0848b98bc71aa0
