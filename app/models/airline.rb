@@ -61,8 +61,8 @@ class Airline < ApplicationRecord
   # id, airline name, IATA code, and number of {Flight Flights} flown by that
   # Airline, sorted by number of flights descending.
   # 
-  # Used on various "show" views to generate a table of airlines and
-  # their flight counts.
+  # Used on various "index" and "show" views to generate a table of airlines
+  # and their flight counts.
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate Airline flight counts for

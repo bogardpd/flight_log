@@ -152,8 +152,8 @@ class AircraftFamily < ApplicationRecord
   # flights on its child aircraft types), sorted by number of flights
   # descending.
   #
-  # Used on various "show" views to generate a table of aircraft families and
-  # their flight counts.
+  # Used on various "index" and "show" views to generate a table of aircraft
+  # families and their flight counts.
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate AircraftFamily flight counts for

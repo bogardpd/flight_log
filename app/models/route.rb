@@ -1,18 +1,37 @@
+# Defines a model for flight routes.
+#
+# Note that this specifically refers to flight routes, and not routes in the
+# Ruby on Rails routing sense.
+#
+# The Route model is largely used to maintain a table of route distances
+# between {Airport} pairs; most interaction that the application has with a
+# Route is actually internally managed as the pair of {Airport Airports}
+# associated with a {Flight}.
 class Route < ApplicationRecord
   belongs_to :airport1, :class_name => "Airport"
   belongs_to :airport2, :class_name => "Airport"
   
+  # The plain text arrow used between airport pairs on one way routes.
   ARROW_ONE_WAY_PLAINTEXT = "⇒"
+  # The plain text arrow used between airport pairs on two way routes.
   ARROW_TWO_WAY_PLAINTEXT = "⇔"
+  # The HTML arrow used between airport pairs on one way routes.
   ARROW_ONE_WAY_HTML = %Q(<span class="route-arrow">#{ARROW_ONE_WAY_PLAINTEXT}</span>).html_safe
+  # The HTML arrow used between airport pairs on two way routes.
   ARROW_TWO_WAY_HTML = %Q(<span class="route-arrow">#{ARROW_TWO_WAY_PLAINTEXT}</span>).html_safe
   
   # Given two IATA airport codes, returns the distance in statute miles
-  # between them. This calls an SQL query, and should not be used in a loop.
-  def self.distance_by_iata(iata1, iata2)
+  # between them. The haversine formula is used to calculate the distance.
+  #
+  # This calls an SQL query, and should not be used in a loop.
+  # 
+  # @param iata_1 [String] an IATA airport code
+  # @param iata_2 [String] an IATA airport code
+  # @return [Integer] the distance between the airports in statute miles
+  def self.distance_by_iata(iata_1, iata_2)
     airport_ids = Array.new
-    airport_ids[0] = Airport.where(:iata_code => iata1).first.try(:id)
-    airport_ids[1] = Airport.where(:iata_code => iata2).first.try(:id)
+    airport_ids[0] = Airport.where(:iata_code => iata_1).first.try(:id)
+    airport_ids[1] = Airport.where(:iata_code => iata_2).first.try(:id)
     current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport_ids[0], airport_ids[1], airport_ids[1], airport_ids[0])
     if current_route.present?
       return current_route.first.distance_mi
@@ -22,8 +41,14 @@ class Route < ApplicationRecord
     end
   end
   
-  # Given two airports, returns the distance in statute miles between them.
+  # Given two {Airport Airports}, returns the distance in statute miles
+  # between them. The haversine formula is used to calculate the distance.
+  # 
   # This calls an SQL query, and should not be used in a loop.
+  #
+  # @param airport_1 [Airport] an {Airport}
+  # @param airport_2 [Airport] an {Airport}
+  # @return [Integer] the distance between the airports in statute miles
   def self.distance_by_airport(airport_1, airport_2)
     current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport_1, airport_2, airport_2, airport_1)
     if current_route.present?
@@ -48,9 +73,12 @@ class Route < ApplicationRecord
     end
   end
   
-  # Accepts two coordinates (floating point [latitude,longitude] arrays), and
-  # returns the great circle distance between them (in integer miles) using
-  # the haversine fomula.
+  # Given two latitude/longitude pairs, returns the distance in statute miles
+  # between them. The haversine formula is used to calculate the distance.
+  #
+  # @param coord_orig [Array<Float>] an array containing a latitude and a longitude in decimal degrees
+  # @param coord_dest [Array<Float>] an array containing a latitude and a longitude in decimal degrees
+  # @return [Integer] the distance between the coordinates in statute miles
   def self.distance_by_coordinates(coord_orig, coord_dest)
     return nil unless coord_orig.present? && coord_dest.present?
     deg_to_rad = Math::PI / 180
@@ -70,6 +98,17 @@ class Route < ApplicationRecord
   # (sorted alphabetically), distance, and number of times flown, sorted by
   # number of times flown descending. Routes which have been flown but have
   # not had a distance defined have a value of -1 (to allow sorting).
+
+  # Returns an array of routes, with a hash for each IATA code pair containing
+  # the distance in statute miles and number of {Flight Flights} on that route
+  # (in either direction), sorted by number of flights descending.
+  #
+  # Used on various "index" and "show" views to generate a table of routes and
+  # their flight counts.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to
+  #   calculate Route flight counts for
+  # @return [Array<Hash>] details for each Route flown
   def self.flight_count(flights)
     flights = flights.includes(:origin_airport, :destination_airport)
     
@@ -77,7 +116,7 @@ class Route < ApplicationRecord
     route_frequencies = Hash.new(0)
     route_array = Array.new()
     
-    Route.find_by_sql("SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_distances[[x.iata1,x.iata2].sort] = x.distance_mi }
+    Route.find_by_sql("SELECT routes.distance_mi, airports1.iata_code AS iata_1, airports2.iata_code AS iata_2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_distances[[x.iata_1,x.iata_2].sort] = x.distance_mi }
         
     flights.each do |flight|
       airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
@@ -96,7 +135,11 @@ class Route < ApplicationRecord
     
   end
   
-  # Given a collection of Flights, returns their total distance.
+  # Returns the total distance in statute miles of a collection of {Flight Flights}.
+  # 
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to
+  #   calculate the total distance for
+  # @return [Integer] the total distance of the {Flight Flights} in statute miles
   def self.total_distance(flights)
     return flight_count(flights).reduce(0){|sum, r| sum + r[:flight_count] * r[:distance_mi]}
   end
