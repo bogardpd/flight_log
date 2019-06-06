@@ -83,7 +83,19 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Provides utilities for dealing with images hosted on an image storage
+service.</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
   
     <h2>
       Constant Summary
@@ -93,7 +105,18 @@
     <dl class="constants">
       
         <dt id="ROOT_PATH-constant" class="">ROOT_PATH =
-          
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The root URL for this application&#39;s external images.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>https://s3.us-east-2.amazonaws.com/pbogardcom-images</span><span class='tstring_end'>&quot;</span></span></pre></dd>
       
@@ -132,7 +155,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns true if the image at path exists, false otherwise.</p>
+<p>Checks if an image exists.</p>
 </div></span>
   
 </li>
@@ -159,13 +182,37 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true if the image at path exists, false otherwise.</p>
+<p>Checks if an image exists.</p>
+
+<p>Note that this method checks an absolute path, so <span class='object_link'><a href="#ROOT_PATH-constant" title="ExternalImage::ROOT_PATH (constant)">ROOT_PATH</a></span> is not
+automatically prepended. Be sure to manually include <span class='object_link'><a href="#ROOT_PATH-constant" title="ExternalImage::ROOT_PATH (constant)">ROOT_PATH</a></span> in the
+path string if the image is hosted there.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>path</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the absolute path to check</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -175,6 +222,11 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
+      
+        &mdash;
+        <div class='inline'>
+<p>true if the image at path exists, false otherwise</p>
+</div>
       
     </li>
   
@@ -186,18 +238,18 @@
       <pre class="lines">
 
 
-6
-7
-8
-9
-10
-11
-12
-13
-14</pre>
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/external_image.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'app/modules/external_image.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='lparen'>(</span><span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>net/http</span><span class='tstring_end'>&quot;</span></span>
@@ -218,7 +270,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jun  5 21:43:43 2019 by
+  Generated on Wed Jun  5 21:50:30 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
