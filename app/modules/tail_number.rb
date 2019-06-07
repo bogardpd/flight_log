@@ -184,8 +184,8 @@ module TailNumber
   # {Airline} IATA codes, and number of {Flight Flights} on that tail number,
   # sorted by number of flights descending.
   #
-  # Used on various "index" and "show" views to generate a table of aircraft
-  # families and their flight counts.
+  # Used on various "index" and "show" views to generate a table of tail
+  # numbers and their flight counts.
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate tail number flight counts for

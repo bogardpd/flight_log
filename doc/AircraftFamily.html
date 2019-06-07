@@ -201,7 +201,7 @@ of that family should be used.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#family_select_options-class_method" title="family_select_options (class method)">.<strong>family_select_options</strong>  &#x21d2; Array </a>
+      <a href="#family_select_options-class_method" title="family_select_options (class method)">.<strong>family_select_options</strong>  &#x21d2; Array&lt;Array&gt; </a>
     
 
     
@@ -217,7 +217,7 @@ of that family should be used.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Returns an array of parent families in a format ready for
-options_for_select.</p>
+<code>options_for_select</code>.</p>
 </div></span>
   
 </li>
@@ -278,7 +278,7 @@ descending.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#grouped_type_select_options-class_method" title="grouped_type_select_options (class method)">.<strong>grouped_type_select_options</strong>  &#x21d2; Array </a>
+      <a href="#grouped_type_select_options-class_method" title="grouped_type_select_options (class method)">.<strong>grouped_type_select_options</strong>  &#x21d2; Array&lt;Array&gt; </a>
     
 
     
@@ -294,7 +294,7 @@ descending.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Returns a nested array of families and types in a format ready for
-grouped_options_for_select.</p>
+<code>grouped_options_for_select</code>.</p>
 </div></span>
   
 </li>
@@ -600,7 +600,7 @@ by aircraft family category.</p>
       <div class="method_details ">
   <h3 class="signature " id="family_select_options-class_method">
   
-    .<strong>family_select_options</strong>  &#x21d2; <tt>Array</tt> 
+    .<strong>family_select_options</strong>  &#x21d2; <tt>Array&lt;Array&gt;</tt> 
   
 
   
@@ -610,10 +610,10 @@ by aircraft family category.</p>
   <div class="discussion">
     
 <p>Returns an array of parent families in a format ready for
-options_for_select. Used for generating aircraft parent family select boxes
-when the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new</a></span> flight form prepopulation encounters
-an unknown aircraft ICAO code, and has to ask the user what family this new
-type belongs to.</p>
+<code>options_for_select</code>. Used for generating aircraft parent family
+select boxes when the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new</a></span> flight form prepopulation
+encounters an unknown aircraft ICAO code, and has to ask the user what
+family this new type belongs to.</p>
 
 
   </div>
@@ -626,7 +626,7 @@ type belongs to.</p>
     <li>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt>Array&lt;Array&gt;</tt>)</span>
       
       
       
@@ -861,7 +861,7 @@ for</p>
       <div class="method_details ">
   <h3 class="signature " id="grouped_type_select_options-class_method">
   
-    .<strong>grouped_type_select_options</strong>  &#x21d2; <tt>Array</tt> 
+    .<strong>grouped_type_select_options</strong>  &#x21d2; <tt>Array&lt;Array&gt;</tt> 
   
 
   
@@ -871,9 +871,9 @@ for</p>
   <div class="discussion">
     
 <p>Returns a nested array of families and types in a format ready for
-grouped_options_for_select. Used for generating aircraft family/type select
-boxes on the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">add</a></span> and <span class='object_link'><a href="FlightsController.html#edit-instance_method" title="FlightsController#edit (method)">edit</a></span>
-<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> form.</p>
+<code>grouped_options_for_select</code>. Used for generating aircraft
+family/type select boxes on the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">add</a></span> and
+<span class='object_link'><a href="FlightsController.html#edit-instance_method" title="FlightsController#edit (method)">edit</a></span> <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> form.</p>
 
 
   </div>
@@ -886,7 +886,7 @@ boxes on the <span class='object_link'><a href="FlightsController.html#new-insta
     <li>
       
       
-        <span class='type'>(<tt>Array</tt>)</span>
+        <span class='type'>(<tt>Array&lt;Array&gt;</tt>)</span>
       
       
       
@@ -1550,7 +1550,7 @@ child type.</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Jun  6 21:41:38 2019 by
+  Generated on Thu Jun  6 22:11:14 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

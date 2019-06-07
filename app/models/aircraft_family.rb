@@ -175,22 +175,22 @@ class AircraftFamily < ApplicationRecord
   end
 
   # Returns an array of parent families in a format ready for
-  # options_for_select. Used for generating aircraft parent family select boxes
+  # +options_for_select+. Used for generating aircraft parent family select boxes
   # when the {FlightsController#new new} flight form prepopulation encounters an
   # unknown aircraft ICAO code, and has to ask the user what family this new
   # type belongs to.
   # 
-  # @return [Array] options for an aircraft family select box
+  # @return [Array<Array>] options for an aircraft family select box
   def self.family_select_options
     self.families.pluck(:manufacturer, :family_name, :id).sort_by{|af| [af[0].downcase,af[1].downcase]}.map{|af| [[af[0],af[1]].join(" "), af[2]]}
   end
   
   # Returns a nested array of families and types in a format ready for
-  # grouped_options_for_select. Used for generating aircraft family/type select
+  # +grouped_options_for_select+. Used for generating aircraft family/type select
   # boxes on the {FlightsController#new add} and {FlightsController#edit edit}
   # \{Flight} form.
   # 
-  # @return [Array] options for an aircraft family/type select box
+  # @return [Array<Array>] options for an aircraft family/type select box
   def self.grouped_type_select_options
     types = self.types.map{|f| {family_id: f.parent_id, family_name: f.family_name, id: f.id}}.sort_by{|f| f[:family_name]}
     families = self.families.sort_by{|f| [f[:manufacturer].downcase, f[:family_name].downcase]}
