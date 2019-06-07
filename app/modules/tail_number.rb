@@ -1,5 +1,31 @@
+# Provides utilities for interacting with tail numbers.
+#
+# Tail number uniqueness is considered case insensitive and insensitive to
+# the presence or absence of dashes. However, tail numbers are nearly always
+# capitalized, and most countries have either no dash in their tail numbers or
+# a dash that's always in the same position in the tail number. Throughout this
+# module, documentation will refer to formatted tail numbers and simplified
+# tail numbers. A *formatted* tail number is a string with dashes in the
+# appropriate place for the country (e.g. +VH-OQI+, +C-FGRY+, +N909EV+), and a
+# *simplified* tail number is a string with all dashes removed (e.g. +VHOQI+,
+# +CFGRY+, +N909EV+).
 module TailNumber
   
+  # Defines countries and dash formats for various tail number regular
+  # expressions. Used by other methods to determine a country name and/or a
+  # dash position based on which regular expression a simplified tail number
+  # matches.
+  #
+  # The dash position specifies the character position of a dash in a country's
+  # tail number format (e.g. C-FGRY has a dash postion of 1, VH-OQI has a dash
+  # position of 2). If the dash position is 0, then no dash is assumed (e.g.
+  # N909EV).
+  #
+  # @return [Hash] tail number regexps as keys, country names and dash
+  #   positions as values
+  # @example
+  #   TailNumber.countries[/^VH[A-Z]{3}$/] #=> {country: "Australia", dash: 2}
+  # @see .simplify
   def self.countries
     tail_formats = {
       # Highest numbers of aircraft:
@@ -102,11 +128,28 @@ module TailNumber
     return tail_formats
   end
   
-  # Capitalizes and strips non-alphanumeric characters
+  # Capitalizes a tail number and strips non-alphanumeric characters.
+  # 
+  # Tail number uniqueness is considered case insensitive and insensitive to
+  # the presence or absence of dashes, so this method puts the tail number into
+  # a standard simplified format for saving it into the database.
+  #
+  # @param tail_number [String] a tail number
+  # @return [String] a simplified tail number
+  # @example
+  #   TailNumber.simplify("VH-OQI") #=> "VHOQI"
   def self.simplify(tail_number)
     return tail_number.upcase.gsub(/[^A-Z0-9]/,"")
   end
   
+  # Determines the country of a tail number and adds appropriate dashes to
+  # match that country's tail number format.
+  #
+  # @param tail_number [String] a formatted or simplified tail number
+  # @return [Hash{Symbol => String}] a country name and formatted tail number
+  # @example
+  #   TailNumber.country_format("VHOQI") #=> {country: "Australia", tail: "VH-OQI"}
+  #   TailNumber.country_format("N909EV") #=> {country: "United States", tail: "N909EV"}
   def self.country_format(tail_number)
     tail_number = simplify(tail_number)
     country = countries.find{|k,v| k.match(tail_number) }&.last
@@ -116,19 +159,37 @@ module TailNumber
     return {country: country[:country], tail: tail}
   end
   
-  # Identifies the country associated with a given tail number.
+  # Returns the country associated with a given tail number.
+  # 
+  # @param tail_number [String] a formatted or simplified tail number
+  # @return [String] a country name
+  # @example
+  #   TailNumber.country("N909EV") #=> "United States"
   def self.country(tail_number)
     return country_format(tail_number)[:country]
   end
   
   # Takes a tail number and adds dashes as appropriate.
+  # 
+  # @param tail_number [String] a simplified tail number
+  # @return [String] a formatted tail number
+  # @example
+  #   TailNumber.format("CFGRY") #=> "C-FGRY"
   def self.format(tail_number)
     return country_format(tail_number)[:tail]
   end
   
-  # Returns a hash of tail numbers, aircraft codes (ICAO preferred), aircraft
-  # manufacturers, aircraft family/type names, airline names, airline IATA
-  # codes, and flight counts
+  # Returns an array of tail numbers, {AircraftFamily} codes (ICAO preferred),
+  # {AircraftFamily} manufacturers, {AircraftFamily} names, {Airline} names,
+  # {Airline} IATA codes, and number of {Flight Flights} on that tail number,
+  # sorted by number of flights descending.
+  #
+  # Used on various "index" and "show" views to generate a table of aircraft
+  # families and their flight counts.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to
+  #   calculate tail number flight counts for
+  # @return [Array<Hash>] details for each tail number flown
   def self.flight_count(flights)
     tail_counts = flights.reorder(nil).where.not(tail_number: nil).group(:tail_number).count
     tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
