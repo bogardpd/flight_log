@@ -1,16 +1,35 @@
-# Used to interact with FlightAware's FlightXML API.
-
+# Provides utilities for interacting with with FlightAware's FlightXML API.
+#
+# This is used to look up {Flight} data that couldn't be found from a
+# {BoardingPass} or {PKPass} for the purposes of prepopulating the
+# {FlightsController#new new flight} form. It's also used to look up {Airport}
+# data when creating a {AirportsController#new new airport}.
+#
+# Note: Since FlightXML has its own database of flights, airports, and routes,
+# when you see these terms in this documentation, it refers to FlightXML and
+# not this applications models, unless it specifically links to {Flight},
+# {Airport}, or {Route}.
+#
+# Uses the {http://savonrb.com/ Savon} gem as a SOAP client to interact with FlightXML. 
+# 
+# @see https://flightaware.com/commercial/flightxml/documentation2.rvt FlightXML 2.0 Documentation
+# @see http://savonrb.com/ Savon
 module FlightXML
   
+  # The default error message to return if a FlightXML lookup failed.
   ERROR = "We couldn’t find your flight data on FlightAware. You will have to manually enter some fields."
   
   # Defines the Savon client to connect to the FlightXML API.
+  #
+  # @return [Savon::Client] a Savon client
   def self.client
     return Savon.client(wsdl: "https://flightxml.flightaware.com/soap/FlightXML2/wsdl", basic_auth: [ENV["FLIGHTAWARE_USERNAME"], ENV["FLIGHTAWARE_API_KEY"]])
   end
   
-  # Accepts an airport ICAO string, and returns an array containing its
-  # latitude and longitude.
+  # Looks up the latitude and longitude for an ICAO airport code.
+  #
+  # @param airport_icao [String] an ICAO airport code
+  # @return [Array<Float>] latitude and longitude in decimal degrees
   def self.airport_coordinates(airport_icao)
     begin
       pos = client.call(:airport_info, message: {
@@ -22,7 +41,10 @@ module FlightXML
     end
   end
   
-  # Accepts an airport ICAO string, and returns its TZInfo Timezone.
+  # Looks up the timezone for an ICAO airport code.
+  #
+  # @param airport_icao [String] an ICAO airport code
+  # @return [TZInfo::DataTimezone] a timezone
   def self.airport_timezone(airport_icao)
     begin
       tz = client.call(:airport_info, message: {
@@ -34,16 +56,27 @@ module FlightXML
     end
   end
   
-  # Accepts an array of airport ICAO code strings, and returns a hash of each
-  # airport code and its TZInfo Timezone.
+  # Looks up the timezones for multiple ICAO airport codes.
+  #
+  # @param airport_icao_array [Array<String>] ICAO airport codes
+  # @return [Hash{String => TZInfo::DataTimezone}] ICAO keys and timezone values
   def self.airport_timezones(airport_icao_array)
     airport_icao_array.map{|icao| { icao => airport_timezone(icao) }}.reduce(:merge)
   end
   
-  # Accepts an airline string and a flight number string and returns
-  # an array of flights.
-  # Airline can be ICAO or IATA, but if IATA it may not contain
-  # a number (B6) and must then be converted to ICAO (JBU).
+  # Looks up flight data for flights matching a flight identifier string.
+  #
+  # A flight identifier is a string containing an airline code and a flight
+  # number, with no space between them (e.g. AA1234 or UAL5678). The airline
+  # can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not
+  # be used (the ICAO code must then be used in these cases).
+  #
+  # Usually the multiple matching flights are the same flight number on
+  # different days, but some airlines reuse a flight number multiple times per
+  # day for different routes.
+  #
+  # @param ident [String] a flight identifier
+  # @return [Array<Hash>] data for each matching flight
   def self.flight_lookup(ident)
     begin
      
@@ -59,7 +92,10 @@ module FlightXML
     end
   end
   
-  # Accepts a FlightXML fa_flight_id, and returns information about the flight.
+  # Looks up flight data for a FlightXML fa_flight_id.
+  # 
+  # @param fa_flight_id [String] a FlightAware/FlightXML unique flight ID
+  # @return [Hash] flight data
   def self.form_values(fa_flight_id)
     return nil unless fa_flight_id
     fields = Hash.new
@@ -91,6 +127,18 @@ module FlightXML
   end
   
   # Accepts a FlightXML ident and a departure time, and returns a FlightXML ID.
+
+  # Looks up a FlightXML unique flight ID for flights matching a flight
+  # identifier string and UTC departure date/time.
+  #
+  # A flight identifier is a string containing an airline code and a flight
+  # number, with no space between them (e.g. AA1234 or UAL5678). The airline
+  # can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not
+  # be used (the ICAO code must then be used in these cases).
+  #
+  # @param ident [String] a flight identifier
+  # @param departure_utc [DateTime] a UTC departure time
+  # @return [String] a FlightXML fa_flight_id
   def self.get_flight_id(ident, departure_utc)
     return nil unless ident && departure_utc
     
