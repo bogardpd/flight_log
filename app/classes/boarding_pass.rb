@@ -9,6 +9,7 @@
 class BoardingPass
   include ActionView::Helpers::TextHelper
   
+  # The default error message to return if a boarding pass parse failed.
   ERROR = "We were unable to parse the data in the boarding pass barcode."
   
   # Initialize a boarding pass.

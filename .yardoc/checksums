@@ -1,4 +1,4 @@
-app/classes/map.rb cf2c0d0bac147dcb362ac467981232fb473ab9af
+app/classes/map.rb 9d353957592e8819e08e72d89c5f5f7b2f062fe6
 app/models/trip.rb ff1ac9047478e3223c5684d51139184f1fa372db
 app/models/user.rb aa83d10456ebe2e579ef80f7f08ff20dc10171a2
 app/models/route.rb 851aa45aee57515baab7f14cbf976c223cd7fced
@@ -16,7 +16,7 @@ app/helpers/pages_helper.rb 1c3a51d6c6c8cd9df0c825aa36fad27be9fee1ea
 app/helpers/trips_helper.rb e457c169ea6671060525a5a63e9c96050fa3803e
 app/helpers/users_helper.rb d2c40dd9b55e9bb1b431c3162ff3838718ec577d
 app/modules/travel_class.rb afc3f60f75650762d696c9708f6f471e6cc167e0
-app/classes/boarding_pass.rb 535f665d7c9d364b3a59f38f14fd54291879055e
+app/classes/boarding_pass.rb babc5409a89a614f5b30754bf78367619e60a125
 app/classes/formatted_date.rb 65e16453acd2ad88389a7cb9b872a39c1798484a
 app/helpers/flights_helper.rb 3c144aaf8d18146466ca9a156b8c71726f9dc68b
 app/models/aircraft_family.rb ab4a63f7725d8fe9cf46e4f6fbcf6a9b76a6d152

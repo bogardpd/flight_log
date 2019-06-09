@@ -16,12 +16,16 @@ class Map
   include ActionView::Helpers
   include ActionView::Context
 
+  # Defines the preset regions and their ICAO code start characters for use in
+  # creating region tabs for region-sensitive maps.
+  # @see #gcmap_regions
   ICAO_REGIONS = {
     "World":            %w(),
     "North America":    %w(C K M T),
     "Europe":           %w(B E L),
     "Pacific/Oceania":  %w(A N PH R Y)
   }
+  # The XML version and encoding for this application's XML files.
   XML_PROLOG = %Q(<?xml version="1.0" encoding="UTF-8" ?>).html_safe
   
   # Creates HTML for a {http://www.gcmap.com/ Great Circle Mapper} map.
@@ -61,6 +65,7 @@ class Map
   #   region, and a boolean indicating whether this region's button should be
   #   selected (true if this region is the currently selected region) in the
   #   format !{"Europe": {selected: false, icao: ["B","E","L"]}}
+  # @see ICAO_REGIONS
   # @see ApplicationHelper#gcmap_with_region_select
   # @see http://www.gcmap.com/ Great Circle Mapper
   def gcmap_regions(selected_region)

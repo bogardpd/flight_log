@@ -146,7 +146,26 @@ create new maps.</p>
     <dl class="constants">
       
         <dt id="ICAO_REGIONS-constant" class="">ICAO_REGIONS =
-          
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Defines the preset regions and their ICAO code start characters for use in
+creating region tabs for region-sensitive maps.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><span class='object_link'><a href="#gcmap_regions-instance_method" title="Map#gcmap_regions (method)">#gcmap_regions</a></span></li>
+    
+  </ul>
+
+</div>
         </dt>
         <dd><pre class="code"><span class='lbrace'>{</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>World</span><span class='label_end'>&quot;:</span>            <span class='qwords_beg'>%w(</span><span class='words_sep'>)</span><span class='comma'>,</span>
@@ -156,7 +175,18 @@ create new maps.</p>
 <span class='rbrace'>}</span></pre></dd>
       
         <dt id="XML_PROLOG-constant" class="">XML_PROLOG =
-          
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The XML version and encoding for this application&#39;s XML files.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>%Q(</span><span class='tstring_content'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span><span class='tstring_end'>)</span></span><span class='period'>.</span><span class='id identifier rubyid_html_safe'>html_safe</span></pre></dd>
       
@@ -415,12 +445,12 @@ variables.</p>
       <pre class="lines">
 
 
-139
-140
-141</pre>
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 139</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 144</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_hash_image_query'>hash_image_query</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span><span class='rparen'>)</span>
   <span class='const'>Digest</span><span class='op'>::</span><span class='const'>MD5</span><span class='period'>.</span><span class='id identifier rubyid_hexdigest'>hexdigest</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span> <span class='op'>+</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>IMAGE_KEY</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -487,15 +517,15 @@ variables.</p>
       <pre class="lines">
 
 
-32
-33
-34
-35
 36
-37</pre>
+37
+38
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 36</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap'>gcmap</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>center</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -560,12 +590,12 @@ variables.</p>
       <pre class="lines">
 
 
-45
-46
-47</pre>
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_exists?'>gcmap_exists?</span>
   <span class='id identifier rubyid_gcmap_query'>gcmap_query</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
@@ -647,6 +677,8 @@ icao: [“B”,“E”,“L”]}}</p>
   <p class="tag_title">See Also:</p>
   <ul class="see">
     
+      <li><span class='object_link'><a href="#ICAO_REGIONS-constant" title="Map::ICAO_REGIONS (constant)">ICAO_REGIONS</a></span></li>
+    
       <li><span class='object_link'><a href="ApplicationHelper.html#gcmap_with_region_select-instance_method" title="ApplicationHelper#gcmap_with_region_select (method)">ApplicationHelper#gcmap_with_region_select</a></span></li>
     
       <li><a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a></li>
@@ -659,11 +691,6 @@ icao: [“B”,“E”,“L”]}}</p>
       <pre class="lines">
 
 
-66
-67
-68
-69
-70
 71
 72
 73
@@ -677,10 +704,15 @@ icao: [“B”,“E”,“L”]}}</p>
 81
 82
 83
-84</pre>
+84
+85
+86
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -757,11 +789,6 @@ icao: [“B”,“E”,“L”]}}</p>
       <pre class="lines">
 
 
-91
-92
-93
-94
-95
 96
 97
 98
@@ -774,10 +801,15 @@ icao: [“B”,“E”,“L”]}}</p>
 105
 106
 107
-108</pre>
+108
+109
+110
+111
+112
+113</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gpx'>gpx</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -853,11 +885,6 @@ icao: [“B”,“E”,“L”]}}</p>
       <pre class="lines">
 
 
-115
-116
-117
-118
-119
 120
 121
 122
@@ -869,10 +896,15 @@ icao: [“B”,“E”,“L”]}}</p>
 128
 129
 130
-131</pre>
+131
+132
+133
+134
+135
+136</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kml'>kml</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -901,7 +933,7 @@ icao: [“B”,“E”,“L”]}}</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Jun  6 22:11:12 2019 by
+  Generated on Sun Jun  9 10:51:09 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
