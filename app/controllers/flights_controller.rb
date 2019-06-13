@@ -46,7 +46,7 @@ class FlightsController < ApplicationController
   # {Flight} details:
   # * a {SingleFlightMap}
   # * the flight distance
-  # * the marketing {Airline}, codeshare {Airline}, and {AirlinesController#show_operator operator}
+  # * the administrating {Airline}, codeshare {Airline}, and {AirlinesController#show_operator operator}
   # * the flight number
   # * the {Trip} name and {TripsController#show_section section}
   # * the departure date

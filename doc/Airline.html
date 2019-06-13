@@ -110,26 +110,28 @@
 
 <p>Airlines can be used in multiple ways in this application:</p>
 <ul><li>
-<p><strong>Marketing</strong> <strong>airline</strong>: The entity responsible
-for marketing and selling a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. This is generally the airline who
-provides the livery for the plane, the branding at the gate, the airline
-name on the airport flight status screens, and so on.</p>
+<p><strong>Administrating</strong> <strong>airline</strong>: The entity
+responsible for administrating a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. This is generally the airline
+who provides the livery for the plane, the branding at the gate, the
+airline name on the airport flight status screens, flight planning, and so
+on.</p>
 </li><li>
 <p><strong>Operator</strong>: The entity which actually operates a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.
-Sometimes this will be the same as the marketing airline, and sometimes the
-marketing airline will contract this flight to another airline which
-operates the flight under the marketing airline&#39;s branding.</p>
+Sometimes this will be the same as the administrating airline, and
+sometimes the administrating airline will contract this flight to another
+airline which operates the flight under the administrating airline&#39;s
+branding.</p>
 </li><li>
 <p><strong>Codeshare</strong>: An Airline which sold a ticket on second
 airline&#39;s <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. Often used when the airline the ticket is purchased
 from doesn&#39;t serve one or more of the airports on the itinerary. The
 second airline may potentially also be the operator of the flight, or they
-may further contract it to a third airline which flies under the second
-airline’s branding.</p>
+may further contract it to a third operator airline which flies under the
+second airline’s branding.</p>
 </li></ul>
 
 <p>Thus, the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> model has Airline ID columns for each of the above
-types. The (marketing) airline ID is required, and the operator and
+types. The (administrating) airline ID is required, and the operator and
 codeshare airline IDs are optional.</p>
 
 
@@ -249,7 +251,7 @@ Airline, sorted by number of flights descending.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Accepts a flyer, the current user, and a date range, and returns all
-airlines that had their first marketed flight in this date range.</p>
+airlines that had their first administrated flight in this date range.</p>
 </div></span>
   
 </li>
@@ -492,7 +494,7 @@ and their flight counts.</p>
       
         &mdash;
         <div class='inline'>
-<p>whether to calculate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> counts for Airlines marketing flights
+<p>whether to calculate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> counts for Airlines administrating flights
 (:airline) or Airlines operating flights (:operator)</p>
 </div>
       
@@ -571,8 +573,8 @@ and their flight counts.</p>
   <div class="discussion">
     
 <p>Accepts a flyer, the current user, and a date range, and returns all
-airlines that had their first marketed flight in this date range. Used on
-<span class='object_link'><a href="FlightsController.html#show_date_range-instance_method" title="FlightsController#show_date_range (method)">FlightsController#show_date_range</a></span> to highlight new airlines.</p>
+airlines that had their first administrated flight in this date range. Used
+on <span class='object_link'><a href="FlightsController.html#show_date_range-instance_method" title="FlightsController#show_date_range (method)">FlightsController#show_date_range</a></span> to highlight new airlines.</p>
 
 
   </div>
@@ -819,7 +821,7 @@ string.</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Jun  9 10:51:10 2019 by
+  Generated on Thu Jun 13 13:46:16 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

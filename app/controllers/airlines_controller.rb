@@ -123,7 +123,7 @@ class AirlinesController < ApplicationController
   # * a {FlightsMap}
   # * a table of {Flight Flights}
   # * the total distance flown
-  # * a table of {Airline Airlines} marketing these {Flight Flights}
+  # * a table of {Airline Airlines} administrating these {Flight Flights}
   # * a table of {AircraftFamily AircraftFamilies}
   # * a table of {FlightsController#show_class classes}
   # * a table of {#show_fleet_number fleet numbers}
@@ -182,7 +182,7 @@ class AirlinesController < ApplicationController
   # * a {FlightsMap}
   # * a table of {Flight Flights} (including the {AircraftFamily} and {FlightsController#show_tail tail number} of each {Flight})
   # * the total distance flown
-  # * a table of {Airline Airlines} marketing these {Flight Flights}
+  # * a table of {Airline Airlines} administrating these {Flight Flights}
   # * a table of {AircraftFamily AircraftFamilies}
   # * a table of {FlightsController#show_class classes}
   # * the longest and shortest {Flight}

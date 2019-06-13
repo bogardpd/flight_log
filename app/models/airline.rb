@@ -2,23 +2,23 @@
 #
 # Airlines can be used in multiple ways in this application:
 # 
-# * *Marketing* *airline*: The entity responsible for marketing and selling a
+# * *Administrating* *airline*: The entity responsible for administrating a
 #   {Flight}. This is generally the airline who provides the livery for the
 #   plane, the branding at the gate, the airline name on the airport flight
-#   status screens, and so on.
+#   status screens, flight planning, and so on.
 # * *Operator*: The entity which actually operates a {Flight}. Sometimes this
-#   will be the same as the marketing airline, and sometimes the marketing
-#   airline will contract this flight to another airline which operates the
-#   flight under the marketing airline's branding.
+#   will be the same as the administrating airline, and sometimes the
+#   administrating airline will contract this flight to another airline which
+#   operates the flight under the administrating airline's branding.
 # * *Codeshare*: An Airline which sold a ticket on second airline's {Flight}.
 #   Often used when the airline the ticket is purchased from doesn't serve one
 #   or more of the airports on the itinerary. The second airline may
 #   potentially also be the operator of the flight, or they may further
-#   contract it to a third airline which flies under the second airline’s
-#   branding.
+#   contract it to a third operator airline which flies under the second
+#   airline’s branding.
 #
 # Thus, the {Flight} model has Airline ID columns for each of the above types.
-# The (marketing) airline ID is required, and the operator and codeshare
+# The (administrating) airline ID is required, and the operator and codeshare
 # airline IDs are optional.
 class Airline < ApplicationRecord
   has_many :flights
@@ -67,7 +67,7 @@ class Airline < ApplicationRecord
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate Airline flight counts for
   # @param type [:airline, :operator] whether to calculate {Flight} counts for
-  #   Airlines marketing flights (:airline) or Airlines operating flights
+  #   Airlines administrating flights (:airline) or Airlines operating flights
   #   (:operator)
   # @return [Array<Hash>] details for each Airline flown
   def self.flight_count(flights, type: :airline)
@@ -101,8 +101,8 @@ class Airline < ApplicationRecord
   end
   
   # Accepts a flyer, the current user, and a date range, and returns all
-  # airlines that had their first marketed flight in this date range. Used on
-  # \{FlightsController#show_date_range} to highlight new airlines.
+  # airlines that had their first administrated flight in this date range. Used
+  # on {FlightsController#show_date_range} to highlight new airlines.
   #
   # @param flyer [User] the {User} whose flights should be searched
   # @param current_user [User, nil] the {User} viewing the flights
