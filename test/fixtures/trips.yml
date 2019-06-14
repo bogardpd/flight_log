@@ -13,3 +13,9 @@ tripHidden:
   comment: This is a hidden trip
   purpose: business
   user_id: 1
+
+tripLayoverRatios:
+  id: 3
+  name: Trip to Test Layover Ratios
+  hidden: No
+  comment: sec1 ORD-DFW, sec2 DFW-SEA-ORD, sec3 ORD-ORD-YVR, sec4 YVR-YVR, sec5 no flights

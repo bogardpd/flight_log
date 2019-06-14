@@ -45,6 +45,30 @@ class Trip < ApplicationRecord
       return 1
     end
   end
+
+  # Within a trip section, calculates the ratio of the sum of the direct flight
+  # distances of each {Flight} to the distance of a direct flight between the
+  # first origin and last destination. If the trip section has no flights, or
+  # if the trip section covers no net distance (it begins and ends at the same
+  # airport), then this method returns nil.
+  # 
+  # This calculation is used to determine how "bad" a layover is in terms of
+  # extra distance added. A layover ratio of 1 means any layovers did not add
+  # any distance to the trip section. Higher numbers represent how many times
+  # longer the trip was; for example, a layover ratio of 2 means the trip
+  # section distance was twice as long as the theoretical best distance.
+  #
+  # @param section [Integer] the section of this trip to calculate the layover
+  #   ratio for
+  # @return [Float, nil] the layover ratio
+  def layover_ratio(section)
+    flights = self.flights.where(trip_section: section).order(:departure_utc)
+    return nil unless flights.any?
+    ideal_distance = Route.distance_by_airport(flights.first.origin_airport, flights.last.destination_airport)
+    return nil unless ideal_distance > 0
+    flown_distance = Route.total_distance(flights)
+    return (flown_distance.to_f)/(ideal_distance.to_f)
+  end
   
   # Returns a hash of possible trip purposes. Used to populate the trip
   # purpose select box on the {TripsController#new new} or

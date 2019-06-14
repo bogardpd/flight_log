@@ -1,9 +1,9 @@
 routeDFWORD:
   airport1_id: 1
   airport2_id: 2
-  distance_mi: 802
+  distance_mi: 801
 
 routeORDSEA:
   airport1_id: 2
   airport2_id: 3
-  distance_mi: 1600
+  distance_mi: 1716

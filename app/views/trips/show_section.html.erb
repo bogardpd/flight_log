@@ -1,6 +1,6 @@
-<% if @layover_ratio  %>
+<% if @flights.count > 1 && @layover_ratio %>
 <div id="title-info">
-  <%= link_to "Layover Ratio", "https://onehundredairports.com/2019/02/07/my-worst-layovers/", target: :_blank %>: <%= @layover_ratio %>
+  <%= link_to "Layover Ratio", "https://onehundredairports.com/2019/02/07/my-worst-layovers/", target: :_blank %>: <%= @layover_ratio.round(3) %>
 </div>
 <% end %>
 

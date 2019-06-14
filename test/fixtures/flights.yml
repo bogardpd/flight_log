@@ -72,3 +72,63 @@ flightYVRORD:
   tail_number: N555UA
   travel_class: "economy"
   fleet_number: "555"
+
+flightLayoverRatioS1F1ORDDFW:
+  origin_airport_id: 2
+  destination_airport_id: 1
+  trip_id: 3
+  trip_section: 1
+  departure_date: 2019-07-01
+  departure_utc: 2019-07-01 12:00:00
+  airline_id: 1
+  flight_number: 1001
+
+flightLayoverRatioS2F1DFWSEA:
+  origin_airport_id: 1
+  destination_airport_id: 3
+  trip_id: 3
+  trip_section: 2
+  departure_date: 2019-07-02
+  departure_utc: 2019-07-02 12:00:00
+  airline_id: 1
+  flight_number: 2001
+
+flightLayoverRatioS2F2SEAORD:
+  origin_airport_id: 3
+  destination_airport_id: 2
+  trip_id: 3
+  trip_section: 2
+  departure_date: 2019-07-02
+  departure_utc: 2019-07-02 17:00:00
+  airline_id: 1
+  flight_number: 2002
+
+flightLayoverRatioS3F1ORDORD:
+  origin_airport_id: 2
+  destination_airport_id: 2
+  trip_id: 3
+  trip_section: 3
+  departure_date: 2019-07-03
+  departure_utc: 2019-07-03 12:00:00
+  airline_id: 1
+  flight_number: 3001
+
+flightLayoverRatioS3F2ORDYVR:
+  origin_airport_id: 2
+  destination_airport_id: 4
+  trip_id: 3
+  trip_section: 3
+  departure_date: 2019-07-03
+  departure_utc: 2019-07-03 15:00:00
+  airline_id: 1
+  flight_number: 3002
+
+flightLayoverRatioS4F1YVRYVR:
+  origin_airport_id: 4
+  destination_airport_id: 4
+  trip_id: 3
+  trip_section: 4
+  departure_date: 2019-07-04
+  departure_utc: 2019-07-04 12:00:00
+  airline_id: 1
+  flight_number: 4001

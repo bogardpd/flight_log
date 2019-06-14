@@ -114,24 +114,22 @@ class TripsController < ApplicationController
     add_message(:warning, "This trip is hidden!") if @trip.hidden
     
     @flights = Flight.where(trip_id: @trip, trip_section: params[:section]).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
+    raise ActiveRecord::RecordNotFound unless @flights.any?
+
     @section_distance = Route.total_distance(@flights)
-    if @section_distance && @flights.any?
-      stops = [@flights.first.origin_airport,@flights.last.destination_airport]
-      if @flights.count > 1 && stops.first != stops.last
-        @layover_ratio = (@section_distance.to_f/Route.distance_by_airport(*stops).to_f).round(3)
-      end
-    else
-      stops = Array.new
-    end
+    @layover_ratio = @trip.layover_ratio(params[:section])
+    stops = [@flights.first.origin_airport,@flights.last.destination_airport]
+    
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
     @meta_description = "Maps and lists of flights on section #{params[:section]} of Paul Bogardʼs #{@trip.name} trip."
     @title = "#{@trip.name} (Section #{params[:section]})"
+    
     add_breadcrumb "Trips", trips_path
     add_breadcrumb @trip.name, trip_path(params[:trip])
     add_breadcrumb "Section #{params[:section]}", show_section_path(params[:trip], params[:section])
     
   rescue ActiveRecord::RecordNotFound
-    flash[:warning] = "We couldnʼt find a trip with an ID of #{params[:trip]}. Instead, weʼll give you a list of trips."
+    flash[:warning] = "We couldnʼt find a matching trip section. Instead, weʼll give you a list of trips."
     redirect_to trips_path
   end
   
