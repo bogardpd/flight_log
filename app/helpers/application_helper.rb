@@ -22,7 +22,7 @@ module ApplicationHelper
     if @meta_description.nil?
       ""
     else
-      %Q(<meta name="description" content="#{@meta_description}" />).html_safe
+      content_tag(:meta, nil, name: "description", content: @meta_description)
     end
   end
   
@@ -36,7 +36,7 @@ module ApplicationHelper
   # @return [ActiveSupport::SafeBuffer] A city name with any present airport
   #   name formatted.
   def format_airport_name(city_airport_name)
-    return city_airport_name.gsub(" (", %Q(&ensp;<small class="airport-name">)).gsub(")", "</small>").html_safe
+    return sanitize(city_airport_name.gsub(/\(.*\)/, '&ensp;<small class="airport-name">\0</small>').tr("()",""))
   end
   
   # Formats a pair of decimal coordinates into a string pair of coordinates
@@ -47,7 +47,7 @@ module ApplicationHelper
   # @return [ActiveSupport::SafeBuffer] a string pair of decimal degree
   #   coordinates with N/S and E/W hemispheres and 5 decimal places.
   def format_coordinates(coordinates)
-    return "#{"%.5f" % coordinates[0].abs}° #{coordinates[0] < 0 ? "S" : "N"}&ensp;#{"%.5f" % coordinates[1].abs}° #{coordinates[1] < 0 ? "W" : "E"}".html_safe
+    return sanitize("#{"%.5f" % coordinates[0].abs}° #{coordinates[0] < 0 ? "S" : "N"}&ensp;#{"%.5f" % coordinates[1].abs}° #{coordinates[1] < 0 ? "W" : "E"}")
   end
   
   # Renders a message <div> containing an info box, success message, warning
@@ -103,7 +103,7 @@ module ApplicationHelper
     title ||= icao_code
     class_array = ["airline-icon"]
     class_array |= css_class.split(" ") if css_class
-    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/icao/#{icao_code}.png", title: title, alt: icao_code, class: class_array.join(" "), onerror: "this.src='assets/blank.png';this.onerror='';").html_safe
+    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/icao/#{icao_code}.png", title: title, alt: icao_code, class: class_array.join(" "), onerror: "this.src='assets/blank.png';this.onerror='';")
   end
   
   # Renders an image containing a country flag.
@@ -115,8 +115,7 @@ module ApplicationHelper
   def country_flag_icon(country, title: nil)
     return image_tag("/assets/blank.png", class: "country-flag-icon") unless country
     title ||= country
-    return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: "country-flag-icon", onerror: "this.src='assets/blank.png';this.onerror='';").html_safe
-    html += %Q(</span>)
+    return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: "country-flag-icon", onerror: "this.src='assets/blank.png';this.onerror='';")
   end
   
   # Provides monospace formatting for a string. Generally used for formatting IATA and ICAO codes.
@@ -125,8 +124,7 @@ module ApplicationHelper
   # @return [ActiveSupport::SafeBuffer] HTML text formatted with a monospace font
   def code_mono(code)
     return nil unless code.present?
-    html = %Q(<span class="code-mono">#{code}</span>)
-    html.html_safe
+    return content_tag(:span, code, class: %w(code-mono))
   end
   
   # Renders a link which the user can click on to sort a table column. Used in
@@ -171,7 +169,7 @@ module ApplicationHelper
     else
       sort_polarity = sort_direction[1]
     end
-    link_to([title_string,category_sort_symbol].join(" ").html_safe, url_for(region: params[:region], sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
+    link_to(sanitize([title_string,category_sort_symbol].join(" ")), url_for(region: params[:region], sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
   end
 
   # Takes a tail number and renders an image_tag for the country flag of the
@@ -198,9 +196,9 @@ module ApplicationHelper
     country_format = TailNumber.country_format(tail_number)
     tail_link = link_to(country_format[:tail], show_tail_path(tail_number), title: "View flights on tail number #{country_format[:tail]}")
     if country_format[:country] || show_blank_flag
-      return "#{country_flag_icon(country_format[:country])} #{tail_link}".html_safe
+      return country_flag_icon(country_format[:country]) + " " + tail_link
     else
-      return tail_link.html_safe
+      return tail_link
     end
   end
   

@@ -67,7 +67,6 @@ module FlightsHelper
     classes = %w(star-rating)
     inline_classes = {left: "icon-left", right: "icon-right", both: "icon-between-text"}
     classes.push(inline_classes[inline]) if inline_classes[inline]
-    html = image_tag("stars/#{quality}.svg", title: "#{quality} out of 5 stars", alt: "#{quality} out of 5 stars", class: classes.join(" "))
-    return html.html_safe
+    return image_tag("stars/#{quality}.svg", title: "#{quality} out of 5 stars", alt: "#{quality} out of 5 stars", class: classes.join(" "))
   end
 end

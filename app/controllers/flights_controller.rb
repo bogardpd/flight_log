@@ -2,6 +2,7 @@
 # classes}, {TailNumber tail numbers}, and {BoardingPass} parsing.
 
 class FlightsController < ApplicationController
+
   protect_from_forgery except: :show_boarding_pass_json
   before_action :logged_in_user, :only => [:new, :new_flight_menu, :change_trip, :create, :create_iata, :edit, :update, :destroy, :index_emails, :create_iata]
   
@@ -576,7 +577,7 @@ class FlightsController < ApplicationController
         flash[:success] += " Youʼve had prior flights on this tail!"
       end
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
-        flash[:warning] = "Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?".html_safe
+        flash[:warning] = ActionController::Base.helpers.sanitize("Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?")
       end
       # If pass exists, delete pass 
       if params[:flight][:pk_pass_id]
@@ -619,7 +620,7 @@ class FlightsController < ApplicationController
         flash[:success] += " You’ve had prior flights on this tail!"
       end
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
-        flash[:warning] = "Your departure date and UTC time are more than a day apart &ndash; are you sure they’re correct?".html_safe
+        flash[:warning] = ActionController::Base.helpers.sanitize("Your departure date and UTC time are more than a day apart &ndash; are you sure they’re correct?")
       end
       @pass = PKPass.find_by(id: params[:flight][:pass_id])
       @pass.destroy if @pass
