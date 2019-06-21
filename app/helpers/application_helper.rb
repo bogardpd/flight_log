@@ -70,7 +70,7 @@ module ApplicationHelper
     order = [:error, :warning, :success, :info]
     @messages ||= []
     @messages.concat(flash.map{|k,v| {type: k.to_sym, text: v}}) if flash
-    @messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text]) }.join.html_safe
+    safe_join(@messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text]) })
   end
   
   # Takes an IATA airline code which may or may not contain a
