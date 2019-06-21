@@ -62,7 +62,7 @@
 						<%= index + 1 %>
 					<% end %>
 	    	</td>
-		    <td class="airport-city"><%= country_flag_icon(row[:country]) %> <%= link_to(format_airport_name(row[:city]).html_safe, airport_path(row[:iata_code])) %></td>
+		    <td class="airport-city"><%= country_flag_icon(row[:country]) %> <%= link_to(format_airport_name(row[:city]), airport_path(row[:iata_code])) %></td>
 		    <td class="airport-code code-mono"><%= link_to(row[:iata_code], airport_path(row[:iata_code])) %></td>
 				<td class="airport-distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
 		    <td class="airport-flights"><div class="graph" style="background-size: <%= row[:total_flights]*100/@flights_maximum %>% 100%;"><%= link_to(row[:total_flights], route_path("#{@airport.iata_code}-#{row[:iata_code]}")) %></div></td>
