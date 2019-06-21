@@ -23,8 +23,8 @@
   		</tr>
   	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
   	  <tr>
-  	    <td class="aircraft-family"><%= link_to(%Q(<span class="aircraft-manufacturer">#{aircraft_family[:manufacturer]}</span> #{aircraft_family[:family_name]}).html_safe, aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
-  	    <td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:id]), :title => "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
+  	    <td class="aircraft-family"><%= link_to(content_tag(:span, aircraft_family[:manufacturer], class: "aircraft-manufacturer") + " " + aircraft_family[:family_name], aircraft_family_path(aircraft_family[:id]), title: "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
+  	    <td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:id]), title: "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
   		</tr>
   	<% end %>
   	</table>
