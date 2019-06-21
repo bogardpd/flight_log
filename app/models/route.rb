@@ -16,9 +16,9 @@ class Route < ApplicationRecord
   # The plain text arrow used between airport pairs on two way routes.
   ARROW_TWO_WAY_PLAINTEXT = "⇔"
   # The HTML arrow used between airport pairs on one way routes.
-  ARROW_ONE_WAY_HTML = %Q(<span class="route-arrow">#{ARROW_ONE_WAY_PLAINTEXT}</span>).html_safe
+  ARROW_ONE_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_ONE_WAY_PLAINTEXT, class: %w(route-arrow))
   # The HTML arrow used between airport pairs on two way routes.
-  ARROW_TWO_WAY_HTML = %Q(<span class="route-arrow">#{ARROW_TWO_WAY_PLAINTEXT}</span>).html_safe
+  ARROW_TWO_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_TWO_WAY_PLAINTEXT, class: %w(route-arrow))
   
   # Given two IATA airport codes, returns the distance in statute miles
   # between them. The haversine formula is used to calculate the distance.
