@@ -27,18 +27,18 @@
       <% airline_maximum = known_airlines.max_by{|i| i[:flight_count]}[:flight_count]%>
       <% known_airlines.each_with_index do |airline, index| %>
         <% path = (type == :operator) ? show_operator_path(airline[:iata_airline_code]) : airline_path(airline[:iata_airline_code]) %>
-        <%= (new_airlines.include?(airline[:id]) ? %Q(<tr class="new">) : "<tr>").html_safe %>
+        <%= content_tag(:tr, class: (new_airlines.include?(airline[:id]) ? "new" : nil)) do %>
           <td class="counter"><%= ((is_summary || @sort_cat == :flights) && airline[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
       		<td class="airline-airline">
             <%= link_to(airline_icon(airline[:icao_airline_code], title: "View all flights on #{airline[:airline_name]}") + airline[:airline_name], path, title: "View all flights on #{airline[:airline_name]}") %><% if new_airlines.include?(airline[:id]) %>*<% end %>
           </td>
       		<td class="airline-code code-mono">
-            <%= link_to(airline[:iata_airline_code].split("-").first, path, :title => "View all flights on #{airline[:airline_name]}") %>
+            <%= link_to(airline[:iata_airline_code].split("-").first, path, title: "View all flights on #{airline[:airline_name]}") %>
           </td>
           <td class="airline-flights">
             <%= render "flights/graph_block", value: airline[:flight_count], maximum: airline_maximum %>
           </td>
-        </tr>
+        <% end %>
       	<% previous_count = airline[:flight_count] %>
       <% end %>
 
