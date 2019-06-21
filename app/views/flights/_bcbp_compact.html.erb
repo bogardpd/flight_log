@@ -1,5 +1,5 @@
 <% if boarding_pass.ordered_groups %>
 <div class="boarding-pass-fields">
-  <div class="raw-data"><code><%= boarding_pass.extract_detail(:raw).zip(boarding_pass.extract_detail(:valid)).map{|d| %Q(<span class="#{{"true" => "valid", "false" => "invalid", "" => "unknown"}[d[1].to_s]}">#{d[0]}</span>)}.join.html_safe %></code></div>
+  <div class="raw-data"><code><%= safe_join(boarding_pass.extract_detail(:raw).zip(boarding_pass.extract_detail(:valid)).map{|d| content_tag(:span, d[0], class: {"true" => "valid", "false" => "invalid", "" => "unknown"}[d[1].to_s])}) %></code></div>
 </div>
 <% end %>

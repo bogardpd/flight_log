@@ -38,17 +38,17 @@ module FlightsHelper
   # 
   # @see BoardingPass
   def format_radio_text(label, text_hash)
-    label = %Q(<span class="label">#{label}</span>)
+    label = content_tag(:span, label, class: "label")
     if text_hash.nil?
-      text = %Q(<span class="radio-empty">(blank)</span>)
+      text = content_tag(:span, "(blank)", class: "radio-empty")
     else
       text = Array.new
-      text.push(%Q(<code class="radio-code-block">#{text_hash[:code_block].chars.each_slice(24).map(&:join).join("<br/>")}</code>)) if text_hash[:code_block]
-      text.push(%Q(<span class="radio-code">#{text_hash[:code]}</span>)) if text_hash[:code]
+      text.push(content_tag(:code, sanitize(text_hash[:code_block].chars.each_slice(24).map(&:join).join("<br/>")), class: "radio-code-block")) if text_hash[:code_block]
+      text.push(content_tag(:span, text_hash[:code], class: "radio-code")) if text_hash[:code]
       text.push(text_hash[:text]) if text_hash[:text]
       text = text.join("&emsp;")
     end
-    return [label, text].join("<br/>")
+    return sanitize([label, text].join("<br/>"))
   end
 
   # Renders a star rating image based on a number between 0 and 5, inclusive.

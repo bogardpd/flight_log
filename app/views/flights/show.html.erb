@@ -30,7 +30,7 @@
   </tr>
   <tr>
     <td class="label-column">Trip</td>
-    <td class="flight_show_trip"><%= %Q(<div class="hidden-marker">Hidden</div>).html_safe if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
+    <td class="flight_show_trip"><%= content_tag(:div, "Hidden", class: "hidden-marker") if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
   </tr>
   <tr>
     <td class="label-column">Route</td>
@@ -40,7 +40,7 @@
       <% elsif logged_in? %>
         <div class="supplemental-info message-error"><%= link_to "Distance Undefined",  edit_route_path(@flight.origin_airport.iata_code,@flight.destination_airport.iata_code) %></div>
       <% end %>
-      <%= link_to("#{@flight.origin_airport.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@flight.destination_airport.iata_code}".html_safe, route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %>
+      <%= link_to("#{@flight.origin_airport.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@flight.destination_airport.iata_code}", route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %>
     </td>
   </tr>
   <% if @flight.travel_class %>
@@ -56,7 +56,7 @@
     <td class="label-column">Airline</td>
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.airline.iata_airline_code) %></div>
-			<%= link_to("#{airline_icon(@flight.airline.icao_airline_code, title: @flight.airline.airline_name)}#{@flight.airline.airline_name}".html_safe, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %>
+			<%= link_to(airline_icon(@flight.airline.icao_airline_code, title: @flight.airline.airline_name) + @flight.airline.airline_name, airline_path(@flight.airline.iata_airline_code), title: "View flights on " + @flight.airline.airline_name) %>
 			</td>
   </tr>
   <% if @flight.operator %>
@@ -64,7 +64,7 @@
     <td class="label-column">Operated By</td>
     <td class="flight_show_airline">
 			<div class="supplemental-code"><%= iata_airline_code_display(@flight.operator.iata_airline_code) %></div>
-			<%= link_to("#{airline_icon(@flight.operator.icao_airline_code, title: @flight.operator.airline_name)}#{@flight.operator.airline_name}".html_safe, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %>
+			<%= link_to(airline_icon(@flight.operator.icao_airline_code, title: @flight.operator.airline_name) + @flight.operator.airline_name, show_operator_path(@flight.operator.iata_airline_code), title: "View flights operated by " + @flight.operator.airline_name) %>
 			<% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.iata_airline_code, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %>
 			</td>
   </tr>
@@ -85,7 +85,7 @@
 	    <td class="label-column">Aircraft Family</td>
 	    <td>
 	      <div class="supplemental-code"><%= aircraft[:family].iata_aircraft_code %></div>
-				<%= link_to("#{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family".html_safe, aircraft_family_path(aircraft[:family]), :title => "View flights on #{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family aircraft") %>
+				<%= link_to("#{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family", aircraft_family_path(aircraft[:family]), :title => "View flights on #{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family aircraft") %>
 				</td>
 	    </td>
 	  </tr>
