@@ -44,9 +44,7 @@ module Portfolio
     # config.active_record.whitelist_attributes = true
     
     # Change form field error display.
-    config.action_view.field_error_proc = Proc.new { |html_tag, instance|
-      "<span class=\"field_with_errors\">#{html_tag}</span>".html_safe
-    }
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| ActionController::Base.helpers.content_tag(:span, html_tag, class: "field_with_errors") }
     
     config.before_configuration do
       env_file = File.join(Rails.root, 'config', 'local_env.yml')
