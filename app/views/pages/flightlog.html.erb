@@ -6,7 +6,7 @@
 
 <div class="intro-box">
 	<%= gcmap_with_region_select(@map, @region) %>
-	<p class="total"><span class="distance-primary"><%= render partial: "routes/distance_string", locals: {distance: @total_distance} %></span> &middot; <%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flights.length, "flight")}</span>).html_safe, flights_path)%></p>
+  <p class="total"><span class="distance-primary"><%= render partial: "routes/distance_string", locals: {distance: @total_distance} %></span> &middot; <%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flights.length, "flight"), class: "summary-total"), flights_path) %></p>
 </div>
 
 <% if @flights.any? %>
@@ -22,13 +22,13 @@
     </tr>
   <% @flight_airports.first(5).each do |airport| %>
     <tr>
-      <td class="left"><%= country_flag_icon(airport[:country]) %> <%= link_to(format_airport_name(airport[:city]).html_safe, airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
-      <td class="center code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>
+      <td class="left"><%= country_flag_icon(airport[:country]) %> <%= link_to(format_airport_name(airport[:city]), airport_path(airport[:iata_code]), title: "View airport details for #{airport[:city]}") %></td>
+      <td class="center code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), title: "View airport details for #{airport[:city]}") %></td>
       <td class="center"><%= airport[:visit_count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_airports.count, "airport")}</span>).html_safe, airports_path)%></p>
+  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_airports.count, "airport"), class: "summary-total"), airports_path) %></p>
 </div>
 
 <div class="intro-box column">
@@ -41,12 +41,12 @@
   <% @flight_airlines.first(5).each do |airline| %>
     <tr>
       <td class="left">
-      <%= link_to(airline_icon(airline[:icao_airline_code], title: airline[:airline_name]) + airline[:airline_name], airline_path(airline[:iata_airline_code]), :title => "View flights on #{airline[:airline_name]}") %></td>
+      <%= link_to(airline_icon(airline[:icao_airline_code], title: airline[:airline_name]) + airline[:airline_name], airline_path(airline[:iata_airline_code]), title: "View flights on #{airline[:airline_name]}") %></td>
       <td class="center"><%= airline[:flight_count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_airlines.length, "airline")}</span>).html_safe, airlines_path)%></p>
+  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_airlines.length, "airline"), class: "summary-total"), airlines_path) %></p>
 </div>
 
 <div class="intro-box column">
@@ -59,12 +59,12 @@
     </tr>
   <% @flight_routes.first(5).each do |flight_route| %>
     <tr>
-      <td class="left"><%= link_to(%Q(<span class="code-mono">#{flight_route[:route][0]}</span> #{Route::ARROW_TWO_WAY_PLAINTEXT} <span class="code-mono">#{flight_route[:route][1]}</span>).html_safe, route_path(flight_route[:route].join("-")), :title => "View flights between #{flight_route[:route][0]} and #{flight_route[:route][1]}") %></td>
+      <td class="left"><%= link_to(format_route(flight_route[:route]), route_path(flight_route[:route].join("-")), title: "View flights between #{flight_route[:route][0]} and #{flight_route[:route][1]}") %></td>
       <td class="center"><%= flight_route[:flight_count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_routes.length, "route")}</span>).html_safe, routes_path)%></p>
+  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_routes.length, "route"), class: "summary-total"), routes_path) %></p>
 </div>
 
 <div class="intro-box column">
@@ -77,12 +77,12 @@
     </tr>
   <% @flight_aircraft.first(5).each do |aircraft| %>
     <tr>
-      <td class="left"><%= link_to(%Q(<span class="aircraft-manufacturer">#{aircraft[:manufacturer]}</span> #{aircraft[:family_name]}).html_safe, aircraft_family_path(aircraft[:id]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
+      <td class="left"><%= link_to(format_aircraft_family(aircraft[:manufacturer], aircraft[:family_name]), aircraft_family_path(aircraft[:id]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
       <td class="center"><%= aircraft[:flight_count] %></td>
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_aircraft.length, "aircraft family")}</span>).html_safe, aircraft_families_path)%></p>
+  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_aircraft.length, "aircraft family"), class: "summary-total"), aircraft_families_path) %></p>
 </div>
 
 <div class="intro-box column">
@@ -98,7 +98,7 @@
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(%Q(See all <span class="summary-total">#{pluralize(@flight_tails.count, "tail number")}</span>).html_safe, tails_path)%></p>
+  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_tails.count, "tail number"), class: "summary-total"), tails_path) %></p>
 </div>
 
 </div>

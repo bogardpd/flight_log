@@ -24,7 +24,7 @@
     <% known_families.each_with_index do |aircraft_family, index| %>
       <%= content_tag(:tr, class: (new_aircraft_families.include?(aircraft_family[:id]) ? "new" : nil)) do %>
         <td class="counter"><%= ((is_summary || @sort_cat == :flights) && aircraft_family[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
-    		<td class="aircraft-family"><%= link_to(content_tag(:span, aircraft_family[:manufacturer], class: "aircraft-manufacturer") + " " + aircraft_family[:family_name], aircraft_family_path(aircraft_family[:id]), title: "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} Family aircraft") %><% if new_aircraft_families.include?(aircraft_family[:id]) %>*<% end %></td>
+    		<td class="aircraft-family"><%= link_to(format_aircraft_family(aircraft_family[:manufacturer], aircraft_family[:family_name]), aircraft_family_path(aircraft_family[:id]), title: "View flights on #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]} Family aircraft") %><% if new_aircraft_families.include?(aircraft_family[:id]) %>*<% end %></td>
         <td class="aircraft-flights"><%= render "flights/graph_block", value: aircraft_family[:flight_count], maximum: aircraft_maximum %></td>
       <% end %>
     	<% previous_count = aircraft_family[:flight_count] %>
