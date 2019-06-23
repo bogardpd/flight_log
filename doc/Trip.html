@@ -136,6 +136,23 @@ than the <span class='object_link'><a href="User.html" title="User (class)">User
 
     <dl class="constants">
       
+        <dt id="HIDDEN_MARKER-constant" class="">HIDDEN_MARKER =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>HTML to use to indicate a trip is hidden, or a flight is part of a hidden
+trip.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span><span class='period'>.</span><span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hidden</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hidden-marker</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></pre></dd>
+      
         <dt id="NULL_ATTRS-constant" class="">NULL_ATTRS =
           <div class="docstring">
   <div class="discussion">
@@ -363,16 +380,16 @@ Trip forms.</p>
       <pre class="lines">
 
 
-78
-79
-80
 81
 82
 83
-84</pre>
+84
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_purposes_list'>purposes_list</span>
   <span class='id identifier rubyid_purposes'>purposes</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -467,18 +484,18 @@ Trip forms.</p>
       <pre class="lines">
 
 
-93
-94
-95
 96
 97
 98
 99
 100
-101</pre>
+101
+102
+103
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 96</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_with_departure_dates'>with_departure_dates</span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_flyer'>flyer</span> <span class='op'>==</span> <span class='id identifier rubyid_current_user'>current_user</span>
@@ -540,12 +557,12 @@ they have not yet added any <span class='object_link'><a href="Flight.html" titl
       <pre class="lines">
 
 
-108
-109
-110</pre>
+111
+112
+113</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_with_no_flights'>with_no_flights</span>
   <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id not in (?)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='const'><span class='object_link'><a href="" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_distinct'>distinct</span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:flights</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>trips.id</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -627,9 +644,6 @@ of the previous flight&#39;s trip section or a new trip section.</p>
       <pre class="lines">
 
 
-35
-36
-37
 38
 39
 40
@@ -639,10 +653,13 @@ of the previous flight&#39;s trip section or a new trip section.</p>
 44
 45
 46
-47</pre>
+47
+48
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 38</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_estimated_trip_section'>estimated_trip_section</span><span class='lparen'>(</span><span class='id identifier rubyid_departure_utc'>departure_utc</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span>
@@ -736,17 +753,17 @@ section distance was twice as long as the theoretical best distance.</p>
       <pre class="lines">
 
 
-64
-65
-66
 67
 68
 69
 70
-71</pre>
+71
+72
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 67</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_layover_ratio'>layover_ratio</span><span class='lparen'>(</span><span class='id identifier rubyid_section'>section</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>trip_section:</span> <span class='id identifier rubyid_section'>section</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_order'>order</span><span class='lparen'>(</span><span class='symbol'>:departure_utc</span><span class='rparen'>)</span>
@@ -766,7 +783,7 @@ section distance was twice as long as the theoretical best distance.</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Jun 23 16:24:15 2019 by
+  Generated on Sun Jun 23 16:46:50 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

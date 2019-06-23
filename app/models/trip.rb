@@ -21,6 +21,9 @@ class Trip < ApplicationRecord
   validates :user_id, presence: true
   validates :name, :presence => true
 
+  # HTML to use to indicate a trip is hidden, or a flight is part of a hidden trip.
+  HIDDEN_MARKER = ActionController::Base.helpers.content_tag(:div, "Hidden", class: "hidden-marker")
+
   # Form fields which should be saved as nil when the field is blank.
   NULL_ATTRS = %w( comment )
   before_save :nil_if_blank

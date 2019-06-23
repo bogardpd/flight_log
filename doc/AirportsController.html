@@ -371,7 +371,6 @@ which use it.</p>
       <pre class="lines">
 
 
-223
 224
 225
 226
@@ -390,10 +389,11 @@ which use it.</p>
 239
 240
 241
-242</pre>
+242
+243</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 223</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 224</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@airport</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_airport_params'>airport_params</span><span class='rparen'>)</span>
@@ -461,7 +461,6 @@ which use it.</p>
       <pre class="lines">
 
 
-277
 278
 279
 280
@@ -475,10 +474,11 @@ which use it.</p>
 288
 289
 290
-291</pre>
+291
+292</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 277</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 278</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@flights</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>origin_airport_id = :airport_id OR destination_airport_id = :airport_id</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='symbol'>:airport_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -541,16 +541,16 @@ which use it.</p>
       <pre class="lines">
 
 
-249
 250
 251
 252
 253
 254
-255</pre>
+255
+256</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 249</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 250</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -749,16 +749,16 @@ which use it.</p>
       <pre class="lines">
 
 
-210
 211
 212
 213
 214
 215
-216</pre>
+216
+217</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 210</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 211</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -976,7 +976,8 @@ those trips</p>
 200
 201
 202
-203</pre>
+203
+204</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 80</span>
@@ -1004,6 +1005,7 @@ those trips</p>
   <span class='ivar'>@direct_flight_airports</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_prev_trip_id'>prev_trip_id</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_prev_section_id'>prev_section_id</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='id identifier rubyid_hidden_trips'>hidden_trips</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>hidden:</span> <span class='kw'>true</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='rparen'>)</span>
   
   <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_total_distance'><span class='object_link'><a href="Route.html#total_distance-class_method" title="Route.total_distance (method)">total_distance</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
   
@@ -1015,7 +1017,7 @@ those trips</p>
   <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_flight'>flight</span><span class='op'>|</span>
     <span class='id identifier rubyid_trip_array'>trip_array</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_id'>trip_id</span><span class='rparen'>)</span>
     <span class='kw'>unless</span> <span class='lparen'>(</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_id'>trip_id</span> <span class='op'>==</span> <span class='id identifier rubyid_prev_trip_id'>prev_trip_id</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_section'>trip_section</span> <span class='op'>==</span> <span class='id identifier rubyid_prev_section_id'>prev_section_id</span><span class='rparen'>)</span>
-      <span class='ivar'>@sections</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='symbol'>:trip_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_id'>trip_id</span><span class='comma'>,</span> <span class='symbol'>:trip_name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip'>trip</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='symbol'>:trip_section</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_section'>trip_section</span><span class='comma'>,</span> <span class='symbol'>:departure</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_departure_date'>departure_date</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
+      <span class='ivar'>@sections</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span> <span class='lbrace'>{</span><span class='symbol'>:trip_id</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_id'>trip_id</span><span class='comma'>,</span> <span class='symbol'>:trip_name</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip'>trip</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='symbol'>:trip_section</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_section'>trip_section</span><span class='comma'>,</span> <span class='symbol'>:departure</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_departure_date'>departure_date</span><span class='comma'>,</span> <span class='label'>trip_hidden:</span> <span class='id identifier rubyid_hidden_trips'>hidden_trips</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_id'>trip_id</span><span class='rparen'>)</span><span class='rbrace'>}</span> <span class='rparen'>)</span>
     <span class='kw'>end</span>
     <span class='id identifier rubyid_prev_trip_id'>prev_trip_id</span> <span class='op'>=</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_id'>trip_id</span>
     <span class='id identifier rubyid_prev_section_id'>prev_section_id</span> <span class='op'>=</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_trip_section'>trip_section</span>
@@ -1151,7 +1153,6 @@ those trips</p>
       <pre class="lines">
 
 
-262
 263
 264
 265
@@ -1159,10 +1160,11 @@ those trips</p>
 267
 268
 269
-270</pre>
+270
+271</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 262</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 263</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@airport</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1183,7 +1185,7 @@ those trips</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Jun 23 16:24:19 2019 by
+  Generated on Sun Jun 23 16:46:56 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

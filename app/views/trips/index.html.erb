@@ -5,7 +5,7 @@
   <table class="flightlog">
   <% @trips_with_no_flights.each do |trip| %>
     <tr>
-      <td class="trip_name"><%= %Q(<div class="hidden-marker">Hidden</div>).html_safe if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
+      <td class="trip_name"><%= Trip::HIDDEN_MARKER if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
     </tr>
   <% end %>
   </table>

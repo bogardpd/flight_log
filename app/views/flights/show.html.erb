@@ -30,7 +30,7 @@
   </tr>
   <tr>
     <td class="label-column">Trip</td>
-    <td class="flight_show_trip"><%= content_tag(:div, "Hidden", class: "hidden-marker") if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
+    <td class="flight_show_trip"><%= Trip::HIDDEN_MARKER if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
   </tr>
   <tr>
     <td class="label-column">Route</td>

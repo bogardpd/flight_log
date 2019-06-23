@@ -100,6 +100,7 @@ class AirportsController < ApplicationController
     @direct_flight_airports = Array.new
     prev_trip_id = nil
     prev_section_id = nil
+    hidden_trips = Trip.where(hidden: true).pluck(:id)
     
     @total_distance = Route.total_distance(@flights)
     
@@ -111,7 +112,7 @@ class AirportsController < ApplicationController
     @flights.each do |flight|
       trip_array.push(flight.trip_id)
       unless (flight.trip_id == prev_trip_id && flight.trip_section == prev_section_id)
-        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date} )
+        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date, trip_hidden: hidden_trips.include?(flight.trip_id)} )
       end
       prev_trip_id = flight.trip_id
       prev_section_id = flight.trip_section
