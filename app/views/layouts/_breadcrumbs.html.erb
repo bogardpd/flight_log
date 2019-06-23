@@ -7,7 +7,7 @@
   <span class="breadcrumb-title"><%= h(@breadcrumbs.last.first) %></span>
 	<% if (logged_in? && @admin_actions.present?) %>
   <div id="admin-actions">
-    <%= @admin_actions.join("&emsp;").html_safe %>
+    <%= safe_join(@admin_actions, sanitize("&emsp;")) %>
   </div>
   <% end %>
 </div>

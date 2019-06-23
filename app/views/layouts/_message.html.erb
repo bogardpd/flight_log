@@ -1,1 +1,1 @@
-<div class="message message-<%= type %>"><%= text.html_safe %></div>
+<div class="message message-<%= type %>"><%= sanitize(text) %></div>
