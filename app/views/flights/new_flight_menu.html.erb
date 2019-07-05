@@ -22,6 +22,7 @@
     <tr>
       <td>
         <%= form_tag(new_flight_path, method: :post) do %>
+          <%= hidden_field_tag(:clear_session, true) %>
           <%= hidden_field_tag(:trip_id, @trip.id) %>
           <%= hidden_field_tag(:pk_pass_id, pass[:id]) %>
           <%= submit_tag("Create this flight") %>
@@ -44,6 +45,7 @@
 
 <div class="center">
 <%= form_tag(new_flight_path, method: :post) do %>
+  <%= hidden_field_tag(:clear_session, true) %>
   <%= hidden_field_tag(:trip_id, @trip.id) %>
   <%= label_tag(:boarding_pass_data, "Use a barcode scanner to read your boarding pass, and paste the barcode data here:") %><br/>
   <%= text_area_tag(:boarding_pass_data, nil, size: "60x5", class: "code-mono") %><br/>
@@ -55,6 +57,7 @@
 
 <div class="center">
 <%= form_tag(new_flight_path, method: :post) do %>
+  <%= hidden_field_tag(:clear_session, true) %>
   <%= hidden_field_tag(:trip_id, @trip.id) %>
   <%= label_tag(:airline_icao, "Airline") %> / <%= label_tag(:flight_number) %><br />
   <%= collection_select(nil, :airline_icao, Airline.where(is_only_operator: false).where.not(icao_airline_code: nil).order("LOWER(airline_name)"), :icao_airline_code, :format_name, {include_blank: true}, class: "") %> <%= text_field_tag(:flight_number, nil, size: 5, maxlength: 5) %>
@@ -65,6 +68,7 @@
 <h2>Option 4: Create a flight manually</h2>
 <div class="center">
 <%= form_tag(new_flight_path, method: :post) do %>
+  <%= hidden_field_tag(:clear_session, true) %>
   <%= hidden_field_tag(:trip_id, @trip.id) %>
   <%= submit_tag("Create a new flight") %>
 <% end %>

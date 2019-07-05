@@ -763,12 +763,12 @@ representing a map of all flights the user has permission to view.</p>
       <pre class="lines">
 
 
+458
 459
-460
-461</pre>
+460</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 459</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 458</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_change_trip'>change_trip</span>
   <span class='id identifier rubyid_redirect_to'>redirect_to</span> <span class='id identifier rubyid_new_flight_menu_path'>new_flight_menu_path</span><span class='lparen'>(</span><span class='label'>trip_id:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:trip_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -819,11 +819,6 @@ representing a map of all flights the user has permission to view.</p>
       <pre class="lines">
 
 
-571
-572
-573
-574
-575
 576
 577
 578
@@ -843,10 +838,15 @@ representing a map of all flights the user has permission to view.</p>
 592
 593
 594
-595</pre>
+595
+596
+597
+598
+599
+600</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 571</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 576</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='id identifier rubyid_clear_new_flight_variables'>clear_new_flight_variables</span>
@@ -919,16 +919,16 @@ representing a map of all flights the user has permission to view.</p>
       <pre class="lines">
 
 
-639
-640
-641
-642
-643
 644
-645</pre>
+645
+646
+647
+648
+649
+650</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 639</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 644</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='id identifier rubyid_flight'>flight</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -983,16 +983,16 @@ representing a map of all flights the user has permission to view.</p>
       <pre class="lines">
 
 
-602
-603
-604
-605
-606
 607
-608</pre>
+608
+609
+610
+611
+612
+613</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 602</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 607</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='ivar'>@flight</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1455,6 +1455,7 @@ extracted from information provided in the <span class='object_link'><a href="#n
       <pre class="lines">
 
 
+473
 474
 475
 476
@@ -1545,14 +1546,25 @@ extracted from information provided in the <span class='object_link'><a href="#n
 561
 562
 563
-564</pre>
+564
+565
+566
+567
+568
+569</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 474</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 473</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Flights</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_flights_path'>flights_path</span>
   <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>New Flight</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_new_flight_menu_path'>new_flight_menu_path</span>
+
+  <span class='comment'># Check if this page was loaded directly from a form submission. If so,
+</span>  <span class='comment'># clear out the session variables. This keeps extraneous data from spilling
+</span>  <span class='comment'># over if a user submits one new flight form, clicks back to get to the
+</span>  <span class='comment'># menu, and then submits a different new flight form.
+</span>  <span class='id identifier rubyid_clear_new_flight_variables'>clear_new_flight_variables</span> <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:clear_session</span><span class='rbracket'>]</span>
   
   <span class='comment'># Save form parameters to session:
 </span>  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:new_flight</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1702,6 +1714,7 @@ enter all flight data.</p>
       <pre class="lines">
 
 
+425
 426
 427
 428
@@ -1727,11 +1740,10 @@ enter all flight data.</p>
 448
 449
 450
-451
-452</pre>
+451</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 426</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 425</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new_flight_menu'>new_flight_menu</span>
   <span class='ivar'>@title</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Create a New Flight</span><span class='tstring_end'>&quot;</span></span>
@@ -1964,8 +1976,7 @@ verified user</p>
 395
 396
 397
-398
-399</pre>
+398</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 384</span>
@@ -1976,8 +1987,7 @@ verified user</p>
   <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Boarding Pass</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_boarding_pass_path'>boarding_pass_path</span>
   
   <span class='ivar'>@boarding_pass</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="BoardingPass.html#initialize-instance_method" title="BoardingPass#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='comment'>#if @boarding_pass.leg_operating_carrier_designator(0)
-</span>  <span class='kw'>if</span> <span class='ivar'>@boarding_pass</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:repeated</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='symbol'>:mandatory</span><span class='comma'>,</span> <span class='int'>42</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='ivar'>@boarding_pass</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:repeated</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='symbol'>:mandatory</span><span class='comma'>,</span> <span class='int'>42</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_bp_string'>bp_string</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@boarding_pass</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:repeated</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='symbol'>:mandatory</span><span class='comma'>,</span> <span class='int'>42</span><span class='comma'>,</span> <span class='symbol'>:raw</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='ivar'>@boarding_pass</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:repeated</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='symbol'>:mandatory</span><span class='comma'>,</span> <span class='int'>43</span><span class='comma'>,</span> <span class='symbol'>:raw</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='ivar'>@boarding_pass</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:repeated</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='symbol'>:mandatory</span><span class='comma'>,</span> <span class='int'>26</span><span class='comma'>,</span> <span class='symbol'>:raw</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'> ✈ </span><span class='embexpr_beg'>#{</span><span class='ivar'>@boarding_pass</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:repeated</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='symbol'>:mandatory</span><span class='comma'>,</span> <span class='int'>38</span><span class='comma'>,</span> <span class='symbol'>:raw</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
     <span class='ivar'>@title</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bp_string'>bp_string</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
     <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='id identifier rubyid_bp_string'>bp_string</span><span class='comma'>,</span> <span class='id identifier rubyid_boarding_pass_path'>boarding_pass_path</span>
@@ -2031,17 +2041,17 @@ data.</p>
       <pre class="lines">
 
 
+403
 404
 405
 406
 407
 408
 409
-410
-411</pre>
+410</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 404</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 403</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_boarding_pass_json'>show_boarding_pass_json</span>
   <span class='id identifier rubyid_boarding_pass'>boarding_pass</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="BoardingPass.html#initialize-instance_method" title="BoardingPass#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:data</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -2691,11 +2701,6 @@ for this tail</p>
       <pre class="lines">
 
 
-615
-616
-617
-618
-619
 620
 621
 622
@@ -2708,10 +2713,15 @@ for this tail</p>
 629
 630
 631
-632</pre>
+632
+633
+634
+635
+636
+637</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 615</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/flights_controller.rb', line 620</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@flight</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -2741,7 +2751,7 @@ for this tail</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Jun 23 16:54:19 2019 by
+  Generated on Fri Jul  5 11:36:22 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

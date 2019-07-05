@@ -387,7 +387,6 @@ class FlightsController < ApplicationController
     add_breadcrumb "Boarding Pass", boarding_pass_path
     
     @boarding_pass = BoardingPass.new(params[:data])
-    #if @boarding_pass.leg_operating_carrier_designator(0)
     if @boarding_pass.data.dig(:repeated, 0, :mandatory, 42)
       bp_string = "#{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 43, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 26, :raw)} ✈ #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 38, :raw)}"
       @title += ": #{bp_string}"
@@ -474,6 +473,12 @@ class FlightsController < ApplicationController
   def new
     add_breadcrumb "Flights", flights_path
     add_breadcrumb "New Flight", new_flight_menu_path
+
+    # Check if this page was loaded directly from a form submission. If so,
+    # clear out the session variables. This keeps extraneous data from spilling
+    # over if a user submits one new flight form, clicks back to get to the
+    # menu, and then submits a different new flight form.
+    clear_new_flight_variables if params[:clear_session]
     
     # Save form parameters to session:
     session[:new_flight] ||= Hash.new
