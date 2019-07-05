@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby '2.3.1'
 
-gem 'rails', '5.0.0.1'
+gem 'rails', '~> 5.2', '>= 5.2.3'
 
 # Use puma as the webserver
 gem 'puma', '3.9.1'
@@ -11,17 +11,15 @@ gem 'pg' , '0.18.4'
 # Use bcrypt to hash passwords
 gem 'bcrypt', '3.1.7'
 # Use SCSS for stylesheets
-gem 'sass-rails', '5.0.6'
+gem 'sassc-rails', '~> 2.1', '>= 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '3.0.0'
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '4.2.1'
 
 gem 'rails-ujs', '~> 5.1.0.beta1'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '2.4.1'
+gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
 gem 'rubyzip', '~> 1.2'
 # Use savon for SOAP
