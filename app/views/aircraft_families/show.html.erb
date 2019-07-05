@@ -34,7 +34,11 @@
   
 <% if @aircraft_family.is_family? %>
   <h2 id="types"><%= @aircraft_family.family_name %> Family Subtypes</h2>
-  <%= render partial: "aircraft_family_subtypes", locals: {subtypes: @subtypes} if @flights.any? %>
+  <% if @flights.any? %>
+    <%= render partial: "aircraft_family_subtypes", locals: {subtypes: @subtypes} %>
+  <% else %>
+    <p>I haven’t flown on any <%= @aircraft_family.full_name %> variants.</p>
+  <% end %>
   <% if logged_in? && @subtypes_with_no_flights.any? %>
     <table class="flightlog">
       <thead>

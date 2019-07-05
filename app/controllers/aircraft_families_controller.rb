@@ -75,7 +75,7 @@ class AircraftFamiliesController < ApplicationController
     
     if @aircraft_family.is_family?
       add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
-      add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: "warning") if @flights.length == 0
+      add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: "warning") if @flights.length == 0 && !@aircraft_family.children.any?
       add_admin_action view_context.link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family))
       add_admin_action view_context.link_to("Add Subtype", new_aircraft_family_path(family_id: @aircraft_family))
     else
@@ -196,8 +196,12 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   def destroy
     @aircraft_family = AircraftFamily.find(params[:id])
+    @children = AircraftFamily.where(parent_id: params[:id])
     if @aircraft_family.flights.any?
       flash[:error] = "This aircraft family still has flights and could not be deleted. Please delete all of this aircraft familyʼs flights first."
+      redirect_to aircraft_family_path(@aircraft_family)
+    elsif @children.any?
+      flash[:error] = "This aircraft family still has variants that belong to it and could not be deleted. Please delete all of this aircraft familyʼs variants first."
       redirect_to aircraft_family_path(@aircraft_family)
     else
       @aircraft_family.destroy
