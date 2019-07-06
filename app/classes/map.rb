@@ -135,14 +135,14 @@ class Map
     return output
   end
   
-  # Creates a hash of a map query based on a secret key in the environment
-  # variables.
+  # Creates a hash of a map query based on a secret key in the application
+  # credentials.
   # 
   # @param query [String] the query to hash
   # @return [String] a hash of the query
   # @see PagesController#gcmap_image_proxy
   def self.hash_image_query(query)
-    Digest::MD5.hexdigest(query + ENV["IMAGE_KEY"])
+    Digest::MD5.hexdigest(query + Rails.application.credentials[:image_key])
   end
   
   private

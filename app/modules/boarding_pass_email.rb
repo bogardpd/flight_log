@@ -42,7 +42,7 @@ module BoardingPassEmail
   # @return [Array<String>] JSON data contained within each PKPass attachment
   def self.process_attachments(valid_emails)
     imap = Net::IMAP.new("imap.gmail.com",993,true)
-    imap.login(ENV["BOARDING_PASS_IMPORT_EMAIL_ADDRESS"],ENV["BOARDING_PASS_IMPORT_EMAIL_PASSWORD"])
+    imap.login(Rails.application.credentials[:boarding_pass_import][:email_address],Rails.application.credentials[:boarding_pass_import][:password])
     imap.select("INBOX")
     
     delete_old_emails(imap)

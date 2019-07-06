@@ -1,4 +1,4 @@
-app/classes/map.rb 9d353957592e8819e08e72d89c5f5f7b2f062fe6
+app/classes/map.rb 98fd6725bb2091839da34d8e9d2ec41fc9648831
 app/models/trip.rb 5a313068420b9f03119b1be6afe1755e4f444062
 app/models/user.rb aa83d10456ebe2e579ef80f7f08ff20dc10171a2
 app/models/route.rb 84c7ce84550a5266603e1d92a410635c0a834308
@@ -7,7 +7,7 @@ app/models/airline.rb e90aed32ed2da0ebcb949576f4dd3daf59cb6926
 app/models/airport.rb 5ff9a154b5c94ad16691c1d2800db0a40d5c8f7d
 app/models/pk_pass.rb b63fc9cd7c2e81ef036c9fbc657cda5df7bfeefc
 app/modules/distance.rb 3990ecd3bedd22118f2c8b5ada45d26e622af389
-app/modules/flight_xml.rb a102a744df44fe26c1f83b97cbbff8c2d979d658
+app/modules/flight_xml.rb 09042ea56f06ebdf089a1dc8147e34bdb78f1cda
 app/classes/flights_map.rb 6f1b539a714f10a218949d498e022d09172cba77
 app/modules/tail_number.rb 0e94811f58db69cb5a8e905cfdd46200c516d4b2
 app/classes/airports_map.rb 9fa298296b276262fb656bdcdd0c68b2f920c4f7
@@ -28,7 +28,7 @@ app/helpers/sessions_helper.rb d1852044ff57d2cedeab266aa46bbec2b2f27812
 app/classes/single_flight_map.rb 79ccc361af1ba529e32bbc292e86db8d1363aedb
 app/models/application_record.rb 899e5a65ef956feef4786903943db05e223070b0
 app/helpers/application_helper.rb 87b5469a2be588ba750b64fa43baf51168b28547
-app/modules/boarding_pass_email.rb fe14d19f462ed6f6c12afb29522b7c1530f1ef10
+app/modules/boarding_pass_email.rb 1e5c3d4613de5abbcb31ff4e488b00a26ef5192c
 app/controllers/admin_controller.rb 52925a1422ba9dcc52309f8e5214e7bc9f9cc97d
 app/controllers/pages_controller.rb 310155891f8a0d208facd6d486f29cbca279820b
 app/controllers/trips_controller.rb e9829cec0a1ebd5599066e67acac77033169d6c7
