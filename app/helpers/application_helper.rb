@@ -148,12 +148,12 @@ module ApplicationHelper
         
     if @sort_cat == sort_symbol
       if @sort_dir == :asc
-        category_sort_symbol = %Q(<span class="sort-symbol">&#x25B2;</span>) # Up Triangle
+        category_sort_direction_indicator = content_tag(:span, sanitize("&#x25B2;"), class: "sort-direction") # Up Triangle
       elsif @sort_dir == :desc
-        category_sort_symbol = %Q(<span class="sort-symbol">&#x25BC;</span>) # Down Triangle
+        category_sort_direction_indicator = content_tag(:span, sanitize("&#x25BC;"), class: "sort-direction") # Down Triangle
       end
     else
-      category_sort_symbol = ""
+      category_sort_direction_indicator = nil
     end
     
     case default_dir
@@ -169,7 +169,7 @@ module ApplicationHelper
     else
       sort_polarity = sort_direction[1]
     end
-    link_to(sanitize([title_string,category_sort_symbol].join(" ")), url_for(region: params[:region], sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
+    link_to(safe_join([title_string, category_sort_direction_indicator].compact, " "), url_for(region: params[:region], sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
   end
 
   # Takes a tail number and renders an image_tag for the country flag of the
