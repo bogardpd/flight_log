@@ -13,10 +13,10 @@
 
 <table class="flightlog">
   <tr>
-    <th class="tail-number"><%= sort_link("Tail Number", :tail, "tail", :asc, nil) %></th>
-    <th class="tail-aircraft"><%= sort_link("Aircraft", :aircraft, "aircraft", :asc, nil) %></th>
-    <th class="tail-airline"><%= sort_link("Airline", :airline, "airline", :asc, nil) %></th>
-    <th class="tail-flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
+    <th class="tail-number"><%= sort_link("Tail Number", :tail, :asc) %></th>
+    <th class="tail-aircraft"><%= sort_link("Aircraft", :aircraft, :asc) %></th>
+    <th class="tail-airline"><%= sort_link("Airline", :airline, :asc) %></th>
+    <th class="tail-flights"><%= sort_link("Flights", :flights, :desc) %></th>
 <% @tail_numbers_table.each do |tail| %>
   <tr>
     <td class="tail-number"><%= link_to(country_flag_icon(tail[:country], title: "View flights on tail number #{TailNumber.format(tail[:tail_number])}") + TailNumber.format(tail[:tail_number]), show_tail_path(tail[:tail_number]), title: "View flights on tail number #{TailNumber.format(tail[:tail_number])}") %></td>

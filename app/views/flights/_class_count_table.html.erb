@@ -8,9 +8,9 @@
     <thead>
       <tr>
     		<th class="counter">#</th>
-    		<th class="class-quality"><%= is_summary ? "Quality" : sort_link("Quality", :quality, "quality", :desc, nil) %></th>
+    		<th class="class-quality"><%= is_summary ? "Quality" : sort_link("Quality", :quality, :desc) %></th>
         <th class="class-class">Travel Class</th>
-        <th class="class-flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, nil) %></th>
+        <th class="class-flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, :desc) %></th>
       </tr>
     </thead>
     <tbody>

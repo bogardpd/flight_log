@@ -50,8 +50,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  protected
-
   # Adds a navigation breadcrumb.
   #
   # @param text [String] the link's text

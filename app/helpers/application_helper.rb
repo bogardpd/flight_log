@@ -132,21 +132,19 @@ module ApplicationHelper
   # table is already sorted by this column.
   #
   # @param title_string [String] the text to use for the link
-  # @param sort_symbol [Symbol] a symbol representing the name of the sortable
+  # @param sort_category [Symbol] a symbol representing the name of the sortable
   #   column this link sorts. Compared to @sort_cat to determine if the table
   #   is already sorted by this column.
-  # @param sort_string [String] a string representing the name of the sortable
-  #   column this link sorts. Generally should match the sort_symbol. Used in
-  #   the parameters for the link URL to specify the sort category.
   # @param default_dir [:asc, :desc] The direction to sort this column, if a
   #   direction is not provided in the page URL parameters.
   # @param page_anchor [String] The ID of the table to sort, so that the table
   #   remains in view when a sort link is clicked.
   # @return [ActiveSupport::SafeBuffer] a link_to tag for sorting a table
   #   column.
-  def sort_link(title_string, sort_symbol, sort_string, default_dir, page_anchor)
+  # @see ApplicationController#sort_parse
+  def sort_link(link_text, sort_category, default_dir, page_anchor=nil)
         
-    if @sort_cat == sort_symbol
+    if @sort_cat == sort_category
       if @sort_dir == :asc
         category_sort_direction_indicator = content_tag(:span, sanitize("&#x25B2;"), class: "sort-direction") # Up Triangle
       elsif @sort_dir == :desc
@@ -164,12 +162,12 @@ module ApplicationHelper
       sort_dir_string = ["asc","desc"]
       sort_direction = ["","-"]
     end
-    if (@sort_cat == sort_symbol && @sort_dir == default_dir)
+    if (@sort_cat == sort_category && @sort_dir == default_dir)
       sort_polarity = sort_direction[0]
     else
       sort_polarity = sort_direction[1]
     end
-    link_to(safe_join([title_string, category_sort_direction_indicator].compact, " "), url_for(region: params[:region], sort: sort_polarity.to_s + sort_string, :anchor => page_anchor), :class => "sort")
+    link_to(safe_join([link_text, category_sort_direction_indicator].compact, " "), url_for(region: params[:region], sort: sort_polarity.to_s + sort_category.to_s, anchor: page_anchor), class: "sort")
   end
 
   # Takes a tail number and renders an image_tag for the country flag of the

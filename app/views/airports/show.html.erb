@@ -44,10 +44,10 @@
 	<table class="flightlog">
 	  <tr>
 	    <th class="counter">#</th>
-			<th class="airport-city"><%= sort_link("City", :city, "city", :asc, "airports") %></th>
-	    <th class="airport-code"><%= sort_link("Code", :code, "code", :asc, "airports") %></th>
-			<th class="airport-distance"><%= sort_link("Distance", :distance, "distance", :desc, "airports") %></th>
-	    <th class="airport-flights"><%= sort_link("Flights", :flights, "flights", :desc, "airports") %></th>
+			<th class="airport-city"><%= sort_link("City", :city, :asc, "airports") %></th>
+	    <th class="airport-code"><%= sort_link("Code", :code, :asc, "airports") %></th>
+			<th class="airport-distance"><%= sort_link("Distance", :distance, :desc, "airports") %></th>
+	    <th class="airport-flights"><%= sort_link("Flights", :flights, :desc, "airports") %></th>
 	  </tr>
 	
 		<% previous_count = nil %>

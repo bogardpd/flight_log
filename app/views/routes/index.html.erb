@@ -10,8 +10,8 @@
   <tr>
     <th class="counter">#</th>
 		<th class="route-route">Route</th>
-		<th class="route-distance"><%= sort_link("Distance", :distance, "distance", :desc, nil) %></th>
-    <th class="route-flights"><%= sort_link("Flights", :flights, "flights", :desc, nil) %></th>
+		<th class="route-distance"><%= sort_link("Distance", :distance, :desc) %></th>
+    <th class="route-flights"><%= sort_link("Flights", :flights, :desc) %></th>
   </tr>
 <% previous_count = nil %>
 <% @route_table.each_with_index do |row, index| %>

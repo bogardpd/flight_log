@@ -16,9 +16,9 @@
       <thead>
         <tr>
       		<th class="counter">#</th>
-          <th class="airline-airline"><%= is_summary ? "Airline" : sort_link("Airline", :airline, "airline", :asc, type.to_s.pluralize) %></th>
-      		<th class="airline-code"><%= is_summary ? "Code" : sort_link("Code", :code, "code", :asc, type.to_s.pluralize) %></th>
-          <th class="airline-flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, type.to_s.pluralize) %></th>
+          <th class="airline-airline"><%= is_summary ? "Airline" : sort_link("Airline", :airline, :asc, type.to_s.pluralize) %></th>
+      		<th class="airline-code"><%= is_summary ? "Code" : sort_link("Code", :code, :asc, type.to_s.pluralize) %></th>
+          <th class="airline-flights"><%= is_summary ? "Flights" : sort_link("Flights", :flights, :desc, type.to_s.pluralize) %></th>
         </tr>
       </thead>
       <tbody>

@@ -20,7 +20,7 @@
       <th class="counter">#</th>
     	<th class="flight-flight">Flight</td>
       <th class="flight-route">Route</td>
-      <th class="flight-date"><%= sort_link("Departure", :departure, "departure", :asc, "flight-list") %></td>
+      <th class="flight-date"><%= sort_link("Departure", :departure, :asc, "flight-list") %></td>
     </tr>
     <%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
     <%= render :partial => "flights/flight_total_row" %>

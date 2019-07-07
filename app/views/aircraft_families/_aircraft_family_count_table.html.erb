@@ -4,16 +4,15 @@
 <% if known_families.any? %>
   <% new_aircraft_families ||= Array.new %>
   <% legend_range ||= "this date range" %>
-  
   <table class="flightlog">
     <thead>
       <tr>
         <th class="counter">#</th>
     		<th class="aircraft-family">
-          <%= is_summary ? "Aircraft Family" : sort_link("Aircraft Family", :aircraft, "aircraft", :asc, nil) %>
+          <%= is_summary ? "Aircraft Family" : sort_link("Aircraft Family", :aircraft, :asc) %>
         </th>
         <th class="aircraft-flights">
-          <%= is_summary ? "Flights" : sort_link("Flights", :flights, "flights", :desc, nil) %>
+          <%= is_summary ? "Flights" : sort_link("Flights", :flights, :desc) %>
         </th>
       </tr>
     </thead>
