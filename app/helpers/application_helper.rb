@@ -131,7 +131,7 @@ module ApplicationHelper
   # table headers. Includes an arrow showing the direction of the sort if the
   # table is already sorted by this column.
   #
-  # @param title_string [String] the text to use for the link
+  # @param link_text [String] the text to use for the link
   # @param sort_category [Symbol] a symbol representing the name of the sortable
   #   column this link sorts. Compared to @sort_cat to determine if the table
   #   is already sorted by this column.

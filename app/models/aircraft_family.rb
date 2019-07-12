@@ -157,16 +157,30 @@ class AircraftFamily < ApplicationRecord
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate AircraftFamily flight counts for
+  # @param sort_category [:aircraft, :flights] the category to sort the array
+  #   by
+  # @param sort_direction [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each AircraftFamily flown
-  def self.flight_count(flights)
+  def self.flight_count(flights, sort_category=nil, sort_direction=nil)
     family_count = flights.reorder(nil).joins(:aircraft_family).group(:aircraft_family_id, :parent_id).count
       .map{|k,v| {(k[1]||k[0]) => v}} # Create array of hashes with k as parent id or family id and v as count
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts
     family_count ||= Array.new
       
     counts = self.families.map{|f| {id: f.id, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}
-      .sort_by{|a| [-a[:flight_count], a[:manufacturer].downcase, a[:family_name].downcase]}
     
+    case sort_category
+    when :aircraft
+      counts.sort_by!{ |aircraft_family| [aircraft_family[:manufacturer]&.downcase || "", aircraft_family[:family_name]&.downcase || ""] }
+      counts.reverse! if sort_direction == :desc
+    when :flights
+      sort_mult = (sort_direction == :desc ? -1 : 1)
+      counts.sort_by!{ |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]&.downcase || ""] }
+    else
+      counts.sort_by!{|aircraft_family| [-aircraft_family[:flight_count], aircraft_family[:manufacturer].downcase, aircraft_family[:family_name].downcase]}
+    end
+    
+    # Count flights without aircraft families:
     family_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
     if flights.count > family_sum
       counts.push({id: nil, flight_count: flights.count - family_sum})

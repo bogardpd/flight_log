@@ -93,8 +93,11 @@ class Airport < ApplicationRecord
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate Airport visit counts for
+  # @param sort_category [:country, :city, :code, :visits] the category to sort
+  #   the array by
+  # @param sort_direction [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each Airport visited
-  def self.visit_count(flights)
+  def self.visit_count(flights, sort_category=nil, sort_direction=nil)
     flights = flights.reorder(:trip_id, :trip_section, :departure_utc)
     
     visits = Hash.new(0)
@@ -116,7 +119,27 @@ class Airport < ApplicationRecord
     
     counts = visits.map{|k,v|
       {iata_code: k[0], city: k[1], country: k[2], visit_count: v}
-    }.sort_by{|c| [-c[:visit_count] || 0, c[:city] || "", c[:iata_code] || ""]}
+    }
+
+    case sort_category
+    when :country
+      if sort_direction == :asc
+        counts.sort_by!{|airport| [airport[:country], airport[:city]]}
+      else
+        counts.sort!{|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
+      end
+    when :city
+      counts.sort_by!{|airport| airport[:city]}
+      counts.reverse! if sort_direction == :desc
+    when :code
+      counts.sort_by!{|airport| airport[:iata_code]}
+      counts.reverse! if sort_direction == :desc
+    when :visits
+      sort_mult = (sort_direction == :desc ? -1 : 1)
+      counts.sort_by!{ |airport| [sort_mult*airport[:visit_count], airport[:city]] }
+    else    
+      counts.sort_by!{|airport| [-airport[:visit_count] || 0, airport[:city] || "", airport[:iata_code] || ""]}
+    end
     
     return counts
     

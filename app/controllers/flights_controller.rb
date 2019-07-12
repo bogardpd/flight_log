@@ -33,9 +33,9 @@ class FlightsController < ApplicationController
       @meta_description = "Maps and lists of all of Paul Bogardʼs flights."
     
       # Sort flight table:
-      sort_params = sort_parse(params[:sort], %w(departure), :asc)
-      @sort_cat   = sort_params[:category]
-      @sort_dir   = sort_params[:direction]
+      sort = sort_parse(params[:sort], %w(departure), :asc)
+      @sort_cat   = sort[:category]
+      @sort_dir   = sort[:direction]
       @flights = @flights.reverse_order if @sort_dir == :desc
     
     end
@@ -197,27 +197,14 @@ class FlightsController < ApplicationController
     add_breadcrumb "Travel Classes", classes_path
     
     @flights = flyer.flights(current_user)
-    @classes = TravelClass.flight_count(@flights)
+    sort = sort_parse(params[:sort], %w(quality flights), :desc)
+    @sort_cat = sort[:category]
+    @sort_dir = sort[:direction]
+    @classes = TravelClass.flight_count(@flights, @sort_cat, @sort_dir)
     
     @title = "Travel Classes"
     @meta_description = "A count of how many times Paul Bogard has flown in each class."
     
-    if @classes.any?
-                
-      # Sort aircraft table:
-      sort_params = sort_parse(params[:sort], %w(quality flights), :desc)
-      @sort_cat   = sort_params[:category]
-      @sort_dir   = sort_params[:direction]
-      sort_mult   = (@sort_dir == :asc ? 1 : -1)
-      case @sort_cat
-      when :quality
-        @classes = @classes.sort_by { |tc| TravelClass.list[tc[:class_code]]&.dig(:quality) || -1 }
-        @classes.reverse! if @sort_dir == :desc
-      when :flights
-        @classes = @classes.sort_by { |tc| [sort_mult*tc[:flight_count], tc[:class_code] || ""] }
-      end
-      
-    end
   end
   
   # Shows details for a particular {TravelClass travel class} and data for all
@@ -274,32 +261,14 @@ class FlightsController < ApplicationController
     @title = "Tail Numbers"
     @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often heʼs flown on each."
     
-    @tail_numbers_table = Array.new
-          
     @flights = flyer.flights(current_user)
-    @tail_numbers_table = TailNumber.flight_count(@flights)
+    sort = sort_parse(params[:sort], %w(flights tail aircraft airline), :desc)
+    @sort_cat   = sort[:category]
+    @sort_dir   = sort[:direction]
+    @tail_numbers_table = TailNumber.flight_count(@flights, @sort_cat, @sort_dir)
   
     # Find maxima for graph scaling:
     @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
-  
-    # Sort tails table:
-    sort_params = sort_parse(params[:sort], %w(flights tail aircraft airline), :desc)
-    @sort_cat   = sort_params[:category]
-    @sort_dir   = sort_params[:direction]
-    sort_mult   = (@sort_dir == :asc ? 1 : -1)
-    case @sort_cat
-    when :tail
-      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| tail[:tail_number]}
-      @tail_numbers_table.reverse! if @sort_dir == :desc
-    when :flights
-      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [sort_mult*tail[:count], tail[:tail_number]]}
-    when :aircraft
-      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:aircraft], tail[:airline_name]]}
-      @tail_numbers_table.reverse! if @sort_dir == :desc
-    when :airline
-      @tail_numbers_table = @tail_numbers_table.sort_by {|tail| [tail[:airline_name], tail[:aircraft]]}
-      @tail_numbers_table.reverse! if @sort_dir == :desc
-    end
       
   end
   

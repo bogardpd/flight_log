@@ -423,32 +423,32 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
 240
 241
 242
 243
-244
-245
-246
-247
-248
-249
-250
-251
-252
-253
-254
-255
-256
-257
-258
-259
-260
-261
-262</pre>
+244</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 240</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 222</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_airline_params'>airline_params</span><span class='rparen'>)</span>
@@ -519,20 +519,20 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-301
-302
-303
-304
-305
-306
-307
-308
-309
-310
-311</pre>
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 301</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 283</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -591,16 +591,16 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-269
-270
-271
-272
-273
-274
-275</pre>
+251
+252
+253
+254
+255
+256
+257</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 269</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 251</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -679,25 +679,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 33
 34
 35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54</pre>
+36</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 10</span>
@@ -710,8 +692,11 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
   <span class='id identifier rubyid_add_admin_action'>add_admin_action</span> <span class='id identifier rubyid_view_context'>view_context</span><span class='period'>.</span><span class='id identifier rubyid_link_to'>link_to</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Add New Airline</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_new_airline_path'>new_airline_path</span><span class='rparen'>)</span>
   
   <span class='ivar'>@flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span>
-  <span class='ivar'>@airlines</span>  <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_flight_count'><span class='object_link'><a href="Airline.html#flight_count-class_method" title="Airline.flight_count (method)">flight_count</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='symbol'>:airline</span><span class='rparen'>)</span>
-  <span class='ivar'>@operators</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_flight_count'><span class='object_link'><a href="Airline.html#flight_count-class_method" title="Airline.flight_count (method)">flight_count</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='symbol'>:operator</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_sort'>sort</span> <span class='op'>=</span> <span class='id identifier rubyid_sort_parse'>sort_parse</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:sort</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>flights</span><span class='words_sep'> </span><span class='tstring_content'>airline</span><span class='words_sep'> </span><span class='tstring_content'>code</span><span class='words_sep'>)</span><span class='comma'>,</span> <span class='symbol'>:desc</span><span class='rparen'>)</span>
+  <span class='ivar'>@sort_cat</span> <span class='op'>=</span> <span class='id identifier rubyid_sort'>sort</span><span class='lbracket'>[</span><span class='symbol'>:category</span><span class='rbracket'>]</span>
+  <span class='ivar'>@sort_dir</span> <span class='op'>=</span> <span class='id identifier rubyid_sort'>sort</span><span class='lbracket'>[</span><span class='symbol'>:direction</span><span class='rbracket'>]</span>
+  <span class='ivar'>@airlines</span>  <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_flight_count'><span class='object_link'><a href="Airline.html#flight_count-class_method" title="Airline.flight_count (method)">flight_count</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='ivar'>@sort_cat</span><span class='comma'>,</span> <span class='ivar'>@sort_dir</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='symbol'>:airline</span><span class='rparen'>)</span>
+  <span class='ivar'>@operators</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_flight_count'><span class='object_link'><a href="Airline.html#flight_count-class_method" title="Airline.flight_count (method)">flight_count</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='ivar'>@sort_cat</span><span class='comma'>,</span> <span class='ivar'>@sort_dir</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='symbol'>:operator</span><span class='rparen'>)</span>
       
   <span class='id identifier rubyid_used_airline_ids'>used_airline_ids</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@airlines</span> <span class='op'>+</span> <span class='ivar'>@operators</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span>
   <span class='ivar'>@airlines_with_no_flights</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id NOT IN (?)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_used_airline_ids'>used_airline_ids</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_order'>order</span><span class='lparen'>(</span><span class='symbol'>:airline_name</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_logged_in?'>logged_in?</span>
@@ -723,27 +708,6 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </span>    <span class='ivar'>@airlines_maximum</span>  <span class='op'>=</span> <span class='ivar'>@airlines</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>  <span class='op'>?</span>  <span class='ivar'>@airlines</span><span class='period'>.</span><span class='id identifier rubyid_max_by'>max_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span> <span class='id identifier rubyid_i'>i</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='int'>0</span>
     <span class='ivar'>@operators_maximum</span> <span class='op'>=</span> <span class='ivar'>@operators</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span> <span class='op'>?</span> <span class='ivar'>@operators</span><span class='period'>.</span><span class='id identifier rubyid_max_by'>max_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span> <span class='id identifier rubyid_i'>i</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span> <span class='op'>:</span> <span class='int'>0</span>
   
-    <span class='comment'># Sort airline and operator tables:
-</span>    <span class='id identifier rubyid_sort_params'>sort_params</span> <span class='op'>=</span> <span class='id identifier rubyid_sort_parse'>sort_parse</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:sort</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>flights</span><span class='words_sep'> </span><span class='tstring_content'>airline</span><span class='words_sep'> </span><span class='tstring_content'>code</span><span class='words_sep'>)</span><span class='comma'>,</span> <span class='symbol'>:desc</span><span class='rparen'>)</span>
-    <span class='ivar'>@sort_cat</span>   <span class='op'>=</span> <span class='id identifier rubyid_sort_params'>sort_params</span><span class='lbracket'>[</span><span class='symbol'>:category</span><span class='rbracket'>]</span>
-    <span class='ivar'>@sort_dir</span>   <span class='op'>=</span> <span class='id identifier rubyid_sort_params'>sort_params</span><span class='lbracket'>[</span><span class='symbol'>:direction</span><span class='rbracket'>]</span>
-    <span class='id identifier rubyid_sort_mult'>sort_mult</span>   <span class='op'>=</span> <span class='lparen'>(</span><span class='ivar'>@sort_dir</span> <span class='op'>==</span> <span class='symbol'>:asc</span> <span class='op'>?</span> <span class='int'>1</span> <span class='op'>:</span> <span class='op'>-</span><span class='int'>1</span><span class='rparen'>)</span>
-    
-    <span class='kw'>case</span> <span class='ivar'>@sort_cat</span>
-    <span class='kw'>when</span> <span class='symbol'>:airline</span>
-      <span class='ivar'>@airlines</span>  <span class='op'>=</span>  <span class='ivar'>@airlines</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_airline'>airline</span><span class='op'>|</span>   <span class='id identifier rubyid_airline'>airline</span><span class='lbracket'>[</span><span class='symbol'>:airline_name</span><span class='rbracket'>]</span><span class='op'>&amp;.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
-      <span class='ivar'>@operators</span> <span class='op'>=</span> <span class='ivar'>@operators</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_operator'>operator</span><span class='op'>|</span> <span class='id identifier rubyid_operator'>operator</span><span class='lbracket'>[</span><span class='symbol'>:airline_name</span><span class='rbracket'>]</span><span class='op'>&amp;.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
-      <span class='ivar'>@airlines</span><span class='period'>.</span><span class='id identifier rubyid_reverse!'>reverse!</span>  <span class='kw'>if</span> <span class='ivar'>@sort_dir</span> <span class='op'>==</span> <span class='symbol'>:desc</span>
-      <span class='ivar'>@operators</span><span class='period'>.</span><span class='id identifier rubyid_reverse!'>reverse!</span> <span class='kw'>if</span> <span class='ivar'>@sort_dir</span> <span class='op'>==</span> <span class='symbol'>:desc</span>
-    <span class='kw'>when</span> <span class='symbol'>:code</span>
-      <span class='ivar'>@airlines</span>  <span class='op'>=</span>  <span class='ivar'>@airlines</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_airline'>airline</span><span class='op'>|</span>   <span class='id identifier rubyid_airline'>airline</span><span class='lbracket'>[</span><span class='symbol'>:iata_airline_code</span><span class='rbracket'>]</span><span class='op'>&amp;.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
-      <span class='ivar'>@operators</span> <span class='op'>=</span> <span class='ivar'>@operators</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_operator'>operator</span><span class='op'>|</span> <span class='id identifier rubyid_operator'>operator</span><span class='lbracket'>[</span><span class='symbol'>:iata_airline_code</span><span class='rbracket'>]</span><span class='op'>&amp;.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span>
-      <span class='ivar'>@airlines</span><span class='period'>.</span><span class='id identifier rubyid_reverse!'>reverse!</span>  <span class='kw'>if</span> <span class='ivar'>@sort_dir</span> <span class='op'>==</span> <span class='symbol'>:desc</span>
-      <span class='ivar'>@operators</span><span class='period'>.</span><span class='id identifier rubyid_reverse!'>reverse!</span> <span class='kw'>if</span> <span class='ivar'>@sort_dir</span> <span class='op'>==</span> <span class='symbol'>:desc</span>
-    <span class='kw'>when</span> <span class='symbol'>:flights</span>
-      <span class='ivar'>@airlines</span>  <span class='op'>=</span>  <span class='ivar'>@airlines</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_airline'>airline</span><span class='op'>|</span>  <span class='lbracket'>[</span><span class='id identifier rubyid_sort_mult'>sort_mult</span> <span class='op'>*</span> <span class='id identifier rubyid_airline'>airline</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='id identifier rubyid_airline'>airline</span><span class='lbracket'>[</span><span class='symbol'>:airline_name</span><span class='rbracket'>]</span><span class='op'>&amp;.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-      <span class='ivar'>@operators</span> <span class='op'>=</span> <span class='ivar'>@operators</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_operator'>operator</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_sort_mult'>sort_mult</span> <span class='op'>*</span> <span class='id identifier rubyid_operator'>operator</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_operator'>operator</span><span class='lbracket'>[</span><span class='symbol'>:airline_name</span><span class='rbracket'>]</span><span class='op'>&amp;.</span><span class='id identifier rubyid_downcase'>downcase</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
-    <span class='kw'>end</span>
   <span class='kw'>end</span>
    
 <span class='kw'>end</span></pre>
@@ -793,16 +757,16 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-227
-228
-229
-230
-231
-232
-233</pre>
+209
+210
+211
+212
+213
+214
+215</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 227</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 209</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -882,6 +846,24 @@ flown under its brand.</p>
       <pre class="lines">
 
 
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
 74
 75
 76
@@ -901,28 +883,10 @@ flown under its brand.</p>
 90
 91
 92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111</pre>
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -1025,6 +989,24 @@ flown under its brand.</p>
       <pre class="lines">
 
 
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
 191
 192
 193
@@ -1036,28 +1018,10 @@ flown under its brand.</p>
 199
 200
 201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220</pre>
+202</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 191</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 173</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_fleet_number'>show_fleet_number</span>
   <span class='ivar'>@operator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:operator</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -1163,6 +1127,24 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
 133
 134
 135
@@ -1188,28 +1170,10 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 155
 156
 157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176</pre>
+158</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 133</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show_operator'>show_operator</span>
   <span class='ivar'>@operator</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='symbol'>:iata_airline_code</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:operator</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
@@ -1301,22 +1265,22 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
       <pre class="lines">
 
 
-282
-283
-284
-285
-286
-287
-288
-289
-290
-291
-292
-293
-294</pre>
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 282</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airlines_controller.rb', line 264</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1341,7 +1305,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 
       <div id="footer">
-  Generated on Sun Jul  7 15:56:27 2019 by
+  Generated on Fri Jul 12 18:34:44 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

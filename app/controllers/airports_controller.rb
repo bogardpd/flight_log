@@ -16,34 +16,13 @@ class AirportsController < ApplicationController
     
     if @flights.any?
       
-      @airports = Airport.visit_count(@flights)
+      sort = sort_parse(params[:sort], %w(visits country city code), :desc)
+      @sort_cat = sort[:category]
+      @sort_dir = sort[:direction]
+      @airports = Airport.visit_count(@flights, @sort_cat, @sort_dir)
       used_airport_codes = @airports.map{|a| a[:iata_code]}.uniq.compact
       if logged_in?
         @airports_with_no_flights = Airport.where.not(iata_code: used_airport_codes).order(:city)
-      end
-    
-      # Sort route table:
-      
-      sort_params = sort_parse(params[:sort], %w(visits country city code), :desc)
-      @sort_cat   = sort_params[:category]
-      @sort_dir   = sort_params[:direction]
-      sort_mult   = (@sort_dir == :asc ? 1 : -1)
-      
-      case @sort_cat
-      when :country
-        if @sort_dir == :asc
-          @airports = @airports.sort_by {|airport| [airport[:country], airport[:city]]}
-        else
-          @airports = @airports.sort {|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
-        end
-      when :city
-        @airports = @airports.sort_by {|airport| airport[:city]}
-        @airports.reverse! if @sort_dir == :desc
-      when :code
-        @airports = @airports.sort_by {|airport| airport[:iata_code]}
-        @airports.reverse! if @sort_dir == :desc
-      when :visits
-        @airports = @airports.sort_by { |airport| [sort_mult*airport[:visit_count], airport[:city]] }
       end
       
       # Create maps:
@@ -105,7 +84,6 @@ class AirportsController < ApplicationController
     @total_distance = Route.total_distance(@flights)
     
     # Calculate distances to direct flight airports:
-    direct_flight_airports = @flights.pluck(:origin_airport_id).concat(@flights.pluck(:destination_airport_id)).uniq
     route_hash = Hash.new()
     Route.find_by_sql(["SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id WHERE routes.airport1_id = ? OR routes.airport2_id = ?", @airport.id, @airport.id]).map{|x| route_hash[[x.iata1,x.iata2]] = x.distance_mi }
   

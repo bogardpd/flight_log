@@ -19,7 +19,7 @@ class Trip < ApplicationRecord
   belongs_to :user
   
   validates :user_id, presence: true
-  validates :name, :presence => true
+  validates :name, presence: true
 
   # HTML to use to indicate a trip is hidden, or a flight is part of a hidden trip.
   HIDDEN_MARKER = ActionController::Base.helpers.content_tag(:div, "Hidden", class: "hidden-marker")
@@ -93,12 +93,14 @@ class Trip < ApplicationRecord
   # @param current_user [User, nil] the {User} (or visitor if nil) viewing the
   #   list of trips
   # @return [Array<Hash>] an array of trip details
-  def self.with_departure_dates(flyer, current_user)
+  def self.with_departure_dates(flyer, current_user, sort_category=nil, sort_direction=nil)
     if flyer == current_user
       trips = Trip.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.user_id = 1 GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", flyer.id])
     else
       trips = Trip.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.user_id = ? AND trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", flyer.id])
     end
+
+    trips.reverse! if sort_category == :departure && sort_direction == :desc
   
     return trips
   end

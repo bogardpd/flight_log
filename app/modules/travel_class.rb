@@ -12,8 +12,10 @@ module TravelClass
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate travel class flight counts for
+  # @param sort_category [:quality, :flights] the category to sort the array by
+  # @param sort_direction [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each travel class flown
-  def self.flight_count(flights)
+  def self.flight_count(flights, sort_category=nil, sort_direction=nil)
     counts = flights.reorder(nil).group(:travel_class).count
       .map{|k,v| {class_code: k, flight_count: v}}
     
@@ -21,7 +23,19 @@ module TravelClass
     if flights.count > class_sum
       counts.push({class_code: nil, flight_count: flights.count - class_sum})
     end
-    return counts.sort_by{|tc| list[tc[:class_code]]&.dig(:quality) || -1}.reverse
+
+    case sort_category
+    when :quality
+      counts.sort_by!{ |tc| TravelClass.list[tc[:class_code]]&.dig(:quality) || -1 }
+      counts.reverse! if sort_direction == :desc
+    when :flights
+      sort_mult = (sort_direction == :asc ? 1 : -1)
+      counts.sort_by!{ |tc| [sort_mult*tc[:flight_count], tc[:class_code] || ""] }
+    else
+      counts.sort_by!{|tc| list[tc[:class_code]]&.dig(:quality) || -1}.reverse
+    end
+
+    return counts
   end
   
   # Given a travel class name, gets the travel class code.

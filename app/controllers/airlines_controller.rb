@@ -15,8 +15,11 @@ class AirlinesController < ApplicationController
     add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
     @flights = flyer.flights(current_user)
-    @airlines  = Airline.flight_count(@flights, type: :airline)
-    @operators = Airline.flight_count(@flights, type: :operator)
+    sort = sort_parse(params[:sort], %w(flights airline code), :desc)
+    @sort_cat = sort[:category]
+    @sort_dir = sort[:direction]
+    @airlines  = Airline.flight_count(@flights, @sort_cat, @sort_dir, type: :airline)
+    @operators = Airline.flight_count(@flights, @sort_cat, @sort_dir, type: :operator)
         
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
@@ -28,27 +31,6 @@ class AirlinesController < ApplicationController
       @airlines_maximum  = @airlines.any?  ?  @airlines.max_by{|i| i[:flight_count]}[:flight_count] : 0
       @operators_maximum = @operators.any? ? @operators.max_by{|i| i[:flight_count]}[:flight_count] : 0
     
-      # Sort airline and operator tables:
-      sort_params = sort_parse(params[:sort], %w(flights airline code), :desc)
-      @sort_cat   = sort_params[:category]
-      @sort_dir   = sort_params[:direction]
-      sort_mult   = (@sort_dir == :asc ? 1 : -1)
-      
-      case @sort_cat
-      when :airline
-        @airlines  =  @airlines.sort_by { |airline|   airline[:airline_name]&.downcase || "" }
-        @operators = @operators.sort_by { |operator| operator[:airline_name]&.downcase || "" }
-        @airlines.reverse!  if @sort_dir == :desc
-        @operators.reverse! if @sort_dir == :desc
-      when :code
-        @airlines  =  @airlines.sort_by { |airline|   airline[:iata_airline_code]&.downcase || "" }
-        @operators = @operators.sort_by { |operator| operator[:iata_airline_code]&.downcase || "" }
-        @airlines.reverse!  if @sort_dir == :desc
-        @operators.reverse! if @sort_dir == :desc
-      when :flights
-        @airlines  =  @airlines.sort_by { |airline|  [sort_mult * airline[:flight_count],  airline[:airline_name]&.downcase || ""] }
-        @operators = @operators.sort_by { |operator| [sort_mult * operator[:flight_count], operator[:airline_name]&.downcase || ""] }
-      end
     end
      
   end

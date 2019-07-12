@@ -66,16 +66,34 @@ class Airline < ApplicationRecord
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate Airline flight counts for
+  # @param sort_category [:airline, :code, :flights] the category to sort
+  #   the array by
+  # @param sort_direction [:asc, :desc] the direction to sort the array
   # @param type [:airline, :operator] whether to calculate {Flight} counts for
   #   Airlines administrating flights (:airline) or Airlines operating flights
   #   (:operator)
   # @return [Array<Hash>] details for each Airline flown
-  def self.flight_count(flights, type: :airline)
+  def self.flight_count(flights, sort_category=nil, sort_direction=nil, type: :airline)
+    
     id_field = (type == :airline) ? :airline_id : :operator_id
     counts = flights.reorder(nil).joins(type).group(id_field, :airline_name, :iata_airline_code, :icao_airline_code).count
       .map{|k,v| {id: k[0], airline_name: k[1], iata_airline_code: k[2], icao_airline_code: k[3], flight_count: v}}
-      .sort_by{|a| [-a[:flight_count], a[:airline_name]]}
     
+    case sort_category
+    when :airline
+      counts.sort_by!{|airline| airline[:airline_name]&.downcase || ""}
+      counts.reverse! if sort_direction == :desc
+    when :code
+      counts.sort_by!{|airline| airline[:iata_airline_code]&.downcase || ""}
+      counts.reverse! if sort_direction == :desc
+    when :flights
+      sort_mult = (sort_direction == :desc ? -1 : 1)
+      counts.sort_by!{|airline| [sort_mult * airline[:flight_count], airline[:airline_name]&.downcase || ""]}
+    else
+      counts.sort_by!{|airline| [-airline[:flight_count], airline[:airline_name]&.downcase || ""]}
+    end
+    
+    # Count flights without airlines:
     airline_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
     if flights.count > airline_sum
       counts.push({id: nil, flight_count: flights.count - airline_sum})

@@ -189,12 +189,15 @@ module TailNumber
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate tail number flight counts for
+  # @param sort_category [:tail, :flights, :aircraft, :airline] the category to
+  #   sort the array by
+  # @param sort_direction [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each tail number flown
-  def self.flight_count(flights)
+  def self.flight_count(flights, sort_category=nil, sort_direction=nil)
     tail_counts = flights.reorder(nil).where.not(tail_number: nil).group(:tail_number).count
     tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
     return nil unless tail_details.any?
-    tail_details.map{|f| {f.tail_number => {
+    counts = tail_details.map{|f| {f.tail_number => {
       airline_code:  f.airline.icao_airline_code,
       airline_name:  f.airline.airline_name,
       aircraft_code: f.aircraft_family&.icao_aircraft_code || f.aircraft_family&.iata_aircraft_code,
@@ -214,7 +217,27 @@ module TailNumber
         manufacturer: v[:manufacturer],
         family_name:  v[:family_name]
       }}
-      .sort_by{|t| [-(t[:count] || 0), t[:tail_number] || ""]}
+      
+    
+    case sort_category
+    when :tail
+      counts.sort_by!{|tail| tail[:tail_number]}
+      counts.reverse! if sort_direction == :desc
+    when :flights
+      sort_mult   = (sort_direction == :asc ? 1 : -1)
+      counts.sort_by!{|tail| [sort_mult*tail[:count], tail[:tail_number]]}
+    when :aircraft
+      counts.sort_by!{|tail| [tail[:aircraft], tail[:airline_name]]}
+      counts.reverse! if sort_direction == :desc
+    when :airline
+      counts.sort_by!{|tail| [tail[:airline_name], tail[:aircraft]]}
+      counts.reverse! if sort_direction == :desc
+    else
+      counts.sort_by!{|tail| [-(tail[:count] || 0), tail[:tail_number] || ""]}
+    end
+
+    return counts
+    
   end
   
 end

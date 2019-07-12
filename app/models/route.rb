@@ -108,8 +108,10 @@ class Route < ApplicationRecord
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate Route flight counts for
+  # @param sort_category [:flights, :distance] the category to sort the array
+  #   by
   # @return [Array<Hash>] details for each Route flown
-  def self.flight_count(flights)
+  def self.flight_count(flights, sort_category=nil, sort_direction=nil)
     flights = flights.includes(:origin_airport, :destination_airport)
     
     route_distances = Hash.new()
@@ -130,8 +132,18 @@ class Route < ApplicationRecord
         distance_mi: route_distances[route] || distance_by_iata(route.first, route.last) || -1
       })
     end
-    
-    return route_array.sort_by{|r| [-r[:flight_count], r[:route][0], r[:route][1]]}
+
+    sort_mult = (sort_direction == :desc ? -1 : 1)
+    case sort_category
+    when :flights
+      route_array.sort_by!{|route| [sort_mult*(route[:flight_count] || 0), -(route[:distance_mi] || -1)]}
+    when :distance
+      route_array.sort_by!{|route| [sort_mult*(route[:distance_mi] || -1), -(route[:flight_count] || 0)]}
+    else
+      route_array.sort_by!{|route| [-route[:flight_count], route[:route][0], route[:route][1]]}
+    end
+
+    return route_array
     
   end
   

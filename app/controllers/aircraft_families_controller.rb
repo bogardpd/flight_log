@@ -13,27 +13,15 @@ class AircraftFamiliesController < ApplicationController
     add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
     
     @flights = flyer.flights(current_user)
-    flight_count = AircraftFamily.flight_count(@flights)
+    sort = sort_parse(params[:sort], %w(flights aircraft), :desc)
+    @sort_cat = sort[:category]
+    @sort_dir = sort[:direction]
+    flight_count = AircraftFamily.flight_count(@flights, @sort_cat, @sort_dir)
     @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
     
     if @aircraft_families.any?
-            
       # Find maxima for graph scaling:
       @aircraft_maximum = @aircraft_families.max_by{|i| i[:flight_count]}[:flight_count]
-    
-      # Sort aircraft table:
-      sort_params = sort_parse(params[:sort], %w(flights aircraft code), :desc)
-      @sort_cat   = sort_params[:category]
-      @sort_dir   = sort_params[:direction]
-      sort_mult   = (@sort_dir == :asc ? 1 : -1)
-      
-      case @sort_cat
-      when :aircraft
-        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [aircraft_family[:manufacturer]&.downcase || "", aircraft_family[:family_name]&.downcase || ""] }
-        @aircraft_families.reverse! if @sort_dir == :desc
-      when :flights
-        @aircraft_families = @aircraft_families.sort_by { |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]&.downcase || ""] }
-      end
     end     
   end
   

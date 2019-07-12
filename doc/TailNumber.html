@@ -197,7 +197,7 @@ match that country&#39;s tail number format.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#flight_count-class_method" title="flight_count (class method)">.<strong>flight_count</strong>(flights)  &#x21d2; Array&lt;Hash&gt; </a>
+      <a href="#flight_count-class_method" title="flight_count (class method)">.<strong>flight_count</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; Array&lt;Hash&gt; </a>
     
 
     
@@ -745,7 +745,7 @@ match that country&#39;s tail number format.</p>
       <div class="method_details ">
   <h3 class="signature " id="flight_count-class_method">
   
-    .<strong>flight_count</strong>(flights)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
+    .<strong>flight_count</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
   
 
   
@@ -785,6 +785,42 @@ numbers and their flight counts.</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>sort_category</span>
+      
+      
+        <span class='type'>(<tt>:tail</tt>, <tt>:flights</tt>, <tt>:aircraft</tt>, <tt>:airline</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the category to sort the array by</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sort_direction</span>
+      
+      
+        <span class='type'>(<tt>:asc</tt>, <tt>:desc</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the direction to sort the array</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -812,9 +848,6 @@ numbers and their flight counts.</p>
       <pre class="lines">
 
 
-193
-194
-195
 196
 197
 198
@@ -837,16 +870,39 @@ numbers and their flight counts.</p>
 215
 216
 217
-218</pre>
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/tail_number.rb', line 193</span>
+      <pre class="code"><span class="info file"># File 'app/modules/tail_number.rb', line 196</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_count'>flight_count</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_count'>flight_count</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_tail_counts'>tail_counts</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='label'>tail_number:</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_group'>group</span><span class='lparen'>(</span><span class='symbol'>:tail_number</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span>
   <span class='id identifier rubyid_tail_details'>tail_details</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='label'>tail_number:</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_includes'>includes</span><span class='lparen'>(</span><span class='symbol'>:airline</span><span class='comma'>,</span> <span class='symbol'>:aircraft_family</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_tail_details'>tail_details</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
-  <span class='id identifier rubyid_tail_details'>tail_details</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_tail_number'>tail_number</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+  <span class='id identifier rubyid_counts'>counts</span> <span class='op'>=</span> <span class='id identifier rubyid_tail_details'>tail_details</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_tail_number'>tail_number</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
     <span class='label'>airline_code:</span>  <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_icao_airline_code'>icao_airline_code</span><span class='comma'>,</span>
     <span class='label'>airline_name:</span>  <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span><span class='comma'>,</span>
     <span class='label'>aircraft_code:</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='op'>&amp;.</span><span class='id identifier rubyid_icao_aircraft_code'>icao_aircraft_code</span> <span class='op'>||</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='op'>&amp;.</span><span class='id identifier rubyid_iata_aircraft_code'>iata_aircraft_code</span><span class='comma'>,</span>
@@ -866,7 +922,27 @@ numbers and their flight counts.</p>
       <span class='label'>manufacturer:</span> <span class='id identifier rubyid_v'>v</span><span class='lbracket'>[</span><span class='symbol'>:manufacturer</span><span class='rbracket'>]</span><span class='comma'>,</span>
       <span class='label'>family_name:</span>  <span class='id identifier rubyid_v'>v</span><span class='lbracket'>[</span><span class='symbol'>:family_name</span><span class='rbracket'>]</span>
     <span class='rbrace'>}</span><span class='rbrace'>}</span>
-    <span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='op'>-</span><span class='lparen'>(</span><span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='symbol'>:count</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='int'>0</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='symbol'>:tail_number</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+    
+  
+  <span class='kw'>case</span> <span class='id identifier rubyid_sort_category'>sort_category</span>
+  <span class='kw'>when</span> <span class='symbol'>:tail</span>
+    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_sort_by!'>sort_by!</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_tail'>tail</span><span class='op'>|</span> <span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:tail_number</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_reverse!'>reverse!</span> <span class='kw'>if</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span> <span class='op'>==</span> <span class='symbol'>:desc</span>
+  <span class='kw'>when</span> <span class='symbol'>:flights</span>
+    <span class='id identifier rubyid_sort_mult'>sort_mult</span>   <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_sort_direction'>sort_direction</span> <span class='op'>==</span> <span class='symbol'>:asc</span> <span class='op'>?</span> <span class='int'>1</span> <span class='op'>:</span> <span class='op'>-</span><span class='int'>1</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_sort_by!'>sort_by!</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_tail'>tail</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_sort_mult'>sort_mult</span><span class='op'>*</span><span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:count</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:tail_number</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+  <span class='kw'>when</span> <span class='symbol'>:aircraft</span>
+    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_sort_by!'>sort_by!</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_tail'>tail</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:aircraft</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:airline_name</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_reverse!'>reverse!</span> <span class='kw'>if</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span> <span class='op'>==</span> <span class='symbol'>:desc</span>
+  <span class='kw'>when</span> <span class='symbol'>:airline</span>
+    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_sort_by!'>sort_by!</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_tail'>tail</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:airline_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:aircraft</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_reverse!'>reverse!</span> <span class='kw'>if</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span> <span class='op'>==</span> <span class='symbol'>:desc</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_sort_by!'>sort_by!</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_tail'>tail</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='op'>-</span><span class='lparen'>(</span><span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:count</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='int'>0</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_tail'>tail</span><span class='lbracket'>[</span><span class='symbol'>:tail_number</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>return</span> <span class='id identifier rubyid_counts'>counts</span>
+  
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1056,7 +1132,7 @@ a standard simplified format for saving it into the database.</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Jul  7 15:56:21 2019 by
+  Generated on Fri Jul 12 18:34:38 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
