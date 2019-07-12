@@ -15,7 +15,7 @@ class AirlinesController < ApplicationController
     add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
     @flights = flyer.flights(current_user)
-    @sort = sort_parse(params[:sort], :flights, :desc)
+    @sort = Table.sort_parse(params[:sort], :flights, :desc)
     @airlines  = Airline.flight_count(@flights, *@sort, type: :airline)
     @operators = Airline.flight_count(@flights, *@sort, type: :operator)
         

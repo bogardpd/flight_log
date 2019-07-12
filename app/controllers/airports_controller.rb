@@ -16,7 +16,7 @@ class AirportsController < ApplicationController
     
     if @flights.any?
       
-      @sort = sort_parse(params[:sort], :visits, :desc)
+      @sort = Table.sort_parse(params[:sort], :visits, :desc)
       @airports = Airport.visit_count(@flights, *@sort)
       used_airport_codes = @airports.map{|a| a[:iata_code]}.uniq.compact
       if logged_in?
@@ -135,7 +135,7 @@ class AirportsController < ApplicationController
     end
     
     # Sort city pair table:
-    @sort = sort_parse(params[:sort], :flights, :desc)
+    @sort = Table.sort_parse(params[:sort], :flights, :desc)
     sort_cat, sort_dir = @sort
     sort_mult = (sort_dir == :asc ? 1 : -1)
     

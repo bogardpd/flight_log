@@ -131,7 +131,7 @@ module ApplicationHelper
   # table headers. Includes an arrow showing the direction of the sort if the
   # table is already sorted by this column.
   #
-  # In order for sort_link to work, {ApplicationController#sort_parse} must
+  # In order for sort_link to work, {Table.sort_parse} must
   # have been called from the controller and stored in +@sort+.
   #
   # @param link_text [String] the text to use for the link
@@ -144,7 +144,7 @@ module ApplicationHelper
   #   remains in view when a sort link is clicked.
   # @return [ActiveSupport::SafeBuffer] a link_to tag for sorting a table
   #   column.
-  # @see ApplicationController#sort_parse
+  # @see Table.sort_parse
   def sort_link(link_text, link_sort_category, default_direction, page_anchor=nil)
     param_category, param_direction = @sort
 

@@ -8,7 +8,7 @@ class TripsController < ApplicationController
   def index
     add_breadcrumb "Trips", trips_path
     add_admin_action view_context.link_to("Add New Trip", new_trip_path)
-    @sort = sort_parse(params[:sort], :departure, :desc)
+    @sort = Table.sort_parse(params[:sort], :departure, :desc)
     @trips = Trip.with_departure_dates(flyer, current_user, *@sort)
 
     @trips_with_no_flights = Trip.with_no_flights

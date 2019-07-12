@@ -80,32 +80,6 @@ class ApplicationController < ActionController::Base
     @messages.push({type: type, text: text})
   end
   
-  # Accept a sort querystring in the format "category" or "-category", and
-  # return a hash of sort category and direction.
-  # 
-  # @param query [String] a sort querystring in the format "category" or
-  #   "-category"
-  # @param default_category [Symbol] the sort category to return if no category
-  #   is specified
-  # @param default_direction [:asc, :desc] the sort direction to return if no
-  #   direction is specified
-  # @return [Array<Symbol>] an array containing a symbol for sort category and
-  #   a symbol for sort direction
-  def sort_parse(query, default_category, default_direction)
-    return [default_category, default_direction] if query.nil?
-    
-    # Extract category and direction
-    if query[0] == "-"
-      category = query[1..-1].to_sym
-      direction = :desc
-    else
-      category = query.to_sym
-      direction = :asc
-    end
-    
-    return [category, direction]
-  end
-  
   # Return the longest and shortest flights from a collection of flights. 
   # 
   # If multiple flights tie for longest or shortest (have the same distance),

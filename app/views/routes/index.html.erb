@@ -18,9 +18,9 @@
   <tr>
     <td class="counter">
 			<% if @sort[0] == :flights %>
-				<%= (row[:flight_count] == previous_count) ? "⋮" : index + 1 %>
+				<%= (row[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %>
 			<% elsif @sort[0] == :distance %>
-				<%= (row[:distance_mi] == previous_count) ? "⋮" : index + 1 %>
+				<%= (row[:distance_mi] == previous_count) ? Table::SAME_RANK : index + 1 %>
 			<% else %>
 				<%= index + 1 %>
 			<% end %>

@@ -35,7 +35,7 @@ class RoutesController < ApplicationController
     @meta_description = "A list of the routes Paul Bogard has flown on, and how often heʼs flown on each."
         
     flights = flyer.flights(current_user)
-    @sort = sort_parse(params[:sort], :flights, :desc)
+    @sort = Table.sort_parse(params[:sort], :flights, :desc)
     @route_table = Route.flight_count(flights, *@sort)     
     
     if @route_table.count > 0

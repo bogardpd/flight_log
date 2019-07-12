@@ -13,7 +13,7 @@
   <% previous_count = nil %>
   <% subtypes.each_with_index do |type, index| %>
     <tr>
-      <td class="counter"><%= (type[:flight_count] == previous_count) ? "⋮" : index + 1 %></td>
+      <td class="counter"><%= (type[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %></td>
       <td class="aircraft-family<%= " subdued" if type[:is_family] %>"><%= type[:is_family] ? "(Unknown type of #{type[:family_name]})" : link_to(type[:family_name], aircraft_family_path(type[:id])) %></td>
       <td class="aircraft-code code-mono"><%= link_to(type[:icao_aircraft_code], aircraft_family_path(type[:id])) unless type[:is_family] %></td>
       <td class="aircraft-flights"><%= render "flights/graph_block", :value => type[:flight_count], :maximum => maximum %></td>
