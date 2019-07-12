@@ -33,10 +33,8 @@ class FlightsController < ApplicationController
       @meta_description = "Maps and lists of all of Paul Bogardʼs flights."
     
       # Sort flight table:
-      sort = sort_parse(params[:sort], %w(departure), :asc)
-      @sort_cat   = sort[:category]
-      @sort_dir   = sort[:direction]
-      @flights = @flights.reverse_order if @sort_dir == :desc
+      @sort = sort_parse(params[:sort], :departure, :asc)
+      @flights = @flights.reverse_order if @sort[1] == :desc
     
     end
   
@@ -197,10 +195,8 @@ class FlightsController < ApplicationController
     add_breadcrumb "Travel Classes", classes_path
     
     @flights = flyer.flights(current_user)
-    sort = sort_parse(params[:sort], %w(quality flights), :desc)
-    @sort_cat = sort[:category]
-    @sort_dir = sort[:direction]
-    @classes = TravelClass.flight_count(@flights, @sort_cat, @sort_dir)
+    @sort = sort_parse(params[:sort], :quality, :desc)
+    @classes = TravelClass.flight_count(@flights, *@sort)
     
     @title = "Travel Classes"
     @meta_description = "A count of how many times Paul Bogard has flown in each class."
@@ -262,10 +258,8 @@ class FlightsController < ApplicationController
     @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often heʼs flown on each."
     
     @flights = flyer.flights(current_user)
-    sort = sort_parse(params[:sort], %w(flights tail aircraft airline), :desc)
-    @sort_cat   = sort[:category]
-    @sort_dir   = sort[:direction]
-    @tail_numbers_table = TailNumber.flight_count(@flights, @sort_cat, @sort_dir)
+    @sort = sort_parse(params[:sort], :flights, :desc)
+    @tail_numbers_table = TailNumber.flight_count(@flights, *@sort)
   
     # Find maxima for graph scaling:
     @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]

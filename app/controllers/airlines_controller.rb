@@ -15,11 +15,9 @@ class AirlinesController < ApplicationController
     add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
     @flights = flyer.flights(current_user)
-    sort = sort_parse(params[:sort], %w(flights airline code), :desc)
-    @sort_cat = sort[:category]
-    @sort_dir = sort[:direction]
-    @airlines  = Airline.flight_count(@flights, @sort_cat, @sort_dir, type: :airline)
-    @operators = Airline.flight_count(@flights, @sort_cat, @sort_dir, type: :operator)
+    @sort = sort_parse(params[:sort], :flights, :desc)
+    @airlines  = Airline.flight_count(@flights, *@sort, type: :airline)
+    @operators = Airline.flight_count(@flights, *@sort, type: :operator)
         
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?

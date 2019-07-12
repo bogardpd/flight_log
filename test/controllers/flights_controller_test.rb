@@ -40,7 +40,7 @@ class FlightsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
   
-  def test_index_tails_success
+  def test_index_classes_success
     get classes_path
     assert_response :success
   end

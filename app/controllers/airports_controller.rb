@@ -16,10 +16,8 @@ class AirportsController < ApplicationController
     
     if @flights.any?
       
-      sort = sort_parse(params[:sort], %w(visits country city code), :desc)
-      @sort_cat = sort[:category]
-      @sort_dir = sort[:direction]
-      @airports = Airport.visit_count(@flights, @sort_cat, @sort_dir)
+      @sort = sort_parse(params[:sort], :visits, :desc)
+      @airports = Airport.visit_count(@flights, *@sort)
       used_airport_codes = @airports.map{|a| a[:iata_code]}.uniq.compact
       if logged_in?
         @airports_with_no_flights = Airport.where.not(iata_code: used_airport_codes).order(:city)
@@ -137,22 +135,21 @@ class AirportsController < ApplicationController
     end
     
     # Sort city pair table:
-    sort_params = sort_parse(params[:sort], %w(flights city code distance), :desc)
-    @sort_cat   = sort_params[:category]
-    @sort_dir   = sort_params[:direction]
-    sort_mult   = (@sort_dir == :asc ? 1 : -1)
+    @sort = sort_parse(params[:sort], :flights, :desc)
+    sort_cat, sort_dir = @sort
+    sort_mult = (sort_dir == :asc ? 1 : -1)
     
-    case @sort_cat
+    case sort_cat
     when :city
-      @direct_flight_airports = @direct_flight_airports.sort_by {|value| value[:city]}
-      @direct_flight_airports.reverse! if @sort_dir == :desc
+      @direct_flight_airports.sort_by!{|value| value[:city]}
+      @direct_flight_airports.reverse! if sort_dir == :desc
     when :code
-      @direct_flight_airports = @direct_flight_airports.sort_by {|value| value[:iata_code]}
-      @direct_flight_airports.reverse! if @sort_dir == :desc
+      @direct_flight_airports.sort_by!{|value| value[:iata_code]}
+      @direct_flight_airports.reverse! if sort_dir == :desc
     when :flights
-      @direct_flight_airports = @direct_flight_airports.sort_by {|value| [sort_mult*value[:total_flights],value[:city]]}
+      @direct_flight_airports.sort_by!{|value| [sort_mult*value[:total_flights],value[:city]]}
     when :distance
-      @direct_flight_airports = @direct_flight_airports.sort_by {|value| [sort_mult*value[:distance_mi],value[:city]]}
+      @direct_flight_airports.sort_by!{|value| [sort_mult*value[:distance_mi],value[:city]]}
     end
     
     # Create comparitive lists of airlines, aircraft, and classes:

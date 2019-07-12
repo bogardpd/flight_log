@@ -85,33 +85,25 @@ class ApplicationController < ActionController::Base
   # 
   # @param query [String] a sort querystring in the format "category" or
   #   "-category"
-  # @param permitted_categories [Array<String>] an array of category strings
-  #   which the sort is limited to. If no category is specified in the query,
-  #   or if the category provided is not in this array, then the first element
-  #   of this array will be returned as the category.
-  # @param default_direction [:asc, :desc] the direction to return if no
+  # @param default_category [Symbol] the sort category to return if no category
+  #   is specified
+  # @param default_direction [:asc, :desc] the sort direction to return if no
   #   direction is specified
-  # @return [Hash<Symbol, Symbol>] a hash in the form [category: :category,
-  #   direction: ":asc|:desc"].
-  def sort_parse(query, permitted_categories, default_direction)
-    return {category: permitted_categories.first.to_sym, direction: default_direction} if query.nil?
-    result = Hash.new
+  # @return [Array<Symbol>] an array containing a symbol for sort category and
+  #   a symbol for sort direction
+  def sort_parse(query, default_category, default_direction)
+    return [default_category, default_direction] if query.nil?
+    
     # Extract category and direction
     if query[0] == "-"
-      category = query[1..-1]
-      result[:direction] = :desc
+      category = query[1..-1].to_sym
+      direction = :desc
     else
-      category = query
-      result[:direction] = :asc
+      category = query.to_sym
+      direction = :asc
     end
-    # Check if category is in the query:
-    if permitted_categories.include?(category)
-      result[:category] = category.to_sym
-    else
-      result[:category] = permitted_categories.first.to_sym
-      result[:direction] = default_direction
-    end
-    return result
+    
+    return [category, direction]
   end
   
   # Return the longest and shortest flights from a collection of flights. 

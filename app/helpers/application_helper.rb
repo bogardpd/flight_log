@@ -131,30 +131,34 @@ module ApplicationHelper
   # table headers. Includes an arrow showing the direction of the sort if the
   # table is already sorted by this column.
   #
+  # In order for sort_link to work, {ApplicationController#sort_parse} must
+  # have been called from the controller and stored in +@sort+.
+  #
   # @param link_text [String] the text to use for the link
-  # @param sort_category [Symbol] a symbol representing the name of the sortable
-  #   column this link sorts. Compared to @sort_cat to determine if the table
-  #   is already sorted by this column.
-  # @param default_dir [:asc, :desc] The direction to sort this column, if a
-  #   direction is not provided in the page URL parameters.
+  # @param link_sort_category [Symbol] a symbol representing the name of the
+  #   sortable column this link sorts. Compared to +@sort+ to determine if
+  #   the table is already sorted by this column.
+  # @param default_direction [:asc, :desc] The direction to sort this column,
+  #   if a direction is not provided in the page URL parameters.
   # @param page_anchor [String] The ID of the table to sort, so that the table
   #   remains in view when a sort link is clicked.
   # @return [ActiveSupport::SafeBuffer] a link_to tag for sorting a table
   #   column.
   # @see ApplicationController#sort_parse
-  def sort_link(link_text, sort_category, default_dir, page_anchor=nil)
-        
-    if @sort_cat == sort_category
-      if @sort_dir == :asc
+  def sort_link(link_text, link_sort_category, default_direction, page_anchor=nil)
+    param_category, param_direction = @sort
+
+    if param_category == link_sort_category
+      if param_direction == :asc
         category_sort_direction_indicator = content_tag(:span, sanitize("&#x25B2;"), class: "sort-direction") # Up Triangle
-      elsif @sort_dir == :desc
+      elsif param_direction == :desc
         category_sort_direction_indicator = content_tag(:span, sanitize("&#x25BC;"), class: "sort-direction") # Down Triangle
       end
     else
       category_sort_direction_indicator = nil
     end
     
-    case default_dir
+    case default_direction
     when :asc
       sort_dir_string = ["desc","asc"]
       sort_direction = ["-",""]
@@ -162,12 +166,12 @@ module ApplicationHelper
       sort_dir_string = ["asc","desc"]
       sort_direction = ["","-"]
     end
-    if (@sort_cat == sort_category && @sort_dir == default_dir)
+    if (param_category == link_sort_category && param_direction == default_direction)
       sort_polarity = sort_direction[0]
     else
       sort_polarity = sort_direction[1]
     end
-    link_to(safe_join([link_text, category_sort_direction_indicator].compact, " "), url_for(region: params[:region], sort: sort_polarity.to_s + sort_category.to_s, anchor: page_anchor), class: "sort")
+    link_to(safe_join([link_text, category_sort_direction_indicator].compact, " "), url_for(region: params[:region], sort: sort_polarity.to_s + link_sort_category.to_s, anchor: page_anchor), class: "sort")
   end
 
   # Takes a tail number and renders an image_tag for the country flag of the

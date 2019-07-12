@@ -308,7 +308,7 @@ the region parameter in the URL if present, and the default if absent.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#sort_parse-instance_method" title="#sort_parse (instance method)">#<strong>sort_parse</strong>(query, permitted_categories, default_direction)  &#x21d2; Hash&lt;Symbol, Symbol&gt; </a>
+      <a href="#sort_parse-instance_method" title="#sort_parse (instance method)">#<strong>sort_parse</strong>(query, default_category, default_direction)  &#x21d2; Array&lt;Symbol&gt; </a>
     
 
     
@@ -935,7 +935,7 @@ first user.</p>
       <div class="method_details ">
   <h3 class="signature " id="sort_parse-instance_method">
   
-    #<strong>sort_parse</strong>(query, permitted_categories, default_direction)  &#x21d2; <tt>Hash&lt;Symbol, Symbol&gt;</tt> 
+    #<strong>sort_parse</strong>(query, default_category, default_direction)  &#x21d2; <tt>Array&lt;Symbol&gt;</tt> 
   
 
   
@@ -972,19 +972,16 @@ return a hash of sort category and direction.</p>
   
     <li>
       
-        <span class='name'>permitted_categories</span>
+        <span class='name'>default_category</span>
       
       
-        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+        <span class='type'>(<tt>Symbol</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>an array of category strings which the sort is limited to. If no category
-is specified in the query, or if the category provided is not in this
-array, then the first element of this array will be returned as the
-category.</p>
+<p>the sort category to return if no category is specified</p>
 </div>
       
     </li>
@@ -1000,7 +997,7 @@ category.</p>
       
         &mdash;
         <div class='inline'>
-<p>the direction to return if no direction is specified</p>
+<p>the sort direction to return if no direction is specified</p>
 </div>
       
     </li>
@@ -1013,13 +1010,14 @@ category.</p>
     <li>
       
       
-        <span class='type'>(<tt>Hash&lt;Symbol, Symbol&gt;</tt>)</span>
+        <span class='type'>(<tt>Array&lt;Symbol&gt;</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>a hash in the form [category: :category, direction: “:asc|:desc”].</p>
+<p>an array containing a symbol for sort category and a symbol for sort
+direction</p>
 </div>
       
     </li>
@@ -1032,6 +1030,8 @@ category.</p>
       <pre class="lines">
 
 
+94
+95
 96
 97
 98
@@ -1043,38 +1043,24 @@ category.</p>
 104
 105
 106
-107
-108
-109
-110
-111
-112
-113
-114
-115</pre>
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 96</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 94</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_sort_parse'>sort_parse</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span><span class='comma'>,</span> <span class='id identifier rubyid_permitted_categories'>permitted_categories</span><span class='comma'>,</span> <span class='id identifier rubyid_default_direction'>default_direction</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>category:</span> <span class='id identifier rubyid_permitted_categories'>permitted_categories</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='comma'>,</span> <span class='label'>direction:</span> <span class='id identifier rubyid_default_direction'>default_direction</span><span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_sort_parse'>sort_parse</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span><span class='comma'>,</span> <span class='id identifier rubyid_default_category'>default_category</span><span class='comma'>,</span> <span class='id identifier rubyid_default_direction'>default_direction</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='id identifier rubyid_default_category'>default_category</span><span class='comma'>,</span> <span class='id identifier rubyid_default_direction'>default_direction</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  
   <span class='comment'># Extract category and direction
 </span>  <span class='kw'>if</span> <span class='id identifier rubyid_query'>query</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-</span><span class='tstring_end'>&quot;</span></span>
-    <span class='id identifier rubyid_category'>category</span> <span class='op'>=</span> <span class='id identifier rubyid_query'>query</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span>
-    <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='symbol'>:direction</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='symbol'>:desc</span>
+    <span class='id identifier rubyid_category'>category</span> <span class='op'>=</span> <span class='id identifier rubyid_query'>query</span><span class='lbracket'>[</span><span class='int'>1</span><span class='op'>..</span><span class='op'>-</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
+    <span class='id identifier rubyid_direction'>direction</span> <span class='op'>=</span> <span class='symbol'>:desc</span>
   <span class='kw'>else</span>
-    <span class='id identifier rubyid_category'>category</span> <span class='op'>=</span> <span class='id identifier rubyid_query'>query</span>
-    <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='symbol'>:direction</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='symbol'>:asc</span>
+    <span class='id identifier rubyid_category'>category</span> <span class='op'>=</span> <span class='id identifier rubyid_query'>query</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
+    <span class='id identifier rubyid_direction'>direction</span> <span class='op'>=</span> <span class='symbol'>:asc</span>
   <span class='kw'>end</span>
-  <span class='comment'># Check if category is in the query:
-</span>  <span class='kw'>if</span> <span class='id identifier rubyid_permitted_categories'>permitted_categories</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_category'>category</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='symbol'>:category</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_category'>category</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
-  <span class='kw'>else</span>
-    <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='symbol'>:category</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_permitted_categories'>permitted_categories</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
-    <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='symbol'>:direction</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_default_direction'>default_direction</span>
-  <span class='kw'>end</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_result'>result</span>
+  
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='id identifier rubyid_category'>category</span><span class='comma'>,</span> <span class='id identifier rubyid_direction'>direction</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1170,20 +1156,20 @@ an array.</p>
       <pre class="lines">
 
 
+127
+128
+129
+130
+131
+132
+133
+134
 135
 136
-137
-138
-139
-140
-141
-142
-143
-144
-145</pre>
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 135</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 127</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_superlatives'>superlatives</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_route_distances'>route_distances</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -1278,21 +1264,21 @@ return hash is in the same format as <span class='object_link'><a href="#superla
       <pre class="lines">
 
 
+147
+148
+149
+150
+151
+152
+153
+154
 155
 156
 157
-158
-159
-160
-161
-162
-163
-164
-165
-166</pre>
+158</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 147</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_superlatives_collection'>superlatives_collection</span><span class='lparen'>(</span><span class='id identifier rubyid_route_distances'>route_distances</span><span class='rparen'>)</span>
   
@@ -1316,7 +1302,7 @@ return hash is in the same format as <span class='object_link'><a href="#superla
 </div>
 
       <div id="footer">
-  Generated on Fri Jul 12 18:34:45 2019 by
+  Generated on Fri Jul 12 19:38:10 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

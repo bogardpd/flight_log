@@ -20,7 +20,7 @@
     <% airline_maximum = known_airports.max_by{|i| i[:visit_count]}[:visit_count]%>
     <% known_airports.each_with_index do |airport, index| %>
       <%= content_tag(:tr, class: (new_airports.include?(airport[:iata_code]) ? "new" : nil)) do %>
-        <td class="counter"><%= ((is_summary || @sort_cat == :flights) && airport[:visit_count] == previous_count) ? "⋮" : index + 1 %></td>
+        <td class="counter"><%= ((is_summary || @sort[0] == :visits) && airport[:visit_count] == previous_count) ? "⋮" : index + 1 %></td>
     		<td class="airport-country"><%= country_flag_icon(airport[:country]) %></td>
         <td class="airport-city"><%= link_to(format_airport_name(airport[:city]), airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %><% if new_airports.include?(airport[:iata_code]) %>*<% end %></td>
         <td class="airport-code code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:iata_code]), :title => "View airport details for #{airport[:city]}") %></td>

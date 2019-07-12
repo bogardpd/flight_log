@@ -13,10 +13,8 @@ class AircraftFamiliesController < ApplicationController
     add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
     
     @flights = flyer.flights(current_user)
-    sort = sort_parse(params[:sort], %w(flights aircraft), :desc)
-    @sort_cat = sort[:category]
-    @sort_dir = sort[:direction]
-    flight_count = AircraftFamily.flight_count(@flights, @sort_cat, @sort_dir)
+    @sort = sort_parse(params[:sort], :flights, :desc)
+    flight_count = AircraftFamily.flight_count(@flights, *@sort)
     @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
     
     if @aircraft_families.any?
