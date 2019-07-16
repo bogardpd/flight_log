@@ -85,6 +85,46 @@ class Trip < ApplicationRecord
     purposes["personal"] = "Personal"
     return purposes
   end
+
+  # Returns an array of all trips associated with a collection of flights,
+  # including ID, name, departure date, and an array of trip sections (with
+  # section numbers and departure dates) that also match the flights.
+  # 
+  # Sections which do not match any flights will not be included, even if their
+  # parent trip does match one or more flights.
+  #
+  # Used by {AirportsController#show} to generate tables of trips and trip
+  # sections matching an airport.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights}
+  # @return [Array<Hash>] trips and subsections which include one or more
+  #   {Flight Flights} in the collection.
+  #
+  # @example
+  #   Trip.matching_trips_and_sections(Flight.first(20)) #=> [
+  #     {trip_id: 1, name: "Name", departure_date: "2010-01-01", sections: [
+  #       {trip_section: 1, departure_date: "2010-01-01"}
+  #       {trip_section: 2, departure_date: "2010-01-02"}
+  #     ]}
+  #   ]
+  def self.matching_trips_and_sections(flights)
+    trip_hash = Hash.new{ |h,k| h[k] = {sections: Hash.new} }
+    
+    # Organize sections by trip:
+    trip_section_pairs = flights.pluck(:trip_id, :trip_section, :departure_date).uniq.sort_by{|x| x[2]}
+    trip_section_pairs.each do |p|
+      # Add the flight date, unless an earlier date is already present:
+      current_date = trip_hash.dig(p[0], :sections, p[1])
+      trip_hash[p[0]][:sections][p[1]] = [current_date, p[2]].compact.min
+    end
+
+    # Get trip names:
+    trip_names = Hash[Trip.find(trip_hash.keys).pluck(:id, :name)]
+
+    # Create output array:
+    return trip_hash.map{|k,v| {trip_id: k, name: trip_names[k], departure_date: v[:sections].values.min, sections: v[:sections].map{|sk,sv| {trip_section: sk, departure_date: sv}}}}.sort_by{|t| t[:departure_date]}
+
+  end
   
   # Returns a collection of trip IDs, names, and departure dates. Used in
   # {TripsController#index} to show a list of trips.

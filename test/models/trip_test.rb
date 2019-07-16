@@ -32,5 +32,12 @@ class TripTest < ActiveSupport::TestCase
   def test_layover_ratio_for_section_with_only_zero_distance_flight
     assert_nil @trip.layover_ratio(4) # YVR-YVR
   end
+
+  def test_matching_trips_and_sections
+    flights = Flight.find([1,2])
+    matching = Trip.matching_trips_and_sections(flights)
+    assert matching.dig(0, :trip_id) == 1
+    assert matching.dig(0, :sections, 0, :trip_section) == 1
+  end
   
 end
