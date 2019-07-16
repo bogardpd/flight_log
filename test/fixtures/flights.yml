@@ -1,4 +1,5 @@
 flightORDDFW:
+  id: 1
   origin_airport_id: 2
   destination_airport_id: 1
   trip_id: 1
@@ -14,6 +15,7 @@ flightORDDFW:
   fleet_number: "123"
   
 flightDFWSEA:
+  id: 2
   origin_airport_id: 1
   destination_airport_id: 3
   trip_id: 1

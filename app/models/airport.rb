@@ -42,6 +42,22 @@ class Airport < ApplicationRecord
     end
   end
   
+  # Given two IDs, returns the one that is not associated with this {Airport}.
+  # If both are associated with this airport (a flight where the origin and
+  # destination are the same) then this airport's ID will be returned. If
+  # neither are associated with this airport, nil will be returned.
+  #
+  # Used by {direct_flight_count} to determine which airport on a direct
+  # {Flight} is the remote airport.
+  #
+  # @param id_1 [Integer] an {Airport} ID
+  # @param id_2 [Integer] an {Airport} ID
+  # @return [Integer, nil] the remote {Airport} ID
+  def remote_airport(id_1, id_2)
+    return nil unless [id_1, id_2].include?(self.id)
+    return self.id == id_1 ? id_2 : id_1
+  end
+
   # Returns the image path for this airport's cropped terminal silhouette.
   # This image is always 1440px wide, and is up to 810px tall.
   #
@@ -84,7 +100,76 @@ class Airport < ApplicationRecord
     return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
   end
   
-  # Returns an array of Airports, with a hash for each Airport containing the
+  # Given a collection of flights and a direct flight {Airport}, returns data
+  # about the direct flights to or from the specified airport within the flight
+  # collection. Returns an array with a hash for each remote airport, with each
+  # hash containing the airport name, IATA code, country, distance in miles to
+  # the direct flight airport, and count of direct flights to or from the
+  # direct flight airport.
+  #
+  # Used on {AirportsController#show} to generate the Direct Flight Airports
+  # table.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to
+  #   calculate direct flights within
+  # @param direct_flight_airport [Airport] the airport to calculate direct
+  #   flights from and to
+  # @param sort_category [:city, :code, :distance, :flights] the category to
+  #   sort the array by
+  # @param sort_direction [:asc, :desc] the direction to sort the array
+  #
+  # @return [Array<Hash>] details for each {Airport} with direct flights to
+  #   the +direct_flight_airport+
+  #
+  # @example
+  #   Airport.direct_flight_count(Flight.all, Airport.find(1)) #=> [
+  #     {:iata_code=>"ORD", :city=>"Chicago (O’Hare)", :country=>"United States", :distance_mi=>801, :total_flights=>6},
+  #     {:iata_code=>"SLC", :city=>"Salt Lake City", :country=>"United States", :distance_mi=>987, :total_flights=>6},
+  #     {:iata_code=>"SEA", :city=>"Seattle/Tacoma", :country=>"United States", :distance_mi=>1658, :total_flights=>4}
+  #   ]
+  def self.direct_flight_count(flights, direct_flight_airport, sort_category=nil, sort_direction=nil)
+    
+    # Filter flights to only flights involving the direct_flight_airport:
+    flights = flights.to_a.select{|f| f[:origin_airport_id] == direct_flight_airport.id || f[:destination_airport_id] == direct_flight_airport.id}
+    
+    # Calculate direct flight counts by airport id:
+    count_by_id = Hash.new(0)
+    flights.each do |flight|
+      count_by_id[direct_flight_airport.remote_airport(flight[:origin_airport_id], flight[:destination_airport_id])] += 1
+    end
+
+    # Calculate flight distances by remote airport id:
+    distance_by_id = Hash.new
+    routes = Route.where(airport1_id: count_by_id.keys, airport2_id: direct_flight_airport.id).or(Route.where(airport1_id: direct_flight_airport.id, airport2_id: count_by_id.keys)).pluck(:airport1_id,:airport2_id,:distance_mi)
+    routes.each do |route|
+      distance_by_id[direct_flight_airport.remote_airport(route[0], route[1])] = route[2]
+    end
+
+    # Fill in airport details:
+    airports = Airport.find(count_by_id.keys).pluck(:id, :iata_code, :city, :country)
+    airports.map!{|a| {iata_code: a[1], city: a[2], country: a[3], distance_mi: distance_by_id[a[0]], total_flights: count_by_id[a[0]]}}
+
+    # Sort array:
+    sort_mult = (sort_direction == :asc ? 1 : -1)
+    case sort_category
+    when :city
+      airports.sort_by!{|airport| airport[:city]}
+      airports.reverse! if sort_direction == :desc
+    when :code
+      airports.sort_by!{|airport| airport[:iata_code]}
+      airports.reverse! if sort_direction == :desc
+    when :flights
+      airports.sort_by!{|airport| [sort_mult*airport[:total_flights],airport[:city]]}
+    when :distance
+      airports.sort_by!{|airport| [sort_mult*airport[:distance_mi],airport[:city]]}
+    else
+      airports.sort_by!{|airport| [-airport[:total_flights],airport[:city]]}
+    end
+
+    return airports
+  end
+
+  # Returns an array of airports, with a hash for each airport containing the
   # id, airport name, IATA code, and number of visits to that airport, sorted
   # by number of visits descending.
   #
@@ -95,9 +180,9 @@ class Airport < ApplicationRecord
   #   calculate Airport visit counts for
   # @param sort_category [:country, :city, :code, :visits] the category to sort
   #   the array by
-  # @param sort_direction [:asc, :desc] the direction to sort the array
+  # @param sort_direectionection [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each Airport visited
-  def self.visit_count(flights, sort_category=nil, sort_direction=nil)
+  def self.visit_count(flights, sort_category=nil, sort_direectionection=nil)
     flights = flights.reorder(:trip_id, :trip_section, :departure_utc)
     
     visits = Hash.new(0)
@@ -123,19 +208,19 @@ class Airport < ApplicationRecord
 
     case sort_category
     when :country
-      if sort_direction == :asc
+      if sort_direectionection == :asc
         counts.sort_by!{|airport| [airport[:country], airport[:city]]}
       else
         counts.sort!{|a, b| [b[:country], a[:city]] <=> [a[:country], b[:city]] }
       end
     when :city
       counts.sort_by!{|airport| airport[:city]}
-      counts.reverse! if sort_direction == :desc
+      counts.reverse! if sort_direectionection == :desc
     when :code
       counts.sort_by!{|airport| airport[:iata_code]}
-      counts.reverse! if sort_direction == :desc
+      counts.reverse! if sort_direectionection == :desc
     when :visits
-      sort_mult = (sort_direction == :desc ? -1 : 1)
+      sort_mult = (sort_direectionection == :desc ? -1 : 1)
       counts.sort_by!{ |airport| [sort_mult*airport[:visit_count], airport[:city]] }
     else    
       counts.sort_by!{|airport| [-airport[:visit_count] || 0, airport[:city] || "", airport[:iata_code] || ""]}
@@ -153,7 +238,7 @@ class Airport < ApplicationRecord
   #   ICAO codes (i.e. EG, K)
   # @return [Array<String>] ICAO codes in the region
   def self.in_region_iata_codes(icao_starts)
-    return in_region_hash(icao_starts).values
+    return in_region_hash(icao_starts).airports
   end
 
   # Take a collection of strings representing the starts of ICAO codes, and
@@ -175,7 +260,7 @@ class Airport < ApplicationRecord
   # @param icao_starts [Array<String>] an array of strings of the start of
   #   ICAO codes (i.e. EG, K)
   # @return [Hash<Integer,String>] a hash of airports with matching ICAO codes,
-  #   with airport IDs as keys and IATA codes as values
+  #   with airport IDs as keys and IATA codes as airports
   def self.in_region_hash(icao_starts)
     conditions = icao_starts.map{"icao_code LIKE ?"}.join(" OR ")
     patterns = icao_starts.map{|start| "#{start}%"}
@@ -198,7 +283,7 @@ class Airport < ApplicationRecord
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights}
   # @return [Hash<Integer,Integer>] a hash with airport IDs as keys and number
-  #   of visits as values
+  #   of visits as airports
   def self.frequency_hash(flights)
     airport_frequency = Hash.new(0) # All airports start with 0 flights
     previous_trip_id = nil;

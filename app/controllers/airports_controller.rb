@@ -68,48 +68,26 @@ class AirportsController < ApplicationController
     
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     trip_array = Array.new
-    @sections = Array.new
+    # @sections = Array.new
     section_where_array = Array.new
-    pair_totals = Hash.new(0)
-    pair_cities = Hash.new
-    pair_countries = Hash.new
-    pair_distances = Hash.new
-    @direct_flight_airports = Array.new
     prev_trip_id = nil
     prev_section_id = nil
     hidden_trips = Trip.where(hidden: true).pluck(:id)
     
     @total_distance = Route.total_distance(@flights)
     
-    # Calculate distances to direct flight airports:
-    route_hash = Hash.new()
-    Route.find_by_sql(["SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id WHERE routes.airport1_id = ? OR routes.airport2_id = ?", @airport.id, @airport.id]).map{|x| route_hash[[x.iata1,x.iata2]] = x.distance_mi }
-  
     @flights.each do |flight|
       trip_array.push(flight.trip_id)
       unless (flight.trip_id == prev_trip_id && flight.trip_section == prev_section_id)
-        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date, trip_hidden: hidden_trips.include?(flight.trip_id)} )
+        # @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date, trip_hidden: hidden_trips.include?(flight.trip_id)} )
       end
       prev_trip_id = flight.trip_id
       prev_section_id = flight.trip_section
       section_where_array.push("(trip_id = #{flight.trip_id.to_i} AND trip_section = #{flight.trip_section.to_i})")
-
-      # Create hash of the other airports on flights to/from this airport and their counts
-      if (flight.origin_airport.iata_code == @airport.iata_code)
-        pair_totals[flight.destination_airport.iata_code] += 1
-        pair_cities[flight.destination_airport.iata_code] = flight.destination_airport.city
-        pair_countries[flight.destination_airport.iata_code] = flight.destination_airport.country
-        pair_distances[flight.destination_airport.iata_code] = route_hash[[flight.origin_airport.iata_code,flight.destination_airport.iata_code]] || route_hash[[flight.destination_airport.iata_code,flight.origin_airport.iata_code]] || -1
-      else
-        pair_totals[flight.origin_airport.iata_code] += 1
-        pair_cities[flight.origin_airport.iata_code] = flight.origin_airport.city
-        pair_countries[flight.origin_airport.iata_code] = flight.origin_airport.country
-        pair_distances[flight.origin_airport.iata_code] = route_hash[[flight.origin_airport.iata_code,flight.destination_airport.iata_code]] || route_hash[[flight.destination_airport.iata_code,flight.origin_airport.iata_code]] || -1
-      end
     end
     
     trip_array = trip_array.uniq.sort
-    @sections.uniq!
+    # @sections.uniq!
 
     @trips = Flight.find_by_sql(["SELECT flights.trip_id AS id, MIN(flights.departure_date) AS departure_date, name, hidden FROM flights INNER JOIN trips on trips.id = flights.trip_id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, name, hidden ORDER BY departure_date", trip_array])
     
@@ -117,14 +95,11 @@ class AirportsController < ApplicationController
     @sections_using_airport_flights = flyer_flights.where(section_where_array.join(" OR "))
 
     @airport_frequency = Airport.frequency_hash(@flights)[@airport.id]
-   
-    @pair_maximum = pair_totals.length > 0 ? pair_totals.values.max : 1
- 
-    # Create direct flight airport array sorted by count descending, city ascending:
-    pair_totals.each do |airport, count|
-      @direct_flight_airports << {:iata_code => airport, :total_flights => count, :city => pair_cities[airport], :distance_mi => pair_distances[airport], :country => pair_countries[airport]}
-    end
     
+    # Sort city pair table:
+    @sort = Table.sort_parse(params[:sort], :flights, :desc)
+    @direct_flight_airports = Airport.direct_flight_count(@flights, @airport, *@sort)
+
     # Find maxima for graph scaling:
     if @flights.empty? || @direct_flight_airports.empty?
       @flights_maximum = 0
@@ -132,24 +107,6 @@ class AirportsController < ApplicationController
     else
       @flights_maximum = @direct_flight_airports.max_by{|i| i[:total_flights].to_i}[:total_flights]
       @distance_maximum = @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
-    end
-    
-    # Sort city pair table:
-    @sort = Table.sort_parse(params[:sort], :flights, :desc)
-    sort_cat, sort_dir = @sort
-    sort_mult = (sort_dir == :asc ? 1 : -1)
-    
-    case sort_cat
-    when :city
-      @direct_flight_airports.sort_by!{|value| value[:city]}
-      @direct_flight_airports.reverse! if sort_dir == :desc
-    when :code
-      @direct_flight_airports.sort_by!{|value| value[:iata_code]}
-      @direct_flight_airports.reverse! if sort_dir == :desc
-    when :flights
-      @direct_flight_airports.sort_by!{|value| [sort_mult*value[:total_flights],value[:city]]}
-    when :distance
-      @direct_flight_airports.sort_by!{|value| [sort_mult*value[:distance_mi],value[:city]]}
     end
     
     # Create comparitive lists of airlines, aircraft, and classes:
