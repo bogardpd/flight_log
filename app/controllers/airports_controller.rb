@@ -68,7 +68,7 @@ class AirportsController < ApplicationController
     
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     trip_array = Array.new
-    # @sections = Array.new
+    @sections = Array.new
     section_where_array = Array.new
     prev_trip_id = nil
     prev_section_id = nil
@@ -79,7 +79,7 @@ class AirportsController < ApplicationController
     @flights.each do |flight|
       trip_array.push(flight.trip_id)
       unless (flight.trip_id == prev_trip_id && flight.trip_section == prev_section_id)
-        # @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date, trip_hidden: hidden_trips.include?(flight.trip_id)} )
+        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date, trip_hidden: hidden_trips.include?(flight.trip_id)} )
       end
       prev_trip_id = flight.trip_id
       prev_section_id = flight.trip_section
@@ -87,7 +87,7 @@ class AirportsController < ApplicationController
     end
     
     trip_array = trip_array.uniq.sort
-    # @sections.uniq!
+    @sections.uniq!
 
     @trips = Flight.find_by_sql(["SELECT flights.trip_id AS id, MIN(flights.departure_date) AS departure_date, name, hidden FROM flights INNER JOIN trips on trips.id = flights.trip_id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, name, hidden ORDER BY departure_date", trip_array])
     
