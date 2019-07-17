@@ -5,7 +5,7 @@
   <table class="flightlog">
   <% @trips_with_no_flights.each do |trip| %>
     <tr>
-      <td class="trip_name"><%= Trip::HIDDEN_MARKER if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
+      <td class="trip-name"><%= Trip::HIDDEN_MARKER if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
     </tr>
   <% end %>
   </table>
@@ -19,7 +19,7 @@
 <table class="flightlog">
   <tr>
     <th class="counter">#</th>
-		<th class="trip_name">Trip</th>
+		<th class="trip-name">Trip</th>
     <th class="flight-date"><%= sort_link("Departure", :departure, :desc) %></th>
   </tr>
 	<%= render partial: "trips/trip_table_body" %>

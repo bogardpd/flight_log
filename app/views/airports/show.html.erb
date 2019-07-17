@@ -21,8 +21,7 @@
 		<li><%= link_to("Operators", "#operators", title: "Operators using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Aircraft", "#aircraft", title: "Aircraft using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Classes", "#classes", title: "Classes flown to or from #{@airport.iata_code}") %></li>
-		<li><%= link_to("Trip Sections", "#sections", title: "Trip sections using #{@airport.iata_code}") %></li>
-		<li><%= link_to("Trips", "#trips", title: "Trips using #{@airport.iata_code}") %></li>
+		<li><%= link_to("Trips and Sections", "#trips-and-sections", title: "Trips and sections using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Flight List", "#flights", title: "Flights using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Terminal", "#terminal", title: "Terminal silhouette of #{@airport.iata_code}") %></li>
   </ul>
@@ -85,15 +84,18 @@
 
 	<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
-	<h2 id="sections">Trip Sections Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
-	<p>This map shows the flights of all of my trip sections that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
-	<%= gcmap_with_region_select(@sections_map, @region, anchor: "sections-map") %>
-	<%= render "trips/section_table" %>
 
-	<h2 id="trips">Trips Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
-	<p>This map shows the flights of all of my trips that, at some point, flew through <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.
+	<h2 id="trips-and-sections">Trips and Sections Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+
+	<h3>Trips with a <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Visit</h3>
 	<%= gcmap_with_region_select(@trips_map, @region, anchor: "trips-map") %>
-	<%= render "trips/trip_table" %>
+
+	<h3>Trip Sections with a <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Visit</h3>
+	<%= gcmap_with_region_select(@sections_map, @region, anchor: "sections-map") %>
+
+	<h3>Trip and Section Details</h3>
+	<%= render partial: "trips/trip_and_section_table", locals: {trips_and_sections: @trips_and_sections} %>
+
 	
 	<h2 id="flights"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Flight List</h2>
 	<table class="flightlog">

@@ -67,34 +67,14 @@ class AirportsController < ApplicationController
     @flights = flyer_flights.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id)
     
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
-    trip_array = Array.new
-    @sections = Array.new
-    section_where_array = Array.new
-    prev_trip_id = nil
-    prev_section_id = nil
-    hidden_trips = Trip.where(hidden: true).pluck(:id)
     
     @total_distance = Route.total_distance(@flights)
     
-    @flights.each do |flight|
-      trip_array.push(flight.trip_id)
-      unless (flight.trip_id == prev_trip_id && flight.trip_section == prev_section_id)
-        @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date, trip_hidden: hidden_trips.include?(flight.trip_id)} )
-      end
-      prev_trip_id = flight.trip_id
-      prev_section_id = flight.trip_section
-      section_where_array.push("(trip_id = #{flight.trip_id.to_i} AND trip_section = #{flight.trip_section.to_i})")
-    end
-    
-    trip_array = trip_array.uniq.sort
-    @sections.uniq!
-
-    @trips = Flight.find_by_sql(["SELECT flights.trip_id AS id, MIN(flights.departure_date) AS departure_date, name, hidden FROM flights INNER JOIN trips on trips.id = flights.trip_id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, name, hidden ORDER BY departure_date", trip_array])
-    
-    @trips_using_airport_flights = flyer_flights.where(trip_id: trip_array)
-    @sections_using_airport_flights = flyer_flights.where(section_where_array.join(" OR "))
-
-    @airport_frequency = Airport.frequency_hash(@flights)[@airport.id]
+    # Determine trips and sections:
+    @trips_and_sections = Trip.matching_trips_and_sections(@flights)
+    section_where_array = @trips_and_sections.map{|t| t[:sections].map{|s| [t[:trip_id],s[:trip_section]]}}.flatten(1).map{|pair| "(trip_id = " + pair[0].to_i.to_s + " AND trip_section = " + pair[1].to_i.to_s + ")"}.join(" OR ")
+    @trips_using_airport_flights = flyer_flights.where(trip_id: @trips_and_sections.map{|t| t[:trip_id]})
+    @sections_using_airport_flights = flyer_flights.where(section_where_array)
     
     # Sort city pair table:
     @sort = Table.sort_parse(params[:sort], :flights, :desc)

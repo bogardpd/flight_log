@@ -293,8 +293,17 @@
     
   /* Trips */
     
-    th.trip_name {
-    	text-align: left;
+    td.trip-name, th.trip-name {
+      text-align: left;
+    }
+
+    td.section-name {
+      text-align: left;
+      font-size: $font-size-small;
+    }
+
+    th.section-name {
+      text-align: left;
     }
 
     

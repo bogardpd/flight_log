@@ -1,0 +1,34 @@
+<% if trips_and_sections.any? %>
+  <table class="flightlog">
+    <tr>
+      <th class="counter">#</th>
+      <th class="trip-name">Trip</th>
+      <th class="section-name">Section</th>
+      <th class="flight-date">Departure</th>
+    </tr>
+    <% trips_and_sections.each_with_index do |trip, index| %>
+      <tr>
+        <td class="counter">
+          <%= index + 1 %>
+        </td>
+        <td class="trip-name">
+          <%= Trip::HIDDEN_MARKER if trip[:hidden] %><%= link_to(trip[:name], trip_path(trip[:trip_id]), title: "View trip details for #{trip[:name]}") %>
+        </td>
+        <td class="section-name">
+          <% trip[:sections].each do |section| %>
+            <div><%= link_to("Section #{section[:trip_section]}", show_section_path(trip[:trip_id], section[:trip_section]), title: "View details for section #{section[:trip_section]} of #{trip[:name]}") %></div>
+          <% end %>  
+        </td>
+        <td class="flight-date">
+          <%= Flight.format_date(trip[:departure_date]) %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="4" class="flightlog-total">
+        <%= pluralize(trips_and_sections.length, "trip") %>,
+        <%= pluralize(trips_and_sections.map{|t| t[:sections].count }.reduce(0, :+), "section") %>
+      </td>
+    </tr>
+  </table>
+<% end %>

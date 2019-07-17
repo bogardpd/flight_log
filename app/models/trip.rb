@@ -87,8 +87,9 @@ class Trip < ApplicationRecord
   end
 
   # Returns an array of all trips associated with a collection of flights,
-  # including ID, name, departure date, and an array of trip sections (with
-  # section numbers and departure dates) that also match the flights.
+  # including ID, name, hidden status, departure date, and an array of trip
+  # sections (with section numbers and departure dates) that also match the
+  # flights.
   # 
   # Sections which do not match any flights will not be included, even if their
   # parent trip does match one or more flights.
@@ -102,15 +103,15 @@ class Trip < ApplicationRecord
   #
   # @example
   #   Trip.matching_trips_and_sections(Flight.first(20)) #=> [
-  #     {trip_id: 1, name: "Name", departure_date: "2010-01-01", sections: [
+  #     {trip_id: 1, name: "Name", hidden: false, departure_date: "2010-01-01", sections: [
   #       {trip_section: 1, departure_date: "2010-01-01"}
   #       {trip_section: 2, departure_date: "2010-01-02"}
   #     ]}
   #   ]
   def self.matching_trips_and_sections(flights)
-    trip_hash = Hash.new{ |h,k| h[k] = {sections: Hash.new} }
     
     # Organize sections by trip:
+    trip_hash = Hash.new{ |h,k| h[k] = {sections: Hash.new} }
     trip_section_pairs = flights.pluck(:trip_id, :trip_section, :departure_date).uniq.sort_by{|x| x[2]}
     trip_section_pairs.each do |p|
       # Add the flight date, unless an earlier date is already present:
@@ -119,10 +120,10 @@ class Trip < ApplicationRecord
     end
 
     # Get trip names:
-    trip_names = Hash[Trip.find(trip_hash.keys).pluck(:id, :name)]
+    trip_names = Hash[Trip.find(trip_hash.keys).pluck(:id, :name, :hidden).map{|t| [t[0], {name: t[1], hidden: t[2]}]}]
 
     # Create output array:
-    return trip_hash.map{|k,v| {trip_id: k, name: trip_names[k], departure_date: v[:sections].values.min, sections: v[:sections].map{|sk,sv| {trip_section: sk, departure_date: sv}}}}.sort_by{|t| t[:departure_date]}
+    return trip_hash.map{|tk,tv| {trip_id: tk, name: trip_names[tk][:name], hidden: trip_names[tk][:hidden], departure_date: tv[:sections].values.min, sections: tv[:sections].map{|sk,sv| {trip_section: sk, departure_date: sv}}}}.sort_by{|t| t[:departure_date]}
 
   end
   

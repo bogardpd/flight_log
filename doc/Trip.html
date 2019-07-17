@@ -205,8 +205,9 @@ trip.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Returns an array of all trips associated with a collection of flights,
-including ID, name, departure date, and an array of trip sections (with
-section numbers and departure dates) that also match the flights.</p>
+including ID, name, hidden status, departure date, and an array of trip
+sections (with section numbers and departure dates) that also match the
+flights.</p>
 </div></span>
   
 </li>
@@ -373,8 +374,9 @@ first origin and last destination.</p>
   <div class="discussion">
     
 <p>Returns an array of all trips associated with a collection of flights,
-including ID, name, departure date, and an array of trip sections (with
-section numbers and departure dates) that also match the flights.</p>
+including ID, name, hidden status, departure date, and an array of trip
+sections (with section numbers and departure dates) that also match the
+flights.</p>
 
 <p>Sections which do not match any flights will not be included, even if their
 parent trip does match one or more flights.</p>
@@ -392,7 +394,7 @@ sections matching an airport.</p>
     
       
       <pre class="example code"><code>Trip.matching_trips_and_sections(Flight.first(20)) #=&gt; [
-  {trip_id: 1, name: &quot;Name&quot;, departure_date: &quot;2010-01-01&quot;, sections: [
+  {trip_id: 1, name: &quot;Name&quot;, hidden: false, departure_date: &quot;2010-01-01&quot;, sections: [
     {trip_section: 1, departure_date: &quot;2010-01-01&quot;}
     {trip_section: 2, departure_date: &quot;2010-01-02&quot;}
   ]}
@@ -446,7 +448,6 @@ collection.</p>
       <pre class="lines">
 
 
-110
 111
 112
 113
@@ -463,16 +464,17 @@ collection.</p>
 124
 125
 126
-127</pre>
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_matching_trips_and_sections'>matching_trips_and_sections</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_trip_hash'>trip_hash</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_h'>h</span><span class='comma'>,</span><span class='id identifier rubyid_k'>k</span><span class='op'>|</span> <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>sections:</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rbrace'>}</span> <span class='rbrace'>}</span>
   
   <span class='comment'># Organize sections by trip:
-</span>  <span class='id identifier rubyid_trip_section_pairs'>trip_section_pairs</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:trip_id</span><span class='comma'>,</span> <span class='symbol'>:trip_section</span><span class='comma'>,</span> <span class='symbol'>:departure_date</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_x'>x</span><span class='op'>|</span> <span class='id identifier rubyid_x'>x</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+</span>  <span class='id identifier rubyid_trip_hash'>trip_hash</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_h'>h</span><span class='comma'>,</span><span class='id identifier rubyid_k'>k</span><span class='op'>|</span> <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>sections:</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rbrace'>}</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_trip_section_pairs'>trip_section_pairs</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:trip_id</span><span class='comma'>,</span> <span class='symbol'>:trip_section</span><span class='comma'>,</span> <span class='symbol'>:departure_date</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_x'>x</span><span class='op'>|</span> <span class='id identifier rubyid_x'>x</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
   <span class='id identifier rubyid_trip_section_pairs'>trip_section_pairs</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_p'>p</span><span class='op'>|</span>
     <span class='comment'># Add the flight date, unless an earlier date is already present:
 </span>    <span class='id identifier rubyid_current_date'>current_date</span> <span class='op'>=</span> <span class='id identifier rubyid_trip_hash'>trip_hash</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:sections</span><span class='comma'>,</span> <span class='id identifier rubyid_p'>p</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -480,10 +482,10 @@ collection.</p>
   <span class='kw'>end</span>
 
   <span class='comment'># Get trip names:
-</span>  <span class='id identifier rubyid_trip_names'>trip_names</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_trip_hash'>trip_hash</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='comma'>,</span> <span class='symbol'>:name</span><span class='rparen'>)</span><span class='rbracket'>]</span>
+</span>  <span class='id identifier rubyid_trip_names'>trip_names</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_trip_hash'>trip_hash</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='comma'>,</span> <span class='symbol'>:name</span><span class='comma'>,</span> <span class='symbol'>:hidden</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='label'>name:</span> <span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>hidden:</span> <span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='rbracket'>]</span>
 
   <span class='comment'># Create output array:
-</span>  <span class='kw'>return</span> <span class='id identifier rubyid_trip_hash'>trip_hash</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>trip_id:</span> <span class='id identifier rubyid_k'>k</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='id identifier rubyid_trip_names'>trip_names</span><span class='lbracket'>[</span><span class='id identifier rubyid_k'>k</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>departure_date:</span> <span class='id identifier rubyid_v'>v</span><span class='lbracket'>[</span><span class='symbol'>:sections</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_min'>min</span><span class='comma'>,</span> <span class='label'>sections:</span> <span class='id identifier rubyid_v'>v</span><span class='lbracket'>[</span><span class='symbol'>:sections</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sk'>sk</span><span class='comma'>,</span><span class='id identifier rubyid_sv'>sv</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>trip_section:</span> <span class='id identifier rubyid_sk'>sk</span><span class='comma'>,</span> <span class='label'>departure_date:</span> <span class='id identifier rubyid_sv'>sv</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span> <span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='symbol'>:departure_date</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+</span>  <span class='kw'>return</span> <span class='id identifier rubyid_trip_hash'>trip_hash</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_tk'>tk</span><span class='comma'>,</span><span class='id identifier rubyid_tv'>tv</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>trip_id:</span> <span class='id identifier rubyid_tk'>tk</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='id identifier rubyid_trip_names'>trip_names</span><span class='lbracket'>[</span><span class='id identifier rubyid_tk'>tk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>hidden:</span> <span class='id identifier rubyid_trip_names'>trip_names</span><span class='lbracket'>[</span><span class='id identifier rubyid_tk'>tk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:hidden</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>departure_date:</span> <span class='id identifier rubyid_tv'>tv</span><span class='lbracket'>[</span><span class='symbol'>:sections</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_min'>min</span><span class='comma'>,</span> <span class='label'>sections:</span> <span class='id identifier rubyid_tv'>tv</span><span class='lbracket'>[</span><span class='symbol'>:sections</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sk'>sk</span><span class='comma'>,</span><span class='id identifier rubyid_sv'>sv</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>trip_section:</span> <span class='id identifier rubyid_sk'>sk</span><span class='comma'>,</span> <span class='label'>departure_date:</span> <span class='id identifier rubyid_sv'>sv</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span> <span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='symbol'>:departure_date</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
 
 <span class='kw'>end</span></pre>
     </td>
@@ -641,7 +643,6 @@ Trip forms.</p>
       <pre class="lines">
 
 
-136
 137
 138
 139
@@ -651,10 +652,11 @@ Trip forms.</p>
 143
 144
 145
-146</pre>
+146
+147</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 136</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 137</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_with_departure_dates'>with_departure_dates</span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_flyer'>flyer</span> <span class='op'>==</span> <span class='id identifier rubyid_current_user'>current_user</span>
@@ -718,12 +720,12 @@ they have not yet added any <span class='object_link'><a href="Flight.html" titl
       <pre class="lines">
 
 
-153
 154
-155</pre>
+155
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 153</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 154</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_with_no_flights'>with_no_flights</span>
   <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id not in (?)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='const'><span class='object_link'><a href="" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_distinct'>distinct</span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:flights</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>trips.id</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -944,7 +946,7 @@ section distance was twice as long as the theoretical best distance.</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Jul 15 23:35:05 2019 by
+  Generated on Tue Jul 16 21:41:40 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
