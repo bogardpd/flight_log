@@ -107,29 +107,9 @@ class RoutesController < ApplicationController
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
+    # Determine trips and sections:
     @pair_distance = Route.distance_by_iata(@airports[0],@airports[1])
     @trips_and_sections = Trip.matching_trips_and_sections(@flights)
-    
-    # Get trips sharing this city pair:
-    trip_array = Array.new
-    @sections = Array.new
-    section_where_array = Array.new
-    @flights.each do |flight|
-      trip_array.push(flight.trip_id)
-      @sections.push( {:trip_id => flight.trip_id, :trip_name => flight.trip.name, :trip_section => flight.trip_section, :departure => flight.departure_date, :trip_hidden => flight.trip.hidden} )
-      section_where_array.push("(trip_id = #{flight.trip_id.to_i} AND trip_section = #{flight.trip_section.to_i})")
-    end
-    trip_array.uniq!
-    @sections.uniq!
-    section_where_array.uniq!
-    
-    # Create list of trips sorted by first flight:
-    
-    if logged_in?
-      @trips = Flight.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE flights.trip_id IN (?) GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", trip_array])
-    else
-      @trips = Flight.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE flights.trip_id IN (?) AND trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", trip_array])
-    end
     
     # Create comparitive lists of airlines, aircraft, and classes:
     @airlines = Airline.flight_count(@flights, type: :airline)
@@ -138,8 +118,8 @@ class RoutesController < ApplicationController
     @classes = TravelClass.flight_count(@flights)
     
     # Create flight arrays for maps of trips and sections:
-    @city_pair_trip_flights    = flyer_flights.where(:trip_id => trip_array)
-    @city_pair_section_flights = flyer_flights.where(section_where_array.join(" OR "))
+    @city_pair_trip_flights    = flyer_flights.where(trip_id: @trips_and_sections.map{|t| t[:trip_id]})
+    @city_pair_section_flights = flyer_flights.where(Trip.section_where_array(@trips_and_sections))
     
     # Create maps:
     @route_map    = SingleFlightMap.new(@flights.first)

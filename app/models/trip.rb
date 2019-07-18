@@ -126,6 +126,18 @@ class Trip < ApplicationRecord
     return trip_hash.map{|tk,tv| {trip_id: tk, name: trip_names[tk][:name], hidden: trip_names[tk][:hidden], departure_date: tv[:sections].values.min, sections: tv[:sections].map{|sk,sv| {trip_section: sk, departure_date: sv}}}}.sort_by{|t| t[:departure_date]}
 
   end
+
+  # Generates the WHERE clause of a SQL query for all flights in all sections
+  # specified in a {matching_trips_and_sections} array.
+  #
+  # @param matching_trips_and_sections_array [Array<Hash>] the results of a
+  #   {matching_trips_and_sections} call
+  # @return [String] a SQL where clause
+  # 
+  # @see matching_trips_and_sections
+  def self.section_where_array(matching_trips_and_sections_array)
+    return matching_trips_and_sections_array.map{|t| t[:sections].map{|s| [t[:trip_id],s[:trip_section]]}}.flatten(1).map{|pair| "(trip_id = " + pair[0].to_i.to_s + " AND trip_section = " + pair[1].to_i.to_s + ")"}.join(" OR ")
+  end
   
   # Returns a collection of trip IDs, names, and departure dates. Used in
   # {TripsController#index} to show a list of trips.

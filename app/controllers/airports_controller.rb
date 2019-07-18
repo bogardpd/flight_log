@@ -73,9 +73,8 @@ class AirportsController < ApplicationController
     
     # Determine trips and sections:
     @trips_and_sections = Trip.matching_trips_and_sections(@flights)
-    section_where_array = @trips_and_sections.map{|t| t[:sections].map{|s| [t[:trip_id],s[:trip_section]]}}.flatten(1).map{|pair| "(trip_id = " + pair[0].to_i.to_s + " AND trip_section = " + pair[1].to_i.to_s + ")"}.join(" OR ")
     @trips_using_airport_flights = flyer_flights.where(trip_id: @trips_and_sections.map{|t| t[:trip_id]})
-    @sections_using_airport_flights = flyer_flights.where(section_where_array)
+    @sections_using_airport_flights = flyer_flights.where(Trip.section_where_array(@trips_and_sections))
     
     # Sort city pair table:
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
