@@ -345,7 +345,6 @@ which use it.</p>
       <pre class="lines">
 
 
-194
 195
 196
 197
@@ -353,10 +352,11 @@ which use it.</p>
 199
 200
 201
-202</pre>
+202
+203</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 194</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 195</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@route</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_route_params'>route_params</span><span class='rparen'>)</span>
@@ -413,7 +413,6 @@ which use it.</p>
       <pre class="lines">
 
 
-159
 160
 161
 162
@@ -441,10 +440,11 @@ which use it.</p>
 184
 185
 186
-187</pre>
+187
+188</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 160</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Routes</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_routes_path'>routes_path</span>
@@ -718,7 +718,8 @@ all <span class='object_link'><a href="Flight.html" title="Flight (class)">Fligh
 149
 150
 151
-152</pre>
+152
+153</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 76</span>
@@ -758,6 +759,7 @@ all <span class='object_link'><a href="Flight.html" title="Flight (class)">Fligh
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span> <span class='kw'>if</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>0</span>
   
   <span class='ivar'>@pair_distance</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_distance_by_iata'><span class='object_link'><a href="Route.html#distance_by_iata-class_method" title="Route.distance_by_iata (method)">distance_by_iata</a></span></span><span class='lparen'>(</span><span class='ivar'>@airports</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='ivar'>@airports</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='ivar'>@trips_and_sections</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_matching_trips_and_sections'><span class='object_link'><a href="Trip.html#matching_trips_and_sections-class_method" title="Trip.matching_trips_and_sections (method)">matching_trips_and_sections</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
   
   <span class='comment'># Get trips sharing this city pair:
 </span>  <span class='id identifier rubyid_trip_array'>trip_array</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -846,7 +848,6 @@ all <span class='object_link'><a href="Flight.html" title="Flight (class)">Fligh
       <pre class="lines">
 
 
-209
 210
 211
 212
@@ -854,10 +855,11 @@ all <span class='object_link'><a href="Flight.html" title="Flight (class)">Fligh
 214
 215
 216
-217</pre>
+217
+218</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 209</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 210</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@route</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -878,7 +880,7 @@ all <span class='object_link'><a href="Flight.html" title="Flight (class)">Fligh
 </div>
 
       <div id="footer">
-  Generated on Tue Jul 16 21:41:43 2019 by
+  Generated on Thu Jul 18 15:10:54 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

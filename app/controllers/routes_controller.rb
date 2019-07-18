@@ -108,6 +108,7 @@ class RoutesController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @pair_distance = Route.distance_by_iata(@airports[0],@airports[1])
+    @trips_and_sections = Trip.matching_trips_and_sections(@flights)
     
     # Get trips sharing this city pair:
     trip_array = Array.new
