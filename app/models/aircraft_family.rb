@@ -161,7 +161,7 @@ class AircraftFamily < ApplicationRecord
   #   by
   # @param sort_direction [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each AircraftFamily flown
-  def self.flight_count(flights, sort_category=nil, sort_direction=nil)
+  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
     family_count = flights.reorder(nil).joins(:aircraft_family).group(:aircraft_family_id, :parent_id).count
       .map{|k,v| {(k[1]||k[0]) => v}} # Create array of hashes with k as parent id or family id and v as count
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts

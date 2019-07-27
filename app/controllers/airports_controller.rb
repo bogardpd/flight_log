@@ -17,7 +17,7 @@ class AirportsController < ApplicationController
     if @flights.any?
       
       @sort = Table.sort_parse(params[:sort], :visits, :desc)
-      @airports = Airport.visit_count(@flights, *@sort)
+      @airports = Airport.visit_table_data(@flights, *@sort)
       used_airport_codes = @airports.map{|a| a[:iata_code]}.uniq.compact
       if logged_in?
         @airports_with_no_flights = Airport.where.not(iata_code: used_airport_codes).order(:city)
@@ -68,7 +68,7 @@ class AirportsController < ApplicationController
     
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     
-    @airport_frequency = Airport.frequency_hash(@flights)[@airport.id]
+    @airport_frequency = Airport.visit_frequencies(@flights)[@airport.id]
     @total_distance = Route.total_distance(@flights)
     
     # Determine trips and sections:
@@ -90,10 +90,10 @@ class AirportsController < ApplicationController
     end
     
     # Create comparitive lists of airlines, aircraft, and classes:
-    @airlines = Airline.flight_count(@flights, type: :airline)
-    @operators = Airline.flight_count(@flights, type: :operator)
-    @aircraft_families = AircraftFamily.flight_count(@flights)
-    @classes = TravelClass.flight_count(@flights)
+    @airlines = Airline.flight_table_data(@flights, type: :airline)
+    @operators = Airline.flight_table_data(@flights, type: :operator)
+    @aircraft_families = AircraftFamily.flight_table_data(@flights)
+    @classes = TravelClass.flight_table_data(@flights)
     
     # Create maps:
     @region = current_region(default: [])

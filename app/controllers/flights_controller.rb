@@ -166,10 +166,10 @@ class FlightsController < ApplicationController
     @total_distance = Route.total_distance(@flights)
       
     # Create comparitive lists of airlines and classes:
-    @airports = Airport.visit_count(@flights) 
-    @airlines = Airline.flight_count(@flights, type: :airline) 
-    @aircraft_families = AircraftFamily.flight_count(@flights)
-    @classes = TravelClass.flight_count(@flights)
+    @airports = Airport.visit_table_data(@flights) 
+    @airlines = Airline.flight_table_data(@flights, type: :airline) 
+    @aircraft_families = AircraftFamily.flight_table_data(@flights)
+    @classes = TravelClass.flight_table_data(@flights)
     @new_airports = Airport.new_in_date_range(flyer, current_user, @date_range)
     @new_airlines = Airline.new_in_date_range(flyer, current_user, @date_range)   
     @new_aircraft_families = AircraftFamily.new_in_date_range(flyer, current_user, @date_range)
@@ -196,7 +196,7 @@ class FlightsController < ApplicationController
     
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :quality, :desc)
-    @classes = TravelClass.flight_count(@flights, *@sort)
+    @classes = TravelClass.flight_table_data(@flights, *@sort)
     
     @title = "Travel Classes"
     @meta_description = "A count of how many times Paul Bogard has flown in each class."
@@ -236,9 +236,9 @@ class FlightsController < ApplicationController
     @total_distance = Route.total_distance(@flights)
 
     # Create comparitive lists of airlines, operators, and aircraft:
-    @airlines = Airline.flight_count(@flights, type: :airline)
-    @operators = Airline.flight_count(@flights, type: :operator)
-    @aircraft_families = AircraftFamily.flight_count(@flights)
+    @airlines = Airline.flight_table_data(@flights, type: :airline)
+    @operators = Airline.flight_table_data(@flights, type: :operator)
+    @aircraft_families = AircraftFamily.flight_table_data(@flights)
 
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -259,7 +259,7 @@ class FlightsController < ApplicationController
     
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
-    @tail_numbers_table = TailNumber.flight_count(@flights, *@sort)
+    @tail_numbers_table = TailNumber.flight_table_data(@flights, *@sort)
   
     # Find maxima for graph scaling:
     @flights_maximum = @tail_numbers_table.max_by{|i| i[:count]}[:count]
@@ -301,9 +301,9 @@ class FlightsController < ApplicationController
     @total_distance = Route.total_distance(@flights)
     
     # Create comparitive list of airlines, operators, and classes:
-    @airlines = Airline.flight_count(@flights, type: :airline)
-    @operators = Airline.flight_count(@flights, type: :operator)
-    @classes = TravelClass.flight_count(@flights)
+    @airlines = Airline.flight_table_data(@flights, type: :airline)
+    @operators = Airline.flight_table_data(@flights, type: :operator)
+    @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

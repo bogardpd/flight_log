@@ -16,8 +16,8 @@ class AirlinesController < ApplicationController
     
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
-    @airlines  = Airline.flight_count(@flights, *@sort, type: :airline)
-    @operators = Airline.flight_count(@flights, *@sort, type: :operator)
+    @airlines  = Airline.flight_table_data(@flights, *@sort, type: :airline)
+    @operators = Airline.flight_table_data(@flights, *@sort, type: :operator)
         
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
@@ -76,10 +76,10 @@ class AirlinesController < ApplicationController
     @total_distance = Route.total_distance(@flights)
     
     # Create comparitive lists of aircraft and classes:
-    @airlines = Airline.flight_count(@flights, type: :airline) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
-    @operators = Airline.flight_count(@flights, type: :operator)
-    @aircraft_families = AircraftFamily.flight_count(@flights)
-    @classes = TravelClass.flight_count(@flights)
+    @airlines = Airline.flight_table_data(@flights, type: :airline) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
+    @operators = Airline.flight_table_data(@flights, type: :operator)
+    @aircraft_families = AircraftFamily.flight_table_data(@flights)
+    @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -132,9 +132,9 @@ class AirlinesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
-    @airlines = Airline.flight_count(@flights, type: :airline)
-    @aircraft_families = AircraftFamily.flight_count(@flights)
-    @classes = TravelClass.flight_count(@flights)
+    @airlines = Airline.flight_table_data(@flights, type: :airline)
+    @aircraft_families = AircraftFamily.flight_table_data(@flights)
+    @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
@@ -187,9 +187,9 @@ class AirlinesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
-    @airlines = Airline.flight_count(@flights, type: :airline)
-    @aircraft_families = AircraftFamily.flight_count(@flights)
-    @classes = TravelClass.flight_count(@flights)
+    @airlines = Airline.flight_table_data(@flights, type: :airline)
+    @aircraft_families = AircraftFamily.flight_table_data(@flights)
+    @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

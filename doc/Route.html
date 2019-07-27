@@ -290,7 +290,7 @@ them.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#flight_count-class_method" title="flight_count (class method)">.<strong>flight_count</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; Array&lt;Hash&gt; </a>
+      <a href="#flight_table_data-class_method" title="flight_table_data (class method)">.<strong>flight_table_data</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; Array&lt;Hash&gt; </a>
     
 
     
@@ -726,9 +726,9 @@ them. The haversine formula is used to calculate the distance.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="flight_count-class_method">
+  <h3 class="signature " id="flight_table_data-class_method">
   
-    .<strong>flight_count</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
+    .<strong>flight_table_data</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
   
 
   
@@ -851,7 +851,7 @@ their flight counts.</p>
     <td>
       <pre class="code"><span class="info file"># File 'app/models/route.rb', line 114</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_count'>flight_count</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_table_data'>flight_table_data</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_includes'>includes</span><span class='lparen'>(</span><span class='symbol'>:origin_airport</span><span class='comma'>,</span> <span class='symbol'>:destination_airport</span><span class='rparen'>)</span>
   
   <span class='id identifier rubyid_route_distances'>route_distances</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -963,7 +963,7 @@ their flight counts.</p>
       <pre class="code"><span class="info file"># File 'app/models/route.rb', line 155</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_distance'>total_distance</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_flight_count'>flight_count</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sum'>sum</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='id identifier rubyid_sum'>sum</span> <span class='op'>+</span> <span class='id identifier rubyid_r'>r</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='id identifier rubyid_r'>r</span><span class='lbracket'>[</span><span class='symbol'>:distance_mi</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_flight_table_data'>flight_table_data</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sum'>sum</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='id identifier rubyid_sum'>sum</span> <span class='op'>+</span> <span class='id identifier rubyid_r'>r</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='id identifier rubyid_r'>r</span><span class='lbracket'>[</span><span class='symbol'>:distance_mi</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -975,7 +975,7 @@ their flight counts.</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Jul 18 15:43:20 2019 by
+  Generated on Sat Jul 27 09:51:38 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

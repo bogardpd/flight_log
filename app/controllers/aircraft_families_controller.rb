@@ -14,7 +14,7 @@ class AircraftFamiliesController < ApplicationController
     
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
-    flight_count = AircraftFamily.flight_count(@flights, *@sort)
+    flight_count = AircraftFamily.flight_table_data(@flights, *@sort)
     @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
     
     if @aircraft_families.any?
@@ -79,9 +79,9 @@ class AircraftFamiliesController < ApplicationController
     @subtypes_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft_family)
     
     # Create comparitive lists of airlines and classes:
-    @airlines = Airline.flight_count(@flights, type: :airline)
-    @operators = Airline.flight_count(@flights, type: :operator)
-    @classes = TravelClass.flight_count(@flights)
+    @airlines = Airline.flight_table_data(@flights, type: :airline)
+    @operators = Airline.flight_table_data(@flights, type: :operator)
+    @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
     @route_superlatives = superlatives(@flights)

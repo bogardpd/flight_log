@@ -13,7 +13,7 @@ class AirportFrequencyMap < Map
   #   World map will be shown if region is left blank.
   # @see Map#gcmap_regions
   def initialize(flights, region: [""])
-    @airport_frequencies = Airport.frequency_hash(flights)
+    @airport_frequencies = Airport.visit_frequencies(flights)
     @airports_in_region = Airport.in_region_hash(region).select{|k,v| @airport_frequencies.keys.include?(k)}
     @airports_all = Airport.in_region_hash([]).select{|k,v| @airport_frequencies.keys.include?(k)}
   end

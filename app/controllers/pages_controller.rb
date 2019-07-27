@@ -16,11 +16,11 @@ class PagesController < ApplicationController
     
     @flights = flyer.flights(current_user).includes(:origin_airport, :destination_airport)
     
-    @flight_aircraft = AircraftFamily.flight_count(@flights)
-    @flight_airlines = Airline.flight_count(@flights, type: :airline)
-    @flight_airports = Airport.visit_count(@flights)
-    @flight_routes = Route.flight_count(@flights)
-    @flight_tails = TailNumber.flight_count(@flights)
+    @flight_aircraft = AircraftFamily.flight_table_data(@flights)
+    @flight_airlines = Airline.flight_table_data(@flights, type: :airline)
+    @flight_airports = Airport.visit_table_data(@flights)
+    @flight_routes = Route.flight_table_data(@flights)
+    @flight_tails = TailNumber.flight_table_data(@flights)
     
     if logged_in?
       Trip.where(hidden: true).map{|trip| add_message(:info, "Active Trip: #{view_context.link_to(trip.name, trip_path(trip), class: "title")}")} # Link to hidden trips

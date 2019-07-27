@@ -176,13 +176,16 @@ class Airport < ApplicationRecord
   # Used on various "show" views to generate a table of airports and their
   # flight counts.
   #
+  # If only a hash of visit counts is needed, {visit_frequencies} should be
+  # used instead.
+  #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate Airport visit counts for
   # @param sort_category [:country, :city, :code, :visits] the category to sort
   #   the array by
   # @param sort_direectionection [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each Airport visited
-  def self.visit_count(flights, sort_category=nil, sort_direectionection=nil)
+  def self.visit_table_data(flights, sort_category=nil, sort_direectionection=nil)
     flights = flights.reorder(:trip_id, :trip_section, :departure_utc)
     
     visits = Hash.new(0)
@@ -272,7 +275,9 @@ class Airport < ApplicationRecord
   end
   
   # Take a collection of {Flight Flights}, and return a hash of airport IDs and
-  # number of visits.
+  # number of visits. Used when only a quick lookup of visits is needed; if an
+  # array of data about each airport is needed, {visit_table_data} should be used
+  # instead.
   #
   # If two flights are chronologically consecutive, the destination {Airport}
   # of the first flight is the same as the origin of the second, and these two
@@ -284,7 +289,7 @@ class Airport < ApplicationRecord
   # @param flights [Array<Flight>] a collection of {Flight Flights}
   # @return [Hash<Integer,Integer>] a hash with airport IDs as keys and number
   #   of visits as airports
-  def self.frequency_hash(flights)
+  def self.visit_frequencies(flights)
     airport_frequency = Hash.new(0) # All airports start with 0 flights
     previous_trip_id = nil;
     previous_trip_section = nil;

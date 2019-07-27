@@ -197,7 +197,7 @@ match that country&#39;s tail number format.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#flight_count-class_method" title="flight_count (class method)">.<strong>flight_count</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; Array&lt;Hash&gt; </a>
+      <a href="#flight_table_data-class_method" title="flight_table_data (class method)">.<strong>flight_table_data</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; Array&lt;Hash&gt; </a>
     
 
     
@@ -743,9 +743,9 @@ match that country&#39;s tail number format.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="flight_count-class_method">
+  <h3 class="signature " id="flight_table_data-class_method">
   
-    .<strong>flight_count</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
+    .<strong>flight_table_data</strong>(flights, sort_category = nil, sort_direction = nil)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
   
 
   
@@ -898,7 +898,7 @@ numbers and their flight counts.</p>
     <td>
       <pre class="code"><span class="info file"># File 'app/modules/tail_number.rb', line 196</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_count'>flight_count</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_table_data'>flight_table_data</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_tail_counts'>tail_counts</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='label'>tail_number:</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_group'>group</span><span class='lparen'>(</span><span class='symbol'>:tail_number</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span>
   <span class='id identifier rubyid_tail_details'>tail_details</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='label'>tail_number:</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_includes'>includes</span><span class='lparen'>(</span><span class='symbol'>:airline</span><span class='comma'>,</span> <span class='symbol'>:aircraft_family</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_tail_details'>tail_details</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
@@ -1132,7 +1132,7 @@ a standard simplified format for saving it into the database.</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Jul 18 15:43:19 2019 by
+  Generated on Sat Jul 27 09:51:37 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

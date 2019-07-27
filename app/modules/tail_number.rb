@@ -193,7 +193,7 @@ module TailNumber
   #   sort the array by
   # @param sort_direction [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each tail number flown
-  def self.flight_count(flights, sort_category=nil, sort_direction=nil)
+  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
     tail_counts = flights.reorder(nil).where.not(tail_number: nil).group(:tail_number).count
     tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
     return nil unless tail_details.any?

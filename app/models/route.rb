@@ -111,7 +111,7 @@ class Route < ApplicationRecord
   # @param sort_category [:flights, :distance] the category to sort the array
   #   by
   # @return [Array<Hash>] details for each Route flown
-  def self.flight_count(flights, sort_category=nil, sort_direction=nil)
+  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
     flights = flights.includes(:origin_airport, :destination_airport)
     
     route_distances = Hash.new()
@@ -153,7 +153,7 @@ class Route < ApplicationRecord
   #   calculate the total distance for
   # @return [Integer] the total distance of the {Flight Flights} in statute miles
   def self.total_distance(flights)
-    return flight_count(flights).reduce(0){|sum, r| sum + r[:flight_count] * r[:distance_mi]}
+    return flight_table_data(flights).reduce(0){|sum, r| sum + r[:flight_count] * r[:distance_mi]}
   end
   
 end

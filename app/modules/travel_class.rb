@@ -15,7 +15,7 @@ module TravelClass
   # @param sort_category [:quality, :flights] the category to sort the array by
   # @param sort_direction [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each travel class flown
-  def self.flight_count(flights, sort_category=nil, sort_direction=nil)
+  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
     counts = flights.reorder(nil).group(:travel_class).count
       .map{|k,v| {class_code: k, flight_count: v}}
     

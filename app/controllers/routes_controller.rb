@@ -36,7 +36,7 @@ class RoutesController < ApplicationController
         
     flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
-    @route_table = Route.flight_count(flights, *@sort)     
+    @route_table = Route.flight_table_data(flights, *@sort)     
     
     if @route_table.count > 0
       
@@ -112,10 +112,10 @@ class RoutesController < ApplicationController
     @trips_and_sections = Trip.matching_trips_and_sections(@flights)
     
     # Create comparitive lists of airlines, aircraft, and classes:
-    @airlines = Airline.flight_count(@flights, type: :airline)
-    @operators = Airline.flight_count(@flights, type: :operator)
-    @aircraft_families = AircraftFamily.flight_count(@flights)
-    @classes = TravelClass.flight_count(@flights)
+    @airlines = Airline.flight_table_data(@flights, type: :airline)
+    @operators = Airline.flight_table_data(@flights, type: :operator)
+    @aircraft_families = AircraftFamily.flight_table_data(@flights)
+    @classes = TravelClass.flight_table_data(@flights)
     
     # Create flight arrays for maps of trips and sections:
     @city_pair_trip_flights    = flyer_flights.where(trip_id: @trips_and_sections.map{|t| t[:trip_id]})

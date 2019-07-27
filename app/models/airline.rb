@@ -73,7 +73,7 @@ class Airline < ApplicationRecord
   #   Airlines administrating flights (:airline) or Airlines operating flights
   #   (:operator)
   # @return [Array<Hash>] details for each Airline flown
-  def self.flight_count(flights, sort_category=nil, sort_direction=nil, type: :airline)
+  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil, type: :airline)
     
     id_field = (type == :airline) ? :airline_id : :operator_id
     counts = flights.reorder(nil).joins(type).group(id_field, :airline_name, :iata_airline_code, :icao_airline_code).count
