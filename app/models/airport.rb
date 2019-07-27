@@ -186,7 +186,7 @@ class Airport < ApplicationRecord
   # @param sort_direectionection [:asc, :desc] the direction to sort the array
   # @return [Array<Hash>] details for each Airport visited
   def self.visit_table_data(flights, sort_category=nil, sort_direectionection=nil)
-    flights = flights.reorder(:trip_id, :trip_section, :departure_utc)
+    flights = flights.includes(:origin_airport, :destination_airport).reorder(:trip_id, :trip_section, :departure_utc)
     
     visits = Hash.new(0)
     previous_trip_section = {trip_id: nil, trip_section: nil}

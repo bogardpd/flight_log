@@ -1427,7 +1427,7 @@ used instead.</p>
       <pre class="code"><span class="info file"># File 'app/models/airport.rb', line 188</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_visit_table_data'>visit_table_data</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direectionection'>sort_direectionection</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='symbol'>:trip_id</span><span class='comma'>,</span> <span class='symbol'>:trip_section</span><span class='comma'>,</span> <span class='symbol'>:departure_utc</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_includes'>includes</span><span class='lparen'>(</span><span class='symbol'>:origin_airport</span><span class='comma'>,</span> <span class='symbol'>:destination_airport</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='symbol'>:trip_id</span><span class='comma'>,</span> <span class='symbol'>:trip_section</span><span class='comma'>,</span> <span class='symbol'>:departure_utc</span><span class='rparen'>)</span>
   
   <span class='id identifier rubyid_visits'>visits</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_previous_trip_section'>previous_trip_section</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>trip_id:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>trip_section:</span> <span class='kw'>nil</span><span class='rbrace'>}</span>
@@ -1800,7 +1800,7 @@ This image is always 1440px wide, and is up to 810px tall.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Jul 27 09:51:39 2019 by
+  Generated on Sat Jul 27 10:02:49 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
