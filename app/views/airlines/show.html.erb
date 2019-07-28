@@ -1,3 +1,6 @@
+<% provide(:title, @airline.airline_name) %>
+<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights on #{@airline.airline_name}.") %>
+
 <div id="title-info"><%= iata_airline_code_display(@airline.iata_airline_code) %> / <%= @airline.icao_airline_code %><%= airline_icon(@airline.icao_airline_code, :title => @airline.airline_name)%></div>
 
 <h1><%= @airline.airline_name %></h1>

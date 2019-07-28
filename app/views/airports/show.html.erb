@@ -1,3 +1,6 @@
+<% provide(:title, @airport.iata_code + " – " + @airport.city) %>
+<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights through #{@airport.iata_code} – #{@airport.city}.") %>
+
 <% if @airport.country || @airport.coordinates %>
 <div id="title-info">
   <% if @airport.coordinates %>

@@ -9,8 +9,6 @@ class AirlinesController < ApplicationController
   # @return [nil]
   def index
     @logo_used = true
-    @title = "Airlines"
-    @meta_description = "A list of the airlines on which Paul Bogard has flown, and how often heʼs flown on each."
     add_breadcrumb "Airlines", airlines_path
     add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
@@ -21,7 +19,6 @@ class AirlinesController < ApplicationController
         
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
     @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
-    
     
     if (@airlines.any? || @operators.any?)
       
@@ -58,8 +55,6 @@ class AirlinesController < ApplicationController
     @flights = flyer.flights(current_user).where(airline_id: @airline.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
-    @title = @airline.airline_name
-    @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@airline.airline_name}."
     @logo_used = true
     @region = current_region(default: [])
     
@@ -117,8 +112,6 @@ class AirlinesController < ApplicationController
     @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :aircraft_family, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  
-    @title = @operator.airline_name + " (Operator)"
-    @meta_description = "Maps and lists of Paul Bogardʼs flights operated by #{@operator.airline_name}."
     @logo_used = true
     @region = current_region(default: [])
     
@@ -177,8 +170,6 @@ class AirlinesController < ApplicationController
     
     @logo_used = true
     @region = current_region(default: [])
-    @title = @operator.airline_name + " #" + @fleet_number
-    @meta_description = "Maps and lists of Paul Bogardʼs flights operated on #{@operator.airline_name} ##{@fleet_number}."
     add_breadcrumb "Airlines", airlines_path
     add_breadcrumb "Flights Operated by #{@operator.airline_name}", show_operator_path(@operator.iata_airline_code)
     add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number)
@@ -206,7 +197,6 @@ class AirlinesController < ApplicationController
   # @return [nil]
   def new
     session[:form_location] = nil
-    @title = "New Airline"
     add_breadcrumb "Airlines", airlines_path
     add_breadcrumb "New Airline", new_airline_path
     @airline = Airline.new

@@ -1,3 +1,6 @@
+<% provide(:title, @tail_number) %>
+<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights on tail number #{@tail_number}.") %>
+
 <% if TailNumber.country(@tail_number) %>
 <div id="title-info"><%= TailNumber.country(@tail_number) %><%= tail_number_country_flag(@tail_number) %></div>
 <% end %>

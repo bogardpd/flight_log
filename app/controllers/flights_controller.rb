@@ -12,7 +12,6 @@ class FlightsController < ApplicationController
   def index
     add_breadcrumb "Flights", flights_path
     @logo_used = true
-    @title = "Flights"
     @region = current_region(default: [])
     
     @flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
@@ -30,7 +29,6 @@ class FlightsController < ApplicationController
       @flights.each do |flight|
         @years_with_flights[flight.departure_date.year] = true
       end
-      @meta_description = "Maps and lists of all of Paul Bogardʼs flights."
     
       # Sort flight table:
       @sort = Table.sort_parse(params[:sort], :departure, :asc)
@@ -62,10 +60,8 @@ class FlightsController < ApplicationController
     @logo_used = true
     @flight = flyer.flights(current_user).find(params[:id])
 
-    @title = @flight.airline.airline_name + " " + @flight.flight_number.to_s
-    @meta_description = "Details for Paul Bogardʼs #{@flight.airline.airline_name} #{@flight.flight_number} flight on #{Flight.format_date(@flight.departure_date)}."
     add_breadcrumb "Flights", flights_path
-    add_breadcrumb @title, flight_path(params[:id])
+    add_breadcrumb @flight.name, flight_path(params[:id])
     add_admin_action view_context.link_to("Delete Flight", @flight, method: :delete, data: { confirm: "Are you sure you want to delete this flight?" }, class: "warning")
     add_admin_action view_context.link_to("Edit Flight", edit_flight_path(@flight))
     
@@ -198,9 +194,6 @@ class FlightsController < ApplicationController
     @sort = Table.sort_parse(params[:sort], :quality, :desc)
     @classes = TravelClass.flight_table_data(@flights, *@sort)
     
-    @title = "Travel Classes"
-    @meta_description = "A count of how many times Paul Bogard has flown in each class."
-    
   end
   
   # Shows details for a particular {TravelClass travel class} and data for all
@@ -224,12 +217,12 @@ class FlightsController < ApplicationController
     @logo_used = true
     
     @flights = flyer.flights(current_user).where(travel_class: params[:travel_class]).includes(:airline, :origin_airport, :destination_airport, :trip)
-    
-    @title = TravelClass.list[params[:travel_class]][:name].titlecase + " Class"
-    @meta_description = "Maps and lists of Paul Bogardʼs #{TravelClass.list[params[:travel_class]][:name].downcase} class flights."
     raise ActiveRecord::RecordNotFound if @flights.length == 0
+    
+    @class = params[:travel_class]
+    
     add_breadcrumb "Travel Classes", classes_path
-    add_breadcrumb TravelClass.list[params[:travel_class]][:name].titlecase, show_class_path(params[:travel_class])
+    add_breadcrumb TravelClass.title(@class), show_class_path(@class)
 
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
@@ -253,10 +246,7 @@ class FlightsController < ApplicationController
   # @return [nil]
   def index_tails
     add_breadcrumb "Tail Numbers", tails_path
-    
-    @title = "Tail Numbers"
-    @meta_description = "A list of the individual airplanes Paul Bogard has flown on, and how often heʼs flown on each."
-    
+      
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
     @tail_numbers_table = TailNumber.flight_table_data(@flights, *@sort)
@@ -291,8 +281,6 @@ class FlightsController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @tail_number = TailNumber.format(params[:tail_number])
-    @title = @tail_number
-    @meta_description = "Maps and lists of Paul Bogardʼs flights on tail number #{@tail_number}."
     add_breadcrumb "Tail Numbers", tails_path
     add_breadcrumb @title, show_tail_path(TailNumber.simplify(params[:tail_number]))
     
@@ -319,9 +307,7 @@ class FlightsController < ApplicationController
   # @see #build_boarding_pass
   # @see #show_boarding_pass
   def input_boarding_pass
-    @title = "Boarding Pass Parser"
-    @meta_description = "A boarding pass barcode parser."
-    add_breadcrumb @title, boarding_pass_path
+    add_breadcrumb "Boarding Pass Parser", boarding_pass_path
   end
   
   # Checks whether a boarding pass is present. Redirects to
@@ -345,14 +331,11 @@ class FlightsController < ApplicationController
   # @see #input_boarding_pass
   # @see #build_boarding_pass
   def show_boarding_pass
-    @title = "Boarding Pass Results"
-    @meta_description = "Results from the boarding pass barcode parser."
     add_breadcrumb "Boarding Pass", boarding_pass_path
     
     @boarding_pass = BoardingPass.new(params[:data])
     if @boarding_pass.data.dig(:repeated, 0, :mandatory, 42)
       bp_string = "#{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 43, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 26, :raw)} ✈ #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 38, :raw)}"
-      @title += ": #{bp_string}"
       add_breadcrumb bp_string, boarding_pass_path
     else
       add_breadcrumb "Results", boarding_pass_path
@@ -386,7 +369,6 @@ class FlightsController < ApplicationController
   #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
   # @see https://flightaware.com/commercial/flightxml/documentation2.rvt FlightXML 2.0 Documentation
   def new_flight_menu
-    @title = "Create a New Flight"
     add_breadcrumb "Flights", flights_path
     add_breadcrumb "New Flight", new_flight_menu_path
     clear_new_flight_variables
@@ -521,7 +503,6 @@ class FlightsController < ApplicationController
     session[:new_flight][:departure_date] ||= now.to_date
 
     # Render new flight form:
-    @title = "New Flight"
     add_breadcrumb "Enter Flight Data", new_flight_path
     session[:new_flight][:warnings].each{|w| add_message(:warning, w) }
       
@@ -572,7 +553,6 @@ class FlightsController < ApplicationController
     add_breadcrumb "Flights", flights_path
     add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", flight_path(@flight)
     add_breadcrumb "Edit Flight", edit_flight_path(@flight)
-    @title = "Edit Flight"
   end
   
   # Updates an existing {Flight}.
@@ -710,7 +690,6 @@ class FlightsController < ApplicationController
   # @return [nil]
   def input_new_undefined_airport(iata, icao)
     @airport = Airport.new
-    @title = "New Flight - Undefined Airport"
     add_breadcrumb "Create New Airport", new_flight_path
     @lookup_fields = {iata_code: iata, icao_code: icao}
     session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
@@ -724,7 +703,6 @@ class FlightsController < ApplicationController
   # @return [nil]
   def input_new_undefined_aircraft_family(icao)
     @aircraft_family = AircraftFamily.new
-    @title = "New Flight - Undefined Aircraft Family"
     add_breadcrumb "Create New Aircraft Family", new_flight_path
     @lookup_fields = {icao_code: icao}
     session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
@@ -739,7 +717,6 @@ class FlightsController < ApplicationController
   # @return [nil]
   def input_new_undefined_airline(iata, icao)
     @airline = Airline.new
-    @title = "New Flight - Undefined Airline"
     add_breadcrumb "Create New Airline", new_flight_path
     @lookup_fields = {iata_code: iata, icao_code: icao}
     session[:form_location] = Rails.application.routes.recognize_path(request.original_url)

@@ -1,3 +1,6 @@
+<% provide(:title, @flight.name) %>
+<% provide(:meta_description, "Details for Paul Bogardʼs #{@flight.name} flight on #{Flight.format_date(@flight.departure_date)}.") %>
+
 <div id="title-info"><%= airline_icon(@flight.airline.icao_airline_code, title: @flight.airline.airline_name) %></div>
 
 <h1><%= @flight.airline.airline_name %> <%= @flight.flight_number %></h1>
@@ -47,7 +50,7 @@
   <tr>
     <td class="label-column">Travel Class</td>
     <td>
-			<%= quality_stars(TravelClass.list[@flight.travel_class][:quality], inline: :left) %><%= link_to(TravelClass.list[@flight.travel_class][:name].titlecase, show_class_path(@flight.travel_class), :title => "View #{TravelClass.list[@flight.travel_class][:name].downcase} class flights") %>
+			<%= quality_stars(TravelClass::CLASSES[@flight.travel_class][:quality], inline: :left) %><%= link_to(TravelClass::CLASSES[@flight.travel_class][:name].titlecase, show_class_path(@flight.travel_class), :title => "View #{TravelClass::CLASSES[@flight.travel_class][:name].downcase} class flights") %>
 			</td>
 		</td>
   </tr>

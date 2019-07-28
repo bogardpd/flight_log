@@ -1,34 +1,37 @@
-<h1><%= @title %><br><small><%= TravelClass.list[params[:travel_class]][:description] %></small></h1>
+<% provide(:title, TravelClass.title(@class)) %>
+<% provide(:meta_description, "Maps and lists of Paul Bogardʼs #{TravelClass.title(@class).downcase} flights.") %>
+
+<h1><%= TravelClass.title(@class) %><br><small><%= TravelClass.description(@class) %></small></h1>
 
 <div class="page-navigation">
   <ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights flown in #{@title.downcase}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{@title.downcase} flights") %></li>
-		<li><%= link_to("Operators", "#operators", :title => "Operators with #{@title.downcase} flights") %></li>
-		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft with #{@title.downcase} flights") %></li>
-		<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown in #{@title.downcase}") %></li>
-		<li><%= link_to("Flight List", "#flights", :title => "Flights flown in #{@title.downcase}") %></li>
+		<li><%= link_to("Map", "#map", :title => "Map of flights flown in #{TravelClass.title(@class).downcase}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{TravelClass.title(@class).downcase} flights") %></li>
+		<li><%= link_to("Operators", "#operators", :title => "Operators with #{TravelClass.title(@class).downcase} flights") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft with #{TravelClass.title(@class).downcase} flights") %></li>
+		<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown in #{TravelClass.title(@class).downcase}") %></li>
+		<li><%= link_to("Flight List", "#flights", :title => "Flights flown in #{TravelClass.title(@class).downcase}") %></li>
   </ul>
 </div>
 
-<p>I have flown in <span class="bold"><%= @title.downcase %></span> <%= pluralize(@flights.length, "time") %>.</p>
+<p>I have flown in <span class="bold"><%= TravelClass.title(@class).downcase %></span> <%= pluralize(@flights.length, "time") %>.</p>
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>
   <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
 </div>
 
-<h2 id="airlines">Airlines with <%= @title %> Flights</h2>
+<h2 id="airlines">Airlines with <%= TravelClass.title(@class) %> Flights</h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 
-<h2 id="operators">Operators with <%= @title %> Flights</h2>
+<h2 id="operators">Operators with <%= TravelClass.title(@class) %> Flights</h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
-<h2 id="aircraft">Aircraft with <%= @title %> Flights</h2>
+<h2 id="aircraft">Aircraft with <%= TravelClass.title(@class) %> Flights</h2>
 <%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
-<h2 id="superlatives">Longest and Shortest Routes Flown in <%= @title %></h2>
+<h2 id="superlatives">Longest and Shortest Routes Flown in <%= TravelClass.title(@class) %></h2>
 <%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 
-<h2 id="flights"><%= @title %> Flight List</h2>
+<h2 id="flights"><%= TravelClass.title(@class) %> Flight List</h2>
 <%= render "flight_table" %>

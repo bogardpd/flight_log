@@ -1,4 +1,7 @@
-<h1><%= @title %></h1>
+<% provide(:title, "Flights") %>
+<% provide(:meta_description, "Maps and lists of all of Paul Bogardʼs flights.") %>
+
+<h1>Flights</h1>
 
 <% if @flights.any? %>
 

@@ -28,7 +28,7 @@ class Flight < ApplicationRecord
   validates :departure_date, :presence => true
   validates :departure_utc, :presence => true
   validates :airline_id, presence: true
-  validates :travel_class, :inclusion => { in: TravelClass.list.keys, message: "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
+  validates :travel_class, :inclusion => { in: TravelClass::CLASSES.keys, message: "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
   scope :chronological, -> {
     order("flights.departure_utc")
@@ -44,6 +44,13 @@ class Flight < ApplicationRecord
     return nil unless aircraft_family
     return {family: aircraft_family} if aircraft_family.is_family?
     return {family: aircraft_family.parent, type: aircraft_family}
+  end
+
+  # Returns the {Airline} and flight number for the Flight.
+  #
+  # @return [String] the airline and flight number
+  def name
+    return self.airline.airline_name + " " + self.flight_number.to_s
   end
 
   # For a given flight collection, returns business, mixed, personal, and

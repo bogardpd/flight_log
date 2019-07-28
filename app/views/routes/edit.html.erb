@@ -1,4 +1,6 @@
-<h1>Edit <%= params[:airport1]%> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= params[:airport2] %></h1>
+<% provide(:title, "Edit #{@airports.first} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last}") %>
+
+<h1>Edit <%= @airports.first %> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= @airports.last %></h1>
 
 <%= form_for(@route) do |f| %>
 

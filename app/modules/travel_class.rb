@@ -1,6 +1,35 @@
 # Provides utilities for interacting with travel classes.
 module TravelClass
   
+  # Travel classes, descriptions, and quality ratings.
+  CLASSES = {
+    "first" => {
+      name: "First",
+      description: "Highest class on planes with both First and Business",
+      quality: 5
+    },
+    "business" => {
+      name: "Business",
+      description: "Highest class on planes without separate First and Business",
+      quality: 4
+    },
+    "premium-economy" => {
+      name: "Premium Economy",
+      description: "Economy with extra legroom and seat width",
+      quality: 3
+    },
+    "economy-extra" => {
+      name: "Economy Extra",
+      description: "Economy with extra legroom",
+      quality: 2
+    },
+    "economy" => {
+      name: "Economy",
+      description: "Standard main cabin seat",
+      quality: 1
+    }
+  }
+
   # Returns an array of airlines, with a hash for each family containing the
   # class code and number of flights in that class, sorted by class quality descending.
 
@@ -26,13 +55,13 @@ module TravelClass
 
     case sort_category
     when :quality
-      counts.sort_by!{ |tc| TravelClass.list[tc[:class_code]]&.dig(:quality) || -1 }
+      counts.sort_by!{ |tc| TravelClass::CLASSES[tc[:class_code]]&.dig(:quality) || -1 }
       counts.reverse! if sort_direction == :desc
     when :flights
       sort_mult = (sort_direction == :asc ? 1 : -1)
       counts.sort_by!{ |tc| [sort_mult*tc[:flight_count], tc[:class_code] || ""] }
     else
-      counts.sort_by!{|tc| list[tc[:class_code]]&.dig(:quality) || -1}.reverse
+      counts.sort_by!{|tc| CLASSES[tc[:class_code]]&.dig(:quality) || -1}.reverse
     end
 
     return counts
@@ -44,50 +73,34 @@ module TravelClass
   # @return [String] a travel class code
   def self.get_class_id(class_string)
     return nil unless class_string.present?
-    classes = list.invert
+    classes = CLASSES.invert
     return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
   end
-  
-  # Returns a hash of travel classes, descriptions, and quality ratings.
+
+  # Given a class identifier, return a description of the class.
   #
-  # @return [Hash] travel class details
-  def self.list
-    classes = Hash.new
-    classes["first"] = {
-      name: "First",
-      description: "Highest class on planes with both First and Business",
-      quality: 5
-    }
-    classes["business"] = {
-      name: "Business",
-      description: "Highest class on planes without separate First and Business",
-      quality: 4
-    }
-    classes["premium-economy"] = {
-      name: "Premium Economy",
-      description: "Economy with extra legroom and seat width",
-      quality: 3
-    }
-    classes["economy-extra"] = {
-      name: "Economy Extra",
-      description: "Economy with extra legroom",
-      quality: 2
-    }
-    classes["economy"] = {
-      name: "Economy",
-      description: "Standard main cabin seat",
-      quality: 1
-    }
-    return classes
+  # @param class_string [String] a travel class identifier
+  # @return [String] a description
+  def self.description(class_string)
+    return CLASSES[class_string][:description]
   end
 
+  # Given a class identifier, return a title containing the class name. Used to
+  # generate text for page titles and headers.
+  #
+  # @param class_string [String] a travel class identifier
+  # @return [String] a title
+  def self.title(class_string)
+    return CLASSES[class_string][:name].titlecase + " Class"
+  end
+  
   # Returns an array of travel classes in a format ready for
   # +options_for_select+. Used for generating travel class select boxes for the
   # {FlightsController#new new} and {FlightsController#edit edit} flight forms.
   # 
   # @return [Array<Array>] options for a travel class select box
   def self.dropdown
-    return self.list.map{|k,v| ["#{v[:name]} (#{v[:description]})", k]}
+    return CLASSES.map{|k,v| ["#{v[:name]} (#{v[:description]})", k]}
   end
   
   # Accepts a flyer, the current user, and a date range, and returns all

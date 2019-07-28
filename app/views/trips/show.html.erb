@@ -1,3 +1,6 @@
+<% provide(:title, @trip.name) %>
+<% provide(:meta_description, "Maps and lists of flights on Paul Bogardʼs #{@trip.name} trip.") %>
+
 <% if logged_in? && @trip.purpose.present? %>
   <div id="title-info"><%= @trip.purpose.capitalize %> trip</div>
 <% end %>

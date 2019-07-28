@@ -1,3 +1,6 @@
+<% provide(:title, (@aircraft_family.is_family? ? @aircraft_family.full_name + " Family" : @aircraft_family.full_name)) %>
+<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft.") %>
+
 <div id="title-info"><%= [@aircraft_family.iata_aircraft_code, @aircraft_family.icao_aircraft_code].reject{|c| c.blank?}.join(" / ") %></div>
 
 <h1><%= @aircraft_family.full_name %><%= " Family" if @aircraft_family.is_family? %></h1>

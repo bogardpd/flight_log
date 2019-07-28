@@ -31,8 +31,6 @@ class RoutesController < ApplicationController
   # @return [nil]
   def index
     add_breadcrumb "Routes", routes_path
-    @title = "Routes"
-    @meta_description = "A list of the routes Paul Bogard has flown on, and how often heʼs flown on each."
         
     flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
@@ -98,8 +96,6 @@ class RoutesController < ApplicationController
     add_breadcrumb "Routes", routes_path
     add_breadcrumb "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}", route_path(@route_string)
     add_admin_action view_context.link_to("Edit Route", edit_route_path(@airports[0],@airports[1]))
-    @title = "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}"
-    @meta_description = "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}."
     @logo_used = true
     
     flyer_flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
@@ -138,15 +134,15 @@ class RoutesController < ApplicationController
   #
   # @return [nil]
   def edit
+    @airports = [params[:airport1],params[:airport2]]
     add_breadcrumb "Routes", routes_path
-    add_breadcrumb "#{params[:airport1]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{params[:airport2]}", route_path("#{params[:airport1]}-#{params[:airport2]}")
-    add_breadcrumb "Edit", edit_route_path(airport1: params[:airport1], airport2: params[:airport2])
-    @title = "Edit #{params[:airport1]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{params[:airport2]}"
+    add_breadcrumb "#{@airports.first} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last}", route_path("#{@airports.first}-#{@airports.last}")
+    add_breadcrumb "Edit", edit_route_path(airport1: @airports.first, airport2: @airports.last)
     
     # Get airport ids:
     @airport_ids = Array.new
-    @airport_ids.push(Airport.where(:iata_code => params[:airport1]).first.try(:id))
-    @airport_ids.push(Airport.where(:iata_code => params[:airport2]).first.try(:id))
+    @airport_ids.push(Airport.where(:iata_code => @airports.first).first.try(:id))
+    @airport_ids.push(Airport.where(:iata_code => @airports.last).first.try(:id))
     raise ArgumentError if @airport_ids.include?(nil)
     @airport_ids.sort! # Ensure IDs are in order
     

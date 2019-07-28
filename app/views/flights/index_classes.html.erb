@@ -1,3 +1,6 @@
+<% provide(:title, "Travel Classes") %>
+<% provide(:meta_description, "A count of how many times Paul Bogard has flown in each class.") %>
+
 <h1>Travel Classes</h1>
 
 <% if @classes.reject{|tc| tc[:class_code].nil?}.empty? %>

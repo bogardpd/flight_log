@@ -7,8 +7,6 @@ class AircraftFamiliesController < ApplicationController
   #
   # @return [nil]
   def index
-    @title = "Aircraft"
-    @meta_description = "A list of the types of planes on which Paul Bogard has flown, and how often heʼs flown on each."
     add_breadcrumb "Aircraft Families", aircraft_families_path
     add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
     
@@ -48,16 +46,12 @@ class AircraftFamiliesController < ApplicationController
     raise ActiveRecord::RecordNotFound if (@aircraft_family.nil?)
     
     @logo_used = true
-    @title = @aircraft_family.full_name
-    @title += " Family" if @aircraft_family.is_family?
-    @meta_description = "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft."
     @region = current_region(default: [])
     
     @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_type_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     add_breadcrumb "Aircraft Families", aircraft_families_path
-    
     
     if @aircraft_family.is_family?
       add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)

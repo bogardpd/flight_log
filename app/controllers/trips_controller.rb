@@ -10,10 +10,7 @@ class TripsController < ApplicationController
     add_admin_action view_context.link_to("Add New Trip", new_trip_path)
     @sort = Table.sort_parse(params[:sort], :departure, :desc)
     @trips = Trip.with_departure_dates(flyer, current_user, *@sort)
-
     @trips_with_no_flights = Trip.with_no_flights
-    @title = "Trips"
-    @meta_description = "A list of airplane trips Paul Bogard has taken."
   end
 
   # Shows details for a particular {Trip} and its {Flight Flights}.
@@ -32,15 +29,13 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:id])
     raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
     @flights = Flight.where(trip_id: @trip).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
-    @title = @trip.name
-    @meta_description = "Maps and lists of flights on Paul Bogardʼs #{@trip.name} trip."
     
     add_breadcrumb "Trips", trips_path
-    add_breadcrumb @title, trip_path(params[:id])
+    add_breadcrumb @trip.name, trip_path(params[:id])
     
-    add_admin_action view_context.link_to("Delete Trip", :trip, :method => :delete, :data => {:confirm => "Are you sure you want to delete #{@trip.name}?"}, :class => "warning") if @flights.length == 0
+    add_admin_action view_context.link_to("Delete Trip", :trip, method: :delete, data: {confirm: "Are you sure you want to delete #{@trip.name}?"}, class: "warning") if @flights.length == 0
     add_admin_action view_context.link_to("Edit Trip", edit_trip_path(@trip))
-    add_admin_action view_context.link_to("Add Flight", new_flight_menu_path(:trip_id => @trip))
+    add_admin_action view_context.link_to("Add Flight", new_flight_menu_path(trip_id: @trip))
     
     add_message(:warning, "This trip is hidden!") if @trip.hidden
 
@@ -99,25 +94,24 @@ class TripsController < ApplicationController
   def show_section
     @logo_used = true
     @trip = Trip.find(params[:trip])
+    @section = params[:section]
     
     raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
     
     add_message(:warning, "This trip is hidden!") if @trip.hidden
     
-    @flights = Flight.where(trip_id: @trip, trip_section: params[:section]).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
+    @flights = Flight.where(trip_id: @trip, trip_section: @section).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
     raise ActiveRecord::RecordNotFound unless @flights.any?
 
     @section_distance = Route.total_distance(@flights)
-    @layover_ratio = @trip.layover_ratio(params[:section])
+    @layover_ratio = @trip.layover_ratio(@section)
     stops = [@flights.first.origin_airport,@flights.last.destination_airport]
     
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
-    @meta_description = "Maps and lists of flights on section #{params[:section]} of Paul Bogardʼs #{@trip.name} trip."
-    @title = "#{@trip.name} (Section #{params[:section]})"
     
     add_breadcrumb "Trips", trips_path
     add_breadcrumb @trip.name, trip_path(params[:trip])
-    add_breadcrumb "Section #{params[:section]}", show_section_path(params[:trip], params[:section])
+    add_breadcrumb "Section #{@section}", show_section_path(params[:trip], @section)
     
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find a matching trip section. Instead, weʼll give you a list of trips."
@@ -130,7 +124,6 @@ class TripsController < ApplicationController
   #
   # @return [nil]
   def new
-    @title = "New Trip"
     add_breadcrumb "Trips", trips_path
     add_breadcrumb "New Trip", new_trip_path
     @trip = Trip.new(:hidden => true)

@@ -1,29 +1,24 @@
 # Defines helper methods for the entire application.
 module ApplicationHelper
   
-  # Returns a title defined in a view's \@title variable, or a default title if
-  # \@title is nil.
+  # Returns a title defined in a view's provide(:title) or content_for(:title),
+  # or a default title if a title is not provided.
   #
-  # @return [String] a page title
-  def title_flight_log
+  # @return [ActiveSupport::SafeBuffer] HTML for a <title> tag
+  def title_tag
     base_title = "Paul Bogardʼs Flight Historian"
-    if @title.nil?
-      base_title
-    else
-      "#{@title} - #{base_title}"
-    end
+    return content_tag(:title, [content_for(:title), base_title].compact.join(" – "))
   end  
   
   # Returns a description <meta> tag with content provided by a view's
-  # \@meta_description variable, or a blank string if \@meta_description is nil.
+  # provide(:meta_description) or content_for(:meta_description), or a default
+  # meta description if a meta description is not provied.
   #
-  # @return [ActiveSupport::SafeBuffer, String] HTML for a <meta> tag
-  def meta_description
-    if @meta_description.nil?
-      ""
-    else
-      content_tag(:meta, nil, name: "description", content: @meta_description)
-    end
+  # @return [ActiveSupport::SafeBuffer] HTML for a <meta> tag
+  def meta_description_tag
+    default_description = "Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history."
+    description = content_for?(:meta_description) ? content_for(:meta_description) : default_description
+    return content_tag(:meta, nil, name: "description", content: description)
   end
   
   # Formats the airport name portion of an city name. Anything contained

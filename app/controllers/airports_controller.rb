@@ -9,8 +9,7 @@ class AirportsController < ApplicationController
   def index
     add_breadcrumb "Airports", airports_path
     add_admin_action view_context.link_to("Add New Airport", new_airport_path)
-    @title = "Airports"
-    @meta_description = "Maps and lists of airports Paul Bogard has visited, and how often heʼs visited them."
+
     @flights = flyer.flights(current_user).includes(:origin_airport, :destination_airport)
     @airports = Array.new
     
@@ -101,9 +100,6 @@ class AirportsController < ApplicationController
     @sections_map = FlightsMap.new(@sections_using_airport_flights, highlighted_airports: [@airport], region: @region)
     @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport], region: @region)
     
-    @title = @airport.iata_code
-    @meta_description = "Maps and lists of Paul Bogardʼs flights through #{@airport.iata_code} – #{@airport.city}."
-    
     add_breadcrumb "Airports", airports_path
     add_breadcrumb @title, airport_path(@airport.iata_code)
     
@@ -122,7 +118,6 @@ class AirportsController < ApplicationController
   # @return [nil]
   def new
     session[:form_location] = nil
-    @title = "New Airport"
     add_breadcrumb "Airports", airports_path
     add_breadcrumb "New Airport", new_airport_path
     @airport = Airport.new

@@ -1,3 +1,6 @@
+<% provide(:title, "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}") %>
+<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}.") %>
+
 <h1><%= @airports[0] %> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= @airports[1] %></h1>
 
 <div class="page-navigation">

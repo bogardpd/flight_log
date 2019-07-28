@@ -2,7 +2,7 @@
 <html>
 <head>
   <!-- Created by Paul Bogard. https://github.com/bogardpd/flight_log -->
-	<title><%= title_flight_log %></title>
+	<%= title_tag %>
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="icon" href="/favicon.ico" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -15,7 +15,7 @@
   <%= javascript_include_tag :application %>
 	<%= render "layouts/shim" %>
   <meta name="author" content="Paul Bogard" />
-  <%= meta_description %>
+  <%= meta_description_tag %>
   <%= yield :head_includes %>
   
 </head>

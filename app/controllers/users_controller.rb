@@ -20,7 +20,6 @@ class UsersController < ApplicationController
   # @return [nil]
   def show
     @user = User.find(params[:id])
-    @title = @user.name
   end
   
   # Shows a form to add (sign up) a {User}.
@@ -30,7 +29,6 @@ class UsersController < ApplicationController
   # @return [nil]
   def new
     @user = User.new
-    @title = "Sign Up"
   end
   
   # Creates a new {User}.

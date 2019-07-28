@@ -10,7 +10,6 @@ class PagesController < ApplicationController
   #
   # @return [nil]
   def flightlog
-    @meta_description = "Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history."
     @logo_used = true
     @region = current_region(default: [])
     

@@ -1,3 +1,6 @@
+<% provide(:title, "Trips") %>
+<% provide(:meta_description, "A list of airplane trips Paul Bogard has taken.") %>
+
 <h1>Trips</h1>
 
 <% if (flyer == current_user && @trips_with_no_flights.any?) %>

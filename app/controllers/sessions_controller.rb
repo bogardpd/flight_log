@@ -5,7 +5,6 @@ class SessionsController < ApplicationController
   #
   # @return [nil]
   def new
-    @title = "Log In"
   end
   
   # Creates a new user session (logs a user in).
