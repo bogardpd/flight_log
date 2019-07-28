@@ -6,7 +6,7 @@
 
 <h1><%= @title %></h1>
 
-<p class="center">Part of the <%= link_to(@trip.name, @trip, :class => "bold") %> trip.</p>
+<p class="center">Part of the <%= link_to(@trip.name, @trip, class: "bold", title: "View trip details for #{@trip.name}") %> trip.</p>
 
 <%= @map.gcmap %>
 <%= render partial: "routes/distance_block", locals: {distance: @section_distance, adjective: "section"} %>
