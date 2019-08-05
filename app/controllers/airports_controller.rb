@@ -101,7 +101,7 @@ class AirportsController < ApplicationController
     @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport], region: @region)
     
     add_breadcrumb "Airports", airports_path
-    add_breadcrumb @title, airport_path(@airport.iata_code)
+    add_breadcrumb @airport.iata_code, airport_path(@airport.iata_code)
     
     add_admin_action view_context.link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => "warning") if @flights.length == 0
     add_admin_action view_context.link_to("Edit Airport", edit_airport_path(@airport))
