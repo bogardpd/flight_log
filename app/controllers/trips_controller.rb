@@ -7,7 +7,6 @@ class TripsController < ApplicationController
   # @return [nil]
   def index
     add_breadcrumb "Trips", trips_path
-    add_admin_action view_context.link_to("Add New Trip", new_trip_path)
     @sort = Table.sort_parse(params[:sort], :departure, :desc)
     @trips = Trip.with_departure_dates(flyer, current_user, *@sort)
     @trips_with_no_flights = Trip.with_no_flights
@@ -32,10 +31,6 @@ class TripsController < ApplicationController
     
     add_breadcrumb "Trips", trips_path
     add_breadcrumb @trip.name, trip_path(params[:id])
-    
-    add_admin_action view_context.link_to("Delete Trip", :trip, method: :delete, data: {confirm: "Are you sure you want to delete #{@trip.name}?"}, class: "warning") if @flights.length == 0
-    add_admin_action view_context.link_to("Edit Trip", edit_trip_path(@trip))
-    add_admin_action view_context.link_to("Add Flight", new_flight_menu_path(trip_id: @trip))
     
     add_message(:warning, "This trip is hidden!") if @trip.hidden
 

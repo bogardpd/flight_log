@@ -1,5 +1,14 @@
 # Defines helper methods for the entire application.
 module ApplicationHelper
+
+  # Adds a link to the admin block.
+  #
+  # @param link [ActiveSupport::SafeBuffer] a link_to object
+  # @return [nil]
+  def add_admin_action(link)
+    @admin_actions ||= Array.new
+    @admin_actions.push(link)
+  end
   
   # Returns a title defined in a view's provide(:title) or content_for(:title),
   # or a default title if a title is not provided.

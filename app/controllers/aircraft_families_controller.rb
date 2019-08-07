@@ -8,7 +8,6 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   def index
     add_breadcrumb "Aircraft Families", aircraft_families_path
-    add_admin_action view_context.link_to("Add New Aircraft Family", new_aircraft_family_path)
     
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
@@ -55,15 +54,10 @@ class AircraftFamiliesController < ApplicationController
     
     if @aircraft_family.is_family?
       add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
-      add_admin_action view_context.link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: "warning") if @flights.length == 0 && !@aircraft_family.children.any?
-      add_admin_action view_context.link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family))
-      add_admin_action view_context.link_to("Add Subtype", new_aircraft_family_path(family_id: @aircraft_family))
     else
       family = @aircraft_family.parent
       add_breadcrumb family.full_name, aircraft_family_path(family)
       add_breadcrumb @aircraft_family.family_name, aircraft_family_path(@aircraft_family)
-      add_admin_action view_context.link_to("Delete Aircraft Type", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: "warning") if @flights.length == 0
-      add_admin_action view_context.link_to("Edit Aircraft Type", edit_aircraft_family_path(@aircraft_family))
     end
     
     @map = FlightsMap.new(@flights, region: @region)

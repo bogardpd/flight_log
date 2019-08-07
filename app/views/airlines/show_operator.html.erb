@@ -1,5 +1,7 @@
 <% provide(:title, @operator.airline_name + " (Operator)") %>
 <% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights operated by #{@operator.airline_name}.") %>
+<% add_admin_action link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: "warning") if @flights.length == 0 %>
+<% add_admin_action link_to("Edit Airline", edit_airline_path(@operator)) %>
 
 <div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.icao_airline_code, title: @operator.airline_name) %></div>
 

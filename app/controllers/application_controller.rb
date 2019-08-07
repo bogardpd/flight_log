@@ -60,14 +60,7 @@ class ApplicationController < ActionController::Base
     @breadcrumbs.push([text, path])
   end
 
-  # Adds a link to the admin block.
-  #
-  # @param link [ActiveSupport::SafeBuffer] a link_to object
-  # @return [nil]
-  def add_admin_action(link)
-    @admin_actions ||= Array.new
-    @admin_actions.push(link)
-  end
+
   
   # Adds a message to the alert messages box at the top of the page.
   #

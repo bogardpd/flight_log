@@ -62,8 +62,6 @@ class FlightsController < ApplicationController
 
     add_breadcrumb "Flights", flights_path
     add_breadcrumb @flight.name, flight_path(params[:id])
-    add_admin_action view_context.link_to("Delete Flight", @flight, method: :delete, data: { confirm: "Are you sure you want to delete this flight?" }, class: "warning")
-    add_admin_action view_context.link_to("Edit Flight", edit_flight_path(@flight))
     
     if @flight.trip.hidden? && logged_in?
       add_message(:warning, "This flight is part of a #{view_context.link_to("hidden trip", trip_path(@flight.trip))}!")

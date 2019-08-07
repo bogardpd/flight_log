@@ -10,7 +10,6 @@ class AirlinesController < ApplicationController
   def index
     @logo_used = true
     add_breadcrumb "Airlines", airlines_path
-    add_admin_action view_context.link_to("Add New Airline", new_airline_path)
     
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
@@ -59,10 +58,7 @@ class AirlinesController < ApplicationController
     @region = current_region(default: [])
     
     add_breadcrumb "Airlines", airlines_path
-    add_breadcrumb @title, airline_path(@airline.iata_airline_code)
-    
-    add_admin_action view_context.link_to("Delete Airline", @airline, method: :delete, data: {:confirm => "Are you sure you want to delete #{@airline.airline_name}?"}, class: "warning") if @flights.length == 0
-    add_admin_action view_context.link_to("Edit Airline", edit_airline_path(@airline))
+    add_breadcrumb @airline.airline_name, airline_path(@airline.iata_airline_code)
     
     # Create map:
     @map = FlightsMap.new(@flights, region: @region)
@@ -117,9 +113,6 @@ class AirlinesController < ApplicationController
     
     add_breadcrumb "Airlines", airlines_path
     add_breadcrumb "Flights Operated by " + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
-    
-    add_admin_action view_context.link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: "warning") if @flights.length == 0
-    add_admin_action view_context.link_to("Edit Airline", edit_airline_path(@operator))
     
     @total_distance = Route.total_distance(@flights)
     @map = FlightsMap.new(@flights, region: @region)

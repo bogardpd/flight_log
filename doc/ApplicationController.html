@@ -139,30 +139,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#add_admin_action-instance_method" title="#add_admin_action (instance method)">#<strong>add_admin_action</strong>(link)  &#x21d2; nil </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Adds a link to the admin block.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#add_breadcrumb-instance_method" title="#add_breadcrumb (instance method)">#<strong>add_breadcrumb</strong>(text, path)  &#x21d2; nil </a>
     
 
@@ -375,83 +351,7 @@ the region parameter in the URL if present, and the default if absent.</p>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="add_admin_action-instance_method">
-  
-    #<strong>add_admin_action</strong>(link)  &#x21d2; <tt>nil</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Adds a link to the admin block.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>link</span>
-      
-      
-        <span class='type'>(<tt>ActiveSupport::SafeBuffer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a link_to object</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>nil</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-67
-68
-69
-70</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 67</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_add_admin_action'>add_admin_action</span><span class='lparen'>(</span><span class='id identifier rubyid_link'>link</span><span class='rparen'>)</span>
-  <span class='ivar'>@admin_actions</span> <span class='op'>||=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@admin_actions</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_link'>link</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="add_breadcrumb-instance_method">
+  <h3 class="signature first" id="add_breadcrumb-instance_method">
   
     #<strong>add_breadcrumb</strong>(text, path)  &#x21d2; <tt>nil</tt> 
   
@@ -618,13 +518,13 @@ box.</p>
       <pre class="lines">
 
 
-78
-79
-80
-81</pre>
+71
+72
+73
+74</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_message'>add_message</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_text'>text</span><span class='rparen'>)</span>
   <span class='ivar'>@messages</span> <span class='op'>||=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -996,20 +896,20 @@ an array.</p>
       <pre class="lines">
 
 
+94
+95
+96
+97
+98
+99
+100
 101
 102
 103
-104
-105
-106
-107
-108
-109
-110
-111</pre>
+104</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 94</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_superlatives'>superlatives</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_route_distances'>route_distances</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -1104,21 +1004,21 @@ return hash is in the same format as <span class='object_link'><a href="#superla
       <pre class="lines">
 
 
+114
+115
+116
+117
+118
+119
+120
 121
 122
 123
 124
-125
-126
-127
-128
-129
-130
-131
-132</pre>
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_superlatives_collection'>superlatives_collection</span><span class='lparen'>(</span><span class='id identifier rubyid_route_distances'>route_distances</span><span class='rparen'>)</span>
   
@@ -1142,7 +1042,7 @@ return hash is in the same format as <span class='object_link'><a href="#superla
 </div>
 
       <div id="footer">
-  Generated on Sun Aug  4 23:06:08 2019 by
+  Generated on Tue Aug  6 22:58:28 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

@@ -1,5 +1,14 @@
-<% provide(:title, (@aircraft_family.is_family? ? @aircraft_family.full_name + " Family" : @aircraft_family.full_name)) %>
 <% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights on #{@aircraft_family.full_name} aircraft.") %>
+<% if @aircraft_family.is_family? %>
+  <% provide(:title, @aircraft_family.full_name + " Family") %>
+  <% add_admin_action link_to("Delete Aircraft Family", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: "warning") if @flights.length == 0 && !@aircraft_family.children.any? %>
+  <% add_admin_action link_to("Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family)) %>
+  <% add_admin_action link_to("Add Subtype", new_aircraft_family_path(family_id: @aircraft_family)) %>
+<% else %>
+  <% provide(:title, @aircraft_family.full_name) %>
+  <% add_admin_action link_to("Delete Aircraft Type", @aircraft_family, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft_family.full_name}?"}, class: "warning") if @flights.length == 0 %>
+  <% add_admin_action link_to("Edit Aircraft Type", edit_aircraft_family_path(@aircraft_family)) %>
+<% end %>
 
 <div id="title-info"><%= [@aircraft_family.iata_aircraft_code, @aircraft_family.icao_aircraft_code].reject{|c| c.blank?}.join(" / ") %></div>
 

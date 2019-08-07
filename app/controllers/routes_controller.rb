@@ -77,12 +77,13 @@ class RoutesController < ApplicationController
       current_route = Route.find(params[:id])
       @airports.push(Airport.find(current_route.airport1_id).iata_code)
       @airports.push(Airport.find(current_route.airport2_id).iata_code)
-      @route_string = @airports.join("-")
+      @route_slug = @airports.join("-")
     else
       @airports = params[:id].split("-")
-      @route_string = params[:id]
+      @route_slug = params[:id]
     end
     
+    @route_with_arrow = "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}"
     airport_lookup = Array.new()
     @airports_id = Array.new()
     @airports_city = Array.new()
@@ -94,8 +95,7 @@ class RoutesController < ApplicationController
     end
     
     add_breadcrumb "Routes", routes_path
-    add_breadcrumb "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}", route_path(@route_string)
-    add_admin_action view_context.link_to("Edit Route", edit_route_path(@airports[0],@airports[1]))
+    add_breadcrumb @route_with_arrow, route_path(@route_slug)
     @logo_used = true
     
     flyer_flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
