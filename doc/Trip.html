@@ -136,6 +136,24 @@ than the <span class='object_link'><a href="User.html" title="User (class)">User
 
     <dl class="constants">
       
+        <dt id="PURPOSES-constant" class="">PURPOSES =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Valid trip purposes.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>business</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Business</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mixed</span><span class='tstring_end'>&quot;</span></span>    <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Mixed</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>personal</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Personal</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span></pre></dd>
+      
         <dt id="HIDDEN_MARKER-constant" class="">HIDDEN_MARKER =
           <div class="docstring">
   <div class="discussion">
@@ -208,30 +226,6 @@ trip.</p>
 including ID, name, hidden status, departure date, and an array of trip
 sections (with section numbers and departure dates) that also match the
 flights.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#purposes_list-class_method" title="purposes_list (class method)">.<strong>purposes_list</strong>  &#x21d2; Hash </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns a hash of possible trip purposes.</p>
 </div></span>
   
 </li>
@@ -473,6 +467,14 @@ collection.</p>
       <pre class="lines">
 
 
+103
+104
+105
+106
+107
+108
+109
+110
 111
 112
 113
@@ -482,18 +484,10 @@ collection.</p>
 117
 118
 119
-120
-121
-122
-123
-124
-125
-126
-127
-128</pre>
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 111</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_matching_trips_and_sections'>matching_trips_and_sections</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
   
@@ -512,75 +506,6 @@ collection.</p>
   <span class='comment'># Create output array:
 </span>  <span class='kw'>return</span> <span class='id identifier rubyid_trip_hash'>trip_hash</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_tk'>tk</span><span class='comma'>,</span><span class='id identifier rubyid_tv'>tv</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>trip_id:</span> <span class='id identifier rubyid_tk'>tk</span><span class='comma'>,</span> <span class='label'>name:</span> <span class='id identifier rubyid_trip_names'>trip_names</span><span class='lbracket'>[</span><span class='id identifier rubyid_tk'>tk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>hidden:</span> <span class='id identifier rubyid_trip_names'>trip_names</span><span class='lbracket'>[</span><span class='id identifier rubyid_tk'>tk</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:hidden</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>departure_date:</span> <span class='id identifier rubyid_tv'>tv</span><span class='lbracket'>[</span><span class='symbol'>:sections</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_values'>values</span><span class='period'>.</span><span class='id identifier rubyid_min'>min</span><span class='comma'>,</span> <span class='label'>sections:</span> <span class='id identifier rubyid_tv'>tv</span><span class='lbracket'>[</span><span class='symbol'>:sections</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sk'>sk</span><span class='comma'>,</span><span class='id identifier rubyid_sv'>sv</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>trip_section:</span> <span class='id identifier rubyid_sk'>sk</span><span class='comma'>,</span> <span class='label'>departure_date:</span> <span class='id identifier rubyid_sv'>sv</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span> <span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='symbol'>:departure_date</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
 
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="purposes_list-class_method">
-  
-    .<strong>purposes_list</strong>  &#x21d2; <tt>Hash</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns a hash of possible trip purposes. Used to populate the trip purpose
-select box on the <span class='object_link'><a href="TripsController.html#new-instance_method" title="TripsController#new (method)">new</a></span> or <span class='object_link'><a href="TripsController.html#edit-instance_method" title="TripsController#edit (method)">edit</a></span>
-Trip forms.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>trip purposes</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-81
-82
-83
-84
-85
-86
-87</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 81</span>
-
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_purposes_list'>purposes_list</span>
-  <span class='id identifier rubyid_purposes'>purposes</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='id identifier rubyid_purposes'>purposes</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>business</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Business</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id identifier rubyid_purposes'>purposes</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mixed</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Mixed</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id identifier rubyid_purposes'>purposes</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>personal</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Personal</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_purposes'>purposes</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -659,12 +584,12 @@ specified in a <span class='object_link'><a href="#matching_trips_and_sections-c
       <pre class="lines">
 
 
-138
-139
-140</pre>
+130
+131
+132</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 130</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_section_where_array'>section_where_array</span><span class='lparen'>(</span><span class='id identifier rubyid_matching_trips_and_sections_array'>matching_trips_and_sections_array</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_matching_trips_and_sections_array'>matching_trips_and_sections_array</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_t'>t</span><span class='op'>|</span> <span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='symbol'>:sections</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_t'>t</span><span class='lbracket'>[</span><span class='symbol'>:trip_id</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='id identifier rubyid_s'>s</span><span class='lbracket'>[</span><span class='symbol'>:trip_section</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_pair'>pair</span><span class='op'>|</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(trip_id = </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_pair'>pair</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> AND trip_section = </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_pair'>pair</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>)</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> OR </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -755,20 +680,20 @@ specified in a <span class='object_link'><a href="#matching_trips_and_sections-c
       <pre class="lines">
 
 
+141
+142
+143
+144
+145
+146
+147
+148
 149
 150
-151
-152
-153
-154
-155
-156
-157
-158
-159</pre>
+151</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 149</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 141</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_with_departure_dates'>with_departure_dates</span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_flyer'>flyer</span> <span class='op'>==</span> <span class='id identifier rubyid_current_user'>current_user</span>
@@ -832,12 +757,12 @@ they have not yet added any <span class='object_link'><a href="Flight.html" titl
       <pre class="lines">
 
 
-166
-167
-168</pre>
+158
+159
+160</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 166</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 158</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_with_no_flights'>with_no_flights</span>
   <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>id not in (?)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='const'><span class='object_link'><a href="" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_distinct'>distinct</span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:flights</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>trips.id</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -919,11 +844,6 @@ of the previous flight&#39;s trip section or a new trip section.</p>
       <pre class="lines">
 
 
-38
-39
-40
-41
-42
 43
 44
 45
@@ -931,10 +851,15 @@ of the previous flight&#39;s trip section or a new trip section.</p>
 47
 48
 49
-50</pre>
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 43</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_estimated_trip_section'>estimated_trip_section</span><span class='lparen'>(</span><span class='id identifier rubyid_departure_utc'>departure_utc</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span>
@@ -1028,17 +953,17 @@ section distance was twice as long as the theoretical best distance.</p>
       <pre class="lines">
 
 
-67
-68
-69
-70
-71
 72
 73
-74</pre>
+74
+75
+76
+77
+78
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 67</span>
+      <pre class="code"><span class="info file"># File 'app/models/trip.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_layover_ratio'>layover_ratio</span><span class='lparen'>(</span><span class='id identifier rubyid_section'>section</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>trip_section:</span> <span class='id identifier rubyid_section'>section</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_order'>order</span><span class='lparen'>(</span><span class='symbol'>:departure_utc</span><span class='rparen'>)</span>
@@ -1058,7 +983,7 @@ section distance was twice as long as the theoretical best distance.</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Aug 11 14:48:29 2019 by
+  Generated on Sun Aug 11 15:19:51 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

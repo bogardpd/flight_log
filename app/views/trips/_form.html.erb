@@ -9,7 +9,7 @@
   
   <p>
     <%= f.label :purpose %><br />
-    <%= f.select(:purpose, options_for_select(Trip.purposes_list.invert, @trip.purpose), include_blank: true)%>
+    <%= f.select(:purpose, options_for_select(Trip::PURPOSES.invert, @trip.purpose), include_blank: true)%>
   </p>
 
   <p>

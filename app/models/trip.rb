@@ -21,6 +21,11 @@ class Trip < ApplicationRecord
   validates :user_id, presence: true
   validates :name, presence: true
 
+  # Valid trip purposes.
+  PURPOSES = {"business" => "Business",
+              "mixed"    => "Mixed",
+              "personal" => "Personal"}
+
   # HTML to use to indicate a trip is hidden, or a flight is part of a hidden trip.
   HIDDEN_MARKER = ActionController::Base.helpers.content_tag(:div, "Hidden", class: "hidden-marker")
 
@@ -71,19 +76,6 @@ class Trip < ApplicationRecord
     return nil unless ideal_distance > 0
     flown_distance = Route.total_distance(flights)
     return (flown_distance.to_f)/(ideal_distance.to_f)
-  end
-  
-  # Returns a hash of possible trip purposes. Used to populate the trip
-  # purpose select box on the {TripsController#new new} or
-  # {TripsController#edit edit} Trip forms.
-  #
-  # @return [Hash] trip purposes
-  def self.purposes_list
-    purposes = Hash.new
-    purposes["business"] = "Business"
-    purposes["mixed"] = "Mixed"
-    purposes["personal"] = "Personal"
-    return purposes
   end
 
   # Returns an array of all trips associated with a collection of flights,
