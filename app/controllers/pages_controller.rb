@@ -43,7 +43,7 @@ class PagesController < ApplicationController
   # @return [nil]
   # @see https://letsencrypt.org Let's Encrypt
   def letsencrypt
-    render text: ENV["LETS_ENCRYPT_KEY"]
+    render plain: ENV["LETS_ENCRYPT_KEY"]
   end
   
   # Takes a {http://www.gcmap.com/ Great Circle Mapper} map
