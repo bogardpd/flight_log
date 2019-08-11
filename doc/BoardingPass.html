@@ -650,13 +650,13 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
+137
 138
 139
-140
-141</pre>
+140</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 137</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract_detail'>extract_detail</span><span class='lparen'>(</span><span class='id identifier rubyid_detail'>detail</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
@@ -874,8 +874,7 @@ prepopulate the New Flight or Edit Flight forms.</p>
 127
 128
 129
-130
-131</pre>
+130</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 91</span>
@@ -910,8 +909,7 @@ prepopulate the New Flight or Edit Flight forms.</p>
       <span class='id identifier rubyid_compartment_code'>compartment_code</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:repeated</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='symbol'>:mandatory</span><span class='comma'>,</span> <span class='int'>71</span><span class='comma'>,</span> <span class='symbol'>:raw</span><span class='rparen'>)</span>
       <span class='kw'>if</span> <span class='id identifier rubyid_compartment_code'>compartment_code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
         <span class='id identifier rubyid_travel_class'>travel_class</span> <span class='op'>=</span> <span class='id identifier rubyid_airline_compartments'>airline_compartments</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='id identifier rubyid_airline_iata'>airline_iata</span><span class='comma'>,</span> <span class='id identifier rubyid_compartment_code'>compartment_code</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_class_code'>class_code</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClass</a></span></span><span class='period'>.</span><span class='id identifier rubyid_get_class_id'><span class='object_link'><a href="TravelClass.html#get_class_id-class_method" title="TravelClass.get_class_id (method)">get_class_id</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_travel_class'>travel_class</span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='symbol'>:travel_class</span><span class='comma'>,</span> <span class='id identifier rubyid_class_code'>class_code</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_class_code'>class_code</span>
+        <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='symbol'>:travel_class</span><span class='comma'>,</span> <span class='id identifier rubyid_travel_class'>travel_class</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClass</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TravelClass.html#CLASSES-constant" title="TravelClass::CLASSES (constant)">CLASSES</a></span></span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_travel_class'>travel_class</span><span class='rparen'>)</span>
       <span class='kw'>end</span>
     <span class='kw'>rescue</span> <span class='const'>Errno</span><span class='op'>::</span><span class='const'>ENOENT</span>
     <span class='kw'>end</span>
@@ -1063,6 +1061,7 @@ standard.</p>
       <pre class="lines">
 
 
+156
 157
 158
 159
@@ -1111,11 +1110,10 @@ standard.</p>
 202
 203
 204
-205
-206</pre>
+205</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 157</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 156</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1277,6 +1275,7 @@ code</p>
       <pre class="lines">
 
 
+210
 211
 212
 213
@@ -1285,11 +1284,10 @@ code</p>
 216
 217
 218
-219
-220</pre>
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 211</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 210</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_summary_fields'>summary_fields</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1311,7 +1309,7 @@ code</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Aug 11 15:19:53 2019 by
+  Generated on Sun Aug 11 15:36:33 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

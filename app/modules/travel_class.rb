@@ -66,16 +66,6 @@ module TravelClass
 
     return counts
   end
-  
-  # Given a travel class name, gets the travel class code.
-  #
-  # @param class_string [String] a travel class name
-  # @return [String] a travel class code
-  def self.get_class_id(class_string)
-    return nil unless class_string.present?
-    classes = CLASSES.invert
-    return classes[class_string.split.map{|t| t.capitalize}.join(" ")]
-  end
 
   # Given a class identifier, return a description of the class.
   #

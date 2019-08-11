@@ -118,8 +118,7 @@ class BoardingPass
         compartment_code = data.dig(:repeated, 0, :mandatory, 71, :raw)
         if compartment_code.present?
           travel_class = airline_compartments.dig(airline_iata, compartment_code, "name")
-          class_code = TravelClass.get_class_id(travel_class)
-          fields.store(:travel_class, class_code) if class_code
+          fields.store(:travel_class, travel_class) if TravelClass::CLASSES.keys.include?(travel_class)
         end
       rescue Errno::ENOENT
       end
