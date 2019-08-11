@@ -114,10 +114,9 @@ class BoardingPass
         fields.store(:codeshare_airline_iata, marketing_carrier)
       end
       begin
-        airline_compartments = JSON.parse(File.read("app/assets/json/airline_compartments.json"))
         compartment_code = data.dig(:repeated, 0, :mandatory, 71, :raw)
         if compartment_code.present?
-          travel_class = airline_compartments.dig(airline_iata, compartment_code, "name")
+          travel_class = @airline_compartments.dig(airline_iata, compartment_code, "class")
           fields.store(:travel_class, travel_class) if TravelClass::CLASSES.keys.include?(travel_class)
         end
       rescue Errno::ENOENT
@@ -841,7 +840,7 @@ class BoardingPass
     code = raw.upcase
     airline = get_raw(42, leg).strip
     begin
-      ticket_class = @airline_compartments[airline][code]["name"].capitalize
+      ticket_class = TravelClass::CLASSES[@airline_compartments[airline][code]["class"]][:name]
       ticket_details = @airline_compartments[airline][code]["details"]
     rescue
       ticket_class = code

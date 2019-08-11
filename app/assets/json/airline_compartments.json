@@ -1,54 +1,68 @@
 {
   "AA" : {
-    "G" : { "code" : "economy", "name" : "economy", "details" : "restricted" },
-    "L" : { "code" : "economy", "name" : "economy", "details" : "restricted" },
-    "Q" : { "code" : "economy", "name" : "economy", "details" : "restricted" },
-    "R" : { "code" : "business", "name" : "business", "details" : "upgrade" },
-    "T" : { "code" : "economy", "name" : "economy", "details" : "award" },
-    "X" : { "code" : "first", "name" : "first", "details" : "upgrade" },
-    "Y" : { "code" : "economy", "name" : "economy", "details" : "unrestricted" },
-    "Z" : { "code" : "first", "name" : "first", "details" : "award" }
+    "C" : { "class" : "business", "details" : "upgrade" },
+    "G" : { "class" : "economy", "details" : "restricted" },
+    "L" : { "class" : "economy", "details" : "restricted" },
+    "O" : { "class" : "economy-extra", "details" : "restricted" },
+    "P" : { "class" : "premium-economy", "details" : "restricted" },
+    "Q" : { "class" : "economy", "details" : "restricted" },
+    "R" : { "class" : "business", "details" : "upgrade" },
+    "T" : { "class" : "economy", "details" : "award" },
+    "V" : { "class" : "economy" },
+    "X" : { "class" : "business", "details" : "upgrade" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" },
+    "Z" : { "class" : "first", "details" : "award" }
   },
   "AB" : {
-      "Y" : { "code" : "economy", "name" : "economy", "details" : "unrestricted" }
-    },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
   "AC" : {
-    "Y" : { "code" : "economy", "name" : "economy", "details" : "unrestricted" }
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
   },
   "AS" : {
-    "Q" : { "code" : "economy", "name" : "economy", "details" : "restricted" },
-    "Y" : { "code" : "economy", "name" : "economy", "details" : "unrestricted" }
+    "Q" : { "class" : "economy", "details" : "restricted" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
   },
   "BA" : {
-    "M" : { "code" : "economy", "name" : "economy", "details" : "restricted" }
+    "M" : { "class" : "economy", "details" : "restricted" }
   },
   "B6" : {
-    "P" : { "code" : "economy", "name" : "economy" }
+    "P" : { "class" : "economy" }
   },
   "DL" : {
-    "W" : { "code" : "economy", "name" : "premium economy" },
-    "Y" : { "code" : "economy", "name" : "economy", "details" : "unrestricted" }
+    "F" : { "class" : "first", "details" : "unrestricted" },
+    "W" : { "class" : "economy-extra" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "F9" : {
+    "Y" : { "class" : "economy" }
   },
   "FI" : {
-    "M" : { "code" : "economy", "name" : "economy" }
+    "M" : { "class" : "economy" }
   },
   "HA" : {
-    "Y" : { "code" : "economy", "name" : "economy", "details" : "unrestricted" }
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "NZ" : {
+    "Y" : { "class" : "economy" }
+  },
+  "QF" : {
+    "Y" : { "class" : "economy" }
   },
   "UA" : {
-    "F" : { "code" : "first", "name" : "first" },
-    "Y" : { "code" : "economy", "name" : "economy", "details" : "unrestricted" }
+    "F" : { "class" : "first" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
   },
   "US" : {
-    "N" : { "code" : "economy", "name" : "economy", "details" : "award" },
-    "Y" : { "code" : "economy", "name" : "economy", "details" : "unrestricted" }
+    "N" : { "class" : "economy", "details" : "award" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
   },
   "WN" : {
-    "M" : { "code" : "economy", "name" : "economy", "details" : "Wanna Get Away" },
-    "N" : { "code" : "economy", "name" : "economy", "details" : "Wanna Get Away" },
-    "R" : { "code" : "economy", "name" : "economy", "details" : "Anytime" },
-    "T" : { "code" : "economy", "name" : "economy", "details" : "Wanna Get Away" },
-    "W" : { "code" : "economy", "name" : "economy"},
-    "Y" : { "code" : "economy", "name" : "economy", "details" : "Anytime" }
+    "M" : { "class" : "economy", "details" : "Wanna Get Away" },
+    "N" : { "class" : "economy", "details" : "Wanna Get Away" },
+    "R" : { "class" : "economy", "details" : "Anytime" },
+    "T" : { "class" : "economy", "details" : "Wanna Get Away" },
+    "W" : { "class" : "economy"},
+    "Y" : { "class" : "economy", "details" : "Anytime" }
   }
 }

@@ -650,13 +650,13 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
+136
 137
 138
-139
-140</pre>
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract_detail'>extract_detail</span><span class='lparen'>(</span><span class='id identifier rubyid_detail'>detail</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
@@ -873,8 +873,7 @@ prepopulate the New Flight or Edit Flight forms.</p>
 126
 127
 128
-129
-130</pre>
+129</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 91</span>
@@ -905,10 +904,9 @@ prepopulate the New Flight or Edit Flight forms.</p>
       <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='symbol'>:codeshare_airline_iata</span><span class='comma'>,</span> <span class='id identifier rubyid_marketing_carrier'>marketing_carrier</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
     <span class='kw'>begin</span>
-      <span class='id identifier rubyid_airline_compartments'>airline_compartments</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>app/assets/json/airline_compartments.json</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
       <span class='id identifier rubyid_compartment_code'>compartment_code</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='symbol'>:repeated</span><span class='comma'>,</span> <span class='int'>0</span><span class='comma'>,</span> <span class='symbol'>:mandatory</span><span class='comma'>,</span> <span class='int'>71</span><span class='comma'>,</span> <span class='symbol'>:raw</span><span class='rparen'>)</span>
       <span class='kw'>if</span> <span class='id identifier rubyid_compartment_code'>compartment_code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
-        <span class='id identifier rubyid_travel_class'>travel_class</span> <span class='op'>=</span> <span class='id identifier rubyid_airline_compartments'>airline_compartments</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='id identifier rubyid_airline_iata'>airline_iata</span><span class='comma'>,</span> <span class='id identifier rubyid_compartment_code'>compartment_code</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>name</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_travel_class'>travel_class</span> <span class='op'>=</span> <span class='ivar'>@airline_compartments</span><span class='period'>.</span><span class='id identifier rubyid_dig'>dig</span><span class='lparen'>(</span><span class='id identifier rubyid_airline_iata'>airline_iata</span><span class='comma'>,</span> <span class='id identifier rubyid_compartment_code'>compartment_code</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>class</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
         <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='symbol'>:travel_class</span><span class='comma'>,</span> <span class='id identifier rubyid_travel_class'>travel_class</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClass</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="TravelClass.html#CLASSES-constant" title="TravelClass::CLASSES (constant)">CLASSES</a></span></span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_travel_class'>travel_class</span><span class='rparen'>)</span>
       <span class='kw'>end</span>
     <span class='kw'>rescue</span> <span class='const'>Errno</span><span class='op'>::</span><span class='const'>ENOENT</span>
@@ -1061,6 +1059,7 @@ standard.</p>
       <pre class="lines">
 
 
+155
 156
 157
 158
@@ -1109,11 +1108,10 @@ standard.</p>
 201
 202
 203
-204
-205</pre>
+204</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 156</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 155</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1275,6 +1273,7 @@ code</p>
       <pre class="lines">
 
 
+209
 210
 211
 212
@@ -1283,11 +1282,10 @@ code</p>
 215
 216
 217
-218
-219</pre>
+218</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 210</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 209</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_summary_fields'>summary_fields</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1309,7 +1307,7 @@ code</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Aug 11 15:36:33 2019 by
+  Generated on Sun Aug 11 16:28:44 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
