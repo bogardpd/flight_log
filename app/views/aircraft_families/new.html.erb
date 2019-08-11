@@ -1,7 +1,16 @@
-<% provide(:title, @title) %>
-<% provide(:button_text, "Add Aircraft #{@aircraft_family.is_family? ? "Family" : "Type"}") %>
+<% add_breadcrumb "Aircraft Families", aircraft_families_path %>
+
+<% if params[:family_id] %>
+  <% provide(:title, "New #{@parent_family.family_name} Type") %>
+  <% provide(:button_text, "Add Aircraft Type") %>
+  <% add_breadcrumb @parent_family.full_name, aircraft_family_path(@parent_family) %>
+  <% add_breadcrumb @title, "new_aircraft_family_path(family_id: #{@parent_family.id})" %>
+<% else %>
+  <% provide(:title, "New Aircraft Family") %>
+  <% provide(:button_text, "Add Aircraft Family") %>
+  <% add_breadcrumb "New Aircraft Family", new_aircraft_family_path %>
+<% end %>
 
 <h1><%= @title %></h1>
 
-<%= render :partial => "form" %>
-  
+<%= render partial: "form" %>

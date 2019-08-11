@@ -6,7 +6,6 @@ class TripsController < ApplicationController
   #
   # @return [nil]
   def index
-    add_breadcrumb "Trips", trips_path
     @sort = Table.sort_parse(params[:sort], :departure, :desc)
     @trips = Trip.with_departure_dates(flyer, current_user, *@sort)
     @trips_with_no_flights = Trip.with_no_flights
@@ -28,10 +27,7 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:id])
     raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
     @flights = Flight.where(trip_id: @trip).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
-    
-    add_breadcrumb "Trips", trips_path
-    add_breadcrumb @trip.name, trip_path(params[:id])
-    
+        
     add_message(:warning, "This trip is hidden!") if @trip.hidden
 
     if logged_in? && @trip.hidden
@@ -104,10 +100,6 @@ class TripsController < ApplicationController
     
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
     
-    add_breadcrumb "Trips", trips_path
-    add_breadcrumb @trip.name, trip_path(params[:trip])
-    add_breadcrumb "Section #{@section}", show_section_path(params[:trip], @section)
-    
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find a matching trip section. Instead, weʼll give you a list of trips."
     redirect_to trips_path
@@ -119,9 +111,7 @@ class TripsController < ApplicationController
   #
   # @return [nil]
   def new
-    add_breadcrumb "Trips", trips_path
-    add_breadcrumb "New Trip", new_trip_path
-    @trip = Trip.new(:hidden => true)
+    @trip = Trip.new(hidden: true)
   end
   
   # Creates a new {Trip}.
@@ -146,9 +136,6 @@ class TripsController < ApplicationController
   # @return [nil]
   def edit
     @trip = Trip.find(params[:id])
-    add_breadcrumb "Trips", trips_path
-    add_breadcrumb @trip.name, trip_path(@trip)
-    add_breadcrumb "Edit Trip", edit_trip_path(@trip)
   end
   
   # Updates an existing {Trip}.

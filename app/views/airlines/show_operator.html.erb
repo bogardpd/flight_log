@@ -3,6 +3,9 @@
 <% add_admin_action link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: "warning") if @flights.length == 0 %>
 <% add_admin_action link_to("Edit Airline", edit_airline_path(@operator)) %>
 
+<% add_breadcrumb "Airlines", airlines_path %>
+<% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.iata_airline_code) %>
+
 <div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.icao_airline_code, title: @operator.airline_name) %></div>
 
 <h1>Flights Operated by <%= @operator.airline_name %></h1>

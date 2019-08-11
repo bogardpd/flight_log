@@ -1,16 +1,18 @@
 <% provide(:title, TravelClass.title(@class)) %>
 <% provide(:meta_description, "Maps and lists of Paul Bogardʼs #{TravelClass.title(@class).downcase} flights.") %>
+<% add_breadcrumb "Travel Classes", classes_path %>
+<% add_breadcrumb TravelClass.title(@class), show_class_path(@class) %>
 
 <h1><%= TravelClass.title(@class) %><br><small><%= TravelClass.description(@class) %></small></h1>
 
 <div class="page-navigation">
   <ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights flown in #{TravelClass.title(@class).downcase}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{TravelClass.title(@class).downcase} flights") %></li>
-		<li><%= link_to("Operators", "#operators", :title => "Operators with #{TravelClass.title(@class).downcase} flights") %></li>
-		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft with #{TravelClass.title(@class).downcase} flights") %></li>
-		<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown in #{TravelClass.title(@class).downcase}") %></li>
-		<li><%= link_to("Flight List", "#flights", :title => "Flights flown in #{TravelClass.title(@class).downcase}") %></li>
+		<li><%= link_to("Map", "#map", title: "Map of flights flown in #{TravelClass.title(@class).downcase}") %></li>
+		<li><%= link_to("Airlines", "#airlines", title: "Airlines with #{TravelClass.title(@class).downcase} flights") %></li>
+		<li><%= link_to("Operators", "#operators", title: "Operators with #{TravelClass.title(@class).downcase} flights") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", title: "Aircraft with #{TravelClass.title(@class).downcase} flights") %></li>
+		<li><%= link_to("Longest and Shortest", "#superlatives", title: "Longest and shortest routes flown in #{TravelClass.title(@class).downcase}") %></li>
+		<li><%= link_to("Flight List", "#flights", title: "Flights flown in #{TravelClass.title(@class).downcase}") %></li>
   </ul>
 </div>
 

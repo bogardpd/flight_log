@@ -1,5 +1,8 @@
 <% provide(:title, @operator.airline_name + " #" + @fleet_number) %>
 <% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights operated on #{@operator.airline_name} aircraft ##{@fleet_number}.") %>
+<% add_breadcrumb "Airlines", airlines_path %>
+<% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.iata_airline_code) %>
+<% add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number) %>
 
 <div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %><%= airline_icon(@operator.icao_airline_code, :title => @operator.airline_name) %></div>
 
@@ -15,7 +18,6 @@
 				<li><%= link_to("Flight List", "#flights", :title => "Flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
   </ul>
 </div>
-
 
 <p><span class="bold"><%= link_to(@operator.airline_name, show_operator_path(@operator.iata_airline_code), :title => "View flights operated by #{@operator.airline_name}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
 

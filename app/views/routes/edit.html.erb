@@ -1,4 +1,7 @@
 <% provide(:title, "Edit #{@airports.first} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last}") %>
+<% add_breadcrumb "Routes", routes_path %>
+<% add_breadcrumb "#{@airports.first} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last}", route_path("#{@airports.first}-#{@airports.last}") %>
+<% add_breadcrumb "Edit", edit_route_path(airport1: @airports.first, airport2: @airports.last) %>
 
 <h1>Edit <%= @airports.first %> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= @airports.last %></h1>
 

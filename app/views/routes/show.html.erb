@@ -1,6 +1,9 @@
 <% provide(:title, "#{@route_with_arrow}") %>
 <% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}.") %>
 <% add_admin_action link_to("Edit Route", edit_route_path(@airports[0],@airports[1])) %>
+<% add_breadcrumb "Routes", routes_path %>
+<% add_breadcrumb @route_with_arrow, route_path(@route_slug) %>
+
 <% route_with_arrow_and_abbr = safe_join([content_tag(:abbr, @airports[0], title: @airports_city[0]), Route::ARROW_TWO_WAY_PLAINTEXT, content_tag(:abbr, @airports[1], title: @airports_city[1])], " ") %>
 
 <h1><%= @route_with_arrow %></h1>

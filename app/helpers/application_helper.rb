@@ -9,6 +9,16 @@ module ApplicationHelper
     @admin_actions ||= Array.new
     @admin_actions.push(link)
   end
+
+  # Adds a navigation breadcrumb.
+  #
+  # @param text [String] the link's text
+  # @param path [Rails::Paths::Path] the link's path
+  # @return [nil]
+  def add_breadcrumb(text, path)
+    @breadcrumbs ||= [["Home", root_path]]
+    @breadcrumbs.push([text, path])
+  end
   
   # Returns a title defined in a view's provide(:title) or content_for(:title),
   # or a default title if a title is not provided.
@@ -16,7 +26,7 @@ module ApplicationHelper
   # @return [ActiveSupport::SafeBuffer] HTML for a <title> tag
   def title_tag
     base_title = "Paul Bogardʼs Flight Historian"
-    return content_tag(:title, [content_for(:title), base_title].compact.join(" – "))
+    return content_tag(:title, safe_join([content_for(:title), base_title].compact, " – "))
   end  
   
   # Returns a description <meta> tag with content provided by a view's

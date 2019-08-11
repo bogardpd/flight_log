@@ -1,5 +1,7 @@
 <% provide(:title, "Boarding Pass Results") %>
 <% provide(:meta_description, "Results from the boarding pass barcode parser.") %>
+<% add_breadcrumb "Boarding Pass", boarding_pass_path %>
+<% add_breadcrumb @results, boarding_pass_path %>
 
 <h1>Boarding Pass Results</h1>
 

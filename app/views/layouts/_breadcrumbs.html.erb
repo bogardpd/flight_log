@@ -1,14 +1,22 @@
-<% if (!(params[:controller] == "pages" && params[:action] == "flightlog") && (@breadcrumbs || @admin_actions.present?)) %>
+<% if (!(params[:controller] == "pages" && params[:action] == "flightlog") && (@breadcrumbs || (logged_in? && @admin_actions.present?))) %>
 
-<div id="breadcrumbs">
-  <% @breadcrumbs[0..-2].uniq.each do |txt, path| %>
-    <%= link_to(h(txt), path) %> <span class="breadcrumb-separator">▸</span> 
-  <% end %>
-  <span class="breadcrumb-title"><%= h(@breadcrumbs.last.first) %></span>
-	<% if (logged_in? && @admin_actions.present?) %>
-  <div id="admin-actions">
-    <%= safe_join(@admin_actions, sanitize("&emsp;")) %>
+  <div id="breadcrumbs-and-admin-actions">
+    
+    <% if @breadcrumbs && @breadcrumbs.any? %>
+      <% @breadcrumbs[0..-2].uniq.each do |txt, path| %>
+        <%= link_to(h(txt), path) %> <span class="breadcrumb-separator">▸</span> 
+      <% end %>
+      <span class="breadcrumb-title"><%= h(@breadcrumbs.last.first) %></span>
+    <% else %>
+      &nbsp;
+    <% end %>
+
+    <% if (logged_in? && @admin_actions.present?) %>
+    <div id="admin-actions">
+      <%= safe_join(@admin_actions, sanitize("&emsp;")) %>
+    </div>
+    <% end %>
+
   </div>
-  <% end %>
-</div>
+
 <% end %>

@@ -1,6 +1,9 @@
 <% provide(:title, "Edit " + @trip.name) %>
-<% provide(:button_text, "Update Trip")%>
+<% provide(:button_text, "Update Trip") %>
+<% add_breadcrumb "Trips", trips_path %>
+<% add_breadcrumb @trip.name, trip_path(@trip) %>
+<% add_breadcrumb "Edit Trip", edit_trip_path(@trip) %>
 
 <h1>Edit <%= @trip.name %></abbr></h1>
 
-<%= render :partial => "form" %>
+<%= render partial: "form" %>

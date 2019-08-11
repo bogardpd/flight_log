@@ -7,8 +7,6 @@ class AircraftFamiliesController < ApplicationController
   #
   # @return [nil]
   def index
-    add_breadcrumb "Aircraft Families", aircraft_families_path
-    
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
     flight_count = AircraftFamily.flight_table_data(@flights, *@sort)
@@ -50,16 +48,6 @@ class AircraftFamiliesController < ApplicationController
     @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_type_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
-    add_breadcrumb "Aircraft Families", aircraft_families_path
-    
-    if @aircraft_family.is_family?
-      add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
-    else
-      family = @aircraft_family.parent
-      add_breadcrumb family.full_name, aircraft_family_path(family)
-      add_breadcrumb @aircraft_family.family_name, aircraft_family_path(@aircraft_family)
-    end
-    
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = Route.total_distance(@flights)
     
@@ -87,19 +75,15 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   def new
     session[:form_location] = nil
-    add_breadcrumb "Aircraft Families", aircraft_families_path
+    
     if params[:family_id]
       @parent_family = AircraftFamily.find(params[:family_id])
-      @title = "New #{@parent_family.family_name} Type"
-      add_breadcrumb @parent_family.full_name, aircraft_family_path(@parent_family)
-      add_breadcrumb @title, "new_aircraft_family_path(family_id: #{@parent_family.id})"
       @aircraft_family = AircraftFamily.new(parent_id: @parent_family.id)
+      @title = "New #{@parent_family.family_name} Type"
     else
       @title = "New Aircraft Family"
-      add_breadcrumb "New Aircraft Family", new_aircraft_family_path
       @aircraft_family = AircraftFamily.new
     end
-    
     
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "We couldnʼt find an aircraft family with an ID of #{params[:family_id]}. Instead, weʼll give you a list of aircraft families."
@@ -140,10 +124,7 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   def edit
     session[:form_location] = nil
-    @aircraft_family = AircraftFamily.find(params[:id])
-    add_breadcrumb "Aircraft Families", aircraft_families_path
-    add_breadcrumb @aircraft_family.full_name, aircraft_family_path(@aircraft_family)
-    add_breadcrumb "Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family)
+    @aircraft_family = AircraftFamily.find(params[:id])    
   end
   
   # Updates an existing {AircraftFamily} (either a parent aircraft family or a

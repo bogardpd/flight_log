@@ -2,6 +2,8 @@
 <% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights through #{@airport.iata_code} – #{@airport.city}.") %>
 <% add_admin_action link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => "warning") if @flights.length == 0 %>
 <% add_admin_action link_to("Edit Airport", edit_airport_path(@airport)) %>
+<% add_breadcrumb "Airports", airports_path %>
+<% add_breadcrumb @airport.iata_code, airport_path(@airport.iata_code) %>
 
 <% if @airport.country || @airport.coordinates %>
 <div id="title-info">

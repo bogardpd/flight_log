@@ -3,6 +3,8 @@
 <% add_admin_action link_to("Delete Trip", :trip, method: :delete, data: {confirm: "Are you sure you want to delete #{@trip.name}?"}, class: "warning") if @flights.length == 0 %>
 <% add_admin_action link_to("Edit Trip", edit_trip_path(@trip)) %>
 <% add_admin_action link_to("Add Flight", new_flight_menu_path(trip_id: @trip)) %>
+<% add_breadcrumb "Trips", trips_path %>
+<% add_breadcrumb @trip.name, trip_path(@trip) %>
 
 <% if logged_in? && @trip.purpose.present? %>
   <div id="title-info"><%= @trip.purpose.capitalize %> trip</div>

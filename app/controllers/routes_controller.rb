@@ -30,7 +30,6 @@ class RoutesController < ApplicationController
   #
   # @return [nil]
   def index
-    add_breadcrumb "Routes", routes_path
         
     flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
@@ -94,8 +93,6 @@ class RoutesController < ApplicationController
       @airports_city[index] = airport_lookup[index].city
     end
     
-    add_breadcrumb "Routes", routes_path
-    add_breadcrumb @route_with_arrow, route_path(@route_slug)
     @logo_used = true
     
     flyer_flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
@@ -135,9 +132,6 @@ class RoutesController < ApplicationController
   # @return [nil]
   def edit
     @airports = [params[:airport1],params[:airport2]]
-    add_breadcrumb "Routes", routes_path
-    add_breadcrumb "#{@airports.first} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last}", route_path("#{@airports.first}-#{@airports.last}")
-    add_breadcrumb "Edit", edit_route_path(airport1: @airports.first, airport2: @airports.last)
     
     # Get airport ids:
     @airport_ids = Array.new

@@ -1,5 +1,8 @@
-<% provide(:title, "New Flight")%>
-<% provide(:button_text, "Add Flight")%>
+<% provide(:title, "New Flight") %>
+<% provide(:button_text, "Add Flight") %>
+<% add_breadcrumb "Flights", flights_path %>
+<% add_breadcrumb "New Flight", new_flight_menu_path %>
+<% add_breadcrumb "Enter Flight Data", new_flight_path %>
 
 <h1>New Flight</h1>
 

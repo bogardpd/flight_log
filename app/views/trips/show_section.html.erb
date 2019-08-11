@@ -1,5 +1,8 @@
 <% provide(:title, "Section #{@section} – #{@trip.name}") %>
 <% provide(:meta_description, "Maps and lists of flights on section #{@section} of Paul Bogardʼs #{@trip.name} trip.") %>
+<% add_breadcrumb "Trips", trips_path %>
+<% add_breadcrumb @trip.name, trip_path(@trip) %>
+<% add_breadcrumb "Section #{@section}", show_section_path(@trip, @section) %>
 
 <% if @flights.count > 1 && @layover_ratio %>
 <div id="title-info">

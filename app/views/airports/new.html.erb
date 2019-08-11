@@ -1,6 +1,8 @@
 <% provide(:title, "New Airport") %>
 <% provide(:button_text, "Add Airport") %>
+<% add_breadcrumb "Airports", airports_path %>
+<% add_breadcrumb "New Airport", new_airport_path %>
 
 <h1>New Airport</h1>
 
-<%= render :partial => "form" %>
+<%= render partial: "form" %>

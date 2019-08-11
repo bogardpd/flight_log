@@ -50,18 +50,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # Adds a navigation breadcrumb.
-  #
-  # @param text [String] the link's text
-  # @param path [Rails::Paths::Path] the link's path
-  # @return [nil]
-  def add_breadcrumb(text, path)
-    @breadcrumbs ||= [["Home", root_path]]
-    @breadcrumbs.push([text, path])
-  end
-
-
-  
   # Adds a message to the alert messages box at the top of the page.
   #
   # @param type [:info, :success, :warning, :error] the type of message to

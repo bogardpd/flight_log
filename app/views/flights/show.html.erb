@@ -2,6 +2,8 @@
 <% provide(:meta_description, "Details for Paul Bogardʼs #{@flight.name} flight on #{Flight.format_date(@flight.departure_date)}.") %>
 <% add_admin_action link_to("Delete Flight", @flight, method: :delete, data: { confirm: "Are you sure you want to delete this flight?" }, class: "warning") %>
 <% add_admin_action link_to("Edit Flight", edit_flight_path(@flight)) %>
+<% add_breadcrumb "Flights", flights_path %>
+<% add_breadcrumb @flight.name, flight_path(params[:id]) %>
 
 <div id="title-info"><%= airline_icon(@flight.airline.icao_airline_code, title: @flight.airline.airline_name) %></div>
 

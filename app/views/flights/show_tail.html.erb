@@ -1,5 +1,7 @@
 <% provide(:title, @tail_number) %>
 <% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights on tail number #{@tail_number}.") %>
+<% add_breadcrumb "Tail Numbers", tails_path %>
+<% add_breadcrumb @tail_number, show_tail_path(TailNumber.simplify(params[:tail_number])) %>
 
 <% if TailNumber.country(@tail_number) %>
 <div id="title-info"><%= TailNumber.country(@tail_number) %><%= tail_number_country_flag(@tail_number) %></div>

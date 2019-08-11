@@ -10,7 +10,6 @@ class FlightsController < ApplicationController
   #
   # @return [nil]
   def index
-    add_breadcrumb "Flights", flights_path
     @logo_used = true
     @region = current_region(default: [])
     
@@ -59,9 +58,6 @@ class FlightsController < ApplicationController
   def show
     @logo_used = true
     @flight = flyer.flights(current_user).find(params[:id])
-
-    add_breadcrumb "Flights", flights_path
-    add_breadcrumb @flight.name, flight_path(params[:id])
     
     if @flight.trip.hidden? && logged_in?
       add_message(:warning, "This flight is part of a #{view_context.link_to("hidden trip", trip_path(@flight.trip))}!")
@@ -117,33 +113,31 @@ class FlightsController < ApplicationController
   #
   # @return [nil]
   def show_date_range
-    add_breadcrumb "Flights", flights_path
     @logo_used = true
     
     if params[:year].present?
-      year = params[:year].to_i
-      @date_range = ("#{year}-01-01".to_date)..("#{year}-12-31".to_date)
-      add_breadcrumb year, show_year_path(year: year)
-      @date_range_text = "in #{year}"
-      @took_taken = year == Date.today.year ? "have taken" : "took"
-      @flight_list_title = "#{year} Flight List"
-      @superlatives_title = "#{year} Longest and Shortest Routes"
+      @year = params[:year].to_i
+      @date_range = ("#{@year}-01-01".to_date)..("#{@year}-12-31".to_date)
+      @date_range_text = "in #{@year}"
+      @took_taken = @year == Date.today.year ? "have taken" : "took"
+      @flight_list_title = "#{@year} Flight List"
+      @superlatives_title = "#{@year} Longest and Shortest Routes"
       @superlatives_title_nav = @superlatives_title.downcase
-      @in_text = year.to_s
-      @title = "Flights in #{year}"
-      @meta_description = "Maps and lists of Paul Bogardʼs flights in #{year}"
+      @in_text = @year.to_s
+      @title = "Flights in #{@year}"
+      @meta_description = "Maps and lists of Paul Bogardʼs flights in #{@year}"
     elsif (params[:start_date].present? && params[:end_date].present?)
-      start_date, end_date = [params[:start_date].to_date, params[:end_date].to_date].sort
-      @date_range = start_date..end_date
-      add_breadcrumb "#{Flight.format_date(start_date)} - #{Flight.format_date(end_date)}", show_date_range_path(start_date: start_date, end_date: end_date)
-      @date_range_text = "from #{Flight.format_date(start_date)} to #{Flight.format_date(end_date)}"
+      @start_date, @end_date = [params[:start_date].to_date, params[:end_date].to_date].sort
+      @date_range = @start_date..@end_date
+      @date_range_string = "#{Flight.format_date(@start_date)} to #{Flight.format_date(@end_date)}"
+      @date_range_text = "from #{@date_range_string}"
       @took_taken = @date_range.cover?(Date.today) ? "have taken" : "took"
-      @flight_list_title = "Flight List for #{Flight.format_date(start_date)} to #{Flight.format_date(end_date)}"
-      @superlatives_title = "Longest and Shortest Routes for #{Flight.format_date(start_date)} to #{Flight.format_date(end_date)}"
-      @superlatives_title_nav = "Longest and shortest routes for #{Flight.format_date(start_date)} to #{Flight.format_date(end_date)}"
+      @flight_list_title = "Flight List for #{@date_range_string}"
+      @superlatives_title = "Longest and Shortest Routes for #{@date_range_string}"
+      @superlatives_title_nav = "Longest and shortest routes for #{@date_range_string}"
       @in_text = "this date range"
-      @title = "Flights: #{Flight.format_date(start_date)} – #{Flight.format_date(end_date)}"
-      @meta_description = "Maps and lists of Paul Bogardʼs flights from #{Flight.format_date(start_date)} to #{Flight.format_date(end_date)}"
+      @title = "Flights: #{Flight.format_date(@start_date)} – #{Flight.format_date(@end_date)}"
+      @meta_description = "Maps and lists of Paul Bogardʼs flights from #{@date_range_string}"
     else
       raise ArgumentError.new
     end
@@ -185,13 +179,10 @@ class FlightsController < ApplicationController
   # Shows a table of all {TravelClass travel classes} flown.
   #
   # @return [nil]
-  def index_classes
-    add_breadcrumb "Travel Classes", classes_path
-    
+  def index_classes    
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :quality, :desc)
-    @classes = TravelClass.flight_table_data(@flights, *@sort)
-    
+    @classes = TravelClass.flight_table_data(@flights, *@sort)    
   end
   
   # Shows details for a particular {TravelClass travel class} and data for all
@@ -219,9 +210,6 @@ class FlightsController < ApplicationController
     
     @class = params[:travel_class]
     
-    add_breadcrumb "Travel Classes", classes_path
-    add_breadcrumb TravelClass.title(@class), show_class_path(@class)
-
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = Route.total_distance(@flights)
@@ -243,7 +231,6 @@ class FlightsController < ApplicationController
   #
   # @return [nil]
   def index_tails
-    add_breadcrumb "Tail Numbers", tails_path
       
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
@@ -279,8 +266,6 @@ class FlightsController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @tail_number = TailNumber.format(params[:tail_number])
-    add_breadcrumb "Tail Numbers", tails_path
-    add_breadcrumb @title, show_tail_path(TailNumber.simplify(params[:tail_number]))
     
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
@@ -305,7 +290,6 @@ class FlightsController < ApplicationController
   # @see #build_boarding_pass
   # @see #show_boarding_pass
   def input_boarding_pass
-    add_breadcrumb "Boarding Pass Parser", boarding_pass_path
   end
   
   # Checks whether a boarding pass is present. Redirects to
@@ -329,14 +313,12 @@ class FlightsController < ApplicationController
   # @see #input_boarding_pass
   # @see #build_boarding_pass
   def show_boarding_pass
-    add_breadcrumb "Boarding Pass", boarding_pass_path
     
     @boarding_pass = BoardingPass.new(params[:data])
     if @boarding_pass.data.dig(:repeated, 0, :mandatory, 42)
-      bp_string = "#{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 43, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 26, :raw)} ✈ #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 38, :raw)}"
-      add_breadcrumb bp_string, boarding_pass_path
+      @results = "#{@boarding_pass.data.dig(:repeated, 0, :mandatory, 42, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 43, :raw)} #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 26, :raw)} ✈ #{@boarding_pass.data.dig(:repeated, 0, :mandatory, 38, :raw)}"
     else
-      add_breadcrumb "Results", boarding_pass_path
+      @results = "Results"
     end
     
   end
@@ -367,8 +349,6 @@ class FlightsController < ApplicationController
   #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
   # @see https://flightaware.com/commercial/flightxml/documentation2.rvt FlightXML 2.0 Documentation
   def new_flight_menu
-    add_breadcrumb "Flights", flights_path
-    add_breadcrumb "New Flight", new_flight_menu_path
     clear_new_flight_variables
     
     # Determine an appropriate trip to use:
@@ -414,8 +394,6 @@ class FlightsController < ApplicationController
   #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
   # @see https://flightaware.com/commercial/flightxml/documentation2.rvt FlightXML 2.0 Documentation
   def new
-    add_breadcrumb "Flights", flights_path
-    add_breadcrumb "New Flight", new_flight_menu_path
 
     # Check if this page was loaded directly from a form submission. If so,
     # clear out the session variables. This keeps extraneous data from spilling
@@ -471,7 +449,6 @@ class FlightsController < ApplicationController
             if @fa_flights && @fa_flights.any?
               airports = (@fa_flights.map{|f| f[:origin]} | @fa_flights.map{|f| f[:destination]})
               @timezones = FlightXML.airport_timezones(airports)
-              add_breadcrumb "Select Flight", new_flight_menu_path
               render "flightxml_select_flight"
               return
             else
@@ -501,7 +478,6 @@ class FlightsController < ApplicationController
     session[:new_flight][:departure_date] ||= now.to_date
 
     # Render new flight form:
-    add_breadcrumb "Enter Flight Data", new_flight_path
     session[:new_flight][:warnings].each{|w| add_message(:warning, w) }
       
   rescue ActiveRecord::RecordNotFound
@@ -534,9 +510,6 @@ class FlightsController < ApplicationController
       redirect_to @flight
     else
       @title = "New Flight"
-      add_breadcrumb "Flights", flights_path
-      add_breadcrumb "New Flight", new_flight_menu_path
-      add_breadcrumb "Enter Flight Data", new_flight_path
       render "new"
     end
   end
@@ -548,9 +521,6 @@ class FlightsController < ApplicationController
   # @return [nil]
   def edit
     @flight = Flight.find(params[:id])
-    add_breadcrumb "Flights", flights_path
-    add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", flight_path(@flight)
-    add_breadcrumb "Edit Flight", edit_flight_path(@flight)
   end
   
   # Updates an existing {Flight}.
@@ -688,7 +658,6 @@ class FlightsController < ApplicationController
   # @return [nil]
   def input_new_undefined_airport(iata, icao)
     @airport = Airport.new
-    add_breadcrumb "Create New Airport", new_flight_path
     @lookup_fields = {iata_code: iata, icao_code: icao}
     session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
     render "new_undefined_airport" and return true
@@ -701,7 +670,6 @@ class FlightsController < ApplicationController
   # @return [nil]
   def input_new_undefined_aircraft_family(icao)
     @aircraft_family = AircraftFamily.new
-    add_breadcrumb "Create New Aircraft Family", new_flight_path
     @lookup_fields = {icao_code: icao}
     session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
     render "new_undefined_aircraft_family" and return true
@@ -715,7 +683,6 @@ class FlightsController < ApplicationController
   # @return [nil]
   def input_new_undefined_airline(iata, icao)
     @airline = Airline.new
-    add_breadcrumb "Create New Airline", new_flight_path
     @lookup_fields = {iata_code: iata, icao_code: icao}
     session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
     render "new_undefined_airline" and return true

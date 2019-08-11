@@ -1,6 +1,9 @@
-<% provide(:title, "Edit #{@aircraft_family.full_name}" )%>
-<% provide(:button_text, "Update Aircraft Family")%>
+<% provide(:title, "Edit #{@aircraft_family.full_name}") %>
+<% provide(:button_text, "Update Aircraft Family") %>
+<% add_breadcrumb "Aircraft Families", aircraft_families_path %>
+<% add_breadcrumb @aircraft_family.full_name, aircraft_family_path<% (@aircraft_family) %>
+<% add_breadcrumb "Edit Aircraft Family", edit_aircraft_family_path(@aircraft_family) %>
 
 <h1>Edit <%= @aircraft_family.full_name %></h1>
 
-<%= render :partial => "form" %>
+<%= render partial: "form" %>

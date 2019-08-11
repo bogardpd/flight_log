@@ -1,6 +1,9 @@
 <% provide(:title, "Edit #{@airport.iata_code}") %>
-<% provide(:button_text, "Update Airport")%>
+<% provide(:button_text, "Update Airport") %>
+<% add_breadcrumb "Airports", airports_path %>
+<% add_breadcrumb @airport.iata_code, airport_path(@airport) %>
+<% add_breadcrumb "Edit Airport", edit_airport_path(@airport) %>
 
 <h1>Edit <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h1>
 
-<%= render :partial => "form" %>
+<%= render partial: "form" %>

@@ -1,6 +1,8 @@
 <% provide(:title, "New Trip") %>
 <% provide(:button_text, "Add Trip") %>
+<% add_breadcrumb "Trips", trips_path %>
+<% add_breadcrumb "New Trip", new_trip_path %>
 
 <h1>New Trip</h1>
 
-<%= render :partial => "form" %>
+<%= render partial: "form" %>

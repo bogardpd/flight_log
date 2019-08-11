@@ -1,6 +1,9 @@
 <% provide(:title, "Edit Flight") %>
-<% provide(:button_text, "Update Flight")%>
+<% provide(:button_text, "Update Flight") %>
+<% add_breadcrumb "Flights", flights_path %>
+<% add_breadcrumb "#{@flight.airline.airline_name} #{@flight.flight_number}", flight_path(@flight) %>
+<% add_breadcrumb "Edit Flight", edit_flight_path(@flight) %>
 
 <h1>Edit Flight</h1>
 
-<%= render :partial => "form", :locals => {flight: @flight, defaults: @defaults} %>
+<%= render partial: "form", locals: {flight: @flight, defaults: @defaults} %>

@@ -7,8 +7,7 @@ class AirportsController < ApplicationController
   #
   # @return [nil]
   def index
-    add_breadcrumb "Airports", airports_path
-
+    
     @flights = flyer.flights(current_user).includes(:origin_airport, :destination_airport)
     @airports = Array.new
     
@@ -98,10 +97,7 @@ class AirportsController < ApplicationController
     @airport_map  = FlightsMap.new(@flights, highlighted_airports: [@airport], region: @region)
     @sections_map = FlightsMap.new(@sections_using_airport_flights, highlighted_airports: [@airport], region: @region)
     @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport], region: @region)
-    
-    add_breadcrumb "Airports", airports_path
-    add_breadcrumb @airport.iata_code, airport_path(@airport.iata_code)
-    
+   
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find an airport with an ID of #{params[:id]}. Instead, weʼll give you a list of airports."
     redirect_to airports_path
@@ -114,8 +110,6 @@ class AirportsController < ApplicationController
   # @return [nil]
   def new
     session[:form_location] = nil
-    add_breadcrumb "Airports", airports_path
-    add_breadcrumb "New Airport", new_airport_path
     @airport = Airport.new
   end
   
@@ -153,9 +147,6 @@ class AirportsController < ApplicationController
   def edit
     session[:form_location] = nil
     @airport = Airport.find(params[:id])
-    add_breadcrumb "Airports", airports_path
-    add_breadcrumb @airport.iata_code, airport_path(@airport)
-    add_breadcrumb "Edit Airport", edit_airport_path(@airport)
   end
   
   # Updates an existing {Airport}.

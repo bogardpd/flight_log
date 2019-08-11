@@ -9,7 +9,6 @@ class AirlinesController < ApplicationController
   # @return [nil]
   def index
     @logo_used = true
-    add_breadcrumb "Airlines", airlines_path
     
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
@@ -56,9 +55,6 @@ class AirlinesController < ApplicationController
     
     @logo_used = true
     @region = current_region(default: [])
-    
-    add_breadcrumb "Airlines", airlines_path
-    add_breadcrumb @airline.airline_name, airline_path(@airline.iata_airline_code)
     
     # Create map:
     @map = FlightsMap.new(@flights, region: @region)
@@ -110,10 +106,7 @@ class AirlinesController < ApplicationController
  
     @logo_used = true
     @region = current_region(default: [])
-    
-    add_breadcrumb "Airlines", airlines_path
-    add_breadcrumb "Flights Operated by " + @operator.airline_name, show_operator_path(@operator.iata_airline_code)
-    
+
     @total_distance = Route.total_distance(@flights)
     @map = FlightsMap.new(@flights, region: @region)
     
@@ -163,9 +156,6 @@ class AirlinesController < ApplicationController
     
     @logo_used = true
     @region = current_region(default: [])
-    add_breadcrumb "Airlines", airlines_path
-    add_breadcrumb "Flights Operated by #{@operator.airline_name}", show_operator_path(@operator.iata_airline_code)
-    add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.iata_airline_code, @fleet_number)
     
     @total_distance = Route.total_distance(@flights)
     @map = FlightsMap.new(@flights, region: @region)
@@ -190,8 +180,6 @@ class AirlinesController < ApplicationController
   # @return [nil]
   def new
     session[:form_location] = nil
-    add_breadcrumb "Airlines", airlines_path
-    add_breadcrumb "New Airline", new_airline_path
     @airline = Airline.new
   end
   
@@ -232,9 +220,6 @@ class AirlinesController < ApplicationController
   def edit
     session[:form_location] = nil
     @airline = Airline.find(params[:id])
-    add_breadcrumb "Airlines", airlines_path
-    add_breadcrumb @airline.airline_name, airline_path(@airline.iata_airline_code)
-    add_breadcrumb "Edit Airline", edit_airport_path(@airline)
   end
   
   # Updates an existing {Airline}.
