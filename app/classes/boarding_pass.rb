@@ -969,7 +969,7 @@ class BoardingPass
       specific_years ||= (search_range.begin.year..search_range.end.year)
       specific_years.each do |y|
         begin
-          this_date = FormattedDate.ordinal(y, day_of_year)
+          this_date = Date.ordinal(y, day_of_year)
           if search_range.cover?(this_date)
             likely_dates.push(this_date)
           end
@@ -1039,7 +1039,7 @@ class BoardingPass
       
       output = "#{day_of_year.ordinalize} day of the year "
       if matching_dates.length > 0
-        matching_dates.map!{|d| d.standard_date} # Format dates
+        matching_dates.map!{|d| Flight.format_date(d).strip}
         output += "(#{matching_dates.join(", ")})"
       else
         output += "(#{error_text})"
@@ -1066,7 +1066,7 @@ class BoardingPass
       end
       
       output = "#{day_of_year.ordinalize} day of a year ending in #{year_digit} " 
-      output += matching_date ? "(#{matching_date.standard_date})" : "(#{error_text})"
+      output += matching_date ? "(#{Flight.format_date(matching_date).strip})" : "(#{error_text})"
       return output
       
     else
