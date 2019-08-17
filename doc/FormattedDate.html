@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Class: FormattedDate
+  Module: FormattedDate
   
     &mdash; Documentation by YARD 0.9.19
   
@@ -59,30 +59,12 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Class: FormattedDate
+      <div id="content"><h1>Module: FormattedDate
   
   
   
 </h1>
 <div class="box_info">
-  
-  <dl>
-    <dt>Inherits:</dt>
-    <dd>
-      <span class="inheritName">Date</span>
-      
-        <ul class="fullTree">
-          <li>Object</li>
-          
-            <li class="next">Date</li>
-          
-            <li class="next">FormattedDate</li>
-          
-        </ul>
-        <a href="#" class="inheritanceTree">show all</a>
-      
-    </dd>
-  </dl>
   
 
   
@@ -96,7 +78,7 @@
   
   <dl>
     <dt>Defined in:</dt>
-    <dd>app/classes/formatted_date.rb</dd>
+    <dd>app/modules/formatted_date.rb</dd>
   </dl>
   
 </div>
@@ -104,7 +86,7 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Defines a Date with specific formatting.</p>
+<p>Provides utilities for working with dates.</p>
 
 
   </div>
@@ -113,6 +95,33 @@
   
 
 </div>
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="FORMAT-constant" class="">FORMAT =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>The string format for displaying dates (in strftime format).</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%-d %b %Y</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+    </dl>
+  
+
 
 
 
@@ -121,7 +130,7 @@
 
   
     <h2>
-      Instance Method Summary
+      Class Method Summary
       <small><a href="#" class="summary_toggle">collapse</a></small>
     </h2>
 
@@ -130,7 +139,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#standard_date-instance_method" title="#standard_date (instance method)">#<strong>standard_date</strong>  &#x21d2; String </a>
+      <a href="#str-class_method" title="str (class method)">.<strong>str</strong>(date)  &#x21d2; String </a>
     
 
     
@@ -145,7 +154,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Defines a standard date format string to use throughout the application.</p>
+<p>Formats a date.</p>
 </div></span>
   
 </li>
@@ -155,16 +164,15 @@
   
 
 
-  
 
-  <div id="instance_method_details" class="method_details_list">
-    <h2>Instance Method Details</h2>
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="standard_date-instance_method">
+  <h3 class="signature first" id="str-class_method">
   
-    #<strong>standard_date</strong>  &#x21d2; <tt>String</tt> 
+    .<strong>str</strong>(date)  &#x21d2; <tt>String</tt> 
   
 
   
@@ -173,13 +181,33 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Defines a standard date format string to use throughout the application.</p>
+<p>Formats a date.</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>date</span>
+      
+      
+        <span class='type'>(<tt>Date</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a date.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -192,7 +220,7 @@
       
         &mdash;
         <div class='inline'>
-<p>a formatted date</p>
+<p>a formatted date string.</p>
 </div>
       
     </li>
@@ -205,15 +233,15 @@
       <pre class="lines">
 
 
-7
-8
-9</pre>
+11
+12
+13</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/formatted_date.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'app/modules/formatted_date.rb', line 11</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_standard_date'>standard_date</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%-d %b %Y</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_str'>str</span><span class='lparen'>(</span><span class='id identifier rubyid_date'>date</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="" title="FormattedDate (module)">FormattedDate</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="#FORMAT-constant" title="FormattedDate::FORMAT (constant)">FORMAT</a></span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -225,7 +253,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Aug 11 16:28:44 2019 by
+  Generated on Sat Aug 17 09:46:57 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

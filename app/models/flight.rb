@@ -82,15 +82,6 @@ class Flight < ApplicationRecord
     return summary
   end
 
-  # Formats a date string into a standard format.
-  #
-  # @param input_date [Date] the date to format
-  # @return [String] a formatted date string
-  def self.format_date(input_date)
-    return nil unless input_date.present?
-    input_date.strftime("%e %b %Y")
-  end
-
   # For a given flight collection, returns a range of the years that contain
   # flights.
   # 

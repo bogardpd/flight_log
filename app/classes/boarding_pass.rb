@@ -1039,7 +1039,7 @@ class BoardingPass
       
       output = "#{day_of_year.ordinalize} day of the year "
       if matching_dates.length > 0
-        matching_dates.map!{|d| Flight.format_date(d).strip}
+        matching_dates.map!{|d| FormattedDate.str(d)}
         output += "(#{matching_dates.join(", ")})"
       else
         output += "(#{error_text})"
@@ -1066,7 +1066,7 @@ class BoardingPass
       end
       
       output = "#{day_of_year.ordinalize} day of a year ending in #{year_digit} " 
-      output += matching_date ? "(#{Flight.format_date(matching_date).strip})" : "(#{error_text})"
+      output += matching_date ? "(#{FormattedDate.str(matching_date)})" : "(#{error_text})"
       return output
       
     else

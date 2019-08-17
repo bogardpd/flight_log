@@ -129,14 +129,14 @@ class FlightsController < ApplicationController
     elsif (params[:start_date].present? && params[:end_date].present?)
       @start_date, @end_date = [params[:start_date].to_date, params[:end_date].to_date].sort
       @date_range = @start_date..@end_date
-      @date_range_string = "#{Flight.format_date(@start_date)} to #{Flight.format_date(@end_date)}"
+      @date_range_string = "#{FormattedDate.str(@start_date)} to #{FormattedDate.str(@end_date)}"
       @date_range_text = "from #{@date_range_string}"
       @took_taken = @date_range.cover?(Date.today) ? "have taken" : "took"
       @flight_list_title = "Flight List for #{@date_range_string}"
       @superlatives_title = "Longest and Shortest Routes for #{@date_range_string}"
       @superlatives_title_nav = "Longest and shortest routes for #{@date_range_string}"
       @in_text = "this date range"
-      @title = "Flights: #{Flight.format_date(@start_date)} – #{Flight.format_date(@end_date)}"
+      @title = "Flights: #{FormattedDate.str(@start_date)} – #{FormattedDate.str(@end_date)}"
       @meta_description = "Maps and lists of Paul Bogardʼs flights from #{@date_range_string}"
     else
       raise ArgumentError.new
@@ -365,7 +365,7 @@ class FlightsController < ApplicationController
       end
     end
     empty_trips = Trip.with_no_flights.map{|trip| [trip.name, trip.id]}
-    @trips = empty_trips.concat(Trip.with_departure_dates(current_user, current_user).reverse.map{|trip| ["#{trip.name} / #{Flight.format_date(trip.departure_date)}", trip.id]})
+    @trips = empty_trips.concat(Trip.with_departure_dates(current_user, current_user).reverse.map{|trip| ["#{trip.name} / #{FormattedDate.str(trip.departure_date)}", trip.id]})
     
     # Get PKPasses:
     check_email_for_boarding_passes

@@ -218,30 +218,6 @@ undefined Flight counts grouped by year.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#format_date-class_method" title="format_date (class method)">.<strong>format_date</strong>(input_date)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Formats a date string into a standard format.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#year_range-class_method" title="year_range (class method)">.<strong>year_range</strong>  &#x21d2; Range&lt;Integer&gt; </a>
     
 
@@ -465,87 +441,6 @@ personal, and undefined flights as the values</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="format_date-class_method">
-  
-    .<strong>format_date</strong>(input_date)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Formats a date string into a standard format.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>input_date</span>
-      
-      
-        <span class='type'>(<tt>Date</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>the date to format</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a formatted date string</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-89
-90
-91
-92</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 89</span>
-
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_format_date'>format_date</span><span class='lparen'>(</span><span class='id identifier rubyid_input_date'>input_date</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_input_date'>input_date</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
-  <span class='id identifier rubyid_input_date'>input_date</span><span class='period'>.</span><span class='id identifier rubyid_strftime'>strftime</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%e %b %Y</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="year_range-class_method">
   
     .<strong>year_range</strong>  &#x21d2; <tt>Range&lt;Integer&gt;</tt> 
@@ -590,14 +485,14 @@ flights.</p>
       <pre class="lines">
 
 
-98
-99
-100
-101
-102</pre>
+89
+90
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_year_range'>year_range</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
@@ -654,17 +549,17 @@ Flight.</p>
       <pre class="lines">
 
 
-108
-109
-110
-111
-112
-113
-114
-115</pre>
+99
+100
+101
+102
+103
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_years_with_flights'>years_with_flights</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span>
@@ -814,7 +709,7 @@ the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamil
 </div>
 
       <div id="footer">
-  Generated on Fri Aug 16 16:25:59 2019 by
+  Generated on Sat Aug 17 09:46:58 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
