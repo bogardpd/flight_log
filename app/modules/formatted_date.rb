@@ -9,6 +9,7 @@ module FormattedDate
   # @param date [Date] a date.
   # @return [String] a formatted date string.
   def self.str(date)
+    return "" if date.nil?
     return date.strftime(FormattedDate::FORMAT)
   end
 
