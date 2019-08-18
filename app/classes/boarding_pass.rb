@@ -32,6 +32,7 @@ class BoardingPass
     end
     
     if @raw_data.present?
+      @raw_data = @raw_data.gsub(/\\(.)/, '\1') # Remove leftover JSON escape characters from barcode data
       @fields  = create_fields(determine_version(@raw_data))
       @control = create_control_points(@raw_data)
       @structured_data = build_structured_data(@control, @fields, interpretations)

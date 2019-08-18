@@ -493,7 +493,8 @@ what the BCBP data means</p>
 36
 37
 38
-39</pre>
+39
+40</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 24</span>
@@ -509,7 +510,8 @@ what the BCBP data means</p>
   <span class='kw'>end</span>
   
   <span class='kw'>if</span> <span class='ivar'>@raw_data</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
-    <span class='ivar'>@fields</span>  <span class='op'>=</span> <span class='id identifier rubyid_create_fields'>create_fields</span><span class='lparen'>(</span><span class='id identifier rubyid_determine_version'>determine_version</span><span class='lparen'>(</span><span class='ivar'>@raw_data</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='ivar'>@raw_data</span> <span class='op'>=</span> <span class='ivar'>@raw_data</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\\(.)</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>\1</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># Remove leftover JSON escape characters from barcode data
+</span>    <span class='ivar'>@fields</span>  <span class='op'>=</span> <span class='id identifier rubyid_create_fields'>create_fields</span><span class='lparen'>(</span><span class='id identifier rubyid_determine_version'>determine_version</span><span class='lparen'>(</span><span class='ivar'>@raw_data</span><span class='rparen'>)</span><span class='rparen'>)</span>
     <span class='ivar'>@control</span> <span class='op'>=</span> <span class='id identifier rubyid_create_control_points'>create_control_points</span><span class='lparen'>(</span><span class='ivar'>@raw_data</span><span class='rparen'>)</span>
     <span class='ivar'>@structured_data</span> <span class='op'>=</span> <span class='id identifier rubyid_build_structured_data'>build_structured_data</span><span class='lparen'>(</span><span class='ivar'>@control</span><span class='comma'>,</span> <span class='ivar'>@fields</span><span class='comma'>,</span> <span class='id identifier rubyid_interpretations'>interpretations</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -570,12 +572,12 @@ what the BCBP data means</p>
       <pre class="lines">
 
 
-62
 63
-64</pre>
+64
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 62</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_data'>data</span>
   <span class='kw'>return</span> <span class='ivar'>@structured_data</span>
@@ -650,13 +652,13 @@ that it would show up in the boarding pass raw data.</p>
       <pre class="lines">
 
 
-136
 137
 138
-139</pre>
+139
+140</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 136</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 137</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_extract_detail'>extract_detail</span><span class='lparen'>(</span><span class='id identifier rubyid_detail'>detail</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
@@ -743,17 +745,17 @@ unless a better date is known)</p>
       <pre class="lines">
 
 
-77
 78
 79
 80
 81
 82
 83
-84</pre>
+84
+85</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flight_date'>flight_date</span><span class='lparen'>(</span><span class='id identifier rubyid_known_date'>known_date</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_candidate_years'>candidate_years</span> <span class='op'>=</span> <span class='op'>*</span><span class='lparen'>(</span><span class='id identifier rubyid_known_date'>known_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='op'>-</span><span class='int'>1</span><span class='op'>..</span><span class='id identifier rubyid_known_date'>known_date</span><span class='period'>.</span><span class='id identifier rubyid_year'>year</span><span class='op'>+</span><span class='int'>1</span><span class='rparen'>)</span>
@@ -835,7 +837,6 @@ prepopulate the New Flight or Edit Flight forms.</p>
       <pre class="lines">
 
 
-91
 92
 93
 94
@@ -873,10 +874,11 @@ prepopulate the New Flight or Edit Flight forms.</p>
 126
 127
 128
-129</pre>
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_form_values'>form_values</span><span class='lparen'>(</span><span class='id identifier rubyid_departure_utc_time'>departure_utc_time</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -974,13 +976,13 @@ standard.</p>
       <pre class="lines">
 
 
-47
 48
 49
-50</pre>
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_is_valid?'>is_valid?</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='ivar'>@raw_data</span><span class='period'>.</span><span class='id identifier rubyid_blank?'>blank?</span>
@@ -1059,7 +1061,6 @@ standard.</p>
       <pre class="lines">
 
 
-155
 156
 157
 158
@@ -1108,10 +1109,11 @@ standard.</p>
 201
 202
 203
-204</pre>
+204
+205</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 156</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_ordered_groups'>ordered_groups</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1212,12 +1214,12 @@ standard.</p>
       <pre class="lines">
 
 
-55
 56
-57</pre>
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_raw'>raw</span>
   <span class='kw'>return</span> <span class='ivar'>@raw_data</span>
@@ -1273,7 +1275,6 @@ code</p>
       <pre class="lines">
 
 
-209
 210
 211
 212
@@ -1282,10 +1283,11 @@ code</p>
 215
 216
 217
-218</pre>
+218
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 209</span>
+      <pre class="code"><span class="info file"># File 'app/classes/boarding_pass.rb', line 210</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_summary_fields'>summary_fields</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1307,7 +1309,7 @@ code</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Aug 17 20:02:14 2019 by
+  Generated on Sat Aug 17 20:33:30 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
