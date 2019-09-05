@@ -27,6 +27,7 @@ class Airline < ApplicationRecord
     
   validates :iata_airline_code, :presence => true, :length => { :minimum => 2 }, :uniqueness => { :case_sensitive => false }
   validates :icao_airline_code, :presence => true, :length => { is: 3 }, :uniqueness => { :case_sensitive => false }
+  validates :slug, :presence => true, :uniqueness => { :case_sensitive => false }
   validates :airline_name, :presence => true
   validates :numeric_code, :length => { :is => 3, :allow_blank => true }
   
