@@ -264,7 +264,7 @@ class AirlinesController < ApplicationController
   #
   # @return [ActionController::Parameters]
   def airline_params
-    params.require(:airline).permit(:iata_airline_code, :icao_airline_code, :airline_name, :numeric_code, :is_only_operator)
+    params.require(:airline).permit(:airline_name, :slug, :iata_airline_code, :icao_airline_code, :numeric_code, :is_only_operator)
   end
   
 end
