@@ -1,0 +1,68 @@
+{
+  "AA" : {
+    "C" : { "class" : "business", "details" : "upgrade" },
+    "G" : { "class" : "economy", "details" : "restricted" },
+    "L" : { "class" : "economy", "details" : "restricted" },
+    "O" : { "class" : "economy-extra", "details" : "restricted" },
+    "P" : { "class" : "premium-economy", "details" : "restricted" },
+    "Q" : { "class" : "economy", "details" : "restricted" },
+    "R" : { "class" : "business", "details" : "upgrade" },
+    "T" : { "class" : "economy", "details" : "award" },
+    "V" : { "class" : "economy" },
+    "X" : { "class" : "business", "details" : "upgrade" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" },
+    "Z" : { "class" : "first", "details" : "award" }
+  },
+  "AB" : {
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "AC" : {
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "AS" : {
+    "Q" : { "class" : "economy", "details" : "restricted" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "BA" : {
+    "M" : { "class" : "economy", "details" : "restricted" }
+  },
+  "B6" : {
+    "P" : { "class" : "economy" }
+  },
+  "DL" : {
+    "F" : { "class" : "first", "details" : "unrestricted" },
+    "W" : { "class" : "economy-extra" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "F9" : {
+    "Y" : { "class" : "economy" }
+  },
+  "FI" : {
+    "M" : { "class" : "economy" }
+  },
+  "HA" : {
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "NZ" : {
+    "Y" : { "class" : "economy" }
+  },
+  "QF" : {
+    "Y" : { "class" : "economy" }
+  },
+  "UA" : {
+    "F" : { "class" : "first" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "US" : {
+    "N" : { "class" : "economy", "details" : "award" },
+    "Y" : { "class" : "economy", "details" : "unrestricted" }
+  },
+  "WN" : {
+    "M" : { "class" : "economy", "details" : "Wanna Get Away" },
+    "N" : { "class" : "economy", "details" : "Wanna Get Away" },
+    "R" : { "class" : "economy", "details" : "Anytime" },
+    "T" : { "class" : "economy", "details" : "Wanna Get Away" },
+    "W" : { "class" : "economy"},
+    "Y" : { "class" : "economy", "details" : "Anytime" }
+  }
+}
