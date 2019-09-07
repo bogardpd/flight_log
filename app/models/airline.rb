@@ -44,19 +44,6 @@ class Airline < ApplicationRecord
   def format_name
     return self.airline_name
   end
-
-  # Returns this airline's IATA code without any disambiguation strings.
-  # 
-  # Since IATA airline codes are limited and thus may not be unique, non-unique
-  # codes will contain a hyphen followed by an airline name when used as a
-  # parameter. This method removes everything except the IATA code from the
-  # string.
-  # 
-  # @return [String] an IATA airline code
-  # @see ApplicationHelper#iata_airline_code_display
-  def plain_code
-    return self.iata_airline_code.split("-").first
-  end
   
   # Returns an array of Airlines, with a hash for each Airline containing the
   # id, airline name, slug, IATA code, and number of {Flight Flights} flown by

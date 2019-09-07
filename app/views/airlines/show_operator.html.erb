@@ -7,7 +7,7 @@
 <% add_breadcrumb "Airlines", airlines_path %>
 <% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.slug) %>
 
-<div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.slug, title: @operator.airline_name) %></div>
+<div id="title-info"><%= @operator.iata_airline_code %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.slug, title: @operator.airline_name) %></div>
 
 <h1>Flights Operated by <%= @operator.airline_name %></h1>
 

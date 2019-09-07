@@ -96,21 +96,6 @@ module ApplicationHelper
     safe_join(@messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text]) })
   end
   
-  # Takes an IATA airline code which may or may not contain a
-  # disambiguation string, and returns only the IATA code.
-  # 
-  # Since IATA airline codes are limited and thus may not be unique, non-unique
-  # codes will contain a hyphen followed by an airline name when used as a
-  # parameter. This method removes everything except the IATA code from the
-  # string.
-  # 
-  # @param iata_airline_code [String] an IATA airline code and possibly an airline name
-  # @return [String] an IATA airline code
-  # @see Airline#plain_code
-  def iata_airline_code_display(iata_airline_code)
-    iata_airline_code.split("-").first
-  end
-  
   # Renders an image containing an icon for an airline's logo.
   # 
   # @param slug [String] the unique slug for the airline whose logo is to be

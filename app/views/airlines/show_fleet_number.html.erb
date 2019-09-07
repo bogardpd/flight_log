@@ -4,7 +4,7 @@
 <% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.slug) %>
 <% add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.slug, @fleet_number) %>
 
-<div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.slug, :title => @operator.airline_name) %></div>
+<div id="title-info"><%= @operator.iata_airline_code %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.slug, :title => @operator.airline_name) %></div>
 
 <h1><%= @operator.airline_name %> #<%= @fleet_number %></h1>
 
@@ -26,19 +26,19 @@
   <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
 </div>
 
-<h2 id="airlines">Airlines with Flights Operated as <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>
+<h2 id="airlines">Airlines with Flights Operated as <abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 
-<h2 id="aircraft">Aircraft Operated as <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>
+<h2 id="aircraft">Aircraft Operated as <abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
-<h2 id="classes">Classes Flown on <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>
+<h2 id="classes">Classes Flown on <abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
-<h2 id="superlatives">Longest and Shortest Routes Flown on <abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %></h2>
+<h2 id="superlatives">Longest and Shortest Routes Flown on <abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %></h2>
 <%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 
-<h2 id="flights"><abbr title="<%= @operator.airline_name %>"><%= iata_airline_code_display(@operator.iata_airline_code) %></abbr> #<%= @fleet_number %> Flight List</h2>
+<h2 id="flights"><abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %> Flight List</h2>
 
 <table class="flightlog">
 	<tr>

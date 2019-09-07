@@ -5,7 +5,7 @@
 <% add_breadcrumb "Airlines", airlines_path %>
 <% add_breadcrumb @airline.airline_name, airline_path(@airline.slug) %>
 
-<div id="title-info"><%= iata_airline_code_display(@airline.iata_airline_code) %> / <%= @airline.icao_airline_code %><%= airline_icon(@airline.slug, title: @airline.airline_name)%></div>
+<div id="title-info"><%= @airline.iata_airline_code %> / <%= @airline.icao_airline_code %><%= airline_icon(@airline.slug, title: @airline.airline_name)%></div>
 
 <h1><%= @airline.airline_name %></h1>
 

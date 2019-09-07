@@ -353,31 +353,6 @@ with cardinal directions and 5 decimal places.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#iata_airline_code_display-instance_method" title="#iata_airline_code_display (instance method)">#<strong>iata_airline_code_display</strong>(iata_airline_code)  &#x21d2; String </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Takes an IATA airline code which may or may not contain a disambiguation
-string, and returns only the IATA code.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#meta_description_tag-instance_method" title="#meta_description_tag (instance method)">#<strong>meta_description_tag</strong>  &#x21d2; ActiveSupport::SafeBuffer </a>
     
 
@@ -824,16 +799,16 @@ airline&#39;s ICAO code will be used.</p>
       <pre class="lines">
 
 
-123
-124
-125
-126
-127
-128
-129</pre>
+108
+109
+110
+111
+112
+113
+114</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 108</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_airline_icon'>airline_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_slug'>slug</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>css_class:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>blank.png</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>airline-icon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_slug'>slug</span>
@@ -912,13 +887,13 @@ IATA and ICAO codes.</p>
       <pre class="lines">
 
 
-147
-148
-149
-150</pre>
+132
+133
+134
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 132</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code_mono'>code_mono</span><span class='lparen'>(</span><span class='id identifier rubyid_code'>code</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
@@ -1010,14 +985,14 @@ country&#39;s name will be used.</p>
       <pre class="lines">
 
 
-137
-138
-139
-140
-141</pre>
+122
+123
+124
+125
+126</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 122</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_country_flag_icon'>country_flag_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_country'>country</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>blank.png</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>country-flag-icon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_country'>country</span>
@@ -1384,29 +1359,29 @@ and 5 decimal places.</p>
       <pre class="lines">
 
 
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
 263
 264
 265
 266
-267
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277
-278
-279
-280
-281
-282</pre>
+267</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 263</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 248</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_region_select_links'>gcmap_region_select_links</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_region_hash'>region_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_map'>map</span><span class='period'>.</span><span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
@@ -1544,23 +1519,23 @@ and 5 decimal places.</p>
       <pre class="lines">
 
 
-240
-241
-242
-243
-244
-245
-246
-247
-248
-249
-250
-251
-252
-253</pre>
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 240</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 225</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_with_region_select'>gcmap_with_region_select</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='id identifier rubyid_anchor'>anchor</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -1575,98 +1550,6 @@ and 5 decimal places.</p>
       <span class='kw'>end</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="iata_airline_code_display-instance_method">
-  
-    #<strong>iata_airline_code_display</strong>(iata_airline_code)  &#x21d2; <tt>String</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Takes an IATA airline code which may or may not contain a disambiguation
-string, and returns only the IATA code.</p>
-
-<p>Since IATA airline codes are limited and thus may not be unique, non-unique
-codes will contain a hyphen followed by an airline name when used as a
-parameter. This method removes everything except the IATA code from the
-string.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>iata_airline_code</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>an IATA airline code and possibly an airline name</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>an IATA airline code</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><span class='object_link'><a href="Airline.html#plain_code-instance_method" title="Airline#plain_code (method)">Airline#plain_code</a></span></li>
-    
-  </ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-110
-111
-112</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 110</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_iata_airline_code_display'>iata_airline_code_display</span><span class='lparen'>(</span><span class='id identifier rubyid_iata_airline_code'>iata_airline_code</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_iata_airline_code'>iata_airline_code</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2037,6 +1920,21 @@ link is clicked.</p>
       <pre class="lines">
 
 
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
 170
 171
 172
@@ -2049,25 +1947,10 @@ link is clicked.</p>
 179
 180
 181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197</pre>
+182</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 170</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 155</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sort_link'>sort_link</span><span class='lparen'>(</span><span class='id identifier rubyid_link_text'>link_text</span><span class='comma'>,</span> <span class='id identifier rubyid_link_sort_category'>link_sort_category</span><span class='comma'>,</span> <span class='id identifier rubyid_default_direction'>default_direction</span><span class='comma'>,</span> <span class='id identifier rubyid_page_anchor'>page_anchor</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_param_category'>param_category</span><span class='comma'>,</span> <span class='id identifier rubyid_param_direction'>param_direction</span> <span class='op'>=</span> <span class='ivar'>@sort</span>
@@ -2174,12 +2057,12 @@ matching country.</p>
       <pre class="lines">
 
 
-205
-206
-207</pre>
+190
+191
+192</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 205</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 190</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tail_number_country_flag'>tail_number_country_flag</span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_country_flag_icon'>country_flag_icon</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="TailNumber.html" title="TailNumber (module)">TailNumber</a></span></span><span class='period'>.</span><span class='id identifier rubyid_country'><span class='object_link'><a href="TailNumber.html#country-class_method" title="TailNumber.country (method)">country</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -2282,18 +2165,18 @@ be determined</p>
       <pre class="lines">
 
 
-219
-220
-221
-222
-223
-224
-225
-226
-227</pre>
+204
+205
+206
+207
+208
+209
+210
+211
+212</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 219</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 204</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tail_number_with_country_flag'>tail_number_with_country_flag</span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='comma'>,</span> <span class='id identifier rubyid_show_blank_flag'>show_blank_flag</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_country_format'>country_format</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="TailNumber.html" title="TailNumber (module)">TailNumber</a></span></span><span class='period'>.</span><span class='id identifier rubyid_country_format'><span class='object_link'><a href="TailNumber.html#country_format-class_method" title="TailNumber.country_format (method)">country_format</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span>
@@ -2376,7 +2259,7 @@ content_for(:title), or a default title if a title is not provided.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Sep  7 13:25:55 2019 by
+  Generated on Sat Sep  7 16:52:07 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

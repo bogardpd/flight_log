@@ -3,7 +3,7 @@
   <%= render "error_messages" %>
 
   <p>
-    <%= f.label :airline_name %><br />
+    <%= f.label :airline_name, "Airline Name" %><br />
     <%= f.text_field :airline_name, size: 25 %>
   </p>
 
@@ -17,12 +17,10 @@
   <p>
     <%= f.label :iata_airline_code, "IATA Airline Code" %><br />
     <% if @lookup_fields && @lookup_fields[:iata_code] %>
-      <%= f.text_field :iata_airline_code, value: @lookup_fields[:iata_code], size: 15, class: "code-mono" %><br />
+      <%= f.text_field :iata_airline_code, value: @lookup_fields[:iata_code], size: 2, maxlength: 2, class: "code-mono" %><br />
     <% else %>
-      <%= f.text_field :iata_airline_code, size: 15, class: "code-mono" %><br />
+      <%= f.text_field :iata_airline_code, size: 2, class: "code-mono" %><br />
     <% end %>
-  	If not unique, append a hyphen and the airline name, with spaces converted to hyphens.<br />
-  	Example: <span class="code-mono">OH-psa-airlines</span>
   </p>
   
   <p>
