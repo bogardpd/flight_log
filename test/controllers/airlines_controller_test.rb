@@ -8,17 +8,17 @@ class AirlinesControllerTest < ActionDispatch::IntegrationTest
   end
   
   def test_show_airline_success
-    get airline_path("AA")
+    get airline_path("american-airlines")
     assert_response :success
   end
   
   def test_show_operator_success
-    get show_operator_path("EV")
+    get show_operator_path("expressjet")
     assert_response :success
   end
   
   def test_show_fleet_number_success
-    get show_fleet_number_path(operator: "EV", fleet_number: "123")
+    get show_fleet_number_path(operator: "expressjet", fleet_number: "123")
     assert_response :success
   end
   

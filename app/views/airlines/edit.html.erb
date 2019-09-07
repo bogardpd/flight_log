@@ -1,7 +1,7 @@
 <% provide(:title, "Edit #{@airline.airline_name}") %>
 <% provide(:button_text, "Update Airline") %>
 <% add_breadcrumb "Airlines", airlines_path %>
-<% add_breadcrumb @airline.airline_name, airline_path(@airline.iata_airline_code) %>
+<% add_breadcrumb @airline.airline_name, airline_path(@airline.slug) %>
 <% add_breadcrumb "Edit Airline", edit_airport_path(@airline) %>
 
 <h1>Edit <%= @airline.airline_name %></h1>

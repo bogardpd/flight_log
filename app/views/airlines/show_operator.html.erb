@@ -5,7 +5,7 @@
 <% add_admin_action link_to("Edit Airline", edit_airline_path(@operator)) %>
 
 <% add_breadcrumb "Airlines", airlines_path %>
-<% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.iata_airline_code) %>
+<% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.slug) %>
 
 <div id="title-info"><%= iata_airline_code_display(@operator.iata_airline_code) %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.slug, title: @operator.airline_name) %></div>
 
@@ -61,7 +61,7 @@
   		</tr>
   	<% @fleet_family.each do |fleet_number, family| %>
   		<tr>
-  			<td><%= link_to(airline_icon(@operator.slug, title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") + "#" + fleet_number, show_fleet_number_path(@operator.iata_airline_code, fleet_number), title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft-name"><%= @fleet_name[fleet_number] %><% end %></span></td>
+  			<td><%= link_to(airline_icon(@operator.slug, title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") + "#" + fleet_number, show_fleet_number_path(@operator.slug, fleet_number), title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft-name"><%= @fleet_name[fleet_number] %><% end %></span></td>
   			<td class="tail-aircraft"><%= family %></td>
   		</tr>
   	<% end %>

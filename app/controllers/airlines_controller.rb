@@ -47,8 +47,9 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show
-    @airline = Airline.where(:iata_airline_code => params[:id]).first
-    raise ActiveRecord::RecordNotFound if (@airline.nil?)
+    airlines = Airline.find_by_param(params[:id])
+    raise ActiveRecord::RecordNotFound if airlines.empty?
+    @airline = airlines.first
     
     @flights = flyer.flights(current_user).where(airline_id: @airline.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
@@ -98,8 +99,9 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show_operator
-    @operator = Airline.where(:iata_airline_code => params[:operator]).first
-    raise ActiveRecord::RecordNotFound if (@operator.nil?)
+    operators = Airline.find_by_param(params[:operator])
+    raise ActiveRecord::RecordNotFound if operators.empty?
+    @operator = operators.first
     
     @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :aircraft_family, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
@@ -148,7 +150,9 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show_fleet_number
-    @operator = Airline.where(:iata_airline_code => params[:operator]).first
+    operators = Airline.find_by_param(params[:operator])
+    raise ActiveRecord::RecordNotFound if operators.empty?
+    @operator = operators.first
     @fleet_number = params[:fleet_number]
     @flights = flyer.flights(current_user).where(operator_id: @operator.id, fleet_number: @fleet_number).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if @flights.length == 0
@@ -197,9 +201,9 @@ class AirlinesController < ApplicationController
         redirect_to form_location
       else
         if @airline.is_only_operator
-          redirect_to show_operator_path(@airline.iata_airline_code)
+          redirect_to show_operator_path(@airline.slug)
         else
-          redirect_to airline_path(@airline.iata_airline_code)
+          redirect_to airline_path(@airline.slug)
         end
       end
     else
@@ -231,9 +235,9 @@ class AirlinesController < ApplicationController
     if @airline.update_attributes(airline_params)
       flash[:success] = "Successfully updated airline."
       if @airline.is_only_operator
-        redirect_to show_operator_path(@airline.iata_airline_code)
+        redirect_to show_operator_path(@airline.slug)
       else
-        redirect_to airline_path(@airline.iata_airline_code)
+        redirect_to airline_path(@airline.slug)
       end
     else
       render "edit"
@@ -249,7 +253,7 @@ class AirlinesController < ApplicationController
     @airline = Airline.find(params[:id])
     if @airline.flights.any?
       flash[:error] = "This airline still has flights and could not be deleted. Please delete all of this airlineʼs flights first."
-      redirect_to airline_path(params[:id])
+      redirect_to airline_path(@airline.slug)
     else
       @airline.destroy
       flash[:success] = "Airline deleted."

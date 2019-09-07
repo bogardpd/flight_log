@@ -26,7 +26,7 @@
 
       <% airline_maximum = known_airlines.max_by{|i| i[:flight_count]}[:flight_count]%>
       <% known_airlines.each_with_index do |airline, index| %>
-        <% path = (type == :operator) ? show_operator_path(airline[:iata_airline_code]) : airline_path(airline[:iata_airline_code]) %>
+        <% path = (type == :operator) ? show_operator_path(airline[:slug]) : airline_path(airline[:slug]) %>
         <%= content_tag(:tr, class: (new_airlines.include?(airline[:id]) ? "new" : nil)) do %>
           <td class="counter"><%= ((is_summary || @sort[0] == :flights) && airline[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %></td>
       		<td class="airline-airline">
