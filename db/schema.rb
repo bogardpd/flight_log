@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_05_225902) do
+ActiveRecord::Schema.define(version: 2019_09_07_203410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(version: 2019_09_05_225902) do
     t.string "numeric_code"
     t.string "icao_airline_code"
     t.string "slug"
-    t.index ["iata_airline_code"], name: "index_airlines_on_iata_airline_code"
     t.index ["slug"], name: "index_airlines_on_slug", unique: true
   end
 

@@ -25,8 +25,8 @@ class Airline < ApplicationRecord
   has_many :operated_flights, :class_name => "Flight", :foreign_key => "operator_id"
   has_many :codeshared_flights, :class_name => "Flight", :foreign_key => "codeshare_airline_id"
     
-  validates :iata_airline_code, :presence => true, :length => { :minimum => 2 }, :uniqueness => { :case_sensitive => false }
-  validates :icao_airline_code, :presence => true, :length => { is: 3 }, :uniqueness => { :case_sensitive => false }
+  validates :iata_airline_code, :presence => true, :length => { is: 2 }
+  validates :icao_airline_code, :presence => true, :length => { is: 3 }
   validates :slug, :presence => true, :uniqueness => { :case_sensitive => false }
   validates :airline_name, :presence => true
   validates :numeric_code, :length => { :is => 3, :allow_blank => true }
@@ -127,7 +127,7 @@ class Airline < ApplicationRecord
   #   array if no matching airlines are found.
   def self.find_by_param(param)
     return [] unless param
-    return self.where(id: param).or(self.where(slug: param.to_s.downcase)).or(self.where(iata_airline_code: param.to_s.upcase)).or(self.where(icao_airline_code: param.to_s.upcase)).order(:airline_name)
+    return self.where(id: param).or(self.where(slug: param)).or(self.where(iata_airline_code: param.to_s.upcase)).or(self.where(icao_airline_code: param.to_s.upcase)).order(:airline_name)
   end
   
   # Accepts a flyer, the current user, and a date range, and returns all
