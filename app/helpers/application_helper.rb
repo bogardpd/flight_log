@@ -135,7 +135,7 @@ module ApplicationHelper
   #   not provided, the country's name will be used.
   # @return [ActiveSupport::SafeBuffer] an image_tag for a country flag
   def country_flag_icon(country, title: nil)
-    return image_tag("blank.png", class: "country-flag-icon") unless country == "abc"
+    return image_tag("blank.png", class: "country-flag-icon") unless country
     title ||= country
     return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: "country-flag-icon", onerror: "this.src='assets/blank.png';this.onerror='';")
   end
