@@ -1,22 +1,41 @@
 airlineAA:
   id: 1
-  airline_name: American Airlines
-  iata_airline_code: AA
-  icao_airline_code: AAL
+  airline_name: "American Airlines"
+  slug: "american-airlines"
+  iata_airline_code: "AA"
+  icao_airline_code: "AAL"
   numeric_code: "001"
   is_only_operator: No
   
 airlineEV:
   id: 2
-  airline_name: ExpressJet
-  iata_airline_code: EV
-  icao_airline_code: ASQ
+  airline_name: "ExpressJet"
+  slug: "expressjet"
+  iata_airline_code: "EV"
+  icao_airline_code: "ASQ"
   is_only_operator: Yes
 
 airlineUA:
   id: 3
-  airline_name: United
-  iata_airline_code: UA
-  icao_airline_code: UAL
+  airline_name: "United"
+  slug: "united"
+  iata_airline_code: "UA"
+  icao_airline_code: "UAL"
   numeric_code: "016"
   is_only_operator: No
+
+airlinePSA:
+  id: 4
+  airline_name: "PSA Airlines"
+  slug: "psa-airlines"
+  iata_airline_code: "OH"
+  icao_airline_code: "JIA"
+  is_only_operator: Yes
+
+airlineComair:
+  id: 5
+  airline_name: "Comair"
+  slug: "comair"
+  iata_airline_code: "OH"
+  icao_airline_code: "COM"
+  is_only_operator: Yes

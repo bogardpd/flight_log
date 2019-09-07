@@ -59,8 +59,8 @@ class Airline < ApplicationRecord
   end
   
   # Returns an array of Airlines, with a hash for each Airline containing the
-  # id, airline name, IATA code, and number of {Flight Flights} flown by that
-  # Airline, sorted by number of flights descending.
+  # id, airline name, slug, IATA code, and number of {Flight Flights} flown by
+  # that Airline, sorted by number of flights descending.
   # 
   # Used on various "index" and "show" views to generate a table of airlines
   # and their flight counts.
@@ -117,6 +117,16 @@ class Airline < ApplicationRecord
     icao = airline.icao_airline_code
     return icao if icao
     return keep_iata ? iata : nil
+  end
+
+  # Accepts a querystring parameter, and returns an array of Airlines where the
+  # parameter matches the ID, slug, IATA code, or ICAO code.
+  #
+  # @param param [String] a querystring parameter
+  # @return [Array<Airline>] an array of matching Airlines. Returns an empty
+  #   array if no matching airlines are found.
+  def self.find_by_param(param)
+    return self.where(id: param).or(self.where(slug: param)).or(self.where(iata_airline_code: param)).or(self.where(icao_airline_code: param)).order(:airline_name)
   end
   
   # Accepts a flyer, the current user, and a date range, and returns all

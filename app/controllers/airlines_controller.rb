@@ -150,7 +150,6 @@ class AirlinesController < ApplicationController
   def show_fleet_number
     @operator = Airline.where(:iata_airline_code => params[:operator]).first
     @fleet_number = params[:fleet_number]
-    
     @flights = flyer.flights(current_user).where(operator_id: @operator.id, fleet_number: @fleet_number).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     

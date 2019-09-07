@@ -1,5 +1,6 @@
 <% provide(:title, @operator.airline_name + " (Operator)") %>
 <% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights operated by #{@operator.airline_name}.") %>
+
 <% add_admin_action link_to("Delete Airline", @operator, method: :delete, data: {:confirm => "Are you sure you want to delete #{@operator.airline_name}?"}, class: "warning") if @flights.length == 0 %>
 <% add_admin_action link_to("Edit Airline", edit_airline_path(@operator)) %>
 
@@ -50,7 +51,7 @@
 	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 
 	<h2 id="fleet"><%= @operator.airline_name %>’s Fleet</h2>
-
+	
 	<% if @fleet_family.length > 0 %>
 
   	<table class="flightlog">
@@ -71,7 +72,7 @@
 	  <p>None of my flights operated by <%= @operator.airline_name %> have recorded fleet numbers.</p>
 
 	<% end %>
-	
+
 	<h2 id="flights">List of Flights Operated by <%= @operator.airline_name %></h2>
 	<%= render "flights/flight_table" %>
 
