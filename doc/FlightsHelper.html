@@ -293,7 +293,7 @@ selectee status</p>
       <span class='id identifier rubyid_airline'>airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>iata_airline_code:</span> <span class='id identifier rubyid_raw'>raw</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
     <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_airline'>airline</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_airline_icon'>airline_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_icao_airline_code'>icao_airline_code</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_airline_icon'>airline_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span><span class='rparen'>)</span>
   <span class='kw'>elsif</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='symbol'>:selectee</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>tpc.png</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>title:</span> <span class='id identifier rubyid_interpretation'>interpretation</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>airline-icon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_raw'>raw</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>==</span> <span class='int'>3</span>
   <span class='kw'>end</span>
@@ -543,7 +543,7 @@ text, in between text, or not inline. Used to determine margin styles.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Aug 17 20:33:27 2019 by
+  Generated on Fri Sep  6 21:08:08 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

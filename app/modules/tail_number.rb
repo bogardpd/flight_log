@@ -181,8 +181,8 @@ module TailNumber
   
   # Returns an array of tail numbers, {AircraftFamily} codes (ICAO preferred),
   # {AircraftFamily} manufacturers, {AircraftFamily} names, {Airline} names,
-  # {Airline} IATA codes, and number of {Flight Flights} on that tail number,
-  # sorted by number of flights descending.
+  # {Airline} slugs, and number of {Flight Flights} on that tail number, sorted
+  # by number of flights descending.
   #
   # Used on various "index" and "show" views to generate a table of tail
   # numbers and their flight counts.
@@ -198,7 +198,7 @@ module TailNumber
     tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
     return nil unless tail_details.any?
     counts = tail_details.map{|f| {f.tail_number => {
-      airline_code:  f.airline.icao_airline_code,
+      airline_slug:  f.airline.slug,
       airline_name:  f.airline.airline_name,
       aircraft_code: f.aircraft_family&.icao_aircraft_code || f.aircraft_family&.iata_aircraft_code,
       manufacturer:  f.aircraft_family&.manufacturer,
@@ -213,7 +213,7 @@ module TailNumber
         country:      country(k),
         aircraft:     v[:aircraft_code] || "",
         airline_name: v[:airline_name] || "",
-        airline_code: v[:airline_code] || "",
+        airline_slug: v[:airline_slug] || "",
         manufacturer: v[:manufacturer],
         family_name:  v[:family_name]
       }}

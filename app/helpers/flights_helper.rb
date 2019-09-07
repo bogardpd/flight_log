@@ -20,7 +20,7 @@ module FlightsHelper
         airline = Airline.find_by(iata_airline_code: raw.strip.upcase)
       end
       return nil unless airline
-      return airline_icon(airline.icao_airline_code, title: airline.airline_name)
+      return airline_icon(airline.slug, title: airline.airline_name)
     elsif type == :selectee
       return image_tag("tpc.png", title: interpretation, class: "airline-icon") if raw.to_i == 3
     end

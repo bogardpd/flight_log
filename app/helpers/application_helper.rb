@@ -113,20 +113,19 @@ module ApplicationHelper
   
   # Renders an image containing an icon for an airline's logo.
   # 
-  # @param icao_code [String] the ICAO code for the airline whose logo is to be
+  # @param slug [String] the unique slug for the airline whose logo is to be
   #   displayed
   # @param title [String] an optional title attribute for the logo image. If
   #   not provided, the airline's ICAO code will be used.
   # @param css_class [Array<String>] an optional set of CSS classes to apply to
   #   the logo image.
   # @return [ActiveSupport::SafeBuffer] an image_tag for an airline logo
-  def airline_icon(icao_code, title: nil, css_class: nil)
-    return image_tag("assets/blank.png", class: "airline-icon") unless icao_code
-    icao_code = icao_code.upcase
-    title ||= icao_code
+  def airline_icon(slug, title: nil, css_class: nil)
+    return image_tag("blank.png", class: "airline-icon") unless slug
+    title ||= slug
     class_array = ["airline-icon"]
     class_array |= css_class if css_class
-    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/icao/#{icao_code}.png", title: title, alt: icao_code, class: class_array, onerror: "this.src='assets/blank.png';this.onerror='';")
+    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{slug}.png", title: title, alt: slug, class: class_array, eonerror: "this.src='assets/blank.png';this.onerror='';")
   end
   
   # Renders an image containing a country flag.

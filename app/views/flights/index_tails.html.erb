@@ -25,7 +25,7 @@
   <tr>
     <td class="tail-number"><%= link_to(country_flag_icon(tail[:country], title: "View flights on tail number #{TailNumber.format(tail[:tail_number])}") + TailNumber.format(tail[:tail_number]), show_tail_path(tail[:tail_number]), title: "View flights on tail number #{TailNumber.format(tail[:tail_number])}") %></td>
     <td class="tail-aircraft code-mono"><abbr title="<%= tail[:manufacturer] %> <%= tail[:family_name] %>"><%= tail[:aircraft] %></abbr></td>
-    <td class="tail-airline"><%= airline_icon(tail[:airline_code], title: tail[:airline_name], css_class: %w(icon-no-text)) %></td>
+    <td class="tail-airline"><%= airline_icon(tail[:airline_slug], title: tail[:airline_name], css_class: %w(icon-no-text)) %></td>
 		<td class="tail-flights"><div class="graph-background"><div class="graph" style="background-size: <%= tail[:count]*100/@flights_maximum %>% 100%;"><%= tail[:count] %></div></div></td>
   </tr>
 <% end %>

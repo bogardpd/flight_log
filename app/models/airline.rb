@@ -77,8 +77,8 @@ class Airline < ApplicationRecord
   def self.flight_table_data(flights, sort_category=nil, sort_direction=nil, type: :airline)
     
     id_field = (type == :airline) ? :airline_id : :operator_id
-    counts = flights.reorder(nil).joins(type).group(id_field, :airline_name, :iata_airline_code, :icao_airline_code).count
-      .map{|k,v| {id: k[0], airline_name: k[1], iata_airline_code: k[2], icao_airline_code: k[3], flight_count: v}}
+    counts = flights.reorder(nil).joins(type).group(id_field, :airline_name, :slug, :iata_airline_code, :icao_airline_code).count
+      .map{|k,v| {id: k[0], airline_name: k[1], slug: k[2], iata_airline_code: k[3], icao_airline_code: k[4], flight_count: v}}
     
     case sort_category
     when :airline
