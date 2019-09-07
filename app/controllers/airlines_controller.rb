@@ -47,13 +47,16 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show
-    airlines = Airline.find_by_param(params[:id])
+    airlines = Airline.find_by_param(flyer, current_user, params[:id])
     raise ActiveRecord::RecordNotFound if airlines.empty?
+    if airlines.length > 1
+      @airlines = airlines
+      render "disambiguation_airline" and return
+    end
     @airline = airlines.first
     
     @flights = flyer.flights(current_user).where(airline_id: @airline.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
-    
     @logo_used = true
     @region = current_region(default: [])
     
@@ -72,9 +75,9 @@ class AirlinesController < ApplicationController
     # Create superlatives:
     @route_superlatives = superlatives(@flights)
     
-    rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "We couldnʼt find an airline with an IATA code of #{params[:id]}. Instead, weʼll give you a list of airlines."
-      redirect_to airlines_path
+  rescue ActiveRecord::RecordNotFound
+    flash[:warning] = "We couldnʼt find an airline matching #{params[:id]}. Instead, weʼll give you a list of airlines."
+    redirect_to airlines_path
       
   end
   
@@ -99,8 +102,12 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show_operator
-    operators = Airline.find_by_param(params[:operator])
+    operators = Airline.find_by_param(flyer, current_user, params[:operator])
     raise ActiveRecord::RecordNotFound if operators.empty?
+    if operators.length > 1
+      @operators = operators
+      render "disambiguation_operator" and return
+    end
     @operator = operators.first
     
     @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :aircraft_family, :origin_airport, :destination_airport, :trip)
@@ -150,8 +157,12 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show_fleet_number
-    operators = Airline.find_by_param(params[:operator])
+    operators = Airline.find_by_param(flyer, current_user, params[:operator])
     raise ActiveRecord::RecordNotFound if operators.empty?
+    if operators.length > 1
+      @operators = operators
+      render "disambiguation_operator" and return
+    end
     @operator = operators.first
     @fleet_number = params[:fleet_number]
     @flights = flyer.flights(current_user).where(operator_id: @operator.id, fleet_number: @fleet_number).includes(:airline, :origin_airport, :destination_airport, :trip)
@@ -172,7 +183,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:warning] = "We couldnʼt find any flights operated by #{@operator} with fleet number ##{@fleet_number}. Instead, weʼll give you a list of airlines and operators."
+    flash[:warning] = "We couldnʼt find any flights operated by #{params[:operator]} with fleet number ##{params[:fleet_number]}. Instead, weʼll give you a list of airlines and operators."
     redirect_to airlines_path
   end
   

@@ -1,0 +1,33 @@
+<% provide(:title, "Operating Airline Disambiguation") %>
+<% provide(:meta_description, "Select an operator that matches #{params[:id]}.") %>
+
+<h1>Operating Airline Disambiguation</h1>
+
+<p>More than one airline matches <span class="disambiguation-highlight"><%= params[:operator] %></span>. Which operator did you want to see?</p>
+
+<table class="flightlog">
+  <thead>
+    <tr>
+      <th class="airline-airline">Operator</th>
+      <th class="airline-code">IATA</th>
+      <th class="airline-code">ICAO</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @operators.each do |operators| %>
+      <tr>
+        <td class="airline-airline">
+          <% #path = show_operator_path(operators.slug) %>
+          <% path = url_for(params.permit(:operator, :fleet_number).merge(operator: operators.slug)) %>
+          <%= link_to(airline_icon(operators.slug, title: "View all flights on #{operators.airline_name}") + operators.airline_name, path, title: "View all flights on #{operators.airline_name}") %>
+        </td>
+        <td class="airline-code code-mono">
+          <%= operators.iata_airline_code %>
+        </td>
+        <td class="airline-code code-mono">
+          <%= operators.icao_airline_code %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

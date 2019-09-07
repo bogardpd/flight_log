@@ -313,6 +313,12 @@ span.disabled {
 	text-decoration: line-through;
 }
 
+span.disambiguation-highlight {
+	font-family: $font-stack-monospace;
+	border: 1px solid $color-border-table;
+	padding: 0 0.2em;
+}
+
 span.distance-primary {
 	font-weight: 600;
 }

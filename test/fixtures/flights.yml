@@ -84,6 +84,7 @@ flightLayoverRatioS1F1ORDDFW:
   departure_utc: 2019-07-01 12:00:00
   airline_id: 1
   flight_number: 1001
+  aircraft_family_id: 4
 
 flightLayoverRatioS2F1DFWSEA:
   origin_airport_id: 1
@@ -94,6 +95,7 @@ flightLayoverRatioS2F1DFWSEA:
   departure_utc: 2019-07-02 12:00:00
   airline_id: 1
   flight_number: 2001
+  aircraft_family_id: 4
 
 flightLayoverRatioS2F2SEAORD:
   origin_airport_id: 3
@@ -104,6 +106,7 @@ flightLayoverRatioS2F2SEAORD:
   departure_utc: 2019-07-02 17:00:00
   airline_id: 1
   flight_number: 2002
+  aircraft_family_id: 4
 
 flightLayoverRatioS3F1ORDORD:
   origin_airport_id: 2
@@ -114,6 +117,7 @@ flightLayoverRatioS3F1ORDORD:
   departure_utc: 2019-07-03 12:00:00
   airline_id: 1
   flight_number: 3001
+  aircraft_family_id: 4
 
 flightLayoverRatioS3F2ORDYVR:
   origin_airport_id: 2
@@ -124,6 +128,7 @@ flightLayoverRatioS3F2ORDYVR:
   departure_utc: 2019-07-03 15:00:00
   airline_id: 1
   flight_number: 3002
+  aircraft_family_id: 4
 
 flightLayoverRatioS4F1YVRYVR:
   origin_airport_id: 4
@@ -134,3 +139,26 @@ flightLayoverRatioS4F1YVRYVR:
   departure_utc: 2019-07-04 12:00:00
   airline_id: 1
   flight_number: 4001
+  aircraft_family_id: 4
+
+flightDisambiguationHidden:
+  origin_airport_id: 2
+  destination_airport_id: 1
+  trip_id: 4
+  trip_section: 1
+  departure_date: 2015-01-01
+  departure_utc: 2015-01-01 12:00:00
+  airline_id: 4
+  flight_number: 400
+  aircraft_family_id: 4
+
+flightDisambiguationUnhidden:
+  origin_airport_id: 2
+  destination_airport_id: 1
+  trip_id: 5
+  trip_section: 1
+  departure_date: 2015-01-01
+  departure_utc: 2015-01-01 12:00:00
+  airline_id: 5
+  flight_number: 500
+  aircraft_family_id: 4

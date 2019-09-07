@@ -19,3 +19,15 @@ tripLayoverRatios:
   name: Trip to Test Layover Ratios
   hidden: No
   comment: sec1 ORD-DFW, sec2 DFW-SEA-ORD, sec3 ORD-ORD-YVR, sec4 YVR-YVR, sec5 no flights
+
+tripDisambiguationHidden:
+  id: 4
+  name: "Trip to test hidden disambiguation"
+  hidden: Yes
+  user_id: 1
+
+tripDisambiguationUnhidden:
+  id: 5
+  name: "Trip to test hidden disambiguation"
+  hidden: no
+  user_id: 1
