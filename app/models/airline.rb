@@ -126,7 +126,8 @@ class Airline < ApplicationRecord
   # @return [Array<Airline>] an array of matching Airlines. Returns an empty
   #   array if no matching airlines are found.
   def self.find_by_param(param)
-    return self.where(id: param).or(self.where(slug: param)).or(self.where(iata_airline_code: param)).or(self.where(icao_airline_code: param)).order(:airline_name)
+    return [] unless param
+    return self.where(id: param).or(self.where(slug: param.to_s.downcase)).or(self.where(iata_airline_code: param.to_s.upcase)).or(self.where(icao_airline_code: param.to_s.upcase)).order(:airline_name)
   end
   
   # Accepts a flyer, the current user, and a date range, and returns all
