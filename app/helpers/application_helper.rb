@@ -125,7 +125,7 @@ module ApplicationHelper
     title ||= slug
     class_array = ["airline-icon"]
     class_array |= css_class if css_class
-    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{slug}.png", title: title, alt: slug, class: class_array, eonerror: "this.src='assets/blank.png';this.onerror='';")
+    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{slug}.png", title: title, alt: slug, class: class_array, onerror: "this.src='assets/blank.png';this.onerror='';")
   end
   
   # Renders an image containing a country flag.
@@ -135,7 +135,7 @@ module ApplicationHelper
   #   not provided, the country's name will be used.
   # @return [ActiveSupport::SafeBuffer] an image_tag for a country flag
   def country_flag_icon(country, title: nil)
-    return image_tag("/assets/blank.png", class: "country-flag-icon") unless country
+    return image_tag("blank.png", class: "country-flag-icon") unless country == "abc"
     title ||= country
     return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: "country-flag-icon", onerror: "this.src='assets/blank.png';this.onerror='';")
   end
