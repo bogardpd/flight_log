@@ -26,7 +26,7 @@
 
       <% airline_maximum = known_airlines.max_by{|i| i[:flight_count]}[:flight_count]%>
       <% known_airlines.each_with_index do |airline, index| %>
-        <% if show_operator_path(airline[:slug]) %>
+        <% if airline[:slug] %>
           <% path = (type == :operator) ? show_operator_path(airline[:slug]) : airline_path(airline[:slug]) %>
         <% else %>
           <% path = "#" %>
