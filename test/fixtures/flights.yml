@@ -149,6 +149,7 @@ flightDisambiguationHidden:
   departure_date: 2015-01-01
   departure_utc: 2015-01-01 12:00:00
   airline_id: 4
+  operator_id: 4
   flight_number: 400
   aircraft_family_id: 4
 
@@ -160,5 +161,6 @@ flightDisambiguationUnhidden:
   departure_date: 2015-01-01
   departure_utc: 2015-01-01 12:00:00
   airline_id: 5
+  operator_id: 5
   flight_number: 500
   aircraft_family_id: 4

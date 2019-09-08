@@ -47,7 +47,7 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show
-    airlines = Airline.find_by_param(flyer, current_user, params[:id])
+    airlines = Airline.find_by_param(:airline, params[:id], flyer, current_user)
     raise ActiveRecord::RecordNotFound if airlines.empty?
     if airlines.length > 1
       @airlines = airlines
@@ -102,7 +102,7 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show_operator
-    operators = Airline.find_by_param(flyer, current_user, params[:operator])
+    operators = Airline.find_by_param(:operator, params[:operator], flyer, current_user)
     raise ActiveRecord::RecordNotFound if operators.empty?
     if operators.length > 1
       @operators = operators
@@ -157,7 +157,7 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show_fleet_number
-    operators = Airline.find_by_param(flyer, current_user, params[:operator])
+    operators = Airline.find_by_param(:operator, params[:operator], flyer, current_user)
     raise ActiveRecord::RecordNotFound if operators.empty?
     if operators.length > 1
       @operators = operators

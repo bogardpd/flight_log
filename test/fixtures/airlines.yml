@@ -39,3 +39,11 @@ airlineComair:
   iata_airline_code: "OH"
   icao_airline_code: "COM"
   is_only_operator: Yes
+
+airlineNetJets:
+  id: 6
+  airline_name: "NetJets"
+  slug: "netjets"
+  iata_airline_code: "1I"
+  icao_airline_code: "EJA"
+  is_only_operator: No

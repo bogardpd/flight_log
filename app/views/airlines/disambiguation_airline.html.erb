@@ -17,8 +17,7 @@
     <% @airlines.each do |airline| %>
       <tr>
         <td class="airline-airline">
-          <% path = airline.is_only_operator ? show_operator_path(airline.slug) : airline_path(airline.slug) %>
-          <%= link_to(airline_icon(airline.slug, title: "View all flights on #{airline.airline_name}") + airline.airline_name, path, title: "View all flights on #{airline.airline_name}") %>
+          <%= link_to(airline_icon(airline.slug, title: "View all flights on #{airline.airline_name}") + airline.airline_name, airline_path(airline.slug), title: "View all flights on #{airline.airline_name}") %>
         </td>
         <td class="airline-code code-mono">
           <%= airline.iata_airline_code %>
