@@ -55,5 +55,5 @@ Portfolio::Application.configure do
   
   config.assets.js_compressor = :uglifier
 
-  config.assets.compile = true
+  config.assets.compile = false
 end
