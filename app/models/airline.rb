@@ -25,11 +25,11 @@ class Airline < ApplicationRecord
   has_many :operated_flights, :class_name => "Flight", :foreign_key => "operator_id"
   has_many :codeshared_flights, :class_name => "Flight", :foreign_key => "codeshare_airline_id"
     
-  validates :iata_airline_code, :presence => true, :length => { is: 2 }
-  validates :icao_airline_code, :presence => true, :length => { is: 3 }
-  validates :slug, :presence => true, :uniqueness => { :case_sensitive => false }
-  validates :airline_name, :presence => true
-  validates :numeric_code, :length => { :is => 3, :allow_blank => true }
+  validates :iata_airline_code, presence: true, length: { is: 2 }
+  validates :icao_airline_code, presence: true, length: { is: 3 }
+  validates :slug, presence: true, uniqueness: { case_sensitive: false }
+  validates :airline_name, presence: true
+  validates :numeric_code, length: { is: 3, allow_blank: true }
   
   # Form fields which should be saved capitalized.
   CAPS_ATTRS = %w( icao_airline_code )

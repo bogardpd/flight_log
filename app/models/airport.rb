@@ -16,6 +16,7 @@ class Airport < ApplicationRecord
   
   validates :iata_code, presence: true, length: { is: 3 }, uniqueness: { case_sensitive: false }
   validates :icao_code, presence: true, length: { is: 4 }, uniqueness: { case_sensitive: false }
+  validates :slug, presence: true, uniqueness: { case_sensitive: false }
   validates :city, presence: true
   validates :country, presence: true
   

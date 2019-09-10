@@ -45,6 +45,7 @@ class AircraftFamily < ApplicationRecord
   validates :family_name, presence: true
   validates :iata_aircraft_code, length: { is: 3 }, allow_blank: true
   validates :icao_aircraft_code, length: { in: 2..4 }, uniqueness: { case_sensitive: false }, allow_blank: true
+  validates :slug, presence: true, uniqueness: { case_sensitive: false }
   validates :manufacturer, presence: true
   validates :category, inclusion: { in: categories_list.keys, message: "%{value} is not a valid category" }, allow_nil: false, allow_blank: false
   
