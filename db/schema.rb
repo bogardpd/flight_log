@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_07_203410) do
+ActiveRecord::Schema.define(version: 2019_09_10_005525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(version: 2019_09_07_203410) do
     t.datetime "updated_at", null: false
     t.string "icao_aircraft_code"
     t.integer "parent_id"
+    t.string "slug"
+    t.index ["slug"], name: "index_aircraft_families_on_slug", unique: true
   end
 
   create_table "airlines", id: :serial, force: :cascade do |t|
@@ -47,7 +49,9 @@ ActiveRecord::Schema.define(version: 2019_09_07_203410) do
     t.string "icao_code"
     t.float "latitude"
     t.float "longitude"
+    t.string "slug"
     t.index ["iata_code"], name: "index_airports_on_iata_code", unique: true
+    t.index ["slug"], name: "index_airports_on_slug", unique: true
   end
 
   create_table "flights", id: :serial, force: :cascade do |t|
