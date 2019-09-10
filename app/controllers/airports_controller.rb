@@ -192,7 +192,7 @@ class AirportsController < ApplicationController
   #
   # @return [ActionController::Parameters]
   def airport_params
-    params.require(:airport).permit(:city, :iata_code, :icao_code, :country, :latitude, :longitude)
+    params.require(:airport).permit(:city, :slug, :iata_code, :icao_code, :country, :latitude, :longitude)
   end
   
 end

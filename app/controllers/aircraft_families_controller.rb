@@ -171,7 +171,7 @@ class AircraftFamiliesController < ApplicationController
   #
   # @return [ActionController::Parameters]
   def aircraft_family_params
-    params.require(:aircraft_family).permit(:family_name, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :category, :parent_id)
+    params.require(:aircraft_family).permit(:family_name, :slug, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :category, :parent_id)
   end
   
 end
