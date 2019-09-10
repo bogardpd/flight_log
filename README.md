@@ -18,17 +18,3 @@
 | [1.2: Operators and Codeshares](https://onehundredairports.com/2014/10/29/flight-log-version-1-2-operators-and-codeshares) | 29 Oct 2014 |
 | [1.1: Routes and Top 5 Lists](https://onehundredairports.com/2013/10/24/flight-log-version-1-1-routes-top-5-lists-and-more/) | 24 Oct 2013 |
 | 1.0: Initial Release | 27 Apr 2013 |
-
-## License
-
-This project is licensed under The MIT license.
-
-**The MIT License (MIT)**
-
-Copyright &copy; 2019 Paul D. Bogard
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
