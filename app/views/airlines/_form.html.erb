@@ -8,13 +8,6 @@
   </p>
 
   <p>
-    <%= f.label :slug, "Unique Slug" %><br />
-    <%= f.text_field :slug, size: 25 %><br />
-  	Used to uniquely identify the airline in URL parameters. Lowercase with hyphens in place of non-alphanumeric.<br>
-    Example: <span class="code-mono">american-airlines</span>
-  </p>
-
-  <p>
     <%= f.label :iata_airline_code, "IATA Airline Code" %><br />
     <% if @lookup_fields && @lookup_fields[:iata_code] %>
       <%= f.text_field :iata_airline_code, value: @lookup_fields[:iata_code], size: 2, maxlength: 2, class: "code-mono" %><br />
@@ -40,6 +33,13 @@
   
   <p>
     <%= f.check_box :is_only_operator %> <%= f.label :is_only_operator, "This airline only operates flights (it does not sell or market flights)" %>
+  </p>
+
+  <p>
+    <%= f.label :slug, "Unique Slug" %><br />
+    <%= f.text_field :slug, size: 25 %><br />
+  	Used to uniquely identify the airline in URL parameters. Lowercase with hyphens in place of non-alphanumeric.<br>
+    Example: <span class="code-mono">american-airlines</span>
   </p>
   
   <p>

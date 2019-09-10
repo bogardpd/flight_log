@@ -25,10 +25,16 @@
     <%= f.text_field :city %>
   </p>
 
-
   <p>
     <%= f.label :country %><br />
     <%= f.text_field :country %>
+  </p>
+
+  <p>
+    <%= f.label :slug, "Unique Slug" %><br />
+    <%= f.text_field :slug, size: 25 %><br />
+  	Used to uniquely identify the airport in URL parameters. Generally the uppercase IATA code; if non-unique, append lowercase with hyphens in place of non-alphanumeric.<br>
+    Examples: <span class="code-mono">ORD</span>, <span class="code-mono">DEN-stapleton</span>
   </p>
 
   <p>
