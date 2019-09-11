@@ -1,11 +1,11 @@
-aircraft737:
+aircraft_737:
   id: 1
   family_name: "737"
   iata_aircraft_code: "737"
   manufacturer: Boeing
   category: narrow_body
 
-aircraft737800:
+aircraft_737_800:
   id: 2
   family_name: "737-800"
   iata_aircraft_code: "738"
@@ -14,18 +14,66 @@ aircraft737800:
   category: narrow_body
   parent_id: 1
 
-aircraftA320Family:
+aircraft_A320_Family:
   id: 3
-  family_name: A320 Family
+  family_name: "A320 Family"
   iata_aircraft_code: "32S"
-  manufacturer: Airbus
-  category: narrow_body
+  manufacturer: "Airbus"
+  category: "narrow_body"
 
-aircraftA321:
+aircraft_A321:
   id: 4
-  family_name: A321
+  family_name: "A321"
   iata_aircraft_code: "321"
-  icao_aircraft_code: A321
-  manufacturer: Airbus
-  category: narrow_body
+  icao_aircraft_code: "A321"
+  manufacturer: "Airbus"
+  category: "narrow_body"
   parent_id: 3
+
+aircraft_737_700:
+  id: 5
+  slug: "Boeing-737-700"
+  family_name: "737-700"
+  iata_aircraft_code: "73G"
+  icao_aircraft_code: "B737"
+  manufacturer: "Boeing"
+  category: "narrow_body"
+  parent_id: 1
+
+aircraft_1_Air:
+  id: 6
+  slug: "1-Air"
+  family_name: "1 Air"
+  manufacturer: "1 Air"
+
+aircraft_slug_72:
+  id: 7
+  slug: "72"
+  family_name: "Slug 72"
+  manufacturer: "Slug 72"
+
+aircraft_id_72:
+  id: 72
+  slug: "ID-Seventy-Two"
+  family_name: "ID Seventy Two"
+  manufacturer: "ID Seventy Two"
+
+aircraft_hidden:
+  id: 8
+  slug: "Airbus-A380"
+  family_name: "A380"
+  manufacturer: "Airbus"
+
+aircraft_with_only_subtype_parent:
+  id: 9
+  slug: "Parent-Parent"
+  family_name: "Parent"
+  manufacturer: "Parent"
+
+aircraft_with_only_subtype_child:
+  id: 10
+  slug: "Parent-Child"
+  family_name: "Child"
+  manufacturer: "Parent"
+  parent_id: 9
+  

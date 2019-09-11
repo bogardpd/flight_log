@@ -135,6 +135,37 @@ class AircraftFamily < ApplicationRecord
     end
   end
   
+  # Accepts a querystring parameter, and returns an array of AircraftFamilies
+  # where the parameter matches the ID or slug.
+  #
+  # @param param [String] a querystring parameter
+  # @param flyer [User] the user who flew the {Flight Flights} being viewed
+  # @param current_user [User] the user viewing the {Flight Flights}
+  # @return [Array<Airline>] an array of matching Airlines. Returns an empty
+  #   array if no matching airlines are found.
+  def self.find_by_param(param, flyer, current_user)
+    return [] unless param
+
+    aircraft = self.where(slug: param)
+    if param !~ /\D/
+      # Check IDs only if param is purely numeric. Avoids treating something
+      # like "1-Air" as an ID of 1, since "1-Air".to_i == 73.
+      aircraft = aircraft.or(self.where(id: param))
+    end
+
+    unless current_user == flyer
+      # If the user is not the logged-in flyer of the flights, don't show
+      # aircraft without flights
+      aircraft_with_flights = flyer.flights(current_user).pluck(:aircraft_family_id).uniq
+      parents_with_flights = self.where(id: aircraft_with_flights).pluck(:parent_id).uniq
+      aircraft = aircraft.where(id: aircraft_with_flights | parents_with_flights)
+    end
+
+    aircraft = aircraft.order(:manufacturer, :family_name)
+
+    return aircraft
+  end
+
   # Returns the AircraftFamily ID for a given ICAO or IATA code.
   # 
   # @param airline_code [String] an ICAO or IATA airline type code

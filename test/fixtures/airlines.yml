@@ -1,7 +1,7 @@
 airlineAA:
   id: 1
   airline_name: "American Airlines"
-  slug: "american-airlines"
+  slug: "American-Airlines"
   iata_airline_code: "AA"
   icao_airline_code: "AAL"
   numeric_code: "001"
@@ -10,7 +10,7 @@ airlineAA:
 airlineEV:
   id: 2
   airline_name: "ExpressJet"
-  slug: "expressjet"
+  slug: "ExpressJet"
   iata_airline_code: "EV"
   icao_airline_code: "ASQ"
   is_only_operator: Yes
@@ -18,7 +18,7 @@ airlineEV:
 airlineUA:
   id: 3
   airline_name: "United"
-  slug: "united"
+  slug: "United"
   iata_airline_code: "UA"
   icao_airline_code: "UAL"
   numeric_code: "016"
@@ -27,7 +27,7 @@ airlineUA:
 airlinePSA:
   id: 4
   airline_name: "PSA Airlines"
-  slug: "psa-airlines"
+  slug: "PSA-Airlines"
   iata_airline_code: "OH"
   icao_airline_code: "JIA"
   is_only_operator: Yes
@@ -35,7 +35,7 @@ airlinePSA:
 airlineComair:
   id: 5
   airline_name: "Comair"
-  slug: "comair"
+  slug: "Comair"
   iata_airline_code: "OH"
   icao_airline_code: "COM"
   is_only_operator: Yes
@@ -43,7 +43,7 @@ airlineComair:
 airlineNetJets:
   id: 6
   airline_name: "NetJets"
-  slug: "netjets"
+  slug: "NetJets"
   iata_airline_code: "1I"
   icao_airline_code: "EJA"
   is_only_operator: No

@@ -16,7 +16,7 @@ class AirlineTest < ActiveSupport::TestCase
   end
 
   def test_find_by_param_with_slug_returns_results
-    assert_equal Airline.find_by_param(:airline, "american-airlines", @flyer, @flyer), [airlines(:airlineAA)]
+    assert_equal Airline.find_by_param(:airline, "American-Airlines", @flyer, @flyer), [airlines(:airlineAA)]
   end
 
   def test_find_by_param_with_iata_returns_results
