@@ -199,7 +199,7 @@ class AircraftFamily < ApplicationRecord
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts
     family_count ||= Array.new
       
-    counts = self.families.map{|f| {id: f.id, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}
+    counts = self.families.map{|f| {id: f.id, slug: f.slug, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}
     
     case sort_category
     when :aircraft

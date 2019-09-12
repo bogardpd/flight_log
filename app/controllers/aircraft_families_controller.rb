@@ -39,7 +39,7 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   # @see http://www.norebbo.com/ Norebbo Stock Illustration and Design
   def show
-    @aircraft_family = AircraftFamily.find(params[:id])
+    @aircraft_family = AircraftFamily.find_by(slug: params[:id])
     raise ActiveRecord::RecordNotFound if (@aircraft_family.nil?)
     
     @logo_used = true
