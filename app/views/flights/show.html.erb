@@ -92,7 +92,7 @@
 	    <td class="label-column">Aircraft Family</td>
 	    <td>
 	      <div class="supplemental-code"><%= aircraft[:family].iata_aircraft_code %></div>
-				<%= link_to("#{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family", aircraft_family_path(aircraft[:family]), :title => "View flights on #{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family aircraft") %>
+				<%= link_to("#{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family", aircraft_family_path(aircraft[:family].slug), :title => "View flights on #{aircraft[:family].manufacturer} #{aircraft[:family].family_name} Family aircraft") %>
 				</td>
 	    </td>
 	  </tr>
@@ -101,7 +101,7 @@
 		    <td class="label-column">Type</td>
 		    <td class="aircraft-type">
           <div class="supplemental-code"><%= aircraft[:type].icao_aircraft_code %></div>
-		      <%= link_to(aircraft[:type].family_name, aircraft_family_path(aircraft[:type])) %>
+		      <%= link_to(aircraft[:type].family_name, aircraft_family_path(aircraft[:type].slug)) %>
 		    </td>
 		  </tr>
 		<% end %>

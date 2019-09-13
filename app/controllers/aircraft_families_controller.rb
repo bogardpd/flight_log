@@ -63,7 +63,7 @@ class AircraftFamiliesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "We couldnʼt find an aircraft family with an ID of #{params[:id]}. Instead, weʼll give you a list of aircraft families."
+      flash[:warning] = "We couldnʼt find an aircraft family matching #{params[:id]}. Instead, weʼll give you a list of aircraft families."
       redirect_to aircraft_families_path
   end
   
@@ -86,7 +86,7 @@ class AircraftFamiliesController < ApplicationController
     end
     
     rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "We couldnʼt find an aircraft family with an ID of #{params[:family_id]}. Instead, weʼll give you a list of aircraft families."
+      flash[:warning] = "We couldnʼt find an aircraft family matching #{params[:family_id]}. Instead, weʼll give you a list of aircraft families."
       redirect_to aircraft_families_path
   end
   
@@ -105,7 +105,7 @@ class AircraftFamiliesController < ApplicationController
         session[:form_location] = nil
         redirect_to form_location
       else
-        redirect_to aircraft_family_path(@aircraft_family)
+        redirect_to aircraft_family_path(@aircraft_family.slug)
       end
     else
       if session[:form_location]
@@ -137,7 +137,7 @@ class AircraftFamiliesController < ApplicationController
     @aircraft_family = AircraftFamily.find(params[:id])
     if @aircraft_family.update_attributes(aircraft_family_params)
       flash[:success] = "Successfully updated aircraft family."
-      redirect_to aircraft_family_path(@aircraft_family)
+      redirect_to aircraft_family_path(@aircraft_family.slug)
     else
       render "edit"
     end
@@ -154,10 +154,10 @@ class AircraftFamiliesController < ApplicationController
     @children = AircraftFamily.where(parent_id: params[:id])
     if @aircraft_family.flights.any?
       flash[:error] = "This aircraft family still has flights and could not be deleted. Please delete all of this aircraft familyʼs flights first."
-      redirect_to aircraft_family_path(@aircraft_family)
+      redirect_to aircraft_family_path(@aircraft_family.slug)
     elsif @children.any?
       flash[:error] = "This aircraft family still has variants that belong to it and could not be deleted. Please delete all of this aircraft familyʼs variants first."
-      redirect_to aircraft_family_path(@aircraft_family)
+      redirect_to aircraft_family_path(@aircraft_family.slug)
     else
       @aircraft_family.destroy
       flash[:success] = "Aircraft family deleted."

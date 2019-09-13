@@ -3,7 +3,7 @@
 <% if params[:family_id] %>
   <% provide(:title, "New #{@parent_family.family_name} Type") %>
   <% provide(:button_text, "Add Aircraft Type") %>
-  <% add_breadcrumb @parent_family.full_name, aircraft_family_path(@parent_family) %>
+  <% add_breadcrumb @parent_family.full_name, aircraft_family_path(@parent_family.slug) %>
   <% add_breadcrumb @title, "new_aircraft_family_path(family_id: #{@parent_family.id})" %>
 <% else %>
   <% provide(:title, "New Aircraft Family") %>

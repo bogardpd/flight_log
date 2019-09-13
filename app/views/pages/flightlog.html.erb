@@ -77,7 +77,7 @@
     </tr>
   <% @flight_aircraft.first(5).each do |aircraft| %>
     <tr>
-      <td class="left"><%= link_to(format_aircraft_family(aircraft[:manufacturer], aircraft[:family_name]), aircraft_family_path(aircraft[:id]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
+      <td class="left"><%= link_to(format_aircraft_family(aircraft[:manufacturer], aircraft[:family_name]), aircraft_family_path(aircraft[:slug]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
       <td class="center"><%= aircraft[:flight_count] %></td>
     </tr>
   <% end %>

@@ -18,6 +18,7 @@ aircraft_737_800:
 
 aircraft_A320_Family:
   id: 3
+  slug: "Airbus-A320-Family"
   family_name: "A320 Family"
   iata_aircraft_code: "32S"
   manufacturer: "Airbus"
@@ -25,6 +26,7 @@ aircraft_A320_Family:
 
 aircraft_A321:
   id: 4
+  slug: "Airbus-A321"
   family_name: "A321"
   iata_aircraft_code: "321"
   icao_aircraft_code: "A321"
