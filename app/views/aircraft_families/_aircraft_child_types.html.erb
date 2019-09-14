@@ -1,0 +1,30 @@
+<% child_types_only = child_types.reject{|a| a[:id] == parent_type.id} %>
+<% if child_types_only.any? %>
+  <% maximum = child_types.max_by{|a| a[:flight_count]}[:flight_count] %>
+
+  <table class="flightlog">
+    <thead>
+      <th class="counter">#</th>
+      <th class="aircraft-family">Type</th>
+      <th class="aircraft-code">ICAO</th>
+      <th class="aircraft-flights">Flights</th>
+    </thead>
+    <tbody>
+    <% previous_count = nil %>
+    <% child_types.each_with_index do |type, index| %>
+      <tr>
+        <td class="counter"><%= (type[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %></td>
+        <td class="aircraft-family<%= " subdued" if type[:id] == parent_type.id %>"><%= type[:id] == parent_type.id ? "(Unknown type of #{type[:family_name]})" : link_to(type[:family_name], aircraft_family_path(type[:slug])) %></td>
+        <td class="aircraft-code code-mono"><%= link_to(type[:icao_aircraft_code], aircraft_family_path(type[:slug])) unless type[:id] == parent_type.id %></td>
+        <td class="aircraft-flights"><%= render "flights/graph_block", value: type[:flight_count], maximum: maximum %></td>
+      </tr>
+      <% previous_count = type[:flight_count] %>
+    <% end %>
+    <tr>
+      <td colspan="4" class="flightlog-total"><%= pluralize(child_types_only.length, "known type") %></td>
+    </tr>
+    </tbody>
+  </table>
+<% else %>
+  <%= render_message(:warning, "All of these flights have unknown types.") %>
+<% end %>

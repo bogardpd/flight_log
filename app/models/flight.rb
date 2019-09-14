@@ -42,7 +42,7 @@ class Flight < ApplicationRecord
   #   child type for the Flight if available.
   def aircraft_family_and_type
     return nil unless aircraft_family
-    return {family: aircraft_family} if aircraft_family.is_family?
+    return {family: aircraft_family} if aircraft_family.is_root_family?
     return {family: aircraft_family.parent, type: aircraft_family}
   end
 

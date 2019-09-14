@@ -1,13 +1,13 @@
-<%= form_for(@aircraft_family) do |f| %>
+<%= form_for(@aircraft) do |f| %>
 
   <%= render "error_messages" %>
 
-  <%= f.hidden_field(:parent_id, value: @aircraft_family.parent_id) %>
+  <%= f.hidden_field(:parent_id, value: @aircraft.parent_id) %>
 
   <p>
     <%= f.label :manufacturer %><br/>
     <% if @parent_family %>
-      <%= f.text_field :manufacturer, value: (@aircraft_family.manufacturer || @parent_family.manufacturer), size: 25 %>
+      <%= f.text_field :manufacturer, value: (@aircraft.manufacturer || @parent_family.manufacturer), size: 25 %>
     <% else %>
       <%= f.text_field :manufacturer, size: 25 %>
     <% end %>
@@ -15,25 +15,25 @@
   </p>
   
   <p>
-     <%= f.label :family_name, (@aircraft_family.is_family? ? "Aircraft Family Name" : "Aircraft Type Name") %><br />
+     <%= f.label :family_name, (@aircraft.is_root_family? ? "Aircraft Family Name" : "Aircraft Type Name") %><br />
      <%= f.text_field :family_name, size: 25 %>
   </p>
-
-  <p>
-    <%= f.label :iata_aircraft_code, "IATA Aircraft Code" %><br />
-    <%= f.text_field :iata_aircraft_code, size: 3, maxlength: 3, class: "code-mono all-caps" %><br />
-  </p>
   
-  <% unless @aircraft_family.is_family? %>
-  <p>
-    <%= f.label :icao_aircraft_code, "ICAO Aircraft Code" %><br />
-    <%= f.text_field :icao_aircraft_code, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
-  </p>
+  <% unless @aircraft.is_root_family? %>
+    <p>
+      <%= f.label :iata_aircraft_code, "IATA Aircraft Code" %><br />
+      <%= f.text_field :iata_aircraft_code, size: 3, maxlength: 3, class: "code-mono all-caps" %><br />
+    </p>
+
+    <p>
+      <%= f.label :icao_aircraft_code, "ICAO Aircraft Code" %><br />
+      <%= f.text_field :icao_aircraft_code, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
+    </p>
   <% end %>
 
   <p>
     <%= f.label :category %><br />
-  	<% category_select = @aircraft_family.category || (@aircraft_family.is_family? ? nil : @parent_family.category) %>
+  	<% category_select = @aircraft.category || (@aircraft.is_root_family? ? nil : @parent_family.category) %>
     <%= f.select(:category, options_for_select(AircraftFamily::CATEGORIES.invert, category_select), include_blank: true)%>
   	</p>
   </p>

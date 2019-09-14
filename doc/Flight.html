@@ -637,7 +637,7 @@ the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamil
 
 <span class='kw'>def</span> <span class='id identifier rubyid_aircraft_family_and_type'>aircraft_family_and_type</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span>
-  <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>family:</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='period'>.</span><span class='id identifier rubyid_is_family?'>is_family?</span>
+  <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>family:</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='period'>.</span><span class='id identifier rubyid_is_root_family?'>is_root_family?</span>
   <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>family:</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -709,7 +709,7 @@ the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamil
 </div>
 
       <div id="footer">
-  Generated on Sat Sep 14 17:54:53 2019 by
+  Generated on Sat Sep 14 19:36:54 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

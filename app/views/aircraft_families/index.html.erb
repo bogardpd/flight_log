@@ -1,7 +1,7 @@
-<% provide(:title, "Aircraft Families") %>
+<% provide(:title, "Aircraft") %>
 <% provide(:meta_description, "A list of the types of planes on which Paul Bogard has flown, and how often heʼs flown on each.") %>
 <% add_admin_action link_to("Add New Aircraft Family", new_aircraft_family_path) %>
-<% add_breadcrumb "Aircraft Families", aircraft_families_path %>
+<% add_breadcrumb "Aircraft", aircraft_families_path %>
 
 <h1>Aircraft Families</h1>
 
@@ -24,12 +24,10 @@
   	<table class="flightlog">
   		<tr>
   			<th class="aircraft-family">Aircraft Family</th>
-  			<th class="aircraft-code">Code</th>
   		</tr>
   	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
   	  <tr>
   	    <td class="aircraft-family"><%= link_to(format_aircraft_family(aircraft_family[:manufacturer], aircraft_family[:family_name]), aircraft_family_path(aircraft_family[:slug]), title: "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
-  	    <td class="aircraft-code code-mono"><%= link_to(aircraft_family[:iata_aircraft_code], aircraft_family_path(aircraft_family[:slug]), title: "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
   		</tr>
   	<% end %>
   	</table>

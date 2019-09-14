@@ -483,7 +483,7 @@ nil if the illustration doesn&#39;t exist.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_family%3F-instance_method" title="#is_family? (instance method)">#<strong>is_family?</strong>  &#x21d2; Boolean </a>
+      <a href="#is_root_family%3F-instance_method" title="#is_root_family? (instance method)">#<strong>is_root_family?</strong>  &#x21d2; Boolean </a>
     
 
     
@@ -500,6 +500,31 @@ nil if the illustration doesn&#39;t exist.</p>
     <span class="summary_desc"><div class='inline'>
 <p>Returns true if this AircraftFamily parent family, false if it&#39;s a
 child type.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#type_and_parent_types-instance_method" title="#type_and_parent_types (instance method)">#<strong>type_and_parent_types</strong>  &#x21d2; Array&lt;AircraftFamily&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns an array of the current aircraft type and its parent types, all the
+way up to the highest family it belongs to.</p>
 </div></span>
   
 </li>
@@ -569,12 +594,12 @@ family this new type belongs to.</p>
       <pre class="lines">
 
 
-189
-190
-191</pre>
+203
+204
+205</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 189</span>
+      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 203</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_family_select_options'>family_select_options</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_families'>families</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:manufacturer</span><span class='comma'>,</span> <span class='symbol'>:family_name</span><span class='comma'>,</span> <span class='symbol'>:id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_af'>af</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_af'>af</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='comma'>,</span><span class='id identifier rubyid_af'>af</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_af'>af</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_af'>af</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='id identifier rubyid_af'>af</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_af'>af</span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
@@ -648,16 +673,16 @@ family this new type belongs to.</p>
       <pre class="lines">
 
 
-132
-133
-134
-135
-136
-137
-138</pre>
+146
+147
+148
+149
+150
+151
+152</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 132</span>
+      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 146</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find_id_from_code'>find_id_from_code</span><span class='lparen'>(</span><span class='id identifier rubyid_airline_code'>airline_code</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_from_icao'>from_icao</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>icao_aircraft_code:</span> <span class='id identifier rubyid_airline_code'>airline_code</span><span class='rparen'>)</span>
@@ -779,20 +804,6 @@ for</p>
       <pre class="lines">
 
 
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
 169
 170
 171
@@ -804,10 +815,24 @@ for</p>
 177
 178
 179
-180</pre>
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 169</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_table_data'>flight_table_data</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_family_count'>family_count</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:aircraft_family</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_group'>group</span><span class='lparen'>(</span><span class='symbol'>:aircraft_family_id</span><span class='comma'>,</span> <span class='symbol'>:parent_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span>
@@ -887,16 +912,16 @@ family/type select boxes on the <span class='object_link'><a href="FlightsContro
       <pre class="lines">
 
 
-199
-200
-201
-202
-203
-204
-205</pre>
+213
+214
+215
+216
+217
+218
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 199</span>
+      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 213</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_grouped_type_select_options'>grouped_type_select_options</span>
   <span class='id identifier rubyid_types'>types</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>family_id:</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_parent_id'>parent_id</span><span class='comma'>,</span> <span class='label'>family_name:</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_family_name'>family_name</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rbrace'>}</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_f'>f</span><span class='lbracket'>[</span><span class='symbol'>:family_name</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
@@ -1009,16 +1034,16 @@ as part of their parent family and are not listed separately. Used on
       <pre class="lines">
 
 
-216
-217
-218
-219
-220
-221
-222</pre>
+230
+231
+232
+233
+234
+235
+236</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 216</span>
+      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 230</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new_in_date_range'>new_in_date_range</span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='comma'>,</span> <span class='id identifier rubyid_date_range'>date_range</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
@@ -1091,7 +1116,7 @@ or the ICAO code if it is an aircraft type.</p>
       <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code'>code</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_is_family?'>is_family?</span> <span class='op'>?</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_iata_aircraft_code'>iata_aircraft_code</span> <span class='op'>:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_icao_aircraft_code'>icao_aircraft_code</span>
+  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_is_root_family?'>is_root_family?</span> <span class='op'>?</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_iata_aircraft_code'>iata_aircraft_code</span> <span class='op'>:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_icao_aircraft_code'>icao_aircraft_code</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1466,9 +1491,9 @@ nil if the illustration doesn&#39;t exist.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="is_family?-instance_method">
+  <h3 class="signature " id="is_root_family?-instance_method">
   
-    #<strong>is_family?</strong>  &#x21d2; <tt>Boolean</tt> 
+    #<strong>is_root_family?</strong>  &#x21d2; <tt>Boolean</tt> 
   
 
   
@@ -1517,8 +1542,79 @@ child type.</p>
     <td>
       <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 109</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_is_family?'>is_family?</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_is_root_family?'>is_root_family?</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_parent_id'>parent_id</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="type_and_parent_types-instance_method">
+  
+    #<strong>type_and_parent_types</strong>  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="" title="AircraftFamily (class)">AircraftFamily</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns an array of the current aircraft type and its parent types, all the
+way up to the highest family it belongs to.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="" title="AircraftFamily (class)">AircraftFamily</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>An array of AircraftFamilies, starting with the current type and ending
+with the highest ancestor</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+133
+134
+135
+136
+137
+138
+139
+140</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/aircraft_family.rb', line 133</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_type_and_parent_types'>type_and_parent_types</span>
+  <span class='id identifier rubyid_parents'>parents</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_parents'>parents</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span>
+    <span class='id identifier rubyid_parents'>parents</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='op'>*</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span><span class='period'>.</span><span class='id identifier rubyid_type_and_parent_types'>type_and_parent_types</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_parents'>parents</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1530,7 +1626,7 @@ child type.</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Sep 14 17:54:55 2019 by
+  Generated on Sat Sep 14 19:36:55 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

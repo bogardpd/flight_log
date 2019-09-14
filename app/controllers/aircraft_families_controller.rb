@@ -24,8 +24,8 @@ class AircraftFamiliesController < ApplicationController
   # 
   # {AircraftFamily} details:
   # * a side profile {http://www.norebbo.com/ illustration} of the aircraft
-  # * IATA code (if the {AircraftFamily} is a parent aircraft family) or ICAO code (if the {AircraftFamily} is a child aircraft type)
-  # * a table of child aircraft types (if the {AircraftFamily} is a parent aircraft family)
+  # * IATA code and ICAO code
+  # * a table of child aircraft types
   #
   # {Flight} data:
   # * a {FlightsMap}
@@ -39,20 +39,21 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   # @see http://www.norebbo.com/ Norebbo Stock Illustration and Design
   def show
-    @aircraft_family = AircraftFamily.find_by(slug: params[:id])
-    raise ActiveRecord::RecordNotFound if (@aircraft_family.nil?)
+    @aircraft = AircraftFamily.find_by(slug: params[:id])
+    raise ActiveRecord::RecordNotFound if (@aircraft.nil?)
     
     @logo_used = true
     @region = current_region(default: [])
     
-    @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft_family.family_and_type_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
+    @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft.family_and_type_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = Route.total_distance(@flights)
     
-    @subtypes = @aircraft_family.family_and_type_count(@flights)
-    @subtypes_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft_family)
+    @children = @aircraft.children
+    @flights_including_child_types = @aircraft.family_and_type_count(@flights)
+    @child_types_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft)
     
     # Create comparitive lists of airlines and classes:
     @airlines = Airline.flight_table_data(@flights, type: :airline)
@@ -67,8 +68,7 @@ class AircraftFamiliesController < ApplicationController
       redirect_to aircraft_families_path
   end
   
-  # Shows a form to add an {AircraftFamily} (either a parent aircraft family or
-  # a child aircraft type).
+  # Shows a form to add an {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
   #
@@ -78,11 +78,11 @@ class AircraftFamiliesController < ApplicationController
     
     if params[:family_id]
       @parent_family = AircraftFamily.find(params[:family_id])
-      @aircraft_family = AircraftFamily.new(parent_id: @parent_family.id)
+      @aircraft = AircraftFamily.new(parent_id: @parent_family.id)
       @title = "New #{@parent_family.family_name} Type"
     else
       @title = "New Aircraft Family"
-      @aircraft_family = AircraftFamily.new
+      @aircraft = AircraftFamily.new
     end
     
     rescue ActiveRecord::RecordNotFound
@@ -90,22 +90,21 @@ class AircraftFamiliesController < ApplicationController
       redirect_to aircraft_families_path
   end
   
-  # Creates a new {AircraftFamily} (either a parent aircraft family or a child
-  # aircraft type).
+  # Creates a new {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
   #
   # @return [nil]
   def create
-    @aircraft_family = AircraftFamily.new(aircraft_family_params)
-    if @aircraft_family.save
+    @aircraft = AircraftFamily.new(aircraft_family_params)
+    if @aircraft.save
       flash[:success] = "Successfully added #{params[:aircraft_family][:family_name]}!"
       if session[:form_location]
         form_location = session[:form_location]
         session[:form_location] = nil
         redirect_to form_location
       else
-        redirect_to aircraft_family_path(@aircraft_family.slug)
+        redirect_to aircraft_family_path(@aircraft.slug)
       end
     else
       if session[:form_location]
@@ -116,52 +115,54 @@ class AircraftFamiliesController < ApplicationController
     end
   end
   
-  # Shows a form to edit an existing {AircraftFamily} (either a parent aircraft
-  # family or a child aircraft type).
+  # Shows a form to edit an existing {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
   #
   # @return [nil]
   def edit
     session[:form_location] = nil
-    @aircraft_family = AircraftFamily.find(params[:id])    
+    @aircraft = AircraftFamily.find(params[:id])    
   end
   
-  # Updates an existing {AircraftFamily} (either a parent aircraft family or a
-  # child aircraft type).
+  # Updates an existing {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
   #
   # @return [nil]
   def update
-    @aircraft_family = AircraftFamily.find(params[:id])
-    if @aircraft_family.update_attributes(aircraft_family_params)
+    @aircraft = AircraftFamily.find(params[:id])
+    if @aircraft.update_attributes(aircraft_family_params)
       flash[:success] = "Successfully updated aircraft family."
-      redirect_to aircraft_family_path(@aircraft_family.slug)
+      redirect_to aircraft_family_path(@aircraft.slug)
     else
       render "edit"
     end
   end
   
-  # Deletes an existing {AircraftFamily} (either a parent aircraft family or a
-  # child aircraft type).
+  # Deletes an existing {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
   #
   # @return [nil]
   def destroy
-    @aircraft_family = AircraftFamily.find(params[:id])
+    @aircraft = AircraftFamily.find(params[:id])
     @children = AircraftFamily.where(parent_id: params[:id])
-    if @aircraft_family.flights.any?
-      flash[:error] = "This aircraft family still has flights and could not be deleted. Please delete all of this aircraft familyʼs flights first."
-      redirect_to aircraft_family_path(@aircraft_family.slug)
+    @parent = @aircraft.parent
+    if @aircraft.flights.any?
+      flash[:error] = "This aircraft still has flights and could not be deleted. Please delete all of this aircraftʼs flights first."
+      redirect_to aircraft_family_path(@aircraft.slug)
     elsif @children.any?
-      flash[:error] = "This aircraft family still has variants that belong to it and could not be deleted. Please delete all of this aircraft familyʼs variants first."
-      redirect_to aircraft_family_path(@aircraft_family.slug)
+      flash[:error] = "This aircraft still has types that belong to it and could not be deleted. Please delete all of this aircraftʼs types first."
+      redirect_to aircraft_family_path(@aircraft.slug)
     else
-      @aircraft_family.destroy
-      flash[:success] = "Aircraft family deleted."
-      redirect_to aircraft_families_path
+      @aircraft.destroy
+      flash[:success] = "Aircraft deleted."
+      if @parent
+        redirect_to(aircraft_family_path(@parent.slug))
+      else
+        redirect_to(aircraft_families_path)
+      end
     end
   end
   

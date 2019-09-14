@@ -49,7 +49,7 @@ class AircraftFamily < ApplicationRecord
   #
   # @return [String] the IATA or ICAO aircraft code
   def code
-    return self.is_family? ? self.iata_aircraft_code : self.icao_aircraft_code
+    return self.is_root_family? ? self.iata_aircraft_code : self.icao_aircraft_code
   end
   
   # Returns an array containing the current family's ID and the IDs of all
@@ -106,7 +106,7 @@ class AircraftFamily < ApplicationRecord
   # type.
   # 
   # @return [Boolean] whether or not this is a parent family
-  def is_family?
+  def is_root_family?
     return parent_id.nil?
   end
   
@@ -123,6 +123,20 @@ class AircraftFamily < ApplicationRecord
     else
       return nil
     end
+  end
+
+  # Returns an array of the current aircraft type and its parent types, all the
+  # way up to the highest family it belongs to.
+  #
+  # @return [Array<AircraftFamily>] An array of AircraftFamilies, starting with
+  #   the current type and ending with the highest ancestor
+  def type_and_parent_types
+    parents = Array.new
+    parents.push(self)
+    if self.parent
+      parents.push(*self.parent.type_and_parent_types)
+    end
+    return parents
   end
   
   # Returns the AircraftFamily ID for a given ICAO or IATA code.
