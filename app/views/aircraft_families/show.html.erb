@@ -36,7 +36,6 @@
 	</div>
 
 <% end %>
-
 <%= render partial: "aircraft_illustration", locals: {aircraft_family: @aircraft_family} %>
 
 <p>I have flown on <span class="bold"><%= @aircraft_family.full_name %></span> aircraft <%= pluralize(@flights.length, "time") %>.</p>
