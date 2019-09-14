@@ -25,29 +25,20 @@ class AircraftFamily < ApplicationRecord
   scope :types,    -> { where.not(parent_id: nil) }
   scope :with_no_flights, -> { where("id not in (?)", self.distinct.joins(:flights).select("aircraft_families.id")) }
   
-  # Defines the possible categories for an aircraft family. Currently, this is
-  # only used for validation.
-  # 
-  # This is intended to be used in a future capability to show maps of flights
-  # by aircraft family category.
-  #
-  # @return [Hash<String, String>] the column value and text description of
-  #   each category
-  def self.categories_list
-    categories = Hash.new
-    categories["wide_body"] = "Wide-body"
-    categories["narrow_body"] = "Narrow-body"
-    categories["regional_jet"] = "Regional Jet"
-    categories["turboprop"] = "Turboprop"
-    return categories
-  end
+  # Valid categories.
+  CATEGORIES = {
+    "wide_body"    => "Wide-body",
+    "narrow_body"  => "Narrow-body",
+    "regional_jet" => "Regional Jet",
+    "turboprop"    => "Turboprop"
+  }  
   
   validates :family_name, presence: true
   validates :iata_aircraft_code, length: { is: 3 }, allow_blank: true
   validates :icao_aircraft_code, length: { in: 2..4 }, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :slug, presence: true, uniqueness: { case_sensitive: false }
   validates :manufacturer, presence: true
-  validates :category, inclusion: { in: categories_list.keys, message: "%{value} is not a valid category" }, allow_nil: false, allow_blank: false
+  validates :category, inclusion: { in: CATEGORIES.keys, message: "%{value} is not a valid category" }, allow_nil: false, allow_blank: false
   
   # Form fields which should be saved capitalized.
   CAPS_ATTRS = %w( iata_aircraft_code icao_aircraft_code )

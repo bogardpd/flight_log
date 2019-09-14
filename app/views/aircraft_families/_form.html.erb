@@ -34,7 +34,7 @@
   <p>
     <%= f.label :category %><br />
   	<% category_select = @aircraft_family.category || (@aircraft_family.is_family? ? nil : @parent_family.category) %>
-    <%= f.select(:category, options_for_select(AircraftFamily.categories_list.invert, category_select), :include_blank => true)%>
+    <%= f.select(:category, options_for_select(AircraftFamily::CATEGORIES.invert, category_select), include_blank: true)%>
   	</p>
   </p>
 

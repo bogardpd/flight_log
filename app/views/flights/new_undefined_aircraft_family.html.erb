@@ -42,7 +42,7 @@
   
   <p>
     <%= f.label :category %><br />
-  	<%= f.select(:category, options_for_select(AircraftFamily.categories_list.invert, @aircraft_family.category), :include_blank => true)%>
+  	<%= f.select(:category, options_for_select(AircraftFamily::CATEGORIES.invert, @aircraft_family.category), :include_blank => true)%>
   	</p>
   </p>
 
