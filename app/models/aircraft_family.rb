@@ -44,14 +44,6 @@ class AircraftFamily < ApplicationRecord
   CAPS_ATTRS = %w( iata_aircraft_code icao_aircraft_code )
   before_save :capitalize_codes
   
-  # Returns the aircraft's IATA aircraft code if it is an aircraft family, or
-  # the ICAO code if it is an aircraft type.
-  #
-  # @return [String] the IATA or ICAO aircraft code
-  def code
-    return self.is_root_family? ? self.iata_aircraft_code : self.icao_aircraft_code
-  end
-  
   # Returns an array containing the current family's ID and the IDs of all
   # child types. Used to generate the queries to show all flights of a given
   # family, including its child types.
@@ -137,18 +129,6 @@ class AircraftFamily < ApplicationRecord
       parents.push(*self.parent.type_and_parent_types)
     end
     return parents
-  end
-  
-  # Returns the AircraftFamily ID for a given ICAO or IATA code.
-  # 
-  # @param airline_code [String] an ICAO or IATA airline type code
-  # @return [Integer] an AircraftFamily ID
-  def self.find_id_from_code(airline_code)
-    from_icao = self.find_by(icao_aircraft_code: airline_code)
-    return from_icao.id if from_icao
-    from_iata = self.find_by(iata_aircraft_code: airline_code)
-    return from_iata.id if from_iata
-    return nil
   end
   
   # Returns an array of AircraftFamily parent families (not child types), with
