@@ -52,17 +52,17 @@
 
 	<h2 id="fleet"><%= @operator.airline_name %>’s Fleet</h2>
 	
-	<% if @fleet_family.length > 0 %>
+	<% if @fleet_aircraft.length > 0 %>
 
   	<table class="flightlog">
   		<tr>
   			<th>Fleet Number</th>
-  			<th class="tail-aircraft">Aircraft Family</th>
+  			<th class="tail-aircraft">Aircraft</th>
   		</tr>
-  	<% @fleet_family.each do |fleet_number, family| %>
+  	<% @fleet_aircraft.each do |fleet_number, aircraft| %>
   		<tr>
   			<td><%= link_to(airline_icon(@operator.slug, title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") + "#" + fleet_number, show_fleet_number_path(@operator.slug, fleet_number), title: "View flights on #{@operator.airline_name} aircraft ##{fleet_number}") %><% if @fleet_name[fleet_number] %> &ndash; <span class="aircraft-name"><%= @fleet_name[fleet_number] %><% end %></span></td>
-  			<td class="tail-aircraft"><%= family %></td>
+  			<td class="tail-aircraft"><%= aircraft %></td>
   		</tr>
   	<% end %>
 	  </table>
