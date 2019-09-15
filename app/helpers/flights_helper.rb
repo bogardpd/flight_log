@@ -8,22 +8,22 @@ module FlightsHelper
   # @return [ActiveSupport::SafeBuffer, nil] a nested list of links to aircraft
   #   types
   def aircraft_type_tree(types, top_level=true)
-    types.reverse! if top_level
-    
+    current = types.pop()
+
     ul_classes = ["aircraft-type-tree"]
     ul_classes.push("aircraft-type-tree-top") if top_level
     output = content_tag(:ul, class: ul_classes) do
-      subtypes = types[1..-1]
-      li_classes = (subtypes.any? || top_level) ? nil : "current-type"
+
+      li_classes = (types.any? || top_level) ? nil : "current-type"
       content_tag(:li, class: li_classes) do
-        
-        link_text = top_level ? types.first.full_name : types.first.family_name
-        concat link_to(link_text, aircraft_family_path(types.first.slug), title: "View flights on #{types.first.full_name} aircraft")
-        
-        if subtypes.any?
-          concat aircraft_type_tree(subtypes, false)
-        elsif types.first.iata_aircraft_code.present?
-          concat content_tag(:div, types.first.iata_aircraft_code, class: "supplemental-code")
+
+        link_text = top_level ? current.full_name : current.family_name
+        concat link_to(link_text, aircraft_family_path(current.slug), title: "View flights on #{current.full_name} aircraft")
+
+        if types.any?
+          concat aircraft_type_tree(types, false)
+        elsif current.iata_aircraft_code.present?
+          concat content_tag(:div, current.iata_aircraft_code, class: "supplemental-code")
         end
 
       end
