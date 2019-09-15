@@ -2,7 +2,7 @@
 <% add_breadcrumb("Aircraft", aircraft_families_path) %>
 
 <% provide(:title, @aircraft.full_name) %>
-<% add_admin_action(link_to("Delete Aircraft", @aircraft, method: :delete, data: {:confirm => "Are you sure you want to delete #{@aircraft.full_name}?"}, class: "warning")) if @flights.length == 0 && !@aircraft.children.any? %>
+<% add_admin_action(link_to("Delete Aircraft", @aircraft, method: :delete, data: {confirm: "Are you sure you want to delete #{@aircraft.full_name}?"}, class: "warning")) if @flights.length == 0 && !@aircraft.children.any? %>
 <% add_admin_action(link_to("Edit Aircraft", edit_aircraft_family_path(@aircraft))) %>
 <% add_admin_action(link_to("Add Type", new_aircraft_family_path(family_id: @aircraft))) if @aircraft.is_root_family? %>
 <% type_and_parent_types_breadcrumbs(@aircraft) %>
