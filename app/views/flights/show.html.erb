@@ -86,26 +86,16 @@
 		</td>
   </tr>
   <% end %>
-  <% aircraft = @flight.aircraft_family_and_type %>
-  <% if aircraft %>
-	  <tr>
-	    <td class="label-column">Aircraft Family</td>
-	    <td>
-	      <% unless aircraft[:family].iata_aircraft_code.blank? %><div class="supplemental-code"><%= aircraft[:family].iata_aircraft_code %></div><% end %>
-				<%= link_to("#{aircraft[:family].manufacturer} #{aircraft[:family].family_name}", aircraft_family_path(aircraft[:family].slug), title: "View flights on #{aircraft[:family].manufacturer} #{aircraft[:family].family_name} aircraft") %>
-				</td>
-	    </td>
-	  </tr>
-		<% if aircraft[:type] %>
-		  <tr class="aircraft-type">
-		    <td class="label-column">Type</td>
-		    <td class="aircraft-type">
-          <% unless aircraft[:type].iata_aircraft_code.blank? %><div class="supplemental-code"><%= aircraft[:type].iata_aircraft_code %></div><% end %>
-		      <%= link_to(aircraft[:type].family_name, aircraft_family_path(aircraft[:type].slug), title: "View flights on #{aircraft[:type].manufacturer} #{aircraft[:type].family_name} aircraft") %>
-		    </td>
-		  </tr>
-		<% end %>
+  
+  <% if @flight.aircraft_family %>
+    <tr>
+      <td class="label-column">Equipment</td>
+      <td class="aircraft-type">
+        <%= aircraft_type_tree(@flight.aircraft_family.type_and_parent_types) %>
+      </td>
+    </tr>
   <% end %>
+
   <% if @flight.aircraft_name %>
   <tr>
     <td class="label-column">Aircraft Name</td>

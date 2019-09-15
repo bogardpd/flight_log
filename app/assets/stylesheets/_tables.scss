@@ -138,6 +138,21 @@
     
     td.aircraft-type {
       font-weight: 300;
+
+      ul.aircraft-type-tree {
+        margin: 0;
+        padding-left: $margin-indent;
+        list-style: none;
+        font-weight: normal;
+
+        li.current-type {
+          font-weight: bold;
+        }
+      }
+
+      ul.aircraft-type-tree-top {
+        padding-left: 0;
+      }
     }
     
   /* Airlines */

@@ -1,6 +1,37 @@
 # Defines helper methods for {Flight} views.
 module FlightsHelper
   
+  # Creates a nested list for an aircraft type and all of its parents.
+  #
+  # @param types [Array] the output of an {AircraftFamily#type_and_parent_types}
+  #   call
+  # @return [ActiveSupport::SafeBuffer, nil] a nested list of links to aircraft
+  #   types
+  def aircraft_type_tree(types, top_level=true)
+    types.reverse! if top_level
+    
+    ul_classes = ["aircraft-type-tree"]
+    ul_classes.push("aircraft-type-tree-top") if top_level
+    output = content_tag(:ul, class: ul_classes) do
+      subtypes = types[1..-1]
+      li_classes = (subtypes.any? || top_level) ? nil : "current-type"
+      content_tag(:li, class: li_classes) do
+        
+        link_text = top_level ? types.first.full_name : types.first.family_name
+        concat link_to(link_text, aircraft_family_path(types.first.slug))
+        
+        if subtypes.any?
+          concat aircraft_type_tree(subtypes, false)
+        elsif types.first.iata_aircraft_code.present?
+          concat content_tag(:div, types.first.iata_aircraft_code, class: "supplemental-code")
+        end
+
+      end
+    end
+
+    return output
+  end
+
   # Accepts an icon type and a raw BCBP value, and returns an image_tag for an
   # icon. Used to augment BCBP interpretations in a {BoardingPass} table, such
   # as on {FlightsController#show} or {FlightsController#show_boarding_pass}.
