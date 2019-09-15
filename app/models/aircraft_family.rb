@@ -215,7 +215,7 @@ class AircraftFamily < ApplicationRecord
     families = self.families.sort_by{|f| [f[:manufacturer].downcase, f[:family_name].downcase]}
     return families.map{|f| {f.id => {family_name: f.family_name, manufacturer: f.manufacturer}}}
       .reduce{|a,b| a.merge(b)}
-      .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]} Family"].push(([{family_name: "Unknown type of #{v[:family_name]}", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
+      .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]}"].push(([{family_name: "#{v[:family_name]} (unknown type)", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
   end
   
   # Accepts a flyer, the viewing user, and date range, and returns all aircraft

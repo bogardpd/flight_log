@@ -78,7 +78,7 @@
   </p>
 
   <p>
-    <%= f.label :aircraft_family_id, "Aircraft Family/Type" %><br />
+    <%= f.label :aircraft_family_id, "Aircraft Type" %><br />
     <% if fields[:aircraft_family_id] %>
       <%= f.select(:aircraft_family_id, grouped_options_for_select(AircraftFamily.grouped_type_select_options, fields[:aircraft_family_id]), {include_blank: true}, class: "autopopulated") %>
     <% else %>
