@@ -18,7 +18,7 @@ module FlightsHelper
       content_tag(:li, class: li_classes) do
         
         link_text = top_level ? types.first.full_name : types.first.family_name
-        concat link_to(link_text, aircraft_family_path(types.first.slug))
+        concat link_to(link_text, aircraft_family_path(types.first.slug), title: "View flights on #{types.first.full_name} aircraft")
         
         if subtypes.any?
           concat aircraft_type_tree(subtypes, false)
