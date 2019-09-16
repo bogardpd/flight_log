@@ -47,6 +47,13 @@
   </p>
 
   <p>
+    <%= f.label :slug, "Unique Slug" %><br />
+    <%= f.text_field :slug, size: 25 %><br />
+  	Used to uniquely identify the aircraft family in URL parameters. Manufacturer name and type with hyphens in place of non-alphanumeric.<br>
+    Example: <span class="code-mono">Boeing-737-800</span>
+  </p>
+
+  <p>
     <%= f.submit yield(:button_text) %>
   </p>
   
