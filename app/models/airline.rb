@@ -105,46 +105,6 @@ class Airline < ApplicationRecord
     return icao if icao
     return keep_iata ? iata : nil
   end
-
-  # Accepts a querystring parameter, and returns an array of Airlines where the
-  # parameter matches the ID, slug, IATA code, or ICAO code.
-  #
-  # @param type [:airline, :operator] whether to search for airlines or
-  #   operators
-  # @param param [String] a querystring parameter
-  # @param flyer [User] the user who flew the {Flight Flights} being viewed
-  # @param current_user [User] the user viewing the {Flight Flights}
-  # @return [Array<Airline>] an array of matching Airlines. Returns an empty
-  #   array if no matching airlines are found.
-  def self.find_by_param(type, param, flyer, current_user)
-    return [] unless param
-    return [] unless [:airline, :operator].include?(type)
-
-    airlines = self.where(slug: param).or(self.where(iata_airline_code: param.to_s.upcase)).or(self.where(icao_airline_code: param.to_s.upcase))
-    if param !~ /\D/
-       # Check IDs only if param is purely numeric. Avoids treating something
-       # like "9E" as an ID of 9, since "9E".to_i == 9.
-       airlines = airlines.or(self.where(id: param))
-    end
-
-    if type == :airline
-      # Filter out airlines that are only operators
-      airlines = airlines.where(is_only_operator: false)
-    end
-    
-    unless current_user == flyer
-      # If the user is not the logged-in flyer of the flights, don't show
-      # airlines or operators without flights
-      if type == :airline
-        airlines_with_flights = flyer.flights(current_user).pluck(:airline_id).uniq
-      else
-        airlines_with_flights = flyer.flights(current_user).pluck(:operator_id).uniq
-      end
-      airlines = airlines.where(id: airlines_with_flights)
-    end
-    airlines = airlines.order(:airline_name)
-    return airlines
-  end
   
   # Accepts a flyer, the current user, and a date range, and returns all
   # airlines that had their first administrated flight in this date range. Used

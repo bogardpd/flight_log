@@ -47,13 +47,8 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show
-    airlines = Airline.find_by_param(:airline, params[:id], flyer, current_user)
-    raise ActiveRecord::RecordNotFound if airlines.empty?
-    if airlines.length > 1
-      @airlines = airlines
-      render "disambiguation_airline" and return
-    end
-    @airline = airlines.first
+    @airline = Airline.find_by(slug: params[:id])
+    raise ActiveRecord::RecordNotFound if (@airline.nil?)
     
     @flights = flyer.flights(current_user).where(airline_id: @airline.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
@@ -102,13 +97,8 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show_operator
-    operators = Airline.find_by_param(:operator, params[:operator], flyer, current_user)
-    raise ActiveRecord::RecordNotFound if operators.empty?
-    if operators.length > 1
-      @operators = operators
-      render "disambiguation_operator" and return
-    end
-    @operator = operators.first
+    @operator = Airline.find_by(slug: params[:operator])
+    raise ActiveRecord::RecordNotFound if (@operator.nil?)
     
     @flights = flyer.flights(current_user).where(operator_id: @operator.id).includes(:airline, :aircraft_family, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
@@ -157,13 +147,9 @@ class AirlinesController < ApplicationController
   #
   # @return [nil]
   def show_fleet_number
-    operators = Airline.find_by_param(:operator, params[:operator], flyer, current_user)
-    raise ActiveRecord::RecordNotFound if operators.empty?
-    if operators.length > 1
-      @operators = operators
-      render "disambiguation_operator" and return
-    end
-    @operator = operators.first
+    @operator = Airline.find_by(slug: params[:operator])
+    raise ActiveRecord::RecordNotFound if (@operator.nil?)
+    
     @fleet_number = params[:fleet_number]
     @flights = flyer.flights(current_user).where(operator_id: @operator.id, fleet_number: @fleet_number).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if @flights.length == 0
