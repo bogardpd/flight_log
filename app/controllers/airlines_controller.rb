@@ -118,15 +118,16 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     # Create list of fleet numbers and aircraft families:
-    @fleet_aircraft = Hash.new
-    @fleet_name = Hash.new
+    @fleet = Hash.new
     @flights.each do |flight|
       if flight.fleet_number
-        @fleet_aircraft[flight.fleet_number] = flight.aircraft_family.family_name
-        @fleet_name[flight.fleet_number] = flight.aircraft_name
+        @fleet[flight.fleet_number] = Hash.new
+        @fleet[flight.fleet_number].store(:aircraft, flight.aircraft_family.family_name)
+        @fleet[flight.fleet_number].store(:name, flight.aircraft_name)
+        @fleet[flight.fleet_number].store(:tail, flight.tail_number)
       end
     end
-    @fleet_aircraft = @fleet_aircraft.sort_by{ |key, value| key }
+    @fleet = @fleet.sort_by{ |key, value| key }
         
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find any flights operated by #{params[:operator]}. Instead, weʼll give you a list of airlines and operators."
