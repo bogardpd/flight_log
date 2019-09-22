@@ -74,34 +74,27 @@ class RoutesController < ApplicationController
     @airports = Array.new
     if params[:id].to_i > 0
       current_route = Route.find(params[:id])
-      @airports.push(Airport.find(current_route.airport1_id).iata_code)
-      @airports.push(Airport.find(current_route.airport2_id).iata_code)
+      @airports.push(Airport.find(current_route.airport1_id))
+      @airports.push(Airport.find(current_route.airport2_id))
       @route_slug = @airports.join("-")
     else
-      @airports = params[:id].split("-")
+      codes = params[:id].split("-")
+      @airports = Airport.where(iata_code: codes).order(:iata_code)
+      raise ActiveRecord::RecordNotFound if @airports.length < 2
       @route_slug = params[:id]
     end
     
-    @route_with_arrow = "#{@airports[0]} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1]}"
-    airport_lookup = Array.new()
-    @airports_id = Array.new()
-    @airports_city = Array.new()
-    raise ActiveRecord::RecordNotFound if Airport.where(:iata_code => @airports[0]).length == 0 || Airport.where(:iata_code => @airports[1]).length == 0
-    @airports.each_with_index do |airport, index|
-      airport_lookup[index] = Airport.where(:iata_code => airport).first
-      @airports_id[index] = airport_lookup[index].id
-      @airports_city[index] = airport_lookup[index].city
-    end
+    @route_with_arrow = "#{@airports[0].iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1].iata_code}"
     
     @logo_used = true
-    
+
     flyer_flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
-    @flights = flyer_flights.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {:city1 => @airports_id[0], :city2 => @airports_id[1]})
+    @flights = flyer_flights.where("(origin_airport_id = :city1 AND destination_airport_id = :city2) OR (origin_airport_id = :city2 AND destination_airport_id = :city1)", {city1: @airports[0].id, city2: @airports[1].id})
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     # Determine trips and sections:
-    @pair_distance = Route.distance_by_iata(@airports[0],@airports[1])
+    @pair_distance = Route.distance_by_iata(@airports[0].iata_code,@airports[1].iata_code)
     @trips_and_sections = Trip.matching_trips_and_sections(@flights)
     
     # Create comparitive lists of airlines, aircraft, and classes:
@@ -120,7 +113,7 @@ class RoutesController < ApplicationController
     @trips_map    = HighlightedRoutesMap.new(@city_pair_trip_flights, @flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:warning] = "We couldnʼt find any flights with the route #{params[:id]}. Instead, weʼll give you a list of routes."
+    flash[:warning] = %Q(We couldnʼt find any flights with the route <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of routes.)
     redirect_to routes_path
     
   end

@@ -4,7 +4,7 @@
 <% add_breadcrumb "Routes", routes_path %>
 <% add_breadcrumb @route_with_arrow, route_path(@route_slug) %>
 
-<% route_with_arrow_and_abbr = safe_join([content_tag(:abbr, @airports[0], title: @airports_city[0]), Route::ARROW_TWO_WAY_PLAINTEXT, content_tag(:abbr, @airports[1], title: @airports_city[1])], " ") %>
+<% route_with_arrow_and_abbr = safe_join([content_tag(:abbr, @airports[0].iata_code, title: @airports[0].city), Route::ARROW_TWO_WAY_PLAINTEXT, content_tag(:abbr, @airports[1].iata_code, title: @airports[1].city)], " ") %>
 
 <h1><%= @route_with_arrow %></h1>
 
@@ -20,7 +20,7 @@
   </ul>
 </div>
 
-<p>I have flown between <span class="bold"><%= link_to(@airports_city[0], airport_path(@airports[0])) %></span> and <span class="bold"><%= link_to(@airports_city[1], airport_path(@airports[1])) %></span> <%= pluralize(@flights.length, "time") %>.</p>
+<p>I have flown between <span class="bold"><%= link_to(@airports[0].city, airport_path(@airports[0].slug)) %></span> and <span class="bold"><%= link_to(@airports[1].city, airport_path(@airports[1].slug)) %></span> <%= pluralize(@flights.length, "time") %>.</p>
 
 <div id="map">
   <%= @route_map.gcmap %>

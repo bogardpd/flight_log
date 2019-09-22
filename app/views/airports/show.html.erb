@@ -3,7 +3,7 @@
 <% add_admin_action link_to("Delete Airport", @airport, method: :delete, data: {confirm: "Are you sure you want to delete #{@airport.iata_code}?"}, :class => "warning") if @flights.length == 0 %>
 <% add_admin_action link_to("Edit Airport", edit_airport_path(@airport)) %>
 <% add_breadcrumb "Airports", airports_path %>
-<% add_breadcrumb @airport.iata_code, airport_path(@airport.iata_code) %>
+<% add_breadcrumb @airport.iata_code, airport_path(@airport.slug) %>
 
 <% if @airport.country || @airport.coordinates %>
 <div id="title-info">
@@ -68,8 +68,8 @@
 						<%= index + 1 %>
 					<% end %>
 	    	</td>
-		    <td class="airport-city"><%= country_flag_icon(row[:country]) %> <%= link_to(format_airport_name(row[:city]), airport_path(row[:iata_code])) %></td>
-		    <td class="airport-code code-mono"><%= link_to(row[:iata_code], airport_path(row[:iata_code])) %></td>
+		    <td class="airport-city"><%= country_flag_icon(row[:country]) %> <%= link_to(format_airport_name(row[:city]), airport_path(row[:slug])) %></td>
+		    <td class="airport-code code-mono"><%= link_to(row[:iata_code], airport_path(row[:slug])) %></td>
 				<td class="airport-distance"><%= render "flights/graph_block_with_unit", :value => row[:distance_mi], :maximum => @distance_maximum, :unit => "mi" %></td>
 		    <td class="airport-flights"><div class="graph" style="background-size: <%= row[:total_flights]*100/@flights_maximum %>% 100%;"><%= link_to(row[:total_flights], route_path("#{@airport.iata_code}-#{row[:iata_code]}")) %></div></td>
 		  </tr>

@@ -147,8 +147,8 @@ class Airport < ApplicationRecord
     end
 
     # Fill in airport details:
-    airports = Airport.find(count_by_id.keys).pluck(:id, :iata_code, :city, :country)
-    airports.map!{|a| {iata_code: a[1], city: a[2], country: a[3], distance_mi: distance_by_id[a[0]], total_flights: count_by_id[a[0]]}}
+    airports = Airport.find(count_by_id.keys).pluck(:id, :slug, :iata_code, :city, :country)
+    airports.map!{|a| {slug: a[1], iata_code: a[2], city: a[3], country: a[4], distance_mi: distance_by_id[a[0]], total_flights: count_by_id[a[0]]}}
 
     # Sort array:
     sort_mult = (sort_direction == :asc ? 1 : -1)
@@ -198,16 +198,16 @@ class Airport < ApplicationRecord
       }
       unless current_trip_section == previous_trip_section && flight.origin_airport.iata_code == previous_destination
         # This is not a layover, so count this origin airport
-        visits[[flight.origin_airport.iata_code,flight.origin_airport.city,flight.origin_airport.country]] += 1
+        visits[[flight.origin_airport.slug, flight.origin_airport.iata_code, flight.origin_airport.city,flight.origin_airport.country]] += 1
       end
-      visits[[flight.destination_airport.iata_code,flight.destination_airport.city,flight.destination_airport.country]] += 1
+      visits[[flight.destination_airport.slug, flight.destination_airport.iata_code, flight.destination_airport.city, flight.destination_airport.country]] += 1
       previous_trip_section = current_trip_section
       previous_destination = flight.destination_airport.iata_code
       
     end
     
     counts = visits.map{|k,v|
-      {iata_code: k[0], city: k[1], country: k[2], visit_count: v}
+      {slug: k[0], iata_code: k[1], city: k[2], country: k[3], visit_count: v}
     }
 
     case sort_category

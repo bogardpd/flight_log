@@ -53,12 +53,9 @@ class AirportsController < ApplicationController
   # @see https://www.pbogard.com/projects/terminal-silhouettes Terminal Silhouettes
   def show
     @logo_used = true
-    if params[:id].to_i > 0
-      @airport = Airport.find(params[:id])
-    else
-      @airport = Airport.where(:iata_code => params[:id]).first
-      raise ActiveRecord::RecordNotFound if (@airport.nil?)
-    end
+
+    @airport = Airport.find_by(slug: params[:id])
+    raise ActiveRecord::RecordNotFound if (@airport.nil?)
     
     flyer_flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
     @flights = flyer_flights.where("origin_airport_id = ? OR destination_airport_id = ?", @airport.id, @airport.id)
@@ -99,7 +96,7 @@ class AirportsController < ApplicationController
     @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport], region: @region)
    
   rescue ActiveRecord::RecordNotFound
-    flash[:warning] = "We couldnʼt find an airport with an ID of #{params[:id]}. Instead, weʼll give you a list of airports."
+    flash[:warning] = %Q(We couldnʼt find an airport matching <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of airports.)
     redirect_to airports_path
   end
   
@@ -128,7 +125,7 @@ class AirportsController < ApplicationController
         session[:form_location] = nil
         redirect_to form_location
       else
-        redirect_to @airport
+        redirect_to airport_path(@airport.slug)
       end
     else
       if session[:form_location]
@@ -158,7 +155,7 @@ class AirportsController < ApplicationController
     @airport = Airport.find(params[:id])
     if @airport.update_attributes(airport_params)
       flash[:success] = "Successfully updated airport."
-      redirect_to @airport
+      redirect_to airport_path(@airport.slug)
     else
       render "edit"
     end
@@ -170,17 +167,14 @@ class AirportsController < ApplicationController
   #
   # @return [nil]
   def destroy
-    @flights = Flight.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {:airport_id => params[:id]})
+    @airport = Airport.find(params[:id])
+    @flights = Flight.where("origin_airport_id = :airport_id OR destination_airport_id = :airport_id", {airport_id: params[:id]})
     if @flights.any?
       flash[:error] = "This airport still has flights and could not be deleted. Please delete all of this airportʼs flights first."
-      redirect_to airport_path(params[:id])
+      redirect_to airport_path(@airport.slug)
     else
-      if (Airport.exists?(params[:id]))
-        Airport.find(params[:id]).destroy
-      else
-        Airport.where(:iata_code => params[:id]).first.destroy
-      end
-      flash[:success] = "Airport destroyed."
+      @airport.destroy
+      flash[:success] = "Airport deleted."
       redirect_to airports_path
     end
   end

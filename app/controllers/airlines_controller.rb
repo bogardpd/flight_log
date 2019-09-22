@@ -71,7 +71,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:warning] = "We couldnʼt find an airline matching #{params[:id]}. Instead, weʼll give you a list of airlines."
+    flash[:warning] = %Q(We couldnʼt find an airline matching <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of airlines.)
     redirect_to airlines_path
       
   end
@@ -130,7 +130,7 @@ class AirlinesController < ApplicationController
     @fleet = @fleet.sort_by{ |key, value| key }
         
   rescue ActiveRecord::RecordNotFound
-    flash[:warning] = "We couldnʼt find any flights operated by #{params[:operator]}. Instead, weʼll give you a list of airlines and operators."
+    flash[:warning] = %Q(We couldnʼt find any flights operated by <span class="param-highlight">#{params[:operator]}</span>. Instead, weʼll give you a list of airlines and operators.)
     redirect_to airlines_path
   end
   
@@ -170,7 +170,7 @@ class AirlinesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:warning] = "We couldnʼt find any flights operated by #{params[:operator]} with fleet number ##{params[:fleet_number]}. Instead, weʼll give you a list of airlines and operators."
+    flash[:warning] = %Q(We couldnʼt find any flights operated by <span class="param-highlight">#{params[:operator]}</span> with fleet number #<span class="param-highlight">#{params[:fleet_number]}</span>. Instead, weʼll give you a list of airlines and operators.)
     redirect_to airlines_path
   end
   

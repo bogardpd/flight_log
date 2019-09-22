@@ -64,7 +64,7 @@ class AircraftFamiliesController < ApplicationController
     @route_superlatives = superlatives(@flights)
     
     rescue ActiveRecord::RecordNotFound
-      flash[:warning] = "We couldnʼt find an aircraft family matching #{params[:id]}. Instead, weʼll give you a list of aircraft families."
+      flash[:warning] = %Q(We couldnʼt find an aircraft family matching <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of aircraft families.)
       redirect_to aircraft_families_path
   end
   
