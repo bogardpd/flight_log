@@ -148,7 +148,7 @@ class Airport < ApplicationRecord
 
     # Fill in airport details:
     airports = Airport.find(count_by_id.keys).pluck(:id, :slug, :iata_code, :city, :country)
-    airports.map!{|a| {slug: a[1], iata_code: a[2], city: a[3], country: a[4], distance_mi: distance_by_id[a[0]], total_flights: count_by_id[a[0]]}}
+    airports.map!{|a| {slug: a[1], iata_code: a[2], city: a[3], country: a[4], distance_mi: distance_by_id[a[0]] || -1, total_flights: count_by_id[a[0]]}}
 
     # Sort array:
     sort_mult = (sort_direction == :asc ? 1 : -1)

@@ -72,17 +72,10 @@ class RoutesController < ApplicationController
   # @return [nil]
   def show
     @airports = Array.new
-    if params[:id].to_i > 0
-      current_route = Route.find(params[:id])
-      @airports.push(Airport.find(current_route.airport1_id))
-      @airports.push(Airport.find(current_route.airport2_id))
-      @route_slug = @airports.join("-")
-    else
-      codes = params[:id].split("-")
-      @airports = Airport.where(iata_code: codes).order(:iata_code)
-      raise ActiveRecord::RecordNotFound if @airports.length < 2
-      @route_slug = params[:id]
-    end
+    
+    @airports.push(Airport.find_by(slug: params[:airport1]))
+    @airports.push(Airport.find_by(slug: params[:airport2]))
+    raise ActiveRecord::RecordNotFound if @airports.first == nil || @airports.last == nil
     
     @route_with_arrow = "#{@airports[0].iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1].iata_code}"
     
@@ -113,7 +106,7 @@ class RoutesController < ApplicationController
     @trips_map    = HighlightedRoutesMap.new(@city_pair_trip_flights, @flights)
     
   rescue ActiveRecord::RecordNotFound
-    flash[:warning] = %Q(We couldnʼt find any flights with the route <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of routes.)
+    flash[:warning] = %Q(We couldnʼt find any flights with the route <span class="param-highlight">#{params[:airport1]} &ndash; #{params[:airport2]}</span>. Instead, weʼll give you a list of routes.)
     redirect_to routes_path
     
   end
@@ -124,13 +117,12 @@ class RoutesController < ApplicationController
   #
   # @return [nil]
   def edit
-    @airports = [params[:airport1],params[:airport2]]
+    @airport_ids = [params[:airport1],params[:airport2]]
+    @airports = Array.new
+    @airports.push(Airport.find(@airport_ids.first))
+    @airports.push(Airport.find(@airport_ids.last))
+    @airports.sort_by{|a| a.slug}
     
-    # Get airport ids:
-    @airport_ids = Array.new
-    @airport_ids.push(Airport.where(:iata_code => @airports.first).first.try(:id))
-    @airport_ids.push(Airport.where(:iata_code => @airports.last).first.try(:id))
-    raise ArgumentError if @airport_ids.include?(nil)
     @airport_ids.sort! # Ensure IDs are in order
     
     # Check to see if route already exists in database. If so, edit it, if not, new route.
@@ -144,9 +136,9 @@ class RoutesController < ApplicationController
       @route = Route.new
     end
     
-    rescue ArgumentError
-      flash[:warning] = "Canʼt look up route - at least one of these airports does not exist in the database."
-      redirect_to routes_path
+  rescue ArgumentError
+    flash[:warning] = "Canʼt look up route - at least one of these airports does not exist in the database."
+    redirect_to routes_path
     
   end
   
@@ -159,7 +151,7 @@ class RoutesController < ApplicationController
     @route = Route.new(route_params)
     if @route.save
       flash[:success] = "Successfully added distance to route!"
-      redirect_to route_path("#{@route.airport1.iata_code}-#{@route.airport2.iata_code}")
+      redirect_to show_route_path(airport1: @route.airport1.slug, airport2: @route.airport2.slug)
     else
       render "new"
     end
@@ -174,7 +166,7 @@ class RoutesController < ApplicationController
     @route = Route.find(params[:id])
     if @route.update_attributes(route_params)
       flash[:success] = "Successfully updated route distance."
-      redirect_to route_path("#{@route.airport1.iata_code}-#{@route.airport2.iata_code}")
+      redirect_to show_route_path(airport1: @route.airport1.slug, airport2: @route.airport2.slug)
     else
       render "edit"
     end

@@ -8,7 +8,7 @@ class RoutesControllerTest < ActionDispatch::IntegrationTest
   end
   
   def test_show_route_success
-    get route_path("DFW-ORD")
+    get show_route_path(airport1: airports(:airportDFW).slug, airport2: airports(:airportORD).slug)
     assert_response :success
   end
   

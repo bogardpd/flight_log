@@ -7,3 +7,8 @@ routeORDSEA:
   airport1_id: 2
   airport2_id: 3
   distance_mi: 1716
+
+routeDFWSEA:
+  airport1_id: 1
+  airport2_id: 3
+  distance_mi: 1658

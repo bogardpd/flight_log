@@ -46,8 +46,9 @@ Portfolio::Application.routes.draw do
   get   "/tails/:tail_number"                => "flights#show_tail",            as: :show_tail
 
   # Flight routes:
-  resources :routes, :only => [:new, :show, :create, :update]
-  get   "/routes"                            => "routes#index"                  
+  resources :routes, :only => [:new, :create, :update]
+  get   "/routes"                            => "routes#index"
+  get   "/routes/:airport1/:airport2"        => "routes#show", as: :show_route                  
   get   "/routes/edit/:airport1/:airport2"   => "routes#edit",                  as: :edit_route
   
   # Boarding pass import pages:

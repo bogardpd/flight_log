@@ -1,9 +1,9 @@
-<% provide(:title, "Edit #{@airports.first} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last}") %>
+<% provide(:title, "Edit #{@airports.first.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last.iata_code}") %>
 <% add_breadcrumb "Routes", routes_path %>
-<% add_breadcrumb "#{@airports.first} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last}", route_path("#{@airports.first}-#{@airports.last}") %>
+<% add_breadcrumb "#{@airports.first.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports.last.iata_code}", show_route_path(airport1: @airports.first.slug, airport2: @airports.last.slug) %>
 <% add_breadcrumb "Edit", edit_route_path(airport1: @airports.first, airport2: @airports.last) %>
 
-<h1>Edit <%= @airports.first %> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= @airports.last %></h1>
+<h1>Edit <%= @airports.first.iata_code %> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= @airports.last.iata_code %></h1>
 
 <%= form_for(@route) do |f| %>
 

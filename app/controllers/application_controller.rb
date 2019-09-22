@@ -82,16 +82,16 @@ class ApplicationController < ActionController::Base
   def superlatives(flights)
     route_distances = Hash.new()
     route_hash = Hash.new()
-    Route.find_by_sql("SELECT routes.distance_mi, airports1.iata_code AS iata1, airports2.iata_code AS iata2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_hash[[x.iata1,x.iata2]] = x.distance_mi }
+    Route.find_by_sql("SELECT routes.distance_mi, airports1.slug AS slug1, airports2.slug AS slug2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_hash[[x.slug1,x.slug2]] = x.distance_mi }
     flights.each do |flight|
-      airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
-      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_hash[[airport_alphabetize[0],airport_alphabetize[1]]] || route_hash[[airport_alphabetize[1],airport_alphabetize[0]]] || -1
+      airport_alphabetize = [flight.origin_airport,flight.destination_airport].sort_by{|a| a.slug}
+      route_distances[[airport_alphabetize[0],airport_alphabetize[1]]] = route_hash[[airport_alphabetize[0].slug,airport_alphabetize[1].slug]] || route_hash[[airport_alphabetize[1].slug,airport_alphabetize[0].slug]] || -1
     end
     return superlatives_collection(route_distances)
     
   end
   
-  # Accept a hash of distances, and return a hash superlative distances. The
+  # Accept a hash of distances, and return a hash of superlative distances. The
   # return hash is in the same format as {#superlatives}.
   #
   # @param route_distances [Hash<Array, Number>] a hash in the format

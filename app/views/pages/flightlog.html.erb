@@ -59,7 +59,7 @@
     </tr>
   <% @flight_routes.first(5).each do |flight_route| %>
     <tr>
-      <td class="left"><%= link_to(format_route(flight_route[:route]), route_path(flight_route[:route].join("-")), title: "View flights between #{flight_route[:route][0]} and #{flight_route[:route][1]}") %></td>
+      <td class="left"><%= link_to(format_route(flight_route[:route].map{|r| r.iata_code}), show_route_path(airport1: flight_route[:route].first.slug, airport2: flight_route[:route].last.slug), title: "View flights between #{flight_route[:route][0]} and #{flight_route[:route][1]}") %></td>
       <td class="center"><%= flight_route[:flight_count] %></td>
     </tr>
   <% end %>

@@ -45,9 +45,9 @@
       <% if @route_distance %>
         <div class="supplemental-info"><span class="flight-route-distance"><%= number_with_delimiter(@route_distance, :delimiter => ",") %> mi / <%= number_with_delimiter((@route_distance*1.60934).to_i, :delimiter => ",") %> km</span></div>
       <% elsif logged_in? %>
-        <div class="supplemental-info message-error"><%= link_to "Distance Undefined",  edit_route_path(@flight.origin_airport.iata_code,@flight.destination_airport.iata_code) %></div>
+        <div class="supplemental-info message-error"><%= link_to "Distance Undefined", edit_route_path(@flight.origin_airport,@flight.destination_airport) %></div>
       <% end %>
-      <%= link_to("#{@flight.origin_airport.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@flight.destination_airport.iata_code}", route_path("#{@flight.origin_airport.iata_code}-#{@flight.destination_airport.iata_code}"), :title => "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %>
+      <%= link_to("#{@flight.origin_airport.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@flight.destination_airport.iata_code}", show_route_path(airport1: @flight.origin_airport.slug, airport2: @flight.destination_airport.slug), title: "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %>
     </td>
   </tr>
   <% if @flight.travel_class %>

@@ -40,6 +40,27 @@ class Route < ApplicationRecord
       return distance.present? ? distance : false
     end
   end
+
+  # Given two {Airport} slugs, returns the distance in statute miles between them.
+  # The haversine formula is used to calculate the distance.
+  #
+  # This calls an SQL query, and should not be used in a loop.
+  # 
+  # @param slug_1 [String] an {Airport} slug
+  # @param slug_2 [String] an {Airport} slug
+  # @return [Integer] the distance between the airports in statute miles
+  def self.distance_by_slug(slug_1, slug_2)
+    airport_ids = Array.new
+    airport_ids[0] = Airport.where(:slug => slug_1).first.try(:id)
+    airport_ids[1] = Airport.where(:slug => slug_2).first.try(:id)
+    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport_ids[0], airport_ids[1], airport_ids[1], airport_ids[0])
+    if current_route.present?
+      return current_route.first.distance_mi
+    else
+      distance = distance_by_airport(Airport.find(airport_ids[0]), Airport.find(airport_ids[1]))
+      return distance.present? ? distance : false
+    end
+  end
   
   # Given two {Airport Airports}, returns the distance in statute miles
   # between them. The haversine formula is used to calculate the distance.
@@ -99,7 +120,7 @@ class Route < ApplicationRecord
   # number of times flown descending. Routes which have been flown but have
   # not had a distance defined have a value of -1 (to allow sorting).
 
-  # Returns an array of routes, with a hash for each IATA code pair containing
+  # Returns an array of routes, with a hash for each airport pair containing
   # the distance in statute miles and number of {Flight Flights} on that route
   # (in either direction), sorted by number of flights descending.
   #
@@ -114,14 +135,14 @@ class Route < ApplicationRecord
   def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
     flights = flights.includes(:origin_airport, :destination_airport)
     
-    route_distances = Hash.new()
     route_frequencies = Hash.new(0)
+    route_distances = Hash.new(-1)
     route_array = Array.new()
     
-    Route.find_by_sql("SELECT routes.distance_mi, airports1.iata_code AS iata_1, airports2.iata_code AS iata_2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_distances[[x.iata_1,x.iata_2].sort] = x.distance_mi }
+    Route.find_by_sql("SELECT routes.distance_mi, airports1.slug AS slug_1, airports2.slug AS slug_2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_distances[[x.slug_1,x.slug_2].sort] = x.distance_mi }
         
     flights.each do |flight|
-      airport_alphabetize = [flight.origin_airport.iata_code,flight.destination_airport.iata_code].sort
+      airport_alphabetize = [flight.origin_airport,flight.destination_airport].sort_by{|a| a.slug}
       route_frequencies[airport_alphabetize] += 1;
     end
     
@@ -129,7 +150,7 @@ class Route < ApplicationRecord
       route_array.push({
         route: route,
         flight_count: freq,
-        distance_mi: route_distances[route] || distance_by_iata(route.first, route.last) || -1
+        distance_mi: route_distances[[route.first.slug, route.last.slug]] || distance_by_airport(route.first.id, route.last.id) || -1
       })
     end
 
