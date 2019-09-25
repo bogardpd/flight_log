@@ -689,7 +689,7 @@ all <span class='object_link'><a href="Flight.html" title="Flight (class)">Fligh
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span> <span class='kw'>if</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>0</span>
   
   <span class='comment'># Determine trips and sections:
-</span>  <span class='ivar'>@pair_distance</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_distance_by_airport'><span class='object_link'><a href="Route.html#distance_by_airport-class_method" title="Route.distance_by_airport (method)">distance_by_airport</a></span></span><span class='lparen'>(</span><span class='ivar'>@airports</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span><span class='ivar'>@airports</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+</span>  <span class='ivar'>@pair_distance</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_distance_by_airport'><span class='object_link'><a href="Route.html#distance_by_airport-class_method" title="Route.distance_by_airport (method)">distance_by_airport</a></span></span><span class='lparen'>(</span><span class='ivar'>@airports</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='ivar'>@airports</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='ivar'>@trips_and_sections</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_matching_trips_and_sections'><span class='object_link'><a href="Trip.html#matching_trips_and_sections-class_method" title="Trip.matching_trips_and_sections (method)">matching_trips_and_sections</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
   
   <span class='comment'># Create comparitive lists of airlines, aircraft, and classes:
@@ -790,7 +790,7 @@ all <span class='object_link'><a href="Flight.html" title="Flight (class)">Fligh
 </div>
 
       <div id="footer">
-  Generated on Wed Sep 25 12:16:40 2019 by
+  Generated on Wed Sep 25 15:21:07 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

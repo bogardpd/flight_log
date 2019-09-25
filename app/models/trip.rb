@@ -73,7 +73,7 @@ class Trip < ApplicationRecord
     flights = self.flights.where(trip_section: section).order(:departure_utc)
     return nil unless flights.any?
     ideal_distance = Route.distance_by_airport(flights.first.origin_airport, flights.last.destination_airport)
-    return nil unless ideal_distance > 0
+    return nil unless (ideal_distance && ideal_distance > 0)
     flown_distance = Route.total_distance(flights)
     return (flown_distance.to_f)/(ideal_distance.to_f)
   end

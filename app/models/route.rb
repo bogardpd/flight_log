@@ -29,9 +29,9 @@ class Route < ApplicationRecord
   # @param airport_2 [Airport] an {Airport}
   # @return [Integer] the distance between the airports in statute miles
   def self.distance_by_airport(airport_1, airport_2)
-    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport_1, airport_2, airport_2, airport_1)
+    current_route = Route.find_by("(airport1_id = :a1_id AND airport2_id = :a2_id) OR (airport1_id = :a2_id AND airport2_id = :a1_id)", a1_id: airport_1.id, a2_id: airport_2.id)
     if current_route.present?
-      return current_route.first.distance_mi
+      return current_route.distance_mi
     else
       coordinates_1 = airport_1.coordinates
       coordinates_2 = airport_2.coordinates
@@ -108,7 +108,7 @@ class Route < ApplicationRecord
       route_array.push({
         route: route,
         flight_count: freq,
-        distance_mi: route_distances[[route.first.slug, route.last.slug]] || distance_by_airport(route.first.id, route.last.id) || -1
+        distance_mi: route_distances[[route.first.slug, route.last.slug]] || distance_by_airport(route.first, route.last) || -1
       })
     end
 

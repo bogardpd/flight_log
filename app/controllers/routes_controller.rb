@@ -87,7 +87,7 @@ class RoutesController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     # Determine trips and sections:
-    @pair_distance = Route.distance_by_airport(@airports[0].id,@airports[1].id)
+    @pair_distance = Route.distance_by_airport(@airports[0],@airports[1])
     @trips_and_sections = Trip.matching_trips_and_sections(@flights)
     
     # Create comparitive lists of airlines, aircraft, and classes:
