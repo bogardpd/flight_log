@@ -20,27 +20,6 @@ class Route < ApplicationRecord
   # The HTML arrow used between airport pairs on two way routes.
   ARROW_TWO_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_TWO_WAY_PLAINTEXT, class: %w(route-arrow))
   
-  # Given two IATA airport codes, returns the distance in statute miles
-  # between them. The haversine formula is used to calculate the distance.
-  #
-  # This calls an SQL query, and should not be used in a loop.
-  # 
-  # @param iata_1 [String] an IATA airport code
-  # @param iata_2 [String] an IATA airport code
-  # @return [Integer] the distance between the airports in statute miles
-  def self.distance_by_iata(iata_1, iata_2)
-    airport_ids = Array.new
-    airport_ids[0] = Airport.where(:iata_code => iata_1).first.try(:id)
-    airport_ids[1] = Airport.where(:iata_code => iata_2).first.try(:id)
-    current_route = Route.where("(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)", airport_ids[0], airport_ids[1], airport_ids[1], airport_ids[0])
-    if current_route.present?
-      return current_route.first.distance_mi
-    else
-      distance = distance_by_airport(Airport.find(airport_ids[0]), Airport.find(airport_ids[1]))
-      return distance.present? ? distance : false
-    end
-  end
-  
   # Given two {Airport Airports}, returns the distance in statute miles
   # between them. The haversine formula is used to calculate the distance.
   # 
