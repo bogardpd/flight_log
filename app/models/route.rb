@@ -108,7 +108,7 @@ class Route < ApplicationRecord
       route_array.push({
         route: route,
         flight_count: freq,
-        distance_mi: route_distances[[route.first.slug, route.last.slug]] || distance_by_airport(route.first, route.last) || -1
+        distance_mi: route_distances[[route.first.slug, route.last.slug]] || distance_by_airport(route.first, route.last) || 0
       })
     end
 
@@ -132,7 +132,15 @@ class Route < ApplicationRecord
   #   calculate the total distance for
   # @return [Integer] the total distance of the {Flight Flights} in statute miles
   def self.total_distance(flights)
-    return flight_table_data(flights).reduce(0){|sum, r| sum + r[:flight_count] * r[:distance_mi]}
+    return nil unless flights.any?
+    airport_ids = flights.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq
+    
+    routes = self.where(airport1_id: airport_ids).or(self.where(airport2_id: airport_ids)) # Trying to select only the specific routes involved was too deep of a stack, so instead we just select all routes that involve any of the flight airports as a compromise
+    route_distances = routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
+
+    # Sum distances:
+    flights.includes(:origin_airport, :destination_airport).reduce(0){|sum, f| sum + (route_distances[[f.origin_airport_id,f.destination_airport_id].sort] || distance_by_coordinates(f.origin_airport.coordinates, f.destination_airport.coordinates) || 0)}
+
   end
   
 end
