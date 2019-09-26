@@ -7,3 +7,5 @@ routeORDSEA:
   airport1_id: 2
   airport2_id: 3
   distance_mi: 1716
+
+# Route from DFW to SEA deliberately excluded to test unknown routes.
