@@ -1,7 +1,7 @@
 app/classes/map.rb 98fd6725bb2091839da34d8e9d2ec41fc9648831
 app/models/trip.rb b2339efa3a2c8d5c355578e7e4ce1ba884bc34b9
 app/models/user.rb aa83d10456ebe2e579ef80f7f08ff20dc10171a2
-app/models/route.rb 373b5d255f123ec3653615b03362d6070d71ba06
+app/models/route.rb b49b075477c5907556ad10f5659e668cc03652ff
 app/models/flight.rb 9726beeb1b14ce5138b0ac9070b217a1f0a45099
 app/modules/table.rb 48967bdc56ca121c1696b4ad2279660395d2a88c
 app/models/airline.rb 77470a9a175b9f8845ab971cdeea4150fc155870

@@ -19,6 +19,8 @@ class Route < ApplicationRecord
   ARROW_ONE_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_ONE_WAY_PLAINTEXT, class: %w(route-arrow))
   # The HTML arrow used between airport pairs on two way routes.
   ARROW_TWO_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_TWO_WAY_PLAINTEXT, class: %w(route-arrow))
+  # The default distance to use if a route's distance can't be determined.
+  UNKNOWN_DISTANCE = 0
   
   # Given two {Airport Airports}, returns the distance in statute miles
   # between them. The haversine formula is used to calculate the distance.
@@ -97,7 +99,7 @@ class Route < ApplicationRecord
 
     route_frequencies = flights.includes(:origin_airport, :destination_airport).map{|f| [f.origin_airport,f.destination_airport].sort_by{|a| a.slug}}.reduce(Hash.new(0)){|hash, pair| hash[pair] += 1; hash}
 
-    route_array = route_frequencies.map{|pair, freq| {route: pair, flight_count: freq, distance_mi: route_distances[[pair.first.id,pair.last.id].sort] || distance_by_coordinates(pair.first.coordinates, pair.last.coordinates) || 0 }}
+    route_array = route_frequencies.map{|pair, freq| {route: pair, flight_count: freq, distance_mi: distance_by_hash(route_distances, *pair) }}
 
     sort_mult = (sort_direction == :desc ? -1 : 1)
     case sort_category
@@ -124,7 +126,7 @@ class Route < ApplicationRecord
     route_distances = distances_hash(flights)
 
     # Sum distances:
-    flights.includes(:origin_airport, :destination_airport).reduce(0){|sum, f| sum + (route_distances[[f.origin_airport_id,f.destination_airport_id].sort] || distance_by_coordinates(f.origin_airport.coordinates, f.destination_airport.coordinates) || 0)}
+    flights.includes(:origin_airport, :destination_airport).reduce(0){|sum, f| sum + distance_by_hash(route_distances, f.origin_airport, f.destination_airport)}
 
   end
 
@@ -140,12 +142,24 @@ class Route < ApplicationRecord
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to generate
   #   route distances from
-  # @return [Hash] A hash in the format [Airport, Airport] => integer distance
-  #   in miles
+  # @return [Hash] A hash in the format [Integer airport_id, Integer airport_id]
+  #   => Integer distance in miles
   def self.distances_hash(flights)
     airport_ids = flights.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq
     routes = self.where(airport1_id: airport_ids).or(self.where(airport2_id: airport_ids))
     return routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
+  end
+  
+  # Returns the flight distance from a provided hash of route distances, or
+  # calculates the distance from the airport coordinates if the flight route is
+  # not in the hash.
+  #
+  # @param route_distances[Hash] the results of a {distances_hash} call.
+  # @param airport1 [Airport] an {Airport}
+  # @param airport2 [Airport] an {Airport}
+  # @return [Integer] the flight distance in statute miles
+  def self.distance_by_hash(route_distances, airport1, airport2)
+    return route_distances[[airport1.id,airport2.id].sort] || distance_by_coordinates(airport1.coordinates, airport2.coordinates) || UNKNOWN_DISTANCE
   end
   
 end
