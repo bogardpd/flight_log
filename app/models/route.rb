@@ -72,7 +72,7 @@ class Route < ApplicationRecord
     
     return distance.to_i
   end
-  
+
   # Returns an array of hashes. Each hash contains an array of two airport codes
   # (sorted alphabetically), distance, and number of times flown, sorted by
   # number of times flown descending. Routes which have been flown but have
@@ -91,26 +91,13 @@ class Route < ApplicationRecord
   #   by
   # @return [Array<Hash>] details for each Route flown
   def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
-    flights = flights.includes(:origin_airport, :destination_airport)
+    return nil unless flights.any?
     
-    route_frequencies = Hash.new(0)
-    route_distances = Hash.new(-1)
-    route_array = Array.new()
-    
-    Route.find_by_sql("SELECT routes.distance_mi, airports1.slug AS slug_1, airports2.slug AS slug_2 FROM routes JOIN airports AS airports1 ON airports1.id = routes.airport1_id JOIN airports AS airports2 ON airports2.id = routes.airport2_id").map{|x| route_distances[[x.slug_1,x.slug_2].sort] = x.distance_mi }
-        
-    flights.each do |flight|
-      airport_alphabetize = [flight.origin_airport,flight.destination_airport].sort_by{|a| a.slug}
-      route_frequencies[airport_alphabetize] += 1;
-    end
-    
-    route_frequencies.each do |route, freq|
-      route_array.push({
-        route: route,
-        flight_count: freq,
-        distance_mi: route_distances[[route.first.slug, route.last.slug]] || distance_by_airport(route.first, route.last) || 0
-      })
-    end
+    route_distances = distances_hash(flights)
+
+    route_frequencies = flights.includes(:origin_airport, :destination_airport).map{|f| [f.origin_airport,f.destination_airport].sort_by{|a| a.slug}}.reduce(Hash.new(0)){|hash, pair| hash[pair] += 1; hash}
+
+    route_array = route_frequencies.map{|pair, freq| {route: pair, flight_count: freq, distance_mi: route_distances[[pair.first.id,pair.last.id].sort] || distance_by_coordinates(pair.first.coordinates, pair.last.coordinates) || 0 }}
 
     sort_mult = (sort_direction == :desc ? -1 : 1)
     case sort_category
@@ -133,14 +120,32 @@ class Route < ApplicationRecord
   # @return [Integer] the total distance of the {Flight Flights} in statute miles
   def self.total_distance(flights)
     return nil unless flights.any?
-    airport_ids = flights.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq
-    
-    routes = self.where(airport1_id: airport_ids).or(self.where(airport2_id: airport_ids)) # Trying to select only the specific routes involved was too deep of a stack, so instead we just select all routes that involve any of the flight airports as a compromise
-    route_distances = routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
+
+    route_distances = distances_hash(flights)
 
     # Sum distances:
     flights.includes(:origin_airport, :destination_airport).reduce(0){|sum, f| sum + (route_distances[[f.origin_airport_id,f.destination_airport_id].sort] || distance_by_coordinates(f.origin_airport.coordinates, f.destination_airport.coordinates) || 0)}
 
+  end
+
+  private
+
+  # Takes a collection of {Flight Flights}, and returns a hash of routes for the
+  # flights with pairs of {Airport Airports} as keys and distances in miles as
+  # values.
+  #
+  # Trying to select only the specific routes used creates stack depth issues,
+  # so this method compromises by returning all routes which involve any of the
+  # Airports in any of the Flights.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to generate
+  #   route distances from
+  # @return [Hash] A hash in the format [Airport, Airport] => integer distance
+  #   in miles
+  def self.distances_hash(flights)
+    airport_ids = flights.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq
+    routes = self.where(airport1_id: airport_ids).or(self.where(airport2_id: airport_ids))
+    return routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
   end
   
 end
