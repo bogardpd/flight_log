@@ -19,8 +19,6 @@ class Route < ApplicationRecord
   ARROW_ONE_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_ONE_WAY_PLAINTEXT, class: %w(route-arrow))
   # The HTML arrow used between airport pairs on two way routes.
   ARROW_TWO_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_TWO_WAY_PLAINTEXT, class: %w(route-arrow))
-  # The default distance to use if a route's distance can't be determined.
-  UNKNOWN_DISTANCE = 0
   
   # Given two {Airport Airports}, returns the distance in statute miles
   # between them. The haversine formula is used to calculate the distance.
@@ -108,7 +106,7 @@ class Route < ApplicationRecord
     when :distance
       route_array.sort_by!{|route| [sort_mult*(route[:distance_mi] || -1), -(route[:flight_count] || 0)]}
     else
-      route_array.sort_by!{|route| [-route[:flight_count], route[:route][0], route[:route][1]]}
+      route_array.sort_by!{|route| [(-route[:flight_count] || 0), route[:route][0], route[:route][1]]}
     end
 
     return route_array
@@ -119,15 +117,22 @@ class Route < ApplicationRecord
   # 
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
   #   calculate the total distance for
-  # @return [Integer] the total distance of the {Flight Flights} in statute miles
-  def self.total_distance(flights)
+  # @param allow_unknown_distances [Boolean] If set to true, will consider
+  #   flights with unknown distances to have zero distance. If set to false,
+  #   will return nil if any of the flight distances are unknown.
+  # @return [Integer, nil] the total distance of the {Flight Flights} in statute miles
+  def self.total_distance(flights, allow_unknown_distances=true)
     return nil unless flights.any?
 
     route_distances = distances_hash(flights)
 
     # Sum distances:
-    flights.includes(:origin_airport, :destination_airport).reduce(0){|sum, f| sum + distance_by_hash(route_distances, f.origin_airport, f.destination_airport)}
-
+    distances = flights.includes(:origin_airport, :destination_airport).map{|f| distance_by_hash(route_distances, f.origin_airport, f.destination_airport)}
+    if allow_unknown_distances || (distances.include?(nil) == false)
+      return distances.reduce(0){|sum, d| sum + (d || 0)}
+    else
+      return nil
+    end
   end
 
   private
@@ -159,7 +164,7 @@ class Route < ApplicationRecord
   # @param airport2 [Airport] an {Airport}
   # @return [Integer] the flight distance in statute miles
   def self.distance_by_hash(route_distances, airport1, airport2)
-    return route_distances[[airport1.id,airport2.id].sort] || distance_by_coordinates(airport1.coordinates, airport2.coordinates) || UNKNOWN_DISTANCE
+    return route_distances[[airport1.id,airport2.id].sort] || distance_by_coordinates(airport1.coordinates, airport2.coordinates) || nil
   end
   
 end

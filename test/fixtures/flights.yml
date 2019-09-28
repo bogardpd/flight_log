@@ -63,6 +63,7 @@ flightORDYVR:
   fleet_number: "333"
 
 flightYVRORD:
+  id: 5
   origin_airport_id: 4
   destination_airport_id: 2
   trip_id: 2
@@ -78,6 +79,7 @@ flightYVRORD:
   fleet_number: "555"
 
 flightLayoverRatioS1F1ORDDFW:
+  id: 6
   origin_airport_id: 2
   destination_airport_id: 1
   trip_id: 3
@@ -89,6 +91,7 @@ flightLayoverRatioS1F1ORDDFW:
   aircraft_family_id: 4
 
 flightLayoverRatioS2F1DFWSEA:
+  id: 7
   origin_airport_id: 1
   destination_airport_id: 3
   trip_id: 3
@@ -100,6 +103,7 @@ flightLayoverRatioS2F1DFWSEA:
   aircraft_family_id: 4
 
 flightLayoverRatioS2F2SEAORD:
+  id: 8
   origin_airport_id: 3
   destination_airport_id: 2
   trip_id: 3
@@ -111,6 +115,7 @@ flightLayoverRatioS2F2SEAORD:
   aircraft_family_id: 4
 
 flightLayoverRatioS3F1ORDORD:
+  id: 9
   origin_airport_id: 2
   destination_airport_id: 2
   trip_id: 3
@@ -122,6 +127,7 @@ flightLayoverRatioS3F1ORDORD:
   aircraft_family_id: 4
 
 flightLayoverRatioS3F2ORDYVR:
+  id: 10
   origin_airport_id: 2
   destination_airport_id: 4
   trip_id: 3
@@ -133,6 +139,7 @@ flightLayoverRatioS3F2ORDYVR:
   aircraft_family_id: 4
 
 flightLayoverRatioS4F1YVRYVR:
+  id: 11
   origin_airport_id: 4
   destination_airport_id: 4
   trip_id: 3
@@ -141,6 +148,31 @@ flightLayoverRatioS4F1YVRYVR:
   departure_utc: 2019-07-04 12:00:00
   airline_id: 1
   flight_number: 4001
+  aircraft_family_id: 4
+
+flightLayoverRatioS5F1ORDDFW:
+  id: 12
+  origin_airport_id: 2
+  destination_airport_id: 1
+  trip_id: 3
+  trip_section: 5
+  departure_date: 2019-07-05
+  departure_utc: 2019-07-05 12:00:00
+  airline_id: 1
+  flight_number: 5001
+  aircraft_family_id: 4
+
+flightLayoverRatioS5F2DFWYYZ:
+  # This flight has no route and YYZ has no coordinates, so it has a totally unknown distance.
+  id: 13
+  origin_airport_id: 1
+  destination_airport_id: 5
+  trip_id: 3
+  trip_section: 5
+  departure_date: 2019-07-05
+  departure_utc: 2019-07-05 13:00:00
+  airline_id: 1
+  flight_number: 5002
   aircraft_family_id: 4
 
 flightDisambiguationHidden:
@@ -167,7 +199,7 @@ flightDisambiguationUnhidden:
   flight_number: 500
   aircraft_family_id: 4
 
-flight_aircraft_child_only:
+flightAircraftChildOnly:
   origin_airport_id: 2
   destination_airport_id: 1
   trip_id: 5

@@ -23,6 +23,7 @@ module FlightXML
   #
   # @return [Savon::Client] a Savon client
   def self.client
+    return nil if Rails.env.test? # Don't do FlightXML lookups during automated tests
     return Savon.client(wsdl: "https://flightxml.flightaware.com/soap/FlightXML2/wsdl", basic_auth: [Rails.application.credentials[:flightaware][:username], Rails.application.credentials[:flightaware][:api_key]])
   end
   

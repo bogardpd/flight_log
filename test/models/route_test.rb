@@ -14,6 +14,12 @@ class RouteTest < ActiveSupport::TestCase
     assert_equal(126, Route.distance_by_airport(airport1, airport2))
   end
 
+  def test_distance_by_airport_with_unknown_route_without_coordinates
+    airport1 = airports(:airportSEA)
+    airport2 = airports(:airportYYZ)
+    assert_nil(Route.distance_by_airport(airport1, airport2))
+  end
+
   def test_distance_by_coordinates
     coord1 = [47.4498889,-122.3117778]
     coord2 = [49.193889,-123.184444]
@@ -25,9 +31,19 @@ class RouteTest < ActiveSupport::TestCase
     assert_equal(2517, Route.total_distance(flights))
   end
 
-  def test_total_distance_with_an_unknown_route
+  def test_total_distance_with_an_unknown_route_with_coordinates
     flights = Flight.where(id: [4])
     assert_equal(1759, Route.total_distance(flights))
+  end
+
+  def test_total_distance_with_an_unknown_route_without_coordinates_allowing_unknown_distances
+    flights = Flight.where(id: [13])
+    assert_equal(0, Route.total_distance(flights, true))
+  end
+
+  def test_total_distance_with_an_unknown_route_without_coordinates
+    flights = Flight.where(id: [13])
+    assert_nil(Route.total_distance(flights, false))
   end
 
 end

@@ -37,3 +37,12 @@ airportYVR:
   country: "Canada"
   latitude: 49.193889
   longitude: -123.184444
+
+airportYYZ:
+  id: 5
+  slug: "YYZ"
+  iata_code: "YYZ"
+  icao_code: "CYYZ"
+  city: "Toronto"
+  country: "Canada"
+  # Coordinates deliberately excluded for testing routes with no distance

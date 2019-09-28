@@ -8,7 +8,7 @@ class TripTest < ActiveSupport::TestCase
   end
   
   def test_layover_ratio_for_section_with_no_flights
-    assert_nil @trip.layover_ratio(5) # no flights
+    assert_nil @trip.layover_ratio(6) # no flights
   end
 
   def test_layover_ratio_for_section_with_one_flight
@@ -31,6 +31,10 @@ class TripTest < ActiveSupport::TestCase
 
   def test_layover_ratio_for_section_with_only_zero_distance_flight
     assert_nil @trip.layover_ratio(4) # YVR-YVR
+  end
+
+  def test_layover_ratio_for_section_with_unknown_distance_flight
+    assert_nil @trip.layover_ratio(5) # ORD-DFW-YYZ, DFW-YYZ unknown
   end
 
   def test_matching_trips_and_sections
