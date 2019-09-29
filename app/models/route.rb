@@ -93,7 +93,7 @@ class Route < ApplicationRecord
   def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
     return nil unless flights.any?
     
-    route_distances = distances_hash(flights)
+    route_distances = flights.route_distances
 
     route_frequencies = flights.includes(:origin_airport, :destination_airport).map{|f| [f.origin_airport,f.destination_airport].sort_by{|a| a.slug}}.reduce(Hash.new(0)){|hash, pair| hash[pair] += 1; hash}
 
@@ -124,10 +124,10 @@ class Route < ApplicationRecord
   def self.total_distance(flights, allow_unknown_distances=true)
     return nil unless flights.any?
 
-    route_distances = distances_hash(flights)
-
+    distances = flights.route_distances
+    
     # Sum distances:
-    distances = flights.includes(:origin_airport, :destination_airport).map{|f| distance_by_hash(route_distances, f.origin_airport, f.destination_airport)}
+    distances = flights.includes(:origin_airport, :destination_airport).map{|f| distance_by_hash(distances, f.origin_airport, f.destination_airport)}
     if allow_unknown_distances || (distances.include?(nil) == false)
       return distances.reduce(0){|sum, d| sum + (d || 0)}
     else
@@ -137,29 +137,11 @@ class Route < ApplicationRecord
 
   private
 
-  # Takes a collection of {Flight Flights}, and returns a hash of routes for the
-  # flights with pairs of {Airport Airports} as keys and distances in miles as
-  # values.
-  #
-  # Trying to select only the specific routes used creates stack depth issues,
-  # so this method compromises by returning all routes which involve any of the
-  # Airports in any of the Flights.
-  #
-  # @param flights [Array<Flight>] a collection of {Flight Flights} to generate
-  #   route distances from
-  # @return [Hash] A hash in the format [Integer airport_id, Integer airport_id]
-  #   => Integer distance in miles
-  def self.distances_hash(flights)
-    airport_ids = flights.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq
-    routes = self.where(airport1_id: airport_ids).or(self.where(airport2_id: airport_ids))
-    return routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
-  end
-  
   # Returns the flight distance from a provided hash of route distances, or
   # calculates the distance from the airport coordinates if the flight route is
   # not in the hash.
   #
-  # @param route_distances[Hash] the results of a {distances_hash} call.
+  # @param route_distances[Hash] the results of a {Flight.route_distances} call.
   # @param airport1 [Airport] an {Airport}
   # @param airport2 [Airport] an {Airport}
   # @return [Integer] the flight distance in statute miles

@@ -30,9 +30,14 @@ class Flight < ApplicationRecord
   validates :airline_id, presence: true
   validates :travel_class, :inclusion => { in: TravelClass::CLASSES.keys, message: "%{value} is not a valid travel class" }, :allow_nil => true, :allow_blank => true
   
+  # Sorts Flights chronologically.
+  # @method chronological()
+  # @scope instance
+  # @return [Array<Flight>] Flights sorted by departure time (UTC)
   scope :chronological, -> {
     order("flights.departure_utc")
   }
+
 
   # Returns the {AircraftFamily} parent family for the Flight, and the
   # {AircraftFamily} child type for the Flight if available.
@@ -81,6 +86,27 @@ class Flight < ApplicationRecord
     
     return summary
   end
+
+  # Returns a hash of routes for a collection of flights with sorted pairs of
+  # {Airport} IDs as keys and distances in miles as values.
+  #
+  # Trying to select only the specific routes used creates stack depth issues,
+  # so this method compromises by returning all routes which involve any of the
+  # Airports in any of the Flights.
+  #
+  # @scope instance
+  # @return [Hash] A hash in the format [Integer airport_id, Integer airport_id]
+  #   => Integer distance in miles
+  def self.route_distances
+    airport_ids = self.all.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq
+    routes = Route.where("airport1_id IN (:a_ids) OR airport2_id IN (:a_ids)", a_ids: airport_ids)
+    return routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
+  end
+
+  # def self.total_distance
+  #   distances = self.all.route_distances
+  #   self.all.map{|f| distances[[f.origin_airport_id,f.destination_airport_id].sort]}.reduce(:+)
+  # end
 
   # For a given flight collection, returns a range of the years that contain
   # flights.

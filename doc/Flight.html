@@ -302,6 +302,30 @@ Flight.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#chronological-instance_method" title="#chronological (instance method)">#<strong>chronological</strong>  &#x21d2; Array&lt;Flight&gt; </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sorts Flights chronologically.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#name-instance_method" title="#name (instance method)">#<strong>name</strong>  &#x21d2; String </a>
     
 
@@ -318,6 +342,31 @@ Flight.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Returns the <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> and flight number for the Flight.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#route_distances-instance_method" title="#route_distances (instance method)">#<strong>route_distances</strong>  &#x21d2; Hash </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns a hash of routes for a collection of flights with sorted pairs of
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> IDs as keys and distances in miles as values.</p>
 </div></span>
   
 </li>
@@ -395,11 +444,6 @@ personal, and undefined flights as the values</p>
       <pre class="lines">
 
 
-66
-67
-68
-69
-70
 71
 72
 73
@@ -412,10 +456,15 @@ personal, and undefined flights as the values</p>
 80
 81
 82
-83</pre>
+83
+84
+85
+86
+87
+88</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_by_year'>by_year</span>
   <span class='comment'># Create hash ranging from earliest to latest years (default all values to zero):
@@ -485,14 +534,14 @@ flights.</p>
       <pre class="lines">
 
 
-89
-90
-91
-92
-93</pre>
+115
+116
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 89</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_year_range'>year_range</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
@@ -549,17 +598,17 @@ Flight.</p>
       <pre class="lines">
 
 
-99
-100
-101
-102
-103
-104
-105
-106</pre>
+125
+126
+127
+128
+129
+130
+131
+132</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 125</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_years_with_flights'>years_with_flights</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span>
@@ -626,20 +675,79 @@ the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamil
       <pre class="lines">
 
 
-43
-44
-45
-46
-47</pre>
+48
+49
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 43</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_aircraft_family_and_type'>aircraft_family_and_type</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span>
   <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>family:</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='period'>.</span><span class='id identifier rubyid_is_root_family?'>is_root_family?</span>
   <span class='kw'>return</span> <span class='lbrace'>{</span><span class='label'>family:</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='period'>.</span><span class='id identifier rubyid_parent'>parent</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='id identifier rubyid_aircraft_family'>aircraft_family</span><span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="chronological-instance_method">
+  
+    #<strong>chronological</strong>  &#x21d2; <tt>Array&lt;<span class='object_link'><a href="" title="Flight (class)">Flight</a></span>&gt;</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sorts Flights chronologically.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="" title="Flight (class)">Flight</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Flights sorted by departure time (UTC)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+37
+38
+39</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 37</span>
+
+<span class='id identifier rubyid_scope'>scope</span> <span class='symbol'>:chronological</span><span class='comma'>,</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span>
+  <span class='id identifier rubyid_order'>order</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>flights.departure_utc</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='rbrace'>}</span></pre>
     </td>
   </tr>
 </table>
@@ -689,15 +797,85 @@ the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamil
       <pre class="lines">
 
 
-52
-53
-54</pre>
+57
+58
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 52</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_name'>name</span>
   <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_number'>flight_number</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="route_distances-instance_method">
+  
+    #<strong>route_distances</strong>  &#x21d2; <tt>Hash</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns a hash of routes for a collection of flights with sorted pairs of
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> IDs as keys and distances in miles as values.</p>
+
+<p>Trying to select only the specific routes used creates stack depth issues,
+so this method compromises by returning all routes which involve any of the
+Airports in any of the Flights.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A hash in the format [Integer airport_id, Integer airport_id]</p>
+
+<h1 id="label-3E+Integer+distance+in+miles">&gt; Integer distance in miles</h1>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+100
+101
+102
+103
+104</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 100</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_route_distances'>route_distances</span>
+  <span class='id identifier rubyid_airport_ids'>airport_ids</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:origin_airport_id</span><span class='comma'>,</span> <span class='symbol'>:destination_airport_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
+  <span class='id identifier rubyid_routes'>routes</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>airport1_id IN (:a_ids) OR airport2_id IN (:a_ids)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>a_ids:</span> <span class='id identifier rubyid_airport_ids'>airport_ids</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_routes'>routes</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_airport1_id'>airport1_id</span><span class='comma'>,</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_airport2_id'>airport2_id</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_distance_mi'>distance_mi</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -709,7 +887,7 @@ the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamil
 </div>
 
       <div id="footer">
-  Generated on Sat Sep 28 11:48:40 2019 by
+  Generated on Sun Sep 29 12:12:31 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

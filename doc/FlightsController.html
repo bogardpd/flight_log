@@ -1508,7 +1508,7 @@ extracted from information provided in the <span class='object_link'><a href="#n
 </span>  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:new_flight</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:trip_section</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_trip'>trip</span><span class='period'>.</span><span class='id identifier rubyid_estimated_trip_section'>estimated_trip_section</span><span class='lparen'>(</span><span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:new_flight</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:departure_utc</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 
   <span class='comment'># Guess origin airport (if not set) from last destination airport:
-</span>  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:new_flight</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:origin_airport_id</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport_id'>destination_airport_id</span>
+</span>  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:new_flight</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:origin_airport_id</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_chronological'><span class='object_link'><a href="Flight.html#chronological-instance_method" title="Flight#chronological (method)">chronological</a></span></span><span class='period'>.</span><span class='id identifier rubyid_last'>last</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport_id'>destination_airport_id</span>
 
   <span class='comment'># Guess departure date and departure UTC (if not set) from the current time:
 </span>  <span class='id identifier rubyid_now'>now</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_utc'>utc</span>
@@ -2573,7 +2573,7 @@ for this tail</p>
 </div>
 
       <div id="footer">
-  Generated on Sat Sep 28 11:48:43 2019 by
+  Generated on Sun Sep 29 12:12:34 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>
