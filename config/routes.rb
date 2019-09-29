@@ -48,8 +48,9 @@ Portfolio::Application.routes.draw do
   # Flight routes:
   resources :routes, :only => [:new, :create, :update]
   get   "/routes"                            => "routes#index"
-  get   "/routes/:airport1/:airport2"        => "routes#show", as: :show_route                  
+  get   "/routes/:airport1/:airport2"        => "routes#show",                  as: :show_route                  
   get   "/routes/edit/:airport1/:airport2"   => "routes#edit",                  as: :edit_route
+  get   "/routes/:route"                     => "routes#index" # Redirect legacy routes to Index Routes
   
   # Boarding pass import pages:
   resources :pk_passes, :only => [:destroy]
