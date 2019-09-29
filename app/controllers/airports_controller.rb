@@ -94,6 +94,9 @@ class AirportsController < ApplicationController
     @airport_map  = FlightsMap.new(@flights, highlighted_airports: [@airport], region: @region)
     @sections_map = FlightsMap.new(@sections_using_airport_flights, highlighted_airports: [@airport], region: @region)
     @trips_map    = FlightsMap.new(@trips_using_airport_flights, highlighted_airports: [@airport], region: @region)
+
+    # Check for presence of terminal silhouette:
+    @terminal_exists = ExternalImage.exists?(@airport.terminal_silhouette_path)
    
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = %Q(We couldnʼt find an airport matching <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of airports.)

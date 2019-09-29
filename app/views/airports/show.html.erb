@@ -30,7 +30,7 @@
 		<li><%= link_to("Classes", "#classes", title: "Classes flown to or from #{@airport.iata_code}") %></li>
 		<li><%= link_to("Trips and Sections", "#trips-and-sections", title: "Trips and sections using #{@airport.iata_code}") %></li>
 		<li><%= link_to("Flight List", "#flights", title: "Flights using #{@airport.iata_code}") %></li>
-		<li><%= link_to("Terminal", "#terminal", title: "Terminal silhouette of #{@airport.iata_code}") %></li>
+		<% if @terminal_exists %><li><%= link_to("Terminal", "#terminal", title: "Terminal silhouette of #{@airport.iata_code}") %></li><% end %>
   </ul>
 </div>
 
@@ -113,20 +113,19 @@
 
 	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
 
-	<h2 id="terminal">Terminal Silhouette</h2>
-
-	<% if ExternalImage.exists?(@airport.terminal_silhouette_path) %>
-  <div class="illustration-container">
-    <% if ExternalImage.exists?(@airport.terminal_silhouette_large_path) %>
-      <%= link_to(image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette"), @airport.terminal_silhouette_large_path, target: :_blank) %>
-    <% else %>
-      <%= image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette") %>
-    <% end %>
-  </div>
-  <div class="credit illustration-credit">
-    Terminal silhouette created by <%= link_to("Paul Bogard", "https://www.pbogard.com/projects/terminal-silhouettes", target: :_blank) %>
-  </div>
-<% end %>
+	<% if @terminal_exists %>
+		<h2 id="terminal">Terminal Silhouette</h2>
+		<div class="illustration-container">
+			<% if ExternalImage.exists?(@airport.terminal_silhouette_large_path) %>
+				<%= link_to(image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette"), @airport.terminal_silhouette_large_path, target: :_blank) %>
+			<% else %>
+				<%= image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette") %>
+			<% end %>
+		</div>
+		<div class="credit illustration-credit">
+			Terminal silhouette created by <%= link_to("Paul Bogard", "https://www.pbogard.com/projects/terminal-silhouettes", target: :_blank) %>
+		</div>
+	<% end %>
 
 
 <% end %>

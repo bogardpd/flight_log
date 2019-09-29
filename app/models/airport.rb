@@ -14,8 +14,8 @@ class Airport < ApplicationRecord
   before_save :capitalize_codes
   before_save :strip_blanks
   
-  validates :iata_code, presence: true, length: { is: 3 }, uniqueness: { case_sensitive: false }
-  validates :icao_code, presence: true, length: { is: 4 }, uniqueness: { case_sensitive: false }
+  validates :iata_code, presence: true, length: { is: 3 }
+  validates :icao_code, presence: true, length: { is: 4 }
   validates :slug, presence: true, uniqueness: { case_sensitive: false }
   validates :city, presence: true
   validates :country, presence: true
@@ -64,14 +64,14 @@ class Airport < ApplicationRecord
   #
   # @return [String] an image path
   def terminal_silhouette_path
-    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png-flight-historian/#{self.iata_code}.png"
+    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png-flight-historian/#{self.slug}.png"
   end
   
   # Returns the image path for this airport's uncropped terminal silhouette.
   #
   # @return [String] an image path
   def terminal_silhouette_large_path
-    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png/#{self.iata_code}.png"
+    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png/#{self.slug}.png"
   end
   
   # Accepts an airport IATA code, and returns the matching ICAO code.
