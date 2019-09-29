@@ -68,7 +68,7 @@ class AirlinesController < ApplicationController
     @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
-    @route_superlatives = superlatives(@flights)
+    @route_superlatives = @flights.superlatives
     
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = %Q(We couldnʼt find an airline matching <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of airlines.)
@@ -115,7 +115,7 @@ class AirlinesController < ApplicationController
     @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
-    @route_superlatives = superlatives(@flights)
+    @route_superlatives = @flights.superlatives
     
     # Create list of fleet numbers and aircraft families:
     @fleet = Hash.new
@@ -167,7 +167,7 @@ class AirlinesController < ApplicationController
     @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
-    @route_superlatives = superlatives(@flights)
+    @route_superlatives = @flights.superlatives
     
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = %Q(We couldnʼt find any flights operated by <span class="param-highlight">#{params[:operator]}</span> with fleet number #<span class="param-highlight">#{params[:fleet_number]}</span>. Instead, weʼll give you a list of airlines and operators.)

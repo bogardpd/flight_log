@@ -629,7 +629,7 @@ representing a map of all flights the user has permission to view.</p>
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="ApplicationController.html" title="ApplicationController (class)">ApplicationController</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="ApplicationController.html#add_message-instance_method" title="ApplicationController#add_message (method)">#add_message</a></span>, <span class='object_link'><a href="ApplicationController.html#check_email_for_boarding_passes-instance_method" title="ApplicationController#check_email_for_boarding_passes (method)">#check_email_for_boarding_passes</a></span>, <span class='object_link'><a href="ApplicationController.html#current_region-instance_method" title="ApplicationController#current_region (method)">#current_region</a></span>, <span class='object_link'><a href="ApplicationController.html#flyer-instance_method" title="ApplicationController#flyer (method)">#flyer</a></span>, <span class='object_link'><a href="ApplicationController.html#logged_in_user-instance_method" title="ApplicationController#logged_in_user (method)">#logged_in_user</a></span>, <span class='object_link'><a href="ApplicationController.html#superlatives-instance_method" title="ApplicationController#superlatives (method)">#superlatives</a></span>, <span class='object_link'><a href="ApplicationController.html#superlatives_collection-instance_method" title="ApplicationController#superlatives_collection (method)">#superlatives_collection</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="ApplicationController.html#add_message-instance_method" title="ApplicationController#add_message (method)">#add_message</a></span>, <span class='object_link'><a href="ApplicationController.html#check_email_for_boarding_passes-instance_method" title="ApplicationController#check_email_for_boarding_passes (method)">#check_email_for_boarding_passes</a></span>, <span class='object_link'><a href="ApplicationController.html#current_region-instance_method" title="ApplicationController#current_region (method)">#current_region</a></span>, <span class='object_link'><a href="ApplicationController.html#flyer-instance_method" title="ApplicationController#flyer (method)">#flyer</a></span>, <span class='object_link'><a href="ApplicationController.html#logged_in_user-instance_method" title="ApplicationController#logged_in_user (method)">#logged_in_user</a></span></p>
 
   
   
@@ -2016,7 +2016,7 @@ data.</p>
   <span class='ivar'>@aircraft_families</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_flight_table_data'><span class='object_link'><a href="AircraftFamily.html#flight_table_data-class_method" title="AircraftFamily.flight_table_data (method)">flight_table_data</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
 
   <span class='comment'># Create superlatives:
-</span>  <span class='ivar'>@route_superlatives</span> <span class='op'>=</span> <span class='id identifier rubyid_superlatives'>superlatives</span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
+</span>  <span class='ivar'>@route_superlatives</span> <span class='op'>=</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_superlatives'>superlatives</span>
   
 <span class='kw'>rescue</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span>
   <span class='id identifier rubyid_flash'>flash</span><span class='lbracket'>[</span><span class='symbol'>:warning</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We couldnʼt find any flights in </span><span class='embexpr_beg'>#{</span><span class='ivar'>@title</span><span class='embexpr_end'>}</span><span class='tstring_content'>. Instead, weʼll give you a list of travel classes.</span><span class='tstring_end'>&quot;</span></span>
@@ -2209,7 +2209,7 @@ during this date range</p>
   <span class='ivar'>@new_classes</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClass</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new_in_date_range'><span class='object_link'><a href="TravelClass.html#new_in_date_range-class_method" title="TravelClass.new_in_date_range (method)">new_in_date_range</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='comma'>,</span> <span class='ivar'>@date_range</span><span class='rparen'>)</span>
   
   <span class='comment'># Create superlatives:
-</span>  <span class='ivar'>@route_superlatives</span> <span class='op'>=</span> <span class='id identifier rubyid_superlatives'>superlatives</span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
+</span>  <span class='ivar'>@route_superlatives</span> <span class='op'>=</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_superlatives'>superlatives</span>
         
 <span class='kw'>rescue</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span>
   <span class='id identifier rubyid_flash'>flash</span><span class='lbracket'>[</span><span class='symbol'>:warning</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We couldnʼt find any flights in </span><span class='embexpr_beg'>#{</span><span class='ivar'>@in_text</span><span class='embexpr_end'>}</span><span class='tstring_content'>. Instead, weʼll give you a list of flights.</span><span class='tstring_end'>&quot;</span></span>
@@ -2471,7 +2471,7 @@ for this tail</p>
   <span class='ivar'>@classes</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClass</a></span></span><span class='period'>.</span><span class='id identifier rubyid_flight_table_data'><span class='object_link'><a href="TravelClass.html#flight_table_data-class_method" title="TravelClass.flight_table_data (method)">flight_table_data</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
   
   <span class='comment'># Create superlatives:
-</span>  <span class='ivar'>@route_superlatives</span> <span class='op'>=</span> <span class='id identifier rubyid_superlatives'>superlatives</span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
+</span>  <span class='ivar'>@route_superlatives</span> <span class='op'>=</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_superlatives'>superlatives</span>
       
 <span class='kw'>rescue</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span>
  <span class='id identifier rubyid_flash'>flash</span><span class='lbracket'>[</span><span class='symbol'>:warning</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We couldnʼt find any flights with the tail number </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:tail_number</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_content'>. Instead, weʼll give you a list of tail numbers.</span><span class='tstring_end'>&quot;</span></span>
@@ -2573,7 +2573,7 @@ for this tail</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 29 12:45:11 2019 by
+  Generated on Sun Sep 29 17:26:07 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

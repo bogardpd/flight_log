@@ -164,7 +164,7 @@ class FlightsController < ApplicationController
     @new_classes = TravelClass.new_in_date_range(flyer, current_user, @date_range)
     
     # Create superlatives:
-    @route_superlatives = superlatives(@flights)
+    @route_superlatives = @flights.superlatives
           
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find any flights in #{@in_text}. Instead, weʼll give you a list of flights."
@@ -220,7 +220,7 @@ class FlightsController < ApplicationController
     @aircraft_families = AircraftFamily.flight_table_data(@flights)
 
     # Create superlatives:
-    @route_superlatives = superlatives(@flights)
+    @route_superlatives = @flights.superlatives
     
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find any flights in #{@title}. Instead, weʼll give you a list of travel classes."
@@ -277,7 +277,7 @@ class FlightsController < ApplicationController
     @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
-    @route_superlatives = superlatives(@flights)
+    @route_superlatives = @flights.superlatives
         
   rescue ActiveRecord::RecordNotFound
    flash[:warning] = "We couldnʼt find any flights with the tail number #{params[:tail_number]}. Instead, weʼll give you a list of tail numbers."

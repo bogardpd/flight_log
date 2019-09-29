@@ -61,7 +61,7 @@ class AircraftFamiliesController < ApplicationController
     @classes = TravelClass.flight_table_data(@flights)
     
     # Create superlatives:
-    @route_superlatives = superlatives(@flights)
+    @route_superlatives = @flights.superlatives
     
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = %Q(We couldnʼt find an aircraft family matching <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of aircraft families.)

@@ -90,16 +90,60 @@ class Flight < ApplicationRecord
   # Returns a hash of routes for a collection of flights with sorted pairs of
   # {Airport} IDs as keys and distances in miles as values.
   #
-  # Trying to select only the specific routes used creates stack depth issues,
-  # so this method compromises by returning all routes which involve any of the
-  # Airports in any of the Flights.
-  #
   # @scope instance
   # @return [Hash] A hash in the format [Integer airport_id, Integer airport_id] => Integer distance in miles
   def self.route_distances
     airport_ids = self.all.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq
-    routes = Route.where("airport1_id IN (:a_ids) OR airport2_id IN (:a_ids)", a_ids: airport_ids)
-    return routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
+    
+    routes = Route.where("airport1_id IN (:a_ids) OR airport2_id IN (:a_ids)", a_ids: airport_ids)   # Trying to select only the specific routes used creates stack depth issues, so this method compromises by selecting all routes which involve any of the Airports in any of the Flights.
+    distances = routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
+
+    # Filter down to only the routes that are actually used:
+    return self.all.map{|flight| [[flight.origin_airport_id, flight.destination_airport_id].sort, distances[[flight.origin_airport_id, flight.destination_airport_id].sort]]}.to_h
+  end
+
+  # Return the longest and shortest flights from a collection of flights.
+  #
+  # Returns a hash with keys of :max, :min, and :zero, which contain the longest
+  # Flight(s), shortest non-zero-length Flight(s), and zero-length Flight(s)
+  # respectively. Each of these values is itself a hash, with an array of two
+  # {Airport Airports} as each key, and the distance in statute miles as each
+  # value.
+  # 
+  # Zero-length flights are strictly defined as flights where the origin and
+  # destination airports are the same. Theoretically, if a flight were flown
+  # between two airports that were less than 0.5 miles apart, then the flight
+  # would be included in :min rather than :zero, even though its integer
+  # distance would be rounded to zero.
+  #
+  # @scope instance
+  # @return [Hash] A hash of superlative routes.
+  # @example
+  #   Flight.all.superlatives #=> {
+  #     :max => {[Airport1,Airport2] => 8500},
+  #     :min => {[Airport3,Airport4] => 50, [Airport5,Airport6] => 50},
+  #     :zero => {[Airport7,Airport7] => 0}
+  #   }
+  def self.superlatives
+    route_distances = self.all.route_distances
+    
+    # Separate out routes where both airports are the same:
+    routes_zero, routes_non_zero = route_distances.partition{|k, v| k[0] == k[1]}
+    routes_non_zero = routes_non_zero.to_h
+    routes_zero = routes_zero.to_h
+
+    distance_min, distance_max = routes_non_zero.values.compact.sort.values_at(0,-1)
+
+    route_superlatives = Hash.new
+    route_superlatives[:max] = routes_non_zero.select{|k, v| v == distance_max}
+    route_superlatives[:min] = routes_non_zero.select{|k, v| v == distance_min}
+    route_superlatives[:zero] = routes_zero
+
+    # Convert airport IDs to airports:
+    airport_ids = route_superlatives.values.map{|r| r.keys}.flatten.uniq
+    airports = Airport.find(airport_ids).map{|a| [a.id, a]}.to_h
+    
+    return route_superlatives.map{|k,v| [k, v.map{|r| [[airports[r[0][0]], airports[r[0][1]]], r[1]] }.to_h ]}.to_h
   end
 
   # Returns the total distance in statute miles of a collection of Flights.

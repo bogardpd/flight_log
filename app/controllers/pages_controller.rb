@@ -33,7 +33,7 @@ class PagesController < ApplicationController
     
     if @flights.any?
       @map = FlightsMap.new(@flights, region: @region)
-      @route_superlatives = superlatives(@flights)
+      @route_superlatives = @flights.superlatives
     end
 
   end

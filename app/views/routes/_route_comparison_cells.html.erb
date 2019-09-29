@@ -1,2 +1,0 @@
-<td class="route-route"><%= link_to(format_route(route[0].map{|r| r.iata_code}), show_route_path(airport1: route[0].first.slug, airport2: route[0].last.slug), title: "View flights between #{route[0].first.iata_code} and #{route[0].last.iata_code}") %></td>
-<td class="route-distance"><%= number_with_delimiter(route[1], delimeter: ",") %> <span class="measurement-unit">mi</span></td>
