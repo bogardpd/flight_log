@@ -18,9 +18,9 @@ class TripTest < ActiveSupport::TestCase
   end
 
   def test_layover_ratio_for_section_with_multiple_flights
-    ratio = @trip.layover_ratio(2) # DFW-SEA-ORD
+    ratio = @trip.layover_ratio(2) # DFW-ORD-SEA
     assert_not_nil ratio
-    assert_in_delta ratio, 4.212, @delta
+    assert_in_delta ratio, 1.518, @delta
   end
 
   def test_layover_ratio_for_section_with_zero_and_nonzero_distance_flights

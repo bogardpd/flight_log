@@ -866,7 +866,7 @@ flown under its brand.</p>
 </span>  <span class='ivar'>@map</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="FlightsMap.html#initialize-instance_method" title="FlightsMap#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='label'>region:</span> <span class='ivar'>@region</span><span class='rparen'>)</span>
   
   <span class='comment'># Calculate total flight distance:
-</span>  <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_total_distance'><span class='object_link'><a href="Route.html#total_distance-class_method" title="Route.total_distance (method)">total_distance</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
+</span>  <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_total_distance'>total_distance</span>
   
   <span class='comment'># Create comparitive lists of aircraft and classes:
 </span>  <span class='ivar'>@airlines</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_flight_table_data'><span class='object_link'><a href="Airline.html#flight_table_data-class_method" title="Airline.flight_table_data (method)">flight_table_data</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='symbol'>:airline</span><span class='rparen'>)</span> <span class='comment'># Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
@@ -986,7 +986,7 @@ flown under its brand.</p>
   <span class='ivar'>@logo_used</span> <span class='op'>=</span> <span class='kw'>true</span>
   <span class='ivar'>@region</span> <span class='op'>=</span> <span class='id identifier rubyid_current_region'>current_region</span><span class='lparen'>(</span><span class='label'>default:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   
-  <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_total_distance'><span class='object_link'><a href="Route.html#total_distance-class_method" title="Route.total_distance (method)">total_distance</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
+  <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_total_distance'>total_distance</span>
   <span class='ivar'>@map</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="FlightsMap.html#initialize-instance_method" title="FlightsMap#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='label'>region:</span> <span class='ivar'>@region</span><span class='rparen'>)</span>
   
   <span class='comment'># Create comparitive lists of airlines, aircraft and classes:
@@ -1126,7 +1126,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
   <span class='ivar'>@logo_used</span> <span class='op'>=</span> <span class='kw'>true</span>
   <span class='ivar'>@region</span> <span class='op'>=</span> <span class='id identifier rubyid_current_region'>current_region</span><span class='lparen'>(</span><span class='label'>default:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 
-  <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_total_distance'><span class='object_link'><a href="Route.html#total_distance-class_method" title="Route.total_distance (method)">total_distance</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
+  <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_total_distance'>total_distance</span>
   <span class='ivar'>@map</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="FlightsMap.html#initialize-instance_method" title="FlightsMap#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='label'>region:</span> <span class='ivar'>@region</span><span class='rparen'>)</span>
   
   <span class='comment'># Create comparitive lists of airlines, aircraft and classes:
@@ -1239,7 +1239,7 @@ brands the flight) and data for all <span class='object_link'><a href="Flight.ht
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 29 12:12:35 2019 by
+  Generated on Sun Sep 29 12:45:11 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

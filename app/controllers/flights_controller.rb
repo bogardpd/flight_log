@@ -21,7 +21,7 @@ class FlightsController < ApplicationController
     
       @map = FlightsMap.new(@flights, region: @region)
       
-      @total_distance = Route.total_distance(@flights)
+      @total_distance = @flights.total_distance
     
       # Determine which years have flights:
       @years_with_flights = Hash.new(false)
@@ -151,7 +151,7 @@ class FlightsController < ApplicationController
     
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
-    @total_distance = Route.total_distance(@flights)
+    @total_distance = @flights.total_distance
       
     # Create comparitive lists of airlines and classes:
     @airports = Airport.visit_table_data(@flights) 
@@ -212,7 +212,7 @@ class FlightsController < ApplicationController
     
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
-    @total_distance = Route.total_distance(@flights)
+    @total_distance = @flights.total_distance
 
     # Create comparitive lists of airlines, operators, and aircraft:
     @airlines = Airline.flight_table_data(@flights, type: :airline)
@@ -269,7 +269,7 @@ class FlightsController < ApplicationController
     
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
-    @total_distance = Route.total_distance(@flights)
+    @total_distance = @flights.total_distance
     
     # Create comparitive list of airlines, operators, and classes:
     @airlines = Airline.flight_table_data(@flights, type: :airline)

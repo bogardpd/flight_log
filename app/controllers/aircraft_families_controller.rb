@@ -49,7 +49,7 @@ class AircraftFamiliesController < ApplicationController
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     @map = FlightsMap.new(@flights, region: @region)
-    @total_distance = Route.total_distance(@flights)
+    @total_distance = @flights.total_distance
     
     @children = @aircraft.children
     @flights_including_child_types = @aircraft.family_and_type_count(@flights)

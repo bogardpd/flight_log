@@ -847,7 +847,7 @@ those trips</p>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_logged_in?'>logged_in?</span><span class='rparen'>)</span>
   
   <span class='ivar'>@airport_frequency</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_visit_frequencies'><span class='object_link'><a href="Airport.html#visit_frequencies-class_method" title="Airport.visit_frequencies (method)">visit_frequencies</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span><span class='lbracket'>[</span><span class='ivar'>@airport</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rbracket'>]</span>
-  <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_total_distance'><span class='object_link'><a href="Route.html#total_distance-class_method" title="Route.total_distance (method)">total_distance</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
+  <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_total_distance'>total_distance</span>
   
   <span class='comment'># Determine trips and sections:
 </span>  <span class='ivar'>@trips_and_sections</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span></span><span class='period'>.</span><span class='id identifier rubyid_matching_trips_and_sections'><span class='object_link'><a href="Trip.html#matching_trips_and_sections-class_method" title="Trip.matching_trips_and_sections (method)">matching_trips_and_sections</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='rparen'>)</span>
@@ -961,7 +961,7 @@ those trips</p>
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 29 12:12:35 2019 by
+  Generated on Sun Sep 29 12:45:11 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

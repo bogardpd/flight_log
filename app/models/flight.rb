@@ -95,18 +95,29 @@ class Flight < ApplicationRecord
   # Airports in any of the Flights.
   #
   # @scope instance
-  # @return [Hash] A hash in the format [Integer airport_id, Integer airport_id]
-  #   => Integer distance in miles
+  # @return [Hash] A hash in the format [Integer airport_id, Integer airport_id] => Integer distance in miles
   def self.route_distances
     airport_ids = self.all.pluck(:origin_airport_id, :destination_airport_id).flatten.uniq
     routes = Route.where("airport1_id IN (:a_ids) OR airport2_id IN (:a_ids)", a_ids: airport_ids)
     return routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
   end
 
-  # def self.total_distance
-  #   distances = self.all.route_distances
-  #   self.all.map{|f| distances[[f.origin_airport_id,f.destination_airport_id].sort]}.reduce(:+)
-  # end
+  # Returns the total distance in statute miles of a collection of Flights.
+  # 
+  # @scope instance
+  # @param allow_unknown_distances [Boolean] If set to true, will consider
+  #   Flights with unknown distances to have zero distance. If set to false,
+  #   will return nil if any of the Flight distances are unknown.
+  # @return [Integer, nil] the total distance of the Flights in statute miles
+  def self.total_distance(allow_unknown_distances=true)
+    route_distances = self.all.route_distances
+    distances = self.all.map{|f| route_distances[[f.origin_airport_id,f.destination_airport_id].sort]}
+    if allow_unknown_distances || (distances.include?(nil) == false)
+      return distances.reduce(0){|sum, d| sum + (d || 0)}
+    else
+      return nil
+    end
+  end
 
   # For a given flight collection, returns a range of the years that contain
   # flights.

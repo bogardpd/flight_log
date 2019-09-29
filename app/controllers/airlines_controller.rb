@@ -59,7 +59,7 @@ class AirlinesController < ApplicationController
     @map = FlightsMap.new(@flights, region: @region)
     
     # Calculate total flight distance:
-    @total_distance = Route.total_distance(@flights)
+    @total_distance = @flights.total_distance
     
     # Create comparitive lists of aircraft and classes:
     @airlines = Airline.flight_table_data(@flights, type: :airline) # Not used for an airline table, but needed so that the operator table can tell whether all flights are on the advertised airline.
@@ -106,7 +106,7 @@ class AirlinesController < ApplicationController
     @logo_used = true
     @region = current_region(default: [])
 
-    @total_distance = Route.total_distance(@flights)
+    @total_distance = @flights.total_distance
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:
@@ -158,7 +158,7 @@ class AirlinesController < ApplicationController
     @logo_used = true
     @region = current_region(default: [])
     
-    @total_distance = Route.total_distance(@flights)
+    @total_distance = @flights.total_distance
     @map = FlightsMap.new(@flights, region: @region)
     
     # Create comparitive lists of airlines, aircraft and classes:

@@ -97,7 +97,7 @@ class Route < ApplicationRecord
 
     route_frequencies = flights.includes(:origin_airport, :destination_airport).map{|f| [f.origin_airport,f.destination_airport].sort_by{|a| a.slug}}.reduce(Hash.new(0)){|hash, pair| hash[pair] += 1; hash}
 
-    route_array = route_frequencies.map{|pair, freq| {route: pair, flight_count: freq, distance_mi: distance_by_hash(route_distances, *pair) }}
+    route_array = route_frequencies.map{|pair, freq| {route: pair, flight_count: freq, distance_mi: (route_distances[[pair.first.id,pair.last.id].sort] || distance_by_coordinates(pair.first.coordinates, pair.last.coordinates) || nil) }}
 
     sort_mult = (sort_direction == :desc ? -1 : 1)
     case sort_category
@@ -112,41 +112,9 @@ class Route < ApplicationRecord
     return route_array
     
   end
-  
-  # Returns the total distance in statute miles of a collection of {Flight Flights}.
-  # 
-  # @param flights [Array<Flight>] a collection of {Flight Flights} to
-  #   calculate the total distance for
-  # @param allow_unknown_distances [Boolean] If set to true, will consider
-  #   flights with unknown distances to have zero distance. If set to false,
-  #   will return nil if any of the flight distances are unknown.
-  # @return [Integer, nil] the total distance of the {Flight Flights} in statute miles
-  def self.total_distance(flights, allow_unknown_distances=true)
-    return nil unless flights.any?
-
-    distances = flights.route_distances
-    
-    # Sum distances:
-    distances = flights.includes(:origin_airport, :destination_airport).map{|f| distance_by_hash(distances, f.origin_airport, f.destination_airport)}
-    if allow_unknown_distances || (distances.include?(nil) == false)
-      return distances.reduce(0){|sum, d| sum + (d || 0)}
-    else
-      return nil
-    end
-  end
 
   private
 
-  # Returns the flight distance from a provided hash of route distances, or
-  # calculates the distance from the airport coordinates if the flight route is
-  # not in the hash.
-  #
-  # @param route_distances[Hash] the results of a {Flight.route_distances} call.
-  # @param airport1 [Airport] an {Airport}
-  # @param airport2 [Airport] an {Airport}
-  # @return [Integer] the flight distance in statute miles
-  def self.distance_by_hash(route_distances, airport1, airport2)
-    return route_distances[[airport1.id,airport2.id].sort] || distance_by_coordinates(airport1.coordinates, airport2.coordinates) || nil
-  end
+  
   
 end

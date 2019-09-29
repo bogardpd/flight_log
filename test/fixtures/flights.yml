@@ -90,10 +90,10 @@ flightLayoverRatioS1F1ORDDFW:
   flight_number: 1001
   aircraft_family_id: 4
 
-flightLayoverRatioS2F1DFWSEA:
+flightLayoverRatioS2F1DFWORD:
   id: 7
   origin_airport_id: 1
-  destination_airport_id: 3
+  destination_airport_id: 2
   trip_id: 3
   trip_section: 2
   departure_date: 2019-07-02
@@ -102,10 +102,10 @@ flightLayoverRatioS2F1DFWSEA:
   flight_number: 2001
   aircraft_family_id: 4
 
-flightLayoverRatioS2F2SEAORD:
+flightLayoverRatioS2F2ORDSEA:
   id: 8
-  origin_airport_id: 3
-  destination_airport_id: 2
+  origin_airport_id: 2
+  destination_airport_id: 3
   trip_id: 3
   trip_section: 2
   departure_date: 2019-07-02

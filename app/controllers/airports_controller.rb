@@ -63,7 +63,7 @@ class AirportsController < ApplicationController
     raise ActiveRecord::RecordNotFound if (@flights.length == 0 && !logged_in?)
     
     @airport_frequency = Airport.visit_frequencies(@flights)[@airport.id]
-    @total_distance = Route.total_distance(@flights)
+    @total_distance = @flights.total_distance
     
     # Determine trips and sections:
     @trips_and_sections = Trip.matching_trips_and_sections(@flights)

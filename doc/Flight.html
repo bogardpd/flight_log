@@ -372,6 +372,30 @@ Flight.</p>
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#total_distance-instance_method" title="#total_distance (instance method)">#<strong>total_distance</strong>(allow_unknown_distances = true)  &#x21d2; Integer<sup>?</sup> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the total distance in statute miles of a collection of Flights.</p>
+</div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -534,14 +558,14 @@ flights.</p>
       <pre class="lines">
 
 
-115
-116
-117
-118
-119</pre>
+126
+127
+128
+129
+130</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 115</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 126</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_year_range'>year_range</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
@@ -598,17 +622,17 @@ Flight.</p>
       <pre class="lines">
 
 
-125
-126
-127
-128
-129
-130
-131
-132</pre>
+136
+137
+138
+139
+140
+141
+142
+143</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 125</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_years_with_flights'>years_with_flights</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span>
@@ -848,9 +872,8 @@ Airports in any of the Flights.</p>
       
         &mdash;
         <div class='inline'>
-<p>A hash in the format [Integer airport_id, Integer airport_id]</p>
-
-<h1 id="label-3E+Integer+distance+in+miles">&gt; Integer distance in miles</h1>
+<p>A hash in the format [Integer airport_id, Integer airport_id] =&gt; Integer
+distance in miles</p>
 </div>
       
     </li>
@@ -863,14 +886,14 @@ Airports in any of the Flights.</p>
       <pre class="lines">
 
 
+99
 100
 101
 102
-103
-104</pre>
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_route_distances'>route_distances</span>
   <span class='id identifier rubyid_airport_ids'>airport_ids</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:origin_airport_id</span><span class='comma'>,</span> <span class='symbol'>:destination_airport_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
@@ -882,12 +905,107 @@ Airports in any of the Flights.</p>
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="total_distance-instance_method">
+  
+    #<strong>total_distance</strong>(allow_unknown_distances = true)  &#x21d2; <tt>Integer</tt><sup>?</sup> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the total distance in statute miles of a collection of Flights.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>allow_unknown_distances</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>If set to true, will consider Flights with unknown distances to have zero
+distance. If set to false, will return nil if any of the Flight distances
+are unknown.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>nil</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the total distance of the Flights in statute miles</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114
+115
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 112</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_distance'>total_distance</span><span class='lparen'>(</span><span class='id identifier rubyid_allow_unknown_distances'>allow_unknown_distances</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_route_distances'>route_distances</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_route_distances'>route_distances</span>
+  <span class='id identifier rubyid_distances'>distances</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_route_distances'>route_distances</span><span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_origin_airport_id'>origin_airport_id</span><span class='comma'>,</span><span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport_id'>destination_airport_id</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_allow_unknown_distances'>allow_unknown_distances</span> <span class='op'>||</span> <span class='lparen'>(</span><span class='id identifier rubyid_distances'>distances</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='kw'>false</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_distances'>distances</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sum'>sum</span><span class='comma'>,</span> <span class='id identifier rubyid_d'>d</span><span class='op'>|</span> <span class='id identifier rubyid_sum'>sum</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='id identifier rubyid_d'>d</span> <span class='op'>||</span> <span class='int'>0</span><span class='rparen'>)</span><span class='rbrace'>}</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 29 12:12:31 2019 by
+  Generated on Sun Sep 29 12:45:07 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.19 (ruby-2.3.1).
 </div>

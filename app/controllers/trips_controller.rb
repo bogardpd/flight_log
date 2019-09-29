@@ -35,7 +35,7 @@ class TripsController < ApplicationController
       add_message(:info, "You have boarding passes you can #{view_context.link_to("import", new_flight_menu_path(trip_id: @trip))}!") if PKPass.where(flight_id: nil).any?
     end
     
-    @trip_distance = Route.total_distance(@flights)
+    @trip_distance = @flights.total_distance
     @section_count = Hash.new(0) # Holds a count of the number of flights in each section
     @section_final_destination = Hash.new # Holds the last destination airport code in each section
     stops = Array.new # Holds the origin, destination, and intermediate stops of the trip
@@ -94,7 +94,7 @@ class TripsController < ApplicationController
     @flights = Flight.where(trip_id: @trip, trip_section: @section).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
     raise ActiveRecord::RecordNotFound unless @flights.any?
 
-    @section_distance = Route.total_distance(@flights)
+    @section_distance = @flights.total_distance
     @layover_ratio = @trip.layover_ratio(@section)
     stops = [@flights.first.origin_airport,@flights.last.destination_airport]
     
