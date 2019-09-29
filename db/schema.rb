@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_10_005525) do
+ActiveRecord::Schema.define(version: 2019_09_29_213045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(version: 2019_09_10_005525) do
     t.float "latitude"
     t.float "longitude"
     t.string "slug"
-    t.index ["iata_code"], name: "index_airports_on_iata_code", unique: true
     t.index ["slug"], name: "index_airports_on_slug", unique: true
   end
 
