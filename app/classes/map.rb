@@ -458,7 +458,7 @@ class Map
     return content_tag(:rte) do
       concat content_tag(:name, detail.map{|a| a[:iata]}.join("–"))
       concat content_tag(:desc, detail.map{|a| a[:city]}.join(" – "))
-      concat content_tag(:link, nil, href: "https://www.flighthistorian.com/routes/#{detail[0][:iata]}-#{detail[1][:iata]}")
+      concat content_tag(:link, nil, href: "https://www.flighthistorian.com/routes/#{detail[0][:iata]}/#{detail[1][:iata]}")
       concat safe_join(airport_pair.map{|a| gpx_airport(a, :rtept)})
     end
   end
