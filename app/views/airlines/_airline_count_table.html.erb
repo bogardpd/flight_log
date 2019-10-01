@@ -36,7 +36,7 @@
             <%= link_to(airline[:iata_airline_code].split("-").first, path, title: "View all flights on #{airline[:airline_name]}") %>
           </td>
           <td class="airline-flights">
-            <%= render "flights/graph_block", value: airline[:flight_count], maximum: airline_maximum %>
+            <%= graph_bar(airline[:flight_count], airline_maximum) %>
           </td>
         <% end %>
       	<% previous_count = airline[:flight_count] %>

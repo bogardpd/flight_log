@@ -133,6 +133,29 @@ module ApplicationHelper
     return nil unless code.present?
     return content_tag(:span, code, class: %w(code-mono))
   end
+
+  # Provides a bar graph for a value. A single horizontal bar will be drawn with
+  # the provided value as a percentage of the provided maximum, with the numeric
+  # value centered on it. Used on numeric columns of tables to show the value of
+  # the row relative to other rows (for example, Index Airlines will have a bar
+  # for each airline in the table showing how many flights are on that airline).
+  #
+  # @param value [Integer] the value of this row
+  # @param maximum [Integer] the maximum value of this column in the table. Used
+  #   to set the 100% point of the bar.
+  # @param unit [String] a unit to append to the displayed number
+  # @param path [Rails::Paths::Path] a path to link the displayed number to
+  # @param title [String] a title for the link
+  # @return [ActiveSupport::SafeBuffer] HTML for a graph
+  def graph_bar(value, maximum, unit=nil, path=nil, title=nil)
+    return "" unless (value >= 0 && maximum > 0)
+    percent = value * 100 / maximum
+    value = number_with_delimiter(value, delimeter: ",")
+    value = safe_join([value, content_tag(:span, unit, class: "measurement-unit")], " ") if unit
+    return content_tag(:div, class: "graph-background") do
+      content_tag(:div, link_to_if(path.present?, value, path, title: title), class: "graph", style: "background-size: #{percent}% 100%;")
+    end
+  end
   
   # Renders a link which the user can click on to sort a table column. Used in
   # table headers. Includes an arrow showing the direction of the sort if the
@@ -145,10 +168,10 @@ module ApplicationHelper
   # @param link_sort_category [Symbol] a symbol representing the name of the
   #   sortable column this link sorts. Compared to +@sort+ to determine if
   #   the table is already sorted by this column.
-  # @param default_direction [:asc, :desc] The direction to sort this column,
-  #   if a direction is not provided in the page URL parameters.
-  # @param page_anchor [String] The ID of the table to sort, so that the table
-  #   remains in view when a sort link is clicked.
+  # @param default_direction [:asc, :desc] the direction to sort this column,
+  #   if a direction is not provided in the page URL parameters
+  # @param page_anchor [String] the ID of the table to sort, so that the table
+  #   remains in view when a sort link is clicked
   # @return [ActiveSupport::SafeBuffer] a link_to tag for sorting a table
   #   column.
   # @see Table.sort_parse

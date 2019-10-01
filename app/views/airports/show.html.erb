@@ -70,8 +70,8 @@
 	    	</td>
 		    <td class="airport-city"><%= country_flag_icon(row[:country]) %> <%= link_to(format_airport_name(row[:city]), airport_path(row[:slug])) %></td>
 		    <td class="airport-code code-mono"><%= link_to(row[:iata_code], airport_path(row[:slug])) %></td>
-				<td class="airport-distance"><%= render "flights/graph_block_with_unit", value: row[:distance_mi], maximum: @distance_maximum, unit: "mi" %></td>
-		    <td class="airport-flights"><div class="graph" style="background-size: <%= row[:total_flights]*100/@flights_maximum %>% 100%;"><%= link_to(row[:total_flights], show_route_path(airport1: @airport.slug, airport2: row[:slug]), title: "View flights between #{@airport.iata_code} and #{row[:iata_code]}") %></div></td>
+				<td class="airport-distance"><%= graph_bar(row[:distance_mi], @distance_maximum, "mi") %></td>
+		    <td class="airport-flights"><%= graph_bar(row[:total_flights], @flights_maximum, nil, show_route_path(airport1: @airport.slug, airport2: row[:slug]), "View flights between #{@airport.iata_code} and #{row[:iata_code]}") %></td>
 		  </tr>
 			<% previous_count = @sort[0] == :flights ? row[:total_flights] : row[:distance_mi] %>
 		<% end %>

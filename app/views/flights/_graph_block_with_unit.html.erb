@@ -1,3 +1,0 @@
-<% if value >= 0 %>
-	<div class="graph-background"><div class="graph" style="background-size: <%= value*100/maximum %>% 100%;"><%= number_with_delimiter(value, delimeter: ',') %> <span class="measurement-unit"><%= unit %></span></div></div>
-<% end %>
