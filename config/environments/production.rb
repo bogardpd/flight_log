@@ -27,6 +27,7 @@ Portfolio::Application.configure do
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
+  config.assets.digest = true
   config.serve_static_assets = true
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
