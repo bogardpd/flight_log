@@ -147,6 +147,11 @@ GEM
       loofah (~> 2.2, >= 2.2.2)
     rails-ujs (5.1.0.beta1)
       railties (>= 3.1)
+    rails_12factor (0.0.3)
+      rails_serve_static_assets
+      rails_stdout_logging
+    rails_serve_static_assets (0.0.5)
+    rails_stdout_logging (0.0.5)
     railties (5.2.3)
       actionpack (= 5.2.3)
       activesupport (= 5.2.3)
@@ -218,6 +223,7 @@ DEPENDENCIES
   rails (~> 5.2, >= 5.2.3)
   rails-controller-testing (= 0.1.1)
   rails-ujs (~> 5.1.0.beta1)
+  rails_12factor (~> 0.0.3)
   rubyzip (~> 1.2)
   sassc-rails (~> 2.1, >= 2.1.2)
   savon (~> 2.11, >= 2.11.1)
