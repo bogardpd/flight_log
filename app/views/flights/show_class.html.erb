@@ -20,7 +20,7 @@
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>
-  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
+	<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
 </div>
 
 <h2 id="airlines">Airlines with <%= TravelClass.title(@class) %> Flights</h2>

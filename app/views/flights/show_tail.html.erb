@@ -26,7 +26,7 @@
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>
-  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
+	<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
 </div>
 
 <h2 id="classes">Classes Flown on <%= @tail_number %></h2>

@@ -29,7 +29,7 @@
 
 <div id="map" class="intro-box">
   <%= gcmap_with_region_select(@map, @region, anchor: "flight-map") %>
-	<%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total", flight_link: true} %>
+	<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
 </div>
 
 

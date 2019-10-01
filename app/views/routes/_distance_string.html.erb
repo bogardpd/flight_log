@@ -1,3 +1,0 @@
-<% adjective ||= nil %>
-<span class="distance-primary"><%= number_with_delimiter(distance, delimiter: ",") %> <%= [adjective,"mile".pluralize(distance)].compact.join(" ") %></span>
-<span class="distance-secondary">(<%= number_with_delimiter((distance*Distance::KM_PER_MILE).to_i, delimiter: ",") %> km)</span>

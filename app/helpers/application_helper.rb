@@ -134,6 +134,26 @@ module ApplicationHelper
     return content_tag(:span, code, class: %w(code-mono))
   end
 
+  # Provides HTML for a distance in miles and kilometers.
+  #
+  # @param distance_mi [Integer] the distance in statute miles
+  # @param adjective [String] an adjective to prepend to the units
+  # @param flight_link [Boolean] whether to include a link to the #flights
+  #   anchor
+  # @param paragraph [Boolean] whether to wrap the output in a paragraph tag
+  # @return [ActiveSupport::SafeBuffer] HTML text
+  def distance_block(distance_mi, adjective: nil, flight_link: false, paragraph: true)
+    output = Array.new
+    output.push(content_tag(:span, safe_join([number_with_delimiter(distance_mi, delimeter: ","), [adjective,"mile".pluralize(distance_mi)].compact.join(" ")], " "), class: "distance-primary"))
+    output.push(content_tag(:span, "(#{number_with_delimiter((distance_mi * Distance::KM_PER_MILE).to_i, delimeter: ",")} km)", class: "distance-secondary"))
+    if flight_link
+      output.push(sanitize("&middot;"))
+      output.push(link_to("See a list of these flights", "#flights"))
+    end
+    output = safe_join(output, " ")
+    return paragraph ? content_tag(:p, output, class: "distance") : output
+  end
+
   # Provides a bar graph for a value. A single horizontal bar will be drawn with
   # the provided value as a percentage of the provided maximum, with the numeric
   # value centered on it. Used on numeric columns of tables to show the value of

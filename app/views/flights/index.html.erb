@@ -15,7 +15,7 @@
 <% if @flights.any? %>
 
   <%= gcmap_with_region_select(@map, @region, anchor: "flight-map") %>
-  <%= render partial: "routes/distance_block", locals: {distance: @total_distance, adjective: "total"} %>
+  <%= distance_block(@total_distance, adjective: "total") %>
 
   <div id="flight-list">
 
@@ -26,7 +26,7 @@
       <th class="flight-route">Route</td>
       <th class="flight-date"><%= sort_link("Departure", :departure, :asc, "flight-list") %></td>
     </tr>
-    <%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
+    <%= render :partial => "flights/flight_row", collection: @flights, as: :flight %>
     <%= render :partial => "flights/flight_total_row" %>
     </table>
 
