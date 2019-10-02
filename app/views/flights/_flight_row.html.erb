@@ -1,21 +1,12 @@
-<% if flight.trip_section == @previous_section && flight.trip_id == @previous_trip %>
-	<% @tr_style = "no-top-border" %>
-<% else %>
-	<% @tr_style = "" %>
-<% end %>
-
-
-<tr class="<%= @tr_style %>">
+<tr class="<%= ([flight.trip_id, flight.trip_section] == @previous_trip_and_section) ? "no-top-border" : "" %>">
 	
   <td class="counter"><%= (@sort == [:departure, :desc]) ? @flights.length - flight_counter : flight_counter + 1 %></td>
 	
-	<td class="flight-flight<%= @top_row_style %>"><%= Trip::HIDDEN_MARKER if flight.trip.hidden %><%= link_to(airline_icon(flight.airline.slug, title: "View flight details for #{flight.airline.airline_name} #{flight.flight_number.to_s}") + "#{flight.airline.airline_name} #{flight.flight_number.to_s}", flight_path(flight), title: "View flight details for #{flight.airline.airline_name} #{flight.flight_number.to_s}") %></td>
-	<td class="flight-route<%= @top_row_style %>">
+	<td class="flight-flight"><%= Trip::HIDDEN_MARKER if flight.trip.hidden %><%= link_to(airline_icon(flight.airline.slug, title: "View flight details for #{flight.airline.airline_name} #{flight.flight_number.to_s}") + "#{flight.airline.airline_name} #{flight.flight_number.to_s}", flight_path(flight), title: "View flight details for #{flight.airline.airline_name} #{flight.flight_number.to_s}") %></td>
+	<td class="flight-route">
 		<%= (params[:controller] == "airports" && params[:action] == "show" && @airport.id == flight.origin_airport_id) ? code_mono(flight.origin_airport.iata_code) : link_to(code_mono(flight.origin_airport.iata_code), airport_path(flight.origin_airport.slug), title: "View airport details for #{flight.origin_airport.city}") %> <%= Route::ARROW_ONE_WAY_HTML %> <%= (params[:controller] == "airports" && params[:action] == "show" && @airport.id == flight.destination_airport_id) ? code_mono(flight.destination_airport.iata_code) : link_to(code_mono(flight.destination_airport.iata_code), airport_path(flight.destination_airport.slug), title: "View airport details for #{flight.destination_airport.city}") %>
 	</td>
-	<td class="flight-date<%= @top_row_style %>"><%= format_date(flight.departure_date) %></td>
+	<td class="flight-date"><%= format_date(flight.departure_date) %></td>
 	
 </tr>
-<% @previous_trip = flight.trip_id %>
-<% @previous_section = flight.trip_section %>
-
+<% @previous_trip_and_section = [flight.trip_id, flight.trip_section] %>
