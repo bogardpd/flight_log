@@ -1,0 +1,19 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: flight_log_development
+  pool: 5
+  username: <%= Rails.application.credentials[:database][:development][:username] %>
+  password: <%= Rails.application.credentials[:database][:development][:password] %>
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: flight_log_test
+  pool: 5
+  username: <%= Rails.application.credentials[:database][:test][:username] %>
+  password: <%= Rails.application.credentials[:database][:test][:password] %>
+
+production:
+  url:  <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV["DB_POOL"] || ENV["RAILS_MAX_THREADS"] || 5 %>
