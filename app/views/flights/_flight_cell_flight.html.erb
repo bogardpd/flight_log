@@ -1,3 +1,0 @@
-<% linkable = true if local_assigns[:linkable].nil? %>
-<% cell_html = airline_icon(flight.airline.slug, title: "View flight details for #{flight.airline.airline_name} #{flight.flight_number.to_s}") + "#{flight.airline.airline_name} #{flight.flight_number.to_s}" %>
-<td class="flight-flight<%= @top_row_style %>"><%= Trip::HIDDEN_MARKER if flight.trip.hidden %><%= linkable ? link_to(cell_html, flight_path(flight), title: "View flight details for #{flight.airline.airline_name} #{flight.flight_number.to_s}") : cell_html %></td>

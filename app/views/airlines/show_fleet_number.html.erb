@@ -40,24 +40,4 @@
 
 <h2 id="flights"><abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %> Flight List</h2>
 
-<table class="flightlog">
-	<tr>
-	  <th class="counter">#</th>
-		<th class="flight-flight">Flight</td>
-	  <th class="flight-route">Route</td>
-	  <th class="flight-date">Departure</td>
-	  <th class="flight-aircraft">Aircraft</td>
-		<th class="flight-tail">Tail Number</td>
-	</tr>
-	<% @flights.each_with_index do |flight, index| %>
-		<tr>
-		  <td class="counter"><%= index + 1 %></th>
-			<%= render "flights/flight_cell_flight", :flight => flight %>		  
-			<%= render "flights/flight_cell_route", :flight => flight %>
-			<%= render "flights/flight_cell_departure", :flight => flight %>
-			<%= render "flights/flight_cell_aircraft", :flight => flight %>
-			<%= render "flights/flight_cell_tail", :flight => flight %>
-		</tr>
-	<% end %>
-	<tr><td colspan="6" class="flightlog-total"><%= render :partial => "flights/flight_total_row_cell" %></td></tr>
-</table>
+<%= render "flights/flight_table" %>
