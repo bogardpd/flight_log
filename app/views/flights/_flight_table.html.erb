@@ -1,5 +1,5 @@
 <table class="flightlog">
-<%= render :partial => "flights/flight_header_row" %>
-<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
-<%= render :partial => "flights/flight_total_row" %>
+  <%= render partial: "flights/flight_header_row" %>
+  <%= render partial: "flights/flight_row", collection: @flights, as: :flight %>
+  <%= flight_table_total_row(@flights) %>
 </table>

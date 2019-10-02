@@ -6,7 +6,7 @@
 <title>
   Class: Route
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -108,13 +108,9 @@
     
 <p>Defines a model for flight routes.</p>
 
-<p>Note that this specifically refers to flight routes, and not routes in the
-Ruby on Rails routing sense.</p>
+<p>Note that this specifically refers to flight routes, and not routes in the Ruby on Rails routing sense.</p>
 
-<p>The Route model is largely used to maintain a table of route distances
-between <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs; most interaction that the application has with a
-Route is actually internally managed as the pair of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>
-associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
+<p>The Route model is largely used to maintain a table of route distances between <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs; most interaction that the application has with a Route is actually internally managed as the pair of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 
 
   </div>
@@ -177,7 +173,7 @@ associated with a <span class='object_link'><a href="Flight.html" title="Flight 
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span><span class='period'>.</span><span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:span</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#ARROW_ONE_WAY_PLAINTEXT-constant" title="Route::ARROW_ONE_WAY_PLAINTEXT (constant)">ARROW_ONE_WAY_PLAINTEXT</a></span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>route-arrow</span><span class='words_sep'>)</span><span class='rparen'>)</span></pre></dd>
+        <dd><pre class="code"><span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span><span class='period'>.</span><span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:span</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#ARROW_ONE_WAY_PLAINTEXT-constant" title="Route::ARROW_ONE_WAY_PLAINTEXT (constant)">ARROW_ONE_WAY_PLAINTEXT</a></span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>route-arrow</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span></pre></dd>
       
         <dt id="ARROW_TWO_WAY_HTML-constant" class="">ARROW_TWO_WAY_HTML =
           <div class="docstring">
@@ -193,7 +189,7 @@ associated with a <span class='object_link'><a href="Flight.html" title="Flight 
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span><span class='period'>.</span><span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:span</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#ARROW_TWO_WAY_PLAINTEXT-constant" title="Route::ARROW_TWO_WAY_PLAINTEXT (constant)">ARROW_TWO_WAY_PLAINTEXT</a></span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>route-arrow</span><span class='words_sep'>)</span><span class='rparen'>)</span></pre></dd>
+        <dd><pre class="code"><span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span><span class='period'>.</span><span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:span</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#ARROW_TWO_WAY_PLAINTEXT-constant" title="Route::ARROW_TWO_WAY_PLAINTEXT (constant)">ARROW_TWO_WAY_PLAINTEXT</a></span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>route-arrow</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span></pre></dd>
       
     </dl>
   
@@ -230,8 +226,7 @@ associated with a <span class='object_link'><a href="Flight.html" title="Flight 
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>, returns the distance in statute miles between
-them.</p>
+<p>Given two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>, returns the distance in statute miles between them.</p>
 </div></span>
   
 </li>
@@ -255,8 +250,7 @@ them.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given two latitude/longitude pairs, returns the distance in statute miles
-between them.</p>
+<p>Given two latitude/longitude pairs, returns the distance in statute miles between them.</p>
 </div></span>
   
 </li>
@@ -280,9 +274,7 @@ between them.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of routes, with a hash for each airport pair containing
-the distance in statute miles and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that route
-(in either direction), sorted by number of flights descending.</p>
+<p>Returns an array of routes, with a hash for each airport pair containing the distance in statute miles and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that route (in either direction), sorted by number of flights descending.</p>
 </div></span>
   
 </li>
@@ -316,8 +308,7 @@ the distance in statute miles and number of <span class='object_link'><a href="F
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Given two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>, returns the distance in statute miles between
-them. The haversine formula is used to calculate the distance.</p>
+<p>Given two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>, returns the distance in statute miles between them. The haversine formula is used to calculate the distance.</p>
 
 <p>This calls an SQL query, and should not be used in a loop.</p>
 
@@ -454,8 +445,7 @@ them. The haversine formula is used to calculate the distance.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Given two latitude/longitude pairs, returns the distance in statute miles
-between them. The haversine formula is used to calculate the distance.</p>
+<p>Given two latitude/longitude pairs, returns the distance in statute miles between them. The haversine formula is used to calculate the distance.</p>
 
 
   </div>
@@ -572,12 +562,9 @@ between them. The haversine formula is used to calculate the distance.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of routes, with a hash for each airport pair containing
-the distance in statute miles and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that route
-(in either direction), sorted by number of flights descending.</p>
+<p>Returns an array of routes, with a hash for each airport pair containing the distance in statute miles and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that route (in either direction), sorted by number of flights descending.</p>
 
-<p>Used on various “index” and “show” views to generate a table of routes and
-their flight counts.</p>
+<p>Used on various “index” and “show” views to generate a table of routes and their flight counts.</p>
 
 
   </div>
@@ -705,9 +692,9 @@ their flight counts.</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Sep 30 23:36:28 2019 by
+  Generated on Wed Oct  2 00:03:37 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.19 (ruby-2.3.1).
+  0.9.20 (ruby-2.6.5).
 </div>
 
     </div>

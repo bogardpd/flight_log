@@ -6,7 +6,7 @@
 <title>
   Module: ApplicationHelper
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -256,6 +256,30 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#flight_table_total_row-instance_method" title="#flight_table_total_row (instance method)">#<strong>flight_table_total_row</strong>(flights, extra_details = Array.new)  &#x21d2; ActiveSupport::SafeBuffer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Provides a table row containing a total <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> count for the table, and the percent of all flights that this count represents.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#format_airport_name-instance_method" title="#format_airport_name (instance method)">#<strong>format_airport_name</strong>(city_airport_name)  &#x21d2; ActiveSupport::SafeBuffer </a>
     
 
@@ -295,8 +319,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Formats a pair of decimal coordinates into a string pair of coordinates
-with cardinal directions and 5 decimal places.</p>
+<p>Formats a pair of decimal coordinates into a string pair of coordinates with cardinal directions and 5 decimal places.</p>
 </div></span>
   
 </li>
@@ -416,9 +439,7 @@ with cardinal directions and 5 decimal places.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns a description &lt;meta&gt; tag with content provided by a
-view&#39;s provide(:meta_description) or content_for(:meta_description), or
-a default meta description if a meta description is not provied.</p>
+<p>Returns a description &lt;meta&gt; tag with content provided by a view&#39;s provide(:meta_description) or content_for(:meta_description), or a default meta description if a meta description is not provied.</p>
 </div></span>
   
 </li>
@@ -442,8 +463,7 @@ a default meta description if a meta description is not provied.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Renders a message &lt;div&gt; containing an info box, success message,
-warning message, or error message.</p>
+<p>Renders a message &lt;div&gt; containing an info box, success message, warning message, or error message.</p>
 </div></span>
   
 </li>
@@ -467,8 +487,7 @@ warning message, or error message.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Renders all messages (contained in @messages) and flash messages for a
-view, grouped by type.</p>
+<p>Renders all messages (contained in @messages) and flash messages for a view, grouped by type.</p>
 </div></span>
   
 </li>
@@ -516,8 +535,7 @@ view, grouped by type.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Takes a tail number and renders an image_tag for the country flag of the
-matching country.</p>
+<p>Takes a tail number and renders an image_tag for the country flag of the matching country.</p>
 </div></span>
   
 </li>
@@ -541,8 +559,7 @@ matching country.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Takes a tail number and prepends an image_tag for the appropriate country
-flag to it.</p>
+<p>Takes a tail number and prepends an image_tag for the appropriate country flag to it.</p>
 </div></span>
   
 </li>
@@ -566,8 +583,7 @@ flag to it.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns a title defined in a view&#39;s provide(:title) or
-content_for(:title), or a default title if a title is not provided.</p>
+<p>Returns a title defined in a view&#39;s provide(:title) or content_for(:title), or a default title if a title is not provided.</p>
 </div></span>
   
 </li>
@@ -798,8 +814,7 @@ content_for(:title), or a default title if a title is not provided.</p>
       
         &mdash;
         <div class='inline'>
-<p>an optional title attribute for the logo image. If not provided, the
-airline&#39;s ICAO code will be used.</p>
+<p>an optional title attribute for the logo image. If not provided, the airline&#39;s ICAO code will be used.</p>
 </div>
       
     </li>
@@ -882,8 +897,7 @@ airline&#39;s ICAO code will be used.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Provides monospace formatting for a string. Generally used for formatting
-IATA and ICAO codes.</p>
+<p>Provides monospace formatting for a string. Generally used for formatting IATA and ICAO codes.</p>
 
 
   </div>
@@ -945,7 +959,7 @@ IATA and ICAO codes.</p>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code_mono'>code_mono</span><span class='lparen'>(</span><span class='id identifier rubyid_code'>code</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:span</span><span class='comma'>,</span> <span class='id identifier rubyid_code'>code</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>code-mono</span><span class='words_sep'>)</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:span</span><span class='comma'>,</span> <span class='id identifier rubyid_code'>code</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>code-mono</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1000,8 +1014,7 @@ IATA and ICAO codes.</p>
       
         &mdash;
         <div class='inline'>
-<p>an optional title attribute for the flag image. If not provided, the
-country&#39;s name will be used.</p>
+<p>an optional title attribute for the flag image. If not provided, the country&#39;s name will be used.</p>
 </div>
       
     </li>
@@ -1196,6 +1209,123 @@ country&#39;s name will be used.</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="flight_table_total_row-instance_method">
+  
+    #<strong>flight_table_total_row</strong>(flights, extra_details = Array.new)  &#x21d2; <tt>ActiveSupport::SafeBuffer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Provides a table row containing a total <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> count for the table, and the percent of all flights that this count represents.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>flights</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>&gt;</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>extra_details</span>
+      
+      
+        <span class='type'>(<tt>Array&lt;ActiveSupport::SafeBuffer&gt;</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>Array.new</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>supplemental pieces of text to append to the total</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ActiveSupport::SafeBuffer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an HTML table row</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 164</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_flight_table_total_row'>flight_table_total_row</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_details'>extra_details</span><span class='op'>=</span><span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_flyer_flights'>flyer_flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_pluralize'>pluralize</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>flight</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_flyer_flights'>flyer_flights</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_percent'>percent</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='op'>/</span><span class='id identifier rubyid_flyer_flights'>flyer_flights</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='period'>.</span><span class='id identifier rubyid_to_f'>to_f</span><span class='rparen'>)</span><span class='op'>*</span><span class='int'>1000</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_round'>round</span><span class='op'>/</span><span class='float'>10.0</span>
+    <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:span</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_percent'>percent</span><span class='embexpr_end'>}</span><span class='tstring_content'>% of all flights)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>total-percent</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>|=</span> <span class='id identifier rubyid_extra_details'>extra_details</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:tr</span><span class='rparen'>)</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:td</span><span class='comma'>,</span> <span class='id identifier rubyid_safe_join'>safe_join</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>colspan:</span> <span class='int'>4</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>flightlog-total</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="format_airport_name-instance_method">
   
     #<strong>format_airport_name</strong>(city_airport_name)  &#x21d2; <tt>ActiveSupport::SafeBuffer</tt> 
@@ -1207,10 +1337,7 @@ country&#39;s name will be used.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Formats the airport name portion of an city name. Anything contained
-between a pair of parentheses is considered the airport name. Not all
-cities will have airport names; airport names are only used for
-disambiguation when a city has multiple airports.</p>
+<p>Formats the airport name portion of an city name. Anything contained between a pair of parentheses is considered the airport name. Not all cities will have airport names; airport names are only used for disambiguation when a city has multiple airports.</p>
 
 
   </div>
@@ -1289,8 +1416,7 @@ disambiguation when a city has multiple airports.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Formats a pair of decimal coordinates into a string pair of coordinates
-with cardinal directions and 5 decimal places.</p>
+<p>Formats a pair of decimal coordinates into a string pair of coordinates with cardinal directions and 5 decimal places.</p>
 
 
   </div>
@@ -1329,8 +1455,7 @@ with cardinal directions and 5 decimal places.</p>
       
         &mdash;
         <div class='inline'>
-<p>a string pair of decimal degree coordinates with N/S and E/W hemispheres
-and 5 decimal places.</p>
+<p>a string pair of decimal degree coordinates with N/S and E/W hemispheres and 5 decimal places.</p>
 </div>
       
     </li>
@@ -1550,29 +1675,29 @@ and 5 decimal places.</p>
       <pre class="lines">
 
 
-291
-292
-293
-294
-295
-296
-297
-298
-299
-300
-301
-302
-303
-304
-305
-306
-307
-308
-309
-310</pre>
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 291</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 312</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_region_select_links'>gcmap_region_select_links</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_region_hash'>region_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_map'>map</span><span class='period'>.</span><span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
@@ -1710,23 +1835,23 @@ and 5 decimal places.</p>
       <pre class="lines">
 
 
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277
-278
-279
-280
-281</pre>
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 268</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 289</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_with_region_select'>gcmap_with_region_select</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='id identifier rubyid_anchor'>anchor</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -1759,12 +1884,7 @@ and 5 decimal places.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Provides a bar graph for a value. A single horizontal bar will be drawn
-with the provided value as a percentage of the provided maximum, with the
-numeric value centered on it. Used on numeric columns of tables to show the
-value of the row relative to other rows (for example, Index Airlines will
-have a bar for each airline in the table showing how many flights are on
-that airline).</p>
+<p>Provides a bar graph for a value. A single horizontal bar will be drawn with the provided value as a percentage of the provided maximum, with the numeric value centered on it. Used on numeric columns of tables to show the value of the row relative to other rows (for example, Index Airlines will have a bar for each airline in the table showing how many flights are on that airline).</p>
 
 
   </div>
@@ -1800,8 +1920,7 @@ that airline).</p>
       
         &mdash;
         <div class='inline'>
-<p>the maximum value of this column in the table. Used to set the 100% point
-of the bar.</p>
+<p>the maximum value of this column in the table. Used to set the 100% point of the bar.</p>
 </div>
       
     </li>
@@ -1887,18 +2006,18 @@ of the bar.</p>
       <pre class="lines">
 
 
-170
-171
-172
-173
-174
-175
-176
-177
-178</pre>
+191
+192
+193
+194
+195
+196
+197
+198
+199</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 170</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 191</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_graph_bar'>graph_bar</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_maximum'>maximum</span><span class='comma'>,</span> <span class='id identifier rubyid_unit'>unit</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_path'>path</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_title'>title</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>&gt;=</span> <span class='int'>0</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_maximum'>maximum</span> <span class='op'>&gt;</span> <span class='int'>0</span><span class='rparen'>)</span>
@@ -1926,9 +2045,7 @@ of the bar.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a description &lt;meta&gt; tag with content provided by a
-view&#39;s provide(:meta_description) or content_for(:meta_description), or
-a default meta description if a meta description is not provied.</p>
+<p>Returns a description &lt;meta&gt; tag with content provided by a view&#39;s provide(:meta_description) or content_for(:meta_description), or a default meta description if a meta description is not provied.</p>
 
 
   </div>
@@ -1991,8 +2108,7 @@ a default meta description if a meta description is not provied.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Renders a message &lt;div&gt; containing an info box, success message,
-warning message, or error message.</p>
+<p>Renders a message &lt;div&gt; containing an info box, success message, warning message, or error message.</p>
 
 
   </div>
@@ -2087,8 +2203,7 @@ warning message, or error message.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Renders all messages (contained in @messages) and flash messages for a
-view, grouped by type.</p>
+<p>Renders all messages (contained in @messages) and flash messages for a view, grouped by type.</p>
 
 
   </div>
@@ -2160,12 +2275,9 @@ view, grouped by type.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Renders a link which the user can click on to sort a table column. Used in
-table headers. Includes an arrow showing the direction of the sort if the
-table is already sorted by this column.</p>
+<p>Renders a link which the user can click on to sort a table column. Used in table headers. Includes an arrow showing the direction of the sort if the table is already sorted by this column.</p>
 
-<p>In order for sort_link to work, <span class='object_link'><a href="Table.html#sort_parse-class_method" title="Table.sort_parse (method)">Table.sort_parse</a></span> must have been called
-from the controller and stored in <tt>@sort</tt>.</p>
+<p>In order for sort_link to work, <span class='object_link'><a href="Table.html#sort_parse-class_method" title="Table.sort_parse (method)">Table.sort_parse</a></span> must have been called from the controller and stored in <tt>@sort</tt>.</p>
 
 
   </div>
@@ -2201,9 +2313,7 @@ from the controller and stored in <tt>@sort</tt>.</p>
       
         &mdash;
         <div class='inline'>
-<p>a symbol representing the name of the sortable column this link sorts.
-Compared to <tt>@sort</tt> to determine if the table is already sorted by this
-column.</p>
+<p>a symbol representing the name of the sortable column this link sorts. Compared to <tt>@sort</tt> to determine if the table is already sorted by this column.</p>
 </div>
       
     </li>
@@ -2219,8 +2329,7 @@ column.</p>
       
         &mdash;
         <div class='inline'>
-<p>the direction to sort this column, if a direction is not provided in the
-page URL parameters</p>
+<p>the direction to sort this column, if a direction is not provided in the page URL parameters</p>
 </div>
       
     </li>
@@ -2238,8 +2347,7 @@ page URL parameters</p>
       
         &mdash;
         <div class='inline'>
-<p>the ID of the table to sort, so that the table remains in view when a sort
-link is clicked</p>
+<p>the ID of the table to sort, so that the table remains in view when a sort link is clicked</p>
 </div>
       
     </li>
@@ -2278,37 +2386,37 @@ link is clicked</p>
       <pre class="lines">
 
 
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
 219
 220
 221
 222
 223
 224
-225</pre>
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 198</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 219</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sort_link'>sort_link</span><span class='lparen'>(</span><span class='id identifier rubyid_link_text'>link_text</span><span class='comma'>,</span> <span class='id identifier rubyid_link_sort_category'>link_sort_category</span><span class='comma'>,</span> <span class='id identifier rubyid_default_direction'>default_direction</span><span class='comma'>,</span> <span class='id identifier rubyid_page_anchor'>page_anchor</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_param_category'>param_category</span><span class='comma'>,</span> <span class='id identifier rubyid_param_direction'>param_direction</span> <span class='op'>=</span> <span class='ivar'>@sort</span>
@@ -2355,8 +2463,7 @@ link is clicked</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Takes a tail number and renders an image_tag for the country flag of the
-matching country.</p>
+<p>Takes a tail number and renders an image_tag for the country flag of the matching country.</p>
 
 
   </div>
@@ -2415,12 +2522,12 @@ matching country.</p>
       <pre class="lines">
 
 
-233
-234
-235</pre>
+254
+255
+256</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 233</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 254</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tail_number_country_flag'>tail_number_country_flag</span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_country_flag_icon'>country_flag_icon</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="TailNumber.html" title="TailNumber (module)">TailNumber</a></span></span><span class='period'>.</span><span class='id identifier rubyid_country'><span class='object_link'><a href="TailNumber.html#country-class_method" title="TailNumber.country (method)">country</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -2442,8 +2549,7 @@ matching country.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Takes a tail number and prepends an image_tag for the appropriate country
-flag to it.</p>
+<p>Takes a tail number and prepends an image_tag for the appropriate country flag to it.</p>
 
 
   </div>
@@ -2481,8 +2587,7 @@ flag to it.</p>
       
         &mdash;
         <div class='inline'>
-<p>whether or not to show a blank placeholder flag image if the country cannot
-be determined</p>
+<p>whether or not to show a blank placeholder flag image if the country cannot be determined</p>
 </div>
       
     </li>
@@ -2523,18 +2628,18 @@ be determined</p>
       <pre class="lines">
 
 
-247
-248
-249
-250
-251
-252
-253
-254
-255</pre>
+268
+269
+270
+271
+272
+273
+274
+275
+276</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 247</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 268</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tail_number_with_country_flag'>tail_number_with_country_flag</span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='comma'>,</span> <span class='id identifier rubyid_show_blank_flag'>show_blank_flag</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_country_format'>country_format</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="TailNumber.html" title="TailNumber (module)">TailNumber</a></span></span><span class='period'>.</span><span class='id identifier rubyid_country_format'><span class='object_link'><a href="TailNumber.html#country_format-class_method" title="TailNumber.country_format (method)">country_format</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span>
@@ -2562,8 +2667,7 @@ be determined</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a title defined in a view&#39;s provide(:title) or
-content_for(:title), or a default title if a title is not provided.</p>
+<p>Returns a title defined in a view&#39;s provide(:title) or content_for(:title), or a default title if a title is not provided.</p>
 
 
   </div>
@@ -2617,9 +2721,9 @@ content_for(:title), or a default title if a title is not provided.</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Sep 30 23:36:27 2019 by
+  Generated on Wed Oct  2 00:03:37 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.19 (ruby-2.3.1).
+  0.9.20 (ruby-2.6.5).
 </div>
 
     </div>

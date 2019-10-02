@@ -154,6 +154,27 @@ module ApplicationHelper
     return paragraph ? content_tag(:p, output, class: "distance") : output
   end
 
+  # Provides a table row containing a total {Flight Flights} count for the
+  # table, and the percent of all flights that this count represents.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights}
+  # @param extra_details [Array<ActiveSupport::SafeBuffer>] supplemental pieces
+  #   of text to append to the total
+  # @return [ActiveSupport::SafeBuffer] an HTML table row
+  def flight_table_total_row(flights, extra_details=Array.new)
+    flyer_flights = flyer.flights(current_user)
+    output = Array.new
+    output.push(pluralize(flights.length, "flight"))
+    if flyer_flights.any? && flights.length > 0
+      percent = ((flights.length.to_f/flyer_flights.length.to_f)*1000).round/10.0
+      output.push(content_tag(:span, "(#{percent}% of all flights)", class: "total-percent"))
+    end
+    output |= extra_details
+    return content_tag(:tr) do
+      content_tag(:td, safe_join(output.compact, " "), colspan: 4, class: "flightlog-total")
+    end
+  end
+
   # Provides a bar graph for a value. A single horizontal bar will be drawn with
   # the provided value as a percentage of the provided maximum, with the numeric
   # value centered on it. Used on numeric columns of tables to show the value of

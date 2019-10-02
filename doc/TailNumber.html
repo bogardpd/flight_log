@@ -6,7 +6,7 @@
 <title>
   Module: TailNumber
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -88,16 +88,7 @@
     
 <p>Provides utilities for interacting with tail numbers.</p>
 
-<p>Tail number uniqueness is considered case insensitive and insensitive to
-the presence or absence of dashes. However, tail numbers are nearly always
-capitalized, and most countries have either no dash in their tail numbers
-or a dash that&#39;s always in the same position in the tail number.
-Throughout this module, documentation will refer to formatted tail numbers
-and simplified tail numbers. A <strong>formatted</strong> tail number is a
-string with dashes in the appropriate place for the country (e.g.
-<code>VH-OQI</code>, <code>C-FGRY</code>, <code>N909EV</code>), and a
-<strong>simplified</strong> tail number is a string with all dashes removed
-(e.g. <code>VHOQI</code>, <code>CFGRY</code>, <code>N909EV</code>).</p>
+<p>Tail number uniqueness is considered case insensitive and insensitive to the presence or absence of dashes. However, tail numbers are nearly always capitalized, and most countries have either no dash in their tail numbers or a dash that&#39;s always in the same position in the tail number. Throughout this module, documentation will refer to formatted tail numbers and simplified tail numbers. A <strong>formatted</strong> tail number is a string with dashes in the appropriate place for the country (e.g. <code>VH-OQI</code>, <code>C-FGRY</code>, <code>N909EV</code>), and a <strong>simplified</strong> tail number is a string with all dashes removed (e.g. <code>VHOQI</code>, <code>CFGRY</code>, <code>N909EV</code>).</p>
 
 
   </div>
@@ -138,8 +129,7 @@ string with dashes in the appropriate place for the country (e.g.
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Defines countries and dash formats for various tail number regular
-expressions.</p>
+<p>Defines countries and dash formats for various tail number regular expressions.</p>
 </div></span>
   
 </li>
@@ -187,8 +177,7 @@ expressions.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Determines the country of a tail number and adds appropriate dashes to
-match that country&#39;s tail number format.</p>
+<p>Determines the country of a tail number and adds appropriate dashes to match that country&#39;s tail number format.</p>
 </div></span>
   
 </li>
@@ -212,10 +201,7 @@ match that country&#39;s tail number format.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of tail numbers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> codes (ICAO preferred),
-<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> manufacturers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> names,
-<span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> slugs, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that tail number, sorted
-by number of flights descending.</p>
+<p>Returns an array of tail numbers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> codes (ICAO preferred), <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> manufacturers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> slugs, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that tail number, sorted by number of flights descending.</p>
 </div></span>
   
 </li>
@@ -290,15 +276,9 @@ by number of flights descending.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Defines countries and dash formats for various tail number regular
-expressions. Used by other methods to determine a country name and/or a
-dash position based on which regular expression a simplified tail number
-matches.</p>
+<p>Defines countries and dash formats for various tail number regular expressions. Used by other methods to determine a country name and/or a dash position based on which regular expression a simplified tail number matches.</p>
 
-<p>The dash position specifies the character position of a dash in a
-country&#39;s tail number format (e.g. C-FGRY has a dash postion of 1,
-VH-OQI has a dash position of 2). If the dash position is 0, then no dash
-is assumed (e.g. N909EV).</p>
+<p>The dash position specifies the character position of a dash in a country&#39;s tail number format (e.g. C-FGRY has a dash postion of 1, VH-OQI has a dash position of 2). If the dash position is 0, then no dash is assumed (e.g. N909EV).</p>
 
 
   </div>
@@ -655,8 +635,7 @@ is assumed (e.g. N909EV).</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Determines the country of a tail number and adds appropriate dashes to
-match that country&#39;s tail number format.</p>
+<p>Determines the country of a tail number and adds appropriate dashes to match that country&#39;s tail number format.</p>
 
 
   </div>
@@ -754,13 +733,9 @@ match that country&#39;s tail number format.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of tail numbers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> codes (ICAO preferred),
-<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> manufacturers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> names,
-<span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> slugs, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that tail number, sorted
-by number of flights descending.</p>
+<p>Returns an array of tail numbers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> codes (ICAO preferred), <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> manufacturers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> slugs, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that tail number, sorted by number of flights descending.</p>
 
-<p>Used on various “index” and “show” views to generate a table of tail
-numbers and their flight counts.</p>
+<p>Used on various “index” and “show” views to generate a table of tail numbers and their flight counts.</p>
 
 
   </div>
@@ -1050,9 +1025,7 @@ numbers and their flight counts.</p>
     
 <p>Capitalizes a tail number and strips non-alphanumeric characters.</p>
 
-<p>Tail number uniqueness is considered case insensitive and insensitive to
-the presence or absence of dashes, so this method puts the tail number into
-a standard simplified format for saving it into the database.</p>
+<p>Tail number uniqueness is considered case insensitive and insensitive to the presence or absence of dashes, so this method puts the tail number into a standard simplified format for saving it into the database.</p>
 
 
   </div>
@@ -1132,9 +1105,9 @@ a standard simplified format for saving it into the database.</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Sep 30 23:36:26 2019 by
+  Generated on Wed Oct  2 00:03:36 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.19 (ruby-2.3.1).
+  0.9.20 (ruby-2.6.5).
 </div>
 
     </div>

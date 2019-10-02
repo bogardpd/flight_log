@@ -6,7 +6,7 @@
 <title>
   Module: FlightsHelper
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -151,8 +151,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Accepts an icon type and a raw BCBP value, and returns an image_tag for an
-icon.</p>
+<p>Accepts an icon type and a raw BCBP value, and returns an image_tag for an icon.</p>
 </div></span>
   
 </li>
@@ -348,9 +347,7 @@ icon.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Accepts an icon type and a raw BCBP value, and returns an image_tag for an
-icon. Used to augment BCBP interpretations in a <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> table, such
-as on <span class='object_link'><a href="FlightsController.html#show-instance_method" title="FlightsController#show (method)">FlightsController#show</a></span> or <span class='object_link'><a href="FlightsController.html#show_boarding_pass-instance_method" title="FlightsController#show_boarding_pass (method)">FlightsController#show_boarding_pass</a></span>.</p>
+<p>Accepts an icon type and a raw BCBP value, and returns an image_tag for an icon. Used to augment BCBP interpretations in a <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> table, such as on <span class='object_link'><a href="FlightsController.html#show-instance_method" title="FlightsController#show (method)">FlightsController#show</a></span> or <span class='object_link'><a href="FlightsController.html#show_boarding_pass-instance_method" title="FlightsController#show_boarding_pass (method)">FlightsController#show_boarding_pass</a></span>.</p>
 
 
   </div>
@@ -370,8 +367,7 @@ as on <span class='object_link'><a href="FlightsController.html#show-instance_me
       
         &mdash;
         <div class='inline'>
-<p>whether this icon should be for an airline logo, or for TSA PreCheck
-selectee status</p>
+<p>whether this icon should be for an airline logo, or for TSA PreCheck selectee status</p>
 </div>
       
     </li>
@@ -461,8 +457,7 @@ selectee status</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Renders a radio button. Used to select between old or new values when
-updating an existing <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> with a new <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span>.</p>
+<p>Renders a radio button. Used to select between old or new values when updating an existing <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> with a new <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span>.</p>
 
 
   </div>
@@ -482,8 +477,7 @@ updating an existing <span class='object_link'><a href="Flight.html" title="Flig
       
         &mdash;
         <div class='inline'>
-<p>the name of the field for which data is being chosen, along with “current”
-or “updated” as appropriate</p>
+<p>the name of the field for which data is being chosen, along with “current” or “updated” as appropriate</p>
 </div>
       
     </li>
@@ -499,8 +493,7 @@ or “updated” as appropriate</p>
       
         &mdash;
         <div class='inline'>
-<p>a hash of any :code_block, :code, and :text associated with this field of
-the boarding pass</p>
+<p>a hash of any :code_block, :code, and :text associated with this field of the boarding pass</p>
 </div>
       
     </li>
@@ -586,8 +579,7 @@ the boarding pass</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Renders a star rating image based on a number between 0 and 5, inclusive.
-Used for visually depicting the quality of different <span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClasses</a></span>.</p>
+<p>Renders a star rating image based on a number between 0 and 5, inclusive. Used for visually depicting the quality of different <span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClasses</a></span>.</p>
 
 
   </div>
@@ -623,8 +615,7 @@ Used for visually depicting the quality of different <span class='object_link'><
       
         &mdash;
         <div class='inline'>
-<p>Defines whether the image is inline to the left of text, to the right of
-text, in between text, or not inline. Used to determine margin styles.</p>
+<p>Defines whether the image is inline to the left of text, to the right of text, in between text, or not inline. Used to determine margin styles.</p>
 </div>
       
     </li>
@@ -673,7 +664,7 @@ text, in between text, or not inline. Used to determine margin styles.</p>
   <span class='id identifier rubyid_quality'>quality</span> <span class='op'>=</span> <span class='id identifier rubyid_quality'>quality</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
   <span class='id identifier rubyid_quality'>quality</span> <span class='op'>=</span> <span class='int'>0</span> <span class='kw'>if</span> <span class='id identifier rubyid_quality'>quality</span> <span class='op'>&lt;</span> <span class='int'>0</span>
   <span class='id identifier rubyid_quality'>quality</span> <span class='op'>=</span> <span class='int'>5</span> <span class='kw'>if</span> <span class='id identifier rubyid_quality'>quality</span> <span class='op'>&gt;</span> <span class='int'>5</span>
-  <span class='id identifier rubyid_classes'>classes</span> <span class='op'>=</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>star-rating</span><span class='words_sep'>)</span>
+  <span class='id identifier rubyid_classes'>classes</span> <span class='op'>=</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>star-rating</span><span class='tstring_end'>)</span></span>
   <span class='id identifier rubyid_inline_classes'>inline_classes</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>left:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>icon-left</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>right:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>icon-right</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>both:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>icon-between-text</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span>
   <span class='id identifier rubyid_classes'>classes</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_inline_classes'>inline_classes</span><span class='lbracket'>[</span><span class='id identifier rubyid_inline'>inline</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_inline_classes'>inline_classes</span><span class='lbracket'>[</span><span class='id identifier rubyid_inline'>inline</span><span class='rbracket'>]</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>stars/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_quality'>quality</span><span class='embexpr_end'>}</span><span class='tstring_content'>.svg</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>title:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_quality'>quality</span><span class='embexpr_end'>}</span><span class='tstring_content'> out of 5 stars</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>alt:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_quality'>quality</span><span class='embexpr_end'>}</span><span class='tstring_content'> out of 5 stars</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='id identifier rubyid_classes'>classes</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -688,9 +679,9 @@ text, in between text, or not inline. Used to determine margin styles.</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Sep 30 23:36:26 2019 by
+  Generated on Wed Oct  2 00:03:36 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.19 (ruby-2.3.1).
+  0.9.20 (ruby-2.6.5).
 </div>
 
     </div>

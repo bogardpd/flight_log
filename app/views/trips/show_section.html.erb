@@ -17,8 +17,4 @@
 <%= @map.gcmap %>
 <%= distance_block(@section_distance, adjective: "section") %>
 
-<table class="flightlog">
-<%= render :partial => "flights/flight_header_row" %>
-<%= render :partial => "flights/flight_row", :collection => @flights, :as => :flight %>
-<%= render :partial => "flights/flight_total_row" %>
-</table>
+<%= render partial: "flights/flight_table" %>

@@ -6,7 +6,7 @@
 <title>
   Class: Airport
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -127,8 +127,7 @@
           <div class="docstring">
   <div class="discussion">
     
-<p>Form fields which should be saved with leading and trailing whitespace
-removed.</p>
+<p>Form fields which should be saved with leading and trailing whitespace removed.</p>
 
 
   </div>
@@ -138,7 +137,7 @@ removed.</p>
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w( </span><span class='tstring_content'>city</span><span class='words_sep'> </span><span class='tstring_content'>country</span><span class='words_sep'> )</span></pre></dd>
+        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>city</span><span class='words_sep'> </span><span class='tstring_content'>country</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
       
         <dt id="CAP_CODES-constant" class="">CAP_CODES =
           <div class="docstring">
@@ -154,7 +153,7 @@ removed.</p>
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w( </span><span class='tstring_content'>iata_code</span><span class='words_sep'> </span><span class='tstring_content'>icao_code</span><span class='words_sep'> )</span></pre></dd>
+        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>iata_code</span><span class='words_sep'> </span><span class='tstring_content'>icao_code</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
       
     </dl>
   
@@ -215,9 +214,7 @@ removed.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Given a collection of flights and a direct flight <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>, returns data
-about the direct flights to or from the specified airport within the flight
-collection.</p>
+<p>Given a collection of flights and a direct flight <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>, returns data about the direct flights to or from the specified airport within the flight collection.</p>
 </div></span>
   
 </li>
@@ -241,9 +238,7 @@ collection.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Take a collection of strings representing the starts of ICAO codes, and
-return an a hash of all Airports whose airport ICAO codes start with any of
-the provided strings.</p>
+<p>Take a collection of strings representing the starts of ICAO codes, and return an a hash of all Airports whose airport ICAO codes start with any of the provided strings.</p>
 </div></span>
   
 </li>
@@ -267,9 +262,7 @@ the provided strings.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Take a collection of strings representing the starts of ICAO codes, and
-return all IATA codes whose airport ICAO codes start with any of the
-provided strings.</p>
+<p>Take a collection of strings representing the starts of ICAO codes, and return all IATA codes whose airport ICAO codes start with any of the provided strings.</p>
 </div></span>
   
 </li>
@@ -293,9 +286,7 @@ provided strings.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Take a collection of strings representing the starts of ICAO codes, and
-return all airport IDs whose airport ICAO codes start with any of the
-provided strings.</p>
+<p>Take a collection of strings representing the starts of ICAO codes, and return all airport IDs whose airport ICAO codes start with any of the provided strings.</p>
 </div></span>
   
 </li>
@@ -319,8 +310,7 @@ provided strings.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Accepts a flyer, the viewing user, and a date range, and returns the IATA
-code for all airports that had their first flight in this date range.</p>
+<p>Accepts a flyer, the viewing user, and a date range, and returns the IATA code for all airports that had their first flight in this date range.</p>
 </div></span>
   
 </li>
@@ -344,8 +334,7 @@ code for all airports that had their first flight in this date range.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Take a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, and return a hash of airport IDs and
-number of visits.</p>
+<p>Take a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, and return a hash of airport IDs and number of visits.</p>
 </div></span>
   
 </li>
@@ -369,9 +358,7 @@ number of visits.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of airports, with a hash for each airport containing the
-id, airport name, IATA code, and number of visits to that airport, sorted
-by number of visits descending.</p>
+<p>Returns an array of airports, with a hash for each airport containing the id, airport name, IATA code, and number of visits to that airport, sorted by number of visits descending.</p>
 </div></span>
   
 </li>
@@ -452,8 +439,7 @@ by number of visits descending.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the image path for this airport&#39;s uncropped terminal
-silhouette.</p>
+<p>Returns the image path for this airport&#39;s uncropped terminal silhouette.</p>
 </div></span>
   
 </li>
@@ -549,9 +535,7 @@ silhouette.</p>
       
         &mdash;
         <div class='inline'>
-<p>whether or not to return the provided IATA code if an ICAO code is not
-found. If this is false, the method will return nil if an ICAO code is not
-found.</p>
+<p>whether or not to return the provided IATA code if an ICAO code is not found. If this is false, the method will return nil if an ICAO code is not found.</p>
 </div>
       
     </li>
@@ -622,15 +606,9 @@ found.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Given a collection of flights and a direct flight <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>, returns data
-about the direct flights to or from the specified airport within the flight
-collection. Returns an array with a hash for each remote airport, with each
-hash containing the airport name, IATA code, country, distance in miles to
-the direct flight airport, and count of direct flights to or from the
-direct flight airport.</p>
+<p>Given a collection of flights and a direct flight <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>, returns data about the direct flights to or from the specified airport within the flight collection. Returns an array with a hash for each remote airport, with each hash containing the airport name, IATA code, country, distance in miles to the direct flight airport, and count of direct flights to or from the direct flight airport.</p>
 
-<p>Used on <span class='object_link'><a href="AirportsController.html#show-instance_method" title="AirportsController#show (method)">AirportsController#show</a></span> to generate the Direct Flight Airports
-table.</p>
+<p>Used on <span class='object_link'><a href="AirportsController.html#show-instance_method" title="AirportsController#show (method)">AirportsController#show</a></span> to generate the Direct Flight Airports table.</p>
 
 
   </div>
@@ -733,8 +711,7 @@ table.</p>
       
         &mdash;
         <div class='inline'>
-<p>details for each <span class='object_link'><a href="" title="Airport (class)">Airport</a></span> with direct flights to the
-<code>direct_flight_airport</code></p>
+<p>details for each <span class='object_link'><a href="" title="Airport (class)">Airport</a></span> with direct flights to the <code>direct_flight_airport</code></p>
 </div>
       
     </li>
@@ -850,9 +827,7 @@ table.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Take a collection of strings representing the starts of ICAO codes, and
-return an a hash of all Airports whose airport ICAO codes start with any of
-the provided strings.</p>
+<p>Take a collection of strings representing the starts of ICAO codes, and return an a hash of all Airports whose airport ICAO codes start with any of the provided strings.</p>
 
 <p>Params:</p>
 
@@ -893,8 +868,7 @@ the provided strings.</p>
       
         &mdash;
         <div class='inline'>
-<p>a hash of airports with matching ICAO codes, with airport IDs as keys and
-IATA codes as airports</p>
+<p>a hash of airports with matching ICAO codes, with airport IDs as keys and IATA codes as airports</p>
 </div>
       
     </li>
@@ -946,9 +920,7 @@ IATA codes as airports</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Take a collection of strings representing the starts of ICAO codes, and
-return all IATA codes whose airport ICAO codes start with any of the
-provided strings.</p>
+<p>Take a collection of strings representing the starts of ICAO codes, and return all IATA codes whose airport ICAO codes start with any of the provided strings.</p>
 
 
   </div>
@@ -1027,9 +999,7 @@ provided strings.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Take a collection of strings representing the starts of ICAO codes, and
-return all airport IDs whose airport ICAO codes start with any of the
-provided strings.</p>
+<p>Take a collection of strings representing the starts of ICAO codes, and return all airport IDs whose airport ICAO codes start with any of the provided strings.</p>
 
 
   </div>
@@ -1108,8 +1078,7 @@ provided strings.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Accepts a flyer, the viewing user, and a date range, and returns the IATA
-code for all airports that had their first flight in this date range.</p>
+<p>Accepts a flyer, the viewing user, and a date range, and returns the IATA code for all airports that had their first flight in this date range.</p>
 
 
   </div>
@@ -1158,17 +1127,9 @@ code for all airports that had their first flight in this date range.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Take a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, and return a hash of airport IDs and
-number of visits. Used when only a quick lookup of visits is needed; if an
-array of data about each airport is needed, <span class='object_link'><a href="#visit_table_data-class_method" title="Airport.visit_table_data (method)">visit_table_data</a></span> should be
-used instead.</p>
+<p>Take a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, and return a hash of airport IDs and number of visits. Used when only a quick lookup of visits is needed; if an array of data about each airport is needed, <span class='object_link'><a href="#visit_table_data-class_method" title="Airport.visit_table_data (method)">visit_table_data</a></span> should be used instead.</p>
 
-<p>If two flights are chronologically consecutive, the destination <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>
-of the first flight is the same as the origin of the second, and these two
-flights share the same <span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span> and trip section, then the time between the
-two flights is a layover and only counts as one visit to shared <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>.
-Otherwise, the traveler left the airport in between the flights, and it
-counts as two separate visits to the shared <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>.</p>
+<p>If two flights are chronologically consecutive, the destination <span class='object_link'><a href="" title="Airport (class)">Airport</a></span> of the first flight is the same as the origin of the second, and these two flights share the same <span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span> and trip section, then the time between the two flights is a layover and only counts as one visit to shared <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>. Otherwise, the traveler left the airport in between the flights, and it counts as two separate visits to the shared <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>.</p>
 
 
   </div>
@@ -1279,15 +1240,11 @@ counts as two separate visits to the shared <span class='object_link'><a href=""
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of airports, with a hash for each airport containing the
-id, airport name, IATA code, and number of visits to that airport, sorted
-by number of visits descending.</p>
+<p>Returns an array of airports, with a hash for each airport containing the id, airport name, IATA code, and number of visits to that airport, sorted by number of visits descending.</p>
 
-<p>Used on various “show” views to generate a table of airports and their
-flight counts.</p>
+<p>Used on various “show” views to generate a table of airports and their flight counts.</p>
 
-<p>If only a hash of visit counts is needed, <span class='object_link'><a href="#visit_frequencies-class_method" title="Airport.visit_frequencies (method)">visit_frequencies</a></span> should be
-used instead.</p>
+<p>If only a hash of visit counts is needed, <span class='object_link'><a href="#visit_frequencies-class_method" title="Airport.visit_frequencies (method)">visit_frequencies</a></span> should be used instead.</p>
 
 
   </div>
@@ -1496,10 +1453,7 @@ used instead.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the airport&#39;s latitude and longitude in decimal degrees. If the
-latitude and longitude aren&#39;t defined, this method attempts to look
-them up using the FlightXML API and save them, and then returns the
-coordinate array. If this is not successful, returns nil.</p>
+<p>Returns the airport&#39;s latitude and longitude in decimal degrees. If the latitude and longitude aren&#39;t defined, this method attempts to look them up using the FlightXML API and save them, and then returns the coordinate array. If this is not successful, returns nil.</p>
 
 
   </div>
@@ -1584,13 +1538,9 @@ coordinate array. If this is not successful, returns nil.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Given two IDs, returns the one that is not associated with this <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>.
-If both are associated with this airport (a flight where the origin and
-destination are the same) then this airport&#39;s ID will be returned. If
-neither are associated with this airport, nil will be returned.</p>
+<p>Given two IDs, returns the one that is not associated with this <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>. If both are associated with this airport (a flight where the origin and destination are the same) then this airport&#39;s ID will be returned. If neither are associated with this airport, nil will be returned.</p>
 
-<p>Used by <span class='object_link'><a href="#direct_flight_count-class_method" title="Airport.direct_flight_count (method)">direct_flight_count</a></span> to determine which airport on a direct
-<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is the remote airport.</p>
+<p>Used by <span class='object_link'><a href="#direct_flight_count-class_method" title="Airport.direct_flight_count (method)">direct_flight_count</a></span> to determine which airport on a direct <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is the remote airport.</p>
 
 
   </div>
@@ -1687,8 +1637,7 @@ neither are associated with this airport, nil will be returned.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the image path for this airport&#39;s uncropped terminal
-silhouette.</p>
+<p>Returns the image path for this airport&#39;s uncropped terminal silhouette.</p>
 
 
   </div>
@@ -1747,8 +1696,7 @@ silhouette.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the image path for this airport&#39;s cropped terminal silhouette.
-This image is always 1440px wide, and is up to 810px tall.</p>
+<p>Returns the image path for this airport&#39;s cropped terminal silhouette. This image is always 1440px wide, and is up to 810px tall.</p>
 
 
   </div>
@@ -1800,9 +1748,9 @@ This image is always 1440px wide, and is up to 810px tall.</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Sep 30 23:36:28 2019 by
+  Generated on Wed Oct  2 00:03:38 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.19 (ruby-2.3.1).
+  0.9.20 (ruby-2.6.5).
 </div>
 
     </div>

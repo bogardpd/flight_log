@@ -6,7 +6,7 @@
 <title>
   Class: PKPass
   
-    &mdash; Documentation by YARD 0.9.19
+    &mdash; Documentation by YARD 0.9.20
   
 </title>
 
@@ -106,17 +106,11 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Defines a boarding pass using Apple&#39;s PassKit Package (PKPass) format.
-This is used to store Apple Wallet (iOS) boarding passes <span class='object_link'><a href="BoardingPassEmail.html" title="BoardingPassEmail (module)">received</a></span> at a specified email address.</p>
+<p>Defines a boarding pass using Apple&#39;s PassKit Package (PKPass) format. This is used to store Apple Wallet (iOS) boarding passes <span class='object_link'><a href="BoardingPassEmail.html" title="BoardingPassEmail (module)">received</a></span> at a specified email address.</p>
 
-<p>PKPass boarding passes are a compressed folder containing a JSON file,
-which itself includes <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> barcode data, along with some other
-metadata that can be used to prepopulate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> form fields.</p>
+<p>PKPass boarding passes are a compressed folder containing a JSON file, which itself includes <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> barcode data, along with some other metadata that can be used to prepopulate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> form fields.</p>
 
-<p>Since all possible flight data is extracted from the PKPass upon creating a
-new <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>, the PKPass does not maintain a direct database relationship
-with the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> model. Instead, once a new <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is created, its
-PKPass is destroyed.</p>
+<p>Since all possible flight data is extracted from the PKPass upon creating a new <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>, the PKPass does not maintain a direct database relationship with the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> model. Instead, once a new <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is created, its PKPass is destroyed.</p>
 
 
   </div>
@@ -166,8 +160,7 @@ PKPass is destroyed.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of hashes of summary details for all PKPasses that are not
-yet associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
+<p>Returns an array of hashes of summary details for all PKPasses that are not yet associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 </div></span>
   
 </li>
@@ -282,10 +275,7 @@ yet associated with a <span class='object_link'><a href="Flight.html" title="Fli
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of hashes of summary details for all PKPasses that are not
-yet associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. Used on <span class='object_link'><a href="FlightsController.html#new_flight_menu-instance_method" title="FlightsController#new_flight_menu (method)">FlightsController#new_flight_menu</a></span>
-to show a list of boarding passes that the user can choose to create a
-<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> from.</p>
+<p>Returns an array of hashes of summary details for all PKPasses that are not yet associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. Used on <span class='object_link'><a href="FlightsController.html#new_flight_menu-instance_method" title="FlightsController#new_flight_menu (method)">FlightsController#new_flight_menu</a></span> to show a list of boarding passes that the user can choose to create a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> from.</p>
 
 
   </div>
@@ -603,9 +593,9 @@ to show a list of boarding passes that the user can choose to create a
 </div>
 
       <div id="footer">
-  Generated on Mon Sep 30 23:36:28 2019 by
+  Generated on Wed Oct  2 00:03:38 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.19 (ruby-2.3.1).
+  0.9.20 (ruby-2.6.5).
 </div>
 
     </div>
