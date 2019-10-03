@@ -44,6 +44,16 @@ class Airline < ApplicationRecord
   def format_name
     return self.airline_name
   end
+
+  # Returns true if the Airline is the marketing, operating, or codeshare
+  # airline for any {Flight}. Used to check whether or not the airline can be
+  # deleted without affecting any flights.
+  #
+  # @return [Boolean] whether or not this airline is used by any {Flight} in any
+  #   way
+  def has_any_airline_operator_codeshare_flights?
+    return Flight.where(airline_id: self.id).or(Flight.where(operator_id: self.id)).or(Flight.where(codeshare_airline_id: self.id)).any?
+  end
   
   # Returns an array of Airlines, with a hash for each Airline containing the
   # id, airline name, slug, IATA code, and number of {Flight Flights} flown by

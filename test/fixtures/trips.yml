@@ -29,5 +29,12 @@ tripDisambiguationHidden:
 tripDisambiguationUnhidden:
   id: 5
   name: "Trip to test hidden disambiguation"
-  hidden: no
+  hidden: No
+  user_id: 1
+
+tripGeneric:
+  # Used for all test flights that don't require a specific trip
+  id: 6
+  name: "Generic trip"
+  hidden: No
   user_id: 1

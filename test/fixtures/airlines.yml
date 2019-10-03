@@ -47,3 +47,24 @@ airlineNetJets:
   iata_airline_code: "1I"
   icao_airline_code: "EJA"
   is_only_operator: No
+
+airlineOperatorOnly:
+  id: 7
+  airline_name: "Operator Only"
+  slug: "Operator-Only"
+  iata_airline_code: "ZZ"
+  icao_airline_code: "ZZZ"
+
+airlineCodeshareOnly:
+  id: 8
+  airline_name: "Codeshare Only"
+  slug: "Codeshare-Only"
+  iata_airline_code: "ZY"
+  icao_airline_code: "ZZY"
+
+airlineNoFlights:
+  id: 9
+  airline_name: "No Flights"
+  slug: "No-Flights"
+  iata_airline_code: "ZX"
+  icao_airline_code: "ZZX"

@@ -8,6 +8,11 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
   
+  # Logs in a test user
+  # def log_in_as(user)
+    
+  # end
+
   private
   
      # Returns true inside an integration test.
