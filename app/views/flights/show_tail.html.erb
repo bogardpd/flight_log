@@ -4,7 +4,7 @@
 <% add_breadcrumb @tail_number, show_tail_path(TailNumber.simplify(params[:tail_number])) %>
 
 <% if TailNumber.country(@tail_number) %>
-<div id="title-info"><%= TailNumber.country(@tail_number) %><%= tail_number_country_flag(@tail_number) %></div>
+<div id="title-info"><%= TailNumber.country(@tail_number) %><%= country_flag_icon(TailNumber.country(@tail_number)) %></div>
 <% end %>
 
 <h1><%= @tail_number %></h1>

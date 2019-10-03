@@ -520,30 +520,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#tail_number_country_flag-instance_method" title="#tail_number_country_flag (instance method)">#<strong>tail_number_country_flag</strong>(tail_number)  &#x21d2; ActiveSupport::SafeBuffer </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Takes a tail number and renders an image_tag for the country flag of the matching country.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#tail_number_with_country_flag-instance_method" title="#tail_number_with_country_flag (instance method)">#<strong>tail_number_with_country_flag</strong>(tail_number, show_blank_flag = true)  &#x21d2; ActiveSupport::SafeBuffer </a>
     
 
@@ -1675,6 +1651,16 @@
       <pre class="lines">
 
 
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
 312
 313
 314
@@ -1684,20 +1670,10 @@
 318
 319
 320
-321
-322
-323
-324
-325
-326
-327
-328
-329
-330
-331</pre>
+321</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 312</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 302</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_region_select_links'>gcmap_region_select_links</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_region_hash'>region_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_map'>map</span><span class='period'>.</span><span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
@@ -1835,23 +1811,23 @@
       <pre class="lines">
 
 
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
 289
 290
 291
-292
-293
-294
-295
-296
-297
-298
-299
-300
-301
-302</pre>
+292</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 289</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 279</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_with_region_select'>gcmap_with_region_select</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='id identifier rubyid_anchor'>anchor</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -2452,92 +2428,6 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="tail_number_country_flag-instance_method">
-  
-    #<strong>tail_number_country_flag</strong>(tail_number)  &#x21d2; <tt>ActiveSupport::SafeBuffer</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Takes a tail number and renders an image_tag for the country flag of the matching country.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>tail_number</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>an aircraft tail number</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ActiveSupport::SafeBuffer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>an image_tag for a country flag</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><span class='object_link'><a href="TailNumber.html#country-class_method" title="TailNumber.country (method)">TailNumber.country</a></span></li>
-    
-  </ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-254
-255
-256</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 254</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_tail_number_country_flag'>tail_number_country_flag</span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_country_flag_icon'>country_flag_icon</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="TailNumber.html" title="TailNumber (module)">TailNumber</a></span></span><span class='period'>.</span><span class='id identifier rubyid_country'><span class='object_link'><a href="TailNumber.html#country-class_method" title="TailNumber.country (method)">country</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="tail_number_with_country_flag-instance_method">
   
     #<strong>tail_number_with_country_flag</strong>(tail_number, show_blank_flag = true)  &#x21d2; <tt>ActiveSupport::SafeBuffer</tt> 
@@ -2628,18 +2518,18 @@
       <pre class="lines">
 
 
-268
-269
-270
-271
-272
-273
-274
-275
-276</pre>
+258
+259
+260
+261
+262
+263
+264
+265
+266</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 268</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 258</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tail_number_with_country_flag'>tail_number_with_country_flag</span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='comma'>,</span> <span class='id identifier rubyid_show_blank_flag'>show_blank_flag</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_country_format'>country_format</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="TailNumber.html" title="TailNumber (module)">TailNumber</a></span></span><span class='period'>.</span><span class='id identifier rubyid_country_format'><span class='object_link'><a href="TailNumber.html#country_format-class_method" title="TailNumber.country_format (method)">country_format</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span>
@@ -2721,7 +2611,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Oct  2 21:28:38 2019 by
+  Generated on Thu Oct  3 18:50:40 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

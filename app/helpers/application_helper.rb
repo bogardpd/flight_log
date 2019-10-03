@@ -245,16 +245,6 @@ module ApplicationHelper
     link_to(safe_join([link_text, category_sort_direction_indicator].compact, " "), url_for(region: params[:region], sort: sort_polarity.to_s + link_sort_category.to_s, anchor: page_anchor), class: "sort")
   end
 
-  # Takes a tail number and renders an image_tag for the country flag of the
-  # matching country.
-  # 
-  # @param tail_number [String] an aircraft tail number
-  # @return [ActiveSupport::SafeBuffer] an image_tag for a country flag
-  # @see TailNumber.country
-  def tail_number_country_flag(tail_number)
-    country_flag_icon(TailNumber.country(tail_number))
-  end
-  
   # Takes a tail number and prepends an image_tag for the appropriate country
   # flag to it.
   # 
