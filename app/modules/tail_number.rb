@@ -10,7 +10,104 @@
 # *simplified* tail number is a string with all dashes removed (e.g. +VHOQI+,
 # +CFGRY+, +N909EV+).
 module TailNumber
+ 
+  # Capitalizes a tail number and strips non-alphanumeric characters.
+  # 
+  # Tail number uniqueness is considered case insensitive and insensitive to
+  # the presence or absence of dashes, so this method puts the tail number into
+  # a standard simplified format for saving it into the database.
+  #
+  # @param tail_number [String] a tail number
+  # @return [String] a simplified tail number
+  # @example
+  #   TailNumber.simplify("VH-OQI") #=> "VHOQI"
+  def self.simplify(tail_number)
+    return tail_number.upcase.gsub(/[^A-Z0-9]/,"")
+  end
   
+  # Returns the country associated with a given tail number.
+  # 
+  # @param tail_number [String] a formatted or simplified tail number
+  # @return [String] a country name
+  # @example
+  #   TailNumber.country("N909EV") #=> "United States"
+  def self.country(tail_number)
+    return country_format(tail_number)[:country]
+  end
+  
+  # Takes a tail number and adds dashes as appropriate.
+  # 
+  # @param tail_number [String] a simplified tail number
+  # @return [String] a formatted tail number
+  # @example
+  #   TailNumber.format("CFGRY") #=> "C-FGRY"
+  def self.format(tail_number)
+    return country_format(tail_number)[:tail]
+  end
+  
+  # Returns an array of tail numbers, {AircraftFamily} codes (ICAO preferred),
+  # {AircraftFamily} manufacturers, {AircraftFamily} names, {Airline} names,
+  # {Airline} slugs, and number of {Flight Flights} on that tail number, sorted
+  # by number of flights descending.
+  #
+  # Used on various "index" and "show" views to generate a table of tail
+  # numbers and their flight counts.
+  #
+  # @param flights [Array<Flight>] a collection of {Flight Flights} to
+  #   calculate tail number flight counts for
+  # @param sort_category [:tail, :flights, :aircraft, :airline] the category to
+  #   sort the array by
+  # @param sort_direction [:asc, :desc] the direction to sort the array
+  # @return [Array<Hash>] details for each tail number flown
+  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
+    tail_counts = flights.reorder(nil).where.not(tail_number: nil).group(:tail_number).count
+    tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
+    return nil unless tail_details.any?
+    counts = tail_details.map{|f| {f.tail_number => {
+      airline_slug:  f.airline.slug,
+      airline_name:  f.airline.airline_name,
+      aircraft_code: f.aircraft_family&.icao_aircraft_code || f.aircraft_family&.iata_aircraft_code,
+      manufacturer:  f.aircraft_family&.manufacturer,
+      family_name:   f.aircraft_family&.family_name,
+      departure_utc: f.departure_utc
+    }}}
+      .reduce{|a,b| a.merge(b){|k,oldval,newval| newval[:departure_utc] > oldval[:departure_utc] ? newval : oldval}}
+      .merge(tail_counts){|k,oldval,newval| oldval.store(:count, newval); oldval}
+      .map{|k,v| {
+        tail_number:  k,
+        count:        v[:count],
+        country:      country(k),
+        aircraft:     v[:aircraft_code] || "",
+        airline_name: v[:airline_name] || "",
+        airline_slug: v[:airline_slug] || "",
+        manufacturer: v[:manufacturer],
+        family_name:  v[:family_name]
+      }}
+      
+    
+    case sort_category
+    when :tail
+      counts.sort_by!{|tail| tail[:tail_number]}
+      counts.reverse! if sort_direction == :desc
+    when :flights
+      sort_mult   = (sort_direction == :asc ? 1 : -1)
+      counts.sort_by!{|tail| [sort_mult*tail[:count], tail[:tail_number]]}
+    when :aircraft
+      counts.sort_by!{|tail| [tail[:aircraft], tail[:airline_name]]}
+      counts.reverse! if sort_direction == :desc
+    when :airline
+      counts.sort_by!{|tail| [tail[:airline_name], tail[:aircraft]]}
+      counts.reverse! if sort_direction == :desc
+    else
+      counts.sort_by!{|tail| [-(tail[:count] || 0), tail[:tail_number] || ""]}
+    end
+
+    return counts
+    
+  end
+
+  private
+
   # Defines countries and dash formats for various tail number regular
   # expressions. Used by other methods to determine a country name and/or a
   # dash position based on which regular expression a simplified tail number
@@ -127,21 +224,7 @@ module TailNumber
       }
     return tail_formats
   end
-  
-  # Capitalizes a tail number and strips non-alphanumeric characters.
-  # 
-  # Tail number uniqueness is considered case insensitive and insensitive to
-  # the presence or absence of dashes, so this method puts the tail number into
-  # a standard simplified format for saving it into the database.
-  #
-  # @param tail_number [String] a tail number
-  # @return [String] a simplified tail number
-  # @example
-  #   TailNumber.simplify("VH-OQI") #=> "VHOQI"
-  def self.simplify(tail_number)
-    return tail_number.upcase.gsub(/[^A-Z0-9]/,"")
-  end
-  
+
   # Determines the country of a tail number and adds appropriate dashes to
   # match that country's tail number format.
   #
@@ -157,87 +240,6 @@ module TailNumber
     return {country: country[:country], tail: tail_number} if country[:dash] == 0
     tail = "#{tail_number[0...country[:dash]]}-#{tail_number[country[:dash]..-1]}"
     return {country: country[:country], tail: tail}
-  end
-  
-  # Returns the country associated with a given tail number.
-  # 
-  # @param tail_number [String] a formatted or simplified tail number
-  # @return [String] a country name
-  # @example
-  #   TailNumber.country("N909EV") #=> "United States"
-  def self.country(tail_number)
-    return country_format(tail_number)[:country]
-  end
-  
-  # Takes a tail number and adds dashes as appropriate.
-  # 
-  # @param tail_number [String] a simplified tail number
-  # @return [String] a formatted tail number
-  # @example
-  #   TailNumber.format("CFGRY") #=> "C-FGRY"
-  def self.format(tail_number)
-    return country_format(tail_number)[:tail]
-  end
-  
-  # Returns an array of tail numbers, {AircraftFamily} codes (ICAO preferred),
-  # {AircraftFamily} manufacturers, {AircraftFamily} names, {Airline} names,
-  # {Airline} slugs, and number of {Flight Flights} on that tail number, sorted
-  # by number of flights descending.
-  #
-  # Used on various "index" and "show" views to generate a table of tail
-  # numbers and their flight counts.
-  #
-  # @param flights [Array<Flight>] a collection of {Flight Flights} to
-  #   calculate tail number flight counts for
-  # @param sort_category [:tail, :flights, :aircraft, :airline] the category to
-  #   sort the array by
-  # @param sort_direction [:asc, :desc] the direction to sort the array
-  # @return [Array<Hash>] details for each tail number flown
-  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
-    tail_counts = flights.reorder(nil).where.not(tail_number: nil).group(:tail_number).count
-    tail_details = flights.where.not(tail_number: nil).includes(:airline, :aircraft_family)
-    return nil unless tail_details.any?
-    counts = tail_details.map{|f| {f.tail_number => {
-      airline_slug:  f.airline.slug,
-      airline_name:  f.airline.airline_name,
-      aircraft_code: f.aircraft_family&.icao_aircraft_code || f.aircraft_family&.iata_aircraft_code,
-      manufacturer:  f.aircraft_family&.manufacturer,
-      family_name:   f.aircraft_family&.family_name,
-      departure_utc: f.departure_utc
-    }}}
-      .reduce{|a,b| a.merge(b){|k,oldval,newval| newval[:departure_utc] > oldval[:departure_utc] ? newval : oldval}}
-      .merge(tail_counts){|k,oldval,newval| oldval.store(:count, newval); oldval}
-      .map{|k,v| {
-        tail_number:  k,
-        count:        v[:count],
-        country:      country(k),
-        aircraft:     v[:aircraft_code] || "",
-        airline_name: v[:airline_name] || "",
-        airline_slug: v[:airline_slug] || "",
-        manufacturer: v[:manufacturer],
-        family_name:  v[:family_name]
-      }}
-      
-    
-    case sort_category
-    when :tail
-      counts.sort_by!{|tail| tail[:tail_number]}
-      counts.reverse! if sort_direction == :desc
-    when :flights
-      sort_mult   = (sort_direction == :asc ? 1 : -1)
-      counts.sort_by!{|tail| [sort_mult*tail[:count], tail[:tail_number]]}
-    when :aircraft
-      counts.sort_by!{|tail| [tail[:aircraft], tail[:airline_name]]}
-      counts.reverse! if sort_direction == :desc
-    when :airline
-      counts.sort_by!{|tail| [tail[:airline_name], tail[:aircraft]]}
-      counts.reverse! if sort_direction == :desc
-    else
-      counts.sort_by!{|tail| [-(tail[:count] || 0), tail[:tail_number] || ""]}
-    end
-
-    return counts
-    
   end
   
 end

@@ -256,10 +256,11 @@ module ApplicationHelper
   # @see TailNumber.country
   # @see TailNumber.country_format
   def tail_number_with_country_flag(tail_number, show_blank_flag=true)
-    country_format = TailNumber.country_format(tail_number)
-    tail_link = link_to(country_format[:tail], show_tail_path(tail_number), title: "View flights on tail number #{country_format[:tail]}")
-    if country_format[:country] || show_blank_flag
-      return country_flag_icon(country_format[:country]) + " " + tail_link
+    country = TailNumber.country(tail_number)
+    tail_format = TailNumber.format(tail_number)
+    tail_link = link_to(tail_format, show_tail_path(tail_number), title: "View flights on tail number #{tail_format}")
+    if country || show_blank_flag
+      return country_flag_icon(country) + " " + tail_link
     else
       return tail_link
     end
