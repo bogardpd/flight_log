@@ -145,7 +145,7 @@ module ApplicationHelper
   def distance_block(distance_mi, adjective: nil, flight_link: false, paragraph: true)
     output = Array.new
     output.push(content_tag(:span, safe_join([number_with_delimiter(distance_mi, delimeter: ","), [adjective,"mile".pluralize(distance_mi)].compact.join(" ")], " "), class: "distance-primary"))
-    output.push(content_tag(:span, "(#{number_with_delimiter((distance_mi * Distance::KM_PER_MILE).to_i, delimeter: ",")} km)", class: "distance-secondary"))
+    output.push(content_tag(:span, "(#{number_with_delimiter(Distance::km(distance_mi), delimeter: ",")} km)", class: "distance-secondary"))
     if flight_link
       output.push(sanitize("&middot;"))
       output.push(link_to("See a list of these flights", "#flights"))

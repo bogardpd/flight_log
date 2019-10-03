@@ -43,7 +43,7 @@
     <td class="label-column">Route</td>
     <td class="flight_show_route">
       <% if @route_distance %>
-        <div class="supplemental-info"><span class="flight-route-distance"><%= number_with_delimiter(@route_distance, :delimiter => ",") %> mi / <%= number_with_delimiter((@route_distance*1.60934).to_i, :delimiter => ",") %> km</span></div>
+        <div class="supplemental-info"><span class="flight-route-distance"><%= number_with_delimiter(@route_distance, delimeter: ",") %> mi / <%= number_with_delimiter(Distance::km(@route_distance), delimeter: ",") %> km</span></div>
       <% elsif logged_in? %>
         <div class="supplemental-info message-error"><%= link_to "Distance Undefined", edit_route_path(@flight.origin_airport,@flight.destination_airport) %></div>
       <% end %>
