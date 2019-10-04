@@ -64,11 +64,6 @@ class FlightsController < ApplicationController
       check_email_for_boarding_passes
     end
     
-    updated_pass = PKPass.where(flight_id: @flight)
-    if updated_pass.any?
-      add_message(:info, "This flight has an #{view_context.link_to("updated boarding pass", edit_flight_with_pass_path(pass_id: updated_pass.first))} available!")
-    end
-    
     @map = SingleFlightMap.new(@flight)
     @route_distance = Route.distance_by_airport(@flight.origin_airport, @flight.destination_airport)
     @boarding_pass = BoardingPass.new(@flight.boarding_pass_data, flight: @flight)
@@ -538,8 +533,8 @@ class FlightsController < ApplicationController
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
         flash[:warning] = ActionController::Base.helpers.sanitize("Your departure date and UTC time are more than a day apart &ndash; are you sure they’re correct?")
       end
-      @pass = PKPass.find_by(id: params[:flight][:pass_id])
-      @pass.destroy if @pass
+      # @pass = PKPass.find_by(id: params[:flight][:pass_id])
+      # @pass.destroy if @pass
       
       redirect_to @flight
     else

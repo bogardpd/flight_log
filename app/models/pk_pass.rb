@@ -76,7 +76,7 @@ class PKPass < ApplicationRecord
   #
   # @return [Array<Hash>] all boarding passes not associated with a {Flight}
   def self.pass_summary_list
-    PKPass.where(flight_id: nil).map{|pass|
+    PKPass.all.map{|pass|
       fields = BoardingPass.new(pass.barcode, interpretations: false).summary_fields
       json_data = JSON.parse(pass.pass_json)
       if json_data["relevantDate"]

@@ -58,30 +58,6 @@ module FlightsHelper
     return nil
   end
   
-  # Renders a radio button. Used to select between old or new values when
-  # updating an existing {Flight} with a new {BoardingPass}.
-  #
-  # @param label [String] the name of the field for which data is being chosen,
-  #   along with "current" or "updated" as appropriate
-  # @param text_hash [Hash{Symbol => String}] a hash of any :code_block, :code,
-  #   and :text associated with this field of the boarding pass
-  # @return [ActiveSupport::SafeBuffer] HTML for a radio button and label
-  # 
-  # @see BoardingPass
-  def format_radio_text(label, text_hash)
-    label = content_tag(:span, label, class: "label")
-    if text_hash.nil?
-      text = content_tag(:span, "(blank)", class: "radio-empty")
-    else
-      text = Array.new
-      text.push(content_tag(:code, sanitize(text_hash[:code_block].chars.each_slice(24).map(&:join).join("<br/>")), class: "radio-code-block")) if text_hash[:code_block]
-      text.push(content_tag(:span, text_hash[:code], class: "radio-code")) if text_hash[:code]
-      text.push(text_hash[:text]) if text_hash[:text]
-      text = text.join("&emsp;")
-    end
-    return sanitize([label, text].join("<br/>"))
-  end
-
   # Renders a star rating image based on a number between 0 and 5, inclusive.
   # Used for visually depicting the quality of different {TravelClass
   # TravelClasses}.

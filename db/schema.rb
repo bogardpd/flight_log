@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_29_213045) do
+ActiveRecord::Schema.define(version: 2019_10_04_001100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,7 +82,6 @@ ActiveRecord::Schema.define(version: 2019_09_29_213045) do
     t.datetime "received"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "flight_id"
   end
 
   create_table "routes", id: :serial, force: :cascade do |t|
