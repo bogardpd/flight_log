@@ -26,7 +26,7 @@ class TripsController < ApplicationController
     @logo_used = true
     @trip = Trip.find(params[:id])
     raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
-    @flights = Flight.where(trip_id: @trip).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
+    @flights = Flight.where(trip_id: @trip)
         
     add_message(:warning, "This trip is hidden!") if @trip.hidden
 
@@ -36,23 +36,9 @@ class TripsController < ApplicationController
     end
     
     @trip_distance = @flights.total_distance
-    @section_count = Hash.new(0) # Holds a count of the number of flights in each section
-    @section_final_destination = Hash.new # Holds the last destination airport code in each section
-    stops = Array.new # Holds the origin, destination, and intermediate stops of the trip
-    previous_section = nil
-    previous_destination = nil
-    @flights.each do |flight|
-      @section_count[flight.trip_section] += 1
-      @section_final_destination[flight.trip_section] = flight.destination_airport
-      unless flight.trip_section == previous_section  
-        stops.push(previous_destination) unless previous_destination.nil?
-        stops.push(flight.origin_airport)
-      end
-      previous_section = flight.trip_section
-      previous_destination = flight.destination_airport
-    end
-    stops.push(@flights.last.destination_airport) unless @flights.empty?
-    stops.uniq!
+    @sections_and_flights = @trip.sections_and_flights
+
+    stops = @sections_and_flights.map{|k, v| [v.first.origin_airport,v.last.destination_airport]}.flatten.uniq
     
     # Create map
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)

@@ -1,5 +1,5 @@
 app/classes/map.rb 7f0c387dc37dcc436a740164adb35dd7e27c52b9
-app/models/trip.rb 2152aff5cfb53bdfed4848efd022ce837bc8730f
+app/models/trip.rb 3d2afabd00ccca1791e2b98f902e6e22a921c332
 app/models/user.rb aa83d10456ebe2e579ef80f7f08ff20dc10171a2
 app/models/route.rb 2d02a09daa1ffd2bbaeec7dd00563593035dada3
 app/models/flight.rb eb0d01e93c4a050f1727dcfba2717e640251af08
@@ -32,7 +32,7 @@ app/helpers/application_helper.rb ef12bfa1eba5164194bb626572c9d3375c3c0b5e
 app/modules/boarding_pass_email.rb 1e5c3d4613de5abbcb31ff4e488b00a26ef5192c
 app/controllers/admin_controller.rb c4ad7d8f6e051643ee4fac7c402f69473d3c8627
 app/controllers/pages_controller.rb bd6c5e3805e53f73b0c9a192e919821c3b551938
-app/controllers/trips_controller.rb 0299e8b3bc4fba6d0241882d1ec0ee163b62e4b8
+app/controllers/trips_controller.rb 61f9bd662765722e877b43e7d117f012f893f27b
 app/controllers/users_controller.rb 4de752e0f645368035395bd01d63900ffb0f92cb
 app/classes/airport_frequency_map.rb a9d89a339c20e947789515dc4da46f7fdd97e4ed
 app/controllers/routes_controller.rb b051fd015f8d24cf50f45d0fd74590135861c748

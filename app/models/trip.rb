@@ -79,6 +79,19 @@ class Trip < ApplicationRecord
     return (flown_distance.to_f)/(ideal_distance.to_f)
   end
 
+  # Returns a hash of trip sections, where each value is an array of flights.
+  #
+  # @return [Hash<Array>] sections and flights for the trip
+  # @example
+  #   Trip.find(1).sections_and_flights #=> {
+  #     1 => [Flight, Flight]
+  #     2 => [Flight]
+  #   }
+  def sections_and_flights
+    trip_flights = self.flights.includes(:airline, :origin_airport, :destination_airport).order(:trip_section, :departure_utc)
+    return trip_flights.map{|f| f.trip_section}.uniq.map{|s| [s, trip_flights.select{|f| f.trip_section == s}]}.to_h
+  end
+
   # Returns an array of all trips associated with a collection of flights,
   # including ID, name, hidden status, departure date, and an array of trip
   # sections (with section numbers and departure dates) that also match the
