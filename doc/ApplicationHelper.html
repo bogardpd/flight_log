@@ -119,11 +119,11 @@
         </dt>
         <dd><pre class="code"><span class='lbrace'>{</span><span class='label'>width:</span> <span class='int'>130</span><span class='comma'>,</span> <span class='label'>height:</span> <span class='int'>30</span><span class='rbrace'>}</span></pre></dd>
       
-        <dt id="GRAPH_BAR_PADDING-constant" class="">GRAPH_BAR_PADDING =
+        <dt id="GRAPH_BAR_TEXT_Y-constant" class="">GRAPH_BAR_TEXT_Y =
           <div class="docstring">
   <div class="discussion">
     
-<p>Text padding for a graph bar.</p>
+<p>Y position for text rows. Keys are the number of text rows to draw, values are arrays of y-positions in pixels.</p>
 
 
   </div>
@@ -133,7 +133,7 @@
 
 </div>
         </dt>
-        <dd><pre class="code"><span class='int'>5</span></pre></dd>
+        <dd><pre class="code"><span class='lbrace'>{</span><span class='int'>1</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='int'>21</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='int'>2</span> <span class='op'>=&gt;</span> <span class='lbracket'>[</span><span class='int'>15</span><span class='comma'>,</span> <span class='int'>27</span><span class='rbracket'>]</span><span class='rbrace'>}</span></pre></dd>
       
     </dl>
   
@@ -676,13 +676,13 @@
       <pre class="lines">
 
 
-13
 14
 15
-16</pre>
+16
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_admin_action'>add_admin_action</span><span class='lparen'>(</span><span class='id identifier rubyid_link'>link</span><span class='rparen'>)</span>
   <span class='ivar'>@admin_actions</span> <span class='op'>||=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -768,13 +768,13 @@
       <pre class="lines">
 
 
-23
 24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 24</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_breadcrumb'>add_breadcrumb</span><span class='lparen'>(</span><span class='id identifier rubyid_text'>text</span><span class='comma'>,</span> <span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
   <span class='ivar'>@breadcrumbs</span> <span class='op'>||=</span> <span class='lbracket'>[</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Home</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_root_path'>root_path</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
@@ -881,16 +881,16 @@
       <pre class="lines">
 
 
-113
 114
 115
 116
 117
 118
-119</pre>
+119
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 114</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_airline_icon'>airline_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_slug'>slug</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>css_class:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>blank.png</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>airline-icon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_slug'>slug</span>
@@ -968,13 +968,13 @@
       <pre class="lines">
 
 
-137
 138
 139
-140</pre>
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 138</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code_mono'>code_mono</span><span class='lparen'>(</span><span class='id identifier rubyid_code'>code</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
@@ -1065,14 +1065,14 @@
       <pre class="lines">
 
 
-127
 128
 129
 130
-131</pre>
+131
+132</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 128</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_country_flag_icon'>country_flag_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_country'>country</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>blank.png</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>country-flag-icon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_country'>country</span>
@@ -1196,7 +1196,6 @@
       <pre class="lines">
 
 
-150
 151
 152
 153
@@ -1206,10 +1205,11 @@
 157
 158
 159
-160</pre>
+160
+161</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 150</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 151</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_distance_block'>distance_block</span><span class='lparen'>(</span><span class='id identifier rubyid_distance_mi'>distance_mi</span><span class='comma'>,</span> <span class='label'>adjective:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>flight_link:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>paragraph:</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1309,7 +1309,6 @@
       <pre class="lines">
 
 
-169
 170
 171
 172
@@ -1321,10 +1320,11 @@
 178
 179
 180
-181</pre>
+181
+182</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 169</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 170</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flight_table_total_row'>flight_table_total_row</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_details'>extra_details</span><span class='op'>=</span><span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flyer_flights'>flyer_flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span>
@@ -1408,12 +1408,12 @@
       <pre class="lines">
 
 
-57
 58
-59</pre>
+59
+60</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 58</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_format_airport_name'>format_airport_name</span><span class='lparen'>(</span><span class='id identifier rubyid_city_airport_name'>city_airport_name</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_sanitize'>sanitize</span><span class='lparen'>(</span><span class='id identifier rubyid_city_airport_name'>city_airport_name</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\(.*\)</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&amp;ensp;&lt;small class=&quot;airport-name&quot;&gt;\0&lt;/small&gt;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>()</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -1487,12 +1487,12 @@
       <pre class="lines">
 
 
-68
 69
-70</pre>
+70
+71</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 69</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_format_coordinates'>format_coordinates</span><span class='lparen'>(</span><span class='id identifier rubyid_coordinates'>coordinates</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_sanitize'>sanitize</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%.5f</span><span class='tstring_end'>&quot;</span></span> <span class='op'>%</span> <span class='id identifier rubyid_coordinates'>coordinates</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_abs'>abs</span><span class='embexpr_end'>}</span><span class='tstring_content'>° </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_coordinates'>coordinates</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>&lt;</span> <span class='int'>0</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>S</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>N</span><span class='tstring_end'>&quot;</span></span><span class='embexpr_end'>}</span><span class='tstring_content'>&amp;ensp;</span><span class='embexpr_beg'>#{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>%.5f</span><span class='tstring_end'>&quot;</span></span> <span class='op'>%</span> <span class='id identifier rubyid_coordinates'>coordinates</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_abs'>abs</span><span class='embexpr_end'>}</span><span class='tstring_content'>° </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_coordinates'>coordinates</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span> <span class='op'>&lt;</span> <span class='int'>0</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>W</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>E</span><span class='tstring_end'>&quot;</span></span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -1566,13 +1566,13 @@
       <pre class="lines">
 
 
-76
 77
 78
-79</pre>
+79
+80</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 77</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_format_date'>format_date</span><span class='lparen'>(</span><span class='id identifier rubyid_date'>date</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_date'>date</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -1694,7 +1694,6 @@
       <pre class="lines">
 
 
-316
 317
 318
 319
@@ -1713,10 +1712,11 @@
 332
 333
 334
-335</pre>
+335
+336</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 316</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 317</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_region_select_links'>gcmap_region_select_links</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_region_hash'>region_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_map'>map</span><span class='period'>.</span><span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
@@ -1854,7 +1854,6 @@
       <pre class="lines">
 
 
-293
 294
 295
 296
@@ -1867,10 +1866,11 @@
 303
 304
 305
-306</pre>
+306
+307</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 293</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 294</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_with_region_select'>gcmap_with_region_select</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='id identifier rubyid_anchor'>anchor</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -1989,7 +1989,6 @@
       <pre class="lines">
 
 
-194
 195
 196
 197
@@ -2007,10 +2006,11 @@
 209
 210
 211
-212</pre>
+212
+213</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 194</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 195</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_graph_bar'>graph_bar</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_maximum'>maximum</span><span class='comma'>,</span> <span class='id identifier rubyid_is_distance'>is_distance</span><span class='op'>=</span><span class='kw'>false</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span> <span class='op'>&gt;=</span> <span class='int'>0</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_maximum'>maximum</span> <span class='op'>&gt;</span> <span class='int'>0</span><span class='rparen'>)</span>
@@ -2020,13 +2020,13 @@
     <span class='kw'>if</span> <span class='id identifier rubyid_is_distance'>is_distance</span>
       <span class='id identifier rubyid_value_mi'>value_mi</span> <span class='op'>=</span> <span class='id identifier rubyid_number_with_delimiter'>number_with_delimiter</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='label'>delimeter:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>,</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
       <span class='id identifier rubyid_value_km'>value_km</span> <span class='op'>=</span> <span class='id identifier rubyid_number_with_delimiter'>number_with_delimiter</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="Distance.html" title="Distance (module)">Distance</a></span></span><span class='op'>::</span><span class='id identifier rubyid_km'><span class='object_link'><a href="Distance.html#km-class_method" title="Distance.km (method)">km</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>delimeter:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>,</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='id identifier rubyid_value_mi'>value_mi</span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>30%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#GRAPH_BAR_DIMENSIONS-constant" title="ApplicationHelper::GRAPH_BAR_DIMENSIONS (constant)">GRAPH_BAR_DIMENSIONS</a></span></span><span class='lbracket'>[</span><span class='symbol'>:height</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='float'>0.3</span> <span class='op'>+</span> <span class='int'>1</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>graph-value</span><span class='words_sep'> </span><span class='tstring_content'>graph-distance</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='id identifier rubyid_value_km'>value_km</span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>70%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#GRAPH_BAR_DIMENSIONS-constant" title="ApplicationHelper::GRAPH_BAR_DIMENSIONS (constant)">GRAPH_BAR_DIMENSIONS</a></span></span><span class='lbracket'>[</span><span class='symbol'>:height</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='float'>0.3</span> <span class='op'>+</span> <span class='int'>1</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>graph-value</span><span class='words_sep'> </span><span class='tstring_content'>graph-distance</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mile</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_pluralize'>pluralize</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>30%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#GRAPH_BAR_DIMENSIONS-constant" title="ApplicationHelper::GRAPH_BAR_DIMENSIONS (constant)">GRAPH_BAR_DIMENSIONS</a></span></span><span class='lbracket'>[</span><span class='symbol'>:height</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='float'>0.8</span> <span class='op'>+</span> <span class='int'>1</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>graph-value</span><span class='words_sep'> </span><span class='tstring_content'>graph-unit</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>km</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>70%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#GRAPH_BAR_DIMENSIONS-constant" title="ApplicationHelper::GRAPH_BAR_DIMENSIONS (constant)">GRAPH_BAR_DIMENSIONS</a></span></span><span class='lbracket'>[</span><span class='symbol'>:height</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='float'>0.8</span> <span class='op'>+</span> <span class='int'>1</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>graph-value</span><span class='words_sep'> </span><span class='tstring_content'>graph-unit</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='id identifier rubyid_value_mi'>value_mi</span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>30%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='const'><span class='object_link'><a href="#GRAPH_BAR_TEXT_Y-constant" title="ApplicationHelper::GRAPH_BAR_TEXT_Y (constant)">GRAPH_BAR_TEXT_Y</a></span></span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>graph-value</span><span class='words_sep'> </span><span class='tstring_content'>graph-distance</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='id identifier rubyid_value_km'>value_km</span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>70%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='const'><span class='object_link'><a href="#GRAPH_BAR_TEXT_Y-constant" title="ApplicationHelper::GRAPH_BAR_TEXT_Y (constant)">GRAPH_BAR_TEXT_Y</a></span></span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>graph-value</span><span class='words_sep'> </span><span class='tstring_content'>graph-distance</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mile</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_pluralize'>pluralize</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>30%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='const'><span class='object_link'><a href="#GRAPH_BAR_TEXT_Y-constant" title="ApplicationHelper::GRAPH_BAR_TEXT_Y (constant)">GRAPH_BAR_TEXT_Y</a></span></span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>graph-value</span><span class='words_sep'> </span><span class='tstring_content'>graph-unit</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>km</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>70%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='const'><span class='object_link'><a href="#GRAPH_BAR_TEXT_Y-constant" title="ApplicationHelper::GRAPH_BAR_TEXT_Y (constant)">GRAPH_BAR_TEXT_Y</a></span></span><span class='lbracket'>[</span><span class='int'>2</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='qwords_beg'>%w(</span><span class='tstring_content'>graph-value</span><span class='words_sep'> </span><span class='tstring_content'>graph-unit</span><span class='tstring_end'>)</span></span><span class='rparen'>)</span>
     <span class='kw'>else</span>
       <span class='id identifier rubyid_graph_text'>graph_text</span> <span class='op'>=</span> <span class='id identifier rubyid_number_with_delimiter'>number_with_delimiter</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='label'>delimeter:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>,</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='id identifier rubyid_graph_text'>graph_text</span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>50%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#GRAPH_BAR_DIMENSIONS-constant" title="ApplicationHelper::GRAPH_BAR_DIMENSIONS (constant)">GRAPH_BAR_DIMENSIONS</a></span></span><span class='lbracket'>[</span><span class='symbol'>:height</span><span class='rbracket'>]</span> <span class='op'>/</span> <span class='int'>2</span> <span class='op'>+</span> <span class='int'>1</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>graph-value</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:text</span><span class='comma'>,</span> <span class='id identifier rubyid_graph_text'>graph_text</span><span class='comma'>,</span> <span class='label'>x:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>50%</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>y:</span> <span class='const'><span class='object_link'><a href="#GRAPH_BAR_TEXT_Y-constant" title="ApplicationHelper::GRAPH_BAR_TEXT_Y (constant)">GRAPH_BAR_TEXT_Y</a></span></span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>graph-value</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_svg'>svg</span>
@@ -2080,14 +2080,14 @@
       <pre class="lines">
 
 
-42
 43
 44
 45
-46</pre>
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 43</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_meta_description_tag'>meta_description_tag</span>
   <span class='id identifier rubyid_default_description'>default_description</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history.</span><span class='tstring_end'>&quot;</span></span>
@@ -2179,12 +2179,12 @@
       <pre class="lines">
 
 
-88
 89
-90</pre>
+90
+91</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 88</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_render_message'>render_message</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_text'>text</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_render'>render</span> <span class='label'>partial:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layouts/message</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>locals:</span> <span class='lbrace'>{</span><span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>text:</span> <span class='id identifier rubyid_text'>text</span><span class='rbrace'>}</span>
@@ -2245,15 +2245,15 @@
       <pre class="lines">
 
 
-97
 98
 99
 100
 101
-102</pre>
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 98</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_render_messages'>render_messages</span>
   <span class='id identifier rubyid_order'>order</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:error</span><span class='comma'>,</span> <span class='symbol'>:warning</span><span class='comma'>,</span> <span class='symbol'>:success</span><span class='comma'>,</span> <span class='symbol'>:info</span><span class='rbracket'>]</span>
@@ -2389,7 +2389,6 @@
       <pre class="lines">
 
 
-232
 233
 234
 235
@@ -2416,10 +2415,11 @@
 256
 257
 258
-259</pre>
+259
+260</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 232</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 233</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sort_link'>sort_link</span><span class='lparen'>(</span><span class='id identifier rubyid_link_text'>link_text</span><span class='comma'>,</span> <span class='id identifier rubyid_link_sort_category'>link_sort_category</span><span class='comma'>,</span> <span class='id identifier rubyid_default_direction'>default_direction</span><span class='comma'>,</span> <span class='id identifier rubyid_page_anchor'>page_anchor</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_param_category'>param_category</span><span class='comma'>,</span> <span class='id identifier rubyid_param_direction'>param_direction</span> <span class='op'>=</span> <span class='ivar'>@sort</span>
@@ -2545,7 +2545,6 @@
       <pre class="lines">
 
 
-271
 272
 273
 274
@@ -2554,10 +2553,11 @@
 277
 278
 279
-280</pre>
+280
+281</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 271</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 272</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tail_number_with_country_flag'>tail_number_with_country_flag</span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='comma'>,</span> <span class='id identifier rubyid_show_blank_flag'>show_blank_flag</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_country'>country</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="TailNumber.html" title="TailNumber (module)">TailNumber</a></span></span><span class='period'>.</span><span class='id identifier rubyid_country'><span class='object_link'><a href="TailNumber.html#country-class_method" title="TailNumber.country (method)">country</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='rparen'>)</span>
@@ -2618,13 +2618,13 @@
       <pre class="lines">
 
 
-32
 33
 34
-35</pre>
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_title_tag'>title_tag</span>
   <span class='id identifier rubyid_base_title'>base_title</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Paul Bogardʼs Flight Historian</span><span class='tstring_end'>&quot;</span></span>
@@ -2640,7 +2640,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Oct  5 16:32:17 2019 by
+  Generated on Sat Oct  5 17:09:39 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

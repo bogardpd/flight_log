@@ -166,22 +166,6 @@ div.field_with_errors label {
 }
 
 /* line 143, app/assets/stylesheets/_flight_log.scss */
-div.graph {
-  width: 120px;
-  margin: 0;
-  border: 1px solid #BED4EA;
-  padding: 0 5px;
-  background-image: url(/assets/graph-pixel-b42d3ecc89fa3c587a99c1cdc64ce20ce8e124cc0162e7c5bf3901f74cbb11a1.png);
-  background-position: left center;
-  background-repeat: no-repeat;
-}
-
-/* line 153, app/assets/stylesheets/_flight_log.scss */
-div.graph-background {
-  background-color: #FCFCFD;
-}
-
-/* line 157, app/assets/stylesheets/_flight_log.scss */
 div.hidden-marker {
   float: right;
   background: #FFFF00;
@@ -193,7 +177,7 @@ div.hidden-marker {
   font-weight: 600;
 }
 
-/* line 168, app/assets/stylesheets/_flight_log.scss */
+/* line 154, app/assets/stylesheets/_flight_log.scss */
 div.supplemental-code {
   float: right;
   width: 3em;
@@ -204,7 +188,7 @@ div.supplemental-code {
   border: 1px solid #bed4ea;
 }
 
-/* line 178, app/assets/stylesheets/_flight_log.scss */
+/* line 164, app/assets/stylesheets/_flight_log.scss */
 div.supplemental-info {
   float: right;
   text-align: right;
@@ -212,7 +196,7 @@ div.supplemental-info {
   margin-left: 0.5em;
 }
 
-/* line 185, app/assets/stylesheets/_flight_log.scss */
+/* line 171, app/assets/stylesheets/_flight_log.scss */
 div.intro-box {
   padding: 10px;
   margin: 2px;
@@ -220,13 +204,13 @@ div.intro-box {
   vertical-align: top;
 }
 
-/* line 191, app/assets/stylesheets/_flight_log.scss */
+/* line 177, app/assets/stylesheets/_flight_log.scss */
 div.intro-box h2 {
   margin: 0;
   font-size: 140%;
 }
 
-/* line 196, app/assets/stylesheets/_flight_log.scss */
+/* line 182, app/assets/stylesheets/_flight_log.scss */
 div.intro-box p {
   margin: 0;
   text-align: center;
@@ -234,12 +218,12 @@ div.intro-box p {
   -webkit-text-size-adjust: 100%;
 }
 
-/* line 203, app/assets/stylesheets/_flight_log.scss */
+/* line 189, app/assets/stylesheets/_flight_log.scss */
 div.intro-box table {
   margin: 3px 0;
 }
 
-/* line 208, app/assets/stylesheets/_flight_log.scss */
+/* line 194, app/assets/stylesheets/_flight_log.scss */
 div.page-navigation {
   clear: both;
   padding: 0.1em 0.5em;
@@ -251,13 +235,13 @@ div.page-navigation {
   border: 1px solid #E6EAEF;
 }
 
-/* line 218, app/assets/stylesheets/_flight_log.scss */
+/* line 204, app/assets/stylesheets/_flight_log.scss */
 div.page-navigation ul {
   padding: 0;
   margin: 0;
 }
 
-/* line 223, app/assets/stylesheets/_flight_log.scss */
+/* line 209, app/assets/stylesheets/_flight_log.scss */
 div.page-navigation li {
   list-style-type: none;
   display: inline-block;
@@ -267,7 +251,7 @@ div.page-navigation li {
   vertical-align: middle;
 }
 
-/* line 234, app/assets/stylesheets/_flight_log.scss */
+/* line 220, app/assets/stylesheets/_flight_log.scss */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
   margin-top: 15px;
@@ -275,7 +259,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
-/* line 241, app/assets/stylesheets/_flight_log.scss */
+/* line 227, app/assets/stylesheets/_flight_log.scss */
 h1 {
   font-size: 200%;
   padding-top: 10px;
@@ -283,7 +267,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* line 246, app/assets/stylesheets/_flight_log.scss */
+/* line 232, app/assets/stylesheets/_flight_log.scss */
 h1 small {
   line-height: 1.1;
   font-size: 70%;
@@ -291,38 +275,38 @@ h1 small {
   color: #52667a;
 }
 
-/* line 253, app/assets/stylesheets/_flight_log.scss */
+/* line 239, app/assets/stylesheets/_flight_log.scss */
 h2 {
   font-size: 160%;
 }
 
-/* line 254, app/assets/stylesheets/_flight_log.scss */
+/* line 240, app/assets/stylesheets/_flight_log.scss */
 h3 {
   font-size: 140%;
 }
 
-/* line 255, app/assets/stylesheets/_flight_log.scss */
+/* line 241, app/assets/stylesheets/_flight_log.scss */
 h4 {
   font-size: 120%;
 }
 
-/* line 256, app/assets/stylesheets/_flight_log.scss */
+/* line 242, app/assets/stylesheets/_flight_log.scss */
 h5 {
   font-size: 100%;
 }
 
-/* line 257, app/assets/stylesheets/_flight_log.scss */
+/* line 243, app/assets/stylesheets/_flight_log.scss */
 h6 {
   font-size: 90%;
 }
 
-/* line 260, app/assets/stylesheets/_flight_log.scss */
+/* line 246, app/assets/stylesheets/_flight_log.scss */
 p {
   margin-left: 10px;
   margin-right: 10px;
 }
 
-/* line 265, app/assets/stylesheets/_flight_log.scss */
+/* line 251, app/assets/stylesheets/_flight_log.scss */
 p.comment {
   border-top: 1px solid #BED4EA;
   border-bottom: 1px solid #BED4EA;
@@ -330,117 +314,115 @@ p.comment {
   padding: 0.25em 0;
 }
 
-/* line 272, app/assets/stylesheets/_flight_log.scss */
+/* line 258, app/assets/stylesheets/_flight_log.scss */
 p.distance {
   text-align: center;
   margin-top: 0;
 }
 
-/* line 277, app/assets/stylesheets/_flight_log.scss */
+/* line 263, app/assets/stylesheets/_flight_log.scss */
 p.new, p.new-legend {
   text-align: center;
   text-shadow: 0 0 3px #FFBB56;
 }
 
-/* line 282, app/assets/stylesheets/_flight_log.scss */
+/* line 268, app/assets/stylesheets/_flight_log.scss */
 p.note {
   text-align: center;
 }
 
-/* line 286, app/assets/stylesheets/_flight_log.scss */
+/* line 272, app/assets/stylesheets/_flight_log.scss */
 p.total {
   -webkit-text-size-adjust: 100%;
 }
 
-/* line 290, app/assets/stylesheets/_flight_log.scss */
+/* line 276, app/assets/stylesheets/_flight_log.scss */
 p.pre-footer {
   border-top: 1px solid #D7E2ED;
   padding-top: 10px;
   text-align: center;
 }
 
-/* line 296, app/assets/stylesheets/_flight_log.scss */
+/* line 282, app/assets/stylesheets/_flight_log.scss */
 small.airport-name {
   text-transform: uppercase;
   font-weight: 300;
 }
 
-/* line 301, app/assets/stylesheets/_flight_log.scss */
+/* line 287, app/assets/stylesheets/_flight_log.scss */
 span.aircraft-name {
   font-style: italic;
 }
 
-/* line 305, app/assets/stylesheets/_flight_log.scss */
+/* line 291, app/assets/stylesheets/_flight_log.scss */
 span.disabled {
   color: #a3b3c2;
   text-decoration: line-through;
 }
 
-/* line 310, app/assets/stylesheets/_flight_log.scss */
-span.disambiguation-highlight {
-  font-family: "Source Code Pro", "Consolas", "Courier", monospace;
-  border: 1px solid #bed4ea;
-  padding: 0 0.2em;
-}
-
-/* line 316, app/assets/stylesheets/_flight_log.scss */
+/* line 296, app/assets/stylesheets/_flight_log.scss */
 span.distance-primary {
   font-weight: 600;
 }
 
-/* line 320, app/assets/stylesheets/_flight_log.scss */
+/* line 300, app/assets/stylesheets/_flight_log.scss */
 span.distance-secondary {
   color: #52667a;
   font-weight: 300;
 }
 
-/* line 325, app/assets/stylesheets/_flight_log.scss */
+/* line 305, app/assets/stylesheets/_flight_log.scss */
 span.measurement-unit {
   color: #52667a;
   font-weight: 300;
 }
 
-/* line 330, app/assets/stylesheets/_flight_log.scss */
+/* line 310, app/assets/stylesheets/_flight_log.scss */
+span.param-highlight {
+  font-weight: bold;
+}
+
+/* line 315, app/assets/stylesheets/_flight_log.scss */
 span.aircraft-manufacturer {
   font-weight: 300;
 }
 
-/* line 334, app/assets/stylesheets/_flight_log.scss */
+/* line 319, app/assets/stylesheets/_flight_log.scss */
 span.flight-city {
   color: #52667a;
   font-weight: 300;
 }
 
-/* line 339, app/assets/stylesheets/_flight_log.scss */
+/* line 324, app/assets/stylesheets/_flight_log.scss */
 span.flight-code {
   font-size: 150%;
   font-weight: 600;
 }
 
-/* line 344, app/assets/stylesheets/_flight_log.scss */
+/* line 329, app/assets/stylesheets/_flight_log.scss */
 span.flight-route-distance {
   color: #52667a;
   font-weight: 300;
 }
 
-/* line 349, app/assets/stylesheets/_flight_log.scss */
+/* line 334, app/assets/stylesheets/_flight_log.scss */
 span.flight-section-route {
   color: #52667a;
   font-size: 85%;
 }
 
-/* line 354, app/assets/stylesheets/_flight_log.scss */
+/* line 339, app/assets/stylesheets/_flight_log.scss */
 span.route-arrow {
   color: #a3b3c2;
   font-weight: 300;
 }
 
-/* line 359, app/assets/stylesheets/_flight_log.scss */
+/* line 344, app/assets/stylesheets/_flight_log.scss */
 span.sort-direction {
   font-size: 70%;
 }
 
-/* line 363, app/assets/stylesheets/_flight_log.scss */
+/* line 348, app/assets/stylesheets/_flight_log.scss */
 span.summary-total {
   font-weight: 600;
 }
@@ -1222,79 +1204,74 @@ td.airport-code, th.airport-code {
 }
 
 /* line 191, app/assets/stylesheets/_tables.scss */
-td.airport-distance, th.airport-distance {
-  text-align: right;
-}
-
-/* line 195, app/assets/stylesheets/_tables.scss */
 td.airport-visits {
   text-align: center;
 }
 
 /* Classes of service */
-/* line 201, app/assets/stylesheets/_tables.scss */
+/* line 197, app/assets/stylesheets/_tables.scss */
 td.class-class, th.class-class {
   text-align: left;
   line-height: 1.2;
 }
 
-/* line 204, app/assets/stylesheets/_tables.scss */
+/* line 200, app/assets/stylesheets/_tables.scss */
 td.class-class span.class-description, th.class-class span.class-description {
   font-size: 85%;
   font-weight: 300;
   color: #52667a;
 }
 
-/* line 211, app/assets/stylesheets/_tables.scss */
+/* line 207, app/assets/stylesheets/_tables.scss */
 td.class-flights, th.class-flights {
   text-align: center;
 }
 
-/* line 215, app/assets/stylesheets/_tables.scss */
+/* line 211, app/assets/stylesheets/_tables.scss */
 td.class-quality, th.class-quality {
   text-align: center;
 }
 
 /* Flights */
-/* line 221, app/assets/stylesheets/_tables.scss */
+/* line 217, app/assets/stylesheets/_tables.scss */
 td.flight-aircraft, th.flight-aircraft {
   text-align: center;
 }
 
-/* line 225, app/assets/stylesheets/_tables.scss */
+/* line 221, app/assets/stylesheets/_tables.scss */
 td.flight-date, th.flight-date {
   text-align: right;
   width: 5.5em;
 }
 
-/* line 230, app/assets/stylesheets/_tables.scss */
+/* line 226, app/assets/stylesheets/_tables.scss */
 td.flight-flight {
   padding-left: 0;
 }
 
-/* line 234, app/assets/stylesheets/_tables.scss */
+/* line 230, app/assets/stylesheets/_tables.scss */
 th.flight-flight {
   text-align: left;
 }
 
-/* line 238, app/assets/stylesheets/_tables.scss */
+/* line 234, app/assets/stylesheets/_tables.scss */
 td.flight-tail, th.flight-tail {
   text-align: left;
 }
 
-/* line 242, app/assets/stylesheets/_tables.scss */
+/* line 238, app/assets/stylesheets/_tables.scss */
 td.flight-airplane-icon {
   font-size: 200%;
   vertical-align: middle;
 }
 
-/* line 247, app/assets/stylesheets/_tables.scss */
+/* line 243, app/assets/stylesheets/_tables.scss */
 td.flight-route, th.flight-route {
   text-align: center;
   width: 6em;
 }
 
-/* line 252, app/assets/stylesheets/_tables.scss */
+/* line 248, app/assets/stylesheets/_tables.scss */
 td.flight-section {
   border-right: 2px solid #9EC7F3;
   text-align: center;
@@ -1302,12 +1279,12 @@ td.flight-section {
   line-height: 1.2;
 }
 
-/* line 259, app/assets/stylesheets/_tables.scss */
+/* line 255, app/assets/stylesheets/_tables.scss */
 th.flight-section {
   text-align: center;
 }
 
-/* line 263, app/assets/stylesheets/_tables.scss */
+/* line 259, app/assets/stylesheets/_tables.scss */
 td.flight-show-airport {
   width: 250px;
   line-height: 1.2;
@@ -1315,89 +1292,89 @@ td.flight-show-airport {
 }
 
 /* Routes */
-/* line 271, app/assets/stylesheets/_tables.scss */
+/* line 267, app/assets/stylesheets/_tables.scss */
 td.route-distance, th.route-distance {
-  text-align: right;
+  text-align: center;
 }
 
-/* line 275, app/assets/stylesheets/_tables.scss */
+/* line 271, app/assets/stylesheets/_tables.scss */
 td.route-flights, th.route-flights {
   text-align: center;
 }
 
-/* line 279, app/assets/stylesheets/_tables.scss */
+/* line 275, app/assets/stylesheets/_tables.scss */
 td.route-route, th.route-route {
-  text-align: left;
+  text-align: center;
 }
 
 /* Tail numbers */
-/* line 285, app/assets/stylesheets/_tables.scss */
+/* line 281, app/assets/stylesheets/_tables.scss */
 td.tail-flights, th.tail-flights {
   text-align: center;
 }
 
-/* line 289, app/assets/stylesheets/_tables.scss */
+/* line 285, app/assets/stylesheets/_tables.scss */
 td.tail-aircraft {
   color: #52667a;
   font-weight: 300;
   text-align: center;
 }
 
-/* line 293, app/assets/stylesheets/_tables.scss */
+/* line 289, app/assets/stylesheets/_tables.scss */
 td.tail-aircraft abbr {
   border-bottom-color: #52667a;
 }
 
-/* line 298, app/assets/stylesheets/_tables.scss */
+/* line 294, app/assets/stylesheets/_tables.scss */
 td.tail-airline, th.tail-airline {
   text-align: center;
 }
 
-/* line 302, app/assets/stylesheets/_tables.scss */
+/* line 298, app/assets/stylesheets/_tables.scss */
 td.tail-number, th.tail_number {
   text-align: left;
 }
 
-/* line 304, app/assets/stylesheets/_tables.scss */
+/* line 300, app/assets/stylesheets/_tables.scss */
 td.tail-number img.country-flag-icon, th.tail_number img.country-flag-icon {
   margin-right: 0.5em;
 }
 
 /* Trips */
-/* line 311, app/assets/stylesheets/_tables.scss */
+/* line 307, app/assets/stylesheets/_tables.scss */
 td.trip-name, th.trip-name {
   text-align: left;
 }
 
-/* line 315, app/assets/stylesheets/_tables.scss */
+/* line 311, app/assets/stylesheets/_tables.scss */
 td.section-name {
   text-align: left;
   font-size: 85%;
 }
 
-/* line 320, app/assets/stylesheets/_tables.scss */
+/* line 316, app/assets/stylesheets/_tables.scss */
 th.section-name {
   text-align: left;
 }
 
 /* Miscellaneous table cell classes */
-/* line 328, app/assets/stylesheets/_tables.scss */
+/* line 324, app/assets/stylesheets/_tables.scss */
 tr.new td {
   background-color: #FFF5E6;
 }
 
-/* line 333, app/assets/stylesheets/_tables.scss */
+/* line 329, app/assets/stylesheets/_tables.scss */
 td.subdued {
   color: #52667a;
   font-weight: 300;
 }
 
-/* line 338, app/assets/stylesheets/_tables.scss */
+/* line 334, app/assets/stylesheets/_tables.scss */
 td.superlatives-label {
   background-color: #F9F9FB;
 }
 
-/* line 342, app/assets/stylesheets/_tables.scss */
+/* line 338, app/assets/stylesheets/_tables.scss */
 td.year_link {
   text-align: center;
 }
@@ -1448,4 +1425,31 @@ table.flight-select span.timezone {
   font-size: 85%;
   font-weight: 300;
   color: #52667a;
+}
+
+/* line 3, app/assets/stylesheets/_svg.scss */
+svg.graph-bar {
+  border: 1px solid #BED4EA;
+}
+
+/* line 6, app/assets/stylesheets/_svg.scss */
+svg.graph-bar rect.graph {
+  fill: #E6EAEF;
+}
+
+/* line 10, app/assets/stylesheets/_svg.scss */
+svg.graph-bar text.graph-value {
+  text-anchor: middle;
+}
+
+/* line 14, app/assets/stylesheets/_svg.scss */
+svg.graph-bar text.graph-distance {
+  font-size: 90%;
+}
+
+/* line 18, app/assets/stylesheets/_svg.scss */
+svg.graph-bar text.graph-unit {
+  font-size: 60%;
+  font-weight: 300;
+  fill: #52667a;
 }

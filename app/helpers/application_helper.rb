@@ -3,8 +3,9 @@ module ApplicationHelper
 
   # Dimensions for a graph bar.
   GRAPH_BAR_DIMENSIONS = {width: 130, height: 30}
-  # Text padding for a graph bar.
-  GRAPH_BAR_PADDING = 5
+  # Y position for text rows. Keys are the number of text rows to draw, values
+  # are arrays of y-positions in pixels.
+  GRAPH_BAR_TEXT_Y = {1 => [21], 2 => [15, 27]}
 
   # Adds a link to the admin block.
   #
@@ -199,13 +200,13 @@ module ApplicationHelper
       if is_distance
         value_mi = number_with_delimiter(value, delimeter: ",")
         value_km = number_with_delimiter(Distance::km(value), delimeter: ",")
-        concat content_tag(:text, value_mi, x: "30%", y: (GRAPH_BAR_DIMENSIONS[:height] * 0.3 + 1), class: %w(graph-value graph-distance))
-        concat content_tag(:text, value_km, x: "70%", y: (GRAPH_BAR_DIMENSIONS[:height] * 0.3 + 1), class: %w(graph-value graph-distance))
-        concat content_tag(:text, "mile".pluralize(value), x: "30%", y: (GRAPH_BAR_DIMENSIONS[:height] * 0.8 + 1), class: %w(graph-value graph-unit))
-        concat content_tag(:text, "km", x: "70%", y: (GRAPH_BAR_DIMENSIONS[:height] * 0.8 + 1), class: %w(graph-value graph-unit))
+        concat content_tag(:text, value_mi, x: "30%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance))
+        concat content_tag(:text, value_km, x: "70%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance))
+        concat content_tag(:text, "mile".pluralize(value), x: "30%", y: GRAPH_BAR_TEXT_Y[2][1], class: %w(graph-value graph-unit))
+        concat content_tag(:text, "km", x: "70%", y: GRAPH_BAR_TEXT_Y[2][1], class: %w(graph-value graph-unit))
       else
         graph_text = number_with_delimiter(value, delimeter: ",")
-        concat content_tag(:text, graph_text, x: "50%", y: (GRAPH_BAR_DIMENSIONS[:height] / 2 + 1), class: "graph-value")
+        concat content_tag(:text, graph_text, x: "50%", y: GRAPH_BAR_TEXT_Y[1][0], class: "graph-value")
       end
     end
     return svg
