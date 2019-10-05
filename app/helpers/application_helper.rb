@@ -1,6 +1,11 @@
 # Defines helper methods for the entire application.
 module ApplicationHelper
 
+  # Dimensions for a graph bar.
+  GRAPH_BAR_DIMENSIONS = {width: 130, height: 30}
+  # Text padding for a graph bar.
+  GRAPH_BAR_PADDING = 5
+
   # Adds a link to the admin block.
   #
   # @param link [ActiveSupport::SafeBuffer] a link_to object
@@ -184,18 +189,26 @@ module ApplicationHelper
   # @param value [Integer] the value of this row
   # @param maximum [Integer] the maximum value of this column in the table. Used
   #   to set the 100% point of the bar.
-  # @param unit [String] a unit to append to the displayed number
-  # @param path [Rails::Paths::Path] a path to link the displayed number to
-  # @param title [String] a title for the link
-  # @return [ActiveSupport::SafeBuffer] HTML for a graph
-  def graph_bar(value, maximum, unit=nil, path=nil, title=nil)
+  # @param is_distance [Boolean] whether or not the value is a distance in miles
+  # @return [ActiveSupport::SafeBuffer] inline SVG for a graph
+  def graph_bar(value, maximum, is_distance=false)
     return "" unless (value >= 0 && maximum > 0)
-    percent = value * 100 / maximum
-    value = number_with_delimiter(value, delimeter: ",")
-    value = safe_join([value, content_tag(:span, unit, class: "measurement-unit")], " ") if unit
-    return content_tag(:div, class: "graph-background") do
-      content_tag(:div, link_to_if(path.present?, value, path, title: title), class: "graph", style: "background-size: #{percent}% 100%;")
+    bar_width = (value.to_f / maximum.to_f) * (GRAPH_BAR_DIMENSIONS[:width])
+    svg = content_tag(:svg, **GRAPH_BAR_DIMENSIONS, class: "graph-bar") do
+      concat content_tag(:rect, nil, width: bar_width, height: GRAPH_BAR_DIMENSIONS[:height], class: "graph")
+      if is_distance
+        value_mi = number_with_delimiter(value, delimeter: ",")
+        value_km = number_with_delimiter(Distance::km(value), delimeter: ",")
+        concat content_tag(:text, value_mi, x: "30%", y: (GRAPH_BAR_DIMENSIONS[:height] * 0.3 + 1), class: %w(graph-value graph-distance))
+        concat content_tag(:text, value_km, x: "70%", y: (GRAPH_BAR_DIMENSIONS[:height] * 0.3 + 1), class: %w(graph-value graph-distance))
+        concat content_tag(:text, "mile".pluralize(value), x: "30%", y: (GRAPH_BAR_DIMENSIONS[:height] * 0.8 + 1), class: %w(graph-value graph-unit))
+        concat content_tag(:text, "km", x: "70%", y: (GRAPH_BAR_DIMENSIONS[:height] * 0.8 + 1), class: %w(graph-value graph-unit))
+      else
+        graph_text = number_with_delimiter(value, delimeter: ",")
+        concat content_tag(:text, graph_text, x: "50%", y: (GRAPH_BAR_DIMENSIONS[:height] / 2 + 1), class: "graph-value")
+      end
     end
+    return svg
   end
   
   # Renders a link which the user can click on to sort a table column. Used in

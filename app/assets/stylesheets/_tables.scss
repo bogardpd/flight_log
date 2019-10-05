@@ -188,10 +188,6 @@
     	text-align: center;
     }
 
-    td.airport-distance, th.airport-distance {
-    	text-align: right;
-    }
-
     td.airport-visits {
     	text-align: center;
     }
@@ -269,7 +265,7 @@
   /* Routes */
     
     td.route-distance, th.route-distance {
-    	text-align: right;
+    	text-align: center;
     }
 
     td.route-flights, th.route-flights {
@@ -277,7 +273,7 @@
     }
 
     td.route-route, th.route-route {
-    	text-align: left;
+    	text-align: center;
     }
     
   /* Tail numbers */

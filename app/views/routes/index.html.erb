@@ -30,7 +30,7 @@
 			<% end %>
 		</td>
 		<td class="route-route"><%= link_to(format_route(row[:route].map{|r| r.iata_code}), show_route_path(airport1: row[:route].first.slug, airport2: row[:route].last.slug), title: "View flights between #{row[:route][0].iata_code} and #{row[:route][1].iata_code}") %></td>
-    <td class="route-distance"><%= graph_bar(row[:distance_mi], @distance_maximum, "mi") %></td>
+    <td class="route-distance"><%= graph_bar(row[:distance_mi], @distance_maximum, true) %></td>
 		<td class="route-flights"><%= graph_bar(row[:flight_count], @flights_maximum) %></td>
   </tr>
 	<% previous_count = @sort[0] == :flights ? row[:flight_count] : row[:distance_mi] %>

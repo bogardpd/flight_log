@@ -88,7 +88,7 @@ a {
 }
 
 a:visited {
-	color: #75BAFD;
+	color: $color-text-link-visited;
 }
 
 a:hover {
@@ -138,20 +138,6 @@ div.field_with_errors {
   label {
   	color: $color-text-error;
   }
-}
-
-div.graph {
-	width: 120px;
-	margin: 0;
-	border: 1px solid #BED4EA;
-	padding: 0 5px;
-	background-image: image-url('graph-pixel.png');
-	background-position:left center;
-	background-repeat:no-repeat;
-}
-
-div.graph-background {
-	background-color: #FCFCFD;
 }
 
 div.hidden-marker {

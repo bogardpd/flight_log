@@ -1,0 +1,27 @@
+// Contains styles for SVG blocks
+
+svg.graph-bar {
+  border: 1px solid #BED4EA;
+  
+  rect.graph {
+    fill: #E6EAEF;
+  }
+
+  text.graph-value {
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  text.graph-distance {
+    font-size: 90%;
+  }
+
+  text.graph-unit {
+    font-size: 60%;
+    font-weight: 300;
+    fill: $color-text-secondary;
+  }
+
+}
+
+
