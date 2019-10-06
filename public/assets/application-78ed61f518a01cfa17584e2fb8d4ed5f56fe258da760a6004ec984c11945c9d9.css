@@ -1099,12 +1099,12 @@ td.flightlog-total span.total-percent {
 /* line 99, app/assets/stylesheets/_tables.scss */
 td.counter {
   color: #C0C9D3;
-  text-align: right;
+  text-align: center;
 }
 
 /* line 104, app/assets/stylesheets/_tables.scss */
 th.counter {
-  text-align: right;
+  text-align: center;
 }
 
 /* Annual summaries */
@@ -1307,74 +1307,79 @@ td.route-route, th.route-route {
   text-align: center;
 }
 
+/* line 279, app/assets/stylesheets/_tables.scss */
+td.superlatives-distance {
+  text-align: right;
+}
+
 /* Tail numbers */
-/* line 281, app/assets/stylesheets/_tables.scss */
+/* line 285, app/assets/stylesheets/_tables.scss */
 td.tail-flights, th.tail-flights {
   text-align: center;
 }
 
-/* line 285, app/assets/stylesheets/_tables.scss */
+/* line 289, app/assets/stylesheets/_tables.scss */
 td.tail-aircraft {
   color: #52667a;
   font-weight: 300;
   text-align: center;
 }
 
-/* line 289, app/assets/stylesheets/_tables.scss */
+/* line 293, app/assets/stylesheets/_tables.scss */
 td.tail-aircraft abbr {
   border-bottom-color: #52667a;
 }
 
-/* line 294, app/assets/stylesheets/_tables.scss */
+/* line 298, app/assets/stylesheets/_tables.scss */
 td.tail-airline, th.tail-airline {
   text-align: center;
 }
 
-/* line 298, app/assets/stylesheets/_tables.scss */
+/* line 302, app/assets/stylesheets/_tables.scss */
 td.tail-number, th.tail_number {
   text-align: left;
 }
 
-/* line 300, app/assets/stylesheets/_tables.scss */
+/* line 304, app/assets/stylesheets/_tables.scss */
 td.tail-number img.country-flag-icon, th.tail_number img.country-flag-icon {
   margin-right: 0.5em;
 }
 
 /* Trips */
-/* line 307, app/assets/stylesheets/_tables.scss */
+/* line 311, app/assets/stylesheets/_tables.scss */
 td.trip-name, th.trip-name {
   text-align: left;
 }
 
-/* line 311, app/assets/stylesheets/_tables.scss */
+/* line 315, app/assets/stylesheets/_tables.scss */
 td.section-name {
   text-align: left;
   font-size: 85%;
 }
 
-/* line 316, app/assets/stylesheets/_tables.scss */
+/* line 320, app/assets/stylesheets/_tables.scss */
 th.section-name {
   text-align: left;
 }
 
 /* Miscellaneous table cell classes */
-/* line 324, app/assets/stylesheets/_tables.scss */
+/* line 328, app/assets/stylesheets/_tables.scss */
 tr.new td {
   background-color: #FFF5E6;
 }
 
-/* line 329, app/assets/stylesheets/_tables.scss */
+/* line 333, app/assets/stylesheets/_tables.scss */
 td.subdued {
   color: #52667a;
   font-weight: 300;
 }
 
-/* line 334, app/assets/stylesheets/_tables.scss */
+/* line 338, app/assets/stylesheets/_tables.scss */
 td.superlatives-label {
   background-color: #F9F9FB;
 }
 
-/* line 338, app/assets/stylesheets/_tables.scss */
+/* line 342, app/assets/stylesheets/_tables.scss */
 td.year_link {
   text-align: center;
 }
@@ -1430,24 +1435,25 @@ table.flight-select span.timezone {
 /* line 3, app/assets/stylesheets/_svg.scss */
 svg.graph-bar {
   border: 1px solid #BED4EA;
+  vertical-align: middle;
 }
 
-/* line 6, app/assets/stylesheets/_svg.scss */
+/* line 7, app/assets/stylesheets/_svg.scss */
 svg.graph-bar rect.graph {
   fill: #E6EAEF;
 }
 
-/* line 10, app/assets/stylesheets/_svg.scss */
+/* line 11, app/assets/stylesheets/_svg.scss */
 svg.graph-bar text.graph-value {
   text-anchor: middle;
 }
 
-/* line 14, app/assets/stylesheets/_svg.scss */
+/* line 15, app/assets/stylesheets/_svg.scss */
 svg.graph-bar text.graph-distance {
   font-size: 90%;
 }
 
-/* line 18, app/assets/stylesheets/_svg.scss */
+/* line 19, app/assets/stylesheets/_svg.scss */
 svg.graph-bar text.graph-unit {
   font-size: 60%;
   font-weight: 300;
