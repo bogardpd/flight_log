@@ -167,8 +167,8 @@ class AircraftFamily < ApplicationRecord
     
     # Count flights without aircraft families:
     family_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
-    if flights.count > family_sum
-      counts.push({id: nil, flight_count: flights.count - family_sum})
+    if flights.size > family_sum
+      counts.push({id: nil, flight_count: flights.size - family_sum})
     end  
     return counts
   end

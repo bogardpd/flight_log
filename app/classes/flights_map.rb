@@ -78,19 +78,13 @@ class FlightsMap < Map
   #   outside of the region.
   def separate_routes_by_region
 
-    pairs_inside_region  = Array.new
-    pairs_outside_region = Array.new
+    pairs_inside_region, pairs_outside_region = @flights
+      .pluck(:origin_airport_id, :destination_airport_id)
+      .map{|pair| pair.sort}
+      .uniq
+      .partition{|pair| @airports_inside_region.include?(pair[0]) && @airports_inside_region.include?(pair[1])}
+    
     routes = Hash.new
-    
-    @flights.each do |flight|
-      route = [flight.origin_airport_id, flight.destination_airport_id].sort
-      if @airports_inside_region.include?(route[0]) && @airports_inside_region.include?(route[1])
-        pairs_inside_region.push(route)
-      else
-        pairs_outside_region.push(route)
-      end
-    end
-    
     routes[:inside_region]  = pairs_inside_region.uniq
     routes[:outside_region] = pairs_outside_region.uniq
     routes[:extra_airports] = ((pairs_outside_region.flatten - pairs_inside_region.flatten) & @airports_inside_region).uniq # Airports that are in the region, but only have routes to outside of the region.

@@ -49,8 +49,8 @@ module TravelClass
       .map{|k,v| {class_code: k, flight_count: v}}
     
     class_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
-    if flights.count > class_sum
-      counts.push({class_code: nil, flight_count: flights.count - class_sum})
+    if flights.size > class_sum
+      counts.push({class_code: nil, flight_count: flights.size - class_sum})
     end
 
     case sort_category

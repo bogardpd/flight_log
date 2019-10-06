@@ -592,8 +592,8 @@
   
   <span class='comment'># Count flights without airlines:
 </span>  <span class='id identifier rubyid_airline_sum'>airline_sum</span> <span class='op'>=</span> <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sum'>sum</span><span class='comma'>,</span> <span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_sum'>sum</span> <span class='op'>+</span> <span class='id identifier rubyid_f'>f</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_airline_sum'>airline_sum</span>
-    <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='label'>id:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>flight_count:</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='op'>-</span> <span class='id identifier rubyid_airline_sum'>airline_sum</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_airline_sum'>airline_sum</span>
+     <span class='id identifier rubyid_counts'>counts</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='label'>id:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>flight_count:</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>-</span> <span class='id identifier rubyid_airline_sum'>airline_sum</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_counts'>counts</span>
 <span class='kw'>end</span></pre>
@@ -848,7 +848,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Oct  6 15:09:57 2019 by
+  Generated on Sun Oct  6 17:05:46 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

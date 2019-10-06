@@ -170,9 +170,9 @@ module ApplicationHelper
   def flight_table_total_row(flights, extra_details=Array.new)
     flyer_flights = flyer.flights(current_user)
     output = Array.new
-    output.push(pluralize(flights.length, "flight"))
-    if flyer_flights.any? && flights.length > 0
-      percent = ((flights.length.to_f/flyer_flights.length.to_f)*1000).round/10.0
+    output.push(pluralize(flights.size, "flight"))
+    if flyer_flights.any? && flights.size > 0
+      percent = ((flights.size.to_f/flyer_flights.size.to_f)*1000).round/10.0
       output.push(content_tag(:span, "(#{percent}% of all flights)", class: "total-percent"))
     end
     output |= extra_details
@@ -298,7 +298,7 @@ module ApplicationHelper
         concat map.gcmap
       else
         if selected_region.length > 0
-          concat render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.count)} #{selected_region.join(", ")}.")
+          concat render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.size)} #{selected_region.join(", ")}.")
         else
           concat render_message(:warning, "When flights have been added, you’ll see a map here.")
         end

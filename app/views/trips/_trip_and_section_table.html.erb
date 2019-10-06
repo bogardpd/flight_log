@@ -27,7 +27,7 @@
     <tr>
       <td colspan="4" class="flightlog-total">
         <%= pluralize(trips_and_sections.length, "trip") %>,
-        <%= pluralize(trips_and_sections.map{|t| t[:sections].count }.reduce(0, :+), "section") %>
+        <%= pluralize(trips_and_sections.map{|t| t[:sections].size }.reduce(0, :+), "section") %>
       </td>
     </tr>
   </table>

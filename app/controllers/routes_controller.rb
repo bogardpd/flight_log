@@ -35,7 +35,7 @@ class RoutesController < ApplicationController
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
     @route_table = Route.flight_table_data(flights, *@sort)     
     
-    if @route_table.count > 0
+    if @route_table.size > 0
       
       # Find maxima for graph scaling:
       @flights_maximum = @route_table.max_by{|i| i[:flight_count].to_i}[:flight_count]

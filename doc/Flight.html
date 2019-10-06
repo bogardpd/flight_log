@@ -570,14 +570,14 @@
       <pre class="lines">
 
 
-170
 171
 172
 173
-174</pre>
+174
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 170</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 171</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_year_range'>year_range</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
@@ -633,17 +633,17 @@
       <pre class="lines">
 
 
-180
 181
 182
 183
 184
 185
 186
-187</pre>
+187
+188</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 180</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 181</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_years_with_flights'>years_with_flights</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span>
@@ -897,7 +897,8 @@
 100
 101
 102
-103</pre>
+103
+104</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 95</span>
@@ -909,7 +910,8 @@
 </span>  <span class='id identifier rubyid_distances'>distances</span> <span class='op'>=</span> <span class='id identifier rubyid_routes'>routes</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_airport1_id'>airport1_id</span><span class='comma'>,</span><span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_airport2_id'>airport2_id</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_distance_mi'>distance_mi</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
 
   <span class='comment'># Filter down to only the routes that are actually used:
-</span>  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_flight'>flight</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_origin_airport_id'>origin_airport_id</span><span class='comma'>,</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport_id'>destination_airport_id</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='comma'>,</span> <span class='id identifier rubyid_distances'>distances</span><span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_origin_airport_id'>origin_airport_id</span><span class='comma'>,</span> <span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport_id'>destination_airport_id</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
+</span>  <span class='comment'>#return self.all.map{|flight| [[flight.origin_airport_id, flight.destination_airport_id].sort, distances[[flight.origin_airport_id, flight.destination_airport_id].sort]]}.to_h
+</span>  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:origin_airport_id</span><span class='comma'>,</span> <span class='symbol'>:destination_airport_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_pair'>pair</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_pair'>pair</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='comma'>,</span> <span class='id identifier rubyid_distances'>distances</span><span class='lbracket'>[</span><span class='id identifier rubyid_pair'>pair</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -976,7 +978,6 @@
       <pre class="lines">
 
 
-127
 128
 129
 130
@@ -996,10 +997,11 @@
 144
 145
 146
-147</pre>
+147
+148</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 128</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_superlatives'>superlatives</span>
   <span class='id identifier rubyid_route_distances'>route_distances</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_route_distances'>route_distances</span>
@@ -1093,7 +1095,6 @@
       <pre class="lines">
 
 
-156
 157
 158
 159
@@ -1101,14 +1102,15 @@
 161
 162
 163
-164</pre>
+164
+165</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 156</span>
+      <pre class="code"><span class="info file"># File 'app/models/flight.rb', line 157</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_total_distance'>total_distance</span><span class='lparen'>(</span><span class='id identifier rubyid_allow_unknown_distances'>allow_unknown_distances</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_route_distances'>route_distances</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_route_distances'>route_distances</span>
-  <span class='id identifier rubyid_distances'>distances</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_route_distances'>route_distances</span><span class='lbracket'>[</span><span class='lbracket'>[</span><span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_origin_airport_id'>origin_airport_id</span><span class='comma'>,</span><span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport_id'>destination_airport_id</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_distances'>distances</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:origin_airport_id</span><span class='comma'>,</span> <span class='symbol'>:destination_airport_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_pair'>pair</span><span class='op'>|</span> <span class='id identifier rubyid_route_distances'>route_distances</span><span class='lbracket'>[</span><span class='id identifier rubyid_pair'>pair</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_allow_unknown_distances'>allow_unknown_distances</span> <span class='op'>||</span> <span class='lparen'>(</span><span class='id identifier rubyid_distances'>distances</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='kw'>false</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_distances'>distances</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_sum'>sum</span><span class='comma'>,</span> <span class='id identifier rubyid_d'>d</span><span class='op'>|</span> <span class='id identifier rubyid_sum'>sum</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='id identifier rubyid_d'>d</span> <span class='op'>||</span> <span class='int'>0</span><span class='rparen'>)</span><span class='rbrace'>}</span>
   <span class='kw'>else</span>
@@ -1125,7 +1127,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Oct  6 15:09:57 2019 by
+  Generated on Sun Oct  6 17:05:46 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

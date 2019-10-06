@@ -93,8 +93,8 @@ class Airline < ApplicationRecord
     
     # Count flights without airlines:
     airline_sum = counts.reduce(0){|sum, f| sum + f[:flight_count]}
-    if flights.count > airline_sum
-      counts.push({id: nil, flight_count: flights.count - airline_sum})
+    if flights.size > airline_sum
+       counts.push({id: nil, flight_count: flights.size - airline_sum})
     end
     return counts
   end

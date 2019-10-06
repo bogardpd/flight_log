@@ -17,7 +17,7 @@
   </div>
 
   <div id="airlines">
-    <p>I have flown on <%= pluralize(@airlines.count, "airline") %>.</p>
+    <p>I have flown on <%= pluralize(@airlines.size, "airline") %>.</p>
 
     <% if @airlines.empty? %>
     	<%= render_message(:warning, "There are no flights in the flight log that include an airline!") %>

@@ -11,7 +11,7 @@
   <%= render partial: "flights/error_no_flights" %>
 <% else %>
 
-  <p>I have flown on <%= pluralize(@aircraft_families.count, "aircraft family") %>.</p>
+  <p>I have flown on <%= pluralize(@aircraft_families.size, "aircraft family") %>.</p>
 
   <% if @aircraft_families.empty? %>
     <%= render_message(:warning, "There are no flights in the flight log that include an aircraft type!") %>

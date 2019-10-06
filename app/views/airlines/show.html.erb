@@ -23,8 +23,7 @@
 	</div>
 <% end %>
 
-
-<p>I have flown <%= pluralize(@flights.length, "flight") %> on <span class="bold"><%= @airline.airline_name %></span>.</p>
+<p>I have flown <%= pluralize(@flights.size, "flight") %> on <span class="bold"><%= @airline.airline_name %></span>.</p>
 
 <% if @flights.any? %>
 

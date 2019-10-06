@@ -99,7 +99,8 @@ class Flight < ApplicationRecord
     distances = routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
 
     # Filter down to only the routes that are actually used:
-    return self.all.map{|flight| [[flight.origin_airport_id, flight.destination_airport_id].sort, distances[[flight.origin_airport_id, flight.destination_airport_id].sort]]}.to_h
+    #return self.all.map{|flight| [[flight.origin_airport_id, flight.destination_airport_id].sort, distances[[flight.origin_airport_id, flight.destination_airport_id].sort]]}.to_h
+    return self.all.pluck(:origin_airport_id, :destination_airport_id).map{|pair| [pair.sort, distances[pair.sort]]}.to_h
   end
 
   # Return the longest and shortest flights from a collection of flights.
@@ -155,7 +156,7 @@ class Flight < ApplicationRecord
   # @return [Integer, nil] the total distance of the Flights in statute miles
   def self.total_distance(allow_unknown_distances=true)
     route_distances = self.all.route_distances
-    distances = self.all.map{|f| route_distances[[f.origin_airport_id,f.destination_airport_id].sort]}
+    distances = self.all.pluck(:origin_airport_id, :destination_airport_id).map{|pair| route_distances[pair.sort]}
     if allow_unknown_distances || (distances.include?(nil) == false)
       return distances.reduce(0){|sum, d| sum + (d || 0)}
     else
