@@ -1,10 +1,10 @@
 app/classes/map.rb 7f0c387dc37dcc436a740164adb35dd7e27c52b9
 app/models/trip.rb 3d2afabd00ccca1791e2b98f902e6e22a921c332
-app/models/user.rb aa83d10456ebe2e579ef80f7f08ff20dc10171a2
+app/models/user.rb 4aae4143eda96283a9738a721658c65de7840919
 app/models/route.rb 2d02a09daa1ffd2bbaeec7dd00563593035dada3
-app/models/flight.rb eb0d01e93c4a050f1727dcfba2717e640251af08
+app/models/flight.rb 7a2e8c1e403a4c42c7faaf452e553406fe7407bc
 app/modules/table.rb 48967bdc56ca121c1696b4ad2279660395d2a88c
-app/models/airline.rb 27cfb848005958ee8ced57a1e30b8b8ad41734d8
+app/models/airline.rb ab214dcaeb5b98804d41e264ca0ef7f8f3d3cfca
 app/models/airport.rb 14140386a598a81e45e21fff78cbd397aea8fa49
 app/models/pk_pass.rb f69908e07f123f92d5cb04da0d2e16f589197a74
 app/modules/distance.rb 1518d387f502ed8b398484dd8aaf374586be1b90
@@ -20,7 +20,7 @@ app/modules/travel_class.rb 7c4219d0c4869556b68671c8559032ba918d8ead
 app/classes/boarding_pass.rb 7bc9ff7dc26e1ec436990ead88b0219119e9a589
 app/helpers/routes_helper.rb d91c15d04db35ec5039f615a7be88d55271f286a
 app/helpers/flights_helper.rb 4da64da02dd7492f557ec4cc7015d5ba04599908
-app/models/aircraft_family.rb 3d2df2520cab1c2860e57985680dc4f06ef0f472
+app/models/aircraft_family.rb 19669d966ee5ab178e4b9a4b1f6f618405ec942a
 app/modules/external_image.rb 63543f485a7ae68df9c44e35c9298deee09f6b98
 app/modules/formatted_date.rb c954819cb261aabafb106ae4c932d676c37822c1
 app/helpers/airlines_helper.rb 073cbb939dac01c34cefd0fc647b42a1b198900d
@@ -28,7 +28,7 @@ app/helpers/airports_helper.rb 9232bbe9b70116f80f97cdf2f05f37cb07901532
 app/helpers/sessions_helper.rb d1852044ff57d2cedeab266aa46bbec2b2f27812
 app/classes/single_flight_map.rb 79ccc361af1ba529e32bbc292e86db8d1363aedb
 app/models/application_record.rb 899e5a65ef956feef4786903943db05e223070b0
-app/helpers/application_helper.rb a79e777332d7851aa59724d16790c1f972421f7c
+app/helpers/application_helper.rb 4fb3a00b17fe3ec33a959a7967ab9dea35054e1c
 app/modules/boarding_pass_email.rb 1e5c3d4613de5abbcb31ff4e488b00a26ef5192c
 app/controllers/admin_controller.rb c4ad7d8f6e051643ee4fac7c402f69473d3c8627
 app/controllers/pages_controller.rb bd6c5e3805e53f73b0c9a192e919821c3b551938

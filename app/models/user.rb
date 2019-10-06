@@ -10,10 +10,10 @@ class User < ApplicationRecord
   
   before_save :create_remember_token
   
-  validates :name, :presence => true, :uniqueness => true, :length => { :maximum => 50 }
-  validates :password, :presence => true, :length => { :minimum => 6 }
-  validates :password_confirmation, :presence => true
-  validates :email, :presence => true
+  validates :name, presence: true, uniqueness: true, length: { maximum: 50 }
+  validates :password, presence: true, length: { minimum: 6 }
+  validates :password_confirmation, presence: true
+  validates :email, presence: true
   
   # Returns both email addresses associated with this User. Used by
   # {ApplicationController#check_email_for_boarding_passes} to match received
@@ -32,12 +32,11 @@ class User < ApplicationRecord
   def flights(viewing_user=nil)
     if self == viewing_user
       # The viewer is viewing their own flights, so get all trips.
-      trip_ids = self.trips.pluck(:id)
+      return Flight.joins(:trip).where(trips: {user_id: self.id}).chronological
     else
       # The viewer is viewing someone else's flights, so get trips which are not hidden.
-      trip_ids = self.trips.where(hidden: false).pluck(:id)
+      return Flight.joins(:trip).where(trips: {user_id: self.id, hidden: false}).chronological
     end
-    return Flight.where(trip_id: trip_ids.sort).order(:departure_utc)
   end
     
   # Returns the hash digest of the given string. Used for hashing User passwords.

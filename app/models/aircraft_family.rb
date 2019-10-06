@@ -71,7 +71,7 @@ class AircraftFamily < ApplicationRecord
   # @see AircraftFamiliesController#show
   def family_and_type_count(flights)
     type_count = flights.reorder(nil).joins(:aircraft_family)
-      .group(:aircraft_family_id, :slug, :family_name, :icao_aircraft_code, :parent_id).count
+      .group(:aircraft_family_id, "aircraft_families.slug", :family_name, :icao_aircraft_code, :parent_id).count
       .map{|k,v| {id: k[0], slug: k[1], family_name: k[2], icao_aircraft_code: k[3], is_family: k[4].nil?, flight_count: v}}
       .sort_by{|a| [-a[:flight_count], a[:family_name]] }
     return type_count

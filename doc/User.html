@@ -292,13 +292,13 @@
       <pre class="lines">
 
 
+46
 47
 48
-49
-50</pre>
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/user.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'app/models/user.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='const'><span class='object_link'><a href="" title="User (class)">User</a></span></span><span class='period'>.</span><span class='id identifier rubyid_digest'>digest</span><span class='lparen'>(</span><span class='id identifier rubyid_string'>string</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_cost'>cost</span> <span class='op'>=</span> <span class='const'>ActiveModel</span><span class='op'>::</span><span class='const'>SecurePassword</span><span class='period'>.</span><span class='id identifier rubyid_min_cost'>min_cost</span> <span class='op'>?</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Engine</span><span class='op'>::</span><span class='const'>MIN_COST</span> <span class='op'>:</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Engine</span><span class='period'>.</span><span class='id identifier rubyid_cost'>cost</span>
@@ -448,8 +448,7 @@
 37
 38
 39
-40
-41</pre>
+40</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/models/user.rb', line 32</span>
@@ -457,12 +456,11 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_viewing_user'>viewing_user</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='kw'>self</span> <span class='op'>==</span> <span class='id identifier rubyid_viewing_user'>viewing_user</span>
     <span class='comment'># The viewer is viewing their own flights, so get all trips.
-</span>    <span class='id identifier rubyid_trip_ids'>trip_ids</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_trips'>trips</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='rparen'>)</span>
+</span>    <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:trip</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>trips:</span> <span class='lbrace'>{</span><span class='label'>user_id:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span>
   <span class='kw'>else</span>
     <span class='comment'># The viewer is viewing someone else&#39;s flights, so get trips which are not hidden.
-</span>    <span class='id identifier rubyid_trip_ids'>trip_ids</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_trips'>trips</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>hidden:</span> <span class='kw'>false</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_pluck'>pluck</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='rparen'>)</span>
+</span>    <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:trip</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>trips:</span> <span class='lbrace'>{</span><span class='label'>user_id:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='label'>hidden:</span> <span class='kw'>false</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_chronological'>chronological</span>
   <span class='kw'>end</span>
-  <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>trip_id:</span> <span class='id identifier rubyid_trip_ids'>trip_ids</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_order'>order</span><span class='lparen'>(</span><span class='symbol'>:departure_utc</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -474,7 +472,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Oct  5 17:09:40 2019 by
+  Generated on Sun Oct  6 15:09:56 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

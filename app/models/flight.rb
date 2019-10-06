@@ -35,7 +35,7 @@ class Flight < ApplicationRecord
   # @scope instance
   # @return [Array<Flight>] Flights sorted by departure time (UTC)
   scope :chronological, -> {
-    order("flights.departure_utc")
+    order(:departure_utc)
   }
 
 
