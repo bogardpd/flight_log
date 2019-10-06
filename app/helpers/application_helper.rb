@@ -201,8 +201,8 @@ module ApplicationHelper
         value_mi = number_with_delimiter(value, delimeter: ",")
         value_km = number_with_delimiter(Distance::km(value), delimeter: ",")
         concat content_tag(:text, value_mi, x: "30%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance))
-        concat content_tag(:text, value_km, x: "70%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance))
         concat content_tag(:text, "mile".pluralize(value), x: "30%", y: GRAPH_BAR_TEXT_Y[2][1], class: %w(graph-value graph-unit))
+        concat content_tag(:text, value_km, x: "70%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance))
         concat content_tag(:text, "km", x: "70%", y: GRAPH_BAR_TEXT_Y[2][1], class: %w(graph-value graph-unit))
       else
         graph_text = number_with_delimiter(value, delimeter: ",")

@@ -1099,12 +1099,12 @@ td.flightlog-total span.total-percent {
 /* line 99, app/assets/stylesheets/_tables.scss */
 td.counter {
   color: #C0C9D3;
-  text-align: right;
+  text-align: center;
 }
 
 /* line 104, app/assets/stylesheets/_tables.scss */
 th.counter {
-  text-align: right;
+  text-align: center;
 }
 
 /* Annual summaries */
@@ -1430,17 +1430,17 @@ table.flight-select span.timezone {
 /* line 3, app/assets/stylesheets/_svg.scss */
 svg.graph-bar {
   border: 1px solid #BED4EA;
+  vertical-align: middle;
 }
 
-/* line 6, app/assets/stylesheets/_svg.scss */
+/* line 7, app/assets/stylesheets/_svg.scss */
 svg.graph-bar rect.graph {
   fill: #E6EAEF;
 }
 
-/* line 10, app/assets/stylesheets/_svg.scss */
+/* line 11, app/assets/stylesheets/_svg.scss */
 svg.graph-bar text.graph-value {
   text-anchor: middle;
-  dominant-baseline: middle;
 }
 
 /* line 15, app/assets/stylesheets/_svg.scss */
