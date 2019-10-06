@@ -13,7 +13,7 @@ class PagesController < ApplicationController
     @logo_used = true
     @region = current_region(default: [])
     
-    @flights = flyer.flights(current_user).includes(:origin_airport, :destination_airport)
+    @flights = flyer.flights(current_user)
     
     @flight_aircraft = AircraftFamily.flight_table_data(@flights)
     @flight_airlines = Airline.flight_table_data(@flights, type: :airline)

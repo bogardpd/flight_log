@@ -6,7 +6,7 @@
 
 <div class="intro-box">
 	<%= gcmap_with_region_select(@map, @region) %>
-  <p class="total"><span class="distance-primary"><%= distance_block(@total_distance, paragraph: false) %> &middot; <%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flights.length, "flight"), class: "summary-total"), flights_path) %></p>
+  <p class="total"><span class="distance-primary"><%= distance_block(@total_distance, paragraph: false) %> &middot; <%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flights.size, "flight"), class: "summary-total"), flights_path) %></p>
 </div>
 
 <% if @flights.any? %>
@@ -46,7 +46,7 @@
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_airlines.length, "airline"), class: "summary-total"), airlines_path) %></p>
+  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_airlines.size, "airline"), class: "summary-total"), airlines_path) %></p>
 </div>
 
 <div class="intro-box column">
@@ -64,7 +64,7 @@
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_routes.length, "route"), class: "summary-total"), routes_path) %></p>
+  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_routes.size, "route"), class: "summary-total"), routes_path) %></p>
 </div>
 
 <div class="intro-box column">
@@ -82,7 +82,7 @@
     </tr>
   <% end %>
   </table>
-  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_aircraft.length, "aircraft family"), class: "summary-total"), aircraft_families_path) %></p>
+  <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_aircraft.size, "aircraft family"), class: "summary-total"), aircraft_families_path) %></p>
 </div>
 
 <div class="intro-box column">
