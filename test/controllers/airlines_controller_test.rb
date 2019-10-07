@@ -3,7 +3,7 @@ require "test_helper"
 class AirlinesControllerTest < ActionDispatch::IntegrationTest
   
   def setup
-    @user = users(:sampleuser)
+    @user = users(:user_one)
   end
 
   def test_index_airlines_success

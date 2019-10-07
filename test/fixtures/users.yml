@@ -1,4 +1,5 @@
-sampleuser:
+user_one:
   id: 1
-  name: Sample User
-  password_digest: <%= User.digest('password') %>
+  name: "Sample User"
+  password_digest: "<%= User.digest('password') %>"
+  remember_token: "1234abcd"
