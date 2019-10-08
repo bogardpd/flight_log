@@ -6,6 +6,7 @@ class PagesFlowTest < ActionDispatch::IntegrationTest
     get "/"
     assert_response :success
     assert_select "div.message-info", {count: 0, text: /Active Trip/}, "This view must not list an active trip"
+    assert_select "a:match('href', ?)", "/new-flight-menu", {count: 0}, "This view must not show a link to import boarding passes"
     assert_select "img.map", {}, "This view must contain a map"
     assert_select "a:match('href', ?)", "/flights", {}, "This view must contain a link to Index Flights"
     assert_select "span.summary-total", {}, "This view must contain a count of flights"
@@ -23,6 +24,7 @@ class PagesFlowTest < ActionDispatch::IntegrationTest
     get "/"
     assert_response :success
     assert_select "div.message-info", /Active Trip/, "This view must list an active trip"
+    assert_select "a:match('href', ?)", "/new-flight-menu", {}, "This view must show a link to import boarding passes"
   end
 
 end
