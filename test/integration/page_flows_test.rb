@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PagesFlowTest < ActionDispatch::IntegrationTest
+class PageFlowsTest < ActionDispatch::IntegrationTest
   
   test "can see home" do
     get "/"
