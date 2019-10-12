@@ -85,9 +85,10 @@ module ApplicationHelper
   # @param type [:error, :warning, :success, :info] the type of message to
   #   provide. Used to determine the style of the message.
   # @param text [String] the message text
+  # @param id [String] an ID for the message block
   # @return [ActiveSupport::SafeBuffer] a message <div>
-  def render_message(type, text)
-    render partial: "layouts/message", locals: {type: type, text: text}
+  def render_message(type, text, id=nil)
+    render partial: "layouts/message", locals: {type: type, text: text, id: id}
   end
   
   # Renders all messages (contained in \@messages) and flash messages for a
@@ -99,7 +100,7 @@ module ApplicationHelper
     order = [:error, :warning, :success, :info]
     @messages ||= []
     @messages.concat(flash.map{|k,v| {type: k.to_sym, text: v}}) if flash
-    safe_join(@messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text]) })
+    safe_join(@messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text], m[:id]) })
   end
   
   # Renders an image containing an icon for an airline's logo.

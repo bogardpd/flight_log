@@ -139,7 +139,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#add_message-instance_method" title="#add_message (instance method)">#<strong>add_message</strong>(type, text)  &#x21d2; nil </a>
+      <a href="#add_message-instance_method" title="#add_message (instance method)">#<strong>add_message</strong>(type, text, id = nil)  &#x21d2; nil </a>
     
 
     
@@ -280,7 +280,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="add_message-instance_method">
   
-    #<strong>add_message</strong>(type, text)  &#x21d2; <tt>nil</tt> 
+    #<strong>add_message</strong>(type, text, id = nil)  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -330,6 +330,24 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>an optional ID for the message block</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -352,17 +370,17 @@
       <pre class="lines">
 
 
-59
 60
 61
-62</pre>
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/application_controller.rb', line 60</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_add_message'>add_message</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_text'>text</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_add_message'>add_message</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_text'>text</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@messages</span> <span class='op'>||=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  <span class='ivar'>@messages</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>text:</span> <span class='id identifier rubyid_text'>text</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='ivar'>@messages</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>text:</span> <span class='id identifier rubyid_text'>text</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='id identifier rubyid_id'>id</span><span class='rbrace'>}</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -642,7 +660,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Oct  6 23:08:00 2019 by
+  Generated on Sat Oct 12 18:21:56 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

@@ -1,6 +1,6 @@
-airportDFW:
+airport_dfw:
   id: 1
-  slug: "DFW-Dallas"
+  slug: "DFW"
   iata_code: "DFW"
   icao_code: "KDFW"
   city: "Dallas/Fort Worth"
@@ -8,7 +8,7 @@ airportDFW:
   latitude: 32.8972316
   longitude: -97.0376949
 
-airportORD:
+airport_ord:
   id: 2
   slug: "ORD-Chicago"
   iata_code: "ORD"
@@ -18,7 +18,7 @@ airportORD:
   latitude: 41.9745206
   longitude: -87.9065973
   
-airportSEA:
+airport_sea:
   id: 3
   slug: "SEA-Tac"
   iata_code: "SEA"
@@ -28,7 +28,7 @@ airportSEA:
   latitude: 47.4498889
   longitude: -122.3117778
 
-airportYVR:
+airport_yvr:
   id: 4
   slug: "YVR-Vancouver"
   iata_code: "YVR"
@@ -38,7 +38,7 @@ airportYVR:
   latitude: 49.193889
   longitude: -123.184444
 
-airportYYZ:
+airport_yyz:
   id: 5
   slug: "YYZ"
   iata_code: "YYZ"

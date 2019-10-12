@@ -6,13 +6,13 @@ tripChicagoSeattle:
   purpose: personal
   user_id: 1
 
-tripHidden:
+trip_hidden:
   id: 2
-  name: Sample Hidden Trip
+  name: "Sample Hidden Trip"
   hidden: Yes
-  comment: This is a hidden trip
-  purpose: business
-  user_id: 1
+  comment: "This is a hidden trip"
+  purpose: "business"
+  user_id: user_one
 
 tripLayoverRatios:
   id: 3

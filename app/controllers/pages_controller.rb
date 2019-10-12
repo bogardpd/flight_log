@@ -22,8 +22,8 @@ class PagesController < ApplicationController
     @flight_tails = TailNumber.flight_table_data(@flights)
     
     if logged_in?
-      Trip.where(hidden: true).map{|trip| add_message(:info, "Active Trip: #{view_context.link_to(trip.name, trip_path(trip), class: "title")}")} # Link to hidden trips
-      add_message(:info, "You have boarding passes you can #{view_context.link_to("import", new_flight_menu_path)}!") if PKPass.any?
+      Trip.where(hidden: true).map{|trip| add_message(:info, "Active Trip: #{view_context.link_to(trip.name, trip_path(trip), class: "title")}", "message-active-trip-#{trip.id}")} # Link to hidden trips
+      add_message(:info, "You have boarding passes you can #{view_context.link_to("import", new_flight_menu_path)}!", "message-boarding-passes-available-for-import") if PKPass.any?
       if @flight_routes.find{|x| x[:distance_mi] < 0}
         add_message(:warning, "Some #{view_context.link_to("routes", routes_path)} don’t have distances.")
       end

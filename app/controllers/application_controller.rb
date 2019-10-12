@@ -55,10 +55,11 @@ class ApplicationController < ActionController::Base
   # @param type [:info, :success, :warning, :error] the type of message to
   #   display. Used to determine the color of the message box.
   # @param text [String] the message text
+  # @param id [String] an optional ID for the message block
   # @return [nil]
-  def add_message(type, text)
+  def add_message(type, text, id=nil)
     @messages ||= []
-    @messages.push({type: type, text: text})
+    @messages.push({type: type, text: text, id: id})
   end
   
 end

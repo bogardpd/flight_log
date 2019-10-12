@@ -8,7 +8,7 @@ class AirportsControllerTest < ActionDispatch::IntegrationTest
   end
   
   def test_show_airport_success
-    airport = airports(:airportSEA)
+    airport = airports(:airport_sea)
     get airport_path(airport.slug)
     assert_response :success
   end
