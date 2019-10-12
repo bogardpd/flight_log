@@ -3,17 +3,17 @@ aircraft_737:
   slug: "Boeing-737"
   family_name: "737"
   iata_aircraft_code: "737"
-  manufacturer: Boeing
-  category: narrow_body
+  manufacturer: "Boeing"
+  category: "narrow_body"
 
 aircraft_737_800:
   id: 2
   slug: "Boeing-737-800"
   family_name: "737-800"
   iata_aircraft_code: "738"
-  icao_aircraft_code: B738
-  manufacturer: Boeing
-  category: narrow_body
+  icao_aircraft_code: "B738"
+  manufacturer: "Boeing"
+  category: "narrow_body"
   parent_id: 1
 
 aircraft_A320_Family:

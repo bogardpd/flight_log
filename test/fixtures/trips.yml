@@ -12,7 +12,7 @@ trip_hidden:
   hidden: Yes
   comment: "This is a hidden trip"
   purpose: "business"
-  user_id: user_one
+  user_id: 1
 
 tripLayoverRatios:
   id: 3
