@@ -11,6 +11,18 @@ trip_hidden:
   comment: "This is a hidden trip"
   purpose: "business"
   user: user_one
+  created_at: 2019-01-01 00:00:00
+
+trip_hidden_latest:
+  # Used by FlightFlowsTest to test default trip value in new_flight_menu
+  # without a specified trip ID parameter. This trip's created_at date must be
+  # the latest of all hidden trips.
+  name: "Sample Latest Hidden Trip"
+  hidden: Yes
+  comment: "This is a hidden trip"
+  purpose: "business"
+  user: user_one
+  created_at: 2019-01-02 00:00:00
 
 trip_layover_ratios:
   # Used by TripTest to test layover ratio scenarios

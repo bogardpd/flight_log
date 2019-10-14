@@ -8,6 +8,7 @@ class ActiveSupport::TestCase
   
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+  set_fixture_class(pk_passes: PKPass)
   
   # Logs in a test user
   def log_in_as(user)

@@ -34,6 +34,9 @@ class Airline < ApplicationRecord
   # Form fields which should be saved capitalized.
   CAPS_ATTRS = %w( icao_airline_code )
   before_save :capitalize_codes
+
+  # Returns airlines who are not only operators.
+  scope :exclude_only_operators, -> { where(is_only_operator: false) }
   
   # Formats the name of this Airline.
   #

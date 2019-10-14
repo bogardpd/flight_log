@@ -154,7 +154,7 @@ class Trip < ApplicationRecord
   # @return [Array<Hash>] an array of trip details
   def self.with_departure_dates(flyer, current_user, sort_category=nil, sort_direction=nil)
     if flyer == current_user
-      trips = Trip.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.user_id = 1 GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", flyer.id])
+      trips = Trip.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.user_id = ? GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", flyer.id])
     else
       trips = Trip.find_by_sql(["SELECT flights.trip_id, trips.id, trips.name, trips.hidden, MIN(flights.departure_date) AS departure_date FROM flights JOIN trips ON flights.trip_id = trips.id WHERE trips.user_id = ? AND trips.hidden = false GROUP BY flights.trip_id, trips.id, trips.name, trips.hidden ORDER BY departure_date", flyer.id])
     end
