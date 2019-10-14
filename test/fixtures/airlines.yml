@@ -1,4 +1,4 @@
-airlineAA:
+airline_american:
   id: 1
   airline_name: "American Airlines"
   slug: "American-Airlines"
@@ -7,7 +7,7 @@ airlineAA:
   numeric_code: "001"
   is_only_operator: No
   
-airlineEV:
+airline_expressjet:
   id: 2
   airline_name: "ExpressJet"
   slug: "ExpressJet"
@@ -15,7 +15,7 @@ airlineEV:
   icao_airline_code: "ASQ"
   is_only_operator: Yes
 
-airlineUA:
+airline_united:
   id: 3
   airline_name: "United"
   slug: "United"
@@ -24,7 +24,7 @@ airlineUA:
   numeric_code: "016"
   is_only_operator: No
 
-airlinePSA:
+airline_psa:
   id: 4
   airline_name: "PSA Airlines"
   slug: "PSA-Airlines"
@@ -32,7 +32,7 @@ airlinePSA:
   icao_airline_code: "JIA"
   is_only_operator: Yes
 
-airlineComair:
+airline_comair:
   id: 5
   airline_name: "Comair"
   slug: "Comair"
@@ -40,7 +40,7 @@ airlineComair:
   icao_airline_code: "COM"
   is_only_operator: Yes
 
-airlineNetJets:
+airline_netjets:
   id: 6
   airline_name: "NetJets"
   slug: "NetJets"
@@ -48,21 +48,21 @@ airlineNetJets:
   icao_airline_code: "EJA"
   is_only_operator: No
 
-airlineOperatorOnly:
+airline_operator_only:
   id: 7
   airline_name: "Operator Only"
   slug: "Operator-Only"
   iata_airline_code: "ZZ"
   icao_airline_code: "ZZZ"
 
-airlineCodeshareOnly:
+airline_codeshare_only:
   id: 8
   airline_name: "Codeshare Only"
   slug: "Codeshare-Only"
   iata_airline_code: "ZY"
   icao_airline_code: "ZZY"
 
-airlineNoFlights:
+airline_no_flights:
   id: 9
   airline_name: "No Flights"
   slug: "No-Flights"

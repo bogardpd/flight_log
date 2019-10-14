@@ -28,14 +28,14 @@ class AirlinesControllerTest < ActionDispatch::IntegrationTest
 
   # def test_destroy_airline_success
   #   log_in_as(@user) # Need to log in or else destroy will never be called. However, with rails 5 we can't do this as a controller test anymore. Switch to integration test.
-  #   @airline = airlines(:airlineNoFlights)
+  #   @airline = airlines(:airline_no_flights)
   #   assert_difference("Airline.count", -1) do
   #     delete delete_airline_path(airline)
   #   end
   # end
 
   # def test_airline_should_not_destroy_with_flights
-  #   airline = airlines(:airlineAA)
+  #   airline = airlines(:airline_american)
   #   assert_difference("Airline.count", 0) do
   #     delete airline_url(airline)
   #   end
@@ -43,7 +43,7 @@ class AirlinesControllerTest < ActionDispatch::IntegrationTest
   # end
 
   # def test_airline_should_not_destroy_with_operated_flights
-  #   operator = airlines(:airlineOperatorOnly)
+  #   operator = airlines(:airline_operator_only)
   #   assert_difference("Airline.count", 0) do
   #     delete airline_url(operator)
   #   end

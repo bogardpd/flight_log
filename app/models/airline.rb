@@ -22,8 +22,8 @@
 # airline IDs are optional.
 class Airline < ApplicationRecord
   has_many :flights
-  has_many :operated_flights, :class_name => "Flight", :foreign_key => "operator_id"
-  has_many :codeshared_flights, :class_name => "Flight", :foreign_key => "codeshare_airline_id"
+  has_many :operated_flights, class_name: "Flight", foreign_key: "operator_id"
+  has_many :codeshared_flights, class_name: "Flight", foreign_key: "codeshare_airline_id"
     
   validates :iata_airline_code, presence: true, length: { is: 2 }
   validates :icao_airline_code, presence: true, length: { is: 3 }
