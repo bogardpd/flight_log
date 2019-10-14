@@ -1,224 +1,203 @@
-flightORDDFW:
-  id: 1
-  origin_airport_id: 2
-  destination_airport_id: 1
-  trip_id: 1
+flight_ord_dfw:
+  trip: trip_chicago_seattle
   trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
   departure_date: 2015-01-01
   departure_utc: 2015-01-01 12:00:00
-  airline_id: 1
-  operator_id: 2
-  aircraft_family_id: 2
+  airline: airline_american
+  operator: airline_expressjet
+  aircraft_family: aircraft_737_800
   flight_number: "1100"
-  tail_number: N12345
+  tail_number: "N12345"
   travel_class: "economy"
   fleet_number: "123"
   
-flightDFWSEA:
-  id: 2
-  origin_airport_id: 1
-  destination_airport_id: 3
-  trip_id: 1
+flight_dfw_sea:
+  trip: trip_chicago_seattle
   trip_section: 1
+  origin_airport: airport_dfw
+  destination_airport: airport_sea
   departure_date: 2015-01-01
   departure_utc: 2015-01-01 16:00:00
-  airline_id: 1
-  operator_id: 1
-  aircraft_family_id: 2
+  airline: airline_american
+  operator: airline_american
+  aircraft_family: aircraft_737_800
   flight_number: "1200"
-  tail_number: N987AA
+  tail_number: "N987AA"
   travel_class: "premium-economy"
   fleet_number: "4XW"
 
-flightSEAORD:
-  id: 3
-  origin_airport_id: 3
-  destination_airport_id: 2
-  trip_id: 1
+flight_sea_ord:
+  trip: trip_chicago_seattle
   trip_section: 2
+  origin_airport: airport_sea
+  destination_airport: airport_ord
   departure_date: 2015-01-04
   departure_utc: 2015-01-04 17:00:00
-  airline_id: 1
-  operator_id: 1
-  aircraft_family_id: 2
+  airline: airline_american
+  operator: airline_american
+  aircraft_family: aircraft_737_800
   flight_number: "1400"
-  tail_number: N456AA
+  tail_number: "N456AA"
   travel_class: "economy"
   fleet_number: "456"
   
-flightORDYVR:
-  id: 4
-  origin_airport_id: 2
-  destination_airport_id: 4
-  trip_id: 2
+flight_ord_yvr:
+  trip: trip_hidden
   trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_yvr
   departure_date: 2015-02-04
   departure_utc: 2015-02-05 02:15:00
-  airline_id: 3
-  operator_id: 3
-  aircraft_family_id: 3
+  airline: airline_united
+  operator: airline_united
+  aircraft_family: aircraft_a320_family
   flight_number: "0123"
-  tail_number: N333UA
+  tail_number: "N333UA"
   travel_class: "economy"
   fleet_number: "333"
 
-flightYVRORD:
-  id: 5
-  origin_airport_id: 4
-  destination_airport_id: 2
-  trip_id: 2
+flight_yvr_ord:
+  trip: trip_hidden
   trip_section: 2
+  origin_airport: airport_yvr
+  destination_airport: airport_ord
   departure_date: 2015-02-08
   departure_utc: 2015-02-08 17:30:00
-  airline_id: 3
-  operator_id: 3
-  aircraft_family_id: 4
+  airline: airline_united
+  operator: airline_united
+  aircraft_family: aircraft_a321
   flight_number: "0456"
-  tail_number: N555UA
+  tail_number: "N555UA"
   travel_class: "economy"
   fleet_number: "555"
 
-flightLayoverRatioS1F1ORDDFW:
-  id: 6
-  origin_airport_id: 2
-  destination_airport_id: 1
-  trip_id: 3
+flight_layover_ratio_s1_f1_ord_dfw:
+  # Used by TripTest to test layover ratio for a section with one flight
+  trip: trip_layover_ratios
   trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
   departure_date: 2019-07-01
   departure_utc: 2019-07-01 12:00:00
-  airline_id: 1
-  flight_number: 1001
-  aircraft_family_id: 4
+  airline: airline_american
+  flight_number: "1001"
+  aircraft_family: aircraft_a321
 
-flightLayoverRatioS2F1DFWORD:
-  id: 7
-  origin_airport_id: 1
-  destination_airport_id: 2
-  trip_id: 3
+flight_layover_ratio_s2_f1_dfw_ord:
+  # Used by TripTest to test layover ratio for a section with multiple flights
+  trip: trip_layover_ratios
   trip_section: 2
+  origin_airport: airport_dfw
+  destination_airport: airport_ord
   departure_date: 2019-07-02
   departure_utc: 2019-07-02 12:00:00
-  airline_id: 1
-  flight_number: 2001
-  aircraft_family_id: 4
+  airline: airline_american
+  flight_number: "2001"
+  aircraft_family: aircraft_a321
 
-flightLayoverRatioS2F2ORDSEA:
-  id: 8
-  origin_airport_id: 2
-  destination_airport_id: 3
-  trip_id: 3
+flight_layover_ratio_s2_f2_ord_sea:
+  # Used by TripTest to test layover ratio for a section with multiple flights
+  trip: trip_layover_ratios
   trip_section: 2
+  origin_airport: airport_ord
+  destination_airport: airport_sea
   departure_date: 2019-07-02
   departure_utc: 2019-07-02 17:00:00
-  airline_id: 1
-  flight_number: 2002
-  aircraft_family_id: 4
+  airline: airline_american
+  flight_number: "2002"
+  aircraft_family: aircraft_a321
 
-flightLayoverRatioS3F1ORDORD:
-  id: 9
-  origin_airport_id: 2
-  destination_airport_id: 2
-  trip_id: 3
+flight_layover_ratio_s3_f1_ord_ord:
+  # Used by TripTest to test layover ratio for a section with zero and nonzero
+  # distance flights
+  trip: trip_layover_ratios
   trip_section: 3
+  origin_airport: airport_ord
+  destination_airport: airport_ord
   departure_date: 2019-07-03
   departure_utc: 2019-07-03 12:00:00
-  airline_id: 1
-  flight_number: 3001
-  aircraft_family_id: 4
+  airline: airline_american
+  flight_number: "3001"
+  aircraft_family: aircraft_a321
 
-flightLayoverRatioS3F2ORDYVR:
-  id: 10
-  origin_airport_id: 2
-  destination_airport_id: 4
-  trip_id: 3
+flight_layover_ratio_s3_f2_ord_yvr:
+  # Used by TripTest to test layover ratio for a section with zero and nonzero
+  # distance flights
+  trip: trip_layover_ratios
   trip_section: 3
+  origin_airport: airport_ord
+  destination_airport: airport_yvr
   departure_date: 2019-07-03
   departure_utc: 2019-07-03 15:00:00
-  airline_id: 1
-  flight_number: 3002
-  aircraft_family_id: 4
+  airline: airline_american
+  flight_number: "3002"
+  aircraft_family: aircraft_a321
 
-flightLayoverRatioS4F1YVRYVR:
-  id: 11
-  origin_airport_id: 4
-  destination_airport_id: 4
-  trip_id: 3
+flight_layover_ratio_s4_f1_yvr_yvr:
+  # Used by TripTest to test layover ratio for a section with only zero distance
+  # flights
+  trip: trip_layover_ratios
   trip_section: 4
+  origin_airport: airport_yvr
+  destination_airport: airport_yvr
   departure_date: 2019-07-04
   departure_utc: 2019-07-04 12:00:00
-  airline_id: 1
-  flight_number: 4001
-  aircraft_family_id: 4
+  airline: airline_american
+  flight_number: "4001"
+  aircraft_family: aircraft_a321
 
-flightLayoverRatioS5F1ORDDFW:
-  id: 12
-  origin_airport_id: 2
-  destination_airport_id: 1
-  trip_id: 3
+flight_layover_ratio_unknown_distance_f1:
+  # Used by TripTest to test layover ratio for a section with unknown distance
+  # flights. This flight does have a distance, but the other flight in this
+  # section does not.
+  trip: trip_layover_ratios
   trip_section: 5
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
   departure_date: 2019-07-05
   departure_utc: 2019-07-05 12:00:00
-  airline_id: 1
-  flight_number: 5001
-  aircraft_family_id: 4
+  airline: airline_american
+  flight_number: "5001"
+  aircraft_family: aircraft_a321
 
-flightLayoverRatioS5F2DFWYYZ:
-  # This flight has no route and YYZ has no coordinates, so it has a totally unknown distance.
-  id: 13
-  origin_airport_id: 1
-  destination_airport_id: 5
-  trip_id: 3
+flight_layover_ratio_unknown_distance_f2:
+  # Used by TripTest to test layover ratio for a section with unknown distance
+  # flights. This flight has no route and YYZ has no coordinates, so it has a
+  # totally unknown distance.
+  trip: trip_layover_ratios
   trip_section: 5
+  origin_airport: airport_dfw
+  destination_airport: airport_yyz
   departure_date: 2019-07-05
   departure_utc: 2019-07-05 13:00:00
-  airline_id: 1
-  flight_number: 5002
-  aircraft_family_id: 4
+  airline: airline_american
+  flight_number: "5002"
+  aircraft_family: aircraft_a321
 
-flightDisambiguationHidden:
-  origin_airport_id: 2
-  destination_airport_id: 1
-  trip_id: 4
+flight_aircraft_child_only:
+  trip: trip_generic
   trip_section: 1
-  departure_date: 2015-01-01
-  departure_utc: 2015-01-01 12:00:00
-  airline_id: 4
-  operator_id: 4
-  flight_number: 400
-  aircraft_family_id: 8
-
-flightDisambiguationUnhidden:
-  origin_airport_id: 2
-  destination_airport_id: 1
-  trip_id: 5
-  trip_section: 1
-  departure_date: 2015-01-01
-  departure_utc: 2015-01-01 12:00:00
-  airline_id: 5
-  operator_id: 5
-  flight_number: 500
-  aircraft_family_id: 4
-
-flightAircraftChildOnly:
-  origin_airport_id: 2
-  destination_airport_id: 1
-  trip_id: 5
-  trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
   departure_date: 2015-01-01
   departure_utc: 2015-01-01 13:00:00
-  airline_id: 5
-  operator_id: 5
-  flight_number: 600
-  aircraft_family_id: 10
+  airline: airline_american
+  operator: airline_american
+  flight_number: "600"
+  aircraft_family: aircraft_with_only_subtype_child
 
-flightOperatorCodeshare:
-  origin_airport_id: 1
-  destination_airport_id: 2
-  trip_id: 6
+flight_operator_codeshare:
+  # Used by AirlineTest to test Airline.has_any_operator_codeshare_flights? for 
+  # airlines only used as codeshares and operators.
+  trip: trip_generic
   trip_section: 1
+  origin_airport: airport_dfw
+  destination_airport: airport_ord
   departure_date: 2015-01-01
   departure_utc: 2015-01-01 13:00:00
-  airline_id: 1
-  operator_id: 7
-  codeshare_airline_id: 8
-  flight_number: 600
+  airline: airline_american
+  operator: airline_operator_only
+  codeshare_airline: airline_codeshare_only
+  flight_number: "600"

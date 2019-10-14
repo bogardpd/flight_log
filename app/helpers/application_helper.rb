@@ -194,7 +194,7 @@ module ApplicationHelper
   # @param is_distance [Boolean] whether or not the value is a distance in miles
   # @return [ActiveSupport::SafeBuffer] inline SVG for a graph
   def graph_bar(value, maximum, is_distance=false)
-    return "" unless (value >= 0 && maximum > 0)
+    return "" unless (value.present? && maximum > 0)
     bar_width = (value.to_f / maximum.to_f) * (GRAPH_BAR_DIMENSIONS[:width])
     svg = content_tag(:svg, **GRAPH_BAR_DIMENSIONS, class: "graph-bar") do
       concat content_tag(:rect, nil, width: bar_width, height: GRAPH_BAR_DIMENSIONS[:height], class: "graph")

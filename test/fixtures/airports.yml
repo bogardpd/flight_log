@@ -1,5 +1,4 @@
 airport_dfw:
-  id: 1
   slug: "DFW"
   iata_code: "DFW"
   icao_code: "KDFW"
@@ -9,7 +8,6 @@ airport_dfw:
   longitude: -97.0376949
 
 airport_ord:
-  id: 2
   slug: "ORD-Chicago"
   iata_code: "ORD"
   icao_code: "KORD"
@@ -19,7 +17,6 @@ airport_ord:
   longitude: -87.9065973
   
 airport_sea:
-  id: 3
   slug: "SEA-Tac"
   iata_code: "SEA"
   icao_code: "KSEA"
@@ -29,7 +26,6 @@ airport_sea:
   longitude: -122.3117778
 
 airport_yvr:
-  id: 4
   slug: "YVR-Vancouver"
   iata_code: "YVR"
   icao_code: "CYVR"
@@ -39,7 +35,6 @@ airport_yvr:
   longitude: -123.184444
 
 airport_yyz:
-  id: 5
   slug: "YYZ"
   iata_code: "YYZ"
   icao_code: "CYYZ"

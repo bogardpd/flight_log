@@ -8,8 +8,8 @@
 # Route is actually internally managed as the pair of {Airport Airports}
 # associated with a {Flight}.
 class Route < ApplicationRecord
-  belongs_to :airport1, :class_name => "Airport"
-  belongs_to :airport2, :class_name => "Airport"
+  belongs_to :airport1, class_name: "Airport"
+  belongs_to :airport2, class_name: "Airport"
   
   # The plain text arrow used between airport pairs on one way routes.
   ARROW_ONE_WAY_PLAINTEXT = "⇒"
@@ -115,6 +115,4 @@ class Route < ApplicationRecord
 
   private
 
-  
-  
 end

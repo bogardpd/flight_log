@@ -4,6 +4,8 @@ class AirlinesControllerTest < ActionDispatch::IntegrationTest
   
   def setup
     @user = users(:user_one)
+    @airline = airlines(:airline_american)
+    @operator = airlines(:airline_expressjet)
   end
 
   def test_index_airlines_success
@@ -12,17 +14,17 @@ class AirlinesControllerTest < ActionDispatch::IntegrationTest
   end
   
   def test_show_airline_success
-    get airline_path("American-Airlines")
+    get airline_path(@airline.slug)
     assert_response :success
   end
   
   def test_show_operator_success
-    get show_operator_path("ExpressJet")
+    get show_operator_path(@operator.slug)
     assert_response :success
   end
   
   def test_show_fleet_number_success
-    get show_fleet_number_path(operator: "ExpressJet", fleet_number: "123")
+    get show_fleet_number_path(operator: @operator.slug, fleet_number: "123")
     assert_response :success
   end
 

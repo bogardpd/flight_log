@@ -8,7 +8,7 @@ class FlightsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def test_show_flight_success
-    flight = flights(:flightORDDFW)
+    flight = flights(:flight_ord_dfw)
     get flight_path(flight)
     assert_response :success
   end

@@ -1,26 +1,26 @@
 routeDFWORD:
-  airport1_id: 1
-  airport2_id: 2
+  airport1: airport_dfw
+  airport2: airport_ord
   distance_mi: 801
 
 routeORDSEA:
-  airport1_id: 2
-  airport2_id: 3
+  airport1: airport_ord
+  airport2: airport_sea
   distance_mi: 1716
 
 # Route from DFW to SEA deliberately excluded to test unknown routes.
 
 routeORDORD:
-  airport1_id: 2
-  airport2_id: 2
+  airport1: airport_ord
+  airport2: airport_ord
   distance_mi: 0
 
 routeORDYVR:
-  airport1_id: 2
-  airport2_id: 4
+  airport1: airport_ord
+  airport2: airport_yvr
   distance_mi: 1759
 
 routeYVRYVR:
-  airport1_id: 4
-  airport2_id: 4
+  airport1: airport_yvr
+  airport2: airport_yvr
   distance_mi: 0

@@ -1,40 +1,26 @@
-tripChicagoSeattle:
-  id: 1
-  name: Chicago to Seattle
+trip_chicago_seattle:
+  name: "Chicago to Seattle"
   hidden: No
-  comment: This is a sample trip
-  purpose: personal
-  user_id: 1
+  comment: "This is a sample trip"
+  purpose: "personal"
+  user: user_one
 
 trip_hidden:
-  id: 2
   name: "Sample Hidden Trip"
   hidden: Yes
   comment: "This is a hidden trip"
   purpose: "business"
-  user_id: 1
+  user: user_one
 
-tripLayoverRatios:
-  id: 3
-  name: Trip to Test Layover Ratios
+trip_layover_ratios:
+  # Used by TripTest to test layover ratio scenarios
+  name: "Trip to Test Layover Ratios"
   hidden: No
-  comment: sec1 ORD-DFW, sec2 DFW-SEA-ORD, sec3 ORD-ORD-YVR, sec4 YVR-YVR, sec5 no flights
+  comment: "sec1 ORD-DFW, sec2 DFW-SEA-ORD, sec3 ORD-ORD-YVR, sec4 YVR-YVR, sec5 no flights"
+  user: user_one
 
-tripDisambiguationHidden:
-  id: 4
-  name: "Trip to test hidden disambiguation"
-  hidden: Yes
-  user_id: 1
-
-tripDisambiguationUnhidden:
-  id: 5
-  name: "Trip to test hidden disambiguation"
-  hidden: No
-  user_id: 1
-
-tripGeneric:
+trip_generic:
   # Used for all test flights that don't require a specific trip
-  id: 6
   name: "Generic trip"
   hidden: No
-  user_id: 1
+  user: user_one

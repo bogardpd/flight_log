@@ -3,7 +3,7 @@ require "test_helper"
 class TripTest < ActiveSupport::TestCase
   
   def setup
-    @trip = Trip.find(3)
+    @trip = trips(:trip_layover_ratios)
     @delta = 0.001
   end
   
@@ -38,9 +38,9 @@ class TripTest < ActiveSupport::TestCase
   end
 
   def test_matching_trips_and_sections
-    flights = Flight.find([1,2])
+    flights = Flight.find([flights(:flight_ord_dfw).id, flights(:flight_dfw_sea).id])
     matching = Trip.matching_trips_and_sections(flights)
-    assert matching.dig(0, :trip_id) == 1
+    assert matching.dig(0, :trip_id) == flights[0].trip_id
     assert matching.dig(0, :sections, 0, :trip_section) == 1
   end
   

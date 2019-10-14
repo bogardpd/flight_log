@@ -3,7 +3,7 @@ require "test_helper"
 class AirportTest < ActiveSupport::TestCase
   
   def test_direct_flight_count
-    flights = Flight.find([1,2])
+    flights = Flight.find([flights(:flight_ord_dfw).id, flights(:flight_dfw_sea).id])
     airport = Airport.where(iata_code: "DFW").first
     direct_flight_airports = Airport.direct_flight_count(flights, airport)
     assert direct_flight_airports[0][:iata_code] == "ORD"
@@ -13,13 +13,13 @@ class AirportTest < ActiveSupport::TestCase
   end
 
   def test_remote_airport
-    local_id = 1
-    remote_id = 2
-    airport = Airport.find(local_id)
-    assert airport.remote_airport(local_id,remote_id) == remote_id
-    assert airport.remote_airport(remote_id,local_id) == remote_id
-    assert airport.remote_airport(local_id,local_id) == local_id
-    assert_nil airport.remote_airport(remote_id,remote_id)
+    local_airport = airports(:airport_dfw)
+    remote_airport = airports(:airport_ord)
+
+    assert_equal(remote_airport.id, local_airport.remote_airport(local_airport.id,remote_airport.id))
+    assert_equal(remote_airport.id, local_airport.remote_airport(remote_airport.id,local_airport.id))
+    assert_equal(local_airport.id, local_airport.remote_airport(local_airport.id,local_airport.id))
+    assert_nil(local_airport.remote_airport(remote_airport.id,remote_airport.id))
   end
 
 end
