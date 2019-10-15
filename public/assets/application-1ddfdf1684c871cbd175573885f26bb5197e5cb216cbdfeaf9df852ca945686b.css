@@ -731,52 +731,22 @@ form .autopopulated {
   border: 1px solid #ffbf00;
 }
 
-/* line 15, app/assets/stylesheets/_forms.scss */
-form .radio-code {
-  font-weight: 300;
-  font-family: "Source Code Pro", "Consolas", "Courier", monospace;
+/* line 16, app/assets/stylesheets/_forms.scss */
+form span#trip-name {
+  font-weight: bold;
 }
 
-/* line 19, app/assets/stylesheets/_forms.scss */
-form .radio-code-block {
-  font-family: "Source Code Pro", "Consolas", "Courier", monospace;
+/* line 20, app/assets/stylesheets/_forms.scss */
+form span#utc-time-now {
+  font-weight: bold;
 }
 
-/* line 22, app/assets/stylesheets/_forms.scss */
-form .radio-empty {
-  font-weight: 300;
-  font-style: italic;
-}
-
-/* line 26, app/assets/stylesheets/_forms.scss */
-form .updated {
-  background-color: #ffffb3;
-}
-
-/* line 29, app/assets/stylesheets/_forms.scss */
-form td.radio-button {
-  width: 20px;
-  vertical-align: top;
-}
-
-/* line 33, app/assets/stylesheets/_forms.scss */
-form td.radio-value {
-  width: 275px;
-  vertical-align: top;
-  line-height: 120%;
-}
-
-/* line 37, app/assets/stylesheets/_forms.scss */
-form td.radio-value span.label {
-  font-weight: 600;
-}
-
-/* line 42, app/assets/stylesheets/_forms.scss */
+/* line 24, app/assets/stylesheets/_forms.scss */
 form .field_with_errors {
   color: #cc0000;
 }
 
-/* line 44, app/assets/stylesheets/_forms.scss */
+/* line 26, app/assets/stylesheets/_forms.scss */
 form .field_with_errors input, form .field_with_errors select, form .field_with_errors option {
   color: #cc0000;
   background-color: #f7baba;
@@ -1099,12 +1069,12 @@ td.flightlog-total span.total-percent {
 /* line 99, app/assets/stylesheets/_tables.scss */
 td.counter {
   color: #C0C9D3;
-  text-align: right;
+  text-align: center;
 }
 
 /* line 104, app/assets/stylesheets/_tables.scss */
 th.counter {
-  text-align: right;
+  text-align: center;
 }
 
 /* Annual summaries */
@@ -1307,74 +1277,79 @@ td.route-route, th.route-route {
   text-align: center;
 }
 
+/* line 279, app/assets/stylesheets/_tables.scss */
+td.superlatives-distance {
+  text-align: right;
+}
+
 /* Tail numbers */
-/* line 281, app/assets/stylesheets/_tables.scss */
+/* line 285, app/assets/stylesheets/_tables.scss */
 td.tail-flights, th.tail-flights {
   text-align: center;
 }
 
-/* line 285, app/assets/stylesheets/_tables.scss */
+/* line 289, app/assets/stylesheets/_tables.scss */
 td.tail-aircraft {
   color: #52667a;
   font-weight: 300;
   text-align: center;
 }
 
-/* line 289, app/assets/stylesheets/_tables.scss */
+/* line 293, app/assets/stylesheets/_tables.scss */
 td.tail-aircraft abbr {
   border-bottom-color: #52667a;
 }
 
-/* line 294, app/assets/stylesheets/_tables.scss */
+/* line 298, app/assets/stylesheets/_tables.scss */
 td.tail-airline, th.tail-airline {
   text-align: center;
 }
 
-/* line 298, app/assets/stylesheets/_tables.scss */
+/* line 302, app/assets/stylesheets/_tables.scss */
 td.tail-number, th.tail_number {
   text-align: left;
 }
 
-/* line 300, app/assets/stylesheets/_tables.scss */
+/* line 304, app/assets/stylesheets/_tables.scss */
 td.tail-number img.country-flag-icon, th.tail_number img.country-flag-icon {
   margin-right: 0.5em;
 }
 
 /* Trips */
-/* line 307, app/assets/stylesheets/_tables.scss */
+/* line 311, app/assets/stylesheets/_tables.scss */
 td.trip-name, th.trip-name {
   text-align: left;
 }
 
-/* line 311, app/assets/stylesheets/_tables.scss */
+/* line 315, app/assets/stylesheets/_tables.scss */
 td.section-name {
   text-align: left;
   font-size: 85%;
 }
 
-/* line 316, app/assets/stylesheets/_tables.scss */
+/* line 320, app/assets/stylesheets/_tables.scss */
 th.section-name {
   text-align: left;
 }
 
 /* Miscellaneous table cell classes */
-/* line 324, app/assets/stylesheets/_tables.scss */
+/* line 328, app/assets/stylesheets/_tables.scss */
 tr.new td {
   background-color: #FFF5E6;
 }
 
-/* line 329, app/assets/stylesheets/_tables.scss */
+/* line 333, app/assets/stylesheets/_tables.scss */
 td.subdued {
   color: #52667a;
   font-weight: 300;
 }
 
-/* line 334, app/assets/stylesheets/_tables.scss */
+/* line 338, app/assets/stylesheets/_tables.scss */
 td.superlatives-label {
   background-color: #F9F9FB;
 }
 
-/* line 338, app/assets/stylesheets/_tables.scss */
+/* line 342, app/assets/stylesheets/_tables.scss */
 td.year_link {
   text-align: center;
 }

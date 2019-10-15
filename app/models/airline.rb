@@ -35,6 +35,9 @@ class Airline < ApplicationRecord
   CAPS_ATTRS = %w( icao_airline_code )
   before_save :capitalize_codes
 
+  # Returns airlines sorted alphabetically (case-insensitive).
+  scope :alphabetical, -> { order(Arel.sql("lower(airline_name)")) }
+  
   # Returns airlines who are not only operators.
   scope :exclude_only_operators, -> { where(is_only_operator: false) }
   
