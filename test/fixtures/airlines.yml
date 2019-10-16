@@ -52,3 +52,17 @@ airline_no_flights:
   slug: "No-Flights"
   iata_airline_code: "ZX"
   icao_airline_code: "ZZX"
+
+airline_visible:
+  # Used to test non-hidden airlines
+  airline_name: "Visible Air"
+  slug: "Visible-Air"
+  iata_airline_code: "VA"
+  icao_airline_code: "VSA"
+
+airline_hidden:
+  # Used to test non-hidden airlines
+  airline_name: "Hidden Air"
+  slug: "Hidden-Air"
+  iata_airline_code: "HA"
+  icao_airline_code: "HSA"

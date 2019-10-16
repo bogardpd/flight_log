@@ -41,3 +41,44 @@ airport_yyz:
   city: "Toronto"
   country: "Canada"
   # Coordinates deliberately excluded for testing routes with no distance
+
+airport_visible_1:
+  # Used to test non-hidden airports
+  slug: "AVA"
+  iata_code: "AVA"
+  icao_code: "KAVA"
+  city: "Visible City One"
+  country: "United States"
+  latitude: 40.000
+  longitude: -85.000
+
+airport_visible_2:
+  # Used to test non-hidden airports
+  slug: "AVB"
+  iata_code: "AVB"
+  icao_code: "KAVB"
+  city: "Visible City Two"
+  country: "United States"
+  latitude: 30.000
+  longitude: -85.000
+
+airport_hidden_1:
+  # Used to test hidden airports
+  slug: "AHA"
+  iata_code: "AHA"
+  icao_code: "KAHA"
+  city: "Hidden City One"
+  country: "United States"
+  latitude: 40.000
+  longitude: -90.000
+
+airport_hidden_2:
+  # Used to test hidden airports
+  slug: "AHB"
+  iata_code: "AHB"
+  icao_code: "KAHB"
+  city: "Hidden City Two"
+  country: "United States"
+  latitude: 30.000
+  longitude: -90.000
+  

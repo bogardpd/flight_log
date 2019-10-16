@@ -2,6 +2,11 @@ require "test_helper"
 
 class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   
+  def setup
+    @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
+    @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
+  end
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Add/Edit Aircraft Family/Type             #
   ##############################################################################
@@ -93,6 +98,50 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     aircraft_type = aircraft_families(:aircraft_737_800)
     get(edit_aircraft_family_path(aircraft_type))
     assert_redirected_to(root_path)
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Index Aircraft Families                   #
+  ##############################################################################
+
+  test "can see index aircraft families when logged in" do
+    log_in_as(users(:user_one))
+    get(aircraft_families_path)
+    assert_response(:success)
+
+    assert_select("h1", "Aircraft Families")
+    assert_select("table#aircraft-family-count-table") do
+      check_flight_row(@visible_aircraft_family, "This view should show aircraft with visible flights")
+      check_flight_row(@hidden_aircraft_family, "This view should show aircraft with only hidden flights when logged in")
+    end
+
+    assert_select("div#admin-actions", {}, "This view should show admin actions when logged in") do
+      assert_select("a[href=?]", new_aircraft_family_path, {}, "This view should show a New Aircraft Family link when logged in")
+    end
+
+  end
+
+  test "can see index aircraft families when not logged in" do
+    get(aircraft_families_path)
+    assert_response(:success)
+
+    assert_select("h1", "Aircraft Families")
+    assert_select("table#aircraft-family-count-table") do
+      check_flight_row(@visible_aircraft_family, "This view should show aircraft with visible flights")
+      assert_select("tr#aircraft-family-count-table-#{@hidden_aircraft_family.id}", {count: 0}, "This view should not show aircraft with only hidden flights when not logged in")
+    end
+
+    assert_select("div#admin-actions", {count: 0}, "This view should not show admin actions when not logged in")
+    assert_select("a[href=?]", new_aircraft_family_path, {count: 0}, "This view should not show a New Aircraft Family link when not logged in")
+  end
+
+  private
+
+  def check_flight_row(aircraft_family, error_message)
+    assert_select("tr#aircraft-family-count-table-#{aircraft_family.id}", {}, error_message) do
+      assert_select("a[href=?]", aircraft_family_path(id: aircraft_family.slug))
+      assert_select("text.graph-value", Flight.where(aircraft_family_id: aircraft_family.family_and_type_ids).count.to_s)
+    end
   end
 
 end

@@ -201,3 +201,28 @@ flight_operator_codeshare:
   operator: airline_operator_only
   codeshare_airline: airline_codeshare_only
   flight_number: "600"
+
+flight_visible:
+  # Used to test visible Flights and other models
+  trip: trip_visible
+  trip_section: 1
+  origin_airport: airport_visible_1
+  destination_airport: airport_visible_2
+  departure_date: 2019-10-16
+  departure_utc: 2019-10-16 00:00:00
+  airline: airline_visible
+  flight_number: 8000
+  aircraft_family: aircraft_type_visible
+
+flight_hidden:
+  # Used to test hidden Flights and other models
+  trip: trip_hidden
+  trip_section: 1
+  origin_airport: airport_hidden_1
+  destination_airport: airport_hidden_2
+  departure_date: 2019-10-16
+  departure_utc: 2019-10-16 01:00:00
+  airline: airline_hidden
+  flight_number: 9000
+  aircraft_family: aircraft_type_hidden
+  

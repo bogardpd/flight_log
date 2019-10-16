@@ -55,3 +55,40 @@ aircraft_with_only_subtype_child:
   manufacturer: "Parent"
   parent: aircraft_with_only_subtype_parent
   
+aircraft_family_visible:
+  # Used to test non-hidden aircraft families
+  slug: "Visible-Family"
+  family_name: "Visible Aircraft Family"
+  manufacturer: "Visible Manufacturer"
+  iata_aircraft_code: "VAF"
+  icao_aircraft_code: "VVAF"
+  category: "narrow-body"
+
+aircraft_type_visible:
+  # Used to test non-hidden aircraft types
+  slug: "Visible-Type"
+  family_name: "Visible Aircraft Type"
+  manufacturer: "Visible Manufacturer"
+  iata_aircraft_code: "VAT"
+  icao_aircraft_code: "VVAT"
+  category: "narrow-body"
+  parent: aircraft_family_visible
+
+aircraft_family_hidden:
+  # Used to test hidden aircraft families
+  slug: "Hidden-Family"
+  family_name: "Hidden Aircraft Family"
+  manufacturer: "Hidden Manufacturer"
+  iata_aircraft_code: "HAF"
+  icao_aircraft_code: "HHAF"
+  category: "narrow-body"
+
+aircraft_type_hidden:
+  # Used to test non-hidden aircraft types
+  slug: "Hidden-Type"
+  family_name: "Hidden Aircraft Type"
+  manufacturer: "Hidden Manufacturer"
+  iata_aircraft_code: "HAT"
+  icao_aircraft_code: "HHAT"
+  category: "narrow-body"
+  parent: aircraft_family_hidden

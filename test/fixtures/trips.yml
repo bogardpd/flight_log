@@ -5,7 +5,16 @@ trip_chicago_seattle:
   purpose: "personal"
   user: user_one
 
+trip_visible:
+  # Used to test unhidden trips.
+  name: "Sample Visible Trip"
+  hidden: No
+  comment: "This is a visible trip"
+  purpose: "business"
+  user: user_one
+
 trip_hidden:
+  # Used to test hidden trips.
   name: "Sample Hidden Trip"
   hidden: Yes
   comment: "This is a hidden trip"
