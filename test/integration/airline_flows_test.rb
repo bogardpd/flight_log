@@ -57,4 +57,19 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_redirected_to(root_path)
   end
 
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Index Airlines                            #
+  ##############################################################################
+
+  test "can see index airlines when logged in" do
+    log_in_as(users(:user_one))
+    get(airlines_path)
+    assert_response(:success)
+  end
+
+  test "can see index airlines when not logged in" do
+    get(airlines_path)
+    assert_response(:success)
+  end
+
 end

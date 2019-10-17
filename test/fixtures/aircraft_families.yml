@@ -39,17 +39,15 @@ aircraft_737_700:
   manufacturer: "Boeing"
   category: "narrow_body"
 
-aircraft_hidden:
-  slug: "Airbus-A380"
-  family_name: "A380"
-  manufacturer: "Airbus"
-
 aircraft_with_only_subtype_parent:
+  # Used to test aircraft where only the subtypes have flights. This parent must
+  # not be assigned to any flights.
   slug: "Parent-Parent"
   family_name: "Parent"
   manufacturer: "Parent"
 
 aircraft_with_only_subtype_child:
+  # Used to test aircraft where only the subtypes have flights.
   slug: "Parent-Child"
   family_name: "Child"
   manufacturer: "Parent"
@@ -92,3 +90,24 @@ aircraft_type_hidden:
   icao_aircraft_code: "HHAT"
   category: "narrow-body"
   parent: aircraft_family_hidden
+
+aircraft_family_with_no_flights:
+  # Used to test aircraft families with no flights. Must not be used by any
+  # flights.
+  slug: "Unused-Family"
+  family_name: "Unused Aircraft Family"
+  manufacturer: "Unused Manufacturer"
+  iata_aircraft_code: "UAF"
+  icao_aircraft_code: "UUAF"
+  category: "narrow-body"
+
+aircraft_type_with_no_flights:
+  # Used to test aircraft types with no flights. Must not be used by any
+  # flights.
+  slug: "Unused-Type"
+  family_name: "Unused Aircraft Type"
+  manufacturer: "Unused Manufacturer"
+  iata_aircraft_code: "UAT"
+  icao_aircraft_code: "UUAT"
+  category: "narrow-body"
+  parent: aircraft_family_with_no_flights

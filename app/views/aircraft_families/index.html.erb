@@ -21,12 +21,12 @@
 
   <% if (logged_in? && @aircraft_families_with_no_flights.any?) %>
   	<h2>Aircraft Families with No Flights</h2>
-  	<table class="flightlog">
+  	<table class="flightlog" id="aircraft-families-with-no-flights-table">
   		<tr>
   			<th class="aircraft-family">Aircraft Family</th>
   		</tr>
   	<% @aircraft_families_with_no_flights.each do |aircraft_family| %>
-  	  <tr>
+  	  <tr id="aircraft-family-with-no-flights-row-<%= aircraft_family[:id] %>">
   	    <td class="aircraft-family"><%= link_to(format_aircraft_family(aircraft_family[:manufacturer], aircraft_family[:family_name]), aircraft_family_path(aircraft_family[:slug]), title: "View aircraft family details for #{aircraft_family[:manufacturer]} #{aircraft_family[:family_name]}") %></td>
   		</tr>
   	<% end %>

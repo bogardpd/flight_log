@@ -212,6 +212,7 @@ flight_visible:
   departure_utc: 2019-10-16 00:00:00
   airline: airline_visible
   flight_number: 8000
+  operator: operator_visible
   aircraft_family: aircraft_type_visible
 
 flight_hidden:
@@ -224,5 +225,6 @@ flight_hidden:
   departure_utc: 2019-10-16 01:00:00
   airline: airline_hidden
   flight_number: 9000
+  operator: operator_hidden
   aircraft_family: aircraft_type_hidden
   

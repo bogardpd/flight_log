@@ -5,6 +5,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
     @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
+    @no_flights_aircraft_family = aircraft_families(:aircraft_family_with_no_flights)
   end
 
   ##############################################################################
@@ -114,6 +115,9 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
       check_flight_row(@visible_aircraft_family, "This view should show aircraft with visible flights")
       check_flight_row(@hidden_aircraft_family, "This view should show aircraft with only hidden flights when logged in")
     end
+    assert_select("table#aircraft-families-with-no-flights-table", {}, "This view should show an aircraft families with no flights table when logged in") do
+      assert_select("tr#aircraft-family-with-no-flights-row-#{@no_flights_aircraft_family.id}")
+    end
 
     assert_select("div#admin-actions", {}, "This view should show admin actions when logged in") do
       assert_select("a[href=?]", new_aircraft_family_path, {}, "This view should show a New Aircraft Family link when logged in")
@@ -131,6 +135,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
       assert_select("tr#aircraft-family-count-table-#{@hidden_aircraft_family.id}", {count: 0}, "This view should not show aircraft with only hidden flights when not logged in")
     end
 
+    assert_select("table#aircraft-families-with-no-flights-table", {count: 0}, "This view should not show an aircraft families with no flights table when not logged in")
     assert_select("div#admin-actions", {count: 0}, "This view should not show admin actions when not logged in")
     assert_select("a[href=?]", new_aircraft_family_path, {count: 0}, "This view should not show a New Aircraft Family link when not logged in")
   end
@@ -138,7 +143,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   private
 
   def check_flight_row(aircraft_family, error_message)
-    assert_select("tr#aircraft-family-count-table-#{aircraft_family.id}", {}, error_message) do
+    assert_select("tr#aircraft-family-count-row-#{aircraft_family.id}", {}, error_message) do
       assert_select("a[href=?]", aircraft_family_path(id: aircraft_family.slug))
       assert_select("text.graph-value", Flight.where(aircraft_family_id: aircraft_family.family_and_type_ids).count.to_s)
     end

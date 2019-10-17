@@ -61,8 +61,22 @@ airline_visible:
   icao_airline_code: "VSA"
 
 airline_hidden:
-  # Used to test non-hidden airlines
+  # Used to test hidden airlines
   airline_name: "Hidden Air"
   slug: "Hidden-Air"
   iata_airline_code: "HA"
   icao_airline_code: "HSA"
+
+operator_visible:
+  # Used to test non-hidden operators
+  airline_name: "Visible Express"
+  slug: "Visible-Express"
+  iata_airline_code: "VO"
+  icao_airline_code: "VSO"
+
+operator_hidden:
+  # Used to test hidden operators
+  airline_name: "Hidden Express"
+  slug: "Hidden-Express"
+  iata_airline_code: "HO"
+  icao_airline_code: "HSO"

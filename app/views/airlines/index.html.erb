@@ -39,7 +39,7 @@
 
   <% if (logged_in? && @airlines_with_no_flights.any?) %>
   	<h2>Airlines/Operators with No Flights</h2>
-  	<table class="flightlog">
+  	<table class="flightlog" id="airlines-with-no-flights-table">
   		<tr>
   			<th class="airline-airline">Airline</th>
   			<th class="airline-code">Code</th>
