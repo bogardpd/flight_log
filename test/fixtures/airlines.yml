@@ -38,20 +38,20 @@ airline_comair:
 airline_operator_only:
   airline_name: "Operator Only"
   slug: "Operator-Only"
-  iata_airline_code: "ZZ"
-  icao_airline_code: "ZZZ"
+  iata_airline_code: "OP"
+  icao_airline_code: "AOO"
 
 airline_codeshare_only:
   airline_name: "Codeshare Only"
   slug: "Codeshare-Only"
-  iata_airline_code: "ZY"
-  icao_airline_code: "ZZY"
+  iata_airline_code: "CO"
+  icao_airline_code: "ACO"
 
 airline_no_flights:
   airline_name: "No Flights"
   slug: "No-Flights"
-  iata_airline_code: "ZX"
-  icao_airline_code: "ZZX"
+  iata_airline_code: "NA"
+  icao_airline_code: "NFA"
 
 airline_visible:
   # Used to test non-hidden airlines

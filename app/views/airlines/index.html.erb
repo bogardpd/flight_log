@@ -45,7 +45,7 @@
   			<th class="airline-code">Code</th>
   		</tr>
   	<% @airlines_with_no_flights.each do |airline| %>
-  	  <tr>
+  	  <tr id="airline-with-no-flights-row-<%= airline.id %>">
   	    <td class="airline-airline"><%= link_to(airline_icon(airline.slug, title: "View airline details for #{airline.airline_name}") + airline.airline_name, airline_path(airline.slug), title: "View airline details for #{airline.airline_name}") %></td>
   	    <td class="airline-code code-mono"><%= link_to(airline.iata_airline_code, airline_path(airline.slug), title: "View airline details for #{airline.airline_name}") %></td>
   		</tr>
