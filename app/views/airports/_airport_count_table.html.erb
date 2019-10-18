@@ -4,7 +4,7 @@
   <% new_airports ||= Array.new %>
   <% legend_range ||= "this date range" %>
   
-  <table class="flightlog">
+  <table class="flightlog" id="airport-count-table">
     <thead>
       <tr>
     		<th class="counter">#</th>
@@ -19,7 +19,7 @@
 
     <% airport_maximum = known_airports.max_by{|i| i[:visit_count]}[:visit_count]%>
     <% known_airports.each_with_index do |airport, index| %>
-      <%= content_tag(:tr, class: (new_airports.include?(airport[:iata_code]) ? "new" : nil)) do %>
+      <%= content_tag(:tr, id: "airport-count-row-#{airport[:id]}", class: (new_airports.include?(airport[:iata_code]) ? "new" : nil)) do %>
         <td class="counter"><%= ((is_summary || @sort[0] == :visits) && airport[:visit_count] == previous_count) ? Table::SAME_RANK : index + 1 %></td>
     		<td class="airport-country"><%= country_flag_icon(airport[:country]) %></td>
         <td class="airport-city"><%= link_to(format_airport_name(airport[:city]), airport_path(airport[:slug]), title: "View airport details for #{airport[:city]}") %><% if new_airports.include?(airport[:iata_code]) %>*<% end %></td>
@@ -29,7 +29,7 @@
     	<% previous_count = airport[:visit_count] %>
     <% end %>
 
-      <tr><td colspan="5" class="flightlog-total"><%= pluralize(known_airports.size, "airport") %></td></tr>
+      <tr><td colspan="5" class="flightlog-total" id="airport-count-total"><%= pluralize(known_airports.size, "airport") %></td></tr>
     </tbody>
 
   </table>

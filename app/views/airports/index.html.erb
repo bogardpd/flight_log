@@ -9,9 +9,9 @@
 
 	<div class="page-navigation">
 	  <ul>
-			<li><%= link_to("Airport Map", "#airport-map", :title => "Airports Map") %></li>
-			<li><%= link_to("List of Airports", "#airports-list", :title => "List of Airports") %></li>
-			<li><%= link_to("Airport Frequency Map", "#airport-frequency-map", :title => "Airport Frequency Map") %></li>
+			<li><%= link_to("Airport Map", "#airport-map", title: "Airports Map") %></li>
+			<li><%= link_to("List of Airports", "#airports-list", title: "List of Airports") %></li>
+			<li><%= link_to("Airport Frequency Map", "#airport-frequency-map", title: "Airport Frequency Map") %></li>
 	  </ul>
 	</div>
 
@@ -33,9 +33,9 @@
 
   	<% if (logged_in? && @airports_with_no_flights.any?) %>
     	<h2>Airports with No Flights</h2>
-    	<table class="flightlog">
+    	<table class="flightlog" id="airports-with-no-flights-table">
     	<% @airports_with_no_flights.each do |airport| %>
-    	  <tr>
+    	  <tr id="airport-with-no-flights-row-<%= airport[:id] %>">
     	    <td class="airport-city"><%= country_flag_icon(airport[:country]) %> <%= link_to(format_airport_name(airport.city), airport_path(airport[:slug]), title: "View airport details for #{airport.city}") %></td>
     	    <td class="airport-code code-mono"><%= link_to(airport.iata_code, airport_path(airport[:slug]), title: "View airport details for #{airport.city}") %></td>
 

@@ -82,3 +82,12 @@ airport_hidden_2:
   latitude: 30.000
   longitude: -90.000
   
+airport_no_flights:
+  # Must not be used by any flights.
+  slug: "ANF"
+  iata_code: "ANF"
+  icao_code: "AWNF"
+  city: "No Flights City"
+  country: "United States"
+  latitude: 35.000
+  longitude: -100.000

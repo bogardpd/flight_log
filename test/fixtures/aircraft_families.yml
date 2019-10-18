@@ -92,8 +92,7 @@ aircraft_type_hidden:
   parent: aircraft_family_hidden
 
 aircraft_family_with_no_flights:
-  # Used to test aircraft families with no flights. Must not be used by any
-  # flights.
+  # Must not be used by any flights.
   slug: "Unused-Family"
   family_name: "Unused Aircraft Family"
   manufacturer: "Unused Manufacturer"
@@ -102,8 +101,7 @@ aircraft_family_with_no_flights:
   category: "narrow-body"
 
 aircraft_type_with_no_flights:
-  # Used to test aircraft types with no flights. Must not be used by any
-  # flights.
+  # Must not be used by any flights.
   slug: "Unused-Type"
   family_name: "Unused Aircraft Type"
   manufacturer: "Unused Manufacturer"

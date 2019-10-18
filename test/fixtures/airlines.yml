@@ -48,6 +48,7 @@ airline_codeshare_only:
   icao_airline_code: "ACO"
 
 airline_no_flights:
+  # Must not be used_by any flights.
   airline_name: "No Flights"
   slug: "No-Flights"
   iata_airline_code: "NA"

@@ -1,6 +1,6 @@
 # Defines a model for airports.
 class Airport < ApplicationRecord
-  has_many :originating_flights, class_name: "Flight", foreign_key: "originating_airport_id"
+  has_many :originating_flights, class_name: "Flight", foreign_key: "origin_airport_id"
   has_many :arriving_flights, class_name: "Flight", foreign_key: "destination_airport_id"
   has_many :first_routes, class_name: "Route", foreign_key: "airport1_id"
   has_many :second_routes, class_name: "Route", foreign_key: "airport2_id"
@@ -198,16 +198,16 @@ class Airport < ApplicationRecord
       }
       unless current_trip_section == previous_trip_section && flight.origin_airport.iata_code == previous_destination
         # This is not a layover, so count this origin airport
-        visits[[flight.origin_airport.slug, flight.origin_airport.iata_code, flight.origin_airport.city,flight.origin_airport.country]] += 1
+        visits[[flight.origin_airport.id, flight.origin_airport.slug, flight.origin_airport.iata_code, flight.origin_airport.city,flight.origin_airport.country]] += 1
       end
-      visits[[flight.destination_airport.slug, flight.destination_airport.iata_code, flight.destination_airport.city, flight.destination_airport.country]] += 1
+      visits[[flight.destination_airport.id, flight.destination_airport.slug, flight.destination_airport.iata_code, flight.destination_airport.city, flight.destination_airport.country]] += 1
       previous_trip_section = current_trip_section
       previous_destination = flight.destination_airport.iata_code
       
     end
     
     counts = visits.map{|k,v|
-      {slug: k[0], iata_code: k[1], city: k[2], country: k[3], visit_count: v}
+      {id: k[0], slug: k[1], iata_code: k[2], city: k[3], country: k[4], visit_count: v}
     }
 
     case sort_category

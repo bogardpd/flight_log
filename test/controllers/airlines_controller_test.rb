@@ -7,11 +7,6 @@ class AirlinesControllerTest < ActionDispatch::IntegrationTest
     @airline = airlines(:airline_american)
     @operator = airlines(:airline_expressjet)
   end
-
-  def test_index_airlines_success
-    get airlines_path
-    assert_response :success
-  end
   
   def test_show_airline_success
     get airline_path(@airline.slug)
