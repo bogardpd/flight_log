@@ -70,18 +70,22 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "can see index airlines when logged in" do
+    airlines = Airline.flight_table_data(logged_in_flights, type: :airline).select{|airline| airline[:id].present?}
+    operators = Airline.flight_table_data(logged_in_flights, type: :operator).select{|airline| airline[:id].present?}
     log_in_as(users(:user_one))
     get(airlines_path)
     assert_response(:success)
 
     assert_select("h1", "Airlines")
     assert_select("table#airline-count-table") do
-      check_airline_flight_row(@visible_airline, "This view should show airlines with visible flights")
-      check_airline_flight_row(@hidden_airline, "This view should show airlines with only hidden flights when logged in")
+      check_airline_flight_row(@visible_airline, airlines.find{|a| a[:id] == @visible_airline.id}[:flight_count], "This view should show airlines with visible flights")
+      check_airline_flight_row(@hidden_airline, airlines.find{|a| a[:id] == @hidden_airline.id}[:flight_count], "This view should show airlines with only hidden flights when logged in")
+      assert_select("td#airline-count-total", "#{airlines.size} #{"airline".pluralize(airlines.size)}", "Airline ranked tables shall have a total row with a correct total")
     end
     assert_select("table#operator-count-table") do
-      check_operator_flight_row(@visible_operator, "This view should show operators with visible flights")
-      check_operator_flight_row(@hidden_operator, "This view should show operators with only hidden flights when logged in")
+      check_operator_flight_row(@visible_operator, operators.find{|a| a[:id] == @visible_operator.id}[:flight_count], "This view should show operators with visible flights")
+      check_operator_flight_row(@hidden_operator, operators.find{|a| a[:id] == @hidden_operator.id}[:flight_count], "This view should show operators with only hidden flights when logged in")
+      assert_select("td#operator-count-total", "#{operators.size} #{"operator".pluralize(operators.size)}", "Operator ranked tables shall have a total row with a correct total")
     end
     assert_select("table#airlines-with-no-flights-table") do
       assert_select("tr#airline-with-no-flights-row-#{@no_flights_airline.id}", {}, "This view should show airlines with no flights when logged in") do
@@ -96,17 +100,21 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index airlines when not logged in" do
+    airlines = Airline.flight_table_data(visitor_flights, type: :airline).select{|airline| airline[:id].present?}
+    operators = Airline.flight_table_data(visitor_flights, type: :operator).select{|airline| airline[:id].present?}
     get(airlines_path)
     assert_response(:success)
 
     assert_select("h1", "Airlines")
     assert_select("table#airline-count-table") do
-      check_airline_flight_row(@visible_airline, "This view should show airlines with visible flights")
+      check_airline_flight_row(@visible_airline, airlines.find{|a| a[:id] == @visible_airline.id}[:flight_count], "This view should show airlines with visible flights")
       assert_select("tr#airline-count-row-#{@hidden_airline.id}", {count: 0}, "This view should not show airlines with only hidden flights when not logged in")
+      assert_select("td#airline-count-total", "#{airlines.size} #{"airline".pluralize(airlines.size)}", "Airline ranked tables shall have a total row with a correct total")
     end
     assert_select("table#operator-count-table") do
-      check_operator_flight_row(@visible_operator, "This view should show operators with visible flights")
+      check_operator_flight_row(@visible_operator, operators.find{|a| a[:id] == @visible_operator.id}[:flight_count], "This view should show operators with visible flights")
       assert_select("tr#operator-count-row-#{@hidden_operator.id}", {count: 0}, "This view should not show operators with only hidden flights when not logged in")
+      assert_select("td#operator-count-total", "#{operators.size} #{"operator".pluralize(operators.size)}", "Operator ranked tables shall have a total row with a correct total")
     end
     assert_select("table#airlines-with-no-flights-table", {count: 0}, "This view should not show airlines with no flights when not logged in")
 
@@ -117,17 +125,17 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
   private
 
-  def check_airline_flight_row(airline, error_message)
+  def check_airline_flight_row(airline, expected_flight_count, error_message)
     assert_select("tr#airline-count-row-#{airline.id}", {}, error_message) do
       assert_select("a[href=?]", airline_path(id: airline.slug))
-      assert_select("text.graph-value", airline.flights.count.to_s)
+      assert_select("text.graph-value", expected_flight_count.to_s, "Graph bar should have the correct flight count")
     end
   end
 
-  def check_operator_flight_row(operator, error_message)
+  def check_operator_flight_row(operator, expected_flight_count, error_message)
     assert_select("tr#operator-count-row-#{operator.id}", {}, error_message) do
       assert_select("a[href=?]", show_operator_path(operator: operator.slug))
-      assert_select("text.graph-value", operator.operated_flights.count.to_s)
+      assert_select("text.graph-value", expected_flight_count.to_s, "Graph bar should have the correct flight count")
     end
   end
 

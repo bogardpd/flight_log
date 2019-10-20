@@ -1,6 +1,5 @@
 <% known_families, unknown_families = aircraft_families.partition{|af| af[:id].present?} %>
 <% known_families.reject!{|af| af[:flight_count] == 0} %>
-
 <% if known_families.any? %>
   <% new_aircraft_families ||= Array.new %>
   <% legend_range ||= "this date range" %>
@@ -29,7 +28,7 @@
     	<% previous_count = aircraft_family[:flight_count] %>
     <% end %>
 
-      <tr><td colspan="5" class="flightlog-total"><%= pluralize(known_families.size, "aircraft family") %></td></tr>
+      <tr><td colspan="5" class="flightlog-total" id="aircraft-family-count-total"><%= pluralize(known_families.size, "aircraft family") %></td></tr>
     </tbody>
   
   </table>

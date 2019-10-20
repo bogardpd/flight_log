@@ -106,14 +106,16 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "can see index aircraft families when logged in" do
+    aircraft = AircraftFamily.flight_table_data(logged_in_flights).select{|aircraft| aircraft[:id].present? && aircraft[:flight_count] > 0}
     log_in_as(users(:user_one))
     get(aircraft_families_path)
     assert_response(:success)
 
     assert_select("h1", "Aircraft Families")
     assert_select("table#aircraft-family-count-table") do
-      check_flight_row(@visible_aircraft_family, "This view should show aircraft with visible flights")
-      check_flight_row(@hidden_aircraft_family, "This view should show aircraft with only hidden flights when logged in")
+      check_flight_row(@visible_aircraft_family, aircraft.find{|a| a[:id] == @visible_aircraft_family.id}[:flight_count], "This view should show aircraft with visible flights")
+      check_flight_row(@hidden_aircraft_family, aircraft.find{|a| a[:id] == @hidden_aircraft_family.id}[:flight_count], "This view should show aircraft with only hidden flights when logged in")
+      assert_select("td#aircraft-family-count-total", "#{aircraft.size} #{"aircraft family".pluralize(aircraft.size)}", "Ranked tables shall have a total row with a correct total")
     end
     assert_select("table#aircraft-families-with-no-flights-table", {}, "This view should show an aircraft families with no flights table when logged in") do
       assert_select("tr#aircraft-family-with-no-flights-row-#{@no_flights_aircraft_family.id}")
@@ -126,13 +128,15 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index aircraft families when not logged in" do
+    aircraft = AircraftFamily.flight_table_data(visitor_flights).select{|aircraft| aircraft[:id].present? && aircraft[:flight_count] > 0}
     get(aircraft_families_path)
     assert_response(:success)
 
     assert_select("h1", "Aircraft Families")
     assert_select("table#aircraft-family-count-table") do
-      check_flight_row(@visible_aircraft_family, "This view should show aircraft with visible flights")
+      check_flight_row(@visible_aircraft_family, aircraft.find{|a| a[:id] == @visible_aircraft_family.id}[:flight_count], "This view should show aircraft with visible flights")
       assert_select("tr#aircraft-family-count-table-#{@hidden_aircraft_family.id}", {count: 0}, "This view should not show aircraft with only hidden flights when not logged in")
+      assert_select("td#aircraft-family-count-total", "#{aircraft.size} #{"aircraft family".pluralize(aircraft.size)}", "Ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#aircraft-families-with-no-flights-table", {count: 0}, "This view should not show an aircraft families with no flights table when not logged in")
@@ -142,10 +146,10 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   private
 
-  def check_flight_row(aircraft_family, error_message)
+  def check_flight_row(aircraft_family, expected_flight_count, error_message)
     assert_select("tr#aircraft-family-count-row-#{aircraft_family.id}", {}, error_message) do
       assert_select("a[href=?]", aircraft_family_path(id: aircraft_family.slug))
-      assert_select("text.graph-value", Flight.where(aircraft_family_id: aircraft_family.family_and_type_ids).count.to_s)
+      assert_select("text.graph-value", expected_flight_count.to_s, "Graph bar should have the correct flight count")
     end
   end
 

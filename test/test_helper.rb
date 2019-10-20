@@ -15,4 +15,14 @@ class ActiveSupport::TestCase
     cookies[:remember_token] = user.remember_token
   end
 
+  # Returns all flights
+  def logged_in_flights
+    users(:user_one).flights(users(:user_one))
+  end
+  
+  # Returns non-hidden flights
+  def visitor_flights
+    users(:user_one).flights(nil)
+  end
+
   end
