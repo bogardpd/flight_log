@@ -1,5 +1,5 @@
 <% if @year_range %>
-	<table class="flightlog">
+	<table class="flightlog" id="flight-year-links">
 		<tr>
 			<td colspan="10" class="year_link">
 				<%= (params[:year].present? || (params[:start_date].present? && params[:end_date].present?)) ? link_to("All Dates", flights_path, title: "Show all flights") : content_tag(:span, "All Dates", class: "bold") %>

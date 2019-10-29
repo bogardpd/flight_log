@@ -178,7 +178,7 @@ module ApplicationHelper
     end
     output |= extra_details
     return content_tag(:tr) do
-      content_tag(:td, safe_join(output.compact, " "), colspan: 4, class: "flightlog-total")
+      content_tag(:td, safe_join(output.compact, " "), colspan: 4, id: "flight-total", class: "flightlog-total")
     end
   end
 

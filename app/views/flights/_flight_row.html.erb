@@ -1,4 +1,4 @@
-<tr class="<%= ([flight.trip_id, flight.trip_section] == @previous_trip_and_section) ? "no-top-border" : "" %>">
+<tr id="flight-row-<%= flight.id %>" class="<%= ([flight.trip_id, flight.trip_section] == @previous_trip_and_section) ? "no-top-border" : "" %>">
 	
   <td class="counter"><%= (@sort == [:departure, :desc]) ? @flights.length - flight_counter : flight_counter + 1 %></td>
 	

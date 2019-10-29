@@ -1,6 +1,11 @@
 require "test_helper"
 
 class FlightFlowsTest < ActionDispatch::IntegrationTest
+
+  def setup
+    @visible_flight = flights(:flight_visible)
+    @hidden_flight = flights(:flight_hidden)
+  end
   
   ##############################################################################
   # Tests for Spec > Pages (Views) > Add Flight Menu                           #
@@ -176,6 +181,58 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_redirected_to(root_path)
   end
 
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Index Flights                             #
+  ##############################################################################
+
+  test "can see index flights when logged in" do
+    log_in_as(users(:user_one))
+    get(flights_path)
+    assert_response(:success)
+
+    check_index_flights_common
+    assert_select("table#flight-table") do
+      assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view should show visible flights")
+      assert_select("tr#flight-row-#{@hidden_flight.id}", {}, "This view should show hidden flights")
+      assert_select("td#flight-total", {text: /^#{logged_in_flights.count} flights?/}, "This view should show a flight total row")
+    end
+  end
+
+  test "can see index flights when not logged in" do
+    get(flights_path)
+    assert_response(:success)
+
+    check_index_flights_common
+    assert_select("table#flight-table") do
+      assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view should show visible flights")
+      assert_select("tr#flight-row-#{@hidden_flight.id}", {count: 0}, "This view should not show hidden flights when not logged in")
+      assert_select("td#flight-total", {text: /^#{visitor_flights.count} flights?/}, "This view should not include hidden flights in the total row")
+    end
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Common to Every View > Tables > Flights   #
+  #   Table                                                                    #
+  ##############################################################################
+
+  test "can see flight table partial" do
+    log_in_as(users(:user_one))
+    get(flights_path)
+    assert_response(:success)
+    # Removed until Index Flights uses flight table partial:
+    # assert_template(layout: "layouts/application", partial: "_flight_table") # deprecated
+    # assert_select("table#flight-table") do
+    #   Tests a row within a Flights Table
+    #   assert_select("tr#flight-row-#{flight.id}", {}, error_message) do
+    #     assert_select("img.airline-icon")
+    #     assert_select("a[href=?]", flight_path(flight), {text: "#{flight.airline.airline_name} #{flight.flight_number}"})
+    #     assert_select("a[href=?]", airport_path(flight.origin_airport.slug), {text: flight.origin_airport.iata_code})
+    #     assert_select("a[href=?]", airport_path(flight.destination_airport.slug), {text: flight.destination_airport.iata_code})
+    #     assert_select("td.flight-date", {text: FormattedDate.str(flight.departure_date)})
+    #   end
+    # end
+  end
+
   private
 
   # Provides common assertions used in multiple new flight menu tests.
@@ -219,6 +276,13 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       assert_select("input[type=submit][value=?]", "Create a new flight")
     end
 
+  end
+
+  # Provides common assertions used in multiple index flights tests.
+  def check_index_flights_common
+    assert_select("h1", "Flights")
+    assert_select("div#flight-map", {}, "This view should show a flight map")
+    assert_select("table#flight-year-links", {}, "This view should show year links")
   end
 
 end
