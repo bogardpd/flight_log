@@ -42,8 +42,8 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", "Routes")
 
     assert_select("table#route-count-table") do
-      check_flight_row(routes, @visible_route, "This view should show routes with visible flights")
-      check_flight_row(routes, @hidden_route, "This view should show routes with hidden flights when logged in")
+      check_flight_row(routes, @visible_route, "This view shall show routes with visible flights")
+      check_flight_row(routes, @hidden_route, "This view shall show routes with only hidden flights when logged in")
       assert_select("td#route-count-total", {text: /^#{routes.size} routes?/}, "Ranked tables shall have a total row with a correct total")
     end
   end
@@ -57,8 +57,8 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", "Routes")
 
     assert_select("table#route-count-table") do
-      check_flight_row(routes, @visible_route, "This view should show routes with visible flights")
-      assert_select("tr#route-count-row-#{@hidden_route.pluck(:slug).sort.join("-to-")}", {count: 0}, "This view should not show routes with hidden flights when not logged in")
+      check_flight_row(routes, @visible_route, "This view shall show routes with visible flights")
+      assert_select("tr#route-count-row-#{@hidden_route.pluck(:slug).sort.join("-to-")}", {count: 0}, "This view shall not show routes with only hidden flights when not logged in")
       assert_select("td#route-count-total", {text: /^#{routes.size} routes?/}, "Ranked tables shall have a total row with a correct total")
     end
   end
@@ -71,8 +71,8 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     sorted_slugs = route_to_check.pluck(:slug).sort
     assert_select("tr#route-count-row-#{sorted_slugs.join("-to-")}", {}, error_message) do
       assert_select("a[href=?]", show_route_path(*sorted_slugs))
-      assert_select("text.graph-distance", route_data[:distance_mi].to_s, "Graph bar should have the correct distance")
-      assert_select("text.graph-value", route_data[:flight_count].to_s, "Graph bar should have the correct flight count")
+      assert_select("text.graph-distance", route_data[:distance_mi].to_s, "Graph bar shall have the correct distance")
+      assert_select("text.graph-value", route_data[:flight_count].to_s, "Graph bar shall have the correct flight count")
     end
   end
   

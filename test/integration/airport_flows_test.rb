@@ -70,19 +70,19 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("div#frequency-map")
 
     assert_select("table#airport-count-table") do
-      check_flight_row(@visible_airport, visits[@visible_airport.id], "This view should show airports with visible flights")
-      check_flight_row(@hidden_airport, visits[@hidden_airport.id], "This view should show airports with only hidden flights when logged in")
+      check_flight_row(@visible_airport, visits[@visible_airport.id], "This view shall show airports with visible flights")
+      check_flight_row(@hidden_airport, visits[@hidden_airport.id], "This view shall show airports with only hidden flights when logged in")
       assert_select("td#airport-count-total", {text: /^#{visits.size} airports?/}, "Ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#airports-with-no-flights-table") do
-      assert_select("tr#airport-with-no-flights-row-#{@no_flights_airport.id}", {}, "This view should show airports with no flights when logged in") do
+      assert_select("tr#airport-with-no-flights-row-#{@no_flights_airport.id}", {}, "This view shall show airports with no flights when logged in") do
         assert_select("a[href=?]", airport_path(id: @no_flights_airport.slug))
       end
     end
 
-    assert_select("div#admin-actions", {}, "This view should show admin actions when logged in") do
-      assert_select("a[href=?]", new_airport_path, {}, "This view should show a New Airport link when logged in")
+    assert_select("div#admin-actions", {}, "This view shall show admin actions when logged in") do
+      assert_select("a[href=?]", new_airport_path, {}, "This view shall show a New Airport link when logged in")
     end
 
   end
@@ -99,15 +99,15 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("div#frequency-map")
 
     assert_select("table#airport-count-table") do
-      check_flight_row(@visible_airport, visits[@visible_airport.id], "This view should show airports with visible flights")
-      assert_select("tr#airport-count-row-#{@hidden_airport.id}", {count: 0}, "This view should not show airports with only hidden flights when not logged in")
+      check_flight_row(@visible_airport, visits[@visible_airport.id], "This view shall show airports with visible flights")
+      assert_select("tr#airport-count-row-#{@hidden_airport.id}", {count: 0}, "This view shall not show airports with only hidden flights when not logged in")
       assert_select("td#airport-count-total", {text: /^#{visits.size} airports?/}, "Ranked tables shall have a total row with a correct total")
     end
 
-    assert_select("table#airports-with-no-flights-table", {count: 0}, "This view should not show airports with no flights when not logged in")
+    assert_select("table#airports-with-no-flights-table", {count: 0}, "This view shall not show airports with no flights when not logged in")
 
-    assert_select("div#admin-actions", {count: 0}, "This view should not show admin actions when not logged in")
-    assert_select("a[href=?]", new_airport_path, {count: 0}, "This view should not show a New Airport link when not logged in")
+    assert_select("div#admin-actions", {count: 0}, "This view shall not show admin actions when not logged in")
+    assert_select("a[href=?]", new_airport_path, {count: 0}, "This view shall not show a New Airport link when not logged in")
 
   end
 
@@ -117,7 +117,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   def check_flight_row(airport, expected_visit_count, error_message)
     assert_select("tr#airport-count-row-#{airport.id}", {}, error_message) do
       assert_select("a[href=?]", airport_path(id: airport.slug))
-      assert_select("text.graph-value", expected_visit_count.to_s, "Graph bar should have the correct flight count")
+      assert_select("text.graph-value", expected_visit_count.to_s, "Graph bar shall have the correct flight count")
     end
   end
 

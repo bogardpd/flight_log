@@ -10,11 +10,11 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
     get(root_path)
     assert_response(:success)
 
-    assert_select("div:match('id',?)", /message-active-trip-\d+/, {count: 0}, "This view must not list an active trip")
-    assert_select("div#message-boarding-passes-available-for-import", {count: 0}, "This view must not show a link to import boarding passes")
-    assert_select("img.map", {}, "This view must contain a map")
-    assert_select("a:match('href', ?)", "/flights", {}, "This view must contain a link to Index Flights")
-    assert_select("span.summary-total", {}, "This view must contain a count of flights")
+    assert_select("div:match('id',?)", /message-active-trip-\d+/, {count: 0}, "This view shall not list an active trip")
+    assert_select("div#message-boarding-passes-available-for-import", {count: 0}, "This view shall not show a link to import boarding passes")
+    assert_select("img.map", {}, "This view shall contain a map")
+    assert_select("a:match('href', ?)", "/flights", {}, "This view shall contain a link to Index Flights")
+    assert_select("span.summary-total", {}, "This view shall contain a count of flights")
     assert_select("h2", "Top Airports")
     assert_select("h2", "Top Airlines")
     assert_select("h2", "Top Routes")
@@ -24,14 +24,14 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see active trips on home when logged in" do
-    # At least one PKPass must be present for this test to succeed.
+    # At least one PKPass shall be present for this test to succeed.
     hidden_trip = trips(:trip_hidden)
     log_in_as(users(:user_one))
     get(root_path)
     assert_response(:success)
 
-    assert_select("div#message-active-trip-#{hidden_trip.id}", {}, "This view must list an active trip")
-    assert_select("div#message-boarding-passes-available-for-import", {}, "This view must show a link to import boarding passes")
+    assert_select("div#message-active-trip-#{hidden_trip.id}", {}, "This view shall list an active trip")
+    assert_select("div#message-boarding-passes-available-for-import", {}, "This view shall show a link to import boarding passes")
   end
 
   ##############################################################################

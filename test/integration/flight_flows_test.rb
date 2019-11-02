@@ -5,6 +5,9 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @visible_flight = flights(:flight_visible)
     @hidden_flight = flights(:flight_hidden)
+
+    @visible_tail = "N111VS"
+    @hidden_tail = "N111HD"
   end
   
   ##############################################################################
@@ -192,9 +195,9 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
     check_index_flights_common
     assert_select("table#flight-table") do
-      assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view should show visible flights")
-      assert_select("tr#flight-row-#{@hidden_flight.id}", {}, "This view should show hidden flights")
-      assert_select("td#flight-total", {text: /^#{logged_in_flights.count} flights?/}, "This view should show a flight total row")
+      assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view shall show visible flights")
+      assert_select("tr#flight-row-#{@hidden_flight.id}", {}, "This view shall show hidden flights")
+      assert_select("td#flight-total", {text: /^#{logged_in_flights.count} flights?/}, "This view shall show a flight total row")
     end
   end
 
@@ -204,9 +207,44 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
     check_index_flights_common
     assert_select("table#flight-table") do
-      assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view should show visible flights")
-      assert_select("tr#flight-row-#{@hidden_flight.id}", {count: 0}, "This view should not show hidden flights when not logged in")
-      assert_select("td#flight-total", {text: /^#{visitor_flights.count} flights?/}, "This view should not include hidden flights in the total row")
+      assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view shall show visible flights")
+      assert_select("tr#flight-row-#{@hidden_flight.id}", {count: 0}, "This view shall not show hidden flights when not logged in")
+      assert_select("td#flight-total", {text: /^#{visitor_flights.count} flights?/}, "This view shall not include hidden flights in the total row")
+    end
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Index Tail Numbers                        #
+  ##############################################################################
+
+  test "can see index tail numbers when logged in" do
+    tails = TailNumber.flight_table_data(logged_in_flights)
+    
+    log_in_as(users(:user_one))
+    get(tails_path)
+    assert_response(:success)
+
+    assert_select("h1", "Tail Numbers")
+
+    assert_select("table#tail-number-count-table") do
+      check_tail_number_row(tails, @visible_tail, "This view shall show tail numbers with visible flights")
+      check_tail_number_row(tails, @hidden_tail, "This view shall show tail numbers with only hidden flights when logged in")
+      assert_select("td#tail-number-count-total", {text: /^#{tails.size} unique tail numbers?/}, "Ranked tables shall have a total row with a correct total")
+    end
+  end
+
+  test "can see index tail numbers when not logged in" do
+    tails = TailNumber.flight_table_data(visitor_flights)
+
+    get(tails_path)
+    assert_response(:success)
+
+    assert_select("h1", "Tail Numbers")
+
+    assert_select("table#tail-number-count-table") do
+      check_tail_number_row(tails, @visible_tail, "This view shall show tail numbers with visible flights")
+      assert_select("td#tail-number-count-row-#{@hidden_tail}", {count: 0}, "This view shall not show tail numbers with only hidden flights when not logged in")
+      assert_select("td#tail-number-count-total", {text: /^#{tails.size} unique tail numbers?/}, "Ranked tables shall have a total row with a correct total")
     end
   end
 
@@ -281,8 +319,23 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Provides common assertions used in multiple index flights tests.
   def check_index_flights_common
     assert_select("h1", "Flights")
-    assert_select("div#flight-map", {}, "This view should show a flight map")
-    assert_select("table#flight-year-links", {}, "This view should show year links")
+    assert_select("div#flight-map", {}, "This view shall show a flight map")
+    assert_select("table#flight-year-links", {}, "This view shall show year links")
+  end
+
+  # Runs tests on a row in a tail number count table
+  def check_tail_number_row(flight_table_data, tail, error_message)
+    tail_data = flight_table_data.find{|t| t[:tail_number] == tail}
+    assert_select("tr#tail-number-count-row-#{tail}", {}, error_message) do
+      assert_select("a[href=?]", show_tail_path(tail), {text: tail}) do
+        assert_select("img.country-flag-icon")
+      end
+      assert_select("td.tail-aircraft", {text: tail_data[:aircraft]})
+      assert_select("td.tail-airline") do
+        assert_select("img.airline-icon[title=?]", tail_data[:airline_name])
+      end
+      assert_select("text.graph-value", tail_data[:count].to_s, "Graph bar shall have the correct flight count")
+    end
   end
 
 end

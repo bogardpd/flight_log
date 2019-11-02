@@ -15,21 +15,21 @@
 	<% end %>
 <% else %>
 
-<table class="flightlog">
+<table class="flightlog" id="tail-number-count-table">
   <tr>
     <th class="tail-number"><%= sort_link("Tail Number", :tail, :asc) %></th>
     <th class="tail-aircraft"><%= sort_link("Aircraft", :aircraft, :asc) %></th>
     <th class="tail-airline"><%= sort_link("Airline", :airline, :asc) %></th>
     <th class="tail-flights"><%= sort_link("Flights", :flights, :desc) %></th>
 <% @tail_numbers_table.each do |tail| %>
-  <tr>
+  <tr id="tail-number-count-row-<%= tail[:tail_number] %>">
     <td class="tail-number"><%= link_to(country_flag_icon(tail[:country], title: "View flights on tail number #{TailNumber.format(tail[:tail_number])}") + TailNumber.format(tail[:tail_number]), show_tail_path(tail[:tail_number]), title: "View flights on tail number #{TailNumber.format(tail[:tail_number])}") %></td>
     <td class="tail-aircraft code-mono"><abbr title="<%= tail[:manufacturer] %> <%= tail[:family_name] %>"><%= tail[:aircraft] %></abbr></td>
     <td class="tail-airline"><%= airline_icon(tail[:airline_slug], title: tail[:airline_name], css_class: %w(icon-no-text)) %></td>
 		<td class="tail-flights"><%= graph_bar(tail[:count], @flights_maximum) %></td>
   </tr>
 <% end %>
-  <tr><td colspan="4" class="flightlog-total"><%= pluralize(@tail_numbers_table.size, "unique tail number") %></td></tr>
+  <tr><td colspan="4" class="flightlog-total" id="tail-number-count-total"><%= pluralize(@tail_numbers_table.size, "unique tail number") %></td></tr>
 </table>
 
 <% end %>

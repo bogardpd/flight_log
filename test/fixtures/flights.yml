@@ -214,6 +214,7 @@ flight_visible:
   flight_number: 8000
   operator: operator_visible
   aircraft_family: aircraft_type_visible
+  tail_number: "N111VS"
 
 flight_hidden:
   # Used to test hidden Flights and other models
@@ -227,4 +228,5 @@ flight_hidden:
   flight_number: 9000
   operator: operator_hidden
   aircraft_family: aircraft_type_hidden
+  tail_number: "N111HD"
   
