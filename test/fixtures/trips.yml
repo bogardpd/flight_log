@@ -24,14 +24,24 @@ trip_hidden:
 
 trip_hidden_latest:
   # Used by FlightFlowsTest to test default trip value in new_flight_menu
-  # without a specified trip ID parameter. This trip's created_at date must be
-  # the latest of all hidden trips.
+  # without a specified trip ID parameter. All hidden trips must have a 
+  # created_at date, and this trip's created_at date must be the latest of all
+  # hidden trips.
   name: "Sample Latest Hidden Trip"
   hidden: Yes
   comment: "This is a hidden trip"
   purpose: "business"
   user: user_one
-  created_at: 2019-01-02 00:00:00
+  created_at: 2050-01-01 00:00:00
+
+trip_no_flights:
+  # Used to test trips with no flights. Do not assign any flights to it.
+  name: "Trip with No Flights"
+  hidden: Yes
+  comment: "This trip has no flights."
+  purpose: "personal"
+  user: user_one
+  created_at: 2018-01-01 00:00:00
 
 trip_layover_ratios:
   # Used by TripTest to test layover ratio scenarios
