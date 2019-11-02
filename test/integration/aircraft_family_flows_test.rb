@@ -115,7 +115,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#aircraft-family-count-table") do
       check_flight_row(@visible_aircraft_family, aircraft.find{|a| a[:id] == @visible_aircraft_family.id}[:flight_count], "This view should show aircraft with visible flights")
       check_flight_row(@hidden_aircraft_family, aircraft.find{|a| a[:id] == @hidden_aircraft_family.id}[:flight_count], "This view should show aircraft with only hidden flights when logged in")
-      assert_select("td#aircraft-family-count-total", "#{aircraft.size} #{"aircraft family".pluralize(aircraft.size)}", "Ranked tables shall have a total row with a correct total")
+      assert_select("td#aircraft-family-count-total", {text: /^#{aircraft.size} aircraft famil(y|(ies))/}, "Ranked tables shall have a total row with a correct total")
     end
     assert_select("table#aircraft-families-with-no-flights-table", {}, "This view should show an aircraft families with no flights table when logged in") do
       assert_select("tr#aircraft-family-with-no-flights-row-#{@no_flights_aircraft_family.id}")
@@ -136,7 +136,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#aircraft-family-count-table") do
       check_flight_row(@visible_aircraft_family, aircraft.find{|a| a[:id] == @visible_aircraft_family.id}[:flight_count], "This view should show aircraft with visible flights")
       assert_select("tr#aircraft-family-count-table-#{@hidden_aircraft_family.id}", {count: 0}, "This view should not show aircraft with only hidden flights when not logged in")
-      assert_select("td#aircraft-family-count-total", "#{aircraft.size} #{"aircraft family".pluralize(aircraft.size)}", "Ranked tables shall have a total row with a correct total")
+      assert_select("td#aircraft-family-count-total", {text: /^#{aircraft.size} aircraft famil(y|(ies))/}, "Ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#aircraft-families-with-no-flights-table", {count: 0}, "This view should not show an aircraft families with no flights table when not logged in")
@@ -146,6 +146,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   private
 
+  # Runs tests on a row in a aircraft count table
   def check_flight_row(aircraft_family, expected_flight_count, error_message)
     assert_select("tr#aircraft-family-count-row-#{aircraft_family.id}", {}, error_message) do
       assert_select("a[href=?]", aircraft_family_path(id: aircraft_family.slug))

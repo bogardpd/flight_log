@@ -80,12 +80,12 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#airline-count-table") do
       check_airline_flight_row(@visible_airline, airlines.find{|a| a[:id] == @visible_airline.id}[:flight_count], "This view should show airlines with visible flights")
       check_airline_flight_row(@hidden_airline, airlines.find{|a| a[:id] == @hidden_airline.id}[:flight_count], "This view should show airlines with only hidden flights when logged in")
-      assert_select("td#airline-count-total", "#{airlines.size} #{"airline".pluralize(airlines.size)}", "Airline ranked tables shall have a total row with a correct total")
+      assert_select("td#airline-count-total", {text: /^#{airlines.size} airlines?/}, "Airline ranked tables shall have a total row with a correct total")
     end
     assert_select("table#operator-count-table") do
       check_operator_flight_row(@visible_operator, operators.find{|a| a[:id] == @visible_operator.id}[:flight_count], "This view should show operators with visible flights")
       check_operator_flight_row(@hidden_operator, operators.find{|a| a[:id] == @hidden_operator.id}[:flight_count], "This view should show operators with only hidden flights when logged in")
-      assert_select("td#operator-count-total", "#{operators.size} #{"operator".pluralize(operators.size)}", "Operator ranked tables shall have a total row with a correct total")
+      assert_select("td#operator-count-total", {text: /^#{operators.size} operators?/}, "Operator ranked tables shall have a total row with a correct total")
     end
     assert_select("table#airlines-with-no-flights-table") do
       assert_select("tr#airline-with-no-flights-row-#{@no_flights_airline.id}", {}, "This view should show airlines with no flights when logged in") do
@@ -109,12 +109,12 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#airline-count-table") do
       check_airline_flight_row(@visible_airline, airlines.find{|a| a[:id] == @visible_airline.id}[:flight_count], "This view should show airlines with visible flights")
       assert_select("tr#airline-count-row-#{@hidden_airline.id}", {count: 0}, "This view should not show airlines with only hidden flights when not logged in")
-      assert_select("td#airline-count-total", "#{airlines.size} #{"airline".pluralize(airlines.size)}", "Airline ranked tables shall have a total row with a correct total")
+      assert_select("td#airline-count-total", {text: /^#{airlines.size} airlines?/}, "Airline ranked tables shall have a total row with a correct total")
     end
     assert_select("table#operator-count-table") do
       check_operator_flight_row(@visible_operator, operators.find{|a| a[:id] == @visible_operator.id}[:flight_count], "This view should show operators with visible flights")
       assert_select("tr#operator-count-row-#{@hidden_operator.id}", {count: 0}, "This view should not show operators with only hidden flights when not logged in")
-      assert_select("td#operator-count-total", "#{operators.size} #{"operator".pluralize(operators.size)}", "Operator ranked tables shall have a total row with a correct total")
+      assert_select("td#operator-count-total", {text: /^#{operators.size} operators?/}, "Operator ranked tables shall have a total row with a correct total")
     end
     assert_select("table#airlines-with-no-flights-table", {count: 0}, "This view should not show airlines with no flights when not logged in")
 
@@ -125,6 +125,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
   private
 
+  # Runs tests on a row in an airline count table
   def check_airline_flight_row(airline, expected_flight_count, error_message)
     assert_select("tr#airline-count-row-#{airline.id}", {}, error_message) do
       assert_select("a[href=?]", airline_path(id: airline.slug))
@@ -132,6 +133,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Runs tests on a row in an operator count table
   def check_operator_flight_row(operator, expected_flight_count, error_message)
     assert_select("tr#operator-count-row-#{operator.id}", {}, error_message) do
       assert_select("a[href=?]", show_operator_path(operator: operator.slug))

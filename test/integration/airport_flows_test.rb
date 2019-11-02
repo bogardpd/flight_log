@@ -72,7 +72,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#airport-count-table") do
       check_flight_row(@visible_airport, visits[@visible_airport.id], "This view should show airports with visible flights")
       check_flight_row(@hidden_airport, visits[@hidden_airport.id], "This view should show airports with only hidden flights when logged in")
-      assert_select("td#airport-count-total", "#{visits.size} #{"airport".pluralize(visits.size)}", "Ranked tables shall have a total row with a correct total")
+      assert_select("td#airport-count-total", {text: /^#{visits.size} airports?/}, "Ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#airports-with-no-flights-table") do
@@ -101,7 +101,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#airport-count-table") do
       check_flight_row(@visible_airport, visits[@visible_airport.id], "This view should show airports with visible flights")
       assert_select("tr#airport-count-row-#{@hidden_airport.id}", {count: 0}, "This view should not show airports with only hidden flights when not logged in")
-      assert_select("td#airport-count-total", "#{visits.size} #{"airport".pluralize(visits.size)}", "Ranked tables shall have a total row with a correct total")
+      assert_select("td#airport-count-total", {text: /^#{visits.size} airports?/}, "Ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#airports-with-no-flights-table", {count: 0}, "This view should not show airports with no flights when not logged in")
@@ -113,6 +113,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
 
   private
 
+  # Runs tests on a row in an airport count table
   def check_flight_row(airport, expected_visit_count, error_message)
     assert_select("tr#airport-count-row-#{airport.id}", {}, error_message) do
       assert_select("a[href=?]", airport_path(id: airport.slug))

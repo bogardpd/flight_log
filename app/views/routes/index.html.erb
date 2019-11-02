@@ -10,7 +10,7 @@
 
 <p>Each route listed includes flights going both directions.</p>
 
-<table class="flightlog">
+<table class="flightlog" id="route-count-table">
   <tr>
     <th class="counter">#</th>
 		<th class="route-route">Route</th>
@@ -19,7 +19,7 @@
   </tr>
 <% previous_count = nil %>
 <% @route_table.each_with_index do |row, index| %>
-  <tr>
+  <tr id="route-count-row-<%= row[:route].pluck(:slug).sort.join("-to-") %>">
     <td class="counter">
 			<% if @sort[0] == :flights %>
 				<%= (row[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %>
@@ -35,7 +35,7 @@
   </tr>
 	<% previous_count = @sort[0] == :flights ? row[:flight_count] : row[:distance_mi] %>
 <% end %>
-  <tr><td colspan="4" class="flightlog-total"><%= pluralize(@route_table.size, "route") %></td></tr>
+  <tr><td colspan="4" class="flightlog-total" id="route-count-total"><%= pluralize(@route_table.size, "route") %></td></tr>
 </table>
 
 <% else %>
