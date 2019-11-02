@@ -8,6 +8,9 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
     @visible_tail = "N111VS"
     @hidden_tail = "N111HD"
+
+    @visible_class = "economy"
+    @hidden_class = "business"
   end
   
   ##############################################################################
@@ -249,6 +252,39 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
+  # Tests for Spec > Pages (Views) > Index Travel Classes                      #
+  ##############################################################################
+
+  test "can see index travel classes when logged in" do
+    classes = TravelClass.flight_table_data(logged_in_flights)
+    
+    log_in_as(users(:user_one))
+    get(classes_path)
+    assert_response(:success)
+
+    assert_select("h1", "Travel Classes")
+
+    assert_select("table#travel-class-count-table") do
+      check_travel_class_row(classes, @visible_class, "This view shall show classes with visible flights")
+      check_travel_class_row(classes, @hidden_class, "This view shall show classes with only hidden flights when logged in")
+    end
+  end
+
+  test "can see index travel classes when not logged in" do
+    classes = TravelClass.flight_table_data(visitor_flights)
+    
+    get(classes_path)
+    assert_response(:success)
+
+    assert_select("h1", "Travel Classes")
+
+    assert_select("table#travel-class-count-table") do
+      check_travel_class_row(classes, @visible_class, "This view shall show classes with visible flights")
+      assert_select("tr#travel-class-count-row-#{@hidden_class}", {count: 0}, "This view shall not show classes with only hidden flights when not logged in")
+    end
+  end
+
+  ##############################################################################
   # Tests for Spec > Pages (Views) > Common to Every View > Tables > Flights   #
   #   Table                                                                    #
   ##############################################################################
@@ -335,6 +371,14 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
         assert_select("img.airline-icon[title=?]", tail_data[:airline_name])
       end
       assert_select("text.graph-value", tail_data[:count].to_s, "Graph bar shall have the correct flight count")
+    end
+  end
+
+  def check_travel_class_row(flight_table_data, travel_class, error_message)
+    tail_data = flight_table_data.find{|c| c[:class_code] == travel_class}
+    assert_select("tr#travel-class-count-row-#{travel_class}", {}, error_message) do
+      assert_select("a[href=?]", show_class_path(travel_class))
+      assert_select("text.graph-value", tail_data[:flight_count].to_s, "Graph bar shall have the correct flight count")
     end
   end
 

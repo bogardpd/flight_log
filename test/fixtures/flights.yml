@@ -215,6 +215,7 @@ flight_visible:
   operator: operator_visible
   aircraft_family: aircraft_type_visible
   tail_number: "N111VS"
+  travel_class: "economy"
 
 flight_hidden:
   # Used to test hidden Flights and other models
@@ -229,4 +230,5 @@ flight_hidden:
   operator: operator_hidden
   aircraft_family: aircraft_type_hidden
   tail_number: "N111HD"
+  travel_class: "business" # To test hidden travel classes, make sure business is only used by hidden flights
   

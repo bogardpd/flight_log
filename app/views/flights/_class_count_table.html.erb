@@ -4,7 +4,7 @@
   <% new_classes ||= Array.new %>
   <% legend_range ||= "this date range" %>
   
-  <table class="flightlog">
+  <table class="flightlog" id="travel-class-count-table">
     <thead>
       <tr>
     		<th class="counter">#</th>
@@ -18,7 +18,7 @@
 
       <% class_maximum = known_classes.max_by{|i| i[:flight_count]}[:flight_count]%>
       <% known_classes.each_with_index do |tc, index| %>
-        <%= content_tag(:tr, class: (new_classes.include?(tc[:class_code]) ? "new" : nil)) do %>
+        <%= content_tag(:tr, id: "travel-class-count-row-#{tc[:class_code]}", class: (new_classes.include?(tc[:class_code]) ? "new" : nil)) do %>
           <td class="counter"><%= ((is_summary || @sort[0] == :flights) && tc[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %></td>
           <td class="class-quality"><%= quality_stars(TravelClass::CLASSES[tc[:class_code]][:quality]) %></td>
           <td class="class-class"><%= link_to(TravelClass::CLASSES[tc[:class_code]][:name], show_class_path(tc[:class_code]), :title => "View #{TravelClass::CLASSES[tc[:class_code]][:name].downcase} class flights") %><% if new_classes.include?(tc[:class_code]) %>*<% end %><br><span class="class-description"><%= TravelClass::CLASSES[tc[:class_code]][:description] %></span></td>
