@@ -63,6 +63,16 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Route                                #
+  ##############################################################################
+
+  test "can see show route" do
+    route = [airports(:airport_dfw), airports(:airport_ord)]
+    get(show_route_path(*route.pluck(:slug)))
+    assert_response(:success)
+  end
+
   private
 
   # Runs tests on a row in a route count table

@@ -111,6 +111,16 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
 
   end
 
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Airport                              #
+  ##############################################################################
+
+  test "can see show airport" do
+    airport = airports(:airport_sea)
+    get(airport_path(airport.slug))
+    assert_response(:success)
+  end
+
   private
 
   # Runs tests on a row in an airport count table

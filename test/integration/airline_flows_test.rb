@@ -123,6 +123,37 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
   end
 
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Airline                              #
+  ##############################################################################
+
+  test "can see show airline" do
+    airline = airlines(:airline_american)
+    get(airline_path(airline.slug))
+    assert_response(:success)
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Operator                             #
+  ##############################################################################
+
+  test "can see show operator" do
+    operator = airlines(:airline_expressjet)
+    get(show_operator_path(operator.slug))
+    assert_response(:success)
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Fleet Number                         #
+  ##############################################################################
+
+  test "can see show fleet number" do
+    operator = airlines(:airline_expressjet)
+    fleet_number = "123"
+    get(show_fleet_number_path(operator: operator.slug, fleet_number: fleet_number))
+    assert_response(:success)
+  end
+
   private
 
   # Runs tests on a row in an airline count table

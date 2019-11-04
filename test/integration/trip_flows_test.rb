@@ -104,6 +104,27 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Trip                                 #
+  ##############################################################################
+
+  test "can see show trip" do
+    trip = trips(:trip_chicago_seattle)
+    get(trip_path(trip))
+    assert_response(:success)
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Trip Section                         #
+  ##############################################################################
+
+  test "can see show trip section" do
+    trip = trips(:trip_chicago_seattle)
+    section = 1
+    get(show_section_path(trip: trip, section: section))
+    assert_response(:success)
+  end
+
+  ##############################################################################
   # Tests for Spec > Pages (Views) > Common to Every View > Tables > Trips     #
   #   Table and Trip Sections Table                                            #
   ##############################################################################

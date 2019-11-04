@@ -285,6 +285,55 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Date Range                           #
+  ##############################################################################
+
+  test "can see show date range" do
+    get(show_date_range_path(start_date: "2014-07-01", end_date: "2015-06-30"))
+    assert_response(:success)
+  end
+
+  test "can see show date range with leading zero" do
+    # Leading 0s in date strings can be confused for an octal number, which is a
+    # problem if subsequent digits are greater than 7.
+    get(show_date_range_path(start_date: "2014-09-01", end_date: "2015-06-30"))
+    assert_response(:success)
+  end
+
+  test "can see show date range with year" do
+    get(show_year_path(2015))
+    assert_response(:success)
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Flight                               #
+  ##############################################################################
+
+  test "can see show flight" do
+    flight = flights(:flight_ord_dfw)
+    get(flight_path(flight))
+    assert_response(:success)
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Tail Number                          #
+  ##############################################################################
+  
+  test "can see show tail number" do
+    get(show_tail_path("N12345"))
+    assert_response(:success)
+  end
+
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Travel Class                         #
+  ##############################################################################
+
+  test "can see show travel class" do
+    get(show_class_path("economy"))
+    assert_response(:success)
+  end
+
+  ##############################################################################
   # Tests for Spec > Pages (Views) > Common to Every View > Tables > Flights   #
   #   Table                                                                    #
   ##############################################################################

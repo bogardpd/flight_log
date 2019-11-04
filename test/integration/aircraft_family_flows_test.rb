@@ -144,6 +144,22 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("a[href=?]", new_aircraft_family_path, {count: 0}, "This view shall not show a New Aircraft Family link when not logged in")
   end
 
+  ##############################################################################
+  # Tests for Spec > Pages (Views) > Show Aircraft                             #
+  ##############################################################################
+
+  test "can see show aircraft with family" do
+    aircraft_family = aircraft_families(:aircraft_737)
+    get(aircraft_family_path(aircraft_family.slug))
+    assert_response(:success)
+  end
+
+  test "can see show aircraft with type" do
+    aircraft_type = aircraft_families(:aircraft_737_800)
+    get(aircraft_family_path(aircraft_type.slug))
+    assert_response(:success)
+  end
+
   private
 
   # Runs tests on a row in a aircraft count table

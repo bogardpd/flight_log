@@ -1,6 +1,11 @@
 require "test_helper"
 
 class PageFlowsTest < ActionDispatch::IntegrationTest
+
+  def setup
+    @airport_options = "b:disc5:black"
+    @query           = "DAY-DFW/ORD"
+  end
   
   ##############################################################################
   # Tests for Spec > Pages (Views) > Home                                      #
@@ -49,6 +54,18 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
     assert_equal(key, response.body)
 
     ENV["LETS_ENCRYPT_KEY"] = cached_lets_encrypt_key
+  end
+
+  test "proxy image accepts correct key" do
+    get(gcmap_image_url(@airport_options, @query.gsub('/','_'), Map.hash_image_query(@query)))
+    assert_response(:success)
+  end
+  
+  test "proxy image rejects incorrect key" do
+    bad_check = "FOO"
+    assert_raises(ActionController::RoutingError) do
+      get(gcmap_image_url(@airport_options, @query.gsub('/','_'), bad_check))
+    end
   end
 
 end
