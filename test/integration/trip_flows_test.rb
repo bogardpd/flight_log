@@ -70,6 +70,8 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     get(trips_path)
     assert_response(:success)
 
+    verify_presence_of_admin_actions(new_trip_path)
+
     assert_select("h1", "Trips")
 
     assert_select("table#trips-table") do
@@ -80,27 +82,15 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#trips-with-no-flights-table") do
       assert_select("tr#trip-with-no-flights-row-#{@no_flights_trip.id}", {}, "This view shall show trips with no flights when logged in")
     end
-
-    assert_select("div#admin-actions", {}, "This view shall show admin actions when logged in") do
-      assert_select("a[href=?]", new_trip_path, {}, "This view shall show a New Trip link when logged in")
-    end
+    
   end
 
   test "can see index trips when not logged in" do
     get(trips_path)
     assert_response(:success)
-
-    assert_select("h1", "Trips")
-
-    assert_select("table#trips-table") do
-      assert_select("tr#trip-row-#{@visible_trip.id}", {}, "This view shall show visible trips")
-      assert_select("tr#trip-row-#{@hidden_trip.id}", {count: 0}, "This view shall not show hidden trips when not logged in")
-    end
-
-    assert_select("table#trips-with-no-flights-table", {count: 0}, "This view shall not show trips with no flights when not logged in")
-
-    assert_select("div#admin-actions", {count: 0}, "This view shall not show admin actions when not logged in")
-    assert_select("a[href=?]", new_trip_path, {count: 0}, "This view shall not show a New Trip link when not logged in")
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(new_trip_path)
+    verify_absence_of_no_flights_tables
   end
 
   ##############################################################################

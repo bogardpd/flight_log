@@ -213,7 +213,7 @@ flight_visible:
   airline: airline_visible
   flight_number: 8000
   operator: operator_visible
-  aircraft_family: aircraft_type_visible
+  aircraft_family: aircraft_family_visible
   tail_number: "N111VS"
   travel_class: "economy"
 
@@ -228,7 +228,7 @@ flight_hidden:
   airline: airline_hidden
   flight_number: 9000
   operator: operator_hidden
-  aircraft_family: aircraft_type_hidden
+  aircraft_family: aircraft_family_hidden
   tail_number: "N111HD"
   travel_class: "business" # To test hidden travel classes, make sure business is only used by hidden flights
   

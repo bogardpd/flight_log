@@ -195,8 +195,11 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     log_in_as(users(:user_one))
     get(flights_path)
     assert_response(:success)
+    
+    assert_select("h1", "Flights")
+    assert_select("div#flight-map", {}, "This view shall show a flight map")
+    assert_select("table#flight-year-links", {}, "This view shall show year links")
 
-    check_index_flights_common
     assert_select("table#flight-table") do
       assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view shall show visible flights")
       assert_select("tr#flight-row-#{@hidden_flight.id}", {}, "This view shall show hidden flights")
@@ -207,13 +210,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   test "can see index flights when not logged in" do
     get(flights_path)
     assert_response(:success)
-
-    check_index_flights_common
-    assert_select("table#flight-table") do
-      assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view shall show visible flights")
-      assert_select("tr#flight-row-#{@hidden_flight.id}", {count: 0}, "This view shall not show hidden flights when not logged in")
-      assert_select("td#flight-total", {text: /^#{visitor_flights.count} flights?/}, "This view shall not include hidden flights in the total row")
-    end
+    verify_absence_of_hidden_data
   end
 
   ##############################################################################
@@ -237,18 +234,9 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index tail numbers when not logged in" do
-    tails = TailNumber.flight_table_data(visitor_flights)
-
     get(tails_path)
     assert_response(:success)
-
-    assert_select("h1", "Tail Numbers")
-
-    assert_select("table#tail-number-count-table") do
-      check_tail_number_row(tails, @visible_tail, "This view shall show tail numbers with visible flights")
-      assert_select("td#tail-number-count-row-#{@hidden_tail}", {count: 0}, "This view shall not show tail numbers with only hidden flights when not logged in")
-      assert_select("td#tail-number-count-total", {text: /^#{tails.size} unique tail numbers?/}, "Ranked tables shall have a total row with a correct total")
-    end
+    verify_absence_of_hidden_data    
   end
 
   ##############################################################################
@@ -263,7 +251,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
 
     assert_select("h1", "Travel Classes")
-
+    
     assert_select("table#travel-class-count-table") do
       check_travel_class_row(classes, @visible_class, "This view shall show classes with visible flights")
       check_travel_class_row(classes, @hidden_class, "This view shall show classes with only hidden flights when logged in")
@@ -271,17 +259,9 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index travel classes when not logged in" do
-    classes = TravelClass.flight_table_data(visitor_flights)
-    
     get(classes_path)
     assert_response(:success)
-
-    assert_select("h1", "Travel Classes")
-
-    assert_select("table#travel-class-count-table") do
-      check_travel_class_row(classes, @visible_class, "This view shall show classes with visible flights")
-      assert_select("tr#travel-class-count-row-#{@hidden_class}", {count: 0}, "This view shall not show classes with only hidden flights when not logged in")
-    end
+    verify_absence_of_hidden_data
   end
 
   ##############################################################################
@@ -399,13 +379,6 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       assert_select("input[type=submit][value=?]", "Create a new flight")
     end
 
-  end
-
-  # Provides common assertions used in multiple index flights tests.
-  def check_index_flights_common
-    assert_select("h1", "Flights")
-    assert_select("div#flight-map", {}, "This view shall show a flight map")
-    assert_select("table#flight-year-links", {}, "This view shall show year links")
   end
 
   # Runs tests on a row in a tail number count table

@@ -76,51 +76,35 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     get(airlines_path)
     assert_response(:success)
 
+    verify_presence_of_admin_actions(new_airline_path)
+
     assert_select("h1", "Airlines")
     assert_select("table#airline-count-table") do
       check_airline_flight_row(@visible_airline, airlines.find{|a| a[:id] == @visible_airline.id}[:flight_count], "This view shall show airlines with visible flights")
       check_airline_flight_row(@hidden_airline, airlines.find{|a| a[:id] == @hidden_airline.id}[:flight_count], "This view shall show airlines with only hidden flights when logged in")
       assert_select("td#airline-count-total", {text: /^#{airlines.size} airlines?/}, "Airline ranked tables shall have a total row with a correct total")
     end
+
     assert_select("table#operator-count-table") do
       check_operator_flight_row(@visible_operator, operators.find{|a| a[:id] == @visible_operator.id}[:flight_count], "This view shall show operators with visible flights")
       check_operator_flight_row(@hidden_operator, operators.find{|a| a[:id] == @hidden_operator.id}[:flight_count], "This view shall show operators with only hidden flights when logged in")
       assert_select("td#operator-count-total", {text: /^#{operators.size} operators?/}, "Operator ranked tables shall have a total row with a correct total")
     end
+
     assert_select("table#airlines-with-no-flights-table") do
       assert_select("tr#airline-with-no-flights-row-#{@no_flights_airline.id}", {}, "This view shall show airlines with no flights when logged in") do
         assert_select("a[href=?]", airline_path(id: @no_flights_airline.slug))
       end
     end
-
-    assert_select("div#admin-actions", {}, "This view shall show admin actions when logged in") do
-      assert_select("a[href=?]", new_airline_path, {}, "This view shall show a New Airline link when logged in")
-    end
-
+    
   end
 
   test "can see index airlines when not logged in" do
-    airlines = Airline.flight_table_data(visitor_flights, type: :airline).select{|airline| airline[:id].present?}
-    operators = Airline.flight_table_data(visitor_flights, type: :operator).select{|airline| airline[:id].present?}
     get(airlines_path)
     assert_response(:success)
-
-    assert_select("h1", "Airlines")
-    assert_select("table#airline-count-table") do
-      check_airline_flight_row(@visible_airline, airlines.find{|a| a[:id] == @visible_airline.id}[:flight_count], "This view shall show airlines with visible flights")
-      assert_select("tr#airline-count-row-#{@hidden_airline.id}", {count: 0}, "This view shall not show airlines with only hidden flights when not logged in")
-      assert_select("td#airline-count-total", {text: /^#{airlines.size} airlines?/}, "Airline ranked tables shall have a total row with a correct total")
-    end
-    assert_select("table#operator-count-table") do
-      check_operator_flight_row(@visible_operator, operators.find{|a| a[:id] == @visible_operator.id}[:flight_count], "This view shall show operators with visible flights")
-      assert_select("tr#operator-count-row-#{@hidden_operator.id}", {count: 0}, "This view shall not show operators with only hidden flights when not logged in")
-      assert_select("td#operator-count-total", {text: /^#{operators.size} operators?/}, "Operator ranked tables shall have a total row with a correct total")
-    end
-    assert_select("table#airlines-with-no-flights-table", {count: 0}, "This view shall not show airlines with no flights when not logged in")
-
-    assert_select("div#admin-actions", {count: 0}, "This view shall not show admin actions when not logged in")
-    assert_select("a[href=?]", new_airline_path, {count: 0}, "This view shall not show a New Airline link when not logged in")
-
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(new_airline_path)
+    verify_absence_of_no_flights_tables
   end
 
   ##############################################################################

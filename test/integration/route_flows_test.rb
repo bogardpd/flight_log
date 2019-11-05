@@ -49,18 +49,9 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index routes when not logged in" do
-    routes = Route.flight_table_data(visitor_flights)
-
     get(routes_path)
     assert_response(:success)
-
-    assert_select("h1", "Routes")
-
-    assert_select("table#route-count-table") do
-      check_flight_row(routes, @visible_route, "This view shall show routes with visible flights")
-      assert_select("tr#route-count-row-#{@hidden_route.pluck(:slug).sort.join("-to-")}", {count: 0}, "This view shall not show routes with only hidden flights when not logged in")
-      assert_select("td#route-count-total", {text: /^#{routes.size} routes?/}, "Ranked tables shall have a total row with a correct total")
-    end
+    verify_absence_of_hidden_data
   end
 
   ##############################################################################

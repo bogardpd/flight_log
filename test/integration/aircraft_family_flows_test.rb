@@ -111,37 +111,28 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     get(aircraft_families_path)
     assert_response(:success)
 
+    verify_presence_of_admin_actions(new_aircraft_family_path)
+
     assert_select("h1", "Aircraft Families")
+
     assert_select("table#aircraft-family-count-table") do
       check_flight_row(@visible_aircraft_family, aircraft.find{|a| a[:id] == @visible_aircraft_family.id}[:flight_count], "This view shall show aircraft with visible flights")
       check_flight_row(@hidden_aircraft_family, aircraft.find{|a| a[:id] == @hidden_aircraft_family.id}[:flight_count], "This view shall show aircraft with only hidden flights when logged in")
       assert_select("td#aircraft-family-count-total", {text: /^#{aircraft.size} aircraft famil(y|(ies))/}, "Ranked tables shall have a total row with a correct total")
     end
+
     assert_select("table#aircraft-families-with-no-flights-table", {}, "This view shall show an aircraft families with no flights table when logged in") do
       assert_select("tr#aircraft-family-with-no-flights-row-#{@no_flights_aircraft_family.id}")
-    end
-
-    assert_select("div#admin-actions", {}, "This view shall show admin actions when logged in") do
-      assert_select("a[href=?]", new_aircraft_family_path, {}, "This view shall show a New Aircraft Family link when logged in")
-    end
-
+    end  
+    
   end
 
   test "can see index aircraft families when not logged in" do
-    aircraft = AircraftFamily.flight_table_data(visitor_flights).select{|aircraft| aircraft[:id].present? && aircraft[:flight_count] > 0}
     get(aircraft_families_path)
     assert_response(:success)
-
-    assert_select("h1", "Aircraft Families")
-    assert_select("table#aircraft-family-count-table") do
-      check_flight_row(@visible_aircraft_family, aircraft.find{|a| a[:id] == @visible_aircraft_family.id}[:flight_count], "This view shall show aircraft with visible flights")
-      assert_select("tr#aircraft-family-count-table-#{@hidden_aircraft_family.id}", {count: 0}, "This view shall not show aircraft with only hidden flights when not logged in")
-      assert_select("td#aircraft-family-count-total", {text: /^#{aircraft.size} aircraft famil(y|(ies))/}, "Ranked tables shall have a total row with a correct total")
-    end
-
-    assert_select("table#aircraft-families-with-no-flights-table", {count: 0}, "This view shall not show an aircraft families with no flights table when not logged in")
-    assert_select("div#admin-actions", {count: 0}, "This view shall not show admin actions when not logged in")
-    assert_select("a[href=?]", new_aircraft_family_path, {count: 0}, "This view shall not show a New Aircraft Family link when not logged in")
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(new_aircraft_family_path)
+    verify_absence_of_no_flights_tables
   end
 
   ##############################################################################
