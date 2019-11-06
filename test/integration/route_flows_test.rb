@@ -46,7 +46,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#route-count-table") do
       check_flight_row(routes, @visible_route, "This view shall show routes with visible flights")
       check_flight_row(routes, @hidden_route, "This view shall show routes with only hidden flights when logged in")
-      assert_select("td#route-count-total", {text: /^#{routes.size} routes?/}, "Ranked tables shall have a total row with a correct total")
+      assert_select("td#route-count-total", {text: /^#{number_with_delimiter(routes.size)} routes?/}, "Ranked tables shall have a total row with a correct total")
     end
   end
 

@@ -85,13 +85,13 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#airline-count-table") do
       check_airline_flight_row(@visible_airline, airlines.find{|a| a[:id] == @visible_airline.id}[:flight_count], "This view shall show airlines with visible flights")
       check_airline_flight_row(@hidden_airline, airlines.find{|a| a[:id] == @hidden_airline.id}[:flight_count], "This view shall show airlines with only hidden flights when logged in")
-      assert_select("td#airline-count-total", {text: /^#{airlines.size} airlines?/}, "Airline ranked tables shall have a total row with a correct total")
+      assert_select("td#airline-count-total", {text: /^#{number_with_delimiter(airlines.size)} airlines?/}, "Airline ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#operator-count-table") do
       check_operator_flight_row(@visible_operator, operators.find{|a| a[:id] == @visible_operator.id}[:flight_count], "This view shall show operators with visible flights")
       check_operator_flight_row(@hidden_operator, operators.find{|a| a[:id] == @hidden_operator.id}[:flight_count], "This view shall show operators with only hidden flights when logged in")
-      assert_select("td#operator-count-total", {text: /^#{operators.size} operators?/}, "Operator ranked tables shall have a total row with a correct total")
+      assert_select("td#operator-count-total", {text: /^#{number_with_delimiter(operators.size)} operators?/}, "Operator ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#airlines-with-no-flights-table") do

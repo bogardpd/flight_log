@@ -206,7 +206,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#flight-table") do
       assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view shall show visible flights")
       assert_select("tr#flight-row-#{@hidden_flight.id}", {}, "This view shall show hidden flights")
-      assert_select("td#flight-total", {text: /^#{logged_in_flights.count} flights?/}, "This view shall show a flight total row")
+      assert_select("td#flight-total", {text: /^#{number_with_delimiter(logged_in_flights.count)} flights?/}, "This view shall show a flight total row")
     end
   end
 
@@ -232,7 +232,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#tail-number-count-table") do
       check_tail_number_row(tails, @visible_tail, "This view shall show tail numbers with visible flights")
       check_tail_number_row(tails, @hidden_tail, "This view shall show tail numbers with only hidden flights when logged in")
-      assert_select("td#tail-number-count-total", {text: /^#{tails.size} unique tail numbers?/}, "Ranked tables shall have a total row with a correct total")
+      assert_select("td#tail-number-count-total", {text: /^#{number_with_delimiter(tails.size)} unique tail numbers?/}, "Ranked tables shall have a total row with a correct total")
     end
   end
 

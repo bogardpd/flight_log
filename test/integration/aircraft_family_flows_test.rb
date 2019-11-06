@@ -121,7 +121,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#aircraft-family-count-table") do
       check_flight_row(@visible_aircraft_family, aircraft.find{|a| a[:id] == @visible_aircraft_family.id}[:flight_count], "This view shall show aircraft with visible flights")
       check_flight_row(@hidden_aircraft_family, aircraft.find{|a| a[:id] == @hidden_aircraft_family.id}[:flight_count], "This view shall show aircraft with only hidden flights when logged in")
-      assert_select("td#aircraft-family-count-total", {text: /^#{aircraft.size} aircraft famil(y|(ies))/}, "Ranked tables shall have a total row with a correct total")
+      assert_select("td#aircraft-family-count-total", {text: /^#{number_with_delimiter(aircraft.size)} aircraft famil(y|(ies))/}, "Ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#aircraft-families-with-no-flights-table", {}, "This view shall show an aircraft families with no flights table when logged in") do

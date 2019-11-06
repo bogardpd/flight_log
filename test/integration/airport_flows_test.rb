@@ -76,7 +76,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#airport-count-table") do
       check_flight_row(@visible_airport, visits[@visible_airport.id], "This view shall show airports with visible flights")
       check_flight_row(@hidden_airport, visits[@hidden_airport.id], "This view shall show airports with only hidden flights when logged in")
-      assert_select("td#airport-count-total", {text: /^#{visits.size} airports?/}, "Ranked tables shall have a total row with a correct total")
+      assert_select("td#airport-count-total", {text: /^#{number_with_delimiter(visits.size)} airports?/}, "Ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#airports-with-no-flights-table") do
