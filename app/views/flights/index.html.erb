@@ -17,20 +17,9 @@
   <%= gcmap_with_region_select(@map, @region, anchor: "flight-map") %>
   <%= distance_block(@total_distance, adjective: "total") %>
 
-  <div id="flight-list">
+  <%= render partial: "flight_table", locals: {is_summary: false} %>
 
-    <table class="flightlog" id="flight-table">
-    <tr>
-      <th class="counter">#</th>
-    	<th class="flight-flight">Flight</td>
-      <th class="flight-route">Route</td>
-      <th class="flight-date"><%= sort_link("Departure", :departure, :asc, "flight-list") %></td>
-    </tr>
-    <%= render partial: "flights/flight_row", collection: @flights, as: :flight %>
-    <%= flight_table_total_row(@flights) %>
-    </table>
-
-  </div>
+  
 
 <% else %>
 

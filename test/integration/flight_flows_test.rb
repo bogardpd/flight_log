@@ -189,6 +189,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Flights                             #
+  # Tests for flight_table partial                                             #
   ##############################################################################
 
   test "can see index flights when logged in" do
@@ -241,6 +242,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Travel Classes                      #
+  # Tests for class_count_table partial                                        #
   ##############################################################################
 
   test "can see index travel classes when logged in" do

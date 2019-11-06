@@ -67,6 +67,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Airlines                            #
+  # Tests for airline_count_table partial                                      #
   ##############################################################################
 
   test "can see index airlines when logged in" do

@@ -63,9 +63,14 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Trips                               #
+  # Tests for Spec > Pages (Views) > Common to Every View > Tables > Trips     #
+  #   Table and Trip Sections Table                                            #
+  # Tests for trip_table partial                                               #
   ##############################################################################
 
   test "can see index trips when logged in" do
+    trips = Trip.with_departure_dates(users(:user_one), users(:user_one))
+    
     log_in_as(users(:user_one))
     get(trips_path)
     assert_response(:success)
@@ -75,8 +80,14 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", "Trips")
 
     assert_select("table#trips-table") do
-      assert_select("tr#trip-row-#{@visible_trip.id}", {}, "This view shall show visible trips")
-      assert_select("tr#trip-row-#{@hidden_trip.id}", {}, "This view shall show hidden trips when logged in")
+      assert_select("tr#trip-row-#{@visible_trip.id}", {}, "This view shall show visible trips") do
+        assert_select("a[href=?]", trip_path(@visible_trip), {text: @visible_trip.name})
+        assert_select("td.flight-date", {text: FormattedDate.str(@visible_trip.flights.pluck(:departure_date).sort.first)})
+      end
+      assert_select("tr#trip-row-#{@hidden_trip.id}", {}, "This view shall show hidden trips when logged in") do
+        assert_select("div.hidden-marker", {}, "Hidden trip shall have hidden marker")
+      end
+      assert_select("td#trips-total", {text: /^#{trips.size} trips?/}, "Trips table shall have a total row with a correct total")
     end
 
     assert_select("table#trips-with-no-flights-table") do
@@ -114,28 +125,6 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
   end
 
-  ##############################################################################
-  # Tests for Spec > Pages (Views) > Common to Every View > Tables > Trips     #
-  #   Table and Trip Sections Table                                            #
-  ##############################################################################
-
-  test "can see trips table partial" do
-    trips = Trip.with_departure_dates(users(:user_one), users(:user_one))
-    
-    log_in_as(users(:user_one))
-    get(trips_path)
-    assert_response(:success)
-
-    assert_select("table#trips-table") do
-      assert_select("tr#trip-row-#{@visible_trip.id}") do
-        assert_select("a[href=?]", trip_path(@visible_trip), {text: @visible_trip.name})
-        assert_select("td.flight-date", {text: FormattedDate.str(@visible_trip.flights.pluck(:departure_date).sort.first)})
-      end
-      assert_select("tr#trip-row-#{@hidden_trip.id}") do
-        assert_select("div.hidden-marker", {}, "Hidden trip shall have hidden marker")
-      end
-      assert_select("td#trips-total", {text: /^#{trips.size} trips?/}, "Trips table shall have a total row with a correct total")
-    end
-  end
+  
 
 end

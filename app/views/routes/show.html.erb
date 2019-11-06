@@ -63,4 +63,4 @@
 
 
 <h2 id="flights"><%= route_with_arrow_and_abbr %> Flight List</h2>
-<%= render "flights/flight_table" %>
+<%= render partial: "flights/flight_table", locals: {is_summary: true} %>

@@ -57,7 +57,7 @@
 
 <h2 id="flights"><%= @flight_list_title %></h2>
 
-<%= render "flight_table" %>
+<%= render partial: "flight_table", locals: {is_summary: true} %>
 
 <% else %>
 	<p>There are no flights in <%= @in_text %>!</p>

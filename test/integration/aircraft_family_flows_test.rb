@@ -103,6 +103,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Aircraft Families                   #
+  # Tests for aircraft_family_count_table partial                              #
   ##############################################################################
 
   test "can see index aircraft families when logged in" do

@@ -54,7 +54,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Airports                            #
-  # Tests for Spec > Common to Every View > Ranked Tables                      #
+  # Tests for airport_count_table partial                                      #
   ##############################################################################
 
   test "can see index airports when logged in" do

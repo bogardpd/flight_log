@@ -36,4 +36,4 @@
 <%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
 
 <h2 id="flights"><%= TravelClass.title(@class) %> Flight List</h2>
-<%= render "flight_table" %>
+<%= render partial: "flight_table", locals: {is_summary: true} %>

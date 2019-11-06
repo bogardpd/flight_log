@@ -105,11 +105,8 @@
 
 	
 	<h2 id="flights"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Flight List</h2>
-	<table class="flightlog">
-		<%= render partial: "flights/flight_header_row" %>
-		<%= render partial: "flights/flight_row", collection: @flights, as: :flight %>
-		<%= flight_table_total_row(@flights, [sanitize("&middot;"), pluralize(@airport_frequency, "visit")]) %>
-	</table>
+
+	<%= render partial: "flights/flight_table", locals: {is_summary: true} %>
 
 	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
 

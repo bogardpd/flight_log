@@ -17,4 +17,4 @@
 <%= @map.gcmap %>
 <%= distance_block(@section_distance, adjective: "section") %>
 
-<%= render partial: "flights/flight_table" %>
+<%= render partial: "flights/flight_table", locals: {is_summary: true} %>
