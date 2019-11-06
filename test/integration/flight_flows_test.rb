@@ -1,6 +1,8 @@
 require "test_helper"
 
 class FlightFlowsTest < ActionDispatch::IntegrationTest
+  
+  include ActionView::Helpers::NumberHelper
 
   def setup
     @visible_flight = flights(:flight_visible)
@@ -394,7 +396,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       assert_select("td.tail-airline") do
         assert_select("img.airline-icon[title=?]", tail_data[:airline_name])
       end
-      assert_select("text.graph-value", tail_data[:count].to_s, "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value", number_with_delimiter(tail_data[:count].to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
   end
 
@@ -402,7 +404,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     tail_data = flight_table_data.find{|c| c[:class_code] == travel_class}
     assert_select("tr#travel-class-count-row-#{travel_class}", {}, error_message) do
       assert_select("a[href=?]", show_class_path(travel_class))
-      assert_select("text.graph-value", tail_data[:flight_count].to_s, "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value", number_with_delimiter(tail_data[:flight_count].to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
   end
 

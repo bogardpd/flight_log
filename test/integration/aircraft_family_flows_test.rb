@@ -1,6 +1,8 @@
 require "test_helper"
 
 class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
+
+  include ActionView::Helpers::NumberHelper
   
   def setup
     @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
@@ -158,7 +160,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   def check_flight_row(aircraft_family, expected_flight_count, error_message)
     assert_select("tr#aircraft-family-count-row-#{aircraft_family.id}", {}, error_message) do
       assert_select("a[href=?]", aircraft_family_path(id: aircraft_family.slug))
-      assert_select("text.graph-value", expected_flight_count.to_s, "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value", number_with_delimiter(expected_flight_count.to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
   end
 

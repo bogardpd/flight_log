@@ -2,6 +2,8 @@ require "test_helper"
 
 class AirportFlowsTest < ActionDispatch::IntegrationTest
 
+  include ActionView::Helpers::NumberHelper
+
   def setup
     @visible_airport = airports(:airport_visible_1)
     @hidden_airport = airports(:airport_hidden_1)
@@ -109,7 +111,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   def check_flight_row(airport, expected_visit_count, error_message)
     assert_select("tr#airport-count-row-#{airport.id}", {}, error_message) do
       assert_select("a[href=?]", airport_path(id: airport.slug))
-      assert_select("text.graph-value", expected_visit_count.to_s, "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value", number_with_delimiter(expected_visit_count.to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
   end
 

@@ -74,8 +74,8 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     sorted_slugs = route_to_check.pluck(:slug).sort
     assert_select("tr#route-count-row-#{sorted_slugs.join("-to-")}", {}, error_message) do
       assert_select("a[href=?]", show_route_path(*sorted_slugs))
-      assert_select("text.graph-distance", number_with_delimiter(route_data[:distance_mi], delimeter: ","), "Graph bar shall have the correct distance")
-      assert_select("text.graph-value", number_with_delimiter(route_data[:flight_count].to_s, delimeter: ","), "Graph bar shall have the correct flight count")
+      assert_select("text.graph-distance", number_with_delimiter(route_data[:distance_mi], delimiter: ","), "Graph bar shall have the correct distance")
+      assert_select("text.graph-value", number_with_delimiter(route_data[:flight_count].to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
   end
   
