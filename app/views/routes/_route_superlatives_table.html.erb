@@ -1,13 +1,15 @@
 <% if superlatives %>
 	<% categories = {max: "Longest Route", min: "Shortest Route", zero: "Shortest Net Distance"} %>
 
-	<table class="flightlog">
+	<table class="flightlog" id="superlatives-table">
+	
 		<% categories.each do |category, label| %>
-				
+			
 			<% superlatives[category].each_with_index do |(airports, distance), index| %>
+			
 				<% airports.sort_by!{|a| a.iata_code} %>
 				
-				<tr>
+				<tr id="superlative-row-<%= airports.pluck(:slug).sort.join("-to-") %>">
 					<% if index == 0 %>
 						<td class="label-column superlatives-label" rowspan="<%= superlatives[category].length %>"><%= label %></td>
 					<% end %>

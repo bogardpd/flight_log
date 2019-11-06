@@ -14,14 +14,14 @@
 
 <div class="intro-box column">
   <h2>Top Airports</h2>
-  <table class="flightlog">
+  <table class="flightlog" id="top-airports-table">
     <tr>
       <th class="left">City</th>
       <th class="center">Code</th>
       <th class="center">Visits</th>
     </tr>
   <% @flight_airports.first(5).each do |airport| %>
-    <tr>
+    <tr id="airport-count-row-<%= airport[:id] %>">
       <td class="left"><%= country_flag_icon(airport[:country]) %> <%= link_to(format_airport_name(airport[:city]), airport_path(airport[:slug]), title: "View airport details for #{airport[:city]}") %></td>
       <td class="center code-mono"><%= link_to(airport[:iata_code], airport_path(airport[:slug]), title: "View airport details for #{airport[:city]}") %></td>
       <td class="center"><%= airport[:visit_count] %></td>
@@ -33,13 +33,13 @@
 
 <div class="intro-box column">
   <h2>Top Airlines</h2>
-  <table class="flightlog">
+  <table class="flightlog" id="top-airlines-table">
     <tr>
       <th class="left">Airline</th>
       <th class="center">Flights</th>
     </tr>
   <% @flight_airlines.first(5).each do |airline| %>
-    <tr>
+    <tr id="airline-count-row-<%= airline[:id] %>">
       <td class="left">
       <%= link_to(airline_icon(airline[:slug], title: airline[:airline_name]) + airline[:airline_name], airline_path(airline[:slug]), title: "View flights on #{airline[:airline_name]}") %></td>
       <td class="center"><%= airline[:flight_count] %></td>
@@ -52,13 +52,13 @@
 <div class="intro-box column">
   <h2>Top Routes</h2>
   
-  <table class="flightlog">
+  <table class="flightlog" id="top-routes-table">
     <tr>
       <th class="left">Route</th>
       <th class="center">Flights</th>
     </tr>
   <% @flight_routes.first(5).each do |flight_route| %>
-    <tr>
+    <tr id="route-count-row-<%= flight_route[:route].pluck(:slug).sort.join("-to-") %>">
       <td class="left"><%= link_to(format_route(flight_route[:route].map{|r| r.iata_code}), show_route_path(airport1: flight_route[:route].first.slug, airport2: flight_route[:route].last.slug), title: "View flights between #{flight_route[:route][0]} and #{flight_route[:route][1]}") %></td>
       <td class="center"><%= flight_route[:flight_count] %></td>
     </tr>
@@ -70,29 +70,29 @@
 <div class="intro-box column">
   <h2>Top Aircraft</h2>
   
-  <table class="flightlog">
+  <table class="flightlog" id="top-aircraft-table">
     <tr>
       <th class="left">Aircraft Family</th>
       <th class="center">Flights</th>
     </tr>
-  <% @flight_aircraft.first(5).each do |aircraft| %>
-    <tr>
-      <td class="left"><%= link_to(format_aircraft_family(aircraft[:manufacturer], aircraft[:family_name]), aircraft_family_path(aircraft[:slug]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
-      <td class="center"><%= aircraft[:flight_count] %></td>
-    </tr>
-  <% end %>
+    <% @flight_aircraft.first(5).each do |aircraft| %>
+      <tr id="aircraft-family-count-row-<%= aircraft[:id] %>">
+        <td class="left"><%= link_to(format_aircraft_family(aircraft[:manufacturer], aircraft[:family_name]), aircraft_family_path(aircraft[:slug]), title: "View flights on #{aircraft[:family_name]} aircraft") %></td>
+        <td class="center"><%= aircraft[:flight_count] %></td>
+      </tr>
+    <% end %>
   </table>
   <p><%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(@flight_aircraft.size, "aircraft family"), class: "summary-total"), aircraft_families_path) %></p>
 </div>
 
 <div class="intro-box column">
   <h2>Top Tails</h2>
-  <table class="flightlog">
+  <table class="flightlog" id="top-tail-numbers-table">
     <tr>
       <th class="left">Tail Number</th>
       <th class="center">Flights</th>
   <% @flight_tails.first(5).each do |tail| %>
-    <tr>
+    <tr id="tail-number-count-row-<%= tail[:tail_number] %>">
       <td class="left tail-number"><%= tail_number_with_country_flag(tail[:tail_number]) %></td>
       <td class="center"><%= tail[:count] %></td>
     </tr>
@@ -108,7 +108,7 @@
 <% if @route_superlatives || logged_in? %>	
 <div class="intro-box column">
   <h2>Superlatives</h2>
-	<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
+	<%= render partial: "routes/route_superlatives_table", locals: {superlatives: @route_superlatives} %>
 </div>
 <% end %>
 

@@ -2,6 +2,8 @@ require "test_helper"
 
 class RouteFlowsTest < ActionDispatch::IntegrationTest
 
+  include ActionView::Helpers::NumberHelper
+
   def setup
     @visible_route = [airports(:airport_visible_1), airports(:airport_visible_2)]
     @hidden_route = [airports(:airport_hidden_1), airports(:airport_hidden_2)]
@@ -72,8 +74,8 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     sorted_slugs = route_to_check.pluck(:slug).sort
     assert_select("tr#route-count-row-#{sorted_slugs.join("-to-")}", {}, error_message) do
       assert_select("a[href=?]", show_route_path(*sorted_slugs))
-      assert_select("text.graph-distance", route_data[:distance_mi].to_s, "Graph bar shall have the correct distance")
-      assert_select("text.graph-value", route_data[:flight_count].to_s, "Graph bar shall have the correct flight count")
+      assert_select("text.graph-distance", number_with_delimiter(route_data[:distance_mi], delimeter: ","), "Graph bar shall have the correct distance")
+      assert_select("text.graph-value", number_with_delimiter(route_data[:flight_count].to_s, delimeter: ","), "Graph bar shall have the correct flight count")
     end
   end
   

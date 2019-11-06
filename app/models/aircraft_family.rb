@@ -145,14 +145,19 @@ class AircraftFamily < ApplicationRecord
   # @param sort_category [:aircraft, :flights] the category to sort the array
   #   by
   # @param sort_direction [:asc, :desc] the direction to sort the array
+  # @param include_families_with_no_flights [Boolean] whether to include
+  #   aircraft families with no flights in the hash. Used by
+  #   {AircraftFamiliesController#index} to generate an aircraft families with
+  #   no flights table.
   # @return [Array<Hash>] details for each AircraftFamily flown
-  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil)
+  def self.flight_table_data(flights, sort_category=nil, sort_direction=nil, include_families_with_no_flights: false)
     family_count = flights.reorder(nil).joins(:aircraft_family).group(:aircraft_family_id, :parent_id).count
       .map{|k,v| {(k[1]||k[0]) => v}} # Create array of hashes with k as parent id or family id and v as count
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts
     family_count ||= Array.new
       
     counts = self.families.map{|f| {id: f.id, slug: f.slug, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}
+    counts.reject!{|f| f[:flight_count] == 0} unless include_families_with_no_flights
     
     case sort_category
     when :aircraft

@@ -9,7 +9,7 @@ class AircraftFamiliesController < ApplicationController
   def index
     @flights = flyer.flights(current_user)
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
-    flight_count = AircraftFamily.flight_table_data(@flights, *@sort)
+    flight_count = AircraftFamily.flight_table_data(@flights, *@sort, include_families_with_no_flights: true)
     @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
     
     if @aircraft_families.any?

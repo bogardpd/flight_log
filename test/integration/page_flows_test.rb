@@ -11,25 +11,28 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Home                                      #
   ##############################################################################
 
-  test "can see home" do
+  test "can see home when not logged in" do
     get(root_path)
     assert_response(:success)
+    verify_absence_of_hidden_data
 
     assert_select("div:match('id',?)", /message-active-trip-\d+/, {count: 0}, "This view shall not list an active trip")
     assert_select("div#message-boarding-passes-available-for-import", {count: 0}, "This view shall not show a link to import boarding passes")
+    
     assert_select("img.map", {}, "This view shall contain a map")
     assert_select("a:match('href', ?)", "/flights", {}, "This view shall contain a link to Index Flights")
     assert_select("span.summary-total", {}, "This view shall contain a count of flights")
-    assert_select("h2", "Top Airports")
-    assert_select("h2", "Top Airlines")
-    assert_select("h2", "Top Routes")
-    assert_select("h2", "Top Aircraft")
-    assert_select("h2", "Top Tails")
-    assert_select("h2", "Superlatives")
+    
+    assert_select("table#top-airports-table")
+    assert_select("table#top-airlines-table")
+    assert_select("table#top-routes-table")
+    assert_select("table#top-aircraft-table")
+    assert_select("table#top-tail-numbers-table")
+    assert_select("table#superlatives-table")
   end
 
   test "can see active trips on home when logged in" do
-    # At least one PKPass shall be present for this test to succeed.
+    # At least one PKPass must be present for this test to succeed.
     hidden_trip = trips(:trip_hidden)
     log_in_as(users(:user_one))
     get(root_path)

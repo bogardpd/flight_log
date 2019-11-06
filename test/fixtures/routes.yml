@@ -24,3 +24,10 @@ route_yvr_yvr:
   airport1: airport_yvr
   airport2: airport_yvr
   distance_mi: 0
+
+route_hidden_longest:
+  # Used to make sure hidden routes are not shown in superlatives table. Must be
+  # longer than any other route.
+  airport1: airport_hidden_1
+  airport2: airport_hidden_2
+  distance_mi: 12436

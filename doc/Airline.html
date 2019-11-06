@@ -394,18 +394,18 @@
       <pre class="lines">
 
 
-112
-113
-114
 115
 116
 117
 118
 119
-120</pre>
+120
+121
+122
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_convert_iata_to_icao'>convert_iata_to_icao</span><span class='lparen'>(</span><span class='id identifier rubyid_iata'>iata</span><span class='comma'>,</span> <span class='id identifier rubyid_keep_iata'>keep_iata</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_airline'>airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>iata_airline_code:</span> <span class='id identifier rubyid_iata'>iata</span><span class='rparen'>)</span>
@@ -539,9 +539,6 @@
       <pre class="lines">
 
 
-77
-78
-79
 80
 81
 82
@@ -565,10 +562,13 @@
 100
 101
 102
-103</pre>
+103
+104
+105
+106</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_table_data'>flight_table_data</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_category'>sort_category</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_sort_direction'>sort_direction</span><span class='op'>=</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='symbol'>:airline</span><span class='rparen'>)</span>
   
@@ -698,14 +698,14 @@
       <pre class="lines">
 
 
-130
-131
-132
 133
-134</pre>
+134
+135
+136
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new_in_date_range'>new_in_date_range</span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='comma'>,</span> <span class='id identifier rubyid_date_range'>date_range</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
@@ -769,12 +769,12 @@
       <pre class="lines">
 
 
-47
-48
-49</pre>
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 47</span>
+      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_format_name'>format_name</span>
   <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span>
@@ -828,12 +828,12 @@
       <pre class="lines">
 
 
-57
-58
-59</pre>
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 60</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_has_any_airline_operator_codeshare_flights?'>has_any_airline_operator_codeshare_flights?</span>
   <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>airline_id:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_or'>or</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>operator_id:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_or'>or</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>codeshare_airline_id:</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
@@ -848,7 +848,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Oct 14 13:43:21 2019 by
+  Generated on Tue Nov  5 21:54:06 2019 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

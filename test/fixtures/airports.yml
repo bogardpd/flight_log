@@ -69,8 +69,8 @@ airport_hidden_1:
   icao_code: "KAHA"
   city: "Hidden City One"
   country: "United States"
-  latitude: 40.000
-  longitude: -90.000
+  latitude: 90.000
+  longitude: 0.000
 
 airport_hidden_2:
   # Used to test hidden airports
@@ -79,8 +79,8 @@ airport_hidden_2:
   icao_code: "KAHB"
   city: "Hidden City Two"
   country: "United States"
-  latitude: 30.000
-  longitude: -90.000
+  latitude: -90.000
+  longitude: 0.000
   
 airport_no_flights:
   # Must not be used by any flights.
