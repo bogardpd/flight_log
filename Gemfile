@@ -27,7 +27,7 @@ gem 'savon', '~> 2.12'
 
 # Force loofah to 2.2.3 for security update.
 # https://github.com/flavorjones/loofah/issues/144
-gem 'loofah', '~> 2.2.3'
+gem 'loofah', '~> 2.3.1'
 
 group :development do
   gem 'sql_queries_count'
