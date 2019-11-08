@@ -731,52 +731,22 @@ form .autopopulated {
   border: 1px solid #ffbf00;
 }
 
-/* line 15, app/assets/stylesheets/_forms.scss */
-form .radio-code {
-  font-weight: 300;
-  font-family: "Source Code Pro", "Consolas", "Courier", monospace;
+/* line 16, app/assets/stylesheets/_forms.scss */
+form span#trip-name {
+  font-weight: bold;
 }
 
-/* line 19, app/assets/stylesheets/_forms.scss */
-form .radio-code-block {
-  font-family: "Source Code Pro", "Consolas", "Courier", monospace;
+/* line 20, app/assets/stylesheets/_forms.scss */
+form span#utc-time-now {
+  font-weight: bold;
 }
 
-/* line 22, app/assets/stylesheets/_forms.scss */
-form .radio-empty {
-  font-weight: 300;
-  font-style: italic;
-}
-
-/* line 26, app/assets/stylesheets/_forms.scss */
-form .updated {
-  background-color: #ffffb3;
-}
-
-/* line 29, app/assets/stylesheets/_forms.scss */
-form td.radio-button {
-  width: 20px;
-  vertical-align: top;
-}
-
-/* line 33, app/assets/stylesheets/_forms.scss */
-form td.radio-value {
-  width: 275px;
-  vertical-align: top;
-  line-height: 120%;
-}
-
-/* line 37, app/assets/stylesheets/_forms.scss */
-form td.radio-value span.label {
-  font-weight: 600;
-}
-
-/* line 42, app/assets/stylesheets/_forms.scss */
+/* line 24, app/assets/stylesheets/_forms.scss */
 form .field_with_errors {
   color: #cc0000;
 }
 
-/* line 44, app/assets/stylesheets/_forms.scss */
+/* line 26, app/assets/stylesheets/_forms.scss */
 form .field_with_errors input, form .field_with_errors select, form .field_with_errors option {
   color: #cc0000;
   background-color: #f7baba;

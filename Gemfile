@@ -25,10 +25,6 @@ gem 'rubyzip', '~> 1.2'
 # Use savon for SOAP
 gem 'savon', '~> 2.12'
 
-# Force loofah to 2.2.3 for security update.
-# https://github.com/flavorjones/loofah/issues/144
-gem 'loofah', '~> 2.2.3'
-
 group :development do
   gem 'sql_queries_count'
   gem 'derailed_benchmarks'
