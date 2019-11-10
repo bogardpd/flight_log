@@ -5,6 +5,8 @@ development:
   pool: 5
   username: <%= Rails.application.credentials[:database][:development][:username] %>
   password: <%= Rails.application.credentials[:database][:development][:password] %>
+  host: 127.0.0.1
+  port: 5432
 
 test:
   adapter: postgresql
@@ -13,6 +15,8 @@ test:
   pool: 5
   username: <%= Rails.application.credentials[:database][:test][:username] %>
   password: <%= Rails.application.credentials[:database][:test][:password] %>
+  host: 127.0.0.1
+  port: 5432
 
 production:
   url:  <%= ENV["DATABASE_URL"] %>
