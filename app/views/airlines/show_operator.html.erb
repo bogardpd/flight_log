@@ -7,7 +7,7 @@
 <% add_breadcrumb "Airlines", airlines_path %>
 <% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.slug) %>
 
-<div id="title-info"><%= @operator.iata_airline_code %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.slug, title: @operator.airline_name) %></div>
+<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @operator["#{c}_airline_code".to_sym].blank?}.map{|c| content_tag(:span, @operator["#{c}_airline_code".to_sym], id: "#{c}-airline-code")}, " / ") %><%= airline_icon(@operator.slug, title: @operator.airline_name) %></div>
 
 <h1>Flights Operated by <%= @operator.airline_name %></h1>
 
@@ -54,7 +54,7 @@
 	
 	<% if @fleet.length > 0 %>
 
-  	<table class="flightlog">
+  	<table class="flightlog" id="fleet-number-table">
   		<tr>
   			<th>Fleet Number</th>
   			<th class="tail-aircraft">Aircraft</th>

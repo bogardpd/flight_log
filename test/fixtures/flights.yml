@@ -228,6 +228,7 @@ flight_hidden:
   airline: airline_hidden
   flight_number: 9000
   operator: operator_hidden
+  fleet_number: "9HD"
   aircraft_family: aircraft_family_hidden
   tail_number: "N111HD"
   travel_class: "business" # To test hidden travel classes, make sure business is only used by hidden flights

@@ -139,7 +139,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     get(airline_path(airline.slug))
     assert_response(:success)
 
-    check_show_airline_common(airline)
+    check_show_airline_common(airline, :airline)
     verify_presence_of_admin_actions(edit_airline_path(airline))
   end
 
@@ -148,7 +148,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     get(airline_path(airline.slug))
     assert_response(:success)
 
-    check_show_airline_common(airline)
+    check_show_airline_common(airline, :airline)
     verify_absence_of_hidden_data
     verify_absence_of_admin_actions(edit_airline_path(airline))
   end
@@ -157,10 +157,43 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Operator                             #
   ##############################################################################
 
-  test "can see show operator" do
-    operator = airlines(:airline_expressjet)
+  test "redirect show operator for unused or hidden operator when not logged in" do
+    get(show_operator_path(airlines(:airline_no_flights).slug))
+    assert_redirected_to(airlines_path)
+
+    get(show_operator_path(airlines(:operator_hidden).slug))
+    assert_redirected_to(airlines_path)
+  end
+
+  test "can see show operator for unused or hidden operator when logged in" do
+    log_in_as(users(:user_one))
+
+    get(show_operator_path(airlines(:airline_no_flights).slug))
+    assert_response(:success)
+    verify_presence_of_admin_actions(:delete)
+
+    get(show_operator_path(airlines(:operator_hidden).slug))
+    assert_response(:success)
+  end
+  
+  test "can see show operator when logged in" do
+    operator = airlines(:airline_american)
+    log_in_as(users(:user_one))
     get(show_operator_path(operator.slug))
     assert_response(:success)
+
+    check_show_airline_common(operator, :operator)
+    verify_presence_of_admin_actions(edit_airline_path(operator))
+  end
+
+  test "can see show operator when not logged in" do
+    operator = airlines(:airline_american)
+    get(show_operator_path(operator.slug))
+    assert_response(:success)
+
+    check_show_airline_common(operator, :operator)
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(edit_airline_path(operator))
   end
 
   ##############################################################################
@@ -193,13 +226,21 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   end
 
   # Runs tests common to show airline
-  def check_show_airline_common(airline)
-    assert_select("h1", airline.airline_name)
+  def check_show_airline_common(airline, type)
+    if type == :airline
+      assert_select("h1", airline.airline_name)
+      assert_select("#operator-count-table")
+    elsif type == :operator
+      assert_select("h1", "Flights Operated by #{airline.airline_name}")
+      assert_select("#airline-count-table")
+      assert_select("#fleet-number-table")
+    end
+
     assert_select("#iata-airline-code", airline.iata_airline_code) if airline.iata_airline_code
     assert_select("#icao-airline-code", airline.icao_airline_code) if airline.icao_airline_code
     assert_select("div#map")
+    assert_select("p.distance")
 
-    assert_select("#operator-count-table")
     assert_select("#aircraft-family-count-table")
     assert_select("#travel-class-count-table")
     assert_select("#superlatives-table")
