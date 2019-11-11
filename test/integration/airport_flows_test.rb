@@ -99,10 +99,43 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Airport                              #
   ##############################################################################
 
-  test "can see show airport" do
-    airport = airports(:airport_sea)
+  test "redirect show airport for unused or hidden airport when not logged in" do
+    get(airport_path(airports(:airport_no_flights).slug))
+    assert_redirected_to(airports_path)
+
+    get(airport_path(airports(:airport_hidden_1).slug))
+    assert_redirected_to(airports_path)
+  end
+
+  test "can see show airport for unused or hidden airport when logged in" do
+    log_in_as(users(:user_one))
+
+    get(airport_path(airports(:airport_no_flights).slug))
+    assert_response(:success)
+    verify_presence_of_admin_actions(:delete)
+
+    get(airport_path(airports(:airport_hidden_1).slug))
+    assert_response(:success)
+  end
+
+  test "can see show airport when logged in" do
+    airport = airports(:airport_visible_1)
+    log_in_as(users(:user_one))
     get(airport_path(airport.slug))
     assert_response(:success)
+
+    check_show_airport_common(airport)
+    verify_presence_of_admin_actions(edit_airport_path(airport))
+  end
+
+  test "can see show airport when not logged in" do
+    airport = airports(:airport_visible_1)
+    get(airport_path(airport.slug))
+    assert_response(:success)
+
+    check_show_airport_common(airport)
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(edit_airport_path(airport))
   end
 
   private
@@ -113,6 +146,31 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
       assert_select("a[href=?]", airport_path(id: airport.slug))
       assert_select("text.graph-value", number_with_delimiter(expected_visit_count.to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
+  end
+
+  # Runs tests common to show airline
+  def check_show_airport_common(airport)
+    assert_select("h1", airport.city)
+
+    assert_select("#airport-coordinates") if airport.latitude && airport.longitude
+    assert_select("#iata-airport-code[title=?]", airport.city, {text: airport.iata_code}) if airport.iata_code
+    assert_select("#icao-airport-code[title=?]", airport.city, {text: airport.icao_code}) if airport.icao_code
+
+    assert_select("#airport-map")
+    assert_select("#trips-map")
+    assert_select("#sections-map")
+
+    assert_select("p.distance")
+
+    assert_select("#flight-table")
+    assert_select("#trip-and-section-table")
+
+    assert_select("#airline-count-table")
+    assert_select("#operator-count-table")
+    assert_select("#aircraft-family-count-table")
+    assert_select("#travel-class-count-table")
+    
+    assert_select("#direct-flight-airports-table")
   end
 
 end

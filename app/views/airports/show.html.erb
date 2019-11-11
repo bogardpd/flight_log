@@ -8,7 +8,7 @@
 <% if @airport.country || @airport.coordinates %>
 <div id="title-info">
   <% if @airport.coordinates %>
-    <div><%= format_coordinates(@airport.coordinates) %></div>
+    <div id="airport-coordinates"><%= format_coordinates(@airport.coordinates) %></div>
   <% end %>
   <% if @airport.country %>
     <div>
@@ -34,7 +34,7 @@
   </ul>
 </div>
 
-<p>I have visited <span class="bold"><abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>"><%= @airport.icao_code %></abbr></span> <%= pluralize(@airport_frequency, "time") %>.</p>
+<p>I have visited <span class="bold"><abbr title="<%= @airport.city %>" id="iata-airport-code"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>" id="icao-airport-code"><%= @airport.icao_code %></abbr></span> <%= pluralize(@airport_frequency, "time") %>.</p>
 
 <% unless @flights.length == 0 %>
 
@@ -47,7 +47,7 @@
 
 	<p>These are the airports with which Iʼve had a direct flight from or to <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.</p>
 
-	<table class="flightlog">
+	<table class="flightlog" id="direct-flight-airports-table">
 	  <tr>
 	    <th class="counter">#</th>
 			<th class="airport-city"><%= sort_link("City", :city, :asc, "airports") %></th>

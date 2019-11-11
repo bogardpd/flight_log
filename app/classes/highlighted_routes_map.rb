@@ -33,6 +33,13 @@ class HighlightedRoutesMap < Map
     return "Map of flight routes with some routes emphasized, created by Paul Bogard’s Flight Historian"
   end
 
+  # Returns a string to use in the class for the map.
+  #
+  # @return [String] the map type
+  def map_type
+    return "highlighted-routes-map"
+  end
+
   # Creates an array of numerically-sorted pairs of airport IDs for routes that
   # should be emphasized.
   # 

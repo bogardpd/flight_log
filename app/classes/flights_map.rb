@@ -50,6 +50,13 @@ class FlightsMap < Map
     return "Map of flight routes, created by Paul Bogard’s Flight Historian"
   end
 
+  # Returns a string to use in the class for the map.
+  #
+  # @return [String] the map type
+  def map_type
+    return "flights-map"
+  end
+
   # Creates an array of numerically-sorted pairs of airport IDs for routes with
   # no special formatting.
   # 

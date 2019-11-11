@@ -36,5 +36,12 @@ class AirportsMap < Map
   def map_description
     return "Map of airport locations, created by Paul Bogard’s Flight Historian"
   end
+
+  # Returns a string to use in the class for the map.
+  #
+  # @return [String] the map type
+  def map_type
+    return "airports-map"
+  end
   
 end
