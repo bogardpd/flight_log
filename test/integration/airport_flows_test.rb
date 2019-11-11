@@ -99,23 +99,12 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Airport                              #
   ##############################################################################
 
-  test "redirect show airport for unused or hidden airport when not logged in" do
-    get(airport_path(airports(:airport_no_flights).slug))
-    assert_redirected_to(airports_path)
-
-    get(airport_path(airports(:airport_hidden_1).slug))
-    assert_redirected_to(airports_path)
-  end
-
-  test "can see show airport for unused or hidden airport when logged in" do
-    log_in_as(users(:user_one))
-
-    get(airport_path(airports(:airport_no_flights).slug))
-    assert_response(:success)
-    verify_presence_of_admin_actions(:delete)
-
-    get(airport_path(airports(:airport_hidden_1).slug))
-    assert_response(:success)
+  test "redirect show unused or hidden airports when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_unused_path: airport_path(airports(:airport_no_flights).slug),
+      show_hidden_path: airport_path(airports(:airport_hidden_1).slug),
+      redirect_path:    airports_path
+    )
   end
 
   test "can see show airport when logged in" do

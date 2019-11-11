@@ -86,4 +86,31 @@ class ActiveSupport::TestCase
     assert_select("table[id$=?]", "-with-no-flights-table", {count: 0}, "This view shall not show a no flights table when not logged in")
   end
 
+  # Checks that show pages for unused or hidden entities are shown when logged
+  # in, and redirected to an index when not logged in.
+  def verify_show_unused_or_hidden_redirects(show_unused_path: nil, show_hidden_path: nil, redirect_path: root_path)
+    if show_unused_path
+      get(show_unused_path)
+      assert_redirected_to(redirect_path)
+    end
+
+    if show_hidden_path
+      get(show_hidden_path)
+      assert_redirected_to(redirect_path)
+    end
+
+    log_in_as(users(:user_one))
+
+    if show_unused_path
+      get(show_unused_path)
+      assert_response(:success)
+      verify_presence_of_admin_actions(:delete)
+    end
+
+    if show_hidden_path
+      get(show_hidden_path)
+      assert_response(:success)
+    end
+  end
+
 end

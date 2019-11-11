@@ -116,23 +116,12 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Airline                              #
   ##############################################################################
 
-  test "redirect show airline for unused or hidden airline when not logged in" do
-    get(airline_path(airlines(:airline_no_flights).slug))
-    assert_redirected_to(airlines_path)
-
-    get(airline_path(airlines(:airline_hidden).slug))
-    assert_redirected_to(airlines_path)
-  end
-
-  test "can see show airline for unused or hidden airline when logged in" do
-    log_in_as(users(:user_one))
-
-    get(airline_path(airlines(:airline_no_flights).slug))
-    assert_response(:success)
-    verify_presence_of_admin_actions(:delete)
-
-    get(airline_path(airlines(:airline_hidden).slug))
-    assert_response(:success)
+  test "redirect show unused or hidden airlines when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_unused_path: airline_path(airlines(:airline_no_flights).slug),
+      show_hidden_path: airline_path(airlines(:airline_hidden).slug),
+      redirect_path:    airlines_path
+    )
   end
   
   test "can see show airline when logged in" do
@@ -159,23 +148,12 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Operator                             #
   ##############################################################################
 
-  test "redirect show operator for unused or hidden operator when not logged in" do
-    get(show_operator_path(airlines(:airline_no_flights).slug))
-    assert_redirected_to(airlines_path)
-
-    get(show_operator_path(airlines(:operator_hidden).slug))
-    assert_redirected_to(airlines_path)
-  end
-
-  test "can see show operator for unused or hidden operator when logged in" do
-    log_in_as(users(:user_one))
-
-    get(show_operator_path(airlines(:airline_no_flights).slug))
-    assert_response(:success)
-    verify_presence_of_admin_actions(:delete)
-
-    get(show_operator_path(airlines(:operator_hidden).slug))
-    assert_response(:success)
+  test "redirect show unused or hidden operators when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_unused_path: show_operator_path(airlines(:airline_no_flights).slug),
+      show_hidden_path: show_operator_path(airlines(:operator_hidden).slug),
+      redirect_path:    airlines_path
+    )
   end
   
   test "can see show operator when logged in" do
@@ -202,22 +180,17 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Fleet Number                         #
   ##############################################################################
 
+  test "redirect show hidden fleet numbers when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_hidden_path: show_fleet_number_path(@hidden_flight.operator.slug, @hidden_flight.fleet_number),
+      redirect_path:    airlines_path
+    )
+  end
+  
   test "redirect show fleet number for unused fleet number" do
     log_in_as(users(:user_one))
     get(show_fleet_number_path(airlines(:airline_expressjet).slug, "unused"))
     assert_redirected_to(airlines_path)
-  end
-
-  test "redirect show fleet number for hidden fleet number when not logged in" do
-    get(show_fleet_number_path(@hidden_flight.operator.slug, @hidden_flight.fleet_number))
-    assert_redirected_to(airlines_path)
-  end
-
-  test "can see show fleet number for unused or hidden fleet number when logged in" do
-    log_in_as(users(:user_one))
-
-    get(show_fleet_number_path(@hidden_flight.operator.slug, @hidden_flight.fleet_number))
-    assert_response(:success)
   end
 
   test "can see show fleet number when logged in" do

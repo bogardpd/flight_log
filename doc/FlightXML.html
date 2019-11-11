@@ -6,7 +6,7 @@
 <title>
   Module: FlightXML
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -86,13 +86,21 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Provides utilities for interacting with with FlightAware&#39;s FlightXML API.</p>
+<p>Provides utilities for interacting with with FlightAware&#39;s FlightXML
+API.</p>
 
-<p>This is used to look up <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> data that couldn&#39;t be found from a <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> or <span class='object_link'><a href="PKPass.html" title="PKPass (class)">PKPass</a></span> for the purposes of prepopulating the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new flight</a></span> form. It&#39;s also used to look up <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> data when creating a <span class='object_link'><a href="AirportsController.html#new-instance_method" title="AirportsController#new (method)">new airport</a></span>.</p>
+<p>This is used to look up <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> data that couldn&#39;t be found from a
+<span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> or <span class='object_link'><a href="PKPass.html" title="PKPass (class)">PKPass</a></span> for the purposes of prepopulating the
+<span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new flight</a></span> form. It&#39;s also used to look up
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> data when creating a <span class='object_link'><a href="AirportsController.html#new-instance_method" title="AirportsController#new (method)">new airport</a></span>.</p>
 
-<p>Note: Since FlightXML has its own database of flights, airports, and routes, when you see these terms in this documentation, it refers to FlightXML and not this applications models, unless it specifically links to <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>, <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>, or <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span>.</p>
+<p>Note: Since FlightXML has its own database of flights, airports, and
+routes, when you see these terms in this documentation, it refers to
+FlightXML and not this applications models, unless it specifically links to
+<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>, <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>, or <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span>.</p>
 
-<p>Uses the <a href="http://savonrb.com" target="_parent" title="/ Savon">/ Savon</a> gem as a SOAP client to interact with FlightXML.</p>
+<p>Uses the <a href="http://savonrb.com/" target="_parent" title="Savon">Savon</a> gem as a SOAP client to interact with
+FlightXML.</p>
 
 
   </div>
@@ -110,16 +118,11 @@
   </ul>
 
 </div>
-  
-    <h2>
-      Constant Summary
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      
-        <dt id="ERROR-constant" class="">ERROR =
-          <div class="docstring">
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="ERROR-constant" class="">ERROR =
+        <div class="docstring">
   <div class="discussion">
     
 <p>The default error message to return if a FlightXML lookup failed.</p>
@@ -131,11 +134,10 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We couldn’t find your flight data on FlightAware. You will have to manually enter some fields.</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-    </dl>
-  
+      </dt>
+      <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We couldn’t find your flight data on FlightAware. You will have to manually enter some fields.</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+    
+  </dl>
 
 
 
@@ -313,7 +315,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Looks up a FlightXML unique flight ID for flights matching a flight identifier string and UTC departure date/time.</p>
+<p>Looks up a FlightXML unique flight ID for flights matching a flight
+identifier string and UTC departure date/time.</p>
 </div></span>
   
 </li>
@@ -668,9 +671,14 @@
     
 <p>Looks up flight data for flights matching a flight identifier string.</p>
 
-<p>A flight identifier is a string containing an airline code and a flight number, with no space between them (e.g. AA1234 or UAL5678). The airline can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not be used (the ICAO code must then be used in these cases).</p>
+<p>A flight identifier is a string containing an airline code and a flight
+number, with no space between them (e.g. AA1234 or UAL5678). The airline
+can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not
+be used (the ICAO code must then be used in these cases).</p>
 
-<p>Usually the multiple matching flights are the same flight number on different days, but some airlines reuse a flight number multiple times per day for different routes.</p>
+<p>Usually the multiple matching flights are the same flight number on
+different days, but some airlines reuse a flight number multiple times per
+day for different routes.</p>
 
 
   </div>
@@ -902,9 +910,13 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Looks up a FlightXML unique flight ID for flights matching a flight identifier string and UTC departure date/time.</p>
+<p>Looks up a FlightXML unique flight ID for flights matching a flight
+identifier string and UTC departure date/time.</p>
 
-<p>A flight identifier is a string containing an airline code and a flight number, with no space between them (e.g. AA1234 or UAL5678). The airline can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not be used (the ICAO code must then be used in these cases).</p>
+<p>A flight identifier is a string containing an airline code and a flight
+number, with no space between them (e.g. AA1234 or UAL5678). The airline
+can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not
+be used (the ICAO code must then be used in these cases).</p>
 
 
   </div>
@@ -1012,9 +1024,9 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Nov  5 21:54:05 2019 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.5).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>
