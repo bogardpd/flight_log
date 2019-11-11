@@ -114,10 +114,43 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Airline                              #
   ##############################################################################
 
-  test "can see show airline" do
+  test "redirect show airline for unused or hidden airline when not logged in" do
+    get(airline_path(airlines(:airline_no_flights).slug))
+    assert_redirected_to(airlines_path)
+
+    get(airline_path(airlines(:airline_hidden).slug))
+    assert_redirected_to(airlines_path)
+  end
+
+  test "can see show airline for unused or hidden airline when logged in" do
+    log_in_as(users(:user_one))
+
+    get(airline_path(airlines(:airline_no_flights).slug))
+    assert_response(:success)
+    verify_presence_of_admin_actions(:delete)
+
+    get(airline_path(airlines(:airline_hidden).slug))
+    assert_response(:success)
+  end
+  
+  test "can see show airline when logged in" do
+    airline = airlines(:airline_american)
+    log_in_as(users(:user_one))
+    get(airline_path(airline.slug))
+    assert_response(:success)
+
+    check_show_airline_common(airline)
+    verify_presence_of_admin_actions(edit_airline_path(airline))
+  end
+
+  test "can see show airline when not logged in" do
     airline = airlines(:airline_american)
     get(airline_path(airline.slug))
     assert_response(:success)
+
+    check_show_airline_common(airline)
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(edit_airline_path(airline))
   end
 
   ##############################################################################
@@ -157,6 +190,20 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
       assert_select("a[href=?]", show_operator_path(operator: operator.slug))
       assert_select("text.graph-value", number_with_delimiter(expected_flight_count.to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
+  end
+
+  # Runs tests common to show airline
+  def check_show_airline_common(airline)
+    assert_select("h1", airline.airline_name)
+    assert_select("#iata-airline-code", airline.iata_airline_code) if airline.iata_airline_code
+    assert_select("#icao-airline-code", airline.icao_airline_code) if airline.icao_airline_code
+    assert_select("div#map")
+
+    assert_select("#operator-count-table")
+    assert_select("#aircraft-family-count-table")
+    assert_select("#travel-class-count-table")
+    assert_select("#superlatives-table")
+    assert_select("#flight-table")
   end
 
 end

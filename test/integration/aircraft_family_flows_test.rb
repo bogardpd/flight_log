@@ -7,7 +7,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
     @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
-    @no_flights_aircraft_family = aircraft_families(:aircraft_family_with_no_flights)
+    @no_flights_aircraft_family = aircraft_families(:aircraft_family_no_flights)
   end
 
   ##############################################################################
@@ -142,37 +142,28 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Aircraft                             #
   ##############################################################################
 
-  test "redirect show aircraft for unused type when not logged in" do
-    aircraft = aircraft_families(:aircraft_type_with_no_flights)
-    get(aircraft_family_path(aircraft.slug))
+  test "redirect show aircraft for unused or hidden type when not logged in" do
+    get(aircraft_family_path(aircraft_families(:aircraft_type_no_flights).slug))
+    assert_redirected_to(aircraft_families_path)
+
+    get(aircraft_family_path(aircraft_families(:aircraft_type_hidden).slug))
     assert_redirected_to(aircraft_families_path)
   end
 
-  test "can see show aircraft for unused type when logged in" do
-    aircraft = aircraft_families(:aircraft_type_with_no_flights)
+  test "can see show aircraft for unused or hidden type when logged in" do
     log_in_as(users(:user_one))
-    get(aircraft_family_path(aircraft.slug))
+
+    get(aircraft_family_path(aircraft_families(:aircraft_type_no_flights).slug))
     assert_response(:success)
     verify_presence_of_admin_actions(:delete)
-  end
 
-  test "redirect show aircraft for hidden type when not logged in" do
-    aircraft = aircraft_families(:aircraft_type_hidden)
-    get(aircraft_family_path(aircraft.slug))
-    assert_redirected_to(aircraft_families_path)
-  end
-
-  test "can see show aircraft for hidden type when logged in" do
-    aircraft = aircraft_families(:aircraft_type_hidden)
-    log_in_as(users(:user_one))
-    get(aircraft_family_path(aircraft.slug))
+    get(aircraft_family_path(aircraft_families(:aircraft_type_hidden).slug))
     assert_response(:success)
   end
 
   test "show aircraft delete link is not present when family with no flights has child types" do
-    aircraft = aircraft_families(:aircraft_family_with_no_flights)
     log_in_as(users(:user_one))
-    get(aircraft_family_path(aircraft.slug))
+    get(aircraft_family_path(aircraft_families(:aircraft_family_no_flights).slug))
     assert_response(:success)
     assert_select("a[data-method=delete]", {text: /^Delete/, count: 0}, "This view shall not show a delete link when aircraft has child types")
   end
@@ -233,6 +224,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#iata-aircraft-code", aircraft.iata_aircraft_code) if aircraft.iata_aircraft_code
     assert_select("#icao-aircraft-code", aircraft.icao_aircraft_code) if aircraft.icao_aircraft_code
     assert_select("img.aircraft-illustration")
+    assert_select("div#map")
 
     assert_select("table#aircraft-subtype-table") if aircraft.children.any?
 

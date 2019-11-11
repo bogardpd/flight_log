@@ -91,7 +91,7 @@ aircraft_type_hidden:
   category: "narrow-body"
   parent: aircraft_family_hidden
 
-aircraft_family_with_no_flights:
+aircraft_family_no_flights:
   # Must not be used by any flights.
   slug: "Unused-Family"
   family_name: "Unused Aircraft Family"
@@ -100,7 +100,7 @@ aircraft_family_with_no_flights:
   icao_aircraft_code: "UUAF"
   category: "narrow-body"
 
-aircraft_type_with_no_flights:
+aircraft_type_no_flights:
   # Must not be used by any flights.
   slug: "Unused-Type"
   family_name: "Unused Aircraft Type"
@@ -108,4 +108,4 @@ aircraft_type_with_no_flights:
   iata_aircraft_code: "UAT"
   icao_aircraft_code: "UUAT"
   category: "narrow-body"
-  parent: aircraft_family_with_no_flights
+  parent: aircraft_family_no_flights
