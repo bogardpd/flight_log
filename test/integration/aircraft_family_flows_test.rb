@@ -142,16 +142,57 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Aircraft                             #
   ##############################################################################
 
-  test "can see show aircraft with family" do
-    aircraft_family = aircraft_families(:aircraft_737)
-    get(aircraft_family_path(aircraft_family.slug))
+  test "redirect show aircraft for hidden type when not logged in" do
+    aircraft = aircraft_families(:aircraft_family_with_no_flights)
+    get(aircraft_family_path(aircraft.slug))
+    assert_redirected_to(aircraft_families_path)
+  end
+
+  test "can see show aircraft for hidden type when logged in" do
+    aircraft = aircraft_families(:aircraft_family_with_no_flights)
+    log_in_as(users(:user_one))
+    get(aircraft_family_path(aircraft.slug))
     assert_response(:success)
   end
 
-  test "can see show aircraft with type" do
+  test "can see show aircraft with family when logged in" do
+    aircraft_family = aircraft_families(:aircraft_737)
+    log_in_as(users(:user_one))
+    get(aircraft_family_path(aircraft_family.slug))
+    assert_response(:success)
+
+    check_show_aircraft_common(aircraft_family)
+    verify_presence_of_admin_actions(edit_aircraft_family_path(aircraft_family))
+  end
+
+  test "can see show aircraft with family when not logged in" do
+    aircraft_family = aircraft_families(:aircraft_737)
+    get(aircraft_family_path(aircraft_family.slug))
+    assert_response(:success)
+
+    check_show_aircraft_common(aircraft_family)
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(edit_aircraft_family_path(aircraft_family))
+  end
+
+  test "can see show aircraft with type when logged in" do
+    aircraft_type = aircraft_families(:aircraft_737_800)
+    log_in_as(users(:user_one))
+    get(aircraft_family_path(aircraft_type.slug))
+    assert_response(:success)
+
+    check_show_aircraft_common(aircraft_type)
+    verify_presence_of_admin_actions(edit_aircraft_family_path(aircraft_type))
+  end
+
+  test "can see show aircraft with type when not logged in" do
     aircraft_type = aircraft_families(:aircraft_737_800)
     get(aircraft_family_path(aircraft_type.slug))
     assert_response(:success)
+    
+    check_show_aircraft_common(aircraft_type)
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(edit_aircraft_family_path(aircraft_type))
   end
 
   private
@@ -162,6 +203,22 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
       assert_select("a[href=?]", aircraft_family_path(id: aircraft_family.slug))
       assert_select("text.graph-value", number_with_delimiter(expected_flight_count.to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
+  end
+
+  # Runs tests common to show aircraft family and show aircraft type
+  def check_show_aircraft_common(aircraft)
+    assert_select("h1", aircraft.full_name)
+    assert_select("#iata-aircraft-code", aircraft.iata_aircraft_code) if aircraft.iata_aircraft_code
+    assert_select("#icao-aircraft-code", aircraft.icao_aircraft_code) if aircraft.icao_aircraft_code
+    assert_select("img.aircraft-illustration")
+
+    assert_select("table#aircraft-subtype-table") if aircraft.children.any?
+
+    assert_select("#airline-count-table")
+    assert_select("#operator-count-table")
+    assert_select("#travel-class-count-table")
+    assert_select("#superlatives-table")
+    assert_select("#flight-table")
   end
 
 end

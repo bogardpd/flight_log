@@ -2,7 +2,7 @@
 <% if child_types_only.any? %>
   <% maximum = child_types.max_by{|a| a[:flight_count]}[:flight_count] %>
 
-  <table class="flightlog">
+  <table class="flightlog" id="aircraft-subtype-table">
     <thead>
       <th class="counter">#</th>
       <th class="aircraft-family">Type</th>

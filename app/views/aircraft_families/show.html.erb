@@ -7,7 +7,7 @@
 <% add_admin_action(link_to("Add Type", new_aircraft_family_path(family_id: @aircraft))) if @aircraft.is_root_family? %>
 <% type_and_parent_types_breadcrumbs(@aircraft) %>
 
-<div id="title-info"><%= [@aircraft.iata_aircraft_code, @aircraft.icao_aircraft_code].reject{|c| c.blank?}.join(" / ") %></div>
+<div id="title-info"><%= safe_join([:iata_aircraft_code, :icao_aircraft_code].reject{|c| @aircraft[c].blank?}.map{|c| content_tag(:span, @aircraft[c], id: c.to_s.gsub("_","-"))}, " / ") %></div>
 
 <h1><%= @aircraft.full_name %></h1>
 

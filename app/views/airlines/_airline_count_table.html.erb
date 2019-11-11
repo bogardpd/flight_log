@@ -8,7 +8,7 @@
   
   <% if identical && type == :operator %>
   
-  	<p>In many cases, an airline subcontracts another airline to operate flights for them. However, all of these flights were operated by <%= (params[:controller] == "airlines" && params[:action] == "show") ? @airline.airline_name : "their advertised airline" %>.</p>
+  	<p id="operator-count-table">In many cases, an airline subcontracts another airline to operate flights for them. However, all of these flights were operated by <%= (params[:controller] == "airlines" && params[:action] == "show") ? @airline.airline_name : "their advertised airline" %>.</p>
   
   <% else %>
   
