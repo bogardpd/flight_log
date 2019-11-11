@@ -143,16 +143,25 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "redirect show aircraft for hidden type when not logged in" do
-    aircraft = aircraft_families(:aircraft_family_with_no_flights)
+    aircraft = aircraft_families(:aircraft_type_with_no_flights)
     get(aircraft_family_path(aircraft.slug))
     assert_redirected_to(aircraft_families_path)
   end
 
   test "can see show aircraft for hidden type when logged in" do
+    aircraft = aircraft_families(:aircraft_type_with_no_flights)
+    log_in_as(users(:user_one))
+    get(aircraft_family_path(aircraft.slug))
+    assert_response(:success)
+    verify_presence_of_admin_actions(:delete)
+  end
+
+  test "show aircraft delete link is not present when family with no flights has child types" do
     aircraft = aircraft_families(:aircraft_family_with_no_flights)
     log_in_as(users(:user_one))
     get(aircraft_family_path(aircraft.slug))
     assert_response(:success)
+    assert_select("a[data-method=delete]", {text: /^Delete/, count: 0}, "This view shall not show a delete link when aircraft has child types")
   end
 
   test "can see show aircraft with family when logged in" do

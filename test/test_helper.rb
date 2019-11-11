@@ -34,7 +34,14 @@ class ActiveSupport::TestCase
   def verify_presence_of_admin_actions(*paths_to_check)
     assert_select("div#admin-actions", {}, "This view shall show admin actions when logged in") do
       paths_to_check.each do |path|
-        assert_select("a[href=?]", path, {}, "This view shall show a link to #{path} when logged in")
+        if path == :delete
+          # Delete doesn't have a path, so we just have to pass it in as a
+          # symbol. We need to actually check for Delete text so we don't
+          # accidentally pick up log out links.
+          assert_select("a[data-method=delete]", {text: /^Delete/}, "This view shall show a delete link when logged in")
+        else
+          assert_select("a[href=?]", path, {}, "This view shall show a link to #{path} when logged in")
+        end
       end
     end
   end
@@ -43,7 +50,12 @@ class ActiveSupport::TestCase
   def verify_absence_of_admin_actions(*paths_to_check)
     assert_select("div#admin-actions", {count: 0}, "This view shall not show admin actions when not logged in")
     paths_to_check.each do |path|
-      assert_select("a[href=?]", path, {count: 0}, "This view shall not show a link to #{path} when not logged in")
+      if path == :delete
+        # Delete doesn't have a path, so we just have to pass it in as a symbol.
+        assert_select("a[data-method=delete]", {text: /^Delete/, count: 0}, "This view shall not show a delete link when not logged in")
+      else
+        assert_select("a[href=?]", path, {count: 0}, "This view shall not show a link to #{path} when not logged in")
+      end
     end
   end
 
