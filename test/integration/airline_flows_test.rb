@@ -10,6 +10,8 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     @visible_operator = airlines(:operator_visible)
     @hidden_operator = airlines(:operator_hidden)
     @no_flights_airline = airlines(:airline_no_flights)
+    @visible_flight = flights(:flight_visible)
+    @hidden_flight = flights(:flight_hidden)
   end
   
   ##############################################################################
@@ -200,11 +202,42 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Fleet Number                         #
   ##############################################################################
 
-  test "can see show fleet number" do
-    operator = airlines(:airline_expressjet)
-    fleet_number = "123"
-    get(show_fleet_number_path(operator: operator.slug, fleet_number: fleet_number))
+  test "redirect show fleet number for unused fleet number" do
+    log_in_as(users(:user_one))
+    get(show_fleet_number_path(airlines(:airline_expressjet).slug, "unused"))
+    assert_redirected_to(airlines_path)
+  end
+
+  test "redirect show fleet number for hidden fleet number when not logged in" do
+    get(show_fleet_number_path(@hidden_flight.operator.slug, @hidden_flight.fleet_number))
+    assert_redirected_to(airlines_path)
+  end
+
+  test "can see show fleet number for unused or hidden fleet number when logged in" do
+    log_in_as(users(:user_one))
+
+    get(show_fleet_number_path(@hidden_flight.operator.slug, @hidden_flight.fleet_number))
     assert_response(:success)
+  end
+
+  test "can see show fleet number when logged in" do
+    operator     = @visible_flight.operator
+    fleet_number = @visible_flight.fleet_number
+    log_in_as(users(:user_one))
+    get(show_fleet_number_path(operator.slug, fleet_number))
+    assert_response(:success)
+
+    check_show_airline_common(operator, :fleet_number, fleet_number: fleet_number)
+  end
+
+  test "can see show fleet number when not logged in" do
+    operator     = @visible_flight.operator
+    fleet_number = @visible_flight.fleet_number
+    get(show_fleet_number_path(operator.slug, fleet_number))
+    assert_response(:success)
+
+    check_show_airline_common(operator, :fleet_number, fleet_number: fleet_number)
+    verify_absence_of_hidden_data
   end
 
   private
@@ -226,7 +259,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   end
 
   # Runs tests common to show airline
-  def check_show_airline_common(airline, type)
+  def check_show_airline_common(airline, type, fleet_number: nil)
     if type == :airline
       assert_select("h1", airline.airline_name)
       assert_select("#operator-count-table")
@@ -234,6 +267,10 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
       assert_select("h1", "Flights Operated by #{airline.airline_name}")
       assert_select("#airline-count-table")
       assert_select("#fleet-number-table")
+    elsif type == :fleet_number
+      assert_select("h1", "#{airline.airline_name} ##{fleet_number}")
+      assert_select("a[href=?]", show_operator_path(operator: airline.slug))
+      assert_select("#airline-count-table")
     end
 
     assert_select("#iata-airline-code", airline.iata_airline_code) if airline.iata_airline_code

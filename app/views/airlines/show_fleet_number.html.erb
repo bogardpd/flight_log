@@ -4,7 +4,7 @@
 <% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.slug) %>
 <% add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.slug, @fleet_number) %>
 
-<div id="title-info"><%= @operator.iata_airline_code %> / <%= @operator.icao_airline_code %><%= airline_icon(@operator.slug, :title => @operator.airline_name) %></div>
+<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @operator["#{c}_airline_code".to_sym].blank?}.map{|c| content_tag(:span, @operator["#{c}_airline_code".to_sym], id: "#{c}-airline-code")}, " / ") %><%= airline_icon(@operator.slug, title: @operator.airline_name) %></div>
 
 <h1><%= @operator.airline_name %> #<%= @fleet_number %></h1>
 
