@@ -6,7 +6,9 @@
 
 <% if @flights.size > 1 && @layover_ratio %>
 <div id="title-info">
+  <div id="layover-ratio">
   <%= link_to "Layover Ratio", "https://onehundredairports.com/2019/02/07/my-worst-layovers/", target: :_blank %>: <%= @layover_ratio.round(3) %>
+  </div>
 </div>
 <% end %>
 

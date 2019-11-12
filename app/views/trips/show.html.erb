@@ -29,7 +29,7 @@
 
   <% @sections_and_flights.each do |section, flights| %>
     <% flights.each_with_index do |flight, index| %>
-      <tr class="<%= index == 0 ? "" : "no-top-border" %>">
+      <tr class="<%= index == 0 ? "" : "no-top-border" %>" id="flight-row-<%= flight.id %>">
         <% if index == 0 %>
           <td rowspan="<%= flights.length %>" class="flight-section">
             <%= link_to("Section #{flight.trip_section}", show_section_path(flight.trip_id, flight.trip_section), class: "bold") %>

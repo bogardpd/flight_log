@@ -149,9 +149,30 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Trip Section                         #
   ##############################################################################
 
-  test "can see show trip section" do
+  test "redirect show hidden trip sections when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_hidden_path: trip_path(@hidden_trip, 1),
+      redirect_path:    trips_path
+    )
+  end
+  
+  test "can see show trip section when not logged in" do
+    trip = trips(:trip_layover_ratios)
+    section = 2
+    get(show_section_path(trip: trip, section: section))
+    assert_response(:success)
+    verify_absence_of_hidden_data
+
+    assert_select(".flights-map")
+    assert_select("#flight-table")
+    assert_select(".distance-primary")
+    assert_select("#layover-ratio")
+  end
+
+  test "can see show trip section when logged in" do
     trip = trips(:trip_chicago_seattle)
     section = 1
+    log_in_as(users(:user_one))
     get(show_section_path(trip: trip, section: section))
     assert_response(:success)
   end
