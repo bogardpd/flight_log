@@ -249,7 +249,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#iata-airline-code", airline.iata_airline_code) if airline.iata_airline_code
     assert_select("#icao-airline-code", airline.icao_airline_code) if airline.icao_airline_code
     assert_select("div#map")
-    assert_select("p.distance")
+    assert_select(".distance-primary")
 
     assert_select("#aircraft-family-count-table")
     assert_select("#travel-class-count-table")

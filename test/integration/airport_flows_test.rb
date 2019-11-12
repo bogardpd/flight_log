@@ -149,7 +149,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#trips-map")
     assert_select("#sections-map")
 
-    assert_select("p.distance")
+    assert_select(".distance-primary")
 
     assert_select("#flight-table")
     assert_select("#trip-and-section-table")

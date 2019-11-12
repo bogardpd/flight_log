@@ -272,7 +272,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Date Range                           #
   ##############################################################################
 
-  test "redirect show unused or hidden airports when appropriate" do
+  test "redirect show hidden date range when appropriate" do
     verify_show_unused_or_hidden_redirects(
       show_hidden_path: show_date_range_path(start_date: @hidden_flight.departure_date, end_date: @hidden_flight.departure_date),
       redirect_path:    flights_path
@@ -286,7 +286,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
     assert_select(".flights-map")
     assert_select("#flight-table")
-    assert_select("p.distance")
+    assert_select(".distance-primary")
     assert_select("#airport-count-table")
     assert_select("#airline-count-table")
     assert_select("#aircraft-family-count-table")
@@ -348,8 +348,33 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Tail Number                          #
   ##############################################################################
   
-  test "can see show tail number" do
-    get(show_tail_path("N12345"))
+  test "redirect show hidden tail number when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_hidden_path: show_tail_path(@hidden_flight.tail_number),
+      redirect_path:    tails_path
+    )
+  end
+  
+  test "can see show tail number when not logged in" do
+    tail = @visible_flight.tail_number
+    get(show_tail_path(tail))
+    assert_response(:success)
+    verify_absence_of_hidden_data
+
+    assert_select(".flights-map")
+    assert_select("#flight-table")
+    assert_select(".distance-primary")
+    assert_select("#travel-class-count-table")
+    assert_select("#airline-count-table")
+    assert_select("#operator-count-table")
+    assert_select("#superlatives-table")
+
+    assert_select("a[href=?]", "http://flightaware.com/live/flight/#{tail}")
+  end
+
+  test "can see show tail number when logged in" do
+    log_in_as(users(:user_one))
+    get(show_tail_path(@visible_flight.tail_number))
     assert_response(:success)
   end
 
