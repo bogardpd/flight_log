@@ -7,11 +7,15 @@ flight_ord_dfw:
   departure_utc: 2015-01-01 12:00:00
   airline: airline_american
   operator: airline_expressjet
+  codeshare_airline: airline_united
   aircraft_family: aircraft_737_800
   flight_number: "1100"
   tail_number: "N12345"
+  aircraft_name: "Special Livery"
   travel_class: "economy"
   fleet_number: "123"
+  comment: "This is a comment."
+  boarding_pass_data: "M1BOGARD/PAUL         EZZZZZZ ORDDFWAA 1100 243C004C0060 348>5180  9242BFI              2A10899999999999 FI FI 9999999999          Y"
   
 flight_dfw_sea:
   trip: trip_chicago_seattle

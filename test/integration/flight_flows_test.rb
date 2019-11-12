@@ -293,10 +293,32 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Flight                               #
   ##############################################################################
 
-  test "can see show flight" do
+  test "redirect show hidden flights when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_hidden_path: flight_path(@hidden_flight),
+      redirect_path:    flights_path
+    )
+  end
+
+  test "can see show flight when logged in" do
+    flight = flights(:flight_ord_dfw)
+    log_in_as(users(:user_one))
+    get(flight_path(flight))
+    assert_response(:success)
+
+    check_show_flight_common(flight)
+    verify_presence_of_admin_actions(edit_flight_path(flight))
+    assert_select("#flight-boarding-pass-data")
+  end
+
+  test "can see show flight when not logged in" do
     flight = flights(:flight_ord_dfw)
     get(flight_path(flight))
     assert_response(:success)
+
+    check_show_flight_common(flight)
+    verify_absence_of_admin_actions(edit_flight_path(flight))
+    assert_select("#flight-boarding-pass-data", {count: 0})
   end
 
   ##############################################################################
@@ -406,6 +428,52 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       assert_select("a[href=?]", show_class_path(travel_class))
       assert_select("text.graph-value", number_with_delimiter(tail_data[:flight_count].to_s, delimiter: ","), "Graph bar shall have the correct flight count")
     end
+  end
+
+  # Runs tests common to show airline
+  def check_show_flight_common(flight)
+    assert_select("h1", flight.name)
+    
+    assert_select("#flight-airline") do
+      assert_select("a[href=?]", airline_path(flight.airline.slug), {text: flight.airline.airline_name})
+    end
+    assert_select("#flight-trip") do
+      assert_select("a[href=?]", trip_path(flight.trip), {text: flight.trip.name})
+      assert_select("a[href=?]", show_section_path(flight.trip, flight.trip_section), {text: "Section #{flight.trip_section}"})
+    end
+    assert_select("#flight-route") do
+      assert_select("a[href=?]", show_route_path(flight.origin_airport.slug,flight.destination_airport.slug), {text: "#{flight.origin_airport.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{flight.destination_airport.iata_code}"})
+      assert_select("#flight-route-distance")
+    end
+    assert_select("#flight-departure-date", {text: FormattedDate::str(flight.departure_date)})
+    assert_select("#flight-origin-airport") do
+      assert_select("a[href=?]", airport_path(flight.origin_airport.slug), {text: flight.origin_airport.iata_code})
+    end
+    assert_select("#flight-destination-airport") do
+      assert_select("a[href=?]", airport_path(flight.destination_airport.slug), {text: flight.destination_airport.iata_code})
+    end
+    assert_select("#flight-aircraft") do
+      assert_select("a[href=?]", aircraft_family_path(flight.aircraft_family.slug), {text: flight.aircraft_family.family_name})
+      assert_select("a[href=?]", aircraft_family_path(flight.aircraft_family.parent.slug), {text: "#{flight.aircraft_family.parent.manufacturer} #{flight.aircraft_family.parent.family_name}"})
+    end
+    assert_select("#flight-tail-number") do
+      assert_select("a[href=?]", show_tail_path(flight.tail_number), {text: flight.tail_number})
+    end
+    assert_select("#flight-travel-class") do
+      assert_select("a[href=?]", show_class_path(flight.travel_class), {text: TravelClass::CLASSES[flight.travel_class][:name].titlecase})
+    end
+    assert_select("#flight-codeshare") do
+      assert_select("#flight-codeshare-airline", {text: flight.codeshare_airline.airline_name})
+      assert_select("#flight-codeshare-flight-number", {text: flight.codeshare_flight_number})
+    end
+    assert_select("#flight-operator") do
+      assert_select("a[href=?]", show_operator_path(flight.operator.slug), {text: flight.operator.airline_name})
+      assert_select("a[href=?]", show_fleet_number_path(flight.operator.slug, flight.fleet_number), {text: "##{flight.fleet_number}"})
+    end
+    assert_select("#flight-aircraft-name", {text: flight.aircraft_name})
+    assert_select("p.comment", {text: flight.comment})
+
+    assert_select(".single-flight-map")
   end
 
 end

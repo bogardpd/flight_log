@@ -17,12 +17,12 @@
 
 <table class="flightlog flight-large-route">
   <tr class="no-top-border">
-    <td class="flight-show-airport right">
+    <td class="flight-show-airport right" id="flight-origin-airport">
       <span class="flight-code"><%= link_to(@flight.origin_airport.iata_code, airport_path(@flight.origin_airport.slug), :title => "View airport details for " + @flight.origin_airport.city) %></span><br />
       <span class="flight-city"><%= @flight.origin_airport.city %></span>
     </td>
     <td class="flight-airplane-icon"><%= Route::ARROW_ONE_WAY_HTML %></td>
-    <td class="flight-show-airport">
+    <td class="flight-show-airport" id="flight-destination-airport">
       <span class="flight-code"><%= link_to(@flight.destination_airport.iata_code, airport_path(@flight.destination_airport.slug), :title => "View airport details for " + @flight.destination_airport.city) %></span><br />
       <span class="flight-city"><%= @flight.destination_airport.city %></span>
     </td>
@@ -33,17 +33,17 @@
   
   <tr>
     <td class="label-column">Departure Date</td>
-    <td><%= format_date(@flight.departure_date) %></td>
+    <td id="flight-departure-date"><%= format_date(@flight.departure_date) %></td>
   </tr>
   <tr>
     <td class="label-column">Trip</td>
-    <td class="flight_show_trip"><%= Trip::HIDDEN_MARKER if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
+    <td id="flight-trip"><%= Trip::HIDDEN_MARKER if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
   </tr>
   <tr>
     <td class="label-column">Route</td>
-    <td class="flight_show_route">
+    <td id="flight-route">
       <% if @route_distance %>
-        <div class="supplemental-info"><span class="flight-route-distance"><%= number_with_delimiter(@route_distance, delimeter: ",") %> mi / <%= number_with_delimiter(Distance::km(@route_distance), delimeter: ",") %> km</span></div>
+        <div class="supplemental-info" id="flight-route-distance"><span class="flight-route-distance"><%= number_with_delimiter(@route_distance, delimeter: ",") %> mi / <%= number_with_delimiter(Distance::km(@route_distance), delimeter: ",") %> km</span></div>
       <% elsif logged_in? %>
         <div class="supplemental-info message-error"><%= link_to "Distance Undefined", edit_route_path(@flight.origin_airport,@flight.destination_airport) %></div>
       <% end %>
@@ -53,7 +53,7 @@
   <% if @flight.travel_class %>
   <tr>
     <td class="label-column">Travel Class</td>
-    <td>
+    <td id="flight-travel-class">
 			<%= quality_stars(TravelClass::CLASSES[@flight.travel_class][:quality], inline: :left) %><%= link_to(TravelClass::CLASSES[@flight.travel_class][:name].titlecase, show_class_path(@flight.travel_class), :title => "View #{TravelClass::CLASSES[@flight.travel_class][:name].downcase} class flights") %>
 			</td>
 		</td>
@@ -61,7 +61,7 @@
   <% end %>
   <tr>
     <td class="label-column">Airline</td>
-    <td class="flight_show_airline">
+    <td id="flight-airline">
 			<div class="supplemental-code"><%= @flight.airline.iata_airline_code %></div>
 			<%= link_to(airline_icon(@flight.airline.slug, title: @flight.airline.airline_name) + @flight.airline.airline_name, airline_path(@flight.airline.slug), title: "View flights on " + @flight.airline.slug) %>
 			</td>
@@ -69,7 +69,7 @@
   <% if @flight.operator %>
   <tr>
     <td class="label-column">Operated By</td>
-    <td class="flight_show_airline">
+    <td id="flight-operator">
 			<div class="supplemental-code"><%= @flight.operator.iata_airline_code %></div>
 			<%= link_to(airline_icon(@flight.operator.slug, title: @flight.operator.airline_name) + @flight.operator.airline_name, show_operator_path(@flight.operator.slug), title: "View flights operated by " + @flight.operator.airline_name) %>
 			<% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.slug, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %>
@@ -79,9 +79,9 @@
   <% if @flight.codeshare_airline %>
   <tr>
     <td class="label-column">Codeshare</td>
-    <td class="flight_show_airline">
+    <td id="flight-codeshare">
 			<div class="supplemental-code"><%= @flight.codeshare_airline.iata_airline_code %></div>
-			<%= airline_icon(@flight.codeshare_airline.slug, title: @flight.codeshare_airline.airline_name) %><%= @flight.codeshare_airline.airline_name %> <%= @flight.codeshare_flight_number %>
+			<%= airline_icon(@flight.codeshare_airline.slug, title: @flight.codeshare_airline.airline_name) %><span id="flight-codeshare-airline"><%= @flight.codeshare_airline.airline_name %></span> <span id="flight-codeshare-flight-number"><%= @flight.codeshare_flight_number %></span>
 			</td>
 		</td>
   </tr>
@@ -90,7 +90,7 @@
   <% if @flight.aircraft_family %>
     <tr>
       <td class="label-column">Equipment</td>
-      <td class="aircraft-type">
+      <td class="aircraft-type" id="flight-aircraft">
         <%= aircraft_type_tree(@flight.aircraft_family.type_and_parent_types) %>
       </td>
     </tr>
@@ -99,13 +99,13 @@
   <% if @flight.aircraft_name %>
   <tr>
     <td class="label-column">Aircraft Name</td>
-    <td class="aircraft-name"><%= @flight.aircraft_name %></td>
+    <td class="aircraft-name" id="flight-aircraft-name"><%= @flight.aircraft_name %></td>
   </tr>
   <% end %>
   <% if @flight.tail_number %>
   <tr>
     <td class="label-column">Tail Number</td>
-    <td class="tail-number"><%= tail_number_with_country_flag(@flight.tail_number, false) %></td>
+    <td class="tail-number" id="flight-tail-number"><%= tail_number_with_country_flag(@flight.tail_number, false) %></td>
   </tr>
   <% end %>
 </table>
