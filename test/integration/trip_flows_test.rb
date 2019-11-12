@@ -110,10 +110,39 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Trip                                 #
   ##############################################################################
 
-  test "can see show trip" do
+  test "redirect show unused or hidden trips when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_unused_path: trip_path(@no_flights_trip),
+      show_hidden_path: trip_path(@hidden_trip),
+      redirect_path:    trips_path
+    )
+  end
+
+  test "can see show trip when not logged in" do
     trip = trips(:trip_chicago_seattle)
     get(trip_path(trip))
     assert_response(:success)
+    verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(new_flight_menu_path(trip), edit_trip_path(trip))
+
+    assert_select(".flights-map")
+    assert_select(".distance-primary")
+    assert_select("table#trip-flight-table") do
+      assert_select("td.flight-section", {count: trip.flights.pluck(:trip_section).uniq.size})
+      assert_select("td.flight-flight", {count: trip.flights.size})
+    end
+
+    assert_select("div#message-boarding-passes-available-for-import", {count: 0}, "This view shall not show a link to import boarding passes")
+  end
+
+  test "can see show trip when logged in" do
+    log_in_as(users(:user_one))
+    trip = trips(:trip_hidden)
+    get(trip_path(trip))
+    assert_response(:success)
+    verify_presence_of_admin_actions(new_flight_menu_path(trip), edit_trip_path(trip))
+
+    assert_select("div#message-boarding-passes-available-for-import", {}, "This view shall show a link to import boarding passes")
   end
 
   ##############################################################################

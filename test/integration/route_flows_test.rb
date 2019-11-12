@@ -68,9 +68,11 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see show route when not logged in" do
-    get(show_route_path(*@visible_route.pluck(:slug)))
+    route = routes(:route_visible)
+    get(show_route_path(route.airport1.slug, route.airport2.slug))
     assert_response(:success)
     verify_absence_of_hidden_data
+    verify_absence_of_admin_actions(edit_route_path(route.airport1_id, route.airport2_id))
 
     assert_select(".single-flight-map")
     assert_select(".highlighted-routes-map", {count: 2})

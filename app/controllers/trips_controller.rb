@@ -32,7 +32,7 @@ class TripsController < ApplicationController
 
     if logged_in? && @trip.hidden
       check_email_for_boarding_passes
-      add_message(:info, "You have boarding passes you can #{view_context.link_to("import", new_flight_menu_path(trip_id: @trip))}!") if PKPass.all.any?
+      add_message(:info, "You have boarding passes you can #{view_context.link_to("import", new_flight_menu_path(trip_id: @trip))}!", "message-boarding-passes-available-for-import") if PKPass.all.any?
     end
     
     @trip_distance = @flights.total_distance
