@@ -60,10 +60,35 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Route                                #
   ##############################################################################
 
-  test "can see show route" do
-    route = [airports(:airport_dfw), airports(:airport_ord)]
-    get(show_route_path(*route.pluck(:slug)))
+  test "redirect show unused or hidden routes when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_hidden_path: show_route_path(*@hidden_route.pluck(:slug)),
+      redirect_path:    routes_path
+    )
+  end
+
+  test "can see show route when not logged in" do
+    get(show_route_path(*@visible_route.pluck(:slug)))
     assert_response(:success)
+    verify_absence_of_hidden_data
+
+    assert_select(".single-flight-map")
+    assert_select(".highlighted-routes-map", {count: 2})
+    assert_select("#flight-table")
+    assert_select(".distance-primary")
+    assert_select("#trip-and-section-table")
+    assert_select("#airline-count-table")
+    assert_select("#operator-count-table")
+    assert_select("#aircraft-family-count-table")
+    assert_select("#travel-class-count-table")
+  end
+
+  test "can see show route when logged in" do
+    route = routes(:route_visible)
+    log_in_as(users(:user_one))
+    get(show_route_path(route.airport1.slug, route.airport2.slug))
+    assert_response(:success)
+    verify_presence_of_admin_actions(edit_route_path(route.airport1_id, route.airport2_id))
   end
 
   private
