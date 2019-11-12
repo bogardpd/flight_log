@@ -382,7 +382,29 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Travel Class                         #
   ##############################################################################
 
-  test "can see show travel class" do
+  test "redirect show hidden travel class when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_hidden_path: show_class_path(@hidden_flight.travel_class),
+      redirect_path:    classes_path
+    )
+  end
+  
+  test "can see show travel class when not logged in" do
+    get(show_class_path("economy"))
+    assert_response(:success)
+    verify_absence_of_hidden_data
+
+    assert_select(".flights-map")
+    assert_select("#flight-table")
+    assert_select(".distance-primary")
+    assert_select("#airline-count-table")
+    assert_select("#operator-count-table")
+    assert_select("#aircraft-family-count-table")
+    assert_select("#superlatives-table")
+  end
+
+  test "can see show travel class when logged in" do
+    log_in_as(users(:user_one))
     get(show_class_path("economy"))
     assert_response(:success)
   end
