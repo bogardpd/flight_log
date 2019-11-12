@@ -228,8 +228,8 @@ flight_hidden:
   trip_section: 1
   origin_airport: airport_hidden_1
   destination_airport: airport_hidden_2
-  departure_date: 2019-10-16
-  departure_utc: 2019-10-16 01:00:00
+  departure_date: 2019-10-17
+  departure_utc: 2019-10-17 01:00:00
   airline: airline_hidden
   flight_number: 9000
   operator: operator_hidden

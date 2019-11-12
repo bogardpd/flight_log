@@ -272,7 +272,29 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Date Range                           #
   ##############################################################################
 
-  test "can see show date range" do
+  test "redirect show unused or hidden airports when appropriate" do
+    verify_show_unused_or_hidden_redirects(
+      show_hidden_path: show_date_range_path(start_date: @hidden_flight.departure_date, end_date: @hidden_flight.departure_date),
+      redirect_path:    flights_path
+    )
+  end
+
+  test "can see show date range when not logged in" do
+    get(show_date_range_path(start_date: "2014-07-01", end_date: "2015-06-30"))
+    assert_response(:success)
+    verify_absence_of_hidden_data
+
+    assert_select(".flights-map")
+    assert_select("#flight-table")
+    assert_select("p.distance")
+    assert_select("#airport-count-table")
+    assert_select("#airline-count-table")
+    assert_select("#aircraft-family-count-table")
+    assert_select("#superlatives-table")
+  end
+
+  test "can see show date range when logged in" do
+    log_in_as(users(:user_one))
     get(show_date_range_path(start_date: "2014-07-01", end_date: "2015-06-30"))
     assert_response(:success)
   end
@@ -317,6 +339,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
 
     check_show_flight_common(flight)
+    verify_absence_of_hidden_data
     verify_absence_of_admin_actions(edit_flight_path(flight))
     assert_select("#flight-boarding-pass-data", {count: 0})
   end
