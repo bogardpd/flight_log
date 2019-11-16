@@ -1,3 +1,5 @@
+# For the sake of testing logins, all test users should have the password
+# 'password'.
 user_one:
   name: "Sample User"
   password_digest: "<%= User.digest('password') %>"

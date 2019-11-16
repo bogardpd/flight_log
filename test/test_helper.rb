@@ -10,9 +10,17 @@ class ActiveSupport::TestCase
   fixtures :all
   set_fixture_class(pk_passes: PKPass)
   
-  # Logs in a test user
+  # Logs in a test user (integration tests)
   def log_in_as(user)
     cookies[:remember_token] = user.remember_token
+  end
+
+  # Logs in a test user (system tests)
+  def system_log_in_as(user)
+    visit(login_path)
+    fill_in("Username", with: user.name)
+    fill_in("Password", with: "password")
+    click_on("Log in")
   end
 
   # Logs out a test user
