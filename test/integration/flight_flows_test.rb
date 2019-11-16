@@ -432,6 +432,17 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     # end
   end
 
+  ##############################################################################
+  # Tests to ensure visitors can't create, update, or destroy flights          #
+  ##############################################################################
+
+  test "visitor cannot create, update, or destroy flights" do
+    verify_create_update_destroy_redirects(
+      flights_path,
+      flight_path(@visible_flight)
+    )
+  end
+
   private
 
   # Provides common assertions used in multiple new flight menu tests.

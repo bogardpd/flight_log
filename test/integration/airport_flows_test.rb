@@ -127,6 +127,17 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_admin_actions(edit_airport_path(airport))
   end
 
+  ##############################################################################
+  # Tests to ensure visitors can't create, update, or destroy airports         #
+  ##############################################################################
+
+  test "visitor cannot create, update, or destroy airports" do
+    verify_create_update_destroy_redirects(
+      airports_path,
+      airport_path(@visible_airport.slug)
+    )
+  end
+
   private
 
   # Runs tests on a row in an airport count table

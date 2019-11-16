@@ -213,6 +213,17 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_hidden_data
   end
 
+  ##############################################################################
+  # Tests to ensure visitors can't create, update, or destroy airlines         #
+  ##############################################################################
+
+  test "visitor cannot create, update, or destroy airlines" do
+    verify_create_update_destroy_redirects(
+      airlines_path,
+      airline_path(@visible_airline.slug)
+    )
+  end
+
   private
 
   # Runs tests on a row in an airline count table

@@ -177,6 +177,15 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
   end
 
-  
+  ##############################################################################
+  # Tests to ensure visitors can't create, update, or destroy trips            #
+  ##############################################################################
+
+  test "visitor cannot create, update, or destroy trips" do
+    verify_create_update_destroy_redirects(
+      trips_path,
+      trip_path(@visible_trip)
+    )
+  end
 
 end

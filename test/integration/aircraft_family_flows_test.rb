@@ -197,6 +197,17 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_admin_actions(edit_aircraft_family_path(aircraft_type))
   end
 
+  ##############################################################################
+  # Tests to ensure visitors can't create, update, or destroy aircraft         #
+  ##############################################################################
+
+  test "visitor cannot create, update, or destroy aircraft" do
+    verify_create_update_destroy_redirects(
+      aircraft_families_path,
+      aircraft_family_path(@visible_aircraft_family.slug)
+    )
+  end
+
   private
 
   # Runs tests on a row in a aircraft count table

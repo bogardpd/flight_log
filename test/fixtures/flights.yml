@@ -181,6 +181,7 @@ flight_layover_ratio_unknown_distance_f2:
   aircraft_family: aircraft_a321
 
 flight_aircraft_child_only:
+  # Used to test aircraft where only the subtypes have flights.
   trip: trip_generic
   trip_section: 1
   origin_airport: airport_ord

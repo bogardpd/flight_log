@@ -93,6 +93,20 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     verify_presence_of_admin_actions(edit_route_path(route.airport1_id, route.airport2_id))
   end
 
+  ##############################################################################
+  # Tests to ensure visitors can't create or update routes                     #
+  ##############################################################################
+
+  test "visitor cannot create or update routes" do
+    post(routes_path)
+    assert_redirected_to(root_path)
+
+    put(route_path(routes(:route_visible)))
+    assert_redirected_to(root_path)
+
+    # Route does not have a destroy action
+  end
+
   private
 
   # Runs tests on a row in a route count table

@@ -113,4 +113,17 @@ class ActiveSupport::TestCase
     end
   end
 
+  # Checks that create, update, and destroy actions are redirected to home when
+  # not logged in.
+  def verify_create_update_destroy_redirects(new_path, update_destroy_path)
+    post(new_path)
+    assert_redirected_to(root_path)
+
+    put(update_destroy_path)
+    assert_redirected_to(root_path)
+
+    delete(update_destroy_path)
+    assert_redirected_to(root_path)
+  end
+
 end
