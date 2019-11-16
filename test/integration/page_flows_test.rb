@@ -11,6 +11,7 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   
   ##############################################################################
   # Tests for Spec > Pages (Views) > Home                                      #
+  # Tests for routes/route_superlatives_table partial                          #
   ##############################################################################
 
   test "can see home when not logged in" do

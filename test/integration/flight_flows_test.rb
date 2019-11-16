@@ -191,7 +191,10 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Flights                             #
+  # Tests for Spec > Pages (Views) > Common to Every View > Tables > Flight    #
+  #   Table                                                                    #
   # Tests for flight_table partial                                             #
+  # Tests for flight_year_links partial                                        #
   ##############################################################################
 
   test "can see index flights when logged in" do
@@ -201,7 +204,9 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     
     assert_select("h1", "Flights")
     assert_select("div#flight-map", {}, "This view shall show a flight map")
-    assert_select("table#flight-year-links", {}, "This view shall show year links")
+    assert_select("table#flight-year-links", {}, "This view shall show year links") do
+      assert_select("a[href=?]", show_year_path(@visible_flight.departure_date.year))
+    end
 
     assert_select("table#flight-table") do
       assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view shall show visible flights")
@@ -313,6 +318,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Flight                               #
+  # Tests for bcbp partial                                                     #
   ##############################################################################
 
   test "redirect show hidden flights when appropriate" do
@@ -407,29 +413,6 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     log_in_as(users(:user_one))
     get(show_class_path("economy"))
     assert_response(:success)
-  end
-
-  ##############################################################################
-  # Tests for Spec > Pages (Views) > Common to Every View > Tables > Flights   #
-  #   Table                                                                    #
-  ##############################################################################
-
-  test "can see flight table partial" do
-    log_in_as(users(:user_one))
-    get(flights_path)
-    assert_response(:success)
-    # Removed until Index Flights uses flight table partial:
-    # assert_template(layout: "layouts/application", partial: "_flight_table") # deprecated
-    # assert_select("table#flight-table") do
-    #   Tests a row within a Flights Table
-    #   assert_select("tr#flight-row-#{flight.id}", {}, error_message) do
-    #     assert_select("img.airline-icon")
-    #     assert_select("a[href=?]", flight_path(flight), {text: "#{flight.airline.airline_name} #{flight.flight_number}"})
-    #     assert_select("a[href=?]", airport_path(flight.origin_airport.slug), {text: flight.origin_airport.iata_code})
-    #     assert_select("a[href=?]", airport_path(flight.destination_airport.slug), {text: flight.destination_airport.iata_code})
-    #     assert_select("td.flight-date", {text: FormattedDate.str(flight.departure_date)})
-    #   end
-    # end
   end
 
   ##############################################################################

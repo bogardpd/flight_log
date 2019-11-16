@@ -140,6 +140,8 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Aircraft                             #
+  # Tests for aircraft_child_types partial                                     #
+  # Tests for aircraft_illustration partial                                    #
   ##############################################################################
 
   test "redirect show unused or hidden airports when appropriate" do

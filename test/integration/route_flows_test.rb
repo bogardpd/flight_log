@@ -58,6 +58,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Route                                #
+  # Tests for trip_and_section_table partial                                   #
   ##############################################################################
 
   test "redirect show unused or hidden routes when appropriate" do
