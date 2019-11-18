@@ -48,7 +48,7 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
     end
 
     # Update subtype:
-    visit(aircraft_family_path("Embraer-ERJ-145"))
+    visit(aircraft_family_path(type[:slug]))
     click_on("Edit Aircraft")
     fill_in("Aircraft Type Name", with: type[:family_name_update])
     click_on("Update Aircraft Family")
