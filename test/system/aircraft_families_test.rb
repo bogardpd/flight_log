@@ -1,7 +1,6 @@
 require "application_system_test_case"
 
 class AircraftFamiliesTest < ApplicationSystemTestCase
-  
   # All tests to ensure visitors can't view hidden, view empty, create, update,
   # or destroy aircraft are located in INTEGRATION tests.
 
@@ -52,7 +51,7 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
 
       fill_in("Aircraft Type Name", with: type[:family_name_update])
       click_on("Update Aircraft Family")
-      
+
       assert_equal(type[:family_name_update], AircraftFamily.find_by(slug: type[:slug]).family_name)
     end
 

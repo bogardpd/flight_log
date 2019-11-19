@@ -4,7 +4,7 @@ class AirportsTest < ApplicationSystemTestCase
   # All tests to ensure visitors can't view hidden, view empty, create, update,
   # or destroy airports are located in INTEGRATION tests.
 
-  test "creating, updating, and destroying an airline" do
+  test "creating, updating, and destroying an airport" do
     airport = {
       iata_code:   "HEL",
       icao_code:   "EFHK",
