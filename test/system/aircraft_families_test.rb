@@ -3,7 +3,7 @@ require "application_system_test_case"
 class AircraftFamiliesTest < ApplicationSystemTestCase
   
   # All tests to ensure visitors can't view hidden, view empty, create, update,
-  # or destroy are located in INTEGRATION tests.
+  # or destroy aircraft are located in INTEGRATION tests.
 
   test "creating, updating, and destroying an aircraft family and type" do
     family = {
@@ -30,29 +30,31 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
       fill_in("Aircraft Family Name", with: family[:family_name])
       fill_in("Unique Slug",          with: family[:slug])
       select(family[:category], from: "aircraft_family_category")
-
       click_on("Add Aircraft Family")
     end
 
     # Create subtype:
-    visit(aircraft_family_path(family[:slug]))
     assert_difference("AircraftFamily.count", 1) do
+      visit(aircraft_family_path(family[:slug]))
       click_on("Add Type")
 
       fill_in("Aircraft Type Name", with: type[:family_name])
       fill_in("IATA Aircraft Code", with: type[:iata_aircraft_code])
       fill_in("ICAO Aircraft Code", with: type[:icao_aircraft_code])
       fill_in("Unique Slug",        with: type[:slug])
-
       click_on("Add Aircraft Type")
     end
 
     # Update subtype:
-    visit(aircraft_family_path(type[:slug]))
-    click_on("Edit Aircraft")
-    fill_in("Aircraft Type Name", with: type[:family_name_update])
-    click_on("Update Aircraft Family")
-    assert_equal(type[:family_name_update], AircraftFamily.find_by(slug: type[:slug]).family_name)
+    assert_no_difference("AircraftFamily.count") do
+      visit(aircraft_family_path(type[:slug]))
+      click_on("Edit Aircraft")
+
+      fill_in("Aircraft Type Name", with: type[:family_name_update])
+      click_on("Update Aircraft Family")
+      
+      assert_equal(type[:family_name_update], AircraftFamily.find_by(slug: type[:slug]).family_name)
+    end
 
     # Destroy subtype and family:
     assert_difference("AircraftFamily.count", -2) do

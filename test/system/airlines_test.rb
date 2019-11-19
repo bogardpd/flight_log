@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class AirlinesTest < ApplicationSystemTestCase
   # All tests to ensure visitors can't view hidden, view empty, create, update,
-  # or destroy are located in INTEGRATION tests.
+  # or destroy airlines are located in INTEGRATION tests.
 
   test "creating, updating, and destroying an airline" do
     airline = {
@@ -26,16 +26,19 @@ class AirlinesTest < ApplicationSystemTestCase
       fill_in("ICAO Airline Code",    with: airline[:icao_airline_code])
       fill_in("Airline Numeric Code", with: airline[:numeric_code])
       fill_in("Unique Slug",          with: airline[:slug])
-
       click_on("Add Airline")
     end
 
     # Update airline:
-    visit(airline_path(airline[:slug]))
-    click_on("Edit Airline")
-    fill_in("Airline Name", with: airline[:airline_name_update])
-    click_on("Update Airline")
-    assert_equal(airline[:airline_name_update], Airline.find_by(slug: airline[:slug]).airline_name)
+    assert_no_difference("Airline.count") do
+      visit(airline_path(airline[:slug]))
+      click_on("Edit Airline")
+
+      fill_in("Airline Name", with: airline[:airline_name_update])
+      click_on("Update Airline")
+      
+      assert_equal(airline[:airline_name_update], Airline.find_by(slug: airline[:slug]).airline_name)
+    end
 
     # Destroy airline:
     assert_difference("Airline.count", -1) do
