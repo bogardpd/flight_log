@@ -77,7 +77,7 @@ class RoutesController < ApplicationController
     @airports.push(Airport.find_by(slug: params[:airport2]))
     raise ActiveRecord::RecordNotFound if @airports.first == nil || @airports.last == nil
     
-    @route_with_arrow = "#{@airports[0].iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{@airports[1].iata_code}"
+    @route_with_arrow = Route.airport_string(*@airports, sort: false)
     
     @logo_used = true
 

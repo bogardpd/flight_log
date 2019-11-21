@@ -225,7 +225,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", aircraft.full_name)
     assert_select("#iata-aircraft-code", aircraft.iata_aircraft_code) if aircraft.iata_aircraft_code
     assert_select("#icao-aircraft-code", aircraft.icao_aircraft_code) if aircraft.icao_aircraft_code
-    assert_select("img.aircraft-illustration")
+    assert_select("#aircraft-illustration")
     assert_select("div#map")
     assert_select(".distance-primary")
 

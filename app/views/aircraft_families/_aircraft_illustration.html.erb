@@ -1,8 +1,10 @@
-<% if aircraft_family.illustration_location %>
-  <div class="illustration-container">
-    <%= image_tag(aircraft_family.illustration_location, alt: "#{aircraft_family.full_name} illustration", class: "aircraft-illustration") %>
-  </div>
-  <div class="credit illustration-credit">
-    Illustration created by <%= link_to("Norebbo", "http://www.norebbo.com/", target: "_blank") %>
-  </div>
-<% end %>
+<div id="aircraft-illustration">
+  <% if aircraft_family.illustration_location %>
+    <div class="illustration-container">
+      <%= image_tag(aircraft_family.illustration_location, alt: "#{aircraft_family.full_name} illustration", class: "aircraft-illustration") %>
+    </div>
+    <div class="credit illustration-credit">
+      Illustration created by <%= link_to("Norebbo", "http://www.norebbo.com/", target: "_blank") %>
+    </div>
+  <% end %>
+</div>

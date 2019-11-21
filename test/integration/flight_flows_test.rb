@@ -506,7 +506,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       assert_select("a[href=?]", show_section_path(flight.trip, flight.trip_section), {text: "Section #{flight.trip_section}"})
     end
     assert_select("#flight-route") do
-      assert_select("a[href=?]", show_route_path(flight.origin_airport.slug,flight.destination_airport.slug), {text: "#{flight.origin_airport.iata_code} #{Route::ARROW_TWO_WAY_PLAINTEXT} #{flight.destination_airport.iata_code}"})
+      assert_select("a[href=?]", show_route_path(flight.origin_airport.slug,flight.destination_airport.slug), {text: Route.airport_string(flight.origin_airport, flight.destination_airport, sort: false)})
       assert_select("#flight-route-distance")
     end
     assert_select("#flight-departure-date", {text: FormattedDate::str(flight.departure_date)})

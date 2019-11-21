@@ -20,6 +20,27 @@ class Route < ApplicationRecord
   # The HTML arrow used between airport pairs on two way routes.
   ARROW_TWO_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_TWO_WAY_PLAINTEXT, class: %w(route-arrow))
   
+  # Returns a plaintext string of the Route's two airport IATA codes, sorted
+  # alphabetically, separated by a two-way arrow.
+  #
+  # @return [String] two airport IATA codes separated by a two-way arrow
+  def airport_string
+    return Route.airport_string(self.airport1, self.airport2)
+  end
+
+  # Given two {Airport Airports}, returns a plaintext string of their IATA
+  # codes, separated by a two-way arrow.
+  #
+  # @param airport1 [Airport] an airport
+  # @param airport2 [Airport] an airport
+  # @param sort [Boolean] whether or not to alphabetically sort the IATA codes
+  # @return [String] two airport IATA codes separated by a two-way arrow
+  def self.airport_string(airport1, airport2, sort: true)
+    output = [airport1, airport2].map{|a| a.iata_code}
+    output.sort! if sort
+    return output.join(" #{ARROW_TWO_WAY_PLAINTEXT} ")
+  end
+
   # Given two {Airport Airports}, returns the distance in statute miles
   # between them. The haversine formula is used to calculate the distance.
   # 
