@@ -10,8 +10,8 @@ class TripsTest < ApplicationSystemTestCase
       purpose: "Personal",
       comment: "This was a great vacation!"
     }
-    
-    system_log_in_as(users(:user_one))
+    user = users(:user_one)
+    system_log_in_as(user)
 
     # Create trip:
     assert_difference("Trip.count", 1) do
@@ -25,6 +25,7 @@ class TripsTest < ApplicationSystemTestCase
       click_on("Add Trip")
 
       assert_equal(true, Trip.last.hidden)
+      assert_equal(user, Trip.last.user)
     end
 
     # Update trip:
