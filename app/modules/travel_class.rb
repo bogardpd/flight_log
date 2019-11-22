@@ -75,6 +75,15 @@ module TravelClass
     return CLASSES[class_string][:description]
   end
 
+  # Given a class identifier, return a name description of the class. Used for
+  # select boxes.
+  #
+  # @param class_string [String] a travel class identifier
+  # @return [String] a name and parenthetical description
+  def self.name_and_description(class_string)
+    return "#{CLASSES[class_string][:name]} (#{CLASSES[class_string][:description]})"
+  end
+
   # Given a class identifier, return a title containing the class name. Used to
   # generate text for page titles and headers.
   #
@@ -90,7 +99,7 @@ module TravelClass
   # 
   # @return [Array<Array>] options for a travel class select box
   def self.dropdown
-    return CLASSES.map{|k,v| ["#{v[:name]} (#{v[:description]})", k]}
+    return CLASSES.keys.map{|tc| [name_and_description(tc), tc]}
   end
   
   # Accepts a flyer, the current user, and a date range, and returns all
