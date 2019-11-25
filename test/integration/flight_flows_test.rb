@@ -416,6 +416,46 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
+  # Tests for GPX and KML maps                                                 #
+  ##############################################################################
+
+  test "can see GPX when logged in" do
+    log_in_as(users(:user_one))
+    
+    get(show_flight_gpx_path)
+    assert_response(:success)
+    assert_equal("application/xml", response.content_type)
+
+    assert_operator(gpx_airport_count(response.body, airports(:airport_hidden_1)), :>, 0, "This view shall include hidden data when logged in")
+  end
+
+  test "can see GPX when not logged in" do
+    get(show_flight_gpx_path)
+    assert_response(:success)
+    assert_equal("application/xml", response.content_type)
+
+    assert_equal(0, gpx_airport_count(response.body, airports(:airport_hidden_1)), "This view shall not include hidden data when not logged in")
+  end
+
+  test "can see KML when logged in" do
+    log_in_as(users(:user_one))
+
+    get(show_flight_kml_path)
+    assert_response(:success)
+    assert_equal("application/xml", response.content_type)
+
+    assert_operator(kml_airport_count(response.body, airports(:airport_hidden_1)), :>, 0, "This view shall include hidden data when logged in")
+  end
+
+  test "can see KML when not logged in" do
+    get(show_flight_kml_path)
+    assert_response(:success)
+    assert_equal("application/xml", response.content_type)
+
+    assert_equal(0, kml_airport_count(response.body, airports(:airport_hidden_1)), "This view shall not include hidden data when not logged in")
+  end
+
+  ##############################################################################
   # Tests to ensure visitors can't create, update, or destroy flights          #
   ##############################################################################
 
@@ -538,6 +578,18 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("p.comment", {text: flight.comment})
 
     assert_select(".single-flight-map")
+  end
+
+  # Returns the count of waypoints of a given airport in a GPX file.
+  def gpx_airport_count(gpx, airport_to_find)
+    airports = Hash.from_xml(gpx).dig("gpx", "wpt")
+    count = airports.select{|a| a["description"] == airport_to_find.city}.size
+  end
+
+  # Returns the count of waypoints of a given airport in a GPX file.
+  def kml_airport_count(kml, airport_to_find)
+    airports = Hash.from_xml(kml).dig("kml", "Document", "Folder").find{|f| f["name"] == "Airports"}.dig("Placemark")
+    count = airports.select{|a| a["description"] == airport_to_find.city}.size
   end
 
 end
