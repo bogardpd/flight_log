@@ -56,6 +56,13 @@ class PagesController < ApplicationController
   # only render an image if the parameters include a valid checksum generated
   # by {Map.hash_image_query}, and will otherwise return a Not Found error.
   #
+  # Many maps will have forward slashes ("/") in the Great Circle Mapper query,
+  # which gets escaped to %2F. However, this means the query will take up more
+  # characters, which could be a problem with some browsers' character length
+  # limit with very long queries. Thus, the proxy will accept queries with
+  # underscores ("_"), which do not get escaped, in place of slashes, and will
+  # convert them as appropriate. Escaped slashes will also work.
+  #
   # @return [nil]
   # @see Map.hash_image_query
   # @see http://www.gcmap.com/ Great Circle Mapper
