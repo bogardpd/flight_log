@@ -323,7 +323,7 @@ module ApplicationHelper
       if values[:selected]
         tabs.push(content_tag(:li, region, class: "selected"))
       else
-        tabs.push(content_tag(:li, link_to(region, url_for(params.permit(:id, :sort, :region).merge(region: values[:icao].join("-"), anchor: anchor)))))
+        tabs.push(content_tag(:li, link_to(region, url_for(params.permit(:id, :sort, :region, :start_date, :end_date, :year, :fleet_number, :operator, :tail_number, :travel_class).merge(region: values[:icao].join("-"), anchor: anchor)))))
       end
     end
     
