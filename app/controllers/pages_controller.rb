@@ -72,7 +72,7 @@ class PagesController < ApplicationController
     query = params[:query].gsub("_","/")
     
     if Map.hash_image_query(query) == params[:check] # Ensure the query was issued by this application
-      response.headers["Cache-Control"] = "public, max-age=#{84.hours.to_i}"
+      response.headers["Cache-Control"] = "public, max-age=#{1.year.to_i}"
       response.headers["Content-Type"] = "image/gif"
       response.headers["Content-Disposition"] = "inline"
       image_url = "http://www.gcmap.com/map?PM=#{params[:airport_options]}&MP=r&MS=wls2&P=#{query}"
