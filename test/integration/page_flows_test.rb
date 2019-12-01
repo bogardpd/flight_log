@@ -7,6 +7,8 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @airport_options = "b:disc5:black"
     @query           = "DAY-DFW/ORD"
+
+    stub_common_requests
   end
   
   ##############################################################################

@@ -4,6 +4,10 @@ class AirportsTest < ApplicationSystemTestCase
   # All tests to ensure visitors can't view hidden, view empty, create, update,
   # or destroy airports are located in INTEGRATION tests.
 
+  def setup
+    stub_system_common_requests
+  end
+
   test "creating, updating, and destroying an airport" do
     airport = {
       iata_code:   "HEL",

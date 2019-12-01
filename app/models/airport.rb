@@ -260,7 +260,6 @@ class Airport < ApplicationRecord
   # return an a hash of all Airports whose airport ICAO codes start with any of
   # the provided strings.
   # 
-  # Params:
   # @param icao_starts [Array<String>] an array of strings of the start of
   #   ICAO codes (i.e. EG, K)
   # @return [Hash<Integer,String>] a hash of airports with matching ICAO codes,

@@ -1,8 +1,10 @@
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path('../../config/environment', __FILE__)
 require "rails/test_help"
+require "webmock/minitest"
 require "minitest/reporters"
 Minitest::Reporters.use!
+WebMock.disable_net_connect!(allow_localhost: true)
 
 class ActiveSupport::TestCase
   
@@ -10,6 +12,22 @@ class ActiveSupport::TestCase
   fixtures :all
   set_fixture_class(pk_passes: PKPass)
   
+  # Sets up stub requests used by multiple tests
+  def stub_common_requests
+    stub_request(:get, /www.gcmap.com/).to_return(status: 200, body: "", headers: {})
+    stub_request(:head, /amazonaws.com\/pbogardcom-images/).to_return(status: 200, body: "", headers: {})
+
+    stub_request(:get, "https://flightxml.flightaware.com/soap/FlightXML2/wsdl").
+      with(
+        headers: {
+        'Accept'=>'*/*',
+        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Authorization'=>/Basic \w*==/,
+        'User-Agent'=>'Ruby'
+        }).
+      to_return(status: 200, body: "", headers: {})
+  end
+
   # Logs in a test user (integration tests)
   def log_in_as(user)
     cookies[:remember_token] = user.remember_token

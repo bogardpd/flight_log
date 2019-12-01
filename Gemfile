@@ -42,6 +42,8 @@ group :test do
   gem 'guard-minitest',           '2.4.4'
   gem 'capybara'
   gem 'selenium-webdriver'
+  # Use webmock to stub out HTTP API requests
+  gem 'webmock', '~> 3.7', '>= 3.7.6'
 end
 
 group :production do

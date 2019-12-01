@@ -7,6 +7,8 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @visible_route = [airports(:airport_visible_1), airports(:airport_visible_2)]
     @hidden_route = [airports(:airport_hidden_1), airports(:airport_hidden_2)]
+
+    stub_common_requests
   end
   
   ##############################################################################

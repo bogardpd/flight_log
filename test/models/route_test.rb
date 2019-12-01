@@ -1,6 +1,10 @@
 require "test_helper"
 
 class RouteTest < ActiveSupport::TestCase
+
+  def setup
+    stub_common_requests
+  end
   
   test "distance_by_airport with known route returns correct distance" do
     route = routes(:route_dfw_ord)

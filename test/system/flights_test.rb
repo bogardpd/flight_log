@@ -6,6 +6,7 @@ class FlightsTest < ApplicationSystemTestCase
 
   def setup
     @trip = trips(:trip_hidden)
+    stub_system_common_requests
   end
 
   test "creating, updating, and destroying a flight" do

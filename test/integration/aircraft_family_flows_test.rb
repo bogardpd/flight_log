@@ -8,6 +8,8 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
     @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
     @no_flights_aircraft_family = aircraft_families(:aircraft_family_no_flights)
+
+    stub_common_requests
   end
 
   ##############################################################################

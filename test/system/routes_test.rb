@@ -6,6 +6,7 @@ class RoutesTest < ApplicationSystemTestCase
 
   def setup
     @airports_with_no_route_distance = [airports(:airport_dfw), airports(:airport_sea)]
+    stub_system_common_requests   
   end
 
   # There is no form to create a new route; instead, new routes are created by
