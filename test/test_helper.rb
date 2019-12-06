@@ -12,21 +12,7 @@ class ActiveSupport::TestCase
   fixtures :all
   set_fixture_class(pk_passes: PKPass)
   
-  # Sets up stub requests used by multiple tests
-  def stub_common_requests
-    stub_request(:get, /www.gcmap.com/).to_return(status: 200, body: "", headers: {})
-    stub_request(:head, /amazonaws.com\/pbogardcom-images/).to_return(status: 200, body: "", headers: {})
-
-    stub_request(:get, "https://flightxml.flightaware.com/soap/FlightXML2/wsdl").
-      with(
-        headers: {
-        'Accept'=>'*/*',
-        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'Authorization'=>/Basic \w*==/,
-        'User-Agent'=>'Ruby'
-        }).
-      to_return(status: 200, body: "", headers: {})
-  end
+  
 
   # Logs in a test user (integration tests)
   def log_in_as(user)
@@ -55,6 +41,115 @@ class ActiveSupport::TestCase
   def visitor_flights
     return users(:user_one).flights(nil)
   end
+
+  ##############################################################################
+  # Stubs                                                                      #
+  ##############################################################################
+
+  def stub_aws_head_images
+    WebMock.stub_request(:head, /amazonaws.com\/pbogardcom-images/).
+      to_return(status: 200, body: "", headers: {})
+  end
+
+  def stub_flight_xml_get_wsdl
+    WebMock.stub_request(:get, "https://flightxml.flightaware.com/soap/FlightXML2/wsdl").
+      to_return(status: 200, body: file_fixture("flight_xml.wsdl.xml").read)
+  end
+
+  # Stub FlightXML AirlineFlightInfo
+  def stub_flight_xml_airline_flight_info(fa_flight_id, fields)
+    body = "<?xml version=\"1.0\"  encoding=\"utf-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:FlightXML2=\"http://flightxml.flightaware.com/soap/FlightXML2\"><SOAP-ENV:Body><FlightXML2:AirlineFlightInfoResults><FlightXML2:AirlineFlightInfoResult><FlightXML2:faFlightID>DAL877-1575611129-airline-0151</FlightXML2:faFlightID><FlightXML2:ident>DAL877</FlightXML2:ident><FlightXML2:codeshares>AFR2072</FlightXML2:codeshares><FlightXML2:codeshares>AFR5743</FlightXML2:codeshares><FlightXML2:codeshares>CES6964</FlightXML2:codeshares><FlightXML2:codeshares>KLM6363</FlightXML2:codeshares><FlightXML2:codeshares>VIR1748</FlightXML2:codeshares><FlightXML2:tailnumber></FlightXML2:tailnumber><FlightXML2:meal_service>Business: Lunch / Economy: Refreshments for sale</FlightXML2:meal_service><FlightXML2:gate_orig></FlightXML2:gate_orig><FlightXML2:gate_dest></FlightXML2:gate_dest><FlightXML2:terminal_orig></FlightXML2:terminal_orig><FlightXML2:terminal_dest></FlightXML2:terminal_dest><FlightXML2:bag_claim></FlightXML2:bag_claim><FlightXML2:seats_cabin_first>0</FlightXML2:seats_cabin_first><FlightXML2:seats_cabin_business>24</FlightXML2:seats_cabin_business><FlightXML2:seats_cabin_coach>210</FlightXML2:seats_cabin_coach></FlightXML2:AirlineFlightInfoResult></FlightXML2:AirlineFlightInfoResults></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+
+    WebMock.stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
+      with(body: /<FlightXML2:AirlineFlightInfoRequest>.*<FlightXML2:faFlightID>#{fa_flight_id}<\/FlightXML2:faFlightID>/).
+      to_return(status: 200, body: body)
+  end
+
+  # Stub FlightXML AirportInfo
+  def stub_flight_xml_post_airport_info(icao_code, fields)
+    fields[:name]      ||= "Fake Airport Name"
+    fields[:location]  ||= "Fakeville"
+    fields[:latitude]  ||= 0.0
+    fields[:longitude] ||= 0.0
+    fields[:timezone]  ||= ":America/Chicago"
+    
+    body = "<?xml version=\"1.0\"  encoding=\"utf-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:FlightXML2=\"http://flightxml.flightaware.com/soap/FlightXML2\"><SOAP-ENV:Body><FlightXML2:AirportInfoResults><FlightXML2:AirportInfoResult>"
+    body += "<FlightXML2:name>#{fields[:name]}</FlightXML2:name>"
+    body += "<FlightXML2:location>#{fields[:location]}</FlightXML2:location>"
+    body += "<FlightXML2:longitude>#{fields[:longitude]}</FlightXML2:longitude>"
+    body += "<FlightXML2:latitude>#{fields[:latitude]}</FlightXML2:latitude>"
+    body += "<FlightXML2:timezone>#{fields[:timezone]}</FlightXML2:timezone>"
+    body += "</FlightXML2:AirportInfoResult></FlightXML2:AirportInfoResults></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+
+    WebMock.stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
+      with(body: /<FlightXML2:AirportInfoRequest>.*<FlightXML2:airportCode>#{icao_code}<\/FlightXML2:airportCode>/).
+      to_return(status: 200, body: body)
+
+  end
+
+  # Stub FlightXML FlightInfoEx
+  def stub_flight_xml_post_flight_info_ex(ident, fields)
+    fields[:ident] = ident
+
+    fields[:fa_flight_id]   ||= "DAL877-1575611129-airline-0151"
+    fields[:aircraft]       ||= aircraft_families(:aircraft_737_800).icao_aircraft_code
+    fields[:departure_time] ||= Time.now
+    fields[:origin]         ||= airports(:airport_visible_1).icao_code
+    fields[:destination]    ||= airports(:airport_visible_2).icao_code
+
+    body = "<?xml version=\"1.0\"  encoding=\"utf-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:FlightXML2=\"http://flightxml.flightaware.com/soap/FlightXML2\"><SOAP-ENV:Body><FlightXML2:FlightInfoExResults><FlightXML2:FlightInfoExResult><FlightXML2:next_offset>1</FlightXML2:next_offset><FlightXML2:flights>"
+    body += "<FlightXML2:faFlightID>#{fields[:fa_flight_id]}</FlightXML2:faFlightID>"
+    body += "<FlightXML2:ident>#{ident}</FlightXML2:ident>"
+    body += "<FlightXML2:aircrafttype>#{fields[:aircraft]}</FlightXML2:aircrafttype>"
+    body += "<FlightXML2:filed_ete>02:18:00</FlightXML2:filed_ete>"
+    body += "<FlightXML2:filed_time>#{fields[:departure_time].to_i}</FlightXML2:filed_time>"
+    body += "<FlightXML2:filed_departuretime>#{fields[:departure_time].to_i}</FlightXML2:filed_departuretime>"
+    body += "<FlightXML2:filed_airspeed_kts>363</FlightXML2:filed_airspeed_kts>"
+    body += "<FlightXML2:filed_airspeed_mach></FlightXML2:filed_airspeed_mach>"
+    body += "<FlightXML2:filed_altitude>0</FlightXML2:filed_altitude>
+    <FlightXML2:route></FlightXML2:route>"
+    body += "<FlightXML2:actualdeparturetime>0</FlightXML2:actualdeparturetime>"
+    body += "<FlightXML2:estimatedarrivaltime>1575835200</FlightXML2:estimatedarrivaltime>"
+    body += "<FlightXML2:actualarrivaltime>0</FlightXML2:actualarrivaltime>"
+    body += "<FlightXML2:diverted></FlightXML2:diverted>"
+    body += "<FlightXML2:origin>#{fields[:origin]}</FlightXML2:origin>"
+    body += "<FlightXML2:destination>#{fields[:destination]}</FlightXML2:destination>"
+    body += "<FlightXML2:originName>Orlando Intl</FlightXML2:originName>"
+    body += "<FlightXML2:originCity>Orlando, FL</FlightXML2:originCity>"
+    body += "<FlightXML2:destinationName>Detroit Metro Wayne Co</FlightXML2:destinationName>"
+    body += "<FlightXML2:destinationCity>Detroit, MI</FlightXML2:destinationCity>"
+    body += "</FlightXML2:flights></FlightXML2:FlightInfoExResult></FlightXML2:FlightInfoExResults></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+
+    WebMock.stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
+      with(body: /<FlightXML2:FlightInfoExRequest>.*(<FlightXML2:ident>#{ident}<\/FlightXML2:ident>|<FlightXML2:faFlightID>#{ident}<\/FlightXML2:faFlightID>)/).
+      to_return(status: 200, body: body)
+  end
+
+  # Stub FlightXML GetFlightId
+  def stub_flight_xml_post_get_flight_id(ident, departure_time, result)
+
+    body = "<?xml version=\"1.0\"  encoding=\"utf-8\"?>\n<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/1999/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/1999/XMLSchema\" xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:FlightXML2=\"http://flightxml.flightaware.com/soap/FlightXML2\"><SOAP-ENV:Body><FlightXML2:GetFlightIdResults><FlightXML2:GetFlightIdResult>"
+    body += result
+    body += "</FlightXML2:GetFlightIdResult></FlightXML2:GetFlightIdResults></SOAP-ENV:Body></SOAP-ENV:Envelope>\n"
+
+    WebMock.stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
+      with(body: /<FlightXML2:GetFlightIDRequest>.*<FlightXML2:ident>#{ident}<\/FlightXML2:ident>/).
+      to_return(status: 200, body: body)
+  end
+
+  def stub_flight_xml_post_timeout
+    stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
+      to_timeout
+  end
+
+  def stub_gcmap_get_images
+    WebMock.stub_request(:get, /www.gcmap.com/).
+      to_return(status: 200, body: "", headers: {})
+  end
+
+  ##############################################################################
+  # Verifications                                                              #
+  ##############################################################################
 
   # Checks that admin actions are present and contain links to specific paths.
   def verify_presence_of_admin_actions(*paths_to_check)

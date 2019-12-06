@@ -5,10 +5,14 @@ class AirportsTest < ApplicationSystemTestCase
   # or destroy airports are located in INTEGRATION tests.
 
   def setup
-    stub_system_common_requests
+    stub_aws_head_images
+    stub_gcmap_get_images
+    stub_flight_xml_get_wsdl
+    stub_flight_xml_post_timeout
   end
 
   test "creating, updating, and destroying an airport" do
+
     airport = {
       iata_code:   "HEL",
       icao_code:   "EFHK",

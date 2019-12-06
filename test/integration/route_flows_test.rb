@@ -7,8 +7,6 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @visible_route = [airports(:airport_visible_1), airports(:airport_visible_2)]
     @hidden_route = [airports(:airport_hidden_1), airports(:airport_hidden_2)]
-
-    stub_common_requests
   end
   
   ##############################################################################
@@ -38,6 +36,9 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "can see index routes when logged in" do
+    stub_flight_xml_get_wsdl
+    stub_flight_xml_post_timeout
+
     routes = Route.flight_table_data(logged_in_flights)
     
     log_in_as(users(:user_one))
@@ -54,6 +55,9 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index routes when not logged in" do
+    stub_flight_xml_get_wsdl
+    stub_flight_xml_post_timeout
+
     get(routes_path)
     assert_response(:success)
     verify_absence_of_hidden_data

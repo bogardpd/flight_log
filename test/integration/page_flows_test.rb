@@ -7,8 +7,6 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @airport_options = "b:disc5:black"
     @query           = "DAY-DFW/ORD"
-
-    stub_common_requests
   end
   
   ##############################################################################
@@ -17,6 +15,9 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "can see home when not logged in" do
+    stub_flight_xml_get_wsdl
+    stub_flight_xml_post_timeout
+
     get(root_path)
     assert_response(:success)
     verify_absence_of_hidden_data
@@ -38,6 +39,10 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see active trips on home when logged in" do
     # At least one PKPass must be present for this test to succeed.
+
+    stub_flight_xml_get_wsdl
+    stub_flight_xml_post_timeout
+
     hidden_trip = trips(:trip_hidden)
     log_in_as(users(:user_one))
     get(root_path)
@@ -65,6 +70,8 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "proxy image accepts correct key" do
+    stub_gcmap_get_images
+
     get(gcmap_image_url(@airport_options, @query.gsub('/','_'), Map.hash_image_query(@query)))
     assert_response(:success)
   end

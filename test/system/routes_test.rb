@@ -5,14 +5,20 @@ class RoutesTest < ApplicationSystemTestCase
   # located in INTEGRATION tests.
 
   def setup
+    stub_flight_xml_get_wsdl
+    stub_gcmap_get_images
+
     @airports_with_no_route_distance = [airports(:airport_dfw), airports(:airport_sea)]
-    stub_system_common_requests   
   end
 
   # There is no form to create a new route; instead, new routes are created by
   # {Route.distance_by_airport} (tested in /test/models/route_test.rb), or if a
   # user tries to edit a route that's not already in the database.
   test "creating a route by editing route with no distance" do
+    
+    # We don't look up distance in FlightXML, and the airports already have coordinates:
+    stub_flight_xml_post_timeout
+
     system_log_in_as(users(:user_one))
 
     assert_difference("Route.count", 1) do
@@ -24,6 +30,8 @@ class RoutesTest < ApplicationSystemTestCase
 
   # Update route:
   test "updating a route" do
+    stub_flight_xml_post_timeout
+    
     route = routes(:route_visible)
     distance_update = 1234
 

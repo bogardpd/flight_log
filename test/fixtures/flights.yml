@@ -173,7 +173,7 @@ flight_layover_ratio_unknown_distance_f2:
   trip: trip_layover_ratios
   trip_section: 5
   origin_airport: airport_dfw
-  destination_airport: airport_yyz
+  destination_airport: airport_with_no_coordinates
   departure_date: 2019-07-05
   departure_utc: 2019-07-05 13:00:00
   airline: airline_american

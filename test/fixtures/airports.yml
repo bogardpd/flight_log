@@ -34,7 +34,7 @@ airport_yvr:
   latitude: 49.193889
   longitude: -123.184444
 
-airport_yyz:
+airport_with_no_coordinates:
   slug: "YYZ"
   iata_code: "YYZ"
   icao_code: "CYYZ"

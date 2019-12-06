@@ -5,11 +5,11 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   include ActionView::Helpers::NumberHelper
   
   def setup
+    stub_aws_head_images
+    
     @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
     @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
     @no_flights_aircraft_family = aircraft_families(:aircraft_family_no_flights)
-
-    stub_common_requests
   end
 
   ##############################################################################

@@ -5,7 +5,9 @@ class TripsTest < ApplicationSystemTestCase
   # or destroy trips are located in INTEGRATION tests.
 
   def setup
-    stub_system_common_requests
+    stub_flight_xml_get_wsdl
+    stub_flight_xml_post_timeout
+    stub_gcmap_get_images
   end
 
   test "creating, updating, and destroying a trip" do

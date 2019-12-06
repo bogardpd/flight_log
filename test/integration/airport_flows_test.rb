@@ -5,11 +5,11 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   include ActionView::Helpers::NumberHelper
 
   def setup
+    stub_aws_head_images
+
     @visible_airport = airports(:airport_visible_1)
     @hidden_airport = airports(:airport_hidden_1)
     @no_flights_airport = airports(:airport_no_flights)
-
-    stub_common_requests
   end
   
   ##############################################################################

@@ -3,7 +3,7 @@ require "test_helper"
 class RouteTest < ActiveSupport::TestCase
 
   def setup
-    stub_common_requests
+    
   end
   
   test "distance_by_airport with known route returns correct distance" do
@@ -23,8 +23,11 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   def test_distance_by_airport_with_unknown_route_without_coordinates
+    stub_flight_xml_get_wsdl
+    stub_flight_xml_post_timeout
+
     airport1 = airports(:airport_sea)
-    airport2 = airports(:airport_yyz)
+    airport2 = airports(:airport_with_no_coordinates)
     assert_nil(Route.distance_by_airport(airport1, airport2))
   end
 
