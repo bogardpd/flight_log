@@ -147,7 +147,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (4.0.1)
-    puma (3.12.2)
+    puma (4.3.1)
+      nio4r (~> 2.0)
     rack (2.0.7)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -260,7 +261,7 @@ DEPENDENCIES
   jquery-rails
   minitest-reporters (= 1.1.9)
   pg (= 0.18.4)
-  puma (= 3.12.2)
+  puma (= 4.3.1)
   rails (~> 5.2, >= 5.2.3)
   rails-controller-testing (= 0.1.1)
   rails-ujs (~> 5.1.0.beta1)
