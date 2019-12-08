@@ -70,7 +70,7 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "proxy image accepts correct key" do
-    stub_gcmap_get_images
+    stub_gcmap_get_map
 
     get(gcmap_image_url(@airport_options, @query.gsub('/','_'), Map.hash_image_query(@query)))
     assert_response(:success)

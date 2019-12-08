@@ -6,7 +6,7 @@ class RoutesTest < ApplicationSystemTestCase
 
   def setup
     stub_flight_xml_get_wsdl
-    stub_gcmap_get_images
+    stub_gcmap_get_map
 
     @airports_with_no_route_distance = [airports(:airport_dfw), airports(:airport_sea)]
   end

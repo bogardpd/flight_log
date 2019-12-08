@@ -8,7 +8,7 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
     stub_aws_head_images
     stub_flight_xml_get_wsdl
     stub_flight_xml_post_timeout
-    stub_gcmap_get_images
+    stub_gcmap_get_map
   end
 
   test "creating, updating, and destroying an aircraft family and type" do

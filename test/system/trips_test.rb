@@ -7,7 +7,7 @@ class TripsTest < ApplicationSystemTestCase
   def setup
     stub_flight_xml_get_wsdl
     stub_flight_xml_post_timeout
-    stub_gcmap_get_images
+    stub_gcmap_get_map
   end
 
   test "creating, updating, and destroying a trip" do

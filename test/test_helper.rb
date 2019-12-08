@@ -142,9 +142,9 @@ class ActiveSupport::TestCase
       to_timeout
   end
 
-  def stub_gcmap_get_images
+  def stub_gcmap_get_map
     WebMock.stub_request(:get, /www.gcmap.com/).
-      to_return(status: 200, body: "", headers: {})
+      to_return(status: 200, body: file_fixture("map.gif").read, headers: {})
   end
 
   ##############################################################################

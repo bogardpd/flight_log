@@ -7,7 +7,7 @@ class FlightsTest < ApplicationSystemTestCase
   def setup
     stub_flight_xml_get_wsdl
     stub_flight_xml_post_airport_info(airports(:airport_with_no_coordinates).icao_code, {})
-    stub_gcmap_get_images
+    stub_gcmap_get_map
     @trip = trips(:trip_hidden)
     @pass = pk_passes(:pk_pass_existing_data)
 
