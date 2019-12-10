@@ -1,0 +1,2 @@
+<?xml version="1.0"  encoding="utf-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance" xmlns:xsd="http://www.w3.org/1999/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:FlightXML2="http://flightxml.flightaware.com/soap/FlightXML2"><SOAP-ENV:Body><FlightXML2:GetFlightIDResults><FlightXML2:GetFlightIDResult>AAL2300-1575870329-airline-0404</FlightXML2:GetFlightIDResult></FlightXML2:GetFlightIDResults></SOAP-ENV:Body></SOAP-ENV:Envelope>

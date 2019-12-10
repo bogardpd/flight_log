@@ -16,7 +16,7 @@
 class PKPass < ApplicationRecord
   after_initialize :set_values
   
-  validates :pass_json, :presence => true
+  validates :pass_json, presence: true
   
   # Returns the pass's BCBP barcode data string
   #
@@ -36,6 +36,13 @@ class PKPass < ApplicationRecord
   # @return [BoardingPass] a new {BoardingPass} created from barcode data
   def bcbp
     return BoardingPass.new(barcode)
+  end
+
+  # Returns the UTC departure time.
+  #
+  # @return [Time] the UTC departure time
+  def departure_utc
+    return form_values[:departure_utc]
   end
   
   # Returns a hash of form field values extracted from this PKPass.

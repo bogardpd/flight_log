@@ -17,7 +17,7 @@ class FlightsTest < ApplicationSystemTestCase
     @fa_flight[:flight_number]      = "1734"    # From bcbp.txt
     @fa_flight[:origin]             = "KDFW"    # From bcbp.txt
     @fa_flight[:destination]        = "KORD"    # From bcbp.txt
-    @fa_flight[:departure_time]     = Time.parse(JSON.parse(@pass.pass_json)["expirationDate"])
+    @fa_flight[:departure_time]     = @pass.departure_utc.to_i
     @fa_flight[:fa_flight_id]       = "#{@fa_flight[:ident]}-#{@fa_flight[:departure_time].to_i}-airline-0001"
     @fa_flight[:icao_aircraft_code] = aircraft_families(:aircraft_737_800).icao_aircraft_code
   end
@@ -104,7 +104,7 @@ class FlightsTest < ApplicationSystemTestCase
 
   test "creating a flight from BCBP data" do
     
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {fa_flight_id: @fa_flight[:fa_flight_id], origin: @fa_flight[:origin], destination: @fa_flight[:destination], aircraft_family: @fa_flight[:icao_aircraft_code]})
+    stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {faFlightID: @fa_flight[:fa_flight_id], origin: @fa_flight[:origin], destination: @fa_flight[:destination], aircrafttype: @fa_flight[:icao_aircraft_code]})
     stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {})
     stub_flight_xml_post_get_flight_id(@fa_flight[:ident], @fa_flight[:departure_time], @fa_flight[:fa_flight_id])
     stub_flight_xml_post_airport_info(@fa_flight[:origin], {})

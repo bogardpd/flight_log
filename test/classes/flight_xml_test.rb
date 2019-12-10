@@ -19,7 +19,7 @@ class FlightXMLTest < ActiveSupport::TestCase
     coordinates = [43.677223, -79.630556]
     
     stub_flight_xml_get_wsdl
-    stub_flight_xml_post_airport_info(icao_code, {latitude: coordinates[0], longitude: coordinates[1]})
+    stub_flight_xml_post_airport_info(icao_code, {"latitude": coordinates[0], "longitude": coordinates[1]})
 
     assert_equal(coordinates, FlightXML.airport_coordinates(icao_code))
   end
