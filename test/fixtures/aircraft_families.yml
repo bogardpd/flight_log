@@ -92,7 +92,9 @@ aircraft_type_hidden:
   parent: aircraft_family_hidden
 
 aircraft_family_no_flights:
-  # Must not be used by any flights.
+  # Must not be used by any flights. Must have child type for testing destroying
+  # aircraft families with child types
+  # (test/integration/aircraft_family_flows_test.rb).
   slug: "Unused-Family"
   family_name: "Unused Aircraft Family"
   manufacturer: "Unused Manufacturer"

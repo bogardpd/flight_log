@@ -212,6 +212,32 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     )
   end
 
+  ##############################################################################
+  # Tests to ensure users can't destroy aircraft with flights or subtypes      #
+  ##############################################################################
+
+  test "cannot remove aircraft family with flights" do
+    log_in_as(users(:user_one))
+    aircraft = flights(:flight_visible).aircraft_family
+    
+    assert_no_difference("AircraftFamily.count") do
+      delete(aircraft_family_path(aircraft))
+    end
+    
+    assert_redirected_to(aircraft_family_path(aircraft.slug))
+  end
+
+  test "cannot remove aircraft family with child types" do
+    log_in_as(users(:user_one))
+    aircraft = aircraft_families(:aircraft_family_no_flights)
+    
+    assert_no_difference("AircraftFamily.count") do
+      delete(aircraft_family_path(aircraft))  
+    end
+
+    assert_redirected_to(aircraft_family_path(aircraft.slug))
+  end
+
   private
 
   # Runs tests on a row in a aircraft count table
