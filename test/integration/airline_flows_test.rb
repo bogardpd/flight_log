@@ -224,6 +224,43 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     )
   end
 
+  ##############################################################################
+  # Tests to ensure users can't destroy airlines with flights                  #
+  ##############################################################################
+
+  test "cannot remove airline with flights" do
+    log_in_as(users(:user_one))
+    airline = flights(:flight_visible).airline
+    
+    assert_no_difference("Airline.count") do
+      delete(airline_path(airline))
+    end
+    
+    assert_redirected_to(airline_path(airline.slug))
+  end
+
+  test "cannot remove operator with flights" do
+    log_in_as(users(:user_one))
+    operator = flights(:flight_visible).operator
+    
+    assert_no_difference("Airline.count") do
+      delete(airline_path(operator))
+    end
+    
+    assert_redirected_to(airline_path(operator.slug))
+  end
+
+  test "cannot remove codeshare airline with flights" do
+    log_in_as(users(:user_one))
+    codeshare_airline = flights(:flight_visible).codeshare_airline
+    
+    assert_no_difference("Airline.count") do
+      delete(airline_path(codeshare_airline))
+    end
+    
+    assert_redirected_to(airline_path(codeshare_airline.slug))
+  end
+
   private
 
   # Runs tests on a row in an airline count table

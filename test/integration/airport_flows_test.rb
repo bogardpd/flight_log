@@ -140,6 +140,21 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     )
   end
 
+  ##############################################################################
+  # Tests to ensure users can't destroy airports with flights                  #
+  ##############################################################################
+
+  test "cannot remove airport with flights" do
+    log_in_as(users(:user_one))
+    airport = flights(:flight_visible).origin_airport
+    
+    assert_no_difference("Airport.count") do
+      delete(airport_path(airport))
+    end
+    
+    assert_redirected_to(airport_path(airport.slug))
+  end
+
   private
 
   # Runs tests on a row in an airport count table

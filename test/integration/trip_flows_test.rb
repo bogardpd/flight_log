@@ -188,4 +188,19 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     )
   end
 
+  ##############################################################################
+  # Tests to ensure users can't destroy trips with flights                     #
+  ##############################################################################
+
+  test "cannot remove trip with flights" do
+    log_in_as(users(:user_one))
+    trip = flights(:flight_visible).trip
+    
+    assert_no_difference("Trip.count") do
+      delete(trip_path(trip))
+    end
+    
+    assert_redirected_to(trip_path(trip))
+  end
+
 end

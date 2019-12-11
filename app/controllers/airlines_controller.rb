@@ -251,7 +251,7 @@ class AirlinesController < ApplicationController
     @airline = Airline.find(params[:id])
     if @airline.has_any_airline_operator_codeshare_flights?
       flash[:error] = "This airline still has flights and could not be deleted. Please delete all of this airlineʼs flights first."
-      redirect_to show_airline_path(@airline.slug)
+      redirect_to airline_path(@airline.slug)
     else
       @airline.destroy
       flash[:success] = "Airline deleted."

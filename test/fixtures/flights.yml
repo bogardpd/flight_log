@@ -218,6 +218,7 @@ flight_visible:
   airline: airline_visible
   flight_number: 8000
   operator: operator_visible
+  codeshare_airline: codeshare_airline_visible
   fleet_number: "1VS"
   aircraft_family: aircraft_family_visible
   tail_number: "N111VS"

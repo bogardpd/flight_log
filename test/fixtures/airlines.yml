@@ -81,3 +81,10 @@ operator_hidden:
   slug: "Hidden-Express"
   iata_airline_code: "HO"
   icao_airline_code: "HSO"
+
+codeshare_airline_visible:
+  # Used to test non-hidden codeshare airlines
+  airline_name: "Codeshare Jets"
+  slug: "Codeshare-Jets"
+  iata_airline_code: "VC"
+  icao_airline_code: "VCJ"
