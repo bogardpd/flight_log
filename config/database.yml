@@ -19,5 +19,7 @@ test:
   port: 5432
 
 production:
-  url:  <%= ENV["DATABASE_URL"] %>
+  adapter: postgresql
+  encoding: unicode
+  url:  <%= ENV["DATABASE_URL"] || Rails.application.credentials[:database][:production][:database_url] %>
   pool: <%= ENV["DB_POOL"] || ENV["RAILS_MAX_THREADS"] || 5 %>
