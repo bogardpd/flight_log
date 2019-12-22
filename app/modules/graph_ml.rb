@@ -6,11 +6,14 @@ module GraphML
   # Generate a GraphML file for use in the yEd graph editor.
   # 
   # @param flights [Array<Flight>] a collection of {Flight Flights}
+  # @param group_edges [Boolean] true to represent multiple routes between
+  #   airports as a single edge with proportional line weights; false to keep
+  # separate edges 
   # @return [ActiveSupport::Safebuffer] XML for a
   #   {http://graphml.graphdrawing.org GraphML} graph.
   # 
   # @see https://www.yworks.com/products/yed
-  def self.yed(flights)
+  def self.yed(flights, group_edges=false)
     flights = flights.includes(:origin_airport, :destination_airport)
     routes = flights.map{|route| [route.origin_airport, route.destination_airport]}
     route_freq = routes.inject(Hash.new(0)){|h,i| h[i] += 1; h }
@@ -57,15 +60,21 @@ module GraphML
           end
           
           # Create flights:
-          route_freq.each_with_index do |(route, freq), edge_id|
-            xml.edge(id: "e#{edge_id}", source: "n#{route[0][:id]}", target: "n#{route[1][:id]}") do
-              xml.data(key: "d9")
-              xml.data(key: "d10") do
-                xml[:y].PolyLineEdge do
-                  xml[:y].LineStyle(width: line_width(freq, max_route_freq))
-                  xml[:y].Arrows(source: "none", target: "standard")
+          if group_edges
+            route_freq.each_with_index do |(route, freq), edge_id|
+              xml.edge(id: "e#{edge_id}", source: "n#{route[0][:id]}", target: "n#{route[1][:id]}") do
+                xml.data(key: "d9")
+                xml.data(key: "d10") do
+                  xml[:y].PolyLineEdge do
+                    xml[:y].LineStyle(width: line_width(freq, max_route_freq))
+                    xml[:y].Arrows(source: "none", target: "standard")
+                  end
                 end
               end
+            end
+          else
+            routes.each_with_index do |route, edge_id|              
+              xml.edge(id: "e#{edge_id}", source: "n#{route[0][:id]}", target: "n#{route[1][:id]}")
             end
           end
 
