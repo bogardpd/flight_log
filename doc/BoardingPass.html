@@ -6,7 +6,7 @@
 <title>
   Class: BoardingPass
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -107,7 +107,9 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Defines a Boarding Pass based on <a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP)">IATA Bar Coded Boarding Pass (BCBP)</a> data. Used to parse boarding pass barcode text received by email or entered into a form.</p>
+<p>Defines a Boarding Pass based on
+<a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="IATA Bar Coded Boarding Pass (BCBP)">IATA Bar Coded Boarding Pass (BCBP)</a> data. Used to parse boarding pass
+barcode text received by email or entered into a form.</p>
 
 
   </div>
@@ -127,16 +129,11 @@
   </ul>
 
 </div>
-  
-    <h2>
-      Constant Summary
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      
-        <dt id="ERROR-constant" class="">ERROR =
-          <div class="docstring">
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="ERROR-constant" class="">ERROR =
+        <div class="docstring">
   <div class="discussion">
     
 <p>The default error message to return if a boarding pass parse failed.</p>
@@ -148,11 +145,10 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We were unable to parse the data in the boarding pass barcode.</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-    </dl>
-  
+      </dt>
+      <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We were unable to parse the data in the boarding pass barcode.</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+    
+  </dl>
 
 
 
@@ -210,7 +206,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of a particular detail (:raw, :valid, etc.), in the order that it would show up in the boarding pass raw data.</p>
+<p>Returns an array of a particular detail (:raw, :valid, etc.), in the order
+that it would show up in the boarding pass raw data.</p>
 </div></span>
   
 </li>
@@ -308,7 +305,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns whether or not the boarding pass data is valid under the IATA BCBP standard.</p>
+<p>Returns whether or not the boarding pass data is valid under the IATA BCBP
+standard.</p>
 </div></span>
   
 </li>
@@ -425,7 +423,8 @@
       
         &mdash;
         <div class='inline'>
-<p>barcode string in IATA Bar Coded Boarding Pass format (see <a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="BCBP Implementation Guide">BCBP Implementation Guide</a> Section 4.2)</p>
+<p>barcode string in IATA Bar Coded Boarding Pass format (see
+<a href="https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf" target="_parent" title="BCBP Implementation Guide">BCBP Implementation Guide</a> Section 4.2)</p>
 </div>
       
     </li>
@@ -441,7 +440,8 @@
       
         &mdash;
         <div class='inline'>
-<p>a Flight that this boarding pass is associated with. Used to provide exact dates rather than an estimate from the BCBP data.</p>
+<p>a Flight that this boarding pass is associated with. Used to provide exact
+dates rather than an estimate from the BCBP data.</p>
 </div>
       
     </li>
@@ -457,7 +457,8 @@
       
         &mdash;
         <div class='inline'>
-<p>whether or not the Boarding Pass should try to provide interpretations of what the BCBP data means</p>
+<p>whether or not the Boarding Pass should try to provide interpretations of
+what the BCBP data means</p>
 </div>
       
     </li>
@@ -592,7 +593,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of a particular detail (:raw, :valid, etc.), in the order that it would show up in the boarding pass raw data.</p>
+<p>Returns an array of a particular detail (:raw, :valid, etc.), in the order
+that it would show up in the boarding pass raw data.</p>
 
 
   </div>
@@ -675,7 +677,9 @@
     
 <p>Returns the most likely flight date given a known UTC Date.</p>
 
-<p>The BCBP standard does not include a year in the barcode data, so we have to estimate the date by assuming it&#39;s probably in the provided date&#39;s year, or the previous or next year.</p>
+<p>The BCBP standard does not include a year in the barcode data, so we have
+to estimate the date by assuming it&#39;s probably in the provided
+date&#39;s year, or the previous or next year.</p>
 
 
   </div>
@@ -695,7 +699,8 @@
       
         &mdash;
         <div class='inline'>
-<p>an initial date (UTC) to base the flight date estimate on (usually today, unless a better date is known)</p>
+<p>an initial date (UTC) to base the flight date estimate on (usually today,
+unless a better date is known)</p>
 </div>
       
     </li>
@@ -771,7 +776,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a hash of form field values extracted from this barcode. Used to prepopulate the New Flight or Edit Flight forms.</p>
+<p>Returns a hash of form field values extracted from this barcode. Used to
+prepopulate the New Flight or Edit Flight forms.</p>
 
 
   </div>
@@ -924,7 +930,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns whether or not the boarding pass data is valid under the IATA BCBP standard.</p>
+<p>Returns whether or not the boarding pass data is valid under the IATA BCBP
+standard.</p>
 
 
   </div>
@@ -1247,7 +1254,9 @@
       
         &mdash;
         <div class='inline'>
-<p>a hash containing the Passenger Name Record (PNR) number, airline IATA code, flight number, origin airport IATA code, and destination airport IATA code</p>
+<p>a hash containing the Passenger Name Record (PNR) number, airline IATA
+code, flight number, origin airport IATA code, and destination airport IATA
+code</p>
 </div>
       
     </li>
@@ -1294,9 +1303,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Nov 24 22:08:49 2019 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.5).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>

@@ -6,7 +6,7 @@
 <title>
   Class: Flight
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -115,16 +115,11 @@
   
 
 </div>
-  
-    <h2>
-      Constant Summary
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      
-        <dt id="NULL_ATTRS-constant" class="">NULL_ATTRS =
-          <div class="docstring">
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="NULL_ATTRS-constant" class="">NULL_ATTRS =
+        <div class="docstring">
   <div class="discussion">
     
 <p>Form fields which should be saved as nil when the field is blank.</p>
@@ -136,14 +131,15 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>flight_number</span><span class='words_sep'> </span><span class='tstring_content'>aircraft_name</span><span class='words_sep'> </span><span class='tstring_content'>tail_number</span><span class='words_sep'> </span><span class='tstring_content'>travel_class</span><span class='words_sep'> </span><span class='tstring_content'>comment</span><span class='words_sep'> </span><span class='tstring_content'>fleet_number</span><span class='words_sep'> </span><span class='tstring_content'>boarding_pass_data</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
-      
-        <dt id="STRIP_ATTRS-constant" class="">STRIP_ATTRS =
-          <div class="docstring">
+      </dt>
+      <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>flight_number</span><span class='words_sep'> </span><span class='tstring_content'>aircraft_name</span><span class='words_sep'> </span><span class='tstring_content'>tail_number</span><span class='words_sep'> </span><span class='tstring_content'>travel_class</span><span class='words_sep'> </span><span class='tstring_content'>comment</span><span class='words_sep'> </span><span class='tstring_content'>fleet_number</span><span class='words_sep'> </span><span class='tstring_content'>boarding_pass_data</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
+    
+      <dt id="STRIP_ATTRS-constant" class="">STRIP_ATTRS =
+        <div class="docstring">
   <div class="discussion">
     
-<p>Form fields which should be saved with leading and trailing whitespace removed.</p>
+<p>Form fields which should be saved with leading and trailing whitespace
+removed.</p>
 
 
   </div>
@@ -152,14 +148,15 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>operator</span><span class='words_sep'> </span><span class='tstring_content'>fleet_number</span><span class='words_sep'> </span><span class='tstring_content'>aircraft_family</span><span class='words_sep'> </span><span class='tstring_content'>aircraft_name</span><span class='words_sep'> </span><span class='tstring_content'>tail_number</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
-      
-        <dt id="SIMPLIFY_ATTRS-constant" class="">SIMPLIFY_ATTRS =
-          <div class="docstring">
+      </dt>
+      <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>operator</span><span class='words_sep'> </span><span class='tstring_content'>fleet_number</span><span class='words_sep'> </span><span class='tstring_content'>aircraft_family</span><span class='words_sep'> </span><span class='tstring_content'>aircraft_name</span><span class='words_sep'> </span><span class='tstring_content'>tail_number</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
+    
+      <dt id="SIMPLIFY_ATTRS-constant" class="">SIMPLIFY_ATTRS =
+        <div class="docstring">
   <div class="discussion">
     
-<p>Form fields which should be saved capitalized and with all non-alphanumeric characters removed.</p>
+<p>Form fields which should be saved capitalized and with all non-alphanumeric
+characters removed.</p>
 
 
   </div>
@@ -168,11 +165,10 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>tail_number</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
-      
-    </dl>
-  
+      </dt>
+      <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>tail_number</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
+    
+  </dl>
 
 
 
@@ -206,7 +202,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>For a given flight collection, returns business, mixed, personal, and undefined Flight counts grouped by year.</p>
+<p>For a given flight collection, returns business, mixed, personal, and
+undefined Flight counts grouped by year.</p>
 </div></span>
   
 </li>
@@ -230,7 +227,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>For a given flight collection, returns a range of the years that contain flights.</p>
+<p>For a given flight collection, returns a range of the years that contain
+flights.</p>
 </div></span>
   
 </li>
@@ -254,7 +252,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>For a given flight collection, returns all years that have at least one Flight.</p>
+<p>For a given flight collection, returns all years that have at least one
+Flight.</p>
 </div></span>
   
 </li>
@@ -287,7 +286,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> parent family for the Flight, and the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> child type for the Flight if available.</p>
+<p>Returns the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> parent family for the Flight, and the
+<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> child type for the Flight if available.</p>
 </div></span>
   
 </li>
@@ -359,7 +359,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns a hash of routes for a collection of flights with sorted pairs of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> IDs as keys and distances in miles as values.</p>
+<p>Returns a hash of routes for a collection of flights with sorted pairs of
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> IDs as keys and distances in miles as values.</p>
 </div></span>
   
 </li>
@@ -441,7 +442,10 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>For a given flight collection, returns business, mixed, personal, and undefined Flight counts grouped by year. Years with no flights that are between the earliest and latest flight will be included, with zeroes in the values.</p>
+<p>For a given flight collection, returns business, mixed, personal, and
+undefined Flight counts grouped by year. Years with no flights that are
+between the earliest and latest flight will be included, with zeroes in the
+values.</p>
 
 
   </div>
@@ -468,7 +472,8 @@
       
         &mdash;
         <div class='inline'>
-<p>a hash with years as the keys, and hashes of counts of business, mixed, personal, and undefined flights as the values</p>
+<p>a hash with years as the keys, and hashes of counts of business, mixed,
+personal, and undefined flights as the values</p>
 </div>
       
     </li>
@@ -538,7 +543,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>For a given flight collection, returns a range of the years that contain flights.</p>
+<p>For a given flight collection, returns a range of the years that contain
+flights.</p>
 
 
   </div>
@@ -601,7 +607,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>For a given flight collection, returns all years that have at least one Flight.</p>
+<p>For a given flight collection, returns all years that have at least one
+Flight.</p>
 
 
   </div>
@@ -676,7 +683,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> parent family for the Flight, and the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> child type for the Flight if available.</p>
+<p>Returns the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> parent family for the Flight, and the
+<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> child type for the Flight if available.</p>
 
 
   </div>
@@ -695,7 +703,8 @@
       
         &mdash;
         <div class='inline'>
-<p>a hash containing the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> parent family for the Flight, and the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> child type for the Flight if available.</p>
+<p>a hash containing the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> parent family for the Flight, and
+the <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> child type for the Flight if available.</p>
 </div>
       
     </li>
@@ -857,7 +866,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a hash of routes for a collection of flights with sorted pairs of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> IDs as keys and distances in miles as values.</p>
+<p>Returns a hash of routes for a collection of flights with sorted pairs of
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> IDs as keys and distances in miles as values.</p>
 
 
   </div>
@@ -876,7 +886,8 @@
       
         &mdash;
         <div class='inline'>
-<p>A hash in the format [Integer airport_id, Integer airport_id] =&gt; Integer distance in miles</p>
+<p>A hash in the format [Integer airport_id, Integer airport_id] =&gt; Integer
+distance in miles</p>
 </div>
       
     </li>
@@ -932,9 +943,17 @@
     
 <p>Return the longest and shortest flights from a collection of flights.</p>
 
-<p>Returns a hash with keys of :max, :min, and :zero, which contain the longest Flight(s), shortest non-zero-length Flight(s), and zero-length Flight(s) respectively. Each of these values is itself a hash, with an array of two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> as each key, and the distance in statute miles as each value.</p>
+<p>Returns a hash with keys of :max, :min, and :zero, which contain the
+longest Flight(s), shortest non-zero-length Flight(s), and zero-length
+Flight(s) respectively. Each of these values is itself a hash, with an
+array of two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> as each key, and the distance in statute
+miles as each value.</p>
 
-<p>Zero-length flights are strictly defined as flights where the origin and destination airports are the same. Theoretically, if a flight were flown between two airports that were less than 0.5 miles apart, then the flight would be included in :min rather than :zero, even though its integer distance would be rounded to zero.</p>
+<p>Zero-length flights are strictly defined as flights where the origin and
+destination airports are the same. Theoretically, if a flight were flown
+between two airports that were less than 0.5 miles apart, then the flight
+would be included in :min rather than :zero, even though its integer
+distance would be rounded to zero.</p>
 
 
   </div>
@@ -1063,7 +1082,9 @@
       
         &mdash;
         <div class='inline'>
-<p>If set to true, will consider Flights with unknown distances to have zero distance. If set to false, will return nil if any of the Flight distances are unknown.</p>
+<p>If set to true, will consider Flights with unknown distances to have zero
+distance. If set to false, will return nil if any of the Flight distances
+are unknown.</p>
 </div>
       
     </li>
@@ -1127,9 +1148,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Nov 24 22:08:48 2019 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.5).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>

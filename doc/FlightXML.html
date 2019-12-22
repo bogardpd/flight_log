@@ -6,7 +6,7 @@
 <title>
   Module: FlightXML
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -86,13 +86,21 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Provides utilities for interacting with with FlightAware&#39;s FlightXML API.</p>
+<p>Provides utilities for interacting with with FlightAware&#39;s FlightXML
+API.</p>
 
-<p>This is used to look up <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> data that couldn&#39;t be found from a <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> or <span class='object_link'><a href="PKPass.html" title="PKPass (class)">PKPass</a></span> for the purposes of prepopulating the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new flight</a></span> form. It&#39;s also used to look up <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> data when creating a <span class='object_link'><a href="AirportsController.html#new-instance_method" title="AirportsController#new (method)">new airport</a></span>.</p>
+<p>This is used to look up <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> data that couldn&#39;t be found from a
+<span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> or <span class='object_link'><a href="PKPass.html" title="PKPass (class)">PKPass</a></span> for the purposes of prepopulating the
+<span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new flight</a></span> form. It&#39;s also used to look up
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> data when creating a <span class='object_link'><a href="AirportsController.html#new-instance_method" title="AirportsController#new (method)">new airport</a></span>.</p>
 
-<p>Note: Since FlightXML has its own database of flights, airports, and routes, when you see these terms in this documentation, it refers to FlightXML and not this applications models, unless it specifically links to <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>, <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>, or <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span>.</p>
+<p>Note: Since FlightXML has its own database of flights, airports, and
+routes, when you see these terms in this documentation, it refers to
+FlightXML and not this applications models, unless it specifically links to
+<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>, <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>, or <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span>.</p>
 
-<p>Uses the <a href="http://savonrb.com" target="_parent" title="/ Savon">/ Savon</a> gem as a SOAP client to interact with FlightXML.</p>
+<p>Uses the <a href="http://savonrb.com/" target="_parent" title="Savon">Savon</a> gem as a SOAP client to interact with
+FlightXML.</p>
 
 
   </div>
@@ -110,16 +118,11 @@
   </ul>
 
 </div>
-  
-    <h2>
-      Constant Summary
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      
-        <dt id="ERROR-constant" class="">ERROR =
-          <div class="docstring">
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="ERROR-constant" class="">ERROR =
+        <div class="docstring">
   <div class="discussion">
     
 <p>The default error message to return if a FlightXML lookup failed.</p>
@@ -131,11 +134,10 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We couldn’t find your flight data on FlightAware. You will have to manually enter some fields.</span><span class='tstring_end'>&quot;</span></span></pre></dd>
-      
-    </dl>
-  
+      </dt>
+      <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>We couldn’t find your flight data on FlightAware. You will have to manually enter some fields.</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+    
+  </dl>
 
 
 
@@ -313,7 +315,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Looks up a FlightXML unique flight ID for flights matching a flight identifier string and UTC departure date/time.</p>
+<p>Looks up a FlightXML unique flight ID for flights matching a flight
+identifier string and UTC departure date/time.</p>
 </div></span>
   
 </li>
@@ -392,6 +395,7 @@
       <pre class="lines">
 
 
+33
 34
 35
 36
@@ -400,11 +404,10 @@
 39
 40
 41
-42
-43</pre>
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 33</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_airport_coordinates'>airport_coordinates</span><span class='lparen'>(</span><span class='id identifier rubyid_airport_icao'>airport_icao</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -485,6 +488,7 @@
       <pre class="lines">
 
 
+48
 49
 50
 51
@@ -493,11 +497,10 @@
 54
 55
 56
-57
-58</pre>
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 48</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_airport_timezone'>airport_timezone</span><span class='lparen'>(</span><span class='id identifier rubyid_airport_icao'>airport_icao</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
@@ -578,12 +581,12 @@
       <pre class="lines">
 
 
+63
 64
-65
-66</pre>
+65</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 63</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_airport_timezones'>airport_timezones</span><span class='lparen'>(</span><span class='id identifier rubyid_airport_icao_array'>airport_icao_array</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_airport_icao_array'>airport_icao_array</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_icao'>icao</span><span class='op'>|</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_icao'>icao</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_airport_timezone'>airport_timezone</span><span class='lparen'>(</span><span class='id identifier rubyid_icao'>icao</span><span class='rparen'>)</span> <span class='rbrace'>}</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_reduce'>reduce</span><span class='lparen'>(</span><span class='symbol'>:merge</span><span class='rparen'>)</span>
@@ -639,15 +642,13 @@
 
 25
 26
-27
-28</pre>
+27</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_client'>client</span>
-  <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_env'>env</span><span class='period'>.</span><span class='id identifier rubyid_test?'>test?</span> <span class='comment'># Don&#39;t do FlightXML lookups during automated tests
-</span>  <span class='kw'>return</span> <span class='const'>Savon</span><span class='period'>.</span><span class='id identifier rubyid_client'>client</span><span class='lparen'>(</span><span class='label'>wsdl:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>https://flightxml.flightaware.com/soap/FlightXML2/wsdl</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>basic_auth:</span> <span class='lbracket'>[</span><span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:flightaware</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:username</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:flightaware</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:api_key</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='const'>Savon</span><span class='period'>.</span><span class='id identifier rubyid_client'>client</span><span class='lparen'>(</span><span class='label'>wsdl:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>https://flightxml.flightaware.com/soap/FlightXML2/wsdl</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>basic_auth:</span> <span class='lbracket'>[</span><span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:flightaware</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:username</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:flightaware</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:api_key</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -668,9 +669,14 @@
     
 <p>Looks up flight data for flights matching a flight identifier string.</p>
 
-<p>A flight identifier is a string containing an airline code and a flight number, with no space between them (e.g. AA1234 or UAL5678). The airline can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not be used (the ICAO code must then be used in these cases).</p>
+<p>A flight identifier is a string containing an airline code and a flight
+number, with no space between them (e.g. AA1234 or UAL5678). The airline
+can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not
+be used (the ICAO code must then be used in these cases).</p>
 
-<p>Usually the multiple matching flights are the same flight number on different days, but some airlines reuse a flight number multiple times per day for different routes.</p>
+<p>Usually the multiple matching flights are the same flight number on
+different days, but some airlines reuse a flight number multiple times per
+day for different routes.</p>
 
 
   </div>
@@ -722,6 +728,7 @@
       <pre class="lines">
 
 
+80
 81
 82
 83
@@ -732,23 +739,18 @@
 88
 89
 90
-91
-92
-93
-94</pre>
+91</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 81</span>
+      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_flight_lookup'>flight_lookup</span><span class='lparen'>(</span><span class='id identifier rubyid_ident'>ident</span><span class='rparen'>)</span>
   <span class='kw'>begin</span>
-   
     <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_client'>client</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='symbol'>:flight_info_ex</span><span class='comma'>,</span> <span class='label'>message:</span> <span class='lbrace'>{</span>
       <span class='label'>ident:</span> <span class='id identifier rubyid_ident'>ident</span><span class='comma'>,</span>
       <span class='label'>how_many:</span> <span class='int'>15</span><span class='comma'>,</span>
       <span class='label'>offset:</span> <span class='int'>0</span>
       <span class='rbrace'>}</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_hash'>to_hash</span><span class='lbracket'>[</span><span class='symbol'>:flight_info_ex_results</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:flight_info_ex_result</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:flights</span><span class='rbracket'>]</span>
-    
     <span class='kw'>return</span> <span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_wrap'>wrap</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span> <span class='comment'># Ensure result is an array even if it&#39;s a single flight
 </span>  <span class='kw'>rescue</span>
     <span class='kw'>return</span> <span class='kw'>nil</span>
@@ -823,6 +825,9 @@
       <pre class="lines">
 
 
+97
+98
+99
 100
 101
 102
@@ -848,13 +853,10 @@
 122
 123
 124
-125
-126
-127
-128</pre>
+125</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 97</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_form_values'>form_values</span><span class='lparen'>(</span><span class='id identifier rubyid_fa_flight_id'>fa_flight_id</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_fa_flight_id'>fa_flight_id</span>
@@ -902,9 +904,13 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Looks up a FlightXML unique flight ID for flights matching a flight identifier string and UTC departure date/time.</p>
+<p>Looks up a FlightXML unique flight ID for flights matching a flight
+identifier string and UTC departure date/time.</p>
 
-<p>A flight identifier is a string containing an airline code and a flight number, with no space between them (e.g. AA1234 or UAL5678). The airline can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not be used (the ICAO code must then be used in these cases).</p>
+<p>A flight identifier is a string containing an airline code and a flight
+number, with no space between them (e.g. AA1234 or UAL5678). The airline
+can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not
+be used (the ICAO code must then be used in these cases).</p>
 
 
   </div>
@@ -972,6 +978,9 @@
       <pre class="lines">
 
 
+140
+141
+142
 143
 144
 145
@@ -981,13 +990,10 @@
 149
 150
 151
-152
-153
-154
-155</pre>
+152</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 143</span>
+      <pre class="code"><span class="info file"># File 'app/modules/flight_xml.rb', line 140</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_get_flight_id'>get_flight_id</span><span class='lparen'>(</span><span class='id identifier rubyid_ident'>ident</span><span class='comma'>,</span> <span class='id identifier rubyid_departure_utc'>departure_utc</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_ident'>ident</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_departure_utc'>departure_utc</span>
@@ -1012,9 +1018,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Nov 24 22:08:47 2019 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.5).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>

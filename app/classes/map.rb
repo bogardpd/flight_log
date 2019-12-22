@@ -47,17 +47,17 @@ class Map
   end
 
   # Checks whether or not this map contains enough data to create a
-  # {http://www.gcmap.com/ Great Circle Mapper} map.
+  # {http://www.gcmap.com Great Circle Mapper} map.
   #
   # @return [Boolean] whether or not this map has a non-blank
-  #   {http://www.gcmap.com/ Great Circle Mapper} querystring
-  # @see http://www.gcmap.com/ Great Circle Mapper
+  #   {http://www.gcmap.com Great Circle Mapper} querystring
+  # @see http://www.gcmap.com Great Circle Mapper
   def gcmap_exists?
     gcmap_query.present?
   end
 
   # Returns all regions contained in the current map. Used for generating
-  # region selection tabs above a {http://www.gcmap.com/ Great Circle Mapper}
+  # region selection tabs above a {http://www.gcmap.com Great Circle Mapper}
   # map image.
   #
   # Regions are defined by an array of ICAO code prefixes (e.g. ["K","PH"]).

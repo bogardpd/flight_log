@@ -6,7 +6,7 @@
 <title>
   Class: AircraftFamily
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
@@ -108,11 +108,23 @@
     
 <p>Defines a model for aircraft families.</p>
 
-<p>For the purposes of this application, an AircraftFamily object can either be a parent <strong>family</strong> (e.g. Boeing 737), or a child <strong>type</strong> (e.g. Boeing 737-800). A family can have zero to many types, but each type must have exactly one family. The relationship is defined by a parent_id column, which is nil for parent families, but set for child types.</p>
+<p>For the purposes of this application, an AircraftFamily object can either
+be a parent <strong>family</strong> (e.g. Boeing 737), or a child
+<strong>type</strong> (e.g. Boeing 737-800). A family can have zero to many
+types, but each type must have exactly one family. The relationship is
+defined by a parent_id column, which is nil for parent families, but set
+for child types.</p>
 
-<p>Generally, a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> would refer to an AircraftFamily type for its aircraft_family_id; however, if the specific type is not known, it can refer to an AircraftFamily family.</p>
+<p>Generally, a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> would refer to an AircraftFamily type for its
+aircraft_family_id; however, if the specific type is not known, it can
+refer to an AircraftFamily family.</p>
 
-<p>Aircraft types are defined by ICAO codes; if two aircraft variants have the same ICAO type designator, then they are considered the same aircraft type within this application. Aircraft families are defined by the most generic IATA type code available – preferably an IATA code covering an entire family of aircraft, but if not, the IATA code for the most common variant of that family should be used.</p>
+<p>Aircraft types are defined by ICAO codes; if two aircraft variants have the
+same ICAO type designator, then they are considered the same aircraft type
+within this application. Aircraft families are defined by the most generic
+IATA type code available – preferably an IATA code covering an entire
+family of aircraft, but if not, the IATA code for the most common variant
+of that family should be used.</p>
 
 
   </div>
@@ -121,16 +133,11 @@
   
 
 </div>
-  
-    <h2>
-      Constant Summary
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      
-        <dt id="CATEGORIES-constant" class="">CATEGORIES =
-          <div class="docstring">
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="CATEGORIES-constant" class="">CATEGORIES =
+        <div class="docstring">
   <div class="discussion">
     
 <p>Valid categories.</p>
@@ -142,16 +149,16 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='lbrace'>{</span>
+      </dt>
+      <dd><pre class="code"><span class='lbrace'>{</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>wide_body</span><span class='tstring_end'>&quot;</span></span>    <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Wide-body</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>narrow_body</span><span class='tstring_end'>&quot;</span></span>  <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Narrow-body</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>regional_jet</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Regional Jet</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>turboprop</span><span class='tstring_end'>&quot;</span></span>    <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Turboprop</span><span class='tstring_end'>&quot;</span></span>
 <span class='rbrace'>}</span></pre></dd>
-      
-        <dt id="CAPS_ATTRS-constant" class="">CAPS_ATTRS =
-          <div class="docstring">
+    
+      <dt id="CAPS_ATTRS-constant" class="">CAPS_ATTRS =
+        <div class="docstring">
   <div class="discussion">
     
 <p>Form fields which should be saved capitalized.</p>
@@ -163,11 +170,10 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>iata_aircraft_code</span><span class='words_sep'> </span><span class='tstring_content'>icao_aircraft_code</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
-      
-    </dl>
-  
+      </dt>
+      <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>iata_aircraft_code</span><span class='words_sep'> </span><span class='tstring_content'>icao_aircraft_code</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
+    
+  </dl>
 
 
 
@@ -201,7 +207,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of parent families in a format ready for <code>options_for_select</code>.</p>
+<p>Returns an array of parent families in a format ready for
+<code>options_for_select</code>.</p>
 </div></span>
   
 </li>
@@ -225,7 +232,11 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of AircraftFamily parent families (not child types), with a hash for each family containing the aircraft manufacturer, name, IATA code, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that aircraft family (including flights on its child aircraft types), sorted by number of flights descending.</p>
+<p>Returns an array of AircraftFamily parent families (not child types), with
+a hash for each family containing the aircraft manufacturer, name, IATA
+code, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that aircraft family (including
+flights on its child aircraft types), sorted by number of flights
+descending.</p>
 </div></span>
   
 </li>
@@ -249,7 +260,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns a nested array of families and types in a format ready for <code>grouped_options_for_select</code>.</p>
+<p>Returns a nested array of families and types in a format ready for
+<code>grouped_options_for_select</code>.</p>
 </div></span>
   
 </li>
@@ -273,7 +285,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Accepts a flyer, the viewing user, and date range, and returns all aircraft families that had their first flight in this date range.</p>
+<p>Accepts a flyer, the viewing user, and date range, and returns all aircraft
+families that had their first flight in this date range.</p>
 </div></span>
   
 </li>
@@ -306,7 +319,9 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Takes a set of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> and breaks it down by the types of this AircraftFamily, returning an array containing a hash of ID, type name, ICAO code, and the number of flights for each type.</p>
+<p>Takes a set of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> and breaks it down by the types of this
+AircraftFamily, returning an array containing a hash of ID, type name, ICAO
+code, and the number of flights for each type.</p>
 </div></span>
   
 </li>
@@ -330,7 +345,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array containing the current family&#39;s ID and the IDs of all child types.</p>
+<p>Returns an array containing the current family&#39;s ID and the IDs of all
+child types.</p>
 </div></span>
   
 </li>
@@ -402,7 +418,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the location of an illustration of this aircraft family/type, or nil if the illustration doesn&#39;t exist.</p>
+<p>Returns the location of an illustration of this aircraft family/type, or
+nil if the illustration doesn&#39;t exist.</p>
 </div></span>
   
 </li>
@@ -426,7 +443,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns true if this AircraftFamily parent family, false if it&#39;s a child type.</p>
+<p>Returns true if this AircraftFamily parent family, false if it&#39;s a
+child type.</p>
 </div></span>
   
 </li>
@@ -450,7 +468,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of the current aircraft type and its parent types, all the way up to the highest family it belongs to.</p>
+<p>Returns an array of the current aircraft type and its parent types, all the
+way up to the highest family it belongs to.</p>
 </div></span>
   
 </li>
@@ -484,7 +503,11 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of parent families in a format ready for <code>options_for_select</code>. Used for generating aircraft parent family select boxes when the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new</a></span> flight form prepopulation encounters an unknown aircraft ICAO code, and has to ask the user what family this new type belongs to.</p>
+<p>Returns an array of parent families in a format ready for
+<code>options_for_select</code>. Used for generating aircraft parent family
+select boxes when the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new</a></span> flight form prepopulation
+encounters an unknown aircraft ICAO code, and has to ask the user what
+family this new type belongs to.</p>
 
 
   </div>
@@ -543,9 +566,14 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of AircraftFamily parent families (not child types), with a hash for each family containing the aircraft manufacturer, name, IATA code, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that aircraft family (including flights on its child aircraft types), sorted by number of flights descending.</p>
+<p>Returns an array of AircraftFamily parent families (not child types), with
+a hash for each family containing the aircraft manufacturer, name, IATA
+code, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that aircraft family (including
+flights on its child aircraft types), sorted by number of flights
+descending.</p>
 
-<p>Used on various “index” and “show” views to generate a table of aircraft families and their flight counts.</p>
+<p>Used on various “index” and “show” views to generate a table of aircraft
+families and their flight counts.</p>
 
 
   </div>
@@ -565,7 +593,8 @@
       
         &mdash;
         <div class='inline'>
-<p>a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> to calculate AircraftFamily flight counts for</p>
+<p>a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> to calculate AircraftFamily flight counts
+for</p>
 </div>
       
     </li>
@@ -617,7 +646,9 @@
       
         &mdash;
         <div class='inline'>
-<p>whether to include aircraft families with no flights in the hash. Used by <span class='object_link'><a href="AircraftFamiliesController.html#index-instance_method" title="AircraftFamiliesController#index (method)">AircraftFamiliesController#index</a></span> to generate an aircraft families with no flights table.</p>
+<p>whether to include aircraft families with no flights in the hash. Used by
+<span class='object_link'><a href="AircraftFamiliesController.html#index-instance_method" title="AircraftFamiliesController#index (method)">AircraftFamiliesController#index</a></span> to generate an aircraft families with no
+flights table.</p>
 </div>
       
     </li>
@@ -724,7 +755,10 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a nested array of families and types in a format ready for <code>grouped_options_for_select</code>. Used for generating aircraft family/type select boxes on the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">add</a></span> and <span class='object_link'><a href="FlightsController.html#edit-instance_method" title="FlightsController#edit (method)">edit</a></span> <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> form.</p>
+<p>Returns a nested array of families and types in a format ready for
+<code>grouped_options_for_select</code>. Used for generating aircraft
+family/type select boxes on the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">add</a></span> and
+<span class='object_link'><a href="FlightsController.html#edit-instance_method" title="FlightsController#edit (method)">edit</a></span> <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> form.</p>
 
 
   </div>
@@ -791,7 +825,10 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Accepts a flyer, the viewing user, and date range, and returns all aircraft families that had their first flight in this date range. Types are included as part of their parent family and are not listed separately. Used on <span class='object_link'><a href="FlightsController.html#show_date_range-instance_method" title="FlightsController#show_date_range (method)">FlightsController#show_date_range</a></span> to highlight new aircraft families.</p>
+<p>Accepts a flyer, the viewing user, and date range, and returns all aircraft
+families that had their first flight in this date range. Types are included
+as part of their parent family and are not listed separately. Used on
+<span class='object_link'><a href="FlightsController.html#show_date_range-instance_method" title="FlightsController#show_date_range (method)">FlightsController#show_date_range</a></span> to highlight new aircraft families.</p>
 
 
   </div>
@@ -916,9 +953,14 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Takes a set of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> and breaks it down by the types of this AircraftFamily, returning an array containing a hash of ID, type name, ICAO code, and the number of flights for each type. Also includes a hash for this family, which counts the number of flights in this family that are not assigned to a specific type.</p>
+<p>Takes a set of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> and breaks it down by the types of this
+AircraftFamily, returning an array containing a hash of ID, type name, ICAO
+code, and the number of flights for each type. Also includes a hash for
+this family, which counts the number of flights in this family that are not
+assigned to a specific type.</p>
 
-<p>Used to generate a table of AircraftFamily sub-types and their flight frequencies when showing an AircraftFamily family.</p>
+<p>Used to generate a table of AircraftFamily sub-types and their flight
+frequencies when showing an AircraftFamily family.</p>
 
 
   </div>
@@ -938,7 +980,8 @@
       
         &mdash;
         <div class='inline'>
-<p>the collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> to calculate sub-type flight frequencies for</p>
+<p>the collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> to calculate sub-type flight frequencies
+for</p>
 </div>
       
     </li>
@@ -1012,7 +1055,9 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array containing the current family&#39;s ID and the IDs of all child types. Used to generate the queries to show all flights of a given family, including its child types.</p>
+<p>Returns an array containing the current family&#39;s ID and the IDs of all
+child types. Used to generate the queries to show all flights of a given
+family, including its child types.</p>
 
 
   </div>
@@ -1079,7 +1124,8 @@
     
 <p>Formats the name of this family/type.</p>
 
-<p>This method currently applies no additional formatting; it&#39;s used as a placeholder in case formatting is needed in the future.</p>
+<p>This method currently applies no additional formatting; it&#39;s used as a
+placeholder in case formatting is needed in the future.</p>
 
 
   </div>
@@ -1197,7 +1243,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the location of an illustration of this aircraft family/type, or nil if the illustration doesn&#39;t exist.</p>
+<p>Returns the location of an illustration of this aircraft family/type, or
+nil if the illustration doesn&#39;t exist.</p>
 
 
   </div>
@@ -1273,7 +1320,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true if this AircraftFamily parent family, false if it&#39;s a child type.</p>
+<p>Returns true if this AircraftFamily parent family, false if it&#39;s a
+child type.</p>
 
 
   </div>
@@ -1332,7 +1380,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of the current aircraft type and its parent types, all the way up to the highest family it belongs to.</p>
+<p>Returns an array of the current aircraft type and its parent types, all the
+way up to the highest family it belongs to.</p>
 
 
   </div>
@@ -1351,7 +1400,8 @@
       
         &mdash;
         <div class='inline'>
-<p>An array of AircraftFamilies, starting with the current type and ending with the highest ancestor</p>
+<p>An array of AircraftFamilies, starting with the current type and ending
+with the highest ancestor</p>
 </div>
       
     </li>
@@ -1394,9 +1444,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Nov 24 22:08:49 2019 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.5).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>
