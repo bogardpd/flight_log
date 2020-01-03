@@ -114,7 +114,6 @@ module FlightXML
     fields.store(:origin_airport_icao, flight_info_ex[:origin]) if flight_info_ex[:origin]
     fields.store(:destination_airport_icao, flight_info_ex[:destination]) if flight_info_ex[:destination]
     fields.store(:aircraft_family_icao, flight_info_ex[:aircrafttype]) if flight_info_ex[:aircrafttype]
-    Logger.new("#{Rails.root}/log/aircraft_type.log").info("#{Time.now} | #{fields[:origin_airport_icao]}-#{fields[:destination_airport_icao]} | #{fields[:aircraft_family_icao]}")
     
     operator_icao = flight_info_ex[:ident][0,3] if flight_info_ex[:ident]
     fields.store(:operator_icao, flight_info_ex[:ident][0,3]) if operator_icao
