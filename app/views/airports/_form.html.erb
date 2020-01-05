@@ -30,6 +30,20 @@
     <%= f.text_field :country %>
   </p>
 
+  <% if @airport.persisted? %>
+    
+    <p>
+      <%= f.label :latitude, "Latitude (decimal degrees)" %><br />
+      <%= f.text_field :latitude %>
+    </p>
+
+    <p>
+      <%= f.label :longitude, "Longitude (decimal degrees)" %><br />
+      <%= f.text_field :longitude %>
+    </p>
+
+  <% end %>
+
   <p>
     <%= f.label :slug, "Unique Slug" %><br />
     <%= f.text_field :slug, size: 25 %><br />

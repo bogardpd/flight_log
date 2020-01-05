@@ -27,6 +27,8 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("input#airport_icao_code")
     assert_select("input#airport_city")
     assert_select("input#airport_country")
+    assert_select("input#airport_latitude", {count: 0})
+    assert_select("input#airport_longitude", {count: 0})
     assert_select("input#airport_slug")
   end
 
@@ -47,6 +49,8 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("input#airport_icao_code[value=?]", airport.icao_code)
     assert_select("input#airport_city[value=?]",      airport.city)
     assert_select("input#airport_country[value=?]",   airport.country)
+    assert_select("input#airport_latitude[value=?]",  airport.latitude.to_s)
+    assert_select("input#airport_longitude[value=?]", airport.longitude.to_s)
     assert_select("input#airport_slug[value=?]",      airport.slug)
   end
 
