@@ -40,7 +40,7 @@
 
 <h2 id="superlatives">Longest and Shortest Routes Flown on <%= @tail_number %></h2>
 
-<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
+<%= render partial: "routes/route_superlatives_table", locals: {superlatives: @route_superlatives} %>
 
 <h2 id="flights"><%= @tail_number %> Flight List</h2>
 <%= render partial: "flight_table", locals: {is_summary: true} %>

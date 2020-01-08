@@ -1,6 +1,6 @@
 <%= form_for(@trip) do |f| %>
 
-  <%= render "error_messages" %>
+  <%= render partial: "error_messages" %>
 
   <p>
     <%= f.label :name, "Trip Name" %><br />

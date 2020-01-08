@@ -17,7 +17,7 @@
 </div>
 
 <% if @boarding_pass.data.present? %>
-  <%= render "bcbp", boarding_pass: @boarding_pass %>
+  <%= render partial: "bcbp", locals: {boarding_pass: @boarding_pass} %>
 <% else %>
   <p>Weʼre sorry, but we were unable to parse the boarding pass data provided.</p>
 <% end %>

@@ -33,7 +33,7 @@
 <%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
 <h2 id="superlatives">Longest and Shortest Routes Flown in <%= TravelClass.title(@class) %></h2>
-<%= render "routes/route_superlatives_table", :superlatives => @route_superlatives %>
+<%= render partial: "routes/route_superlatives_table", locals: {superlatives: @route_superlatives} %>
 
 <h2 id="flights"><%= TravelClass.title(@class) %> Flight List</h2>
 <%= render partial: "flight_table", locals: {is_summary: true} %>

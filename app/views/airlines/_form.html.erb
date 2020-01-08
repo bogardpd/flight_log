@@ -1,6 +1,6 @@
 <%= form_for(@airline) do |f| %>
 
-  <%= render "error_messages" %>
+  <%= render partial: "error_messages" %>
 
   <p>
     <%= f.label :airline_name, "Airline Name" %><br />

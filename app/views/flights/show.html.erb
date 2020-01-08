@@ -111,5 +111,5 @@
 </table>
 
 <% if logged_in? && @boarding_pass.data.present? %>
-  <%= render "bcbp", boarding_pass: @boarding_pass %>
+  <%= render partial: "bcbp", locals: {boarding_pass: @boarding_pass} %>
 <% end %>

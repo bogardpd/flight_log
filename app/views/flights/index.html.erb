@@ -6,7 +6,7 @@
 
 <% if @flights.any? %>
 
-<%= render "flight_year_links" %>
+<%= render partial: "flight_year_links" %>
 
 <% end %>
 
@@ -23,6 +23,6 @@
 
 <% else %>
 
-  <%= render "error_no_flights" %>
+  <%= render partial: "error_no_flights" %>
 
 <% end %>

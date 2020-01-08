@@ -9,7 +9,7 @@
 
 <% if @tail_numbers_table.empty? %>
 	<% if @flights.empty? %>
-		<%= render "error_no_flights" %>
+		<%= render partial: "error_no_flights" %>
 	<% else %>
 		<%= render_message(:warning, "There are no flights in the flight log that include a tail number!") %>
 	<% end %>

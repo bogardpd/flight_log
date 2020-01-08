@@ -13,7 +13,7 @@
   
   <%= csrf_meta_tag %>
   <%= javascript_include_tag :application %>
-	<%= render "layouts/shim" %>
+	<%= render partial: "layouts/shim" %>
   <meta name="author" content="Paul Bogard" />
   <%= meta_description_tag %>
   <%= yield :head_includes %>
@@ -29,9 +29,9 @@
 
   <div id="container">
 
-    <%= render "layouts/header" %>
-    <%= render "layouts/navigation" %>
-    <%= render "layouts/breadcrumbs" %>
+    <%= render partial: "layouts/header" %>
+    <%= render partial: "layouts/navigation" %>
+    <%= render partial: "layouts/breadcrumbs" %>
     
     <div id="body">
           
@@ -48,8 +48,8 @@
       </section>
     </div>
     
-    <%= render "layouts/admin_panel" %>
-    <%= render "layouts/footer" %>
+    <%= render partial: "layouts/admin_panel" %>
+    <%= render partial: "layouts/footer" %>
     
     <%= debug(params) if Rails.env.development? %>
   </div>

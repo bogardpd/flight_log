@@ -18,7 +18,7 @@
   <tr>
     <td>
       <div style="width: 30em;">
-        <%= render "flights/bcbp_compact", boarding_pass: pass %>
+        <%= render partial: "flights/bcbp_compact", locals: {boarding_pass: pass} %>
       </div>
     </td>
     <td>

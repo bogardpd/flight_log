@@ -8,7 +8,7 @@
 
 <%= form_for(@aircraft_family) do |f| %>
 
-  <%= render "error_messages" %>
+  <%= render partial: "error_messages" %>
   
   <p>
     <%= f.label :parent_id, "Parent Aircraft Family" %><br/>

@@ -1,7 +1,7 @@
 <% fields ||= Hash.new %>
 
 <%= form_for(flight) do |f| %>
-  <%= render "error_messages" %>
+  <%= render partial: "error_messages" %>
 
   <p>Trip: <span id="trip-name"><%= flight.trip.name %></span></p>
 

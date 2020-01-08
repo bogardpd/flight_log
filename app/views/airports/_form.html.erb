@@ -1,6 +1,6 @@
 <%= form_for(@airport) do |f| %>
 
-  <%= render "error_messages" %>
+  <%= render partial: "error_messages" %>
 
   <p>
     <%= f.label :iata_code, "IATA Code" %><br />
