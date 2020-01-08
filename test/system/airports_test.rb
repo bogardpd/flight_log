@@ -8,19 +8,22 @@ class AirportsTest < ApplicationSystemTestCase
     stub_aws_head_images
     stub_gcmap_get_map
     stub_flight_xml_get_wsdl
-    stub_flight_xml_post_timeout
   end
 
   test "creating, updating, and destroying an airport" do
-
     airport = {
       iata_code:   "HEL",
       icao_code:   "EFHK",
       city:        "Helsinki",
       city_update: "Helsinki (Vantaa)",
       country:     "Finland",
-      slug:        "HEL"
+      slug:        "HEL",
+      latitude:    60.31722,
+      longitude:   24.96333
     }
+
+    stub_flight_xml_post_airport_info(airports(:airport_with_no_coordinates).icao_code, {})
+    stub_flight_xml_post_airport_info(airport[:icao_code], {latitude: airport[:latitude], longitude: airport[:longitude]})
 
     system_log_in_as(users(:user_one))
 
@@ -35,6 +38,10 @@ class AirportsTest < ApplicationSystemTestCase
       fill_in("Country",     with: airport[:country])
       fill_in("Unique Slug", with: airport[:slug])
       click_on("Add Airport")
+
+      new_airport = Airport.find_by(slug: airport[:slug])
+      assert_equal(airport[:latitude], new_airport.latitude)
+      assert_equal(airport[:longitude], new_airport.longitude)
     end
 
     # Update airport:
