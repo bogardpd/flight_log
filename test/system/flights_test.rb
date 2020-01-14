@@ -160,6 +160,61 @@ class FlightsTest < ApplicationSystemTestCase
     end
 
   end
+
+  test "creating a flight with unknown FlightXML ICAO codes" do
+    unknown_aircraft = {icao: "A322", iata: "322", manufacturer: "Airbus", type: "A322", category: "Narrow-body", slug: "Airbus-A322"}
+    unknown_airline = {icao: "AAA", iata: "A2", name: "American Airline Association", slug: "American-Airline-Association"}
+    unknown_airport = {icao: "ZZZZ", iata: "ZZZ", city: "Zizzville", country: "Zazz", slug: "ZZZ"}
+    stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {faFlightID: @fa_flight[:fa_flight_id]})
+    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: unknown_aircraft[:icao], ident: unknown_airline[:icao] + "1111", origin: unknown_airport[:icao]})
+    stub_flight_xml_post_airport_info(unknown_airport[:icao], {})
+    stub_flight_xml_post_airport_info(@fa_flight[:origin], {})    
+    stub_flight_xml_post_airport_info(@fa_flight[:destination], {})    
+    stub_flight_xml_airline_flight_info(@fa_flight[:fa_flight_id], {})
+
+    system_log_in_as(users(:user_one))
+
+    assert_difference("Flight.count", 1) do
+      visit(trip_path(@trip))
+      within("#message-boarding-passes-available-for-import") do
+        click_on("import")
+      end
+
+      select(@fa_flight[:airline_name], from: :airline_icao)
+      fill_in("flight_number", with: @fa_flight[:flight_number])
+      click_on("Search")
+      click_on("Select")
+
+      assert_difference("Airport.count", 1) do
+        # New airport form
+        fill_in("IATA Code", with: unknown_airport[:iata])
+        fill_in("City", with: unknown_airport[:city])
+        fill_in("Country", with: unknown_airport[:country])
+        fill_in("Slug", with: unknown_airport[:slug])
+        click_on("Continue")
+      end
+      
+      assert_difference("AircraftFamily.count", 1) do
+        # New aircraft form
+        fill_in("Manufacturer", with: unknown_aircraft[:manufacturer])
+        fill_in("Aircraft Type Name", with: unknown_aircraft[:type])
+        fill_in("IATA Aircraft Code", with: unknown_aircraft[:iata])
+        fill_in("Unique Slug", with: unknown_aircraft[:slug])
+        select(unknown_aircraft[:category], from: :aircraft_family_category)
+        click_on("Continue")
+      end
+
+      assert_difference("Airline.count", 1) do
+        # New airline form
+        fill_in("Airline Name", with: unknown_airline[:name])
+        fill_in("IATA Airline Code", with: unknown_airline[:iata])
+        fill_in("Unique Slug", with: unknown_airline[:slug])
+        click_on("Continue")
+      end
+
+      click_on("Add Flight")
+    end
+  end
   
   private
 
