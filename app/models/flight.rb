@@ -16,6 +16,9 @@ class Flight < ApplicationRecord
   # Form fields which should be saved capitalized and with all non-alphanumeric
   # characters removed.
   SIMPLIFY_ATTRS = %w( tail_number )
+
+  # Warning text for if departure date and departure UTC might be too far apart
+  WARNING_DEPARTURE_DATE_DEPARTURE_UTC_TOO_FAR = ActionController::Base.helpers.sanitize("Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?")
   
   before_save :nil_if_blank
   before_save :strip_blanks

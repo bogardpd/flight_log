@@ -215,6 +215,38 @@ class FlightsTest < ApplicationSystemTestCase
       click_on("Add Flight")
     end
   end
+
+  test "creating a flight with departure date and UTC datetime being more than 48 hours apart" do
+    current_date = Time.parse("2020-01-01 00:00:00")
+    future_date = current_date + 3.days
+
+    flight = {
+      origin_airport:      airports(:airport_ord),
+      destination_airport: airports(:airport_dfw),
+      trip_section:        1,
+      airline:             airlines(:airline_american),
+    }
+
+    system_log_in_as(users(:user_one))
+
+    assert_difference("Flight.count", 1) do
+      visit(trip_path(@trip))
+      click_on("Add Flight")
+      click_on("Create a new flight")
+
+      fill_in("Trip Section", with: flight[:trip_section])
+      select(flight[:origin_airport].iata_code, from: :flight_origin_airport_id)
+      select(flight[:destination_airport].iata_code, from: :flight_destination_airport_id)
+      select(flight[:airline].airline_name, from: :flight_airline_id)
+      select_datetime(current_date, "flight_departure_date", include_time: false)
+      select_datetime(future_date, "flight_departure_utc", include_time: true)
+      
+      click_on("Add Flight")
+    end
+
+    assert_css("div.message-warning", text: Flight::WARNING_DEPARTURE_DATE_DEPARTURE_UTC_TOO_FAR)
+
+  end
   
   private
 
