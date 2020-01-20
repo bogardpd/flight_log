@@ -88,7 +88,7 @@ module ApplicationHelper
   # @param id [String] an ID for the message block
   # @return [ActiveSupport::SafeBuffer] a message <div>
   def render_message(type, text, id=nil)
-    render partial: "layouts/message", locals: {type: type, text: text, id: id}
+    render partial: "layouts/message", locals: {message: {type: type, text: text, id: id}}
   end
   
   # Renders all messages (contained in \@messages) and flash messages for a
@@ -100,7 +100,8 @@ module ApplicationHelper
     order = [:error, :warning, :success, :info]
     @messages ||= []
     @messages.concat(flash.map{|k,v| {type: k.to_sym, text: v}}) if flash
-    safe_join(@messages.sort_by{|m| order.index(m[:type]) || order.length}.map{|m| render_message(m[:type], m[:text], m[:id]) })
+    @messages.sort_by!{|m| order.index(m[:type]) || order.length}
+    render(partial: "layouts/message", collection: @messages)
   end
   
   # Renders an image containing an icon for an airline's logo.
