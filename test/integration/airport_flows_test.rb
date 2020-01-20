@@ -2,8 +2,6 @@ require "test_helper"
 
 class AirportFlowsTest < ActionDispatch::IntegrationTest
 
-  include ActionView::Helpers::NumberHelper
-
   def setup
     stub_aws_head_images
 
@@ -82,7 +80,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#airport-count-table") do
       check_flight_row(@visible_airport, visits[@visible_airport.id], "This view shall show airports with visible flights")
       check_flight_row(@hidden_airport, visits[@hidden_airport.id], "This view shall show airports with only hidden flights when logged in")
-      assert_select("td#airport-count-total", {text: /^#{number_with_delimiter(visits.size)} airports?/}, "Ranked tables shall have a total row with a correct total")
+      assert_select("td#airport-count-total[data-total=?]", visits.size.to_s, {}, "Ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#airports-with-no-flights-table") do
@@ -165,7 +163,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   def check_flight_row(airport, expected_visit_count, error_message)
     assert_select("tr#airport-count-row-#{airport.id}", {}, error_message) do
       assert_select("a[href=?]", airport_path(id: airport.slug))
-      assert_select("text.graph-value", number_with_delimiter(expected_visit_count.to_s, delimiter: ","), "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value[data-value=?]", expected_visit_count.to_s, {}, "Graph bar shall have the correct flight count")
     end
   end
 

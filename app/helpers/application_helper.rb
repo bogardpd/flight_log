@@ -178,7 +178,7 @@ module ApplicationHelper
     end
     output |= extra_details
     return content_tag(:tr) do
-      content_tag(:td, safe_join(output.compact, " "), colspan: 4, id: "flight-total", class: "flightlog-total")
+      content_tag(:td, safe_join(output.compact, " "), colspan: 4, id: "flight-total", class: "flightlog-total", "data-total": flights.size)
     end
   end
 
@@ -201,13 +201,13 @@ module ApplicationHelper
       if is_distance
         value_mi = number_with_delimiter(value, delimeter: ",")
         value_km = number_with_delimiter(Distance::km(value), delimeter: ",")
-        concat content_tag(:text, value_mi, x: "30%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance))
+        concat content_tag(:text, value_mi, x: "30%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance), "data-distance-mi": value)
         concat content_tag(:text, "mile".pluralize(value), x: "30%", y: GRAPH_BAR_TEXT_Y[2][1], class: %w(graph-value graph-unit))
         concat content_tag(:text, value_km, x: "70%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance))
         concat content_tag(:text, "km", x: "70%", y: GRAPH_BAR_TEXT_Y[2][1], class: %w(graph-value graph-unit))
       else
         graph_text = number_with_delimiter(value, delimeter: ",")
-        concat content_tag(:text, graph_text, x: "50%", y: GRAPH_BAR_TEXT_Y[1][0], class: "graph-value")
+        concat content_tag(:text, graph_text, x: "50%", y: GRAPH_BAR_TEXT_Y[1][0], class: "graph-value", "data-value": value)
       end
     end
     return svg

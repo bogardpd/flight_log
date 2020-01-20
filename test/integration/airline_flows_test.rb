@@ -2,8 +2,6 @@ require "test_helper"
 
 class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
-  include ActionView::Helpers::NumberHelper
-  
   def setup
     @visible_airline = airlines(:airline_visible)
     @hidden_airline = airlines(:airline_hidden)
@@ -87,13 +85,13 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#airline-count-table") do
       check_airline_flight_row(@visible_airline, airlines.find{|a| a[:id] == @visible_airline.id}[:flight_count], "This view shall show airlines with visible flights")
       check_airline_flight_row(@hidden_airline, airlines.find{|a| a[:id] == @hidden_airline.id}[:flight_count], "This view shall show airlines with only hidden flights when logged in")
-      assert_select("td#airline-count-total", {text: /^#{number_with_delimiter(airlines.size)} airlines?/}, "Airline ranked tables shall have a total row with a correct total")
+      assert_select("td#airline-count-total[data-total=?]", airlines.size.to_s, {}, "Airline ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#operator-count-table") do
       check_operator_flight_row(@visible_operator, operators.find{|a| a[:id] == @visible_operator.id}[:flight_count], "This view shall show operators with visible flights")
       check_operator_flight_row(@hidden_operator, operators.find{|a| a[:id] == @hidden_operator.id}[:flight_count], "This view shall show operators with only hidden flights when logged in")
-      assert_select("td#operator-count-total", {text: /^#{number_with_delimiter(operators.size)} operators?/}, "Operator ranked tables shall have a total row with a correct total")
+      assert_select("td#operator-count-total[data-total=?]", operators.size.to_s, {}, "Operator ranked tables shall have a total row with a correct total")
     end
 
     assert_select("table#airlines-with-no-flights-table") do
@@ -267,7 +265,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   def check_airline_flight_row(airline, expected_flight_count, error_message)
     assert_select("tr#airline-count-row-#{airline.id}", {}, error_message) do
       assert_select("a[href=?]", airline_path(id: airline.slug))
-      assert_select("text.graph-value", number_with_delimiter(expected_flight_count.to_s, delimiter: ","), "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value[data-value=?]", expected_flight_count.to_s, {}, "Graph bar shall have the correct flight count")
     end
   end
 
@@ -275,7 +273,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   def check_operator_flight_row(operator, expected_flight_count, error_message)
     assert_select("tr#operator-count-row-#{operator.id}", {}, error_message) do
       assert_select("a[href=?]", show_operator_path(operator: operator.slug))
-      assert_select("text.graph-value", number_with_delimiter(expected_flight_count.to_s, delimiter: ","), "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value[data-value=?]", expected_flight_count.to_s, {}, "Graph bar shall have the correct flight count")
     end
   end
 

@@ -2,8 +2,6 @@ require "test_helper"
 
 class TripFlowsTest < ActionDispatch::IntegrationTest
 
-  include ActionView::Helpers::NumberHelper
-
   def setup
     @visible_trip = trips(:trip_visible)
     @hidden_trip = trips(:trip_hidden)
@@ -89,7 +87,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
       assert_select("tr#trip-row-#{@hidden_trip.id}", {}, "This view shall show hidden trips when logged in") do
         assert_select("div.hidden-marker", {}, "Hidden trip shall have hidden marker")
       end
-      assert_select("td#trips-total", {text: /^#{number_with_delimiter(trips.size)} trips?/}, "Trips table shall have a total row with a correct total")
+      assert_select("td#trips-total[data-total=?]", trips.size.to_s, {}, "Trips table shall have a total row with a correct total")
     end
 
     assert_select("table#trips-with-no-flights-table") do

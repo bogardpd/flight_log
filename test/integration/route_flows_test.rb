@@ -2,8 +2,6 @@ require "test_helper"
 
 class RouteFlowsTest < ActionDispatch::IntegrationTest
 
-  include ActionView::Helpers::NumberHelper
-
   def setup
     @visible_route = [airports(:airport_visible_1), airports(:airport_visible_2)]
     @hidden_route = [airports(:airport_hidden_1), airports(:airport_hidden_2)]
@@ -50,7 +48,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#route-count-table") do
       check_flight_row(routes, @visible_route, "This view shall show routes with visible flights")
       check_flight_row(routes, @hidden_route, "This view shall show routes with only hidden flights when logged in")
-      assert_select("td#route-count-total", {text: /^#{number_with_delimiter(routes.size)} routes?/}, "Ranked tables shall have a total row with a correct total")
+      assert_select("td#route-count-total[data-total=?]", routes.size.to_s, {}, "Ranked tables shall have a total row with a correct total")
     end
   end
 
@@ -123,8 +121,8 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     sorted_slugs = route_to_check.pluck(:slug).sort
     assert_select("tr#route-count-row-#{sorted_slugs.join("-to-")}", {}, error_message) do
       assert_select("a[href=?]", show_route_path(*sorted_slugs))
-      assert_select("text.graph-distance", number_with_delimiter(route_data[:distance_mi], delimiter: ","), "Graph bar shall have the correct distance")
-      assert_select("text.graph-value", number_with_delimiter(route_data[:flight_count].to_s, delimiter: ","), "Graph bar shall have the correct flight count")
+      assert_select("text.graph-distance[data-distance-mi=?]", route_data[:distance_mi].to_s, {}, "Graph bar shall have the correct distance")
+      assert_select("text.graph-value[data-value=?]", route_data[:flight_count].to_s, {}, "Graph bar shall have the correct flight count")
     end
   end
   

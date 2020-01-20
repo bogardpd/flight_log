@@ -28,7 +28,7 @@
     	<% previous_count = aircraft_family[:flight_count] %>
     <% end %>
 
-      <tr><td colspan="5" class="flightlog-total" id="aircraft-family-count-total"><%= pluralize(known_families.size, "aircraft family") %></td></tr>
+      <tr><td colspan="5" class="flightlog-total" id="aircraft-family-count-total" data-total="<%= known_families.size %>"><%= pluralize(known_families.size, "aircraft family") %></td></tr>
     </tbody>
   
   </table>

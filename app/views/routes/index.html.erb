@@ -35,7 +35,7 @@
   </tr>
 	<% previous_count = @sort[0] == :flights ? row[:flight_count] : row[:distance_mi] %>
 <% end %>
-  <tr><td colspan="4" class="flightlog-total" id="route-count-total"><%= pluralize(@route_table.size, "route") %></td></tr>
+  <tr><td colspan="4" class="flightlog-total" id="route-count-total" data-total="<%= @route_table.size %>"><%= pluralize(@route_table.size, "route") %></td></tr>
 </table>
 
 <% else %>

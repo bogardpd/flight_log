@@ -29,7 +29,7 @@
 		<td class="tail-flights"><%= graph_bar(tail[:count], @flights_maximum) %></td>
   </tr>
 <% end %>
-  <tr><td colspan="4" class="flightlog-total" id="tail-number-count-total"><%= pluralize(@tail_numbers_table.size, "unique tail number") %></td></tr>
+  <tr><td colspan="4" class="flightlog-total" id="tail-number-count-total" data-total="<%= @tail_numbers_table.size %>"><%= pluralize(@tail_numbers_table.size, "unique tail number") %></td></tr>
 </table>
 
 <% end %>

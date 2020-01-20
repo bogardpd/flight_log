@@ -2,8 +2,6 @@ require "test_helper"
 
 class FlightFlowsTest < ActionDispatch::IntegrationTest
   
-  include ActionView::Helpers::NumberHelper
-
   def setup
     @visible_flight = flights(:flight_visible)
     @hidden_flight = flights(:flight_hidden)
@@ -211,7 +209,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#flight-table") do
       assert_select("tr#flight-row-#{@visible_flight.id}", {}, "This view shall show visible flights")
       assert_select("tr#flight-row-#{@hidden_flight.id}", {}, "This view shall show hidden flights")
-      assert_select("td#flight-total", {text: /^#{number_with_delimiter(logged_in_flights.count)} flights?/}, "This view shall show a flight total row")
+      assert_select("td#flight-total[data-total=?]", logged_in_flights.count.to_s, {}, "This view shall show a flight total row")
     end
   end
 
@@ -237,7 +235,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#tail-number-count-table") do
       check_tail_number_row(tails, @visible_tail, "This view shall show tail numbers with visible flights")
       check_tail_number_row(tails, @hidden_tail, "This view shall show tail numbers with only hidden flights when logged in")
-      assert_select("td#tail-number-count-total", {text: /^#{number_with_delimiter(tails.size)} unique tail numbers?/}, "Ranked tables shall have a total row with a correct total")
+      assert_select("td#tail-number-count-total[data-total=?]", tails.size.to_s, {}, "Ranked tables shall have a total row with a correct total")
     end
   end
 
@@ -522,15 +520,15 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       assert_select("td.tail-airline") do
         assert_select("img.airline-icon[title=?]", tail_data[:airline_name])
       end
-      assert_select("text.graph-value", number_with_delimiter(tail_data[:count].to_s, delimiter: ","), "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value[data-value=?]", tail_data[:count].to_s, {}, "Graph bar shall have the correct flight count")
     end
   end
 
   def check_travel_class_row(flight_table_data, travel_class, error_message)
-    tail_data = flight_table_data.find{|c| c[:class_code] == travel_class}
+    class_data = flight_table_data.find{|c| c[:class_code] == travel_class}
     assert_select("tr#travel-class-count-row-#{travel_class}", {}, error_message) do
       assert_select("a[href=?]", show_class_path(travel_class))
-      assert_select("text.graph-value", number_with_delimiter(tail_data[:flight_count].to_s, delimiter: ","), "Graph bar shall have the correct flight count")
+      assert_select("text.graph-value[data-value=?]", class_data[:flight_count].to_s, {}, "Graph bar shall have the correct flight count")
     end
   end
 
