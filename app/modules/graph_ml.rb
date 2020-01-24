@@ -7,25 +7,34 @@ module GraphML
   BASE_STYLES = {
     edge_width: 2.0, # px
     node_diameter: 30.0, # px
-    node_font_divisor: 2.4 # Ratio of circle diameter to font size
+    node_font_divisor: 2.4, # Ratio of circle diameter to font size
+    node_color_fill: "#DBDCDF",
+    node_color_border: "#303236",
+    node_color_font: "#303236",
+    node_width_border: 1.0, # px
+  }
+
+  # Default colors for airlines (based on the airline's slug).
+  AIRLINE_COLORS = {
+    "AirTran"           => "#66CCEE",
+    "American-Airlines" => "#EE6677",
+    "Delta"             => "#AA3377",
+    "Southwest"         => "#CCBB44",
+    "United"            => "#4477AA",
+    "US-Airways"        => "#BBBBBB",
   }
 
   # Generate a GraphML file for use in the yEd graph editor.
   # 
   # @param flights [Array<Flight>] a collection of {Flight Flights}
-  # @param group_edges [Boolean] true to represent multiple routes between
-  #   airports as a single edge with proportional line weights; false to keep
-  # separate edges 
   # @return [ActiveSupport::Safebuffer] XML for a
   #   {http://graphml.graphdrawing.org GraphML} graph.
   # 
   # @see https://www.yworks.com/products/yed
-  def self.yed(flights, group_edges=false)
-    flights = flights.includes(:origin_airport, :destination_airport)
-    routes = flights.map{|route| [route.origin_airport, route.destination_airport]}
-    route_freq = routes.inject(Hash.new(0)){|h,i| h[i] += 1; h }
-    max_route_freq = route_freq.values.max
-    airports = routes.flatten.uniq
+  def self.yed(flights)
+    flights = flights.includes(:origin_airport, :destination_airport, :airline)
+    airports = flights.map{|route| [route.origin_airport, route.destination_airport]}.flatten.uniq
+    visits = Airport.visit_table_data(flights).map{|v| [v[:id], v[:visit_count]]}.to_h
 
     schema = {
       "xmlns":              "http://graphml.graphdrawing.org/xmlns",
@@ -37,8 +46,6 @@ module GraphML
       "xmlns:yed":          "http://www.yworks.com/xml/yed/3",
       "xsi:schemaLocation": "http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"
     }
-    
-    visits = Airport.visit_table_data(flights).map{|v| [v[:id], v[:visit_count]]}.to_h
            
     output = Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
       xml.graphml(schema) do
@@ -60,6 +67,8 @@ module GraphML
               xml.data(key: "d6") do
                 xml[:y].ShapeNode do
                   xml[:y].Geometry(circle_size(visits[airport[:id]]), position(airports.size, index))
+                  xml[:y].Fill(color: BASE_STYLES[:node_color_fill], transparent: false)
+                  xml[:y].BorderStyle(color: BASE_STYLES[:node_color_border], raised: false, type: "line", width: BASE_STYLES[:node_width_border])
                   xml[:y].NodeLabel(airport[:iata_code], **font(visits[airport[:id]]))
                   xml[:y].Shape(type: "ellipse")
                 end
@@ -68,32 +77,20 @@ module GraphML
           end
           
           # Create flights:
-          if group_edges
-            route_freq.each_with_index do |(route, freq), edge_id|
-              xml.edge(id: "e#{edge_id}", source: "n#{route[0][:id]}", target: "n#{route[1][:id]}") do
-                xml.data(key: "d9")
-                xml.data(key: "d10") do
-                  xml[:y].PolyLineEdge do
-                    xml[:y].LineStyle(width: line_width(freq, max_route_freq))
-                    xml[:y].Arrows(source: "none", target: "standard")
-                  end
-                end
-              end
-            end
-          else
-            routes.each_with_index do |route, edge_id|              
-              xml.edge(id: "e#{edge_id}", source: "n#{route[0][:id]}", target: "n#{route[1][:id]}") do
-                xml.data(key: "d9")
-                xml.data(key: "d10") do
-                  xml[:y].PolyLineEdge do
-                    xml[:y].LineStyle(width: BASE_STYLES[:edge_width])
-                    xml[:y].Arrows(source: "none", target: "standard")
-                  end
+          flights.sort_by{|f| f.airline.airline_name}.each_with_index do |flight, edge_id|              
+            xml.edge(id: "e#{edge_id}", source: "n#{flight.origin_airport_id}", target: "n#{flight.destination_airport_id}") do
+              xml.data(key: "d9")
+              xml.data(key: "d10") do
+                xml[:y].PolyLineEdge do
+                  color = AIRLINE_COLORS[flight.airline.slug] || BASE_STYLES[:node_color_border]
+                  xml[:y].LineStyle(width: BASE_STYLES[:edge_width], color: color)
+                  xml[:y].Arrows(source: "none", target: "standard")
+                  xml[:y].EdgeLabel(flight.airline.airline_name, visible: false)
                 end
               end
             end
           end
-
+          
         end
         xml.data(key: "d7") do
           xml[:y].Resources
@@ -149,16 +146,6 @@ module GraphML
   def self.font(visits)
     font_size = (diameter(visits) / BASE_STYLES[:node_font_divisor]).to_i.to_s
     return {alignment: "center", fontFamily: "Source Sans Pro Semibold", fontSize: font_size, fontStyle: "plain", verticalTextPosition: "bottom", horizontalTextPosition: "center"}
-  end
-
-  # Calculates a line width based on the frequency of a certain route compared
-  # to the maximum frequency.
-  # @param freq [Integer] the frequency of the route
-  # @param max_freq [Integer] the highest frequency of all routes
-  # @return [Integer] a line width
-  def self.line_width(freq, max_freq)
-    line_width_range = 1..5
-    return (freq.to_f / max_freq) * (line_width_range.end - line_width_range.begin) + line_width_range.begin
   end
 
 end
