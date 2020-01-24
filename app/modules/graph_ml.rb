@@ -3,6 +3,13 @@
 # @see http://graphml.graphdrawing.org/ The GraphML File Format
 module GraphML
 
+  # Styles to use for graphs.
+  BASE_STYLES = {
+    edge_width: 2.0, # px
+    node_diameter: 30.0, # px
+    node_font_divisor: 2.4 # Ratio of circle diameter to font size
+  }
+
   # Generate a GraphML file for use in the yEd graph editor.
   # 
   # @param flights [Array<Flight>] a collection of {Flight Flights}
@@ -19,7 +26,7 @@ module GraphML
     route_freq = routes.inject(Hash.new(0)){|h,i| h[i] += 1; h }
     max_route_freq = route_freq.values.max
     airports = routes.flatten.uniq
-    
+
     schema = {
       "xmlns":              "http://graphml.graphdrawing.org/xmlns",
       "xmlns:java":         "http://www.yworks.com/xml/yfiles-common/1.0/java",
@@ -30,8 +37,9 @@ module GraphML
       "xmlns:yed":          "http://www.yworks.com/xml/yed/3",
       "xsi:schemaLocation": "http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"
     }
-    size_ellipse = {width: 32.0, height: 32.0}
-        
+    
+    visits = Airport.visit_table_data(flights).map{|v| [v[:id], v[:visit_count]]}.to_h
+           
     output = Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
       xml.graphml(schema) do
 
@@ -51,8 +59,8 @@ module GraphML
               xml.data(key: "d5")
               xml.data(key: "d6") do
                 xml[:y].ShapeNode do
-                  xml[:y].Geometry(size_ellipse, position(airports.size, index))
-                  xml[:y].NodeLabel(airport[:iata_code], alignment: "center", fontFamily: "Dialog", fontSize: "12", fontStyle: "plain", verticalTextPosition: "bottom", horizontalTextPosition: "center")
+                  xml[:y].Geometry(circle_size(visits[airport[:id]]), position(airports.size, index))
+                  xml[:y].NodeLabel(airport[:iata_code], **font(visits[airport[:id]]))
                   xml[:y].Shape(type: "ellipse")
                 end
               end
@@ -74,7 +82,15 @@ module GraphML
             end
           else
             routes.each_with_index do |route, edge_id|              
-              xml.edge(id: "e#{edge_id}", source: "n#{route[0][:id]}", target: "n#{route[1][:id]}")
+              xml.edge(id: "e#{edge_id}", source: "n#{route[0][:id]}", target: "n#{route[1][:id]}") do
+                xml.data(key: "d9")
+                xml.data(key: "d10") do
+                  xml[:y].PolyLineEdge do
+                    xml[:y].LineStyle(width: BASE_STYLES[:edge_width])
+                    xml[:y].Arrows(source: "none", target: "standard")
+                  end
+                end
+              end
             end
           end
 
@@ -106,6 +122,33 @@ module GraphML
     x = radius * Math.cos(angle_per_node * node_index)
     y = radius * Math.sin(angle_per_node * node_index)
     return {x: x, y: y}
+  end
+
+  # Calculates the width and height of a node based on the number of visits to
+  # an airport.
+  # 
+  # @param visits [Integer] the number of visits to an airport
+  # @return [Hash] a width,height hash
+  def self.circle_size(visits)
+    return {width: diameter(visits), height: diameter(visits)}
+  end
+
+  # Calculates the diameter of a node based on the number of visits to
+  # an airport.
+  # 
+  # @param visits [Integer] the number of visits to an airport
+  # @return [Float] the diameter in pixels
+  def self.diameter(visits)
+    return BASE_STYLES[:node_diameter] * Math.sqrt(visits)
+  end
+
+  # Creates node text attributes based on the number of visits to an airport.
+  # 
+  # @param visits [Integer] the number of visits to an airport
+  # @return [Hash] a hash of font options
+  def self.font(visits)
+    font_size = (diameter(visits) / BASE_STYLES[:node_font_divisor]).to_i.to_s
+    return {alignment: "center", fontFamily: "Source Sans Pro Semibold", fontSize: font_size, fontStyle: "plain", verticalTextPosition: "bottom", horizontalTextPosition: "center"}
   end
 
   # Calculates a line width based on the frequency of a certain route compared

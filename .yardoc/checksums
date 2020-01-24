@@ -8,7 +8,7 @@ app/models/airline.rb c47a182f9c337de9c213cd30b8c366ad81d547e8
 app/models/airport.rb a5d871ee33fe1c6e67381ba3bb84605503054573
 app/models/pk_pass.rb f7271a4f70171bd4d72c7e5fa1deed150232396b
 app/modules/distance.rb b53aa2d55689cfde7c6cd63f361f2acddfa21ce9
-app/modules/graph_ml.rb 22415540fa55e0f1f7e54f51a2e038176be1894b
+app/modules/graph_ml.rb 41e4efb50b2c361ec80e64607f93fa083e3c9a51
 app/modules/flight_xml.rb e6fe46e00e5a2e71748c588f4fc39abd13c8cd10
 app/classes/flights_map.rb 33dc38f56db1abc31fb0a7bb80f2cf99c2c64a8c
 app/modules/tail_number.rb 4bec3f6c9caa4647b9f4584af8c539dbc66a55de
