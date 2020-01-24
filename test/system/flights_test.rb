@@ -103,6 +103,41 @@ class FlightsTest < ApplicationSystemTestCase
     end
   end
 
+  test "creating a flight from a pkpass with nil date" do
+    pass = pk_passes(:pk_pass_nil_date)
+    flight = Hash.new
+    flight[:flight_number] = "1621"    # From pass fixture
+    flight[:ident]         = "AAL1621" # From pass fixture
+    flight[:fa_flight_id]  = "AAL1621-1575870329-airline-0404"
+    flight[:origin]        = "KORD"    # From pass fixture
+    flight[:destination]   = "KDFW"    # From pass fixture
+
+    stub_flight_xml_post_flight_info_ex(flight[:ident], {faFlightID: flight[:fa_flight_id]})
+    stub_flight_xml_post_airport_info(airports(:airport_ord).icao_code, {})
+    stub_flight_xml_post_airport_info(airports(:airport_dfw).icao_code, {})
+    stub_flight_xml_post_flight_info_ex(flight[:fa_flight_id], {})
+    stub_flight_xml_airline_flight_info(flight[:fa_flight_id], {})
+    
+    system_log_in_as(users(:user_one))
+
+    assert_difference("Flight.count", 1) do
+      visit(trip_path(@trip))
+      within("#message-boarding-passes-available-for-import") do
+        click_on("import")
+      end
+      within("#create-pk-pass-row-#{pass.id}") do
+        click_on("Create this flight")
+      end
+      within("#select-flight-row-#{flight[:fa_flight_id]}") do
+        click_on("Select")
+      end
+      click_on("Add Flight")
+
+      new_flight = Flight.last
+      assert_equal(flight[:flight_number], new_flight.flight_number)
+    end
+  end
+
   test "creating a flight from BCBP data" do
     
     stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {faFlightID: @fa_flight[:fa_flight_id], origin: @fa_flight[:origin], destination: @fa_flight[:destination]})
@@ -122,7 +157,9 @@ class FlightsTest < ApplicationSystemTestCase
       
       fill_in("Use a barcode scanner", with: file_fixture("bcbp.txt").read)
       click_on("Submit barcode data")
-      click_on("Select")
+      within("#select-flight-row-#{@fa_flight[:fa_flight_id]}") do
+        click_on("Select")
+      end
       click_on("Add Flight")
 
       new_flight = Flight.last
@@ -150,7 +187,9 @@ class FlightsTest < ApplicationSystemTestCase
       select(@fa_flight[:airline_name], from: :airline_icao)
       fill_in("flight_number", with: @fa_flight[:flight_number])
       click_on("Search")
-      click_on("Select")
+      within("#select-flight-row-#{@fa_flight[:fa_flight_id]}") do
+        click_on("Select")
+      end
       click_on("Add Flight")
 
       new_flight = Flight.last
@@ -183,7 +222,9 @@ class FlightsTest < ApplicationSystemTestCase
       select(@fa_flight[:airline_name], from: :airline_icao)
       fill_in("flight_number", with: @fa_flight[:flight_number])
       click_on("Search")
-      click_on("Select")
+      within("#select-flight-row-#{@fa_flight[:fa_flight_id]}") do
+        click_on("Select")
+      end
 
       assert_difference("Airport.count", 1) do
         # New airport form

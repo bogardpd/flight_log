@@ -19,12 +19,12 @@
     <% arrival_time = Time.at(flight[:estimatedarrivaltime].to_i).in_time_zone(@timezones[flight[:destination]]) %>
     <% if session[:new_flight][:departure_date] && session[:new_flight][:departure_date] == departure_date %>
       <% if session[:new_flight][:origin_airport_iata] && Airport.convert_iata_to_icao(session[:new_flight][:origin_airport_iata]) != flight[:origin] %>
-        <tr>
+        <tr id="select-flight-row-<%= flight[:fa_flight_id] %>">
       <% else %>
-        <tr class="suggestion">
+        <tr id="select-flight-row-<%= flight[:fa_flight_id] %>" class="suggestion">
       <% end %>
     <% else %>
-      <tr>
+      <tr id="select-flight-row-<%= flight[:fa_flight_id] %>">
     <% end %>
       
       <td>
