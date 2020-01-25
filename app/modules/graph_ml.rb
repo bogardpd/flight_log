@@ -16,12 +16,12 @@ module GraphML
 
   # Default colors for airlines (based on the airline's slug).
   AIRLINE_COLORS = {
-    "AirTran"           => "#66CCEE",
-    "American-Airlines" => "#EE6677",
-    "Delta"             => "#AA3377",
-    "Southwest"         => "#CCBB44",
-    "United"            => "#4477AA",
-    "US-Airways"        => "#BBBBBB",
+    "AirTran"           => "#2db7b7",
+    "American-Airlines" => "#ff99cc",
+    "Delta"             => "#cc0000",
+    "Southwest"         => "#e55b00",
+    "United"            => "#3366ff",
+    "US-Airways"        => "#cccccc",
   }
 
   # Generate a GraphML file for use in the yEd graph editor.
