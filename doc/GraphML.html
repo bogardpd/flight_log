@@ -237,6 +237,8 @@
     
 <p>Generate a GraphML file for use in the yEd graph editor.</p>
 
+<p>This method also saves the output to the file location specified in TEMP_FILE. It will be overwritten each time the method is run.</p>
+
 
   </div>
 </div>
@@ -294,9 +296,6 @@
       <pre class="lines">
 
 
-37
-38
-39
 40
 41
 42
@@ -368,10 +367,13 @@
 108
 109
 110
-111</pre>
+111
+112
+113
+114</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/graph_ml.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'app/modules/graph_ml.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_yed'>yed</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_includes'>includes</span><span class='lparen'>(</span><span class='symbol'>:origin_airport</span><span class='comma'>,</span> <span class='symbol'>:destination_airport</span><span class='comma'>,</span> <span class='symbol'>:airline</span><span class='rparen'>)</span>
@@ -458,7 +460,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Jan 28 21:53:46 2020 by
+  Generated on Wed Jan 29 16:29:02 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

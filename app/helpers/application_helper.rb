@@ -197,21 +197,26 @@ module ApplicationHelper
   def graph_bar(value, maximum, is_distance=false)
     return "" unless (value.present? && maximum > 0)
     bar_width = (value.to_f / maximum.to_f) * (GRAPH_BAR_DIMENSIONS[:width])
-    svg = content_tag(:svg, **GRAPH_BAR_DIMENSIONS, class: "graph-bar") do
-      concat content_tag(:rect, nil, width: bar_width, height: GRAPH_BAR_DIMENSIONS[:height], class: "graph")
-      if is_distance
-        value_mi = number_with_delimiter(value, delimeter: ",")
-        value_km = number_with_delimiter(Distance::km(value), delimeter: ",")
-        concat content_tag(:text, value_mi, x: "30%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance), "data-distance-mi": value)
-        concat content_tag(:text, "mile".pluralize(value), x: "30%", y: GRAPH_BAR_TEXT_Y[2][1], class: %w(graph-value graph-unit))
-        concat content_tag(:text, value_km, x: "70%", y: GRAPH_BAR_TEXT_Y[2][0], class: %w(graph-value graph-distance))
-        concat content_tag(:text, "km", x: "70%", y: GRAPH_BAR_TEXT_Y[2][1], class: %w(graph-value graph-unit))
-      else
-        graph_text = number_with_delimiter(value, delimeter: ",")
-        concat content_tag(:text, graph_text, x: "50%", y: GRAPH_BAR_TEXT_Y[1][0], class: "graph-value", "data-value": value)
+
+    svg = Nokogiri::HTML::DocumentFragment.parse("")
+    Nokogiri::HTML::Builder.with(svg) do |xml|
+      xml.svg(**GRAPH_BAR_DIMENSIONS, class: "graph-bar") do
+        xml.rect(width: bar_width, height: GRAPH_BAR_DIMENSIONS[:height], class: "graph")
+        if is_distance
+          value_mi = number_with_delimiter(value, delimeter: ",")
+          value_km = number_with_delimiter(Distance::km(value), delimeter: ",")
+          xml.text_(value_mi, x: "30%", y: GRAPH_BAR_TEXT_Y[2][0], class: "graph-value graph-distance", "data-distance-mi": value)
+          xml.text_("mile".pluralize(value), x: "30%", y: GRAPH_BAR_TEXT_Y[2][1], class: "graph-value graph-unit")
+          xml.text_(value_km, x: "70%", y: GRAPH_BAR_TEXT_Y[2][0], class: "graph-value graph-distance")
+          xml.text_("km", x: "70%", y: GRAPH_BAR_TEXT_Y[2][1], class: "graph-value graph-unit")
+        else
+          graph_text = number_with_delimiter(value, delimeter: ",")
+          xml.text_(graph_text, x: "50%", y: GRAPH_BAR_TEXT_Y[1][0], class: "graph-value", "data-value": value)
+        end
       end
     end
-    return svg
+    
+    return svg.to_xml.html_safe
   end
   
   # Renders a link which the user can click on to sort a table column. Used in

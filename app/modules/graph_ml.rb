@@ -28,6 +28,9 @@ module GraphML
   TEMP_FILE = "tmp/flights.graphml"
 
   # Generate a GraphML file for use in the yEd graph editor.
+  #
+  # This method also saves the output to the file location specified in
+  # TEMP_FILE. It will be overwritten each time the method is run.
   # 
   # @param flights [Array<Flight>] a collection of {Flight Flights}
   # @return [ActiveSupport::Safebuffer] XML for a
