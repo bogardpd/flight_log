@@ -24,6 +24,9 @@ module GraphML
     "US-Airways"        => "#cccccc",
   }
 
+  # Location to save temporary GraphML files.
+  TEMP_FILE = "tmp/flights.graphml"
+
   # Generate a GraphML file for use in the yEd graph editor.
   # 
   # @param flights [Array<Flight>] a collection of {Flight Flights}
@@ -99,6 +102,10 @@ module GraphML
     end
 
     output = output.to_xml
+
+    f = File.open(TEMP_FILE, "w")
+    f << output
+    f.close
     
     return output
   end
