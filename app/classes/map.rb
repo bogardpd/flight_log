@@ -101,20 +101,58 @@ class Map
   # @see https://www.topografix.com/gpx.asp GPX: the GPS Exchange Format
   def gpx
     @airport_details ||= airport_details
-    used_airports = @airport_details.keys
-    output = XML_PROLOG
-    output += content_tag(:gpx, xmlns: "http://www.topografix.com/GPX/1/1", version: "1.1") do
-      concat (content_tag(:metadata) do
-        concat content_tag(:name, map_name)
-        concat content_tag(:desc, map_description)
-        concat (content_tag(:author) do
-          concat content_tag(:name, "Paul Bogard’s Flight Historian")
-          concat content_tag(:link, content_tag(:text, "Paul Bogard’s Flight Historian"), href: "https://www.flighthistorian.com")
-        end)
-      end)
-      concat gpx_airports(used_airports)
-      concat gpx_routes(routes_normal | routes_out_of_region | routes_highlighted | routes_unhighlighted)
+    used_airports = @airport_details.keys.sort_by{|a| @airport_details[a][:iata]}
+    # output = XML_PROLOG
+    # output += content_tag(:gpx, xmlns: "http://www.topografix.com/GPX/1/1", version: "1.1") do
+    #   concat (content_tag(:metadata) do
+    #     concat content_tag(:name, map_name)
+    #     concat content_tag(:desc, map_description)
+    #     concat (content_tag(:author) do
+    #       concat content_tag(:name, "Paul Bogard’s Flight Historian")
+    #       concat content_tag(:link, content_tag(:text, "Paul Bogard’s Flight Historian"), href: "https://www.flighthistorian.com")
+    #     end)
+    #   end)
+    #   concat gpx_airports(used_airports)
+    #   concat gpx_routes(routes_normal | routes_out_of_region | routes_highlighted | routes_unhighlighted)
+    # end
+    output = Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
+      xml.gpx(xmlns: "http://www.topografix.com/GPX/1/1", version: "1.1") do
+        xml.metadata do
+          xml.name(map_name)
+          xml.desc(map_description)
+          xml.author do
+            xml.name("Paul Bogard’s Flight Historian")
+            xml.link(href: "https://www.flighthistorian.com") do
+              xml.text_("Paul Bogard’s Flight Historian")
+            end
+          end
+        end
+
+        # Create airports:
+        used_airports.each do |airport|
+          gpx_airport(airport, :wpt, xml)
+        end
+
+        # Create routes:
+        routes = (routes_normal | routes_out_of_region | routes_highlighted | routes_unhighlighted)
+        if routes.any?
+          routes = routes.map{|r| r.sort_by{|x| @airport_details[x][:iata]}}.uniq.sort_by{|y| [@airport_details[y[0]][:iata], @airport_details[y[1]][:iata]]}
+          routes.each do |route|
+            detail = route.map{|a| @airport_details[a]}
+            xml.rte do
+              xml.name(detail.map{|a| a[:iata]}.join("-"))
+              xml.desc(detail.map{|a| a[:city]}.join(" – "))
+              xml.link(href: "https://www.flighthistorian.com/routes/#{detail[0][:iata]}/#{detail[1][:iata]}")
+              route.each do |airport|
+                gpx_airport(airport, :rtept, xml)
+              end
+            end
+          end
+        end
+
+      end
     end
+
     return output
   end
 
@@ -444,47 +482,14 @@ class Map
   # @param airport_id [Number] an airport ID
   # @param wpt_type [Symbol] the GPX waypoint type to use (e.g. :wpt, :rtept,
   #   :trkpt)
-  # @return [ActiveSupport::SafeBuffer] XML for a waypoint
-  def gpx_airport(airport_id, wpt_type)
+  # @param xml [Object] A Nokogiri XML Builder object
+  # @return [Object] XML for a waypoint
+  def gpx_airport(airport_id, wpt_type, xml)
     detail = @airport_details[airport_id]
-    return content_tag(wpt_type, lat: detail[:latitude], lon: detail[:longitude]) do
-      concat content_tag(:name, detail[:iata] + " / " + detail[:icao])
-      concat content_tag(:description, detail[:city])
-    end
-  end
-
-  # Create GPX waypoints for a collection of airports.
-  # 
-  # @param airports [Array<Number>] airport IDs
-  # @return [ActiveSupport::SafeBuffer] XML for multiple waypoints
-  def gpx_airports(airports)
-    airports = airports.sort_by{|a| @airport_details[a][:iata]}
-    return safe_join(airports.map{|a| gpx_airport(a, :wpt)})
-  end
-
-  # Create a specific GPX route.
-  # 
-  # @param airport_pair [Array<Number>] two airport IDs
-  # @return [ActiveSupport::SafeBuffer] XML for a route
-  def gpx_route(airport_pair)
-    detail = airport_pair.map{|a| @airport_details[a]}
-    return content_tag(:rte) do
-      concat content_tag(:name, detail.map{|a| a[:iata]}.join("–"))
-      concat content_tag(:desc, detail.map{|a| a[:city]}.join(" – "))
-      concat content_tag(:link, nil, href: "https://www.flighthistorian.com/routes/#{detail[0][:iata]}/#{detail[1][:iata]}")
-      concat safe_join(airport_pair.map{|a| gpx_airport(a, :rtept)})
-    end
-  end
-
-  # Create a collection of GPX routes.
-  # 
-  # @param routes [Array<Array>] an array of routes in the form of
-  #   [[airport_1_id, airport_2_id]]
-  # @return [ActiveSupport::SafeBuffer] XML for multiple routes
-  def gpx_routes(routes)
-    return nil unless routes.any?
-    routes = routes.map{|r| r.sort_by{|x| @airport_details[x][:iata]}}.uniq.sort_by{|y| [@airport_details[y[0]][:iata], @airport_details[y[1]][:iata]]}
-    return safe_join(routes.map{|r| gpx_route(r)})
+    xml.send(wpt_type, lat: detail[:latitude], lon: detail[:longitude]){
+      xml.name([detail[:iata], detail[:icao]].join(" / "))
+      xml.description(detail[:city])
+    }
   end
 
   # KML METHODS
