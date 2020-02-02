@@ -1,4 +1,4 @@
-app/classes/map.rb 1926e704f2ce2b025f4be7f9d728b6a23fdc528f
+app/classes/map.rb 4e4321237416773791e3470c602dd4b4a67d5de3
 app/models/trip.rb 5eb871bcb3c6297078b008a0b043f361609938c2
 app/models/user.rb 4aae4143eda96283a9738a721658c65de7840919
 app/models/route.rb 99c9e7b57463b2cb1d5c2a3a8389617cd115d532

@@ -169,22 +169,6 @@
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Pacific/Oceania</span><span class='label_end'>&quot;:</span>  <span class='qwords_beg'>%w(</span><span class='tstring_content'>A</span><span class='words_sep'> </span><span class='tstring_content'>N</span><span class='words_sep'> </span><span class='tstring_content'>PH</span><span class='words_sep'> </span><span class='tstring_content'>R</span><span class='words_sep'> </span><span class='tstring_content'>Y</span><span class='tstring_end'>)</span></span>
 <span class='rbrace'>}</span></pre></dd>
       
-        <dt id="XML_PROLOG-constant" class="">XML_PROLOG =
-          <div class="docstring">
-  <div class="discussion">
-    
-<p>The XML version and encoding for this application&#39;s XML files.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div>
-        </dt>
-        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>%Q(</span><span class='tstring_content'>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span><span class='tstring_end'>)</span></span><span class='period'>.</span><span class='id identifier rubyid_html_safe'>html_safe</span></pre></dd>
-      
     </dl>
   
 
@@ -437,12 +421,12 @@
       <pre class="lines">
 
 
-188
-189
-190</pre>
+206
+207
+208</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 188</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 206</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_hash_image_query'>hash_image_query</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span><span class='rparen'>)</span>
   <span class='const'>Digest</span><span class='op'>::</span><span class='const'>MD5</span><span class='period'>.</span><span class='id identifier rubyid_hexdigest'>hexdigest</span><span class='lparen'>(</span><span class='id identifier rubyid_query'>query</span> <span class='op'>+</span> <span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:image_key</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -509,6 +493,8 @@
       <pre class="lines">
 
 
+34
+35
 36
 37
 38
@@ -518,12 +504,10 @@
 42
 43
 44
-45
-46
-47</pre>
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap'>gcmap</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>center</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_map_type'>map_type</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -593,12 +577,12 @@
       <pre class="lines">
 
 
-55
-56
-57</pre>
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 55</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_exists?'>gcmap_exists?</span>
   <span class='id identifier rubyid_gcmap_query'>gcmap_query</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
@@ -685,6 +669,8 @@
       <pre class="lines">
 
 
+75
+76
 77
 78
 79
@@ -701,12 +687,10 @@
 90
 91
 92
-93
-94
-95</pre>
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
@@ -783,6 +767,8 @@
       <pre class="lines">
 
 
+100
+101
 102
 103
 104
@@ -824,42 +810,16 @@
 140
 141
 142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157</pre>
+143</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 102</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 100</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gpx'>gpx</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
   <span class='id identifier rubyid_used_airports'>used_airports</span> <span class='op'>=</span> <span class='ivar'>@airport_details</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span> <span class='ivar'>@airport_details</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:iata</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
-  <span class='comment'># output = XML_PROLOG
-</span>  <span class='comment'># output += content_tag(:gpx, xmlns: &quot;http://www.topografix.com/GPX/1/1&quot;, version: &quot;1.1&quot;) do
-</span>  <span class='comment'>#   concat (content_tag(:metadata) do
-</span>  <span class='comment'>#     concat content_tag(:name, map_name)
-</span>  <span class='comment'>#     concat content_tag(:desc, map_description)
-</span>  <span class='comment'>#     concat (content_tag(:author) do
-</span>  <span class='comment'>#       concat content_tag(:name, &quot;Paul Bogard’s Flight Historian&quot;)
-</span>  <span class='comment'>#       concat content_tag(:link, content_tag(:text, &quot;Paul Bogard’s Flight Historian&quot;), href: &quot;https://www.flighthistorian.com&quot;)
-</span>  <span class='comment'>#     end)
-</span>  <span class='comment'>#   end)
-</span>  <span class='comment'>#   concat gpx_airports(used_airports)
-</span>  <span class='comment'>#   concat gpx_routes(routes_normal | routes_out_of_region | routes_highlighted | routes_unhighlighted)
-</span>  <span class='comment'># end
-</span>  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Nokogiri</span><span class='op'>::</span><span class='const'>XML</span><span class='op'>::</span><span class='const'>Builder</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>encoding:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_xml'>xml</span><span class='op'>|</span>
+  
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Nokogiri</span><span class='op'>::</span><span class='const'>XML</span><span class='op'>::</span><span class='const'>Builder</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>encoding:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_xml'>xml</span><span class='op'>|</span>
     <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_gpx'>gpx</span><span class='lparen'>(</span><span class='label'>xmlns:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.topografix.com/GPX/1/1</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>version:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>1.1</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
       <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_metadata'>metadata</span> <span class='kw'>do</span>
         <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='lparen'>(</span><span class='id identifier rubyid_map_name'>map_name</span><span class='rparen'>)</span>
@@ -955,6 +915,20 @@
       <pre class="lines">
 
 
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
 164
 165
 166
@@ -971,24 +945,74 @@
 177
 178
 179
-180</pre>
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'app/classes/map.rb', line 150</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_kml'>kml</span>
   <span class='ivar'>@airport_details</span> <span class='op'>||=</span> <span class='id identifier rubyid_airport_details'>airport_details</span>
-  <span class='id identifier rubyid_used_airports'>used_airports</span> <span class='op'>=</span> <span class='ivar'>@airport_details</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span>
-  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#XML_PROLOG-constant" title="Map::XML_PROLOG (constant)">XML_PROLOG</a></span></span>
-  <span class='id identifier rubyid_output'>output</span> <span class='op'>+=</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:kml</span><span class='comma'>,</span> <span class='label'>xmlns:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.opengis.net/kml/2.2</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
-    <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:Document</span><span class='rparen'>)</span> <span class='kw'>do</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:name</span><span class='comma'>,</span> <span class='id identifier rubyid_map_name'>map_name</span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:description</span><span class='comma'>,</span> <span class='id identifier rubyid_map_description'>map_description</span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_kml_styles'>kml_styles</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_kml_airports'>kml_airports</span><span class='lparen'>(</span><span class='id identifier rubyid_used_airports'>used_airports</span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_kml_routes'>kml_routes</span><span class='lparen'>(</span><span class='id identifier rubyid_routes_normal'>routes_normal</span> <span class='op'>|</span> <span class='id identifier rubyid_routes_out_of_region'>routes_out_of_region</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Routes</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_kml_routes'>kml_routes</span><span class='lparen'>(</span><span class='id identifier rubyid_routes_highlighted'>routes_highlighted</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Highlighted Routes</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_kml_routes'>kml_routes</span><span class='lparen'>(</span><span class='id identifier rubyid_routes_unhighlighted'>routes_unhighlighted</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unhighlighted Routes</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_used_airports'>used_airports</span> <span class='op'>=</span> <span class='ivar'>@airport_details</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span> <span class='ivar'>@airport_details</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:iata</span><span class='rbracket'>]</span><span class='rbrace'>}</span>
+  
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Nokogiri</span><span class='op'>::</span><span class='const'>XML</span><span class='op'>::</span><span class='const'>Builder</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>encoding:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_xml'>xml</span><span class='op'>|</span>
+    <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_kml'>kml</span><span class='lparen'>(</span><span class='label'>xmlns:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.opengis.net/kml/2.2</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>Document</span> <span class='kw'>do</span>
+        <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_name_'>name_</span><span class='lparen'>(</span><span class='id identifier rubyid_map_name'>map_name</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span><span class='lparen'>(</span><span class='id identifier rubyid_map_description'>map_description</span><span class='rparen'>)</span>
+
+        <span class='comment'># Define styles:
+</span>        <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>Style</span><span class='lparen'>(</span><span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>airportMarker</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
+          <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>Icon</span> <span class='kw'>do</span>
+            <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_href'>href</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+          <span class='kw'>end</span>
+        <span class='kw'>end</span>
+        <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>Style</span><span class='lparen'>(</span><span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>flightPath</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
+          <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>LineStyle</span> <span class='kw'>do</span>
+            <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_color'>color</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ff0000ff</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+            <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_width'>width</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>2</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+          <span class='kw'>end</span>
+        <span class='kw'>end</span>
+
+        <span class='comment'># Create airports:
+</span>        <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>Folder</span> <span class='kw'>do</span>
+          <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_name_'>name_</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Airports</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_used_airports'>used_airports</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_airport'>airport</span><span class='op'>|</span>
+            <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>Placemark</span> <span class='kw'>do</span>
+              <span class='id identifier rubyid_detail'>detail</span> <span class='op'>=</span> <span class='ivar'>@airport_details</span><span class='lbracket'>[</span><span class='id identifier rubyid_airport'>airport</span><span class='rbracket'>]</span>
+              <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_name_'>name_</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='id identifier rubyid_detail'>detail</span><span class='lbracket'>[</span><span class='symbol'>:iata</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_detail'>detail</span><span class='lbracket'>[</span><span class='symbol'>:icao</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> / </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+              <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_description'>description</span><span class='lparen'>(</span><span class='id identifier rubyid_detail'>detail</span><span class='lbracket'>[</span><span class='symbol'>:city</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+              <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>StyleUrl</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#airportMarker</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+              <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='const'>Point</span> <span class='kw'>do</span>
+                <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_coordinates'>coordinates</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_detail'>detail</span><span class='lbracket'>[</span><span class='symbol'>:longitude</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_content'>,</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_detail'>detail</span><span class='lbracket'>[</span><span class='symbol'>:latitude</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_content'>,0</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+              <span class='kw'>end</span>
+            <span class='kw'>end</span>
+          <span class='kw'>end</span>
+        <span class='kw'>end</span>
+
+        <span class='comment'># Create routes:
+</span>        <span class='id identifier rubyid_kml_routes'>kml_routes</span><span class='lparen'>(</span><span class='id identifier rubyid_routes_normal'>routes_normal</span> <span class='op'>|</span> <span class='id identifier rubyid_routes_out_of_region'>routes_out_of_region</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Routes</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_xml'>xml</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_kml_routes'>kml_routes</span><span class='lparen'>(</span><span class='id identifier rubyid_routes_highlighted'>routes_highlighted</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Highlighted Routes</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_xml'>xml</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_kml_routes'>kml_routes</span><span class='lparen'>(</span><span class='id identifier rubyid_routes_unhighlighted'>routes_unhighlighted</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unhighlighted Routes</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_xml'>xml</span><span class='rparen'>)</span>
+
+      <span class='kw'>end</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
@@ -1003,7 +1027,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jan 29 22:05:11 2020 by
+  Generated on Sun Feb  2 14:23:26 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.20 (ruby-2.6.5).
 </div>

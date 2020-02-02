@@ -25,8 +25,6 @@ class Map
     "Europe":           %w(B E L),
     "Pacific/Oceania":  %w(A N PH R Y)
   }
-  # The XML version and encoding for this application's XML files.
-  XML_PROLOG = %Q(<?xml version="1.0" encoding="UTF-8" ?>).html_safe
   
   # Creates HTML for a {http://www.gcmap.com/ Great Circle Mapper} map.
   # 
@@ -102,19 +100,7 @@ class Map
   def gpx
     @airport_details ||= airport_details
     used_airports = @airport_details.keys.sort_by{|a| @airport_details[a][:iata]}
-    # output = XML_PROLOG
-    # output += content_tag(:gpx, xmlns: "http://www.topografix.com/GPX/1/1", version: "1.1") do
-    #   concat (content_tag(:metadata) do
-    #     concat content_tag(:name, map_name)
-    #     concat content_tag(:desc, map_description)
-    #     concat (content_tag(:author) do
-    #       concat content_tag(:name, "Paul Bogard’s Flight Historian")
-    #       concat content_tag(:link, content_tag(:text, "Paul Bogard’s Flight Historian"), href: "https://www.flighthistorian.com")
-    #     end)
-    #   end)
-    #   concat gpx_airports(used_airports)
-    #   concat gpx_routes(routes_normal | routes_out_of_region | routes_highlighted | routes_unhighlighted)
-    # end
+    
     output = Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
       xml.gpx(xmlns: "http://www.topografix.com/GPX/1/1", version: "1.1") do
         xml.metadata do
@@ -163,17 +149,49 @@ class Map
   # @see https://www.topografix.com/gpx.asp Keyhole Markup Language
   def kml
     @airport_details ||= airport_details
-    used_airports = @airport_details.keys
-    output = XML_PROLOG
-    output += content_tag(:kml, xmlns: "http://www.opengis.net/kml/2.2") do
-      content_tag(:Document) do
-        concat content_tag(:name, map_name)
-        concat content_tag(:description, map_description)
-        concat kml_styles
-        concat kml_airports(used_airports)
-        concat kml_routes(routes_normal | routes_out_of_region, "Routes")
-        concat kml_routes(routes_highlighted, "Highlighted Routes")
-        concat kml_routes(routes_unhighlighted, "Unhighlighted Routes")
+    used_airports = @airport_details.keys.sort_by{|a| @airport_details[a][:iata]}
+    
+    output = Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
+      xml.kml(xmlns: "http://www.opengis.net/kml/2.2") do
+        xml.Document do
+          xml.name_(map_name)
+          xml.description(map_description)
+
+          # Define styles:
+          xml.Style(id: "airportMarker") do
+            xml.Icon do
+              xml.href("http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png")
+            end
+          end
+          xml.Style(id: "flightPath") do
+            xml.LineStyle do
+              xml.color("ff0000ff")
+              xml.width("2")
+            end
+          end
+
+          # Create airports:
+          xml.Folder do
+            xml.name_("Airports")
+            used_airports.each do |airport|
+              xml.Placemark do
+                detail = @airport_details[airport]
+                xml.name_([detail[:iata], detail[:icao]].join(" / "))
+                xml.description(detail[:city])
+                xml.StyleUrl("#airportMarker")
+                xml.Point do
+                  xml.coordinates("#{detail[:longitude]},#{detail[:latitude]},0")
+                end
+              end
+            end
+          end
+
+          # Create routes:
+          kml_routes(routes_normal | routes_out_of_region, "Routes", xml)
+          kml_routes(routes_highlighted, "Highlighted Routes", xml)
+          kml_routes(routes_unhighlighted, "Unhighlighted Routes", xml)
+
+        end
       end
     end
     return output
@@ -477,95 +495,50 @@ class Map
 
   # GPX METHODS
 
-  # Create a GPX waypoint for a specific airport.
+  # Appends a GPX waypoint for a specific airport to an XML object.
   #
   # @param airport_id [Number] an airport ID
   # @param wpt_type [Symbol] the GPX waypoint type to use (e.g. :wpt, :rtept,
   #   :trkpt)
-  # @param xml [Object] A Nokogiri XML Builder object
-  # @return [Object] XML for a waypoint
+  # @param xml [Object] The Nokogiri XML Builder object to append to
+  # @return [nil]
   def gpx_airport(airport_id, wpt_type, xml)
     detail = @airport_details[airport_id]
     xml.send(wpt_type, lat: detail[:latitude], lon: detail[:longitude]){
       xml.name([detail[:iata], detail[:icao]].join(" / "))
       xml.description(detail[:city])
     }
+    return nil
   end
 
   # KML METHODS
 
-  # Create KML for a specific airport.
-  # 
-  # @param airport_id [Number] an airport ID
-  # @return [ActiveSupport::SafeBuffer] XML for a Placemark
-  def kml_airport(airport_id)
-    detail = @airport_details[airport_id]
-    return content_tag(:Placemark) do
-      concat content_tag(:name, detail[:iata] + " / " + detail[:icao])
-      concat content_tag(:description, detail[:city])
-      concat content_tag(:styleUrl, "#airportMarker")
-      concat content_tag(:Point, content_tag(:coordinates, "#{detail[:longitude]},#{detail[:latitude]},0"))
-    end
-  end
-
-  # Create KML for a collection of airports.
-  # 
-  # @param airports [Array<Number>] airport IDs
-  # @return [ActiveSupport::SafeBuffer] XML for a folder of Placemarks
-  def kml_airports(airports)
-    airports = airports.sort_by{|a| @airport_details[a][:iata]}
-    return content_tag(:Folder) do
-      concat content_tag(:name, "Airports")
-      concat safe_join(airports.map{|a| kml_airport(a)})
-    end
-  end
-
-  # Create KML for a specific route.
-  # 
-  # @param airport_pair [Array<Number>] two airport IDs
-  # @return [ActiveSupport::SafeBuffer] XML for a LineString
-  def kml_route(airport_pair)
-    detail = airport_pair.map{|a| @airport_details[a]}
-    return content_tag(:Placemark) do
-      concat content_tag(:name, detail.map{|a| a[:iata]}.join("–"))
-      concat content_tag(:styleUrl, "#flightPath")
-      concat (content_tag(:LineString) do
-        concat content_tag(:tessellate, "1")
-        concat content_tag(:coordinates, detail.map{|a| "#{a[:longitude]},#{a[:latitude]},0"}.join(" "))
-      end)
-    end
-  end
-
-  # Create KML for a collection of routes.
+  # Appends a KML folder for a collection of routes to an XML object.
   # 
   # @param routes [Array<Number>] an array of routes in the form of
   #   [[airport_1_id, airport_2_id]]
   # @param name [String] the folder name
-  # @return [ActiveSupport::SafeBuffer] XML for a folder of LineStrings
-  def kml_routes(routes, name)
+  # @param xml [Object] The Nokogiri XML Builder object to append to
+  # @return [nil]
+  def kml_routes(routes, name, xml)
     return nil unless routes.any?
     routes = routes.map{|r| r.sort_by{|x| @airport_details[x][:iata]}}.uniq.sort_by{|y| [@airport_details[y[0]][:iata], @airport_details[y[1]][:iata]]}
-    return content_tag(:Folder) do
-      concat content_tag(:name, name)
-      concat safe_join(routes.map{|r| kml_route(r)})
-    end
-  end
-
-  # Define KML styles.
-  # 
-  # @return [ActiveSupport::SafeBuffer] XML for KML styles
-  def kml_styles
-    output = content_tag(:Style, id: "airportMarker") do
-      content_tag(:Icon) do
-        content_tag(:href, "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png")
+    
+    xml.Folder do
+      xml.name_(name)
+      routes.each do |route|
+        detail = route.map{|airport| @airport_details[airport]}
+        xml.Placemark do
+          xml.name_(detail.map{|a| a[:iata]}.join("–"))
+          xml.styleUrl("#flightPath")
+          xml.LineString do
+            xml.tessellate("1")
+            xml.coordinates(detail.map{|a| "#{a[:longitude]},#{a[:latitude]},0"}.join(" "))
+          end
+        end
       end
     end
-    output += content_tag(:Style, id: "flightPath") do
-      content_tag(:LineStyle) do
-        concat content_tag(:color, "ff0000ff")
-        concat content_tag(:width, "2")
-      end
-    end
+    return nil
   end
   
 end
