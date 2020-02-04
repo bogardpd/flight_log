@@ -36,7 +36,7 @@
 	<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 	
 	<h2 id="operators">Operators for <%= @airline.airline_name %> Flights</h2>
-	<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
+	<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, airline_name: @airline.airline_name, identical: (@airlines == @operators), is_summary: true} %>
 
 	<h2 id="classes">Classes Flown on <%= @airline.airline_name %></h2>
 	<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
