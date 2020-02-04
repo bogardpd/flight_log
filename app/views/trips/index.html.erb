@@ -10,7 +10,7 @@
   <table class="flightlog" id="trips-with-no-flights-table">
   <% @trips_with_no_flights.each do |trip| %>
     <tr id="trip-with-no-flights-row-<%= trip.id %>">
-      <td class="trip-name"><%= Trip::HIDDEN_MARKER if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for #{trip.name}") %></td>
+      <td class="trip-name"><%= Trip::HIDDEN_MARKER if trip.hidden %><%= link_to(trip.name, trip_path(trip), title: "View trip details for #{trip.name}") %></td>
     </tr>
   <% end %>
   </table>
@@ -21,7 +21,7 @@
 <p>I have taken <%= pluralize(@trips.length, "trip") %> by air.</p>
 
 <% if @trips.any? %>
-  <%= render partial: "trips/trip_table" %>
+  <%= render partial: "trips/trip_table", locals: {trips: @trips} %>
 <% end %>
 
 <% if flyer == current_user && @trips.empty? && @trips_with_no_flights.empty? %>
