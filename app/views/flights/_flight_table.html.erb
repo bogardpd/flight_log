@@ -6,11 +6,11 @@
     <th class="flight-date"><%= is_summary ? "Departure" : sort_link("Departure", :departure, :asc, "flight-list") %></th>
   </tr>
 
-  <% @flights.each_with_index do |flight, index| %>
-    <% row_class = (index > 0 && @flights[index-1].trip_id == flight.trip_id && @flights[index-1].trip_section == flight.trip_section) ? "no-top-border" : "" %>
+  <% flights.each_with_index do |flight, index| %>
+    <% row_class = (index > 0 && flights[index-1].trip_id == flight.trip_id && flights[index-1].trip_section == flight.trip_section) ? "no-top-border" : "" %>
     <tr id="flight-row-<%= flight.id %>" class="<%= row_class %>">
 	
-      <td class="counter"><%= (@sort == [:departure, :desc]) ? @flights.length - index : index + 1 %></td>
+      <td class="counter"><%= (@sort == [:departure, :desc]) ? flights.length - index : index + 1 %></td>
       
       <td class="flight-flight"><%= Trip::HIDDEN_MARKER if flight.trip.hidden %><%= link_to(airline_icon(flight.airline.slug, title: "View flight details for #{flight.airline.airline_name} #{flight.flight_number.to_s}") + "#{flight.airline.airline_name} #{flight.flight_number.to_s}", flight_path(flight), title: "View flight details for #{flight.airline.airline_name} #{flight.flight_number.to_s}") %></td>
       <td class="flight-route">
@@ -21,5 +21,5 @@
     </tr>
   <% end %>
 
-  <%= flight_table_total_row(@flights) %>
+  <%= flight_table_total_row(flights) %>
 </table>

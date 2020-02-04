@@ -83,6 +83,6 @@
 
 	<h2 id="flights"><%= @aircraft.family_name %> Flight List</h2>
 
-	<%= render partial: "flights/flight_table", locals: {is_summary: true} %>
+	<%= render partial: "flights/flight_table", locals: {flights: @flights, is_summary: true} %>
 
 <% end %>
