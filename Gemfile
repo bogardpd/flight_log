@@ -1,15 +1,15 @@
 source 'http://rubygems.org'
 
-ruby '2.6.5'
+ruby '2.7.0'
 
-gem 'rails', '~> 5.2', '>= 5.2.3'
+gem 'rails', '~> 5.2', '>= 5.2.4.1'
 
 # Use puma as the webserver
 gem 'puma', '4.3.1'
 # Use PostgreSQL as the database
-gem 'pg' , '0.18.4'
+gem 'pg', '~> 1.2', '>= 1.2.2'
 # Use bcrypt to hash passwords
-gem 'bcrypt', '3.1.7'
+gem 'bcrypt', '~> 3.1', '>= 3.1.13'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1', '>= 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
