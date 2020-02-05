@@ -76,7 +76,7 @@ class PagesController < ApplicationController
       response.headers["Content-Type"] = "image/gif"
       response.headers["Content-Disposition"] = "inline"
       image_url = "http://www.gcmap.com/map?PM=#{params[:airport_options]}&MP=r&MS=wls2&P=#{query}"
-      render body: open(image_url, "rb").read
+      render body: URI.open(image_url, "rb").read
     else
       raise ActionController::RoutingError.new("Not Found")
     end

@@ -156,7 +156,7 @@ class AirportsController < ApplicationController
   # @return [nil]
   def update
     @airport = Airport.find(params[:id])
-    if @airport.update_attributes(airport_params)
+    if @airport.update(airport_params)
       flash[:success] = "Successfully updated airport."
       redirect_to airport_path(@airport.slug)
     else

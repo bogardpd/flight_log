@@ -164,7 +164,7 @@ class RoutesController < ApplicationController
   # @return [nil]
   def update
     @route = Route.find(params[:id])
-    if @route.update_attributes(route_params)
+    if @route.update(route_params)
       flash[:success] = "Successfully updated route distance."
       redirect_to show_route_path(airport1: @route.airport1.slug, airport2: @route.airport2.slug)
     else

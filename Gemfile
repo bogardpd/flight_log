@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby '2.7.0'
 
-gem 'rails', '~> 5.2', '>= 5.2.4.1'
+gem 'rails', '~> 6.0', '>= 6.0.2.1'
 
 # Use puma as the webserver
 gem 'puma', '4.3.1'
@@ -13,15 +13,15 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.13'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1', '>= 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '3.0.0'
+gem 'uglifier', '~> 4.2'
 
 gem 'rails-ujs', '~> 5.1.0.beta1'
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 4.3', '>= 4.3.5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
-gem 'rubyzip', '~> 1.2'
+gem 'rubyzip', '~> 2.2'
 # Use savon for SOAP
 gem 'savon', '~> 2.12'
 
@@ -32,18 +32,18 @@ group :development do
 end
 
 group :development, :test do
-  gem 'byebug', '9.0.0', platform: :mri
+  gem 'byebug', '~> 11.1', '>= 11.1.1', platform: :mri
 end
 
 group :test do
-  gem 'rails-controller-testing', '0.1.1'
-  gem 'minitest-reporters',       '1.1.9'
-  gem 'guard',                    '2.13.0'
-  gem 'guard-minitest',           '2.4.4'
+  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.4'
+  gem 'minitest-reporters', '~> 1.4', '>= 1.4.2'
+  # gem 'guard',                    '2.13.0'
+  # gem 'guard-minitest',           '2.4.4'
   gem 'capybara'
   gem 'selenium-webdriver'
   # Use webmock to stub out HTTP API requests
-  gem 'webmock', '~> 3.7', '>= 3.7.6'
+  gem 'webmock', '~> 3.8'
 end
 
 group :production do

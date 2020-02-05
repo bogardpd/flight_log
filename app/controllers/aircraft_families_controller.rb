@@ -132,7 +132,7 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   def update
     @aircraft = AircraftFamily.find(params[:id])
-    if @aircraft.update_attributes(aircraft_family_params)
+    if @aircraft.update(aircraft_family_params)
       flash[:success] = "Successfully updated aircraft family."
       redirect_to aircraft_family_path(@aircraft.slug)
     else

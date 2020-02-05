@@ -525,7 +525,7 @@ class FlightsController < ApplicationController
   # @return [nil]
   def update
     @flight = Flight.find(params[:id])
-    if @flight.update_attributes(flight_params)
+    if @flight.update(flight_params)
       flash[:success] = "Successfully updated flight."
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
         flash[:success] += " You’ve had prior flights on this tail!"

@@ -131,7 +131,7 @@ class TripsController < ApplicationController
   # @return [nil]
   def update
     @trip = Trip.find(params[:id])
-    if @trip.update_attributes(trip_params)
+    if @trip.update(trip_params)
       flash[:success] = "Successfully updated trip."
       redirect_to @trip
     else

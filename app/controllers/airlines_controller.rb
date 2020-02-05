@@ -230,7 +230,7 @@ class AirlinesController < ApplicationController
   # @return [nil]
   def update
     @airline = Airline.find(params[:id])
-    if @airline.update_attributes(airline_params)
+    if @airline.update(airline_params)
       flash[:success] = "Successfully updated airline."
       if @airline.is_only_operator
         redirect_to show_operator_path(@airline.slug)

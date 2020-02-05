@@ -61,7 +61,7 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
 
     get("/.well-known/acme-challenge/ABCD1234")
     assert_response(:success)
-    assert_equal("text/plain", response.content_type)
+    assert_equal("text/plain", response.media_type)
     assert_equal(key, response.body)
 
     ENV["LETS_ENCRYPT_KEY"] = cached_lets_encrypt_key
