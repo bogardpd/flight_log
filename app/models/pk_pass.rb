@@ -85,12 +85,7 @@ class PKPass < ApplicationRecord
   def self.pass_summary_list
     PKPass.all.map{|pass|
       fields = BoardingPass.new(pass.barcode, interpretations: false).summary_fields
-      json_data = JSON.parse(pass.pass_json)
-      if json_data["relevantDate"]
-        fields.store(:date, Time.parse(json_data["relevantDate"]))
-      else
-        fields.store(:date, nil)
-      end
+      fields.store(:date, pass.departure_utc)
       fields.store(:id, pass.id)
       fields
     }.sort_by{|h| h[:date] || Time.at(0)}
