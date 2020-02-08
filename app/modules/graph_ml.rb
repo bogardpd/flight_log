@@ -14,47 +14,96 @@ module GraphML
     node_width_border: 1.0, # px
   }
 
-  # Default colors for airlines (based on the airline's slug).
+  # Default colors for airlines (based on the airline's name).
   AIRLINE_COLORS = {
     "AirTran"           => "#2db7b7",
-    "American-Airlines" => "#ff99cc",
+    "American Airlines" => "#ff99cc",
     "Delta"             => "#cc0000",
-    "Southwest"         => "#e55b00",
+    "Southwest"         => "#ff9900",
     "United"            => "#3366ff",
-    "US-Airways"        => "#cccccc",
+    "US Airways"        => "#cccccc",
   }
 
   # Location to save temporary GraphML files.
   TEMP_FILE = "tmp/flights.graphml"
 
-  # Generate a GraphML file for use in the yEd graph editor.
+    # XML schema for yEd documents.
+  YED_SCHEMA = {
+    "xmlns":              "http://graphml.graphdrawing.org/xmlns",
+    "xmlns:java":         "http://www.yworks.com/xml/yfiles-common/1.0/java",
+    "xmlns:sys":          "http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0",
+    "xmlns:x":            "http://www.yworks.com/xml/yfiles-common/markup/2.0",
+    "xmlns:xsi":          "http://www.w3.org/2001/XMLSchema-instance",
+    "xmlns:y":            "http://www.yworks.com/xml/graphml",
+    "xmlns:yed":          "http://www.yworks.com/xml/yed/3",
+    "xsi:schemaLocation": "http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"
+  }
+
+  # Generate a GraphML file for use in the yEd graph editor from a collection of
+  # {Flight flights}.
   #
   # This method also saves the output to the file location specified in
   # TEMP_FILE. It will be overwritten each time the method is run.
   # 
   # @param flights [Array<Flight>] a collection of {Flight Flights}
-  # @return [ActiveSupport::Safebuffer] XML for a
-  #   {http://graphml.graphdrawing.org GraphML} graph.
+  # @return [Object] XML for a {http://graphml.graphdrawing.org GraphML} graph.
   # 
   # @see https://www.yworks.com/products/yed
-  def self.yed(flights)
+  def self.graph_flights(flights)
     flights = flights.includes(:origin_airport, :destination_airport, :airline)
-    airports = flights.map{|route| [route.origin_airport, route.destination_airport]}.flatten.uniq
-    visits = Airport.visit_table_data(flights).map{|v| [v[:id], v[:visit_count]]}.to_h
+    
+    airport_nodes = Airport.visit_table_data(flights).map{|a| {id: a[:id], text: a[:iata_code], visits: a[:visit_count]}}
+    flight_edges = flights.map{|f| {source: f.origin_airport_id, target: f.destination_airport_id, airline: f.airline.airline_name}}
 
-    schema = {
-      "xmlns":              "http://graphml.graphdrawing.org/xmlns",
-      "xmlns:java":         "http://www.yworks.com/xml/yfiles-common/1.0/java",
-      "xmlns:sys":          "http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0",
-      "xmlns:x":            "http://www.yworks.com/xml/yfiles-common/markup/2.0",
-      "xmlns:xsi":          "http://www.w3.org/2001/XMLSchema-instance",
-      "xmlns:y":            "http://www.yworks.com/xml/graphml",
-      "xmlns:yed":          "http://www.yworks.com/xml/yed/3",
-      "xsi:schemaLocation": "http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"
-    }
-           
+    output = build_yed_xml(airport_nodes, flight_edges)
+
+    write_temp_file(output)
+
+    return output
+  end
+
+  # Generate a GraphML file for use in the yEd graph editor from a string of
+  # airports.
+  #
+  # This method also saves the output to the file location specified in
+  # TEMP_FILE. It will be overwritten each time the method is run.
+  # 
+  # @param flight_string [String] a string of airport codes in the format
+  #   "JFK-ORD-LAX,LAX-DFW-JFK" where hyphens are flights, and commas are the
+  #    end of a one way trip (generally when the traveler leaves the airport).
+  # @return [Object] XML for a {http://graphml.graphdrawing.org GraphML} graph.
+  # 
+  # @see https://www.yworks.com/products/yed
+  def self.parse(flight_string)
+    flight_string.upcase!
+    airports = flight_string.split(/[,-]/)
+      .tally
+      .map{|a, v| {id: a, text: a, visits: v}}
+    flights = flight_string.split(",")
+      .map{|section| section.split("-").each_cons(2).to_a}
+      .flatten(1)
+      .map{|f| {source: f[0], target: f[1]}}
+
+    output = build_yed_xml(airports, flights)
+
+    write_temp_file(output)
+
+    return output
+  end
+
+  private
+
+  # Creates yEd GraphML XML from arrays of nodes and edges.
+  #
+  # @param nodes [Array<Hash>] An array of node hashes in the format
+  #   [{id:, text:, visits:}]
+  # @param edges [Array<Hash>] An array of edge hashes in the format
+  #   [{source:, target:, airline:}]. Source and target refer to node ids, and
+  #   airline is optional.
+  # @return [Object] XML for a {http://graphml.graphdrawing.org GraphML} graph.
+  def self.build_yed_xml(nodes, edges)
     output = Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
-      xml.graphml(schema) do
+      xml.graphml(YED_SCHEMA) do
 
         xml.key("attr.name": "Description", "attr.type": "string", for: "graph", id: "d0")
         xml.key("attr.name": "description", "attr.type": "string", for: "node", id: "d5")
@@ -67,15 +116,15 @@ module GraphML
           xml.data(key: "d0")
           
           # Create airports:
-          airports.each_with_index do |airport, index|            
-            xml.node(id: "n#{airport[:id]}") do
+          nodes.each_with_index do |node, index|
+            xml.node(id: "n#{node[:id]}") do
               xml.data(key: "d5")
               xml.data(key: "d6") do
                 xml[:y].ShapeNode do
-                  xml[:y].Geometry(circle_size(visits[airport[:id]]), position(airports.size, index))
+                  xml[:y].Geometry(circle_size(node[:visits]), position(nodes.size, index))
                   xml[:y].Fill(color: BASE_STYLES[:node_color_fill], transparent: false)
                   xml[:y].BorderStyle(color: BASE_STYLES[:node_color_border], raised: false, type: "line", width: BASE_STYLES[:node_width_border])
-                  xml[:y].NodeLabel(airport[:iata_code], **font(visits[airport[:id]]))
+                  xml[:y].NodeLabel(node[:text], **font(node[:visits]))
                   xml[:y].Shape(type: "ellipse")
                 end
               end
@@ -83,15 +132,15 @@ module GraphML
           end
           
           # Create flights:
-          flights.sort_by{|f| f.airline.airline_name}.each_with_index do |flight, edge_id|              
-            xml.edge(id: "e#{edge_id}", source: "n#{flight.origin_airport_id}", target: "n#{flight.destination_airport_id}") do
+          edges.sort_by{|e| e[:airline]}.each_with_index do |flight, edge_id|              
+            xml.edge(id: "e#{edge_id}", source: "n#{flight[:source]}", target: "n#{flight[:target]}") do
               xml.data(key: "d9")
               xml.data(key: "d10") do
                 xml[:y].PolyLineEdge do
-                  color = AIRLINE_COLORS[flight.airline.slug] || BASE_STYLES[:node_color_border]
+                  color = AIRLINE_COLORS[flight[:airline]] || BASE_STYLES[:node_color_border]
                   xml[:y].LineStyle(width: BASE_STYLES[:edge_width], color: color)
                   xml[:y].Arrows(source: "none", target: "standard")
-                  xml[:y].EdgeLabel(flight.airline.airline_name, visible: false)
+                  xml[:y].EdgeLabel(flight[:airline], visible: false) if flight[:airline]
                 end
               end
             end
@@ -104,16 +153,19 @@ module GraphML
       end
     end
 
-    output = output.to_xml
-
-    f = File.open(TEMP_FILE, "w")
-    f << output
-    f.close
-    
-    return output
+    return output.to_xml
   end
 
-  private
+  # Writes XML to a temporary file.
+  # 
+  # @param xml [Object] XML to write to file
+  # @return [nil]
+  def self.write_temp_file(xml)
+    f = File.open(TEMP_FILE, "w")
+    f << xml
+    f.close
+    return nil
+  end
 
   # Calculates the X,Y position of a node in an evenly-spaced circle of elements
   # based on the number of nodes in the circle and the index of the node.

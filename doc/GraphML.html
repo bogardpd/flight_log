@@ -6,15 +6,15 @@
 <title>
   Module: GraphML
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "GraphML";
   relpath = '';
 </script>
@@ -138,7 +138,7 @@
           <div class="docstring">
   <div class="discussion">
     
-<p>Default colors for airlines (based on the airline&#39;s slug).</p>
+<p>Default colors for airlines (based on the airline&#39;s name).</p>
 
 
   </div>
@@ -150,11 +150,11 @@
         </dt>
         <dd><pre class="code"><span class='lbrace'>{</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>AirTran</span><span class='tstring_end'>&quot;</span></span>           <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#2db7b7</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>American-Airlines</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#ff99cc</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>American Airlines</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#ff99cc</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Delta</span><span class='tstring_end'>&quot;</span></span>             <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#cc0000</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Southwest</span><span class='tstring_end'>&quot;</span></span>         <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#e55b00</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Southwest</span><span class='tstring_end'>&quot;</span></span>         <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#ff9900</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>United</span><span class='tstring_end'>&quot;</span></span>            <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#3366ff</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>US-Airways</span><span class='tstring_end'>&quot;</span></span>        <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#cccccc</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>US Airways</span><span class='tstring_end'>&quot;</span></span>        <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>#cccccc</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
 <span class='rbrace'>}</span></pre></dd>
       
         <dt id="TEMP_FILE-constant" class="">TEMP_FILE =
@@ -172,6 +172,31 @@
 </div>
         </dt>
         <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>tmp/flights.graphml</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="YED_SCHEMA-constant" class="">YED_SCHEMA =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>XML schema for yEd documents.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns</span><span class='label_end'>&quot;:</span>              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://graphml.graphdrawing.org/xmlns</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:java</span><span class='label_end'>&quot;:</span>         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/yfiles-common/1.0/java</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:sys</span><span class='label_end'>&quot;:</span>          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:x</span><span class='label_end'>&quot;:</span>            <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/yfiles-common/markup/2.0</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:xsi</span><span class='label_end'>&quot;:</span>          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.w3.org/2001/XMLSchema-instance</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:y</span><span class='label_end'>&quot;:</span>            <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/graphml</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:yed</span><span class='label_end'>&quot;:</span>          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/yed/3</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xsi:schemaLocation</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd</span><span class='tstring_end'>&quot;</span></span>
+<span class='rbrace'>}</span></pre></dd>
       
     </dl>
   
@@ -193,7 +218,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#yed-class_method" title="yed (class method)">.<strong>yed</strong>(flights)  &#x21d2; ActiveSupport::Safebuffer </a>
+      <a href="#graph_flights-class_method" title="graph_flights (class method)">.<strong>graph_flights</strong>(flights)  &#x21d2; Object </a>
     
 
     
@@ -208,7 +233,31 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Generate a GraphML file for use in the yEd graph editor.</p>
+<p>Generate a GraphML file for use in the yEd graph editor from a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">flights</a></span>.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parse-class_method" title="parse (class method)">.<strong>parse</strong>(flight_string)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Generate a GraphML file for use in the yEd graph editor from a string of airports.</p>
 </div></span>
   
 </li>
@@ -224,9 +273,9 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="yed-class_method">
+  <h3 class="signature first" id="graph_flights-class_method">
   
-    .<strong>yed</strong>(flights)  &#x21d2; <tt>ActiveSupport::Safebuffer</tt> 
+    .<strong>graph_flights</strong>(flights)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -235,7 +284,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Generate a GraphML file for use in the yEd graph editor.</p>
+<p>Generate a GraphML file for use in the yEd graph editor from a collection of <span class='object_link'><a href="Flight.html" title="Flight (class)">flights</a></span>.</p>
 
 <p>This method also saves the output to the file location specified in TEMP_FILE. It will be overwritten each time the method is run.</p>
 
@@ -270,7 +319,7 @@
     <li>
       
       
-        <span class='type'>(<tt>ActiveSupport::Safebuffer</tt>)</span>
+        <span class='type'>(<tt>Object</tt>)</span>
       
       
       
@@ -296,18 +345,6 @@
       <pre class="lines">
 
 
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
 52
 53
 54
@@ -319,20 +356,104 @@
 60
 61
 62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
+63</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/modules/graph_ml.rb', line 52</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_graph_flights'>graph_flights</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_includes'>includes</span><span class='lparen'>(</span><span class='symbol'>:origin_airport</span><span class='comma'>,</span> <span class='symbol'>:destination_airport</span><span class='comma'>,</span> <span class='symbol'>:airline</span><span class='rparen'>)</span>
+  
+  <span class='id identifier rubyid_airport_nodes'>airport_nodes</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_visit_table_data'><span class='object_link'><a href="Airport.html#visit_table_data-class_method" title="Airport.visit_table_data (method)">visit_table_data</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>id:</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>text:</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='symbol'>:iata_code</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>visits:</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='symbol'>:visit_count</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_flight_edges'>flight_edges</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>source:</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_origin_airport_id'>origin_airport_id</span><span class='comma'>,</span> <span class='label'>target:</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport_id'>destination_airport_id</span><span class='comma'>,</span> <span class='label'>airline:</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span><span class='rbrace'>}</span><span class='rbrace'>}</span>
+
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_build_yed_xml'>build_yed_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_airport_nodes'>airport_nodes</span><span class='comma'>,</span> <span class='id identifier rubyid_flight_edges'>flight_edges</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_write_temp_file'>write_temp_file</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
+
+  <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="parse-class_method">
+  
+    .<strong>parse</strong>(flight_string)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Generate a GraphML file for use in the yEd graph editor from a string of airports.</p>
+
+<p>This method also saves the output to the file location specified in TEMP_FILE. It will be overwritten each time the method is run.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>flight_string</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>a string of airport codes in the format “JFK-ORD-LAX,LAX-DFW-JFK” where hyphens are flights, and commas are the</p>
+
+<pre class="code ruby"><code class="ruby">end of a one way trip (generally when the traveler leaves the airport).
+</code></pre>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XML for a <a href="http://graphml.graphdrawing.org" target="_parent" title="GraphML">GraphML</a> graph.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="https://www.yworks.com/products/yed" target="_parent" title="https://www.yworks.com/products/yed">https://www.yworks.com/products/yed</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
 77
 78
 79
@@ -348,106 +469,25 @@
 89
 90
 91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114</pre>
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/modules/graph_ml.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'app/modules/graph_ml.rb', line 77</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_yed'>yed</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_includes'>includes</span><span class='lparen'>(</span><span class='symbol'>:origin_airport</span><span class='comma'>,</span> <span class='symbol'>:destination_airport</span><span class='comma'>,</span> <span class='symbol'>:airline</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_airports'>airports</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_route'>route</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_route'>route</span><span class='period'>.</span><span class='id identifier rubyid_origin_airport'>origin_airport</span><span class='comma'>,</span> <span class='id identifier rubyid_route'>route</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport'>destination_airport</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='period'>.</span><span class='id identifier rubyid_uniq'>uniq</span>
-  <span class='id identifier rubyid_visits'>visits</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_visit_table_data'><span class='object_link'><a href="Airport.html#visit_table_data-class_method" title="Airport.visit_table_data (method)">visit_table_data</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='lbracket'>[</span><span class='id identifier rubyid_v'>v</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='lbracket'>[</span><span class='symbol'>:visit_count</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_flight_string'>flight_string</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_flight_string'>flight_string</span><span class='period'>.</span><span class='id identifier rubyid_upcase!'>upcase!</span>
+  <span class='id identifier rubyid_airports'>airports</span> <span class='op'>=</span> <span class='id identifier rubyid_flight_string'>flight_string</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>[,-]</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_tally'>tally</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>id:</span> <span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='label'>text:</span> <span class='id identifier rubyid_a'>a</span><span class='comma'>,</span> <span class='label'>visits:</span> <span class='id identifier rubyid_v'>v</span><span class='rbrace'>}</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flight_string'>flight_string</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>,</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_section'>section</span><span class='op'>|</span> <span class='id identifier rubyid_section'>section</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each_cons'>each_cons</span><span class='lparen'>(</span><span class='int'>2</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span><span class='rbrace'>}</span>
+    <span class='period'>.</span><span class='id identifier rubyid_flatten'>flatten</span><span class='lparen'>(</span><span class='int'>1</span><span class='rparen'>)</span>
+    <span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='lbrace'>{</span><span class='label'>source:</span> <span class='id identifier rubyid_f'>f</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>target:</span> <span class='id identifier rubyid_f'>f</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='rbrace'>}</span>
 
-  <span class='id identifier rubyid_schema'>schema</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns</span><span class='label_end'>&quot;:</span>              <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://graphml.graphdrawing.org/xmlns</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:java</span><span class='label_end'>&quot;:</span>         <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/yfiles-common/1.0/java</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:sys</span><span class='label_end'>&quot;:</span>          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:x</span><span class='label_end'>&quot;:</span>            <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/yfiles-common/markup/2.0</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:xsi</span><span class='label_end'>&quot;:</span>          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.w3.org/2001/XMLSchema-instance</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:y</span><span class='label_end'>&quot;:</span>            <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/graphml</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xmlns:yed</span><span class='label_end'>&quot;:</span>          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://www.yworks.com/xml/yed/3</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>xsi:schemaLocation</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd</span><span class='tstring_end'>&quot;</span></span>
-  <span class='rbrace'>}</span>
-         
-  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>Nokogiri</span><span class='op'>::</span><span class='const'>XML</span><span class='op'>::</span><span class='const'>Builder</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='label'>encoding:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>UTF-8</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_xml'>xml</span><span class='op'>|</span>
-    <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_graphml'>graphml</span><span class='lparen'>(</span><span class='id identifier rubyid_schema'>schema</span><span class='rparen'>)</span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_build_yed_xml'>build_yed_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_airports'>airports</span><span class='comma'>,</span> <span class='id identifier rubyid_flights'>flights</span><span class='rparen'>)</span>
 
-      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_key'>key</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>attr.name</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Description</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>attr.type</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>string</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>for:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>graph</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d0</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_key'>key</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>attr.name</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>description</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>attr.type</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>string</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>for:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>node</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d5</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_key'>key</span><span class='lparen'>(</span><span class='label'>for:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>node</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d6</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>yfiles.type</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>nodegraphics</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_key'>key</span><span class='lparen'>(</span><span class='label'>for:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>graphml</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d7</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>yfiles.type</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>resources</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_key'>key</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>attr.name</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>description</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>attr.type</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>string</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>for:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>edge</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d9</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_key'>key</span><span class='lparen'>(</span><span class='label'>for:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>edge</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d10</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>yfiles.type</span><span class='label_end'>&quot;:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>edgegraphics</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_write_temp_file'>write_temp_file</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
 
-      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_graph'>graph</span><span class='lparen'>(</span><span class='label'>edgedefault:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>directed</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>G</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
-        <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='lparen'>(</span><span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d0</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-        
-        <span class='comment'># Create airports:
-</span>        <span class='id identifier rubyid_airports'>airports</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_airport'>airport</span><span class='comma'>,</span> <span class='id identifier rubyid_index'>index</span><span class='op'>|</span>            
-          <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_node'>node</span><span class='lparen'>(</span><span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>n</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_airport'>airport</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
-            <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='lparen'>(</span><span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d5</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-            <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='lparen'>(</span><span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d6</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
-              <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>ShapeNode</span> <span class='kw'>do</span>
-                <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>Geometry</span><span class='lparen'>(</span><span class='id identifier rubyid_circle_size'>circle_size</span><span class='lparen'>(</span><span class='id identifier rubyid_visits'>visits</span><span class='lbracket'>[</span><span class='id identifier rubyid_airport'>airport</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span><span class='lparen'>(</span><span class='id identifier rubyid_airports'>airports</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='comma'>,</span> <span class='id identifier rubyid_index'>index</span><span class='rparen'>)</span><span class='rparen'>)</span>
-                <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>Fill</span><span class='lparen'>(</span><span class='label'>color:</span> <span class='const'><span class='object_link'><a href="#BASE_STYLES-constant" title="GraphML::BASE_STYLES (constant)">BASE_STYLES</a></span></span><span class='lbracket'>[</span><span class='symbol'>:node_color_fill</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>transparent:</span> <span class='kw'>false</span><span class='rparen'>)</span>
-                <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>BorderStyle</span><span class='lparen'>(</span><span class='label'>color:</span> <span class='const'><span class='object_link'><a href="#BASE_STYLES-constant" title="GraphML::BASE_STYLES (constant)">BASE_STYLES</a></span></span><span class='lbracket'>[</span><span class='symbol'>:node_color_border</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>raised:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>line</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>width:</span> <span class='const'><span class='object_link'><a href="#BASE_STYLES-constant" title="GraphML::BASE_STYLES (constant)">BASE_STYLES</a></span></span><span class='lbracket'>[</span><span class='symbol'>:node_width_border</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-                <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>NodeLabel</span><span class='lparen'>(</span><span class='id identifier rubyid_airport'>airport</span><span class='lbracket'>[</span><span class='symbol'>:iata_code</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_font'>font</span><span class='lparen'>(</span><span class='id identifier rubyid_visits'>visits</span><span class='lbracket'>[</span><span class='id identifier rubyid_airport'>airport</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
-                <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>Shape</span><span class='lparen'>(</span><span class='label'>type:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ellipse</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-              <span class='kw'>end</span>
-            <span class='kw'>end</span>
-          <span class='kw'>end</span>
-        <span class='kw'>end</span>
-        
-        <span class='comment'># Create flights:
-</span>        <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_each_with_index'>each_with_index</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_flight'>flight</span><span class='comma'>,</span> <span class='id identifier rubyid_edge_id'>edge_id</span><span class='op'>|</span>              
-          <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_edge'>edge</span><span class='lparen'>(</span><span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>e</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_edge_id'>edge_id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>source:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>n</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_origin_airport_id'>origin_airport_id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>target:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>n</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_destination_airport_id'>destination_airport_id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
-            <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='lparen'>(</span><span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d9</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-            <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='lparen'>(</span><span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d10</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
-              <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>PolyLineEdge</span> <span class='kw'>do</span>
-                <span class='id identifier rubyid_color'>color</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#AIRLINE_COLORS-constant" title="GraphML::AIRLINE_COLORS (constant)">AIRLINE_COLORS</a></span></span><span class='lbracket'>[</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'><span class='object_link'><a href="#BASE_STYLES-constant" title="GraphML::BASE_STYLES (constant)">BASE_STYLES</a></span></span><span class='lbracket'>[</span><span class='symbol'>:node_color_border</span><span class='rbracket'>]</span>
-                <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>LineStyle</span><span class='lparen'>(</span><span class='label'>width:</span> <span class='const'><span class='object_link'><a href="#BASE_STYLES-constant" title="GraphML::BASE_STYLES (constant)">BASE_STYLES</a></span></span><span class='lbracket'>[</span><span class='symbol'>:edge_width</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>color:</span> <span class='id identifier rubyid_color'>color</span><span class='rparen'>)</span>
-                <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>Arrows</span><span class='lparen'>(</span><span class='label'>source:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>none</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>target:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>standard</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-                <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>EdgeLabel</span><span class='lparen'>(</span><span class='id identifier rubyid_flight'>flight</span><span class='period'>.</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span><span class='comma'>,</span> <span class='label'>visible:</span> <span class='kw'>false</span><span class='rparen'>)</span>
-              <span class='kw'>end</span>
-            <span class='kw'>end</span>
-          <span class='kw'>end</span>
-        <span class='kw'>end</span>
-        
-      <span class='kw'>end</span>
-      <span class='id identifier rubyid_xml'>xml</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='lparen'>(</span><span class='label'>key:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>d7</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
-        <span class='id identifier rubyid_xml'>xml</span><span class='lbracket'>[</span><span class='symbol'>:y</span><span class='rbracket'>]</span><span class='period'>.</span><span class='const'>Resources</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-  <span class='kw'>end</span>
-
-  <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_to_xml'>to_xml</span>
-
-  <span class='id identifier rubyid_f'>f</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#TEMP_FILE-constant" title="GraphML::TEMP_FILE (constant)">TEMP_FILE</a></span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>w</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_f'>f</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_output'>output</span>
-  <span class='id identifier rubyid_f'>f</span><span class='period'>.</span><span class='id identifier rubyid_close'>close</span>
-  
   <span class='kw'>return</span> <span class='id identifier rubyid_output'>output</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -460,9 +500,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Feb  2 14:23:25 2020 by
+  Generated on Sat Feb  8 10:13:46 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.5).
+  0.9.24 (ruby-2.7.0).
 </div>
 
     </div>

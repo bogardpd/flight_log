@@ -4,15 +4,16 @@ require "rails/test_help"
 require "webmock/minitest"
 require "minitest/reporters"
 Minitest::Reporters.use!
-WebMock.disable_net_connect!(allow_localhost: true)
+WebMock.disable_net_connect!({
+  allow_localhost: true,
+  allow: "chromedriver.storage.googleapis.com"
+})
 
 class ActiveSupport::TestCase
   
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
-  set_fixture_class(pk_passes: PKPass)
-  
-  
+  set_fixture_class(pk_passes: PKPass)  
 
   # Logs in a test user (integration tests)
   def log_in_as(user)

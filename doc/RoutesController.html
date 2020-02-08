@@ -6,15 +6,15 @@
 <title>
   Class: RoutesController
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.24
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "RoutesController";
   relpath = '';
 </script>
@@ -438,9 +438,9 @@
 </span>  
   <span class='comment'># Check to see if route already exists in database. If so, edit it, if not, new route.
 </span>  <span class='id identifier rubyid_current_route'>current_route</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(airport1_id = ? AND airport2_id = ?) OR (airport1_id = ? AND airport2_id = ?)</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@airport_ids</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='ivar'>@airport_ids</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='ivar'>@airport_ids</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='ivar'>@airport_ids</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_current_route'>current_route</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
-    <span class='comment'># Route exists, edit it.
-</span>    <span class='ivar'>@route</span> <span class='op'>=</span> <span class='id identifier rubyid_current_route'>current_route</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_current_route'>current_route</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>    <span class='comment'># Route exists, edit it.
+</span>
+    <span class='ivar'>@route</span> <span class='op'>=</span> <span class='id identifier rubyid_current_route'>current_route</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
     
   <span class='kw'>else</span>
     <span class='comment'># Route does not exist, create a new one.
@@ -749,7 +749,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@route</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='ivar'>@route</span><span class='period'>.</span><span class='id identifier rubyid_update_attributes'>update_attributes</span><span class='lparen'>(</span><span class='id identifier rubyid_route_params'>route_params</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='ivar'>@route</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_route_params'>route_params</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_flash'>flash</span><span class='lbracket'>[</span><span class='symbol'>:success</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Successfully updated route distance.</span><span class='tstring_end'>&quot;</span></span>
     <span class='id identifier rubyid_redirect_to'>redirect_to</span> <span class='id identifier rubyid_show_route_path'>show_route_path</span><span class='lparen'>(</span><span class='label'>airport1:</span> <span class='ivar'>@route</span><span class='period'>.</span><span class='id identifier rubyid_airport1'>airport1</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='comma'>,</span> <span class='label'>airport2:</span> <span class='ivar'>@route</span><span class='period'>.</span><span class='id identifier rubyid_airport2'>airport2</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
@@ -766,9 +766,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Feb  2 14:23:29 2020 by
+  Generated on Sat Feb  8 10:13:49 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.20 (ruby-2.6.5).
+  0.9.24 (ruby-2.7.0).
 </div>
 
     </div>
