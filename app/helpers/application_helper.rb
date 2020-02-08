@@ -152,8 +152,8 @@ module ApplicationHelper
   # @return [ActiveSupport::SafeBuffer] HTML text
   def distance_block(distance_mi, adjective: nil, flight_link: false, paragraph: true)
     output = Array.new
-    output.push(content_tag(:span, safe_join([number_with_delimiter(distance_mi, delimeter: ","), [adjective,"mile".pluralize(distance_mi)].compact.join(" ")], " "), class: "distance-primary"))
-    output.push(content_tag(:span, "(#{number_with_delimiter(Distance::km(distance_mi), delimeter: ",")} km)", class: "distance-secondary"))
+    output.push(content_tag(:span, safe_join([number_with_delimiter(distance_mi, delimiter: sanitize("&nbsp;")), [adjective,"mile".pluralize(distance_mi)].compact.join(" ")], " "), class: "distance-primary"))
+    output.push(content_tag(:span, "(#{number_with_delimiter(Distance::km(distance_mi), delimiter: sanitize("&nbsp;"))} km)", class: "distance-secondary"))
     if flight_link
       output.push(sanitize("&middot;"))
       output.push(link_to("See a list of these flights", "#flights"))
@@ -203,14 +203,14 @@ module ApplicationHelper
       xml.svg(**GRAPH_BAR_DIMENSIONS, class: "graph-bar") do
         xml.rect(width: bar_width, height: GRAPH_BAR_DIMENSIONS[:height], class: "graph")
         if is_distance
-          value_mi = number_with_delimiter(value, delimeter: ",")
-          value_km = number_with_delimiter(Distance::km(value), delimeter: ",")
+          value_mi = number_with_delimiter(value, delimiter: sanitize("&nbsp;"))
+          value_km = number_with_delimiter(Distance::km(value), delimiter: sanitize("&nbsp;"))
           xml.text_(value_mi, x: "30%", y: GRAPH_BAR_TEXT_Y[2][0], class: "graph-value graph-distance", "data-distance-mi": value)
           xml.text_("mile".pluralize(value), x: "30%", y: GRAPH_BAR_TEXT_Y[2][1], class: "graph-value graph-unit")
           xml.text_(value_km, x: "70%", y: GRAPH_BAR_TEXT_Y[2][0], class: "graph-value graph-distance")
           xml.text_("km", x: "70%", y: GRAPH_BAR_TEXT_Y[2][1], class: "graph-value graph-unit")
         else
-          graph_text = number_with_delimiter(value, delimeter: ",")
+          graph_text = number_with_delimiter(value, delimiter: sanitize("&nbsp;"))
           xml.text_(graph_text, x: "50%", y: GRAPH_BAR_TEXT_Y[1][0], class: "graph-value", "data-value": value)
         end
       end
