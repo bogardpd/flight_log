@@ -218,7 +218,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#new_in_date_range-class_method" title="new_in_date_range (class method)">.<strong>new_in_date_range</strong>(flyer, current_user, date_range)  &#x21d2; Array&lt;Integer&gt; </a>
+      <a href="#new_in_date_range-class_method" title="new_in_date_range (class method)">.<strong>new_in_date_range</strong>(flyer, current_user, date_range, type: :airline)  &#x21d2; Array&lt;Integer&gt; </a>
     
 
     
@@ -607,7 +607,7 @@
       <div class="method_details ">
   <h3 class="signature " id="new_in_date_range-class_method">
   
-    .<strong>new_in_date_range</strong>(flyer, current_user, date_range)  &#x21d2; <tt>Array&lt;Integer&gt;</tt> 
+    .<strong>new_in_date_range</strong>(flyer, current_user, date_range, type: :airline)  &#x21d2; <tt>Array&lt;Integer&gt;</tt> 
   
 
   
@@ -673,6 +673,24 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>type</span>
+      
+      
+        <span class='type'>(<tt>:airline</tt>, <tt>:operator</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>:airline</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>whether to calculate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> counts for Airlines administrating flights (:airline) or Airlines operating flights (:operator)</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 <p class="tag_title">Returns:</p>
@@ -700,18 +718,20 @@
       <pre class="lines">
 
 
-133
-134
-135
 136
-137</pre>
+137
+138
+139
+140
+141</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 133</span>
+      <pre class="code"><span class="info file"># File 'app/models/airline.rb', line 136</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new_in_date_range'>new_in_date_range</span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='comma'>,</span> <span class='id identifier rubyid_date_range'>date_range</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_new_in_date_range'>new_in_date_range</span><span class='lparen'>(</span><span class='id identifier rubyid_flyer'>flyer</span><span class='comma'>,</span> <span class='id identifier rubyid_current_user'>current_user</span><span class='comma'>,</span> <span class='id identifier rubyid_date_range'>date_range</span><span class='comma'>,</span> <span class='label'>type:</span> <span class='symbol'>:airline</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flights'>flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_reorder'>reorder</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_first_flights'>first_flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:airline</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='symbol'>:airline_id</span><span class='comma'>,</span> <span class='symbol'>:departure_date</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='label'>airline_id:</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_group'>group</span><span class='lparen'>(</span><span class='symbol'>:airline_id</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_minimum'>minimum</span><span class='lparen'>(</span><span class='symbol'>:departure_date</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_id_type'>id_type</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_id</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
+  <span class='id identifier rubyid_first_flights'>first_flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:airline</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='id identifier rubyid_id_type'>id_type</span><span class='comma'>,</span> <span class='symbol'>:departure_date</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='id identifier rubyid_id_type'>id_type</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_group'>group</span><span class='lparen'>(</span><span class='id identifier rubyid_id_type'>id_type</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_minimum'>minimum</span><span class='lparen'>(</span><span class='symbol'>:departure_date</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_first_flights'>first_flights</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_date_range'>date_range</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_k'>k</span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_sort'>sort</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -850,7 +870,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Feb  8 10:13:48 2020 by
+  Generated on Sat Feb  8 13:22:00 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.24 (ruby-2.7.0).
 </div>

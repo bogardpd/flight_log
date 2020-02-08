@@ -44,9 +44,10 @@
 
 
 <h2 id="airlines">Airlines Flown <%= @date_range_text %></h2>
-
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true, new_airlines: @new_airlines, legend_range: @in_text} %>
 
+<h2 id="operators">Operators Flown <%= @date_range_text %></h2>
+<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, new_airlines: @new_operators, legend_range: @in_text, identical: (@airlines == @operators)} %>
 
 <h2 id="classes">Classes Flown <%= @date_range_text %></h2>
 <%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true, new_classes: @new_classes} %>

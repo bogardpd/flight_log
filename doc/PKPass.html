@@ -338,12 +338,7 @@
 89
 90
 91
-92
-93
-94
-95
-96
-97</pre>
+92</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/models/pk_pass.rb', line 85</span>
@@ -351,12 +346,7 @@
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_pass_summary_list'>pass_summary_list</span>
   <span class='const'><span class='object_link'><a href="" title="PKPass (class)">PKPass</a></span></span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_pass'>pass</span><span class='op'>|</span>
     <span class='id identifier rubyid_fields'>fields</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="BoardingPass.html#initialize-instance_method" title="BoardingPass#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_pass'>pass</span><span class='period'>.</span><span class='id identifier rubyid_barcode'>barcode</span><span class='comma'>,</span> <span class='label'>interpretations:</span> <span class='kw'>false</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_summary_fields'><span class='object_link'><a href="BoardingPass.html#summary_fields-instance_method" title="BoardingPass#summary_fields (method)">summary_fields</a></span></span>
-    <span class='id identifier rubyid_json_data'>json_data</span> <span class='op'>=</span> <span class='const'>JSON</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_pass'>pass</span><span class='period'>.</span><span class='id identifier rubyid_pass_json'>pass_json</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_json_data'>json_data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>relevantDate</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
-      <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='symbol'>:date</span><span class='comma'>,</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_json_data'>json_data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>relevantDate</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='rparen'>)</span>
-    <span class='kw'>else</span>
-      <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='symbol'>:date</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-    <span class='kw'>end</span>
+    <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='symbol'>:date</span><span class='comma'>,</span> <span class='id identifier rubyid_pass'>pass</span><span class='period'>.</span><span class='id identifier rubyid_departure_utc'>departure_utc</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_fields'>fields</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='comma'>,</span> <span class='id identifier rubyid_pass'>pass</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_fields'>fields</span>
   <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_sort_by'>sort_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_h'>h</span><span class='op'>|</span> <span class='id identifier rubyid_h'>h</span><span class='lbracket'>[</span><span class='symbol'>:date</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span><span class='rbrace'>}</span>
@@ -676,7 +666,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Feb  8 10:13:48 2020 by
+  Generated on Sat Feb  8 13:22:01 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.24 (ruby-2.7.0).
 </div>

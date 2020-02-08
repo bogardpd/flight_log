@@ -48,7 +48,7 @@
     </table>
 
     <% if (known_airlines.map{|af| af[:id]} & new_airlines).any? %>
-      <p class="new-legend">* Airline first flown in <%= legend_range %></p>
+      <p class="new-legend">* <%= type.to_s.titleize %> first flown in <%= legend_range %></p>
     <% end %>
     
     <% unknown_airline_flights = unknown_airlines.any? ? unknown_airlines.first[:flight_count] : 0 %>

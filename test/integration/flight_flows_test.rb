@@ -292,6 +292,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select(".distance-primary")
     assert_select("#airport-count-table")
     assert_select("#airline-count-table")
+    assert_select("#operator-count-table")
     assert_select("#aircraft-family-count-table")
     assert_select("#superlatives-table")
   end

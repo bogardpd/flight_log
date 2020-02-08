@@ -129,10 +129,14 @@ class Airline < ApplicationRecord
   # @param flyer [User] the {User} whose flights should be searched
   # @param current_user [User, nil] the {User} viewing the flights
   # @param date_range [Range<Date>] the date range to search
+  # @param type [:airline, :operator] whether to calculate {Flight} counts for
+  #   Airlines administrating flights (:airline) or Airlines operating flights
+  #   (:operator)
   # @return [Array<Integer>] an array of Airline IDs
-  def self.new_in_date_range(flyer, current_user, date_range)
+  def self.new_in_date_range(flyer, current_user, date_range, type: :airline)
     flights = flyer.flights(current_user).reorder(nil)
-    first_flights = flights.joins(:airline).select(:airline_id, :departure_date).where.not(airline_id: nil).group(:airline_id).minimum(:departure_date)
+    id_type = (type.to_s + "_id").to_sym
+    first_flights = flights.joins(:airline).select(id_type, :departure_date).where.not(id_type => nil).group(id_type).minimum(:departure_date)
     return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
   end
   

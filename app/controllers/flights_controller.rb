@@ -151,10 +151,12 @@ class FlightsController < ApplicationController
     # Create comparitive lists of airlines and classes:
     @airports = Airport.visit_table_data(@flights) 
     @airlines = Airline.flight_table_data(@flights, type: :airline) 
+    @operators = Airline.flight_table_data(@flights, type: :operator) 
     @aircraft_families = AircraftFamily.flight_table_data(@flights)
     @classes = TravelClass.flight_table_data(@flights)
     @new_airports = Airport.new_in_date_range(flyer, current_user, @date_range)
-    @new_airlines = Airline.new_in_date_range(flyer, current_user, @date_range)   
+    @new_airlines = Airline.new_in_date_range(flyer, current_user, @date_range, type: :airline)   
+    @new_operators = Airline.new_in_date_range(flyer, current_user, @date_range, type: :operator)   
     @new_aircraft_families = AircraftFamily.new_in_date_range(flyer, current_user, @date_range)
     @new_classes = TravelClass.new_in_date_range(flyer, current_user, @date_range)
     
