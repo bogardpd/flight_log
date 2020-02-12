@@ -172,7 +172,7 @@ module ApplicationHelper
   def flight_table_total_row(flights, extra_details=Array.new)
     flyer_flights = flyer.flights(current_user)
     output = Array.new
-    output.push(pluralize(flights.size, "flight"))
+    output.push(pluralize(number_with_delimiter(flights.size, delimiter: sanitize("&nbsp;")), "flight"))
     if flyer_flights.any? && flights.size > 0
       percent = ((flights.size.to_f/flyer_flights.size.to_f)*1000).round/10.0
       output.push(content_tag(:span, "(#{percent}% of all flights)", class: "total-percent"))

@@ -20,7 +20,7 @@
   </ul>
 </div>
 
-<p>I have flown between <span class="bold"><%= link_to(@airports[0].city, airport_path(@airports[0].slug)) %></span> and <span class="bold"><%= link_to(@airports[1].city, airport_path(@airports[1].slug)) %></span> <%= pluralize(@flights.length, "time") %>.</p>
+<p>I have flown between <span class="bold"><%= link_to(@airports[0].city, airport_path(@airports[0].slug)) %></span> and <span class="bold"><%= link_to(@airports[1].city, airport_path(@airports[1].slug)) %></span> <%= pluralize(number_with_delimiter(@flights.length, delimiter: sanitize("&nbsp;")), "time") %>.</p>
 
 <div id="map">
   <%= @route_map.gcmap %>

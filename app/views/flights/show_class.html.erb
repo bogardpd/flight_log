@@ -16,7 +16,7 @@
   </ul>
 </div>
 
-<p>I have flown in <span class="bold"><%= TravelClass.title(@class).downcase %></span> <%= pluralize(@flights.length, "time") %>.</p>
+<p>I have flown in <span class="bold"><%= TravelClass.title(@class).downcase %></span> <%= pluralize(number_with_delimiter(@flights.length, delimiter: sanitize("&nbsp;")), "time") %>.</p>
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>

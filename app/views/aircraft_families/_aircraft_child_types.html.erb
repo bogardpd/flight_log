@@ -21,7 +21,7 @@
       <% previous_count = type[:flight_count] %>
     <% end %>
     <tr>
-      <td colspan="4" class="flightlog-total"><%= pluralize(child_types_only.length, "known type") %></td>
+      <td colspan="4" class="flightlog-total"><%= pluralize(number_with_delimiter(child_types_only.length, delimiter: sanitize("&nbsp;")), "known type") %></td>
     </tr>
     </tbody>
   </table>

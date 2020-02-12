@@ -28,7 +28,7 @@
     	<% previous_count = aircraft_family[:flight_count] %>
     <% end %>
 
-      <tr><td colspan="5" class="flightlog-total" id="aircraft-family-count-total" data-total="<%= known_families.size %>"><%= pluralize(known_families.size, "aircraft family") %></td></tr>
+      <tr><td colspan="5" class="flightlog-total" id="aircraft-family-count-total" data-total="<%= known_families.size %>"><%= pluralize(number_with_delimiter(known_families.size, delimiter: sanitize("&nbsp;")), "aircraft family") %></td></tr>
     </tbody>
   
   </table>
@@ -39,7 +39,7 @@
 
   <% unknown_family_flights = unknown_families.any? ? unknown_families.first[:flight_count] : 0 %>
   <% if unknown_family_flights > 1 %>
-    <p class="center"><%= unknown_family_flights %> flights with unknown aircraft families are not included in this table.</p>
+    <p class="center"><%= number_with_delimiter(unknown_family_flights, delimiter: sanitize("&nbsp;")) %> flights with unknown aircraft families are not included in this table.</p>
   <% elsif unknown_family_flights == 1 %> 
     <p class="center">1 flight with an unknown aircraft family is not included in this table.</p>
   <% end %>

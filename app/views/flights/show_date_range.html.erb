@@ -25,7 +25,7 @@
 
 <% if @flights.any? %>
 
-<p>I <%= @took_taken %> <%= pluralize(@flights.length, "commercial flight") %> <%= @date_range_text %>.</p>
+<p>I <%= @took_taken %> <%= pluralize(number_with_delimiter(@flights.length, delimiter: sanitize("&nbsp;")), "commercial flight") %> <%= @date_range_text %>.</p>
 
 <div id="map" class="intro-box">
   <%= gcmap_with_region_select(@map, @region, anchor: "flight-map") %>

@@ -17,7 +17,7 @@
 
 <% end %>
 
-<p>I have visited <%= pluralize(@airports.size || 0, "airport") %>.</p>
+<p>I have visited <%= pluralize(number_with_delimiter((@airports.size || 0), delimiter: sanitize("&nbsp;")), "airport") %>.</p>
 
 <% if @flights.any? %>
 
