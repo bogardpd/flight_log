@@ -8,7 +8,7 @@
 <% if @airport.country || @airport.coordinates %>
 <div id="title-info">
   <% if @airport.coordinates %>
-    <div id="airport-coordinates"><%= format_coordinates(@airport.coordinates) %></div>
+    <div id="airport-coordinates"><%= NumberFormat.coordinates(@airport.coordinates) %></div>
   <% end %>
   <% if @airport.country %>
     <div>

@@ -59,17 +59,6 @@ module ApplicationHelper
     return sanitize(city_airport_name.gsub(/\(.*\)/, '&ensp;<small class="airport-name">\0</small>').tr("()",""))
   end
   
-  # Formats a pair of decimal coordinates into a string pair of coordinates
-  # with cardinal directions and 5 decimal places.
-  # 
-  # @param coordinates [Array<Number>] an array containing latitude and
-  #   longitude, each in decimal degrees.
-  # @return [ActiveSupport::SafeBuffer] a string pair of decimal degree
-  #   coordinates with N/S and E/W hemispheres and 5 decimal places.
-  def format_coordinates(coordinates)
-    return sanitize("#{"%.5f" % coordinates[0].abs}° #{coordinates[0] < 0 ? "S" : "N"}&ensp;#{"%.5f" % coordinates[1].abs}° #{coordinates[1] < 0 ? "W" : "E"}")
-  end
-  
   # Renders a message <div> containing an info box, success message, warning
   # message, or error message.
   #
