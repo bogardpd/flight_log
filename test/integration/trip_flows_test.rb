@@ -82,7 +82,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#trips-table") do
       assert_select("tr#trip-row-#{@visible_trip.id}", {}, "This view shall show visible trips") do
         assert_select("a[href=?]", trip_path(@visible_trip), {text: @visible_trip.name})
-        assert_select("td.flight-date", {text: FormattedDate.str(@visible_trip.flights.pluck(:departure_date).sort.first)})
+        assert_select("td.flight-date", {text: NumberFormat.date(@visible_trip.flights.pluck(:departure_date).sort.first)})
       end
       assert_select("tr#trip-row-#{@hidden_trip.id}", {}, "This view shall show hidden trips when logged in") do
         assert_select("div.hidden-marker", {}, "Hidden trip shall have hidden marker")

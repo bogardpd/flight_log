@@ -8,7 +8,7 @@
     <tr id="trip-row-<%= trip.id %>">
       <td class="counter"><%= (@sort == [:departure, :desc]) ? trips.length - index : index + 1 %></td>
       <td class="trip-name"><%= Trip::HIDDEN_MARKER if trip.hidden %><%= link_to(trip.name, trip_path(trip), :title => "View trip details for " + trip.name) %></td></td>
-      <td class="flight-date"><%= format_date(trip.departure_date) %></td>
+      <td class="flight-date"><%= NumberFormat.date(trip.departure_date) %></td>
     </tr>
   <% end %>
   <tr>

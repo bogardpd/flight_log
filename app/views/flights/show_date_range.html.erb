@@ -4,7 +4,7 @@
 <% if params[:year].present? %>
 	<% add_breadcrumb @year, show_year_path(year: @year) %>
 <% else %>
-	<% add_breadcrumb "#{format_date(@start_date)} – #{format_date(@end_date)}", show_date_range_path(start_date: @start_date, end_date: @end_date) %>
+	<% add_breadcrumb "#{NumberFormat.date(@start_date)} – #{NumberFormat.date(@end_date)}", show_date_range_path(start_date: @start_date, end_date: @end_date) %>
 <% end %>
 
 <h1><%= @title %></h1>

@@ -20,7 +20,7 @@
           <% end %>  
         </td>
         <td class="flight-date">
-          <%= format_date(trip[:departure_date]) %>
+          <%= NumberFormat.date(trip[:departure_date]) %>
         </td>
       </tr>
     <% end %>
