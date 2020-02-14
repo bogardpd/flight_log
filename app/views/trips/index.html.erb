@@ -18,7 +18,7 @@
   <h2>Trips with Flights</h2>
 <% end %>
 
-<p>I have taken <%= pluralize(number_with_delimiter(@trips.length, delimiter: sanitize("&nbsp;")), "trip") %> by air.</p>
+<p>I have taken <%= pluralize(NumberFormat.value(@trips.length), "trip") %> by air.</p>
 
 <% if @trips.any? %>
   <%= render partial: "trips/trip_table", locals: {trips: @trips} %>

@@ -23,7 +23,7 @@
 	</div>
 <% end %>
 
-<p>I have flown <%= pluralize(number_with_delimiter(@flights.size, delimiter: sanitize("&nbsp;")), "flight") %> on <span class="bold"><%= @airline.airline_name %></span>.</p>
+<p>I have flown <%= pluralize(NumberFormat.value(@flights.size), "flight") %> on <span class="bold"><%= @airline.airline_name %></span>.</p>
 
 <% if @flights.any? %>
 

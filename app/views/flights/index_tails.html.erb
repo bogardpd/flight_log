@@ -5,7 +5,7 @@
 <h1>Tail Numbers</h1>
 
 <p>Each plane has a <%= link_to("registration", "http://en.wikipedia.org/wiki/Aircraft_registration") %> number, and I use it to keep track of which particular planes Iʼve flown on the most often.</p>
-<p>I have flown on <%= pluralize(number_with_delimiter(@tail_numbers_table.size, delimiter: sanitize("&nbsp;")), "unique tail number") %>.</p>
+<p>I have flown on <%= pluralize(NumberFormat.value(@tail_numbers_table.size), "unique tail number") %>.</p>
 
 <% if @tail_numbers_table.empty? %>
 	<% if @flights.empty? %>
@@ -29,7 +29,7 @@
 		<td class="tail-flights"><%= graph_bar(tail[:count], @flights_maximum) %></td>
   </tr>
 <% end %>
-  <tr><td colspan="4" class="flightlog-total" id="tail-number-count-total" data-total="<%= @tail_numbers_table.size %>"><%= pluralize(number_with_delimiter(@tail_numbers_table.size, delimiter: sanitize("&nbsp;")), "unique tail number") %></td></tr>
+  <tr><td colspan="4" class="flightlog-total" id="tail-number-count-total" data-total="<%= @tail_numbers_table.size %>"><%= pluralize(NumberFormat.value(@tail_numbers_table.size), "unique tail number") %></td></tr>
 </table>
 
 <% end %>

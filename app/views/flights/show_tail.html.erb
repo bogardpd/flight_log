@@ -22,7 +22,7 @@
 </div>
 
 
-<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family.family_name, aircraft_family_path(@flights.last.aircraft_family.slug), :title => "View flights on #{@flights.last.aircraft_family.manufacturer} #{@flights.last.aircraft_family.family_name} aircraft") : "airplane" %> with tail number <span class="bold"><%= @tail_number %></span> <%= pluralize(number_with_delimiter(@flights.length, delimiter: sanitize("&nbsp;")), "time") %>.</p>
+<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family.family_name, aircraft_family_path(@flights.last.aircraft_family.slug), :title => "View flights on #{@flights.last.aircraft_family.manufacturer} #{@flights.last.aircraft_family.family_name} aircraft") : "airplane" %> with tail number <span class="bold"><%= @tail_number %></span> <%= pluralize(NumberFormat.value(@flights.length), "time") %>.</p>
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>

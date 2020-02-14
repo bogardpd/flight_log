@@ -29,7 +29,7 @@
     	<% previous_count = airport[:visit_count] %>
     <% end %>
 
-      <tr><td colspan="5" class="flightlog-total" id="airport-count-total" data-total="<%= known_airports.size %>"><%= pluralize(number_with_delimiter(known_airports.size, delimiter: sanitize("&nbsp;")), "airport") %></td></tr>
+      <tr><td colspan="5" class="flightlog-total" id="airport-count-total" data-total="<%= known_airports.size %>"><%= pluralize(NumberFormat.value(known_airports.size), "airport") %></td></tr>
     </tbody>
 
   </table>

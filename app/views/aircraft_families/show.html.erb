@@ -29,7 +29,7 @@
 
 <%= render partial: "aircraft_illustration", locals: {aircraft_family: @aircraft} %>
 
-<p>I have flown on <span class="bold"><%= @aircraft.full_name %></span> aircraft <%= pluralize(number_with_delimiter(@flights.length, delimiter: sanitize("&nbsp;")), "time") %>.</p>
+<p>I have flown on <span class="bold"><%= @aircraft.full_name %></span> aircraft <%= pluralize(NumberFormat.value(@flights.length), "time") %>.</p>
 
 <% if @flights.any? %>
 

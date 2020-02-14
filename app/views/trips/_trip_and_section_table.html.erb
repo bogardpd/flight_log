@@ -26,8 +26,8 @@
     <% end %>
     <tr>
       <td colspan="4" class="flightlog-total">
-        <%= pluralize(number_with_delimiter(trips_and_sections.length, delimiter: sanitize("&nbsp;")), "trip") %>,
-        <%= pluralize(number_with_delimiter(trips_and_sections.map{|t| t[:sections].size }.reduce(0, :+), delimiter: sanitize("&nbsp;")), "section") %>
+        <%= pluralize(NumberFormat.value(trips_and_sections.length), "trip") %>,
+        <%= pluralize(NumberFormat.value(trips_and_sections.map{|t| t[:sections].size }.reduce(0, :+)), "section") %>
       </td>
     </tr>
   </table>

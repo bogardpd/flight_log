@@ -8,7 +8,7 @@
   <% if @user.errors.any? %>
     <div id="error-explanation">
       <div class="message message-error">
-        The form contains <%= pluralize(number_with_delimiter(@user.errors.count, delimiter: sanitize("&nbsp;")), "error") %>.
+        The form contains <%= pluralize(NumberFormat.value(@user.errors.count), "error") %>.
       </div>
       <ul>
       <% @user.errors.full_messages.each do |msg| %>

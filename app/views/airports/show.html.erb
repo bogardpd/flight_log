@@ -34,7 +34,7 @@
   </ul>
 </div>
 
-<p>I have visited <span class="bold"><abbr title="<%= @airport.city %>" id="iata-airport-code"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>" id="icao-airport-code"><%= @airport.icao_code %></abbr></span> <%= pluralize(number_with_delimiter(@airport_frequency, delimiter: sanitize("&nbsp;")), "time") %>.</p>
+<p>I have visited <span class="bold"><abbr title="<%= @airport.city %>" id="iata-airport-code"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>" id="icao-airport-code"><%= @airport.icao_code %></abbr></span> <%= pluralize(NumberFormat.value(@airport_frequency), "time") %>.</p>
 
 <% unless @flights.length == 0 %>
 
@@ -75,7 +75,7 @@
 		  </tr>
 			<% previous_count = @sort[0] == :flights ? row[:total_flights] : row[:distance_mi] %>
 		<% end %>
-	  <tr><td colspan="5" class="flightlog-total"><%= pluralize(number_with_delimiter(@direct_flight_airports.size, delimiter: sanitize("&nbsp;")), "direct flight airport") %></td></tr>
+	  <tr><td colspan="5" class="flightlog-total"><%= pluralize(NumberFormat.value(@direct_flight_airports.size), "direct flight airport") %></td></tr>
 	</table>
 
 	<h2 id="airlines">Airlines Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>

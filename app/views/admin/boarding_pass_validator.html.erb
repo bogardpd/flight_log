@@ -29,7 +29,7 @@
 <% end %>
   <tr>
     <td colspan="3" class="flightlog-total">
-      <%= pluralize(number_with_delimiter(count, delimiter: sanitize("&nbsp;")), "invalid boarding pass") %>
+      <%= pluralize(NumberFormat.value(count), "invalid boarding pass") %>
     </td>
   </tr>
 </table>

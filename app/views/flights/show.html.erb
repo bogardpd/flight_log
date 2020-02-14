@@ -43,7 +43,7 @@
     <td class="label-column">Route</td>
     <td id="flight-route">
       <% if @route_distance %>
-        <div class="supplemental-info" id="flight-route-distance"><span class="flight-route-distance"><%= number_with_delimiter(@route_distance, delimiter: sanitize("&nbsp;")) %> mi / <%= number_with_delimiter(Distance::km(@route_distance), delimiter: sanitize("&nbsp;")) %> km</span></div>
+        <div class="supplemental-info" id="flight-route-distance"><span class="flight-route-distance"><%= NumberFormat.value(@route_distance) %> mi / <%= NumberFormat.value(Distance::km(@route_distance)) %> km</span></div>
       <% elsif logged_in? %>
         <div class="supplemental-info message-error"><%= link_to "Distance Undefined", edit_route_path(@flight.origin_airport,@flight.destination_airport) %></div>
       <% end %>

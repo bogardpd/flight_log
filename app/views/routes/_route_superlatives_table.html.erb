@@ -14,8 +14,8 @@
 						<td class="label-column superlatives-label" rowspan="<%= superlatives[category].length %>"><%= label %></td>
 					<% end %>
 					<td class="route-route"><%= link_to(format_route(airports.map{|r| r.iata_code}), show_route_path(airport1: airports.first.slug, airport2: airports.last.slug), title: "View flights between #{airports.first.iata_code} and #{airports.last.iata_code}") %></td>
-					<td class="superlatives-distance"><%= number_with_delimiter(distance, delimiter: sanitize("&nbsp;")) %> <span class="measurement-unit">mi</span></td>
-					<td class="superlatives-distance"><%= number_with_delimiter(Distance::km(distance), delimiter: sanitize("&nbsp;")) %> <span class="measurement-unit">km</span></td>
+					<td class="superlatives-distance"><%= NumberFormat.value(distance) %> <span class="measurement-unit">mi</span></td>
+					<td class="superlatives-distance"><%= NumberFormat.value(Distance::km(distance)) %> <span class="measurement-unit">km</span></td>
 				</tr>
 
 			<% end %>	

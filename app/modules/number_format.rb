@@ -1,8 +1,11 @@
-# Provides utilities for working with dates.
+# Provides utilities for formatting numbers.
 module NumberFormat
 
   # The string format for displaying dates (in strftime format).
   DATE_FORMAT = "%-d %b %Y"
+
+  # The delimiter to use as a thousands separator.
+  DELIMITER = ActionController::Base.helpers.sanitize("&nbsp;")
   
   # Formats a pair of decimal coordinates into a string pair of coordinates
   # with cardinal directions and 5 decimal places.
@@ -22,6 +25,14 @@ module NumberFormat
   def self.date(date)
     return "" if date.nil?
     return date.strftime(DATE_FORMAT)
+  end
+
+  # Formats a number by adding thousands separators.
+  # 
+  # @param number [Number] a number.
+  # @return [String] a formatted number string.
+  def self.value(number)
+    return ActionController::Base.helpers.number_with_delimiter(number, delimiter: DELIMITER)
   end
 
 end

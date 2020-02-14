@@ -42,7 +42,7 @@
       	<% previous_count = airline[:flight_count] %>
       <% end %>
 
-        <tr><td colspan="5" class="flightlog-total" id="<%= type.to_s %>-count-total" data-total="<%= known_airlines.size %>"><%= pluralize(number_with_delimiter(known_airlines.size, delimiter: sanitize("&nbsp;")), type.to_s) %></td></tr>
+        <tr><td colspan="5" class="flightlog-total" id="<%= type.to_s %>-count-total" data-total="<%= known_airlines.size %>"><%= pluralize(NumberFormat.value(known_airlines.size), type.to_s) %></td></tr>
       </tbody>
   
     </table>

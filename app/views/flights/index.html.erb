@@ -10,7 +10,7 @@
 
 <% end %>
 
-<p>I have been on <%= pluralize(number_with_delimiter(@flights.length, delimiter: sanitize("&nbsp;")), "commercial flight") %>.</p>
+<p>I have been on <%= pluralize(NumberFormat.value(@flights.length), "commercial flight") %>.</p>
 
 <% if @flights.any? %>
 

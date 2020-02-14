@@ -12,6 +12,6 @@
     </tr>
   <% end %>
   <tr>
-    <td colspan="3" class="flightlog-total" id="trips-total" data-total="<%= trips.length %>"><%= pluralize(number_with_delimiter(trips.length, delimiter: sanitize("&nbsp;")), "trip") %></td>
+    <td colspan="3" class="flightlog-total" id="trips-total" data-total="<%= trips.length %>"><%= pluralize(NumberFormat.value(trips.length), "trip") %></td>
   </tr>
 </table>
