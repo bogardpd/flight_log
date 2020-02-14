@@ -15,7 +15,7 @@ module NumberFormat
   # @return [ActiveSupport::SafeBuffer] a string pair of decimal degree
   #   coordinates with N/S and E/W hemispheres and 5 decimal places.
   def self.coordinates(coordinates)
-    return ActionController::Base.helpers.sanitize("#{"%.5f" % coordinates[0].abs}° #{coordinates[0] < 0 ? "S" : "N"}&ensp;#{"%.5f" % coordinates[1].abs}° #{coordinates[1] < 0 ? "W" : "E"}")
+    return ActionController::Base.helpers.sanitize("#{"%.2f" % coordinates[0].abs}° #{coordinates[0] < 0 ? "S" : "N"}, #{"%.2f" % coordinates[1].abs}° #{coordinates[1] < 0 ? "W" : "E"}")
   end
 
   # Formats a date.
