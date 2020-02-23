@@ -104,8 +104,9 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "visitor cannot create or update routes" do
-    post(routes_path)
-    assert_redirected_to(root_path)
+    # post(routes_path)
+    # assert_redirected_to(root_path)
+    # Route does not have a new or create action
 
     put(route_path(routes(:route_visible)))
     assert_redirected_to(root_path)

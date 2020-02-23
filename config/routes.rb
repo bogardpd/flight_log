@@ -6,7 +6,7 @@ Portfolio::Application.routes.draw do
   resources :users
   
   # Sessions:
-  resources :sessions, :only => [:new, :create, :destroy]
+  resources :sessions, only: [:new, :create, :destroy]
   get    "/signup" => "users#new"
   get    "/login"  => "sessions#new"
   delete "/logout" => "sessions#destroy"
@@ -17,7 +17,7 @@ Portfolio::Application.routes.draw do
   match "/flights/new/"                            => "flights#new", via: [:get, :post], as: :new_flight
   get   "/flights/flights.gpx"                     => "flights#show_flight_gpx",  as: :show_flight_gpx
   get   "/flights/flights.kml"                     => "flights#show_flight_kml",  as: :show_flight_kml
-  resources :flights, :except => [:new]
+  resources :flights, except: [:new]
   get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range",  as: :show_date_range
   get   "/flights/year/:year"                    => "flights#show_date_range",  as: :show_year
   
@@ -46,14 +46,14 @@ Portfolio::Application.routes.draw do
   get   "/tails/:tail_number"                => "flights#show_tail",            as: :show_tail
 
   # Flight routes:
-  resources :routes, :only => [:new, :create, :update]
+  resources :routes, only: [:update]
   get   "/routes"                            => "routes#index"
   get   "/routes/:airport1/:airport2"        => "routes#show",                  as: :show_route                  
   get   "/routes/edit/:airport1/:airport2"   => "routes#edit",                  as: :edit_route
   get   "/routes/:route" => redirect("routes", status: 301) # Redirect legacy routes to Index Routes
   
   # Boarding pass import pages:
-  resources :pk_passes, :only => [:destroy]
+  resources :pk_passes, only: [:destroy]
   
   # Boarding pass parser pages:
   get   "/boarding-pass" => "flights#input_boarding_pass"

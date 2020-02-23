@@ -8,8 +8,8 @@
 # {Route} is actually internally managed as the pair of {Airport Airports}
 # associated with a {Flight}.
 #
-# A #new action is not provided because {Route Routes} are not created
-# manually; instead, they are automatically created when
+# The #new and #create actions are not provided because {Route Routes} are not
+# created manually; instead, they are automatically created when
 # {Route.distance_by_airport} is called by any view needing the distance of a
 # {Route} that hasn't been created yet, or when a verified user navigates to
 # {#edit} from the {#show} view. (Since the {#show} action is defined by two
@@ -140,21 +140,6 @@ class RoutesController < ApplicationController
     flash[:warning] = "Canʼt look up route - at least one of these airports does not exist in the database."
     redirect_to routes_path
     
-  end
-  
-  # Creates a new {Route}.
-  #
-  # This action can only be performed by a verified user.
-  #
-  # @return [nil]
-  def create
-    @route = Route.new(route_params)
-    if @route.save
-      flash[:success] = "Successfully added distance to route!"
-      redirect_to show_route_path(airport1: @route.airport1.slug, airport2: @route.airport2.slug)
-    else
-      render "new"
-    end
   end
   
   # Updates an existing {Route}.

@@ -112,7 +112,7 @@
 
 <p>The <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model is largely used to maintain a table of route distances between <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs; most interaction that the application has with a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> is actually internally managed as the pair of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 
-<p>A #new action is not provided because <span class='object_link'><a href="Route.html" title="Route (class)">Routes</a></span> are not created manually; instead, they are automatically created when <span class='object_link'><a href="Route.html#distance_by_airport-class_method" title="Route.distance_by_airport (method)">Route.distance_by_airport</a></span> is called by any view needing the distance of a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> that hasn&#39;t been created yet, or when a verified user navigates to <span class='object_link'><a href="#edit-instance_method" title="RoutesController#edit (method)">#edit</a></span> from the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> view. (Since the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> action is defined by two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> parameters rather than a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> parameter, it can show a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> which does not yet exist in the database.)</p>
+<p>The #new and #create actions are not provided because <span class='object_link'><a href="Route.html" title="Route (class)">Routes</a></span> are not created manually; instead, they are automatically created when <span class='object_link'><a href="Route.html#distance_by_airport-class_method" title="Route.distance_by_airport (method)">Route.distance_by_airport</a></span> is called by any view needing the distance of a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> that hasn&#39;t been created yet, or when a verified user navigates to <span class='object_link'><a href="#edit-instance_method" title="RoutesController#edit (method)">#edit</a></span> from the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> view. (Since the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> action is defined by two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> parameters rather than a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> parameter, it can show a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> which does not yet exist in the database.)</p>
 
 <p>Likewise, a #destroy action is not provided because maintaining the route distance saves a <span class='object_link'><a href="FlightXML.html" title="FlightXML (module)">FlightXML</a></span> API distance lookup in the future if a flight is ever added with this route. <span class='object_link'><a href="#index-instance_method" title="RoutesController#index (method)">#index</a></span> generates its <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> list from <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs rather than just querying the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model, so unused routes won&#39;t be seen.</p>
 
@@ -136,30 +136,6 @@
     </h2>
 
     <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#create-instance_method" title="#create (instance method)">#<strong>create</strong>  &#x21d2; nil </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Creates a new <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span>.</p>
-</div></span>
-  
-</li>
-
       
         <li class="public ">
   <span class="summary_signature">
@@ -290,75 +266,7 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="create-instance_method">
-  
-    #<strong>create</strong>  &#x21d2; <tt>nil</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Creates a new <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span>.</p>
-
-<p>This action can only be performed by a verified user.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>nil</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-150
-151
-152
-153
-154
-155
-156
-157
-158</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 150</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
-  <span class='ivar'>@route</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_route_params'>route_params</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='ivar'>@route</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span>
-    <span class='id identifier rubyid_flash'>flash</span><span class='lbracket'>[</span><span class='symbol'>:success</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Successfully added distance to route!</span><span class='tstring_end'>&quot;</span></span>
-    <span class='id identifier rubyid_redirect_to'>redirect_to</span> <span class='id identifier rubyid_show_route_path'>show_route_path</span><span class='lparen'>(</span><span class='label'>airport1:</span> <span class='ivar'>@route</span><span class='period'>.</span><span class='id identifier rubyid_airport1'>airport1</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='comma'>,</span> <span class='label'>airport2:</span> <span class='ivar'>@route</span><span class='period'>.</span><span class='id identifier rubyid_airport2'>airport2</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='rparen'>)</span>
-  <span class='kw'>else</span>
-    <span class='id identifier rubyid_render'>render</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>new</span><span class='tstring_end'>&quot;</span></span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="edit-instance_method">
+  <h3 class="signature first" id="edit-instance_method">
   
     #<strong>edit</strong>  &#x21d2; <tt>nil</tt> 
   
@@ -734,18 +642,18 @@
       <pre class="lines">
 
 
-165
-166
-167
-168
-169
-170
-171
-172
-173</pre>
+150
+151
+152
+153
+154
+155
+156
+157
+158</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 165</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/routes_controller.rb', line 150</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@route</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -766,7 +674,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Feb 13 19:12:10 2020 by
+  Generated on Sun Feb 23 11:47:44 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.24 (ruby-2.7.0).
 </div>
