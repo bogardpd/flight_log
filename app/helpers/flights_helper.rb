@@ -54,6 +54,12 @@ module FlightsHelper
       return airline_icon(airline.slug, title: airline.airline_name)
     elsif type == :selectee
       return image_tag("tpc.png", title: interpretation, class: "airline-icon") if raw.to_i == 3
+    elsif type == :travel_class
+      travel_class_tag = Nokogiri::HTML.parse(interpretation)&.at("span#travel-class-interpretation")
+      return nil unless travel_class_tag
+      quality = travel_class_tag["data-class-quality"]&.to_i
+      return nil unless quality
+      return quality_stars(quality)
     end
     return nil
   end

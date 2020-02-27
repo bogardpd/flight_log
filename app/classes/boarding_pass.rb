@@ -488,8 +488,8 @@ class BoardingPass
       validity: /^([0-2]\d{2}|3[0-5]\d|36[0-6])$/})
     fields[ 71] = (prev = {description: "Compartment Code",
       group: :rm, start: start.call(prev), length:  1,
-      interpretation: :interpret_compartment_code, include_leg: true,
-      validity: /^[A-Z]{1}$/i})
+      interpretation: :interpret_compartment_code, type: :travel_class,
+      include_leg: true, validity: /^[A-Z]{1}$/i})
     fields[104] = (prev = {description: "Seat Number",
       group: :rm, start: start.call(prev), length:  4,
       interpretation: :interpret_seat_number,
@@ -841,12 +841,15 @@ class BoardingPass
     code = raw.upcase
     airline = get_raw(42, leg).strip
     begin
-      ticket_class = TravelClass::CLASSES[@airline_compartments[airline][code]["class"]][:name]
+      ticket_class = TravelClass::CLASSES[@airline_compartments[airline][code]["class"]]
+      ticket_class_name = ticket_class[:name]
+      ticket_class_quality = ticket_class[:quality]
       ticket_details = @airline_compartments[airline][code]["details"]
     rescue
-      ticket_class = code
+      ticket_class_name = code
+      ticket_class_quality = nil
     end
-    output = "#{ticket_class} class ticket"
+    output = content_tag(:span, ticket_class_name, id: "travel-class-interpretation", "data-class-quality": ticket_class_quality) + " class ticket"
     output += " (#{ticket_details})" if ticket_details
     return output
   end
