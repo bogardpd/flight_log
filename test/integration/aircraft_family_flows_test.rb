@@ -22,7 +22,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", "New Aircraft Family")
     assert_select("form#new_aircraft_family")
     assert_select("input#aircraft_family_manufacturer")
-    assert_select("input#aircraft_family_family_name")
+    assert_select("input#aircraft_family_name")
     assert_select("select#aircraft_family_category")
     assert_select("input#aircraft_family_slug")
   end
@@ -33,12 +33,12 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     get(new_aircraft_family_path(family_id: parent.id))
     assert_response(:success)
 
-    assert_select("h1", "New #{parent.family_name} Type")
+    assert_select("h1", "New #{parent.name} Type")
     assert_select("form#new_aircraft_family")
     assert_select("input#aircraft_family_manufacturer[value=?]", parent.manufacturer)
-    assert_select("input#aircraft_family_family_name")
-    assert_select("input#aircraft_family_iata_aircraft_code")
-    assert_select("input#aircraft_family_icao_aircraft_code")
+    assert_select("input#aircraft_family_name")
+    assert_select("input#aircraft_family_iata_code")
+    assert_select("input#aircraft_family_icao_code")
     assert_select("select#aircraft_family_category") do
       assert_select("option[selected=selected][value=?]", parent.category)
     end
@@ -66,9 +66,9 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", "Edit #{aircraft_family.full_name}")
     assert_select("form#edit_aircraft_family_#{aircraft_family.id}")
     assert_select("input#aircraft_family_manufacturer[value=?]", aircraft_family.manufacturer)
-    assert_select("input#aircraft_family_family_name[value=?]", aircraft_family.family_name)
-    assert_select("input#aircraft_family_iata_aircraft_code[value=?]", aircraft_family.iata_aircraft_code)
-    assert_select("input#aircraft_family_icao_aircraft_code", {count: 0})
+    assert_select("input#aircraft_family_name[value=?]", aircraft_family.name)
+    assert_select("input#aircraft_family_iata_code[value=?]", aircraft_family.iata_code)
+    assert_select("input#aircraft_family_icao_code", {count: 0})
     assert_select("select#aircraft_family_category") do
       assert_select("option[selected=selected][value=?]", aircraft_family.category)
     end
@@ -84,9 +84,9 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", "Edit #{aircraft_type.full_name}")
     assert_select("form#edit_aircraft_family_#{aircraft_type.id}")
     assert_select("input#aircraft_family_manufacturer[value=?]", aircraft_type.manufacturer)
-    assert_select("input#aircraft_family_family_name[value=?]", aircraft_type.family_name)
-    assert_select("input#aircraft_family_iata_aircraft_code[value=?]", aircraft_type.iata_aircraft_code)
-    assert_select("input#aircraft_family_icao_aircraft_code[value=?]", aircraft_type.icao_aircraft_code)
+    assert_select("input#aircraft_family_name[value=?]", aircraft_type.name)
+    assert_select("input#aircraft_family_iata_code[value=?]", aircraft_type.iata_code)
+    assert_select("input#aircraft_family_icao_code[value=?]", aircraft_type.icao_code)
     assert_select("select#aircraft_family_category") do
       assert_select("option[selected=selected][value=?]", aircraft_type.category)
     end
@@ -251,8 +251,8 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   # Runs tests common to show aircraft family and show aircraft type
   def check_show_aircraft_common(aircraft)
     assert_select("h1", aircraft.full_name)
-    assert_select("#iata-aircraft-code", aircraft.iata_aircraft_code) if aircraft.iata_aircraft_code
-    assert_select("#icao-aircraft-code", aircraft.icao_aircraft_code) if aircraft.icao_aircraft_code
+    assert_select("#iata-code", aircraft.iata_code) if aircraft.iata_code
+    assert_select("#icao-code", aircraft.icao_code) if aircraft.icao_code
     assert_select("#aircraft-illustration")
     assert_select("div#map")
     assert_select(".distance-primary")

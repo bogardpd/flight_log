@@ -18,7 +18,7 @@ class FlightsTest < ApplicationSystemTestCase
     @fa_flight[:origin]             = "KDFW"    # From bcbp.txt
     @fa_flight[:destination]        = "KORD"    # From bcbp.txt
     @fa_flight[:airline_name]       = airlines(:airline_american).airline_name # Matches bcbp.txt
-    @fa_flight[:icao_aircraft_code] = aircraft_families(:aircraft_a321).icao_aircraft_code
+    @fa_flight[:icao_code] = aircraft_families(:aircraft_a321).icao_code
     @fa_flight[:departure_time]     = @pass.departure_utc.to_i
     @fa_flight[:fa_flight_id]       = "#{@fa_flight[:ident]}-#{@fa_flight[:departure_time].to_i}-airline-0001"
   end
@@ -81,7 +81,7 @@ class FlightsTest < ApplicationSystemTestCase
 
   test "creating a flight from a pkpass" do
 
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:icao_aircraft_code]})
+    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:icao_code]})
     stub_flight_xml_post_get_flight_id(@fa_flight[:ident], @fa_flight[:departure_time], @fa_flight[:fa_flight_id])
     stub_flight_xml_airline_flight_info(@fa_flight[:fa_flight_id], {})
     
@@ -99,7 +99,7 @@ class FlightsTest < ApplicationSystemTestCase
 
       new_flight = Flight.last
       assert_equal(@fa_flight[:flight_number], new_flight.flight_number)
-      assert_equal(@fa_flight[:icao_aircraft_code], new_flight.aircraft_family.icao_aircraft_code)
+      assert_equal(@fa_flight[:icao_code], new_flight.aircraft_family.icao_code)
     end
   end
 
@@ -141,7 +141,7 @@ class FlightsTest < ApplicationSystemTestCase
   test "creating a flight from BCBP data" do
     
     stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {faFlightID: @fa_flight[:fa_flight_id], origin: @fa_flight[:origin], destination: @fa_flight[:destination]})
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:icao_aircraft_code]})
+    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:icao_code]})
     stub_flight_xml_post_get_flight_id(@fa_flight[:ident], @fa_flight[:departure_time], @fa_flight[:fa_flight_id])
     stub_flight_xml_post_airport_info(@fa_flight[:origin], {})
     stub_flight_xml_post_airport_info(@fa_flight[:destination], {})
@@ -164,14 +164,14 @@ class FlightsTest < ApplicationSystemTestCase
 
       new_flight = Flight.last
       assert_equal(@fa_flight[:flight_number], new_flight.flight_number)
-      assert_equal(@fa_flight[:icao_aircraft_code], new_flight.aircraft_family.icao_aircraft_code)
+      assert_equal(@fa_flight[:icao_code], new_flight.aircraft_family.icao_code)
 
     end
   end
 
   test "creating a flight from airline and flight number" do
     stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {faFlightID: @fa_flight[:fa_flight_id]})
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:icao_aircraft_code]})
+    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:icao_code]})
     stub_flight_xml_post_airport_info(@fa_flight[:origin], {})
     stub_flight_xml_post_airport_info(@fa_flight[:destination], {})
     stub_flight_xml_airline_flight_info(@fa_flight[:fa_flight_id], {})
@@ -194,7 +194,7 @@ class FlightsTest < ApplicationSystemTestCase
 
       new_flight = Flight.last
       assert_equal(@fa_flight[:flight_number], new_flight.flight_number)
-      assert_equal(@fa_flight[:icao_aircraft_code], new_flight.aircraft_family.icao_aircraft_code)
+      assert_equal(@fa_flight[:icao_code], new_flight.aircraft_family.icao_code)
 
     end
 

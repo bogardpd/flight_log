@@ -1,31 +1,31 @@
 aircraft_737:
   slug: "Boeing-737"
-  family_name: "737"
-  iata_aircraft_code: "737"
+  name: "737"
+  iata_code: "737"
   manufacturer: "Boeing"
   category: "narrow_body"
 
 aircraft_737_800:
   slug: "Boeing-737-800"
-  family_name: "737-800"
-  iata_aircraft_code: "738"
-  icao_aircraft_code: "B738"
+  name: "737-800"
+  iata_code: "738"
+  icao_code: "B738"
   manufacturer: "Boeing"
   category: "narrow_body"
   parent: aircraft_737
 
 aircraft_a320_family:
   slug: "Airbus-A320-Family"
-  family_name: "A320 Family"
-  iata_aircraft_code: "32S"
+  name: "A320 Family"
+  iata_code: "32S"
   manufacturer: "Airbus"
   category: "narrow_body"
 
 aircraft_a321:
   slug: "Airbus-A321"
-  family_name: "A321"
-  iata_aircraft_code: "321"
-  icao_aircraft_code: "A321"
+  name: "A321"
+  iata_code: "321"
+  icao_code: "A321"
   manufacturer: "Airbus"
   category: "narrow_body"
   parent: aircraft_a320_family
@@ -33,9 +33,9 @@ aircraft_a321:
 aircraft_737_700:
   parent: aircraft_737
   slug: "Boeing-737-700"
-  family_name: "737-700"
-  iata_aircraft_code: "73G"
-  icao_aircraft_code: "B737"
+  name: "737-700"
+  iata_code: "73G"
+  icao_code: "B737"
   manufacturer: "Boeing"
   category: "narrow_body"
 
@@ -43,51 +43,51 @@ aircraft_with_only_subtype_parent:
   # Used to test aircraft where only the subtypes have flights. This parent must
   # not be assigned to any flights.
   slug: "Parent-Parent"
-  family_name: "Parent"
+  name: "Parent"
   manufacturer: "Parent"
 
 aircraft_with_only_subtype_child:
   # Used to test aircraft where only the subtypes have flights.
   slug: "Parent-Child"
-  family_name: "Child"
+  name: "Child"
   manufacturer: "Parent"
   parent: aircraft_with_only_subtype_parent
   
 aircraft_family_visible:
   # Used to test non-hidden aircraft families
   slug: "Visible-Family"
-  family_name: "Visible Aircraft Family"
+  name: "Visible Aircraft Family"
   manufacturer: "Visible Manufacturer"
-  iata_aircraft_code: "VAF"
-  icao_aircraft_code: "VVAF"
+  iata_code: "VAF"
+  icao_code: "VVAF"
   category: "narrow-body"
 
 aircraft_type_visible:
   # Used to test non-hidden aircraft types
   slug: "Visible-Type"
-  family_name: "Visible Aircraft Type"
+  name: "Visible Aircraft Type"
   manufacturer: "Visible Manufacturer"
-  iata_aircraft_code: "VAT"
-  icao_aircraft_code: "VVAT"
+  iata_code: "VAT"
+  icao_code: "VVAT"
   category: "narrow-body"
   parent: aircraft_family_visible
 
 aircraft_family_hidden:
   # Used to test hidden aircraft families
   slug: "Hidden-Family"
-  family_name: "Hidden Aircraft Family"
+  name: "Hidden Aircraft Family"
   manufacturer: "Hidden Manufacturer"
-  iata_aircraft_code: "HAF"
-  icao_aircraft_code: "HHAF"
+  iata_code: "HAF"
+  icao_code: "HHAF"
   category: "narrow-body"
 
 aircraft_type_hidden:
   # Used to test non-hidden aircraft types
   slug: "Hidden-Type"
-  family_name: "Hidden Aircraft Type"
+  name: "Hidden Aircraft Type"
   manufacturer: "Hidden Manufacturer"
-  iata_aircraft_code: "HAT"
-  icao_aircraft_code: "HHAT"
+  iata_code: "HAT"
+  icao_code: "HHAT"
   category: "narrow-body"
   parent: aircraft_family_hidden
 
@@ -96,18 +96,18 @@ aircraft_family_no_flights:
   # aircraft families with child types
   # (test/integration/aircraft_family_flows_test.rb).
   slug: "Unused-Family"
-  family_name: "Unused Aircraft Family"
+  name: "Unused Aircraft Family"
   manufacturer: "Unused Manufacturer"
-  iata_aircraft_code: "UAF"
-  icao_aircraft_code: "UUAF"
+  iata_code: "UAF"
+  icao_code: "UUAF"
   category: "narrow-body"
 
 aircraft_type_no_flights:
   # Must not be used by any flights.
   slug: "Unused-Type"
-  family_name: "Unused Aircraft Type"
+  name: "Unused Aircraft Type"
   manufacturer: "Unused Manufacturer"
-  iata_aircraft_code: "UAT"
-  icao_aircraft_code: "UUAT"
+  iata_code: "UAT"
+  icao_code: "UUAT"
   category: "narrow-body"
   parent: aircraft_family_no_flights

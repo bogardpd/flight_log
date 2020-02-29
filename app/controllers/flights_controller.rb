@@ -606,7 +606,7 @@ class FlightsController < ApplicationController
     # AIRCRAFT FAMILIES
     
     if session[:new_flight][:aircraft_family_id].blank? && session[:new_flight][:aircraft_family_icao]
-      if session[:new_flight][:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_aircraft_code: session[:new_flight][:aircraft_family_icao])
+      if session[:new_flight][:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_code: session[:new_flight][:aircraft_family_icao])
         ids.store(:aircraft_family_id, aircraft_family.id)
       else
         input_new_undefined_aircraft_family(session[:new_flight][:aircraft_family_icao]) and return nil

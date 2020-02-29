@@ -79,7 +79,7 @@ class AircraftFamiliesController < ApplicationController
     if params[:family_id]
       @parent_family = AircraftFamily.find(params[:family_id])
       @aircraft = AircraftFamily.new(parent_id: @parent_family.id)
-      @title = "New #{@parent_family.family_name} Type"
+      @title = "New #{@parent_family.name} Type"
     else
       @title = "New Aircraft Family"
       @aircraft = AircraftFamily.new
@@ -98,7 +98,7 @@ class AircraftFamiliesController < ApplicationController
   def create
     @aircraft = AircraftFamily.new(aircraft_family_params)
     if @aircraft.save
-      flash[:success] = "Successfully added #{params[:aircraft_family][:family_name]}!"
+      flash[:success] = "Successfully added #{params[:aircraft_family][:name]}!"
       if session[:form_location]
         form_location = session[:form_location]
         session[:form_location] = nil
@@ -172,7 +172,7 @@ class AircraftFamiliesController < ApplicationController
   #
   # @return [ActionController::Parameters]
   def aircraft_family_params
-    params.require(:aircraft_family).permit(:family_name, :slug, :icao_aircraft_code, :iata_aircraft_code, :manufacturer, :category, :parent_id)
+    params.require(:aircraft_family).permit(:name, :slug, :icao_code, :iata_code, :manufacturer, :category, :parent_id)
   end
   
 end

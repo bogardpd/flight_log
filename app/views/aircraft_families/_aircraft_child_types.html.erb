@@ -14,8 +14,8 @@
     <% child_types.each_with_index do |type, index| %>
       <tr>
         <td class="counter"><%= (type[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %></td>
-        <td class="aircraft-family<%= " subdued" if type[:id] == parent_type.id %>"><%= type[:id] == parent_type.id ? "(Unknown type of #{type[:family_name]})" : link_to(type[:family_name], aircraft_family_path(type[:slug])) %></td>
-        <td class="aircraft-code code-mono"><%= link_to(type[:icao_aircraft_code], aircraft_family_path(type[:slug])) unless type[:id] == parent_type.id %></td>
+        <td class="aircraft-family<%= " subdued" if type[:id] == parent_type.id %>"><%= type[:id] == parent_type.id ? "(Unknown type of #{type[:name]})" : link_to(type[:name], aircraft_family_path(type[:slug])) %></td>
+        <td class="aircraft-code code-mono"><%= link_to(type[:icao_code], aircraft_family_path(type[:slug])) unless type[:id] == parent_type.id %></td>
         <td class="aircraft-flights"><%= graph_bar(type[:flight_count], maximum) %></td>
       </tr>
       <% previous_count = type[:flight_count] %>

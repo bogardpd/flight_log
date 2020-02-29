@@ -556,8 +556,8 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       assert_select("a[href=?]", airport_path(flight.destination_airport.slug), {text: flight.destination_airport.iata_code})
     end
     assert_select("#flight-aircraft") do
-      assert_select("a[href=?]", aircraft_family_path(flight.aircraft_family.slug), {text: flight.aircraft_family.family_name})
-      assert_select("a[href=?]", aircraft_family_path(flight.aircraft_family.parent.slug), {text: "#{flight.aircraft_family.parent.manufacturer} #{flight.aircraft_family.parent.family_name}"})
+      assert_select("a[href=?]", aircraft_family_path(flight.aircraft_family.slug), {text: flight.aircraft_family.name})
+      assert_select("a[href=?]", aircraft_family_path(flight.aircraft_family.parent.slug), {text: "#{flight.aircraft_family.parent.manufacturer} #{flight.aircraft_family.parent.name}"})
     end
     assert_select("#flight-tail-number") do
       assert_select("a[href=?]", show_tail_path(flight.tail_number), {text: flight.tail_number})

@@ -66,9 +66,9 @@ module TailNumber
     counts = tail_details.map{|f| {f.tail_number => {
       airline_slug:  f.airline.slug,
       airline_name:  f.airline.airline_name,
-      aircraft_code: f.aircraft_family&.icao_aircraft_code || f.aircraft_family&.iata_aircraft_code,
+      aircraft_code: f.aircraft_family&.icao_code || f.aircraft_family&.iata_code,
       manufacturer:  f.aircraft_family&.manufacturer,
-      family_name:   f.aircraft_family&.family_name,
+      name:   f.aircraft_family&.name,
       departure_utc: f.departure_utc
     }}}
       .reduce{|a,b| a.merge(b){|k,oldval,newval| newval[:departure_utc] > oldval[:departure_utc] ? newval : oldval}}
@@ -81,7 +81,7 @@ module TailNumber
         airline_name: v[:airline_name] || "",
         airline_slug: v[:airline_slug] || "",
         manufacturer: v[:manufacturer],
-        family_name:  v[:family_name]
+        name:  v[:name]
       }}
       
     

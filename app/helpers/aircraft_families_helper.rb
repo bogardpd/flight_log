@@ -17,7 +17,7 @@ module AircraftFamiliesHelper
     types = type.type_and_parent_types.reverse
     add_breadcrumb(types.first.full_name, aircraft_family_path(types.first.slug))
     types[1..-1].each do |t|
-      add_breadcrumb(t.family_name, aircraft_family_path(t.slug))
+      add_breadcrumb(t.name, aircraft_family_path(t.slug))
     end
   end
 

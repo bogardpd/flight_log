@@ -24,7 +24,7 @@
 <% @tail_numbers_table.each do |tail| %>
   <tr id="tail-number-count-row-<%= tail[:tail_number] %>">
     <td class="tail-number"><%= link_to(country_flag_icon(tail[:country], title: "View flights on tail number #{TailNumber.format(tail[:tail_number])}") + TailNumber.format(tail[:tail_number]), show_tail_path(tail[:tail_number]), title: "View flights on tail number #{TailNumber.format(tail[:tail_number])}") %></td>
-    <td class="tail-aircraft code-mono"><abbr title="<%= tail[:manufacturer] %> <%= tail[:family_name] %>"><%= tail[:aircraft] %></abbr></td>
+    <td class="tail-aircraft code-mono"><abbr title="<%= tail[:manufacturer] %> <%= tail[:name] %>"><%= tail[:aircraft] %></abbr></td>
     <td class="tail-airline"><%= airline_icon(tail[:airline_slug], title: tail[:airline_name], css_class: %w(icon-no-text)) %></td>
 		<td class="tail-flights"><%= graph_bar(tail[:count], @flights_maximum) %></td>
   </tr>

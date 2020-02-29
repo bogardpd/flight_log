@@ -17,13 +17,13 @@ module FlightsHelper
       li_classes = (types.any? || top_level) ? nil : "current-type"
       content_tag(:li, class: li_classes) do
 
-        link_text = top_level ? current.full_name : current.family_name
+        link_text = top_level ? current.full_name : current.name
         concat link_to(link_text, aircraft_family_path(current.slug), title: "View flights on #{current.full_name} aircraft")
 
         if types.any?
           concat aircraft_type_tree(types, false)
-        elsif current.iata_aircraft_code.present?
-          concat content_tag(:div, current.iata_aircraft_code, class: "supplemental-code")
+        elsif current.iata_code.present?
+          concat content_tag(:div, current.iata_code, class: "supplemental-code")
         end
 
       end

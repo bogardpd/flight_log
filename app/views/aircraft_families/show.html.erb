@@ -7,22 +7,22 @@
 <% add_admin_action(link_to("Add Type", new_aircraft_family_path(family_id: @aircraft))) if @aircraft.is_root_family? %>
 <% type_and_parent_types_breadcrumbs(@aircraft) %>
 
-<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @aircraft["#{c}_aircraft_code".to_sym].blank?}.map{|c| content_tag(:span, @aircraft["#{c}_aircraft_code".to_sym], id: "#{c}-aircraft-code")}, " / ") %></div>
+<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @aircraft["#{c}_code".to_sym].blank?}.map{|c| content_tag(:span, @aircraft["#{c}_code".to_sym], id: "#{c}-code")}, " / ") %></div>
 
 <h1><%= @aircraft.full_name %></h1>
 
 <% if @flights.any? %>
 	<div class="page-navigation">
 	  <ul>
-			<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@aircraft.full_name} aircraft") %></li>
+			<li><%= link_to("Map", "#map", title: "Map of flights flown on #{@aircraft.full_name} aircraft") %></li>
 			<% if @children.any? %>
-        <li><%= link_to("Types", "#types", :title => "Types of #{@aircraft.full_name}") %></li>
+        <li><%= link_to("Types", "#types", title: "Types of #{@aircraft.full_name}") %></li>
       <% end %>
-			<li><%= link_to("Airlines", "#airlines", :title => "Airlines with #{@aircraft.full_name} flights") %></li>
-			<li><%= link_to("Operators", "#operators", :title => "Operators with #{@aircraft.full_name} flights") %></li>
-			<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@aircraft.full_name} aircraft") %></li>
-			<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@aircraft.full_name} aircraft") %></li>
-			<li><%= link_to("Flight List", "#flights", :title => "Flights flown on #{@aircraft.full_name} aircraft") %></li>
+			<li><%= link_to("Airlines", "#airlines", title: "Airlines with #{@aircraft.full_name} flights") %></li>
+			<li><%= link_to("Operators", "#operators", title: "Operators with #{@aircraft.full_name} flights") %></li>
+			<li><%= link_to("Classes", "#classes", title: "Classes flown on #{@aircraft.full_name} aircraft") %></li>
+			<li><%= link_to("Longest and Shortest", "#superlatives", title: "Longest and shortest routes flown on #{@aircraft.full_name} aircraft") %></li>
+			<li><%= link_to("Flight List", "#flights", title: "Flights flown on #{@aircraft.full_name} aircraft") %></li>
 	  </ul>
 	</div>
 <% end %>
@@ -40,7 +40,7 @@
 <% end %>
   
 <% if @children.any? %>
-  <h2 id="types"><%= @aircraft.family_name %> Types</h2>
+  <h2 id="types"><%= @aircraft.name %> Types</h2>
   <% if @flights.any? %>
     <%= render partial: "aircraft_child_types", locals: {parent_type: @aircraft, child_types: @flights_including_child_types} %>
   <% else %>
@@ -56,8 +56,8 @@
       <tbody>
       <% @child_types_with_no_flights.each do |type| %>
         <tr>
-          <td class="aircraft-family"><%= link_to(type.family_name, aircraft_family_path(type.slug)) %></td>
-          <td class="aircraft-code code-mono"><%= link_to(type.icao_aircraft_code, aircraft_family_path(type.slug)) %></td>
+          <td class="aircraft-family"><%= link_to(type.name, aircraft_family_path(type.slug)) %></td>
+          <td class="aircraft-code code-mono"><%= link_to(type.icao_code, aircraft_family_path(type.slug)) %></td>
         </tr>
       <% end %>
       </tbody>
@@ -67,21 +67,21 @@
 
 <% if @flights.any? %>
   
-	<h2 id="airlines">Airlines with <%= @aircraft.family_name %> Flights</h2>
+	<h2 id="airlines">Airlines with <%= @aircraft.name %> Flights</h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: true} %>
 
-	<h2 id="operators">Operators with <%= @aircraft.family_name %> Flights</h2>
+	<h2 id="operators">Operators with <%= @aircraft.name %> Flights</h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
-	<h2 id="classes">Classes Flown on <%= @aircraft.family_name %> Aircraft</h2>
+	<h2 id="classes">Classes Flown on <%= @aircraft.name %> Aircraft</h2>
 
 	<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
-	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @aircraft.family_name %> Aircraft</h2>
+	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @aircraft.name %> Aircraft</h2>
 
 	<%= render partial: "routes/route_superlatives_table", locals: {superlatives: @route_superlatives} %>
 
-	<h2 id="flights"><%= @aircraft.family_name %> Flight List</h2>
+	<h2 id="flights"><%= @aircraft.name %> Flight List</h2>
 
 	<%= render partial: "flights/flight_table", locals: {flights: @flights, is_summary: true} %>
 

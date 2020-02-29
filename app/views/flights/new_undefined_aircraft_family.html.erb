@@ -22,21 +22,21 @@
   </p>
   
   <p>
-     <%= f.label :family_name, "Aircraft Type Name" %><br />
-     <%= f.text_field :family_name, size: 25 %>
+     <%= f.label :name, "Aircraft Type Name" %><br />
+     <%= f.text_field :name, size: 25 %>
   </p>
 
   <p>
-    <%= f.label :iata_aircraft_code, "IATA Aircraft Code" %><br />
-    <%= f.text_field :iata_aircraft_code, size: 3, maxlength: 3, class: "code-mono all-caps" %><br />
+    <%= f.label :iata_code, "IATA Aircraft Code" %><br />
+    <%= f.text_field :iata_code, size: 3, maxlength: 3, class: "code-mono all-caps" %><br />
   </p>
   
   <p>
-    <%= f.label :icao_aircraft_code, "ICAO Aircraft Code" %><br />
+    <%= f.label :icao_code, "ICAO Aircraft Code" %><br />
     <% if @lookup_fields && @lookup_fields[:icao_code] %>
-      <%= f.text_field :icao_aircraft_code, value: @lookup_fields[:icao_code], readonly: true, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
+      <%= f.text_field :icao_code, value: @lookup_fields[:icao_code], readonly: true, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
     <% else %>
-      <%= f.text_field :icao_aircraft_code, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
+      <%= f.text_field :icao_code, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
     <% end %>
   </p>
   

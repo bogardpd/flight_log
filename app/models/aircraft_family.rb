@@ -33,15 +33,15 @@ class AircraftFamily < ApplicationRecord
     "turboprop"    => "Turboprop"
   }  
   
-  validates :family_name, presence: true
-  validates :iata_aircraft_code, length: { is: 3 }, allow_blank: true
-  validates :icao_aircraft_code, length: { in: 2..4 }, uniqueness: { case_sensitive: false }, allow_blank: true
+  validates :name, presence: true
+  validates :iata_code, length: { is: 3 }, allow_blank: true
+  validates :icao_code, length: { in: 2..4 }, uniqueness: { case_sensitive: false }, allow_blank: true
   validates :slug, presence: true, uniqueness: { case_sensitive: false }
   validates :manufacturer, presence: true
   validates :category, inclusion: { in: CATEGORIES.keys, message: "%{value} is not a valid category" }, allow_nil: false, allow_blank: false
   
   # Form fields which should be saved capitalized.
-  CAPS_ATTRS = %w( iata_aircraft_code icao_aircraft_code )
+  CAPS_ATTRS = %w( iata_code icao_code )
   before_save :capitalize_codes
   
   # Returns an array containing the current family's ID and the IDs of all
@@ -71,9 +71,9 @@ class AircraftFamily < ApplicationRecord
   # @see AircraftFamiliesController#show
   def family_and_type_count(flights)
     type_count = flights.reorder(nil).joins(:aircraft_family)
-      .group(:aircraft_family_id, "aircraft_families.slug", :family_name, :icao_aircraft_code, :parent_id).count
-      .map{|k,v| {id: k[0], slug: k[1], family_name: k[2], icao_aircraft_code: k[3], is_family: k[4].nil?, flight_count: v}}
-      .sort_by{|a| [-a[:flight_count], a[:family_name]] }
+      .group(:aircraft_family_id, "aircraft_families.slug", "aircraft_families.name", "aircraft_families.icao_code", :parent_id).count
+      .map{|k,v| {id: k[0], slug: k[1], name: k[2], icao_code: k[3], is_family: k[4].nil?, flight_count: v}}
+      .sort_by{|a| [-a[:flight_count], a[:name]] }
     return type_count
   end
   
@@ -84,14 +84,14 @@ class AircraftFamily < ApplicationRecord
   # 
   # @return [String] the family/type name
   def format_name
-    return self.family_name
+    return self.name
   end
   
   # Returns the manufacturer and the family/type name.
   # 
   # @return [String] the manufacturer and the family/type name
   def full_name
-    return "#{self.manufacturer} #{self.family_name}"
+    return "#{self.manufacturer} #{self.name}"
   end
   
   # Returns true if this AircraftFamily parent family, false if it's a child
@@ -156,18 +156,18 @@ class AircraftFamily < ApplicationRecord
       .reduce{|a,b| a.merge(b){|k,old_v,new_v| old_v + new_v}} # Group and sum family counts
     family_count ||= Array.new
       
-    counts = self.families.map{|f| {id: f.id, slug: f.slug, manufacturer: f.manufacturer, family_name: f.family_name, iata_aircraft_code: f.iata_aircraft_code, flight_count: family_count[f.id] || 0}}
+    counts = self.families.map{|f| {id: f.id, slug: f.slug, manufacturer: f.manufacturer, name: f.name, iata_code: f.iata_code, flight_count: family_count[f.id] || 0}}
     counts.reject!{|f| f[:flight_count] == 0} unless include_families_with_no_flights
     
     case sort_category
     when :aircraft
-      counts.sort_by!{ |aircraft_family| [aircraft_family[:manufacturer]&.downcase || "", aircraft_family[:family_name]&.downcase || ""] }
+      counts.sort_by!{ |aircraft_family| [aircraft_family[:manufacturer]&.downcase || "", aircraft_family[:name]&.downcase || ""] }
       counts.reverse! if sort_direction == :desc
     when :flights
       sort_mult = (sort_direction == :desc ? -1 : 1)
-      counts.sort_by!{ |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:family_name]&.downcase || ""] }
+      counts.sort_by!{ |aircraft_family| [sort_mult*aircraft_family[:flight_count], aircraft_family[:name]&.downcase || ""] }
     else
-      counts.sort_by!{|aircraft_family| [-aircraft_family[:flight_count], aircraft_family[:manufacturer].downcase, aircraft_family[:family_name].downcase]}
+      counts.sort_by!{|aircraft_family| [-aircraft_family[:flight_count], aircraft_family[:manufacturer].downcase, aircraft_family[:name].downcase]}
     end
     
     # Count flights without aircraft families:
@@ -186,7 +186,7 @@ class AircraftFamily < ApplicationRecord
   # 
   # @return [Array<Array>] options for an aircraft family select box
   def self.family_select_options
-    self.families.pluck(:manufacturer, :family_name, :id).sort_by{|af| [af[0].downcase,af[1].downcase]}.map{|af| [[af[0],af[1]].join(" "), af[2]]}
+    self.families.pluck(:manufacturer, :name, :id).sort_by{|af| [af[0].downcase,af[1].downcase]}.map{|af| [[af[0],af[1]].join(" "), af[2]]}
   end
   
   # Returns a nested array of families and types in a format ready for
@@ -196,11 +196,11 @@ class AircraftFamily < ApplicationRecord
   # 
   # @return [Array<Array>] options for an aircraft family/type select box
   def self.grouped_type_select_options
-    types = self.types.map{|f| {family_id: f.parent_id, family_name: f.family_name, id: f.id}}.sort_by{|f| f[:family_name]}
-    families = self.families.sort_by{|f| [f[:manufacturer].downcase, f[:family_name].downcase]}
-    return families.map{|f| {f.id => {family_name: f.family_name, manufacturer: f.manufacturer}}}
+    types = self.types.map{|f| {family_id: f.parent_id, name: f.name, id: f.id}}.sort_by{|f| f[:name]}
+    families = self.families.sort_by{|f| [f[:manufacturer].downcase, f[:name].downcase]}
+    return families.map{|f| {f.id => {name: f.name, manufacturer: f.manufacturer}}}
       .reduce{|a,b| a.merge(b)}
-      .map{|k,v| ["#{v[:manufacturer]} #{v[:family_name]}"].push(([{family_name: "#{v[:family_name]} (unknown type)", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:family_name], t[:id]]})}
+      .map{|k,v| ["#{v[:manufacturer]} #{v[:name]}"].push(([{name: "#{v[:name]} (unknown type)", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:name], t[:id]]})}
   end
   
   # Accepts a flyer, the viewing user, and date range, and returns all aircraft
