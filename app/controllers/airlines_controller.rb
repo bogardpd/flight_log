@@ -16,7 +16,7 @@ class AirlinesController < ApplicationController
     @operators = Airline.flight_table_data(@flights, *@sort, type: :operator)
         
     used_airline_ids = (@airlines + @operators).map{|a| a[:id]}.uniq.compact
-    @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:airline_name) if logged_in?
+    @airlines_with_no_flights = Airline.where("id NOT IN (?)", used_airline_ids).order(:name) if logged_in?
     
     if (@airlines.any? || @operators.any?)
       
@@ -192,7 +192,7 @@ class AirlinesController < ApplicationController
   def create
     @airline = Airline.new(airline_params)
     if @airline.save
-      flash[:success] = "Successfully added #{params[:airline][:airline_name]}!"
+      flash[:success] = "Successfully added #{params[:airline][:name]}!"
       if session[:form_location]
         form_location = session[:form_location]
         session[:form_location] = nil
@@ -265,7 +265,7 @@ class AirlinesController < ApplicationController
   #
   # @return [ActionController::Parameters]
   def airline_params
-    params.require(:airline).permit(:airline_name, :slug, :iata_airline_code, :icao_airline_code, :numeric_code, :is_only_operator)
+    params.require(:airline).permit(:name, :slug, :iata_code, :icao_code, :numeric_code, :is_only_operator)
   end
   
 end

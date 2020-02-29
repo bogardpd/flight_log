@@ -5,10 +5,10 @@
   <% legend_range ||= "this date range" %>
   <% type ||= :airline %>
   <% identical ||= false %>
-  <% airline_name ||= "their advertised airline" %>
+  <% name ||= "their advertised airline" %>
     
   <% if identical && type == :operator %>
-  	<p id="operator-count-table">In many cases, an airline subcontracts another airline to operate flights for them. However, all of these flights were operated by <%= airline_name %>.</p>
+  	<p id="operator-count-table">In many cases, an airline subcontracts another airline to operate flights for them. However, all of these flights were operated by <%= name %>.</p>
   
   <% else %>
   
@@ -30,10 +30,10 @@
         <%= content_tag(:tr, id: "#{type.to_s}-count-row-#{airline[:id]}", class: (new_airlines.include?(airline[:id]) ? "new" : nil)) do %>
           <td class="counter"><%= ((is_summary || @sort[0] == :flights) && airline[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %></td>
       		<td class="airline-airline">
-            <%= link_to(airline_icon(airline[:slug], title: "View all flights on #{airline[:airline_name]}") + airline[:airline_name], path, title: "View all flights on #{airline[:airline_name]}") %><% if new_airlines.include?(airline[:id]) %>*<% end %>
+            <%= link_to(airline_icon(airline[:slug], title: "View all flights on #{airline[:name]}") + airline[:name], path, title: "View all flights on #{airline[:name]}") %><% if new_airlines.include?(airline[:id]) %>*<% end %>
           </td>
       		<td class="airline-code code-mono">
-            <%= link_to(airline[:iata_airline_code].split("-").first, path, title: "View all flights on #{airline[:airline_name]}") %>
+            <%= link_to(airline[:iata_code].split("-").first, path, title: "View all flights on #{airline[:name]}") %>
           </td>
           <td class="airline-flights">
             <%= graph_bar(airline[:flight_count], airline_maximum) %>

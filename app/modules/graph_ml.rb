@@ -53,7 +53,7 @@ module GraphML
     flights = flights.includes(:origin_airport, :destination_airport, :airline)
     
     airport_nodes = Airport.visit_table_data(flights).map{|a| {id: a[:id], text: a[:iata_code], visits: a[:visit_count]}}
-    flight_edges = flights.map{|f| {source: f.origin_airport_id, target: f.destination_airport_id, airline: f.airline.airline_name}}
+    flight_edges = flights.map{|f| {source: f.origin_airport_id, target: f.destination_airport_id, airline: f.airline.name}}
 
     output = build_yed_xml(airport_nodes, flight_edges)
 

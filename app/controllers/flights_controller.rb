@@ -492,7 +492,7 @@ class FlightsController < ApplicationController
     clear_new_flight_variables
     @flight = Trip.find(params[:flight][:trip_id]).flights.new(flight_params)
     if @flight.save
-      flash[:success] = "Successfully added #{@flight.airline.airline_name} #{@flight.flight_number}."
+      flash[:success] = "Successfully added #{@flight.airline.name} #{@flight.flight_number}."
       if (@flight.tail_number.present? && Flight.where(:tail_number => @flight.tail_number).count > 1)
         flash[:success] += " Youʼve had prior flights on this tail!"
       end
@@ -616,9 +616,9 @@ class FlightsController < ApplicationController
     # AIRLINES
     
     if session[:new_flight][:airline_id].blank? && (session[:new_flight][:airline_icao] || session[:new_flight][:airline_iata])
-      if session[:new_flight][:airline_icao] && airline = Airline.find_by(icao_airline_code: session[:new_flight][:airline_icao])
+      if session[:new_flight][:airline_icao] && airline = Airline.find_by(icao_code: session[:new_flight][:airline_icao])
         ids.store(:airline_id, airline.id)
-      elsif session[:new_flight][:airline_iata] && airline = Airline.find_by(iata_airline_code: session[:new_flight][:airline_iata])
+      elsif session[:new_flight][:airline_iata] && airline = Airline.find_by(iata_code: session[:new_flight][:airline_iata])
         ids.store(:airline_id, airline.id)
       else
         input_new_undefined_airline(session[:new_flight][:airline_iata], session[:new_flight][:airline_icao]) and return nil
@@ -626,7 +626,7 @@ class FlightsController < ApplicationController
     end
     
     if session[:new_flight][:operator_id].blank? && session[:new_flight][:operator_icao]
-      if session[:new_flight][:operator_icao] && operator = Airline.find_by(icao_airline_code: session[:new_flight][:operator_icao])
+      if session[:new_flight][:operator_icao] && operator = Airline.find_by(icao_code: session[:new_flight][:operator_icao])
         ids.store(:operator_id, operator.id)
       else
         input_new_undefined_airline(nil, session[:new_flight][:operator_icao]) and return nil
@@ -634,9 +634,9 @@ class FlightsController < ApplicationController
     end
     
     if session[:new_flight][:codeshare_airline_id].blank? && session[:new_flight][:codeshare_airline_icao] || session[:new_flight][:codeshare_airline_iata]
-      if session[:new_flight][:codeshare_airline_icao] && codeshare_airline = Airline.find_by(icao_airline_code: session[:new_flight][:codeshare_airline_icao])
+      if session[:new_flight][:codeshare_airline_icao] && codeshare_airline = Airline.find_by(icao_code: session[:new_flight][:codeshare_airline_icao])
         ids.store(:codeshare_airline_id, codeshare_airline.id)
-      elsif session[:new_flight][:codeshare_airline_iata] && codeshare_airline = Airline.find_by(iata_airline_code: session[:new_flight][:codeshare_airline_iata])
+      elsif session[:new_flight][:codeshare_airline_iata] && codeshare_airline = Airline.find_by(iata_code: session[:new_flight][:codeshare_airline_iata])
         ids.store(:codeshare_airline_id, codeshare_airline.id)
       else
         input_new_undefined_airline(session[:new_flight][:codeshare_airline_iata], nil) and return nil

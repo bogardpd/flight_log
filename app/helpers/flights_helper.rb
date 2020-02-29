@@ -36,8 +36,8 @@ module FlightsHelper
   # icon. Used to augment BCBP interpretations in a {BoardingPass} table, such
   # as on {FlightsController#show} or {FlightsController#show_boarding_pass}.
   #
-  # @param type [:airline, :selectee] whether this icon should be for an
-  #   airline logo, or for TSA PreCheck selectee status
+  # @param type [:airline, :selectee, :travel_class] whether this icon should be
+  #   for an airline logo, TSA PreCheck selectee status, or travel class stars
   # @return [ActiveSupport::SafeBuffer, nil] an image tag for the appropriate
   #   icon
   # 
@@ -48,10 +48,10 @@ module FlightsHelper
       if raw =~ /^\d{3}$/
         airline = Airline.find_by(numeric_code: raw)
       else
-        airline = Airline.find_by(iata_airline_code: raw.strip.upcase)
+        airline = Airline.find_by(iata_code: raw.strip.upcase)
       end
       return nil unless airline
-      return airline_icon(airline.slug, title: airline.airline_name)
+      return airline_icon(airline.slug, title: airline.name)
     elsif type == :selectee
       return image_tag("tpc.png", title: interpretation, class: "airline-icon") if raw.to_i == 3
     elsif type == :travel_class

@@ -65,7 +65,7 @@ module TailNumber
     return nil unless tail_details.any?
     counts = tail_details.map{|f| {f.tail_number => {
       airline_slug:  f.airline.slug,
-      airline_name:  f.airline.airline_name,
+      airline_name:  f.airline.name,
       aircraft_code: f.aircraft_family&.icao_code || f.aircraft_family&.iata_code,
       manufacturer:  f.aircraft_family&.manufacturer,
       name:   f.aircraft_family&.name,

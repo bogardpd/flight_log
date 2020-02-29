@@ -15,18 +15,18 @@
   </p>
   
   <p>
-     <%= f.label :name, (@aircraft.is_root_family? ? "Aircraft Family Name" : "Aircraft Type Name") %><br />
+     <%= f.label :name, (@aircraft.is_root_family? ? "Family Name" : "Type Name") %><br />
      <%= f.text_field :name, size: 25 %>
   </p>
 
   <p>
-    <%= f.label :iata_code, "IATA Aircraft Code" %><br />
+    <%= f.label :iata_code, "IATA Code" %><br />
     <%= f.text_field :iata_code, size: 3, maxlength: 3, class: "code-mono all-caps" %><br />
   </p>
   
   <% unless @aircraft.is_root_family? %>
     <p>
-      <%= f.label :icao_code, "ICAO Aircraft Code" %><br />
+      <%= f.label :icao_code, "ICAO Code" %><br />
       <%= f.text_field :icao_code, size: 4, maxlength: 4, class: "code-mono all-caps" %><br />
     </p>
   <% end %>

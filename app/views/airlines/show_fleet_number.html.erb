@@ -1,43 +1,43 @@
-<% provide(:title, @operator.airline_name + " #" + @fleet_number) %>
-<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights operated on #{@operator.airline_name} aircraft ##{@fleet_number}.") %>
+<% provide(:title, @operator.name + " #" + @fleet_number) %>
+<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights operated on #{@operator.name} aircraft ##{@fleet_number}.") %>
 <% add_breadcrumb "Airlines", airlines_path %>
-<% add_breadcrumb @operator.airline_name + " (operator)", show_operator_path(@operator.slug) %>
+<% add_breadcrumb @operator.name + " (operator)", show_operator_path(@operator.slug) %>
 <% add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.slug, @fleet_number) %>
 
-<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @operator["#{c}_airline_code".to_sym].blank?}.map{|c| content_tag(:span, @operator["#{c}_airline_code".to_sym], id: "#{c}-airline-code")}, " / ") %><%= airline_icon(@operator.slug, title: @operator.airline_name) %></div>
+<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @operator["#{c}_code".to_sym].blank?}.map{|c| content_tag(:span, @operator["#{c}_code".to_sym], id: "#{c}-code")}, " / ") %><%= airline_icon(@operator.slug, title: @operator.name) %></div>
 
-<h1><%= @operator.airline_name %> #<%= @fleet_number %></h1>
+<h1><%= @operator.name %> #<%= @fleet_number %></h1>
 
 <div class="page-navigation">
   <ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
-		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
-		<li><%= link_to("Classes", "#classes", :title => "Classes operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
-				<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
-				<li><%= link_to("Flight List", "#flights", :title => "Flights operated by #{@operator.airline_name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Map", "#map", :title => "Map of flights operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Classes", "#classes", :title => "Classes operated by #{@operator.name} ##{@fleet_number}") %></li>
+				<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes operated by #{@operator.name} ##{@fleet_number}") %></li>
+				<li><%= link_to("Flight List", "#flights", :title => "Flights operated by #{@operator.name} ##{@fleet_number}") %></li>
   </ul>
 </div>
 
-<p><span class="bold"><%= link_to(@operator.airline_name, show_operator_path(@operator.slug), :title => "View flights operated by #{@operator.airline_name}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
+<p><span class="bold"><%= link_to(@operator.name, show_operator_path(@operator.slug), :title => "View flights operated by #{@operator.name}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>
   <%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
 </div>
 
-<h2 id="airlines">Airlines with Flights Operated as <abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %></h2>
+<h2 id="airlines">Airlines with Flights Operated as <abbr title="<%= @operator.name %>"><%= @operator.iata_code %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>
 
-<h2 id="aircraft">Aircraft Operated as <abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %></h2>
+<h2 id="aircraft">Aircraft Operated as <abbr title="<%= @operator.name %>"><%= @operator.iata_code %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>
 
-<h2 id="classes">Classes Flown on <abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %></h2>
+<h2 id="classes">Classes Flown on <abbr title="<%= @operator.name %>"><%= @operator.iata_code %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
-<h2 id="superlatives">Longest and Shortest Routes Flown on <abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %></h2>
+<h2 id="superlatives">Longest and Shortest Routes Flown on <abbr title="<%= @operator.name %>"><%= @operator.iata_code %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "routes/route_superlatives_table", locals: {superlatives: @route_superlatives} %>
 
-<h2 id="flights"><abbr title="<%= @operator.airline_name %>"><%= @operator.iata_airline_code %></abbr> #<%= @fleet_number %> Flight List</h2>
+<h2 id="flights"><abbr title="<%= @operator.name %>"><%= @operator.iata_code %></abbr> #<%= @fleet_number %> Flight List</h2>
 
 <%= render partial: "flights/flight_table", locals: {flights: @flights, is_summary: true} %>

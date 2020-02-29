@@ -5,9 +5,9 @@
 <% add_breadcrumb "Flights", flights_path %>
 <% add_breadcrumb @flight.name, flight_path(params[:id]) %>
 
-<div id="title-info"><%= airline_icon(@flight.airline.slug, title: @flight.airline.airline_name) %></div>
+<div id="title-info"><%= airline_icon(@flight.airline.slug, title: @flight.airline.name) %></div>
 
-<h1><%= @flight.airline.airline_name %> <%= @flight.flight_number %></h1>
+<h1><%= @flight.airline.name %> <%= @flight.flight_number %></h1>
 
 <% if @flight.comment %>
   <p class="comment"><%= @flight.comment %></p>
@@ -62,17 +62,17 @@
   <tr>
     <td class="label-column">Airline</td>
     <td id="flight-airline">
-			<div class="supplemental-code"><%= @flight.airline.iata_airline_code %></div>
-			<%= link_to(airline_icon(@flight.airline.slug, title: @flight.airline.airline_name) + @flight.airline.airline_name, airline_path(@flight.airline.slug), title: "View flights on " + @flight.airline.slug) %>
+			<div class="supplemental-code"><%= @flight.airline.iata_code %></div>
+			<%= link_to(airline_icon(@flight.airline.slug, title: @flight.airline.name) + @flight.airline.name, airline_path(@flight.airline.slug), title: "View flights on " + @flight.airline.slug) %>
 			</td>
   </tr>
   <% if @flight.operator %>
   <tr>
     <td class="label-column">Operated By</td>
     <td id="flight-operator">
-			<div class="supplemental-code"><%= @flight.operator.iata_airline_code %></div>
-			<%= link_to(airline_icon(@flight.operator.slug, title: @flight.operator.airline_name) + @flight.operator.airline_name, show_operator_path(@flight.operator.slug), title: "View flights operated by " + @flight.operator.airline_name) %>
-			<% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.slug, @flight.fleet_number), title: "View flights on #{@flight.operator.airline_name} aircraft ##{@flight.fleet_number}") %>)<% end %>
+			<div class="supplemental-code"><%= @flight.operator.iata_code %></div>
+			<%= link_to(airline_icon(@flight.operator.slug, title: @flight.operator.name) + @flight.operator.name, show_operator_path(@flight.operator.slug), title: "View flights operated by " + @flight.operator.name) %>
+			<% if @flight.fleet_number %> (<%= link_to("#" + @flight.fleet_number, show_fleet_number_path(@flight.operator.slug, @flight.fleet_number), title: "View flights on #{@flight.operator.name} aircraft ##{@flight.fleet_number}") %>)<% end %>
 			</td>
   </tr>
   <% end %>
@@ -80,8 +80,8 @@
   <tr>
     <td class="label-column">Codeshare</td>
     <td id="flight-codeshare">
-			<div class="supplemental-code"><%= @flight.codeshare_airline.iata_airline_code %></div>
-			<%= airline_icon(@flight.codeshare_airline.slug, title: @flight.codeshare_airline.airline_name) %><span id="flight-codeshare-airline"><%= @flight.codeshare_airline.airline_name %></span> <span id="flight-codeshare-flight-number"><%= @flight.codeshare_flight_number %></span>
+			<div class="supplemental-code"><%= @flight.codeshare_airline.iata_code %></div>
+			<%= airline_icon(@flight.codeshare_airline.slug, title: @flight.codeshare_airline.name) %><span id="flight-codeshare-airline"><%= @flight.codeshare_airline.name %></span> <span id="flight-codeshare-flight-number"><%= @flight.codeshare_flight_number %></span>
 			</td>
 		</td>
   </tr>

@@ -34,7 +34,7 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
       click_on("Add New Aircraft Family")
 
       fill_in("Manufacturer",         with: family[:manufacturer])
-      fill_in("Aircraft Family Name", with: family[:name])
+      fill_in("Family Name", with: family[:name])
       fill_in("Unique Slug",          with: family[:slug])
       select(family[:category], from: "aircraft_family_category")
       click_on("Add Aircraft Family")
@@ -45,9 +45,9 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
       visit(aircraft_family_path(family[:slug]))
       click_on("Add Type")
 
-      fill_in("Aircraft Type Name", with: type[:name])
-      fill_in("IATA Aircraft Code", with: type[:iata_code])
-      fill_in("ICAO Aircraft Code", with: type[:icao_code])
+      fill_in("Type Name", with: type[:name])
+      fill_in("IATA Code", with: type[:iata_code])
+      fill_in("ICAO Code", with: type[:icao_code])
       fill_in("Unique Slug",        with: type[:slug])
       click_on("Add Aircraft Type")
     end
@@ -57,7 +57,7 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
       visit(aircraft_family_path(type[:slug]))
       click_on("Edit Aircraft")
 
-      fill_in("Aircraft Type Name", with: type[:name_update])
+      fill_in("Type Name", with: type[:name_update])
       click_on("Update Aircraft Family")
 
       assert_equal(type[:name_update], AircraftFamily.find_by(slug: type[:slug]).name)

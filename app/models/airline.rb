@@ -25,18 +25,18 @@ class Airline < ApplicationRecord
   has_many :operated_flights, class_name: "Flight", foreign_key: "operator_id"
   has_many :codeshared_flights, class_name: "Flight", foreign_key: "codeshare_airline_id"
     
-  validates :iata_airline_code, presence: true, length: { is: 2 }
-  validates :icao_airline_code, presence: true, length: { is: 3 }
+  validates :iata_code, presence: true, length: { is: 2 }
+  validates :icao_code, presence: true, length: { is: 3 }
   validates :slug, presence: true, uniqueness: { case_sensitive: false }
-  validates :airline_name, presence: true
+  validates :name, presence: true
   validates :numeric_code, length: { is: 3, allow_blank: true }
   
   # Form fields which should be saved capitalized.
-  CAPS_ATTRS = %w( icao_airline_code )
+  CAPS_ATTRS = %w( iata_code icao_code )
   before_save :capitalize_codes
 
   # Returns airlines sorted alphabetically (case-insensitive).
-  scope :alphabetical, -> { order(Arel.sql("lower(airline_name)")) }
+  scope :alphabetical, -> { order(Arel.sql("lower(name)")) }
   
   # Returns airlines who are not only operators.
   scope :exclude_only_operators, -> { where(is_only_operator: false) }
@@ -48,7 +48,7 @@ class Airline < ApplicationRecord
   # 
   # @return [String] the Airline name
   def format_name
-    return self.airline_name
+    return self.name
   end
 
   # Returns true if the Airline is the marketing, operating, or codeshare
@@ -80,21 +80,21 @@ class Airline < ApplicationRecord
   def self.flight_table_data(flights, sort_category=nil, sort_direction=nil, type: :airline)
     
     id_field = (type == :airline) ? :airline_id : :operator_id
-    counts = flights.reorder(nil).joins(type).group(id_field, "airlines.airline_name", "airlines.slug", "airlines.iata_airline_code", "airlines.icao_airline_code").count
-      .map{|k,v| {id: k[0], airline_name: k[1], slug: k[2], iata_airline_code: k[3], icao_airline_code: k[4], flight_count: v}}
+    counts = flights.reorder(nil).joins(type).group(id_field, "airlines.name", "airlines.slug", "airlines.iata_code", "airlines.icao_code").count
+      .map{|k,v| {id: k[0], name: k[1], slug: k[2], iata_code: k[3], icao_code: k[4], flight_count: v}}
     
     case sort_category
     when :airline
-      counts.sort_by!{|airline| airline[:airline_name]&.downcase || ""}
+      counts.sort_by!{|airline| airline[:name]&.downcase || ""}
       counts.reverse! if sort_direction == :desc
     when :code
-      counts.sort_by!{|airline| airline[:iata_airline_code]&.downcase || ""}
+      counts.sort_by!{|airline| airline[:iata_code]&.downcase || ""}
       counts.reverse! if sort_direction == :desc
     when :flights
       sort_mult = (sort_direction == :desc ? -1 : 1)
-      counts.sort_by!{|airline| [sort_mult * airline[:flight_count], airline[:airline_name]&.downcase || ""]}
+      counts.sort_by!{|airline| [sort_mult * airline[:flight_count], airline[:name]&.downcase || ""]}
     else
-      counts.sort_by!{|airline| [-airline[:flight_count], airline[:airline_name]&.downcase || ""]}
+      counts.sort_by!{|airline| [-airline[:flight_count], airline[:name]&.downcase || ""]}
     end
     
     # Count flights without airlines:
@@ -113,11 +113,11 @@ class Airline < ApplicationRecord
   #   nil if an ICAO code is not found.
   # @return [String, nil] a matching ICAO code if found, the provided IATA code or nil if not found
   def self.convert_iata_to_icao(iata, keep_iata=true)
-    airline = Airline.find_by(iata_airline_code: iata)
+    airline = Airline.find_by(iata_code: iata)
     if airline.nil?
        return keep_iata ? iata : nil
     end
-    icao = airline.icao_airline_code
+    icao = airline.icao_code
     return icao if icao
     return keep_iata ? iata : nil
   end

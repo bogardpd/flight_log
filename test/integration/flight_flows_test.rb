@@ -538,7 +538,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", flight.name)
     
     assert_select("#flight-airline") do
-      assert_select("a[href=?]", airline_path(flight.airline.slug), {text: flight.airline.airline_name})
+      assert_select("a[href=?]", airline_path(flight.airline.slug), {text: flight.airline.name})
     end
     assert_select("#flight-trip") do
       assert_select("a[href=?]", trip_path(flight.trip), {text: flight.trip.name})
@@ -566,11 +566,11 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       assert_select("a[href=?]", show_class_path(flight.travel_class), {text: TravelClass::CLASSES[flight.travel_class][:name].titlecase})
     end
     assert_select("#flight-codeshare") do
-      assert_select("#flight-codeshare-airline", {text: flight.codeshare_airline.airline_name})
+      assert_select("#flight-codeshare-airline", {text: flight.codeshare_airline.name})
       assert_select("#flight-codeshare-flight-number", {text: flight.codeshare_flight_number})
     end
     assert_select("#flight-operator") do
-      assert_select("a[href=?]", show_operator_path(flight.operator.slug), {text: flight.operator.airline_name})
+      assert_select("a[href=?]", show_operator_path(flight.operator.slug), {text: flight.operator.name})
       assert_select("a[href=?]", show_fleet_number_path(flight.operator.slug, flight.fleet_number), {text: "##{flight.fleet_number}"})
     end
     assert_select("#flight-aircraft-name", {text: flight.aircraft_name})

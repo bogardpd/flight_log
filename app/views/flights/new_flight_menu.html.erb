@@ -64,7 +64,7 @@
   <%= hidden_field_tag(:clear_session, true) %>
   <%= hidden_field_tag(:trip_id, @trip.id) %>
   <%= label_tag(:airline_icao, "Airline") %> / <%= label_tag(:flight_number) %><br />
-  <%= collection_select(nil, :airline_icao, Airline.exclude_only_operators.where.not(icao_airline_code: nil).alphabetical, :icao_airline_code, :format_name, {include_blank: true}, class: "") %> <%= text_field_tag(:flight_number, nil, size: 5, maxlength: 5) %>
+  <%= collection_select(nil, :airline_icao, Airline.exclude_only_operators.where.not(icao_code: nil).alphabetical, :icao_code, :format_name, {include_blank: true}, class: "") %> <%= text_field_tag(:flight_number, nil, size: 5, maxlength: 5) %>
   <%= submit_tag("Search") %>
 <% end %>
 </div>

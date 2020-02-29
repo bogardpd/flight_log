@@ -1,90 +1,90 @@
 airline_american:
-  airline_name: "American Airlines"
+  name: "American Airlines"
   slug: "American-Airlines"
-  iata_airline_code: "AA"
-  icao_airline_code: "AAL"
+  iata_code: "AA"
+  icao_code: "AAL"
   numeric_code: "001"
   is_only_operator: No
   
 airline_expressjet:
-  airline_name: "ExpressJet"
+  name: "ExpressJet"
   slug: "ExpressJet"
-  iata_airline_code: "EV"
-  icao_airline_code: "ASQ"
+  iata_code: "EV"
+  icao_code: "ASQ"
   is_only_operator: Yes
 
 airline_united:
-  airline_name: "United"
+  name: "United"
   slug: "United"
-  iata_airline_code: "UA"
-  icao_airline_code: "UAL"
+  iata_code: "UA"
+  icao_code: "UAL"
   numeric_code: "016"
   is_only_operator: No
 
 airline_psa:
-  airline_name: "PSA Airlines"
+  name: "PSA Airlines"
   slug: "PSA-Airlines"
-  iata_airline_code: "OH"
-  icao_airline_code: "JIA"
+  iata_code: "OH"
+  icao_code: "JIA"
   is_only_operator: Yes
 
 airline_comair:
-  airline_name: "Comair"
+  name: "Comair"
   slug: "Comair"
-  iata_airline_code: "OH"
-  icao_airline_code: "COM"
+  iata_code: "OH"
+  icao_code: "COM"
   is_only_operator: Yes
 
 airline_operator_only:
-  airline_name: "Operator Only"
+  name: "Operator Only"
   slug: "Operator-Only"
-  iata_airline_code: "OP"
-  icao_airline_code: "AOO"
+  iata_code: "OP"
+  icao_code: "AOO"
 
 airline_codeshare_only:
-  airline_name: "Codeshare Only"
+  name: "Codeshare Only"
   slug: "Codeshare-Only"
-  iata_airline_code: "CO"
-  icao_airline_code: "ACO"
+  iata_code: "CO"
+  icao_code: "ACO"
 
 airline_no_flights:
   # Must not be used_by any flights.
-  airline_name: "No Flights"
+  name: "No Flights"
   slug: "No-Flights"
-  iata_airline_code: "NA"
-  icao_airline_code: "NFA"
+  iata_code: "NA"
+  icao_code: "NFA"
 
 airline_visible:
   # Used to test non-hidden airlines
-  airline_name: "Visible Air"
+  name: "Visible Air"
   slug: "Visible-Air"
-  iata_airline_code: "VA"
-  icao_airline_code: "VSA"
+  iata_code: "VA"
+  icao_code: "VSA"
 
 airline_hidden:
   # Used to test hidden airlines
-  airline_name: "Hidden Air"
+  name: "Hidden Air"
   slug: "Hidden-Air"
-  iata_airline_code: "HA"
-  icao_airline_code: "HSA"
+  iata_code: "HA"
+  icao_code: "HSA"
 
 operator_visible:
   # Used to test non-hidden operators
-  airline_name: "Visible Express"
+  name: "Visible Express"
   slug: "Visible-Express"
-  iata_airline_code: "VO"
-  icao_airline_code: "VSO"
+  iata_code: "VO"
+  icao_code: "VSO"
 
 operator_hidden:
   # Used to test hidden operators
-  airline_name: "Hidden Express"
+  name: "Hidden Express"
   slug: "Hidden-Express"
-  iata_airline_code: "HO"
-  icao_airline_code: "HSO"
+  iata_code: "HO"
+  icao_code: "HSO"
 
 codeshare_airline_visible:
   # Used to test non-hidden codeshare airlines
-  airline_name: "Codeshare Jets"
+  name: "Codeshare Jets"
   slug: "Codeshare-Jets"
-  iata_airline_code: "VC"
-  icao_airline_code: "VCJ"
+  iata_code: "VC"
+  icao_code: "VCJ"

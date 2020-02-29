@@ -58,7 +58,7 @@ class Flight < ApplicationRecord
   #
   # @return [String] the airline and flight number
   def name
-    return self.airline.airline_name + " " + self.flight_number.to_s
+    return self.airline.name + " " + self.flight_number.to_s
   end
 
   # For a given flight collection, returns business, mixed, personal, and

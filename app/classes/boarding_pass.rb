@@ -773,11 +773,11 @@ class BoardingPass
       airline = Airline.where(numeric_code: raw) 
     else
       # Airline IATA code
-      airline = Airline.where(iata_airline_code: raw.strip()) 
+      airline = Airline.where(iata_code: raw.strip()) 
     end
 
     if airline.length > 0
-      return airline.first.airline_name
+      return airline.first.name
     else
       return nil
     end

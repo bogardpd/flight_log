@@ -23,9 +23,9 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
     assert_select("h1", "New Airline")
     assert_select("form#new_airline")
-    assert_select("input#airline_airline_name")
-    assert_select("input#airline_iata_airline_code")
-    assert_select("input#airline_icao_airline_code")
+    assert_select("input#airline_name")
+    assert_select("input#airline_iata_code")
+    assert_select("input#airline_icao_code")
     assert_select("input#airline_numeric_code")
     assert_select("input#airline_is_only_operator")
     assert_select("input#airline_slug")
@@ -42,11 +42,11 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     get(edit_airline_path(airline))
     assert_response(:success)
 
-    assert_select("h1", "Edit #{airline.airline_name}")
+    assert_select("h1", "Edit #{airline.name}")
     assert_select("form#edit_airline_#{airline.id}")
-    assert_select("input#airline_airline_name[value=?]", airline.airline_name)
-    assert_select("input#airline_iata_airline_code[value=?]", airline.iata_airline_code)
-    assert_select("input#airline_icao_airline_code[value=?]", airline.icao_airline_code)
+    assert_select("input#airline_name[value=?]", airline.name)
+    assert_select("input#airline_iata_code[value=?]", airline.iata_code)
+    assert_select("input#airline_icao_code[value=?]", airline.icao_code)
     if airline.numeric_code
       assert_select("input#airline_numeric_code[value=?]", airline.numeric_code)
     else
@@ -280,20 +280,20 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   # Runs tests common to show airline
   def check_show_airline_common(airline, type, fleet_number: nil)
     if type == :airline
-      assert_select("h1", airline.airline_name)
+      assert_select("h1", airline.name)
       assert_select("#operator-count-table")
     elsif type == :operator
-      assert_select("h1", "Flights Operated by #{airline.airline_name}")
+      assert_select("h1", "Flights Operated by #{airline.name}")
       assert_select("#airline-count-table")
       assert_select("#fleet-number-table")
     elsif type == :fleet_number
-      assert_select("h1", "#{airline.airline_name} ##{fleet_number}")
+      assert_select("h1", "#{airline.name} ##{fleet_number}")
       assert_select("a[href=?]", show_operator_path(operator: airline.slug))
       assert_select("#airline-count-table")
     end
 
-    assert_select("#iata-airline-code", airline.iata_airline_code) if airline.iata_airline_code
-    assert_select("#icao-airline-code", airline.icao_airline_code) if airline.icao_airline_code
+    assert_select("#iata-code", airline.iata_code) if airline.iata_code
+    assert_select("#icao-code", airline.icao_code) if airline.icao_code
     assert_select("div#map")
     assert_select(".distance-primary")
 

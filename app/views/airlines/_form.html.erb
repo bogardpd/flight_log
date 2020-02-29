@@ -3,30 +3,30 @@
   <%= render partial: "error_messages" %>
 
   <p>
-    <%= f.label :airline_name, "Airline Name" %><br />
-    <%= f.text_field :airline_name, size: 25 %>
+    <%= f.label :name, "Name" %><br />
+    <%= f.text_field :name, size: 25 %>
   </p>
 
   <p>
-    <%= f.label :iata_airline_code, "IATA Airline Code" %><br />
+    <%= f.label :iata_code, "IATA Code" %><br />
     <% if @lookup_fields && @lookup_fields[:iata_code] %>
-      <%= f.text_field :iata_airline_code, value: @lookup_fields[:iata_code], size: 2, maxlength: 2, class: "code-mono" %><br />
+      <%= f.text_field :iata_code, value: @lookup_fields[:iata_code], size: 2, maxlength: 2, class: "code-mono" %><br />
     <% else %>
-      <%= f.text_field :iata_airline_code, size: 2, class: "code-mono" %><br />
+      <%= f.text_field :iata_code, size: 2, class: "code-mono" %><br />
     <% end %>
   </p>
   
   <p>
-    <%= f.label :icao_airline_code, "ICAO Airline Code" %><br />
+    <%= f.label :icao_code, "ICAO Code" %><br />
     <% if @lookup_fields && @lookup_fields[:icao_code] %>
-      <%= f.text_field :icao_airline_code, value: @lookup_fields[:icao_code], readonly: true, size: 3, maxlength: 3, class: "code-mono all-caps" %>
+      <%= f.text_field :icao_code, value: @lookup_fields[:icao_code], readonly: true, size: 3, maxlength: 3, class: "code-mono all-caps" %>
     <% else %>
-      <%= f.text_field :icao_airline_code, size: 3, maxlength: 3, class: "code-mono all-caps" %>
+      <%= f.text_field :icao_code, size: 3, maxlength: 3, class: "code-mono all-caps" %>
     <% end %>
   </p>
   
   <p>
-    <%= f.label :numeric_code, "Airline Numeric Code" %><br />
+    <%= f.label :numeric_code, "Numeric Code" %><br />
     <%= f.text_field :numeric_code, size: 3, maxlength: 3, class: "code-mono" %><br />
   	Please include leading zeroes.
   </p>

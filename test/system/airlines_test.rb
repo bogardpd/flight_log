@@ -13,10 +13,10 @@ class AirlinesTest < ApplicationSystemTestCase
   test "creating, updating, and destroying an airline" do
     
     airline = {
-      airline_name:        "British Airways",
-      airline_name_update: "BOAC",
-      iata_airline_code:   "BA",
-      icao_airline_code:   "BAW",
+      name:        "British Airways",
+      name_update: "BOAC",
+      iata_code:   "BA",
+      icao_code:   "BAW",
       numeric_code:        "125",
       slug:                "British-Airways"
     }
@@ -28,10 +28,10 @@ class AirlinesTest < ApplicationSystemTestCase
       visit(airlines_path)
       click_on("Add New Airline")
 
-      fill_in("Airline Name",         with: airline[:airline_name])
-      fill_in("IATA Airline Code",    with: airline[:iata_airline_code])
-      fill_in("ICAO Airline Code",    with: airline[:icao_airline_code])
-      fill_in("Airline Numeric Code", with: airline[:numeric_code])
+      fill_in("Name",         with: airline[:name])
+      fill_in("IATA Code",    with: airline[:iata_code])
+      fill_in("ICAO Code",    with: airline[:icao_code])
+      fill_in("Numeric Code", with: airline[:numeric_code])
       fill_in("Unique Slug",          with: airline[:slug])
       click_on("Add Airline")
     end
@@ -41,10 +41,10 @@ class AirlinesTest < ApplicationSystemTestCase
       visit(airline_path(airline[:slug]))
       click_on("Edit Airline")
 
-      fill_in("Airline Name", with: airline[:airline_name_update])
+      fill_in("Name", with: airline[:name_update])
       click_on("Update Airline")
       
-      assert_equal(airline[:airline_name_update], Airline.find_by(slug: airline[:slug]).airline_name)
+      assert_equal(airline[:name_update], Airline.find_by(slug: airline[:slug]).name)
     end
 
     # Destroy airline:
