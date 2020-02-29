@@ -292,13 +292,13 @@
     <span class='id identifier rubyid_li_classes'>li_classes</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span> <span class='op'>||</span> <span class='id identifier rubyid_top_level'>top_level</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>current-type</span><span class='tstring_end'>&quot;</span></span>
     <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:li</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='id identifier rubyid_li_classes'>li_classes</span><span class='rparen'>)</span> <span class='kw'>do</span>
 
-      <span class='id identifier rubyid_link_text'>link_text</span> <span class='op'>=</span> <span class='id identifier rubyid_top_level'>top_level</span> <span class='op'>?</span> <span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_full_name'>full_name</span> <span class='op'>:</span> <span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_family_name'>family_name</span>
+      <span class='id identifier rubyid_link_text'>link_text</span> <span class='op'>=</span> <span class='id identifier rubyid_top_level'>top_level</span> <span class='op'>?</span> <span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_full_name'>full_name</span> <span class='op'>:</span> <span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span>
       <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_link_to'>link_to</span><span class='lparen'>(</span><span class='id identifier rubyid_link_text'>link_text</span><span class='comma'>,</span> <span class='id identifier rubyid_aircraft_family_path'>aircraft_family_path</span><span class='lparen'>(</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>View flights on </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_full_name'>full_name</span><span class='embexpr_end'>}</span><span class='tstring_content'> aircraft</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 
       <span class='kw'>if</span> <span class='id identifier rubyid_types'>types</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
         <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_aircraft_type_tree'>aircraft_type_tree</span><span class='lparen'>(</span><span class='id identifier rubyid_types'>types</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
-      <span class='kw'>elsif</span> <span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_iata_aircraft_code'>iata_aircraft_code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
-        <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_iata_aircraft_code'>iata_aircraft_code</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>supplemental-code</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+      <span class='kw'>elsif</span> <span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_iata_code'>iata_code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+        <span class='id identifier rubyid_concat'>concat</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_iata_code'>iata_code</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>supplemental-code</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
       <span class='kw'>end</span>
 
     <span class='kw'>end</span>
@@ -337,13 +337,13 @@
         <span class='name'>type</span>
       
       
-        <span class='type'>(<tt>:airline</tt>, <tt>:selectee</tt>)</span>
+        <span class='type'>(<tt>:airline</tt>, <tt>:selectee</tt>, <tt>:travel_class</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>whether this icon should be for an airline logo, or for TSA PreCheck selectee status</p>
+<p>whether this icon should be for an airline logo, TSA PreCheck selectee status, or travel class stars</p>
 </div>
       
     </li>
@@ -413,10 +413,10 @@
     <span class='kw'>if</span> <span class='id identifier rubyid_raw'>raw</span> <span class='op'>=~</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^\d{3}$</span><span class='regexp_end'>/</span></span>
       <span class='id identifier rubyid_airline'>airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>numeric_code:</span> <span class='id identifier rubyid_raw'>raw</span><span class='rparen'>)</span>
     <span class='kw'>else</span>
-      <span class='id identifier rubyid_airline'>airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>iata_airline_code:</span> <span class='id identifier rubyid_raw'>raw</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_airline'>airline</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find_by'>find_by</span><span class='lparen'>(</span><span class='label'>iata_code:</span> <span class='id identifier rubyid_raw'>raw</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_upcase'>upcase</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
     <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_airline'>airline</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_airline_icon'>airline_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_airline_name'>airline_name</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_airline_icon'>airline_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_slug'>slug</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='id identifier rubyid_airline'>airline</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
   <span class='kw'>elsif</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='symbol'>:selectee</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>tpc.png</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>title:</span> <span class='id identifier rubyid_interpretation'>interpretation</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>airline-icon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_raw'>raw</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>==</span> <span class='int'>3</span>
   <span class='kw'>elsif</span> <span class='id identifier rubyid_type'>type</span> <span class='op'>==</span> <span class='symbol'>:travel_class</span>
@@ -547,7 +547,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Feb 27 10:26:15 2020 by
+  Generated on Sat Feb 29 17:33:52 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.24 (ruby-2.7.0).
 </div>
