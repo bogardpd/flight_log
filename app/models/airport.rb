@@ -59,19 +59,18 @@ class Airport < ApplicationRecord
     return self.id == id_1 ? id_2 : id_1
   end
 
-  # Returns the image path for this airport's cropped terminal silhouette.
-  # This image is always 1440px wide, and is up to 810px tall.
+  # Returns the image path for this airport's terminal silhouette.
   #
   # @return [String] an image path
   def terminal_silhouette_path
-    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png-flight-historian/#{self.slug}.png"
+    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/svg/#{self.slug}.svg"
   end
   
-  # Returns the image path for this airport's uncropped terminal silhouette.
+  # Returns the path that this airport's terminal silhouette should link to.
   #
   # @return [String] an image path
-  def terminal_silhouette_large_path
-    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/png/#{self.slug}.png"
+  def terminal_silhouette_link_path
+    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/svg/#{self.slug}.svg"
   end
   
   # Accepts an airport IATA code, and returns the matching ICAO code.

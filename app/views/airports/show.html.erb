@@ -113,8 +113,8 @@
 	<% if @terminal_exists %>
 		<h2 id="terminal">Terminal Silhouette</h2>
 		<div class="illustration-container">
-			<% if ExternalImage.exists?(@airport.terminal_silhouette_large_path) %>
-				<%= link_to(image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette"), @airport.terminal_silhouette_large_path, target: :_blank) %>
+			<% if ExternalImage.exists?(@airport.terminal_silhouette_link_path) %>
+				<%= link_to(image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette"), @airport.terminal_silhouette_link_path, target: :_blank) %>
 			<% else %>
 				<%= image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette") %>
 			<% end %>
