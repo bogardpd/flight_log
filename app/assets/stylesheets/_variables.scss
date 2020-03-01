@@ -5,41 +5,41 @@ $font-size-small: 85%;
 
 $color-base: #9EC7F3; /* hsl(211, 78%, 79%) */
 
-$color-background-page:           #E6EAEF;
-$color-background-container:      #FFFFFF;
-$color-border-page:               #D7E2ED;
+$color-background-page:             #E6EAEF;
+$color-background-container:        #FFFFFF;
+$color-border-page:                 #D7E2ED;
 
-$color-background-table:          hsl(240,  20%,  99%);
-$color-border-table:              rgb(190,  212,  234);
+$color-background-table:            hsl(240,  20%,  99%);
+$color-border-table:                rgb(190,  212,  234);
 
-$color-background-banner-primary: #5D94D7;
+$color-background-banner-primary:   #5D94D7;
 $color-background-banner-secondary: #4892EB;
 
-$color-background-menu-primary:   #1F497D;
-$color-background-menu-secondary: #0F478C;
+$color-background-menu-primary:     #1F497D;
+$color-background-menu-secondary:   #0F478C;
 
-$color-text-primary:              hsl(210,  20%,  16%);
-$color-text-secondary:            hsl(210,  20%,  40%);
-$color-text-tertiary:             hsl(210,  20%,  70%);
-$color-text-link:                 #1E90FF;
-$color-text-link-hover:           #E47911;
-$color-text-link-visited:         #75BAFD;
-$color-text-disabled:             hsl(210,  20%,  70%);
-$color-text-error:                hsl(  0, 100%,  40%);
-$color-text-warning:              hsl( 45, 100%,  40%);
-                                                 
-$color-background-status-bad:     hsl(  0,  50%,  80%);
-$color-background-status-unknown: hsl( 45,  50%,  80%);
-$color-background-status-good:    hsl(180,  50%,  80%);
-$color-border-status-bad:         hsl(  0, 100%, 100%);
-$color-border-status-good:        hsl(180, 100%, 100%);
-$color-background-new:            lighten(yellow, 35%);
+$color-text-primary:                hsl(210,  20%,  16%);
+$color-text-secondary:              hsl(210,  20%,  40%);
+$color-text-tertiary:               hsl(210,  20%,  70%);
+$color-text-link:                   hsl(210, 100%,  45%);
+$color-text-link-visited:           hsl(210,  45%,  60%);
+$color-text-link-hover:             hsl( 30,  86%,  48%);
+$color-text-disabled:               hsl(210,  20%,  70%);
+$color-text-error:                  hsl(  0, 100%,  40%);
+$color-text-warning:                hsl( 45, 100%,  40%);
 
-$color-background-message-default: hsl(0, 0%, 85%);
-$color-background-info: hsl(215, 80%, 85%);
-$color-background-success: hsl(105, 80%, 85%);
-$color-background-warning: hsl(45, 80%, 85%);
-$color-background-error: hsl(0, 80%, 85%);
+$color-background-status-bad:       hsl(  0,  50%,  80%);
+$color-background-status-unknown:   hsl( 45,  50%,  80%);
+$color-background-status-good:      hsl(180,  50%,  80%);
+$color-border-status-bad:           hsl(  0, 100%, 100%);
+$color-border-status-good:          hsl(180, 100%, 100%);
+$color-background-new:              lighten(yellow, 35%);
+
+$color-background-message-default:  hsl(0, 0%, 85%);
+$color-background-info:             hsl(215, 80%, 85%);
+$color-background-success:          hsl(105, 80%, 85%);
+$color-background-warning:          hsl(45, 80%, 85%);
+$color-background-error:            hsl(0, 80%, 85%);
 
 $margin-icon-to-text: 0.5em;
 $margin-indent: 1em;

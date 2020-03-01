@@ -98,17 +98,17 @@ abbr {
 /* line 85, app/assets/stylesheets/_flight_log.scss */
 a {
   text-decoration: underline;
-  color: #1E90FF;
+  color: #0073e6;
 }
 
 /* line 90, app/assets/stylesheets/_flight_log.scss */
 a:visited {
-  color: #75BAFD;
+  color: #6b99c7;
 }
 
 /* line 94, app/assets/stylesheets/_flight_log.scss */
 a:hover {
-  color: #E47911;
+  color: #e47a11;
 }
 
 /* line 98, app/assets/stylesheets/_flight_log.scss */
@@ -732,16 +732,21 @@ form .autopopulated {
 }
 
 /* line 16, app/assets/stylesheets/_forms.scss */
-form span.trip-name {
+form span#trip-name {
   font-weight: bold;
 }
 
 /* line 20, app/assets/stylesheets/_forms.scss */
+form span#utc-time-now {
+  font-weight: bold;
+}
+
+/* line 24, app/assets/stylesheets/_forms.scss */
 form .field_with_errors {
   color: #cc0000;
 }
 
-/* line 22, app/assets/stylesheets/_forms.scss */
+/* line 26, app/assets/stylesheets/_forms.scss */
 form .field_with_errors input, form .field_with_errors select, form .field_with_errors option {
   color: #cc0000;
   background-color: #f7baba;
@@ -866,13 +871,13 @@ div.message .title {
 
 /* line 10, app/assets/stylesheets/_message_banners.scss */
 div.message a {
-  color: #005db7;
+  color: #004080;
   text-decoration: underline;
 }
 
 /* line 14, app/assets/stylesheets/_message_banners.scss */
 div.message a:hover {
-  color: #cc6c0f;
+  color: #cc6e0f;
 }
 
 /* line 19, app/assets/stylesheets/_message_banners.scss */
@@ -904,7 +909,7 @@ div.message-error a {
   padding: 0.2em;
   text-shadow: none;
   font-weight: 400;
-  color: #005db7;
+  color: #004080;
 }
 
 /* line 1, app/assets/stylesheets/_regions.scss */
@@ -1401,24 +1406,25 @@ table.flight-select span.timezone {
 svg.graph-bar {
   border: 1px solid #BED4EA;
   vertical-align: middle;
+  background-color: #fcfcfd;
 }
 
-/* line 7, app/assets/stylesheets/_svg.scss */
+/* line 8, app/assets/stylesheets/_svg.scss */
 svg.graph-bar rect.graph {
   fill: #E6EAEF;
 }
 
-/* line 11, app/assets/stylesheets/_svg.scss */
+/* line 12, app/assets/stylesheets/_svg.scss */
 svg.graph-bar text.graph-value {
   text-anchor: middle;
 }
 
-/* line 15, app/assets/stylesheets/_svg.scss */
+/* line 16, app/assets/stylesheets/_svg.scss */
 svg.graph-bar text.graph-distance {
   font-size: 90%;
 }
 
-/* line 19, app/assets/stylesheets/_svg.scss */
+/* line 20, app/assets/stylesheets/_svg.scss */
 svg.graph-bar text.graph-unit {
   font-size: 60%;
   font-weight: 300;
