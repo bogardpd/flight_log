@@ -66,13 +66,6 @@ class Airport < ApplicationRecord
     return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/svg/#{self.slug}.svg"
   end
   
-  # Returns the path that this airport's terminal silhouette should link to.
-  #
-  # @return [String] an image path
-  def terminal_silhouette_link_path
-    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/svg/#{self.slug}.svg"
-  end
-  
   # Accepts an airport IATA code, and returns the matching ICAO code.
   #
   # @param iata [String] the airport IATA code to look up
