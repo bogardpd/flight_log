@@ -18,13 +18,15 @@
 <table class="flightlog flight-large-route">
   <tr class="no-top-border">
     <td class="flight-show-airport right" id="flight-origin-airport">
-      <span class="flight-code"><%= link_to(@flight.origin_airport.iata_code, airport_path(@flight.origin_airport.slug), :title => "View airport details for " + @flight.origin_airport.city) %></span><br />
+      <span class="flight-code"><%= link_to(@flight.origin_airport.iata_code, airport_path(@flight.origin_airport.slug), title: "View airport details for " + @flight.origin_airport.city) %></span><br>
       <span class="flight-city"><%= @flight.origin_airport.city %></span>
     </td>
+    <td class="flight-flag-icon"><%= country_flag_icon(@flight.origin_airport.country) %></td>
     <td class="flight-airplane-icon"><%= Route::ARROW_ONE_WAY_HTML %></td>
+    <td class="flight-flag-icon"><%= country_flag_icon(@flight.destination_airport.country) %></td>
     <td class="flight-show-airport" id="flight-destination-airport">
-      <span class="flight-code"><%= link_to(@flight.destination_airport.iata_code, airport_path(@flight.destination_airport.slug), :title => "View airport details for " + @flight.destination_airport.city) %></span><br />
-      <span class="flight-city"><%= @flight.destination_airport.city %></span>
+      <span class="flight-code"><%= link_to(@flight.destination_airport.iata_code, airport_path(@flight.destination_airport.slug), title: "View airport details for " + @flight.destination_airport.city) %></span><br>
+      <span class="flight-city"><%= @flight.destination_airport.city %></span>      
     </td>
   </tr>
 </table>
@@ -37,7 +39,7 @@
   </tr>
   <tr>
     <td class="label-column">Trip</td>
-    <td id="flight-trip"><%= Trip::HIDDEN_MARKER if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), :title => "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), :title => "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
+    <td id="flight-trip"><%= Trip::HIDDEN_MARKER if @flight.trip.hidden %><%= link_to(@flight.trip.name, trip_path(@flight.trip), title: "View trip details for " + @flight.trip.name) %> (<%= link_to("Section #{@flight.trip_section}", show_section_path(@flight.trip, @flight.trip_section), title: "View details for section #{@flight.trip_section} of #{@flight.trip.name}" ) %>)</td>
   </tr>
   <tr>
     <td class="label-column">Route</td>
@@ -54,7 +56,7 @@
   <tr>
     <td class="label-column">Travel Class</td>
     <td id="flight-travel-class">
-			<%= quality_stars(TravelClass::CLASSES[@flight.travel_class][:quality], inline: :left) %><%= link_to(TravelClass::CLASSES[@flight.travel_class][:name].titlecase, show_class_path(@flight.travel_class), :title => "View #{TravelClass::CLASSES[@flight.travel_class][:name].downcase} class flights") %>
+			<%= quality_stars(TravelClass::CLASSES[@flight.travel_class][:quality], inline: :left) %><%= link_to(TravelClass::CLASSES[@flight.travel_class][:name].titlecase, show_class_path(@flight.travel_class), title: "View #{TravelClass::CLASSES[@flight.travel_class][:name].downcase} class flights") %>
 			</td>
 		</td>
   </tr>
