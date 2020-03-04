@@ -134,7 +134,7 @@ GEM
     nori (2.6.0)
     pg (1.2.2)
     public_suffix (4.0.3)
-    puma (4.3.2)
+    puma (4.3.3)
       nio4r (~> 2.0)
     rack (2.2.2)
     rack-test (1.1.0)
@@ -179,7 +179,7 @@ GEM
     rake (13.0.1)
     regexp_parser (1.7.0)
     ruby-progressbar (1.10.1)
-    ruby-statistics (2.1.1)
+    ruby-statistics (2.1.2)
     rubyzip (2.2.0)
     safe_yaml (1.0.5)
     sassc (2.2.1)
@@ -235,7 +235,7 @@ GEM
     websocket-extensions (0.1.4)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.2.2)
+    zeitwerk (2.3.0)
 
 PLATFORMS
   ruby
@@ -249,7 +249,7 @@ DEPENDENCIES
   jquery-rails (~> 4.3, >= 4.3.5)
   minitest-reporters (~> 1.4, >= 1.4.2)
   pg (~> 1.2, >= 1.2.2)
-  puma (= 4.3.2)
+  puma (= 4.3.3)
   rails (~> 6.0, >= 6.0.2.1)
   rails-controller-testing (~> 1.0, >= 1.0.4)
   rails-ujs (~> 5.1.0.beta1)
