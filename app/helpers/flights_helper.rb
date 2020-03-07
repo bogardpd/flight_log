@@ -32,34 +32,70 @@ module FlightsHelper
     return output
   end
 
-  # Accepts an icon type and a raw BCBP value, and returns an image_tag for an
-  # icon. Used to augment BCBP interpretations in a {BoardingPass} table, such
-  # as on {FlightsController#show} or {FlightsController#show_boarding_pass}.
+  # Accepts an icon type and an interpretation, and returns the text of the
+  # interpretation, with an image_tag for an icon if appropriate. Used to
+  # augment BCBP interpretations in a {BoardingPass} table, such as on
+  # {FlightsController#show} or {FlightsController#show_boarding_pass}.
   #
-  # @param type [:airline, :selectee, :travel_class] whether this icon should be
-  #   for an airline logo, TSA PreCheck selectee status, or travel class stars
+  # @param icon_type [:airline, :airport, :selectee, :travel_class] whether this
+  #   icon should be for an airline logo, airport country flag, TSA PreCheck
+  #   selectee status, or travel class stars
+  # @param interpretation [String, Hash, nil] The interpretation of what the raw
+  #   value means. Can either be a string of the interpretation, or a hash with
+  #   the interpretation string under the text key, and a slug for an icon under
+  #   the icon_slug key.
+  # @return [ActiveSupport::SafeBuffer, nil] interpretation text, with an an
+  #   image tag for an icon if appropriate.
+  #
+  # @see BoardingPass
+  def display_bcbp_interpretation(icon_type, interpretation)
+    if interpretation.is_a?(Hash)
+      icon_slug = interpretation[:icon_slug]
+      interpretation = interpretation[:text]
+    else
+      icon_slug = nil
+    end
+    if icon_type
+      icon = display_bcbp_icon(icon_type, interpretation, icon_slug)
+      return interpretation unless icon
+      return sanitize(interpretation) + content_tag(:div, icon, class: "interpreted-icon")
+    else
+      return interpretation
+    end
+  end
+
+  # Accepts an icon type, interpretation, and icon slug, and returns an
+  # image_tag for an icon.
+  #
+  # @param icon_type [:airline, :airport, :selectee, :travel_class] whether this
+  #   icon should be for an airline logo, airport country flag, TSA PreCheck
+  #   selectee status, or travel class stars
+  # @param interpretation [String] The interpretation of what the raw
+  # @param icon_slug [String] A unique identifier for an instance of this type
+  #   of icon. (For example, an airline slug used to find an airline icon's
+  #   filename.)
   # @return [ActiveSupport::SafeBuffer, nil] an image tag for the appropriate
   #   icon
   # 
-  # @see BoardingPass
-  def display_icon(type, raw, interpretation=nil)
-    return nil unless raw && type
-    if type == :airline
-      if raw =~ /^\d{3}$/
-        airline = Airline.find_by(numeric_code: raw)
+  # @see #display_bcbp_interpretation
+  def display_bcbp_icon(icon_type, interpretation, icon_slug)
+    return nil unless icon_slug
+
+    case icon_type
+    when :airline
+      return airline_icon(icon_slug, title: interpretation)
+    when :airport
+      return country_flag_icon(icon_slug)
+    when :selectee
+      if icon_slug == "LLLL"
+        return image_tag("tpc.png", title: interpretation, class: "airline-icon")
       else
-        airline = Airline.find_by(iata_code: raw.strip.upcase)
+        return nil
       end
-      return nil unless airline
-      return airline_icon(airline.slug, title: airline.name)
-    elsif type == :selectee
-      return image_tag("tpc.png", title: interpretation, class: "airline-icon") if raw.to_i == 3
-    elsif type == :travel_class
-      travel_class_tag = Nokogiri::HTML.parse(interpretation)&.at("span#travel-class-interpretation")
-      return nil unless travel_class_tag
-      quality = travel_class_tag["data-class-quality"]&.to_i
-      return nil unless quality
-      return quality_stars(quality)
+    when :travel_class
+      return quality_stars(icon_slug)
+    else
+      return nil
     end
     return nil
   end

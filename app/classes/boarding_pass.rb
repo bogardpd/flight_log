@@ -468,11 +468,11 @@ class BoardingPass
       validity: /^(?=^.{7}$)[A-Z0-9]+ *$/i})
     fields[ 26] = (prev = {description: "From City Airport Code",
       group: :rm, start: start.call(prev), length:  3,
-      interpretation: :interpret_airport_code,
+      interpretation: :interpret_airport_code, type: :airport,
       validity: v[:airport_code_alpha]})
     fields[ 38] = (prev = {description: "To City Airport Code",
       group: :rm, start: start.call(prev), length:  3,
-      interpretation: :interpret_airport_code,
+      interpretation: :interpret_airport_code, type: :airport,
       validity: v[:airport_code_alpha]})
     fields[ 42] = (prev = {description: "Operating Carrier Designator",
       group: :rm, start: start.call(prev), length:  3,
@@ -764,20 +764,20 @@ class BoardingPass
   # Interprets an airline code.
   #
   # @param raw [String] raw IATA BCBP data
-  # @return [String, nil] an airline name
+  # @return [Hash, nil] an airline name
   def interpret_airline_code(raw)
     return nil unless raw.present?
 
     if raw =~ /^\d{3}$/
       # Airline numeric code
-      airline = Airline.where(numeric_code: raw) 
+      airline = Airline.find_by(numeric_code: raw) 
     else
       # Airline IATA code
-      airline = Airline.where(iata_code: raw.strip()) 
+      airline = Airline.find_by(iata_code: raw.strip()) 
     end
 
-    if airline.length > 0
-      return airline.first.name
+    if airline
+      return {text: airline.name, icon_slug: airline.slug}
     else
       return nil
     end
@@ -787,11 +787,11 @@ class BoardingPass
   # Interprets an airport code.
   #
   # @param raw [String] raw IATA BCBP data
-  # @return [String, nil] an airport name
+  # @return [Hash, nil] an airport name
   def interpret_airport_code(raw)
     airport = Airport.where(iata_code: raw) 
     if airport.length > 0
-      return airport.first.city
+      return {text: airport.first.city, icon_slug: airport.first.country}
     else
       return nil
     end
@@ -834,7 +834,7 @@ class BoardingPass
   #
   # @param raw [String] raw IATA BCBP data
   # @param leg [Number] an itinerary leg number
-  # @return [String, nil] an estimate for what cabin/class this boarding pass
+  # @return [Hash, nil] an estimate for what cabin/class this boarding pass
   #   is for
   def interpret_compartment_code(raw, leg)
     return nil unless raw.present? && leg.present?
@@ -849,9 +849,11 @@ class BoardingPass
       ticket_class_name = code
       ticket_class_quality = nil
     end
-    output = content_tag(:span, ticket_class_name, id: "travel-class-interpretation", "data-class-quality": ticket_class_quality) + " class ticket"
+    
+    output = ticket_class_name + " class ticket"
     output += " (#{ticket_details})" if ticket_details
-    return output
+    
+    return {text: output, icon_slug: ticket_class_quality}
   end
   
   # Interprets a document type
@@ -1140,14 +1142,15 @@ class BoardingPass
   # Interprets selectee status
   #
   # @param raw [String] raw IATA BCBP data
-  # @return [String, nil] selectee status
+  # @return [Hash, nil] selectee status
   def interpret_selectee_indicator(raw)
     map = {
       "0" => "Not selectee",
       "1" => "SSSS (Secondary Security Screening Selectee)",
       "3" => "LLLL (TSA PreCheck)"
     }
-    return map[raw]
+
+    return {text: map[raw], icon_slug: (raw == "3" ? "LLLL" : nil)}
   end
   
   # Interprets a source of boarding pass issuance

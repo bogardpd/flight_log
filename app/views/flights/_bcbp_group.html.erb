@@ -10,10 +10,7 @@
             <div class="interpreted-data">This is not the right type of data for this field.</div>
           <% elsif v[:interpretation] %>
             <div class="interpreted-data">
-              <% if v[:type] %>
-                <div class="interpreted-icon"><%= display_icon(v[:type], v[:raw], v[:interpretation]) %></div>
-              <% end %>
-              <%= v[:interpretation] %>
+              <%= display_bcbp_interpretation(v[:type], v[:interpretation]) %>
             </div>
           <% end %>
         </td>
