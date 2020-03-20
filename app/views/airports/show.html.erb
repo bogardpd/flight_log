@@ -5,19 +5,6 @@
 <% add_breadcrumb "Airports", airports_path %>
 <% add_breadcrumb @airport.iata_code, airport_path(@airport.slug) %>
 
-<% if @airport.country || @airport.coordinates %>
-<div id="title-info">
-  <% if @airport.coordinates %>
-    <div id="airport-coordinates"><%= NumberFormat.coordinates(@airport.coordinates) %></div>
-  <% end %>
-  <% if @airport.country %>
-    <div>
-      <%= @airport.country %><%= country_flag_icon(@airport.country) %>
-    </div>
-  <% end %>
-</div>
-<% end %>
-
 <h1><%= format_airport_name(@airport.city) %></h1>
 
 <div class="page-navigation">
@@ -34,7 +21,7 @@
   </ul>
 </div>
 
-<p>I have visited <span class="bold"><abbr title="<%= @airport.city %>" id="iata-airport-code"><%= @airport.iata_code %></abbr>/<abbr title="<%= @airport.city %>" id="icao-airport-code"><%= @airport.icao_code %></abbr></span> <%= pluralize(NumberFormat.value(@airport_frequency), "time") %>.</p>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Visits": @airport_frequency}, summary_items: {"IATA": @airport.iata_code, "ICAO": @airport.icao_code, "Country": safe_join([country_flag_icon(@airport.country),@airport.country], " "), "Coordinates": NumberFormat.coordinates(@airport.coordinates)}}) %>
 
 <% unless @flights.length == 0 %>
 

@@ -5,8 +5,6 @@
 <% add_breadcrumb "Airlines", airlines_path %>
 <% add_breadcrumb @airline.name, airline_path(@airline.slug) %>
 
-<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @airline["#{c}_code".to_sym].blank?}.map{|c| content_tag(:span, @airline["#{c}_code".to_sym], id: "#{c}-code")}, " / ") %><%= airline_icon(@airline.slug, title: @airline.name)%></div>
-
 <h1><%= @airline.name %></h1>
 
 <% if @flights.any? %>
@@ -23,7 +21,7 @@
 	</div>
 <% end %>
 
-<p>I have flown <%= pluralize(NumberFormat.value(@flights.size), "flight") %> on <span class="bold"><%= @airline.name %></span>.</p>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"IATA": @airline.iata_code, "ICAO": @airline.icao_code, "Logo": airline_icon(@airline.slug, title: @airline.name, css_class: ["icon-no-text"])}}) %>
 
 <% if @flights.any? %>
 

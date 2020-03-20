@@ -7,8 +7,6 @@
 <% add_breadcrumb "Airlines", airlines_path %>
 <% add_breadcrumb @operator.name + " (operator)", show_operator_path(@operator.slug) %>
 
-<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @operator["#{c}_code".to_sym].blank?}.map{|c| content_tag(:span, @operator["#{c}_code".to_sym], id: "#{c}-code")}, " / ") %><%= airline_icon(@operator.slug, title: @operator.name) %></div>
-
 <h1>Flights Operated by <%= @operator.name %></h1>
 
 <% if @flights.any? %>
@@ -27,8 +25,7 @@
 
 <% end %>
 
-
-<p><span class="bold"><%= @operator.name %></span> has operated <%= @flights.length %> of my flights.</p>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"IATA": @operator.iata_code, "ICAO": @operator.icao_code, "Logo": airline_icon(@operator.slug, title: @operator.name, css_class: ["icon-no-text"])}}) %>
 
 <% if @flights.any? %>
 

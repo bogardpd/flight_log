@@ -3,7 +3,7 @@
 <% add_breadcrumb "Travel Classes", classes_path %>
 <% add_breadcrumb TravelClass.title(@class), show_class_path(@class) %>
 
-<h1><%= TravelClass.title(@class) %><br><small><%= TravelClass.description(@class) %></small></h1>
+<h1><%= TravelClass.title(@class) %></h1>
 
 <div class="page-navigation">
   <ul>
@@ -16,7 +16,7 @@
   </ul>
 </div>
 
-<p>I have flown in <span class="bold"><%= TravelClass.title(@class).downcase %></span> <%= pluralize(NumberFormat.value(@flights.length), "time") %>.</p>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Class Description": TravelClass.description(@class)}}) %>
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>

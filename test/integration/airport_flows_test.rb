@@ -171,9 +171,9 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   def check_show_airport_common(airport)
     assert_select("h1", airport.city)
 
-    assert_select("#airport-coordinates") if airport.latitude && airport.longitude
-    assert_select("#iata-airport-code[title=?]", airport.city, {text: airport.iata_code}) if airport.iata_code
-    assert_select("#icao-airport-code[title=?]", airport.city, {text: airport.icao_code}) if airport.icao_code
+    assert_select("#summary-value-coordinates") if airport.latitude && airport.longitude
+    assert_select("#summary-value-iata", airport.iata_code) if airport.iata_code
+    assert_select("#summary-value-icao", airport.icao_code) if airport.icao_code
 
     assert_select("#airport-map")
     assert_select("#trips-map")

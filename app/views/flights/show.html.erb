@@ -5,8 +5,6 @@
 <% add_breadcrumb "Flights", flights_path %>
 <% add_breadcrumb @flight.name, flight_path(params[:id]) %>
 
-<div id="title-info"><%= airline_icon(@flight.airline.slug, title: @flight.airline.name) %></div>
-
 <h1><%= @flight.airline.name %> <%= @flight.flight_number %></h1>
 
 <% if @flight.comment %>

@@ -55,6 +55,13 @@ class AircraftFamiliesController < ApplicationController
     @flights_including_child_types = @aircraft.family_and_type_count(@flights)
     @child_types_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft)
     
+    # Create summary info
+    @summary_items = Hash.new
+    @summary_items.store("Manufacturer", @aircraft.manufacturer)
+    @summary_items.store("IATA", @aircraft.iata_code) if @aircraft.iata_code.present?
+    @summary_items.store("ICAO", @aircraft.icao_code) if @aircraft.icao_code.present?
+    @summary_items.store("Subtype of", view_context.link_to(@aircraft.parent.name, aircraft_family_path(@aircraft.parent.slug), title: "View flights on #{@aircraft.parent.full_name} aircraft")) if @aircraft.parent.present?
+
     # Create comparitive lists of airlines and classes:
     @airlines = Airline.flight_table_data(@flights, type: :airline)
     @operators = Airline.flight_table_data(@flights, type: :operator)

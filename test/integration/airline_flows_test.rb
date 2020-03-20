@@ -282,18 +282,20 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     if type == :airline
       assert_select("h1", airline.name)
       assert_select("#operator-count-table")
+      assert_select("#summary-value-iata", airline.iata_code) if airline.iata_code
+      assert_select("#summary-value-icao", airline.icao_code) if airline.icao_code
     elsif type == :operator
       assert_select("h1", "Flights Operated by #{airline.name}")
       assert_select("#airline-count-table")
       assert_select("#fleet-number-table")
+      assert_select("#summary-value-iata", airline.iata_code) if airline.iata_code
+      assert_select("#summary-value-icao", airline.icao_code) if airline.icao_code
     elsif type == :fleet_number
       assert_select("h1", "#{airline.name} ##{fleet_number}")
       assert_select("a[href=?]", show_operator_path(operator: airline.slug))
       assert_select("#airline-count-table")
     end
-
-    assert_select("#iata-code", airline.iata_code) if airline.iata_code
-    assert_select("#icao-code", airline.icao_code) if airline.icao_code
+    
     assert_select("div#map")
     assert_select(".distance-primary")
 

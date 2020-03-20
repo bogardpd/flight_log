@@ -81,10 +81,16 @@ class TripsController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @flights.any?
 
     @section_distance = @flights.total_distance
-    @layover_ratio = @trip.layover_ratio(@section)
+    layover_ratio = @trip.layover_ratio(@section)
     stops = [@flights.first.origin_airport,@flights.last.destination_airport]
     
     @map = FlightsMap.new(@flights, highlighted_airports: stops, include_names: true)
+
+    @summary_items = Hash.new
+    @summary_items.store("Trip", view_context.link_to(@trip.name, trip_path(@trip)))
+    if @flights.size > 1 && layover_ratio
+      @summary_items.store("Layover Ratio", view_context.link_to(layover_ratio.round(3), "https://onehundredairports.com/2019/02/07/my-worst-layovers/", target: :_blank))
+    end
     
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find a matching trip section. Instead, weʼll give you a list of trips."

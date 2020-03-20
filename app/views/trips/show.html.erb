@@ -6,11 +6,11 @@
 <% add_breadcrumb "Trips", trips_path %>
 <% add_breadcrumb @trip.name, trip_path(@trip) %>
 
-<% if logged_in? && @trip.purpose.present? %>
-  <div id="title-info"><%= @trip.purpose.capitalize %> trip</div>
-<% end %>
-
 <h1><%= @trip.name %></h1>
+
+<% if logged_in? && @trip.purpose.present? %>
+  <%= render(partial: "layouts/summary", locals: {summary_items: {"Trip Purpose": "#{@trip.purpose.capitalize}"}}) %>
+<% end %>
 
 <% if @trip.comment %>
   <p class="comment"><%= @trip.comment %></p>

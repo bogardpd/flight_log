@@ -3,26 +3,21 @@
 <% add_breadcrumb "Tail Numbers", tails_path %>
 <% add_breadcrumb @tail_number, show_tail_path(TailNumber.simplify(params[:tail_number])) %>
 
-<% if TailNumber.country(@tail_number) %>
-<div id="title-info"><%= TailNumber.country(@tail_number) %><%= country_flag_icon(TailNumber.country(@tail_number)) %></div>
-<% end %>
-
 <h1><%= @tail_number %></h1>
 
 <div class="page-navigation">
 	<ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights flown on #{@tail_number}") %></li>
-		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@tail_number}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@tail_number}") %></li>
-		<li><%= link_to("Operators", "#operators", :title => "Operators using #{@tail_number}") %></li>
-		<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes flown on #{@tail_number}") %></li>
-		<li><%= link_to("Flight List", "#flights", :title => "Flights flown on #{@tail_number}") %></li>
-		<li><%= link_to("Tracking", "#tracking", :title => "Tracking") %></li>
+		<li><%= link_to("Map", "#map", title: "Map of flights flown on #{@tail_number}") %></li>
+		<li><%= link_to("Classes", "#classes", title: "Classes flown on #{@tail_number}") %></li>
+		<li><%= link_to("Airlines", "#airlines", title: "Airlines using #{@tail_number}") %></li>
+		<li><%= link_to("Operators", "#operators", title: "Operators using #{@tail_number}") %></li>
+		<li><%= link_to("Longest and Shortest", "#superlatives", title: "Longest and shortest routes flown on #{@tail_number}") %></li>
+		<li><%= link_to("Flight List", "#flights", title: "Flights flown on #{@tail_number}") %></li>
+		<li><%= link_to("Tracking", "#tracking", title: "Tracking") %></li>
   </ul>
 </div>
 
-
-<p>I have flown on the <%= @flights.last.aircraft_family.present? ? link_to(@flights.last.aircraft_family.name, aircraft_family_path(@flights.last.aircraft_family.slug), :title => "View flights on #{@flights.last.aircraft_family.manufacturer} #{@flights.last.aircraft_family.name} aircraft") : "airplane" %> with tail number <span class="bold"><%= @tail_number %></span> <%= pluralize(NumberFormat.value(@flights.length), "time") %>.</p>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Country of Registration": safe_join([country_flag_icon(TailNumber.country(@tail_number)), TailNumber.country(@tail_number)], " "), "Aircraft": (link_to(@flights.last.aircraft_family.name, aircraft_family_path(@flights.last.aircraft_family.slug), title: "View flights on #{@flights.last.aircraft_family.full_name} aircraft") if @flights.last.aircraft_family)}}) %>
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>

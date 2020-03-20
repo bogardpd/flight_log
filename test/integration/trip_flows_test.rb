@@ -164,7 +164,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_select(".flights-map")
     assert_select("#flight-table")
     assert_select(".distance-primary")
-    assert_select("#layover-ratio")
+    assert_select("#summary-value-layover-ratio")
   end
 
   test "can see show trip section when logged in" do

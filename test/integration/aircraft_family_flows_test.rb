@@ -251,8 +251,8 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   # Runs tests common to show aircraft family and show aircraft type
   def check_show_aircraft_common(aircraft)
     assert_select("h1", aircraft.full_name)
-    assert_select("#iata-code", aircraft.iata_code) if aircraft.iata_code
-    assert_select("#icao-code", aircraft.icao_code) if aircraft.icao_code
+    assert_select("#summary-value-iata", aircraft.iata_code) if aircraft.iata_code
+    assert_select("#summary-value-icao", aircraft.icao_code) if aircraft.icao_code
     assert_select("#aircraft-illustration")
     assert_select("div#map")
     assert_select(".distance-primary")

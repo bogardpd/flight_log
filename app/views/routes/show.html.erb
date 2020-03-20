@@ -6,31 +6,28 @@
 
 <% route_html = format_route_with_abbr(@airports.pluck(:iata_code), @airports.pluck(:city)) %>
 
-<h1><%= @route_with_arrow %></h1>
+<h1><%= @airports[0].city %> <%= Route::ARROW_TWO_WAY_PLAINTEXT %> <%= @airports[1].city %></h1>
 
 <div class="page-navigation">
   <ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights using #{@route_with_arrow}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines using #{@route_with_arrow}") %></li>
-		<li><%= link_to("Operators", "#operators", :title => "Operators using #{@route_with_arrow}") %></li>
-		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft using #{@route_with_arrow}") %></li>
-		<li><%= link_to("Classes", "#classes", :title => "Classes flown on #{@route_with_arrow}") %></li>
-		<li><%= link_to("Trips and Sections", "#trips-and-sections", :title => "Trips and sections with a #{@route_with_arrow} flight") %></li>
-		<li><%= link_to("Flight List", "#flights", :title => "Flights using #{@route_with_arrow}") %></li>
+		<li><%= link_to("Map", "#map", title: "Map of flights using #{@route_with_arrow}") %></li>
+		<li><%= link_to("Airlines", "#airlines", title: "Airlines using #{@route_with_arrow}") %></li>
+		<li><%= link_to("Operators", "#operators", title: "Operators using #{@route_with_arrow}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", title: "Aircraft using #{@route_with_arrow}") %></li>
+		<li><%= link_to("Classes", "#classes", title: "Classes flown on #{@route_with_arrow}") %></li>
+		<li><%= link_to("Trips and Sections", "#trips-and-sections", title: "Trips and sections with a #{@route_with_arrow} flight") %></li>
+		<li><%= link_to("Flight List", "#flights", title: "Flights using #{@route_with_arrow}") %></li>
   </ul>
 </div>
 
-<p>I have flown between <span class="bold"><%= link_to(@airports[0].city, airport_path(@airports[0].slug)) %></span> and <span class="bold"><%= link_to(@airports[1].city, airport_path(@airports[1].slug)) %></span> <%= pluralize(NumberFormat.value(@flights.length), "time") %>.</p>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Airports": link_to(country_flag_icon(@airports[0].country, css_class: ["icon-left"]) + @airports[0].iata_code, airport_path(@airports[0].slug), title: "View airport details for #{@airports[0].city}") + sanitize("&ensp;") + link_to(country_flag_icon(@airports[1].country, css_class: ["icon-between-text"]) + @airports[1].iata_code, airport_path(@airports[1].slug), title: "View airport details for #{@airports[1].city}"), "Distance between Airports": "#{NumberFormat.value(@pair_distance)} mi (#{NumberFormat.value(Distance::km(@pair_distance))} km)"}}) %>
 
 <div id="map">
   <%= @route_map.gcmap %>
 </div>
 
 <% if @pair_distance %>
-<p class="distance">
-	<%= distance_block(@pair_distance, adjective: "per-flight", paragraph: false) %><br/>
-	<%= distance_block(@pair_distance*@flights.length, adjective: "total", paragraph: false) %>
-</p>
+	<%= distance_block(@pair_distance*@flights.length, adjective: "total") %>
 <% end %>
 
 

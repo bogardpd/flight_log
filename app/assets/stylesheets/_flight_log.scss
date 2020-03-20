@@ -24,21 +24,6 @@ body {
 	border-bottom: 1px solid $color-border-page;
 }
 
-#title-info {
-	float: right;
-  margin-bottom: 15px;
-  margin-top:     0;
-	font-weight:  400;
-  font-size: $font-size-small;
-  text-align: right;
-	-webkit-text-size-adjust:100%;
-	
-	img {
-		margin-left: $margin-icon-to-text;
-    margin-right: 0;
-	}
-}
-
 /* Generic fields */
 
 .bold {
@@ -226,8 +211,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
 	font-size:    200%;
-  padding-top:   10px; // Padding is needed to lower h1 without lowering title-info boxes
-	margin-top:     5px;
+	margin-top:    15px;
 	margin-bottom: 20px;
 	small {
 		line-height: 1.1;

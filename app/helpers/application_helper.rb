@@ -106,11 +106,15 @@ module ApplicationHelper
   # @param country [String] the country whose flag is to be displayed
   # @param title [String] an optional title attribute for the flag image. If
   #   not provided, the country's name will be used.
+  # @param css_class [Array<String>] an optional set of CSS classes to apply to
+  #   the logo image.
   # @return [ActiveSupport::SafeBuffer] an image_tag for a country flag
-  def country_flag_icon(country, title: nil)
-    return image_tag("blank.png", class: "country-flag-icon") unless country
-    title ||= country
-    return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: "country-flag-icon", onerror: "this.src='#{image_path("blank.png")}';this.onerror='';")
+  def country_flag_icon(country, title: nil, css_class: nil)
+    class_array = ["country-flag-icon"]
+    class_array |= css_class if css_class
+    return image_tag("blank.png", class: class_array) unless country
+    title ||= country    
+    return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: class_array, onerror: "this.src='#{image_path("blank.png")}';this.onerror='';")
   end
   
   # Provides monospace formatting for a string. Generally used for formatting IATA and ICAO codes.
@@ -252,11 +256,12 @@ module ApplicationHelper
   # @param tail_number [String] an aircraft tail number
   # @param show_blank_flag [Boolean] whether or not to show a blank placeholder
   #   flag image if the country cannot be determined
-  # @return [ActiveSupport::SafeBuffer] an image_tag for a country flag, and
+  # @return [Object, nil] an image_tag for a country flag, and
   #   the provided tail number
   # @see TailNumber.country
   # @see TailNumber.country_format
   def tail_number_with_country_flag(tail_number, show_blank_flag=true)
+    return nil unless tail_number
     country = TailNumber.country(tail_number)
     tail_format = TailNumber.format(tail_number)
     tail_link = link_to(tail_format, show_tail_path(tail_number), title: "View flights on tail number #{tail_format}")

@@ -4,17 +4,9 @@
 <% add_breadcrumb @trip.name, trip_path(@trip) %>
 <% add_breadcrumb "Section #{@section}", show_section_path(@trip, @section) %>
 
-<% if @flights.size > 1 && @layover_ratio %>
-<div id="title-info">
-  <div id="layover-ratio">
-  <%= link_to "Layover Ratio", "https://onehundredairports.com/2019/02/07/my-worst-layovers/", target: :_blank %>: <%= @layover_ratio.round(3) %>
-  </div>
-</div>
-<% end %>
-
 <h1><%= @trip.name %> (Section <%= @section %>)</h1>
 
-<p class="center">Part of the <%= link_to(@trip.name, @trip, class: "bold", title: "View trip details for #{@trip.name}") %> trip.</p>
+<%= render(partial: "layouts/summary", locals: {summary_items: @summary_items}) %>
 
 <%= @map.gcmap %>
 <%= distance_block(@section_distance, adjective: "section") %>

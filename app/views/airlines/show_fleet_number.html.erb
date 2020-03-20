@@ -4,22 +4,20 @@
 <% add_breadcrumb @operator.name + " (operator)", show_operator_path(@operator.slug) %>
 <% add_breadcrumb "#" + @fleet_number, show_fleet_number_path(@operator.slug, @fleet_number) %>
 
-<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @operator["#{c}_code".to_sym].blank?}.map{|c| content_tag(:span, @operator["#{c}_code".to_sym], id: "#{c}-code")}, " / ") %><%= airline_icon(@operator.slug, title: @operator.name) %></div>
-
 <h1><%= @operator.name %> #<%= @fleet_number %></h1>
 
 <div class="page-navigation">
   <ul>
-		<li><%= link_to("Map", "#map", :title => "Map of flights operated by #{@operator.name} ##{@fleet_number}") %></li>
-		<li><%= link_to("Airlines", "#airlines", :title => "Airlines with flights operated by #{@operator.name} ##{@fleet_number}") %></li>
-		<li><%= link_to("Aircraft", "#aircraft", :title => "Aircraft operated by #{@operator.name} ##{@fleet_number}") %></li>
-		<li><%= link_to("Classes", "#classes", :title => "Classes operated by #{@operator.name} ##{@fleet_number}") %></li>
-				<li><%= link_to("Longest and Shortest", "#superlatives", :title => "Longest and shortest routes operated by #{@operator.name} ##{@fleet_number}") %></li>
-				<li><%= link_to("Flight List", "#flights", :title => "Flights operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Map", "#map", title: "Map of flights operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Airlines", "#airlines", title: "Airlines with flights operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Aircraft", "#aircraft", title: "Aircraft operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Classes", "#classes", title: "Classes operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Longest and Shortest", "#superlatives", title: "Longest and shortest routes operated by #{@operator.name} ##{@fleet_number}") %></li>
+		<li><%= link_to("Flight List", "#flights", title: "Flights operated by #{@operator.name} ##{@fleet_number}") %></li>
   </ul>
 </div>
 
-<p><span class="bold"><%= link_to(@operator.name, show_operator_path(@operator.slug), :title => "View flights operated by #{@operator.name}") %> #<%= @fleet_number %></span> has been the aircraft for <%= @flights.length %> of my flights.</p>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Operator": link_to(airline_icon(@operator.slug, title: @operator.name) + @operator.name, show_operator_path(@operator.slug), title: "View flights operated by #{@operator.name}"), "Aircraft": (link_to(@flights.last.aircraft_family.name, aircraft_family_path(@flights.last.aircraft_family.slug), title: "View flights on #{@flights.last.aircraft_family.full_name} aircraft") if @flights.last.aircraft_family), "Tail": tail_number_with_country_flag(@flights.last.tail_number)}}) %>
 
 <div id="map">
   <%= gcmap_with_region_select(@map, @region) %>

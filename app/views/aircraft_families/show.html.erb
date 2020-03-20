@@ -7,8 +7,6 @@
 <% add_admin_action(link_to("Add Type", new_aircraft_family_path(family_id: @aircraft))) if @aircraft.is_root_family? %>
 <% type_and_parent_types_breadcrumbs(@aircraft) %>
 
-<div id="title-info"><%= safe_join(%w(iata icao).reject{|c| @aircraft["#{c}_code".to_sym].blank?}.map{|c| content_tag(:span, @aircraft["#{c}_code".to_sym], id: "#{c}-code")}, " / ") %></div>
-
 <h1><%= @aircraft.full_name %></h1>
 
 <% if @flights.any? %>
@@ -27,9 +25,9 @@
 	</div>
 <% end %>
 
-<%= render partial: "aircraft_illustration", locals: {aircraft_family: @aircraft} %>
+<%= render(partial: "aircraft_illustration", locals: {aircraft_family: @aircraft}) %>
 
-<p>I have flown on <span class="bold"><%= @aircraft.full_name %></span> aircraft <%= pluralize(NumberFormat.value(@flights.length), "time") %>.</p>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: @summary_items}) %>
 
 <% if @flights.any? %>
 

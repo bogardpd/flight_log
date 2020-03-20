@@ -36,7 +36,7 @@
   
     th {
     	padding: 0.5em 0.6em;
-    	background-color: #F9F9FB;
+    	background-color: $color-background-table-head;
     	border-bottom: 2px solid $color-base;
       height: 28px;
       
@@ -63,6 +63,45 @@
     td {
       border: none;
       background-color: $color-background-container;
+    }
+  }
+
+  table.summary {
+  	margin-left: auto;
+  	margin-right: auto;
+  	margin-top: 1em;
+  	margin-bottom: 1em;
+  	border-spacing: 0;
+    border-collapse: collapse;
+
+    td, th {
+      padding-left: 0.8rem;
+      padding-right: 0.8rem;
+      margin: 0;
+      border-left: 1px solid $color-border-table;
+      border-right: 1px solid $color-border-table;
+      text-align: center;
+    }
+
+    th {
+      background-color: $color-background-table-head;
+      color: $color-text-secondary;
+      font-size: $font-size-small;
+      font-weight: $font-weight-light;
+      text-align: center;
+      padding-top: 0.1rem;
+      padding-bottom: 0;
+    }
+
+    td {
+      padding-top: 0;
+      padding-bottom: 0.1rem;
+      background-color: $color-background-table;
+    }
+
+    .summary-count {
+      background-color: $color-border-table;
+      text-shadow: 0 0 3px $color-background-container;
     }
   }
 
