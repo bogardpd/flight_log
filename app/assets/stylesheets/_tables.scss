@@ -56,13 +56,44 @@
   }
 
   table.flight-large-route {
-  	margin-top: 0px;
+    margin-left: auto;
+  	margin-right: auto;
+  	margin-top: 0;
+  	margin-bottom: 1rem;
   	border: none;
-  	outline: none;
+    outline: none;
+    
+    tr {
+      border-top: none !important;
+    }
     
     td {
+      padding: none;
       border: none;
       background-color: $color-background-container;
+      text-align: center;      
+      vertical-align: middle;      
+      line-height: 1;
+    }
+    
+    td.flight-show-airport-airplane-icon {
+    	img {
+        margin-top: 1rem;
+      }
+    }
+
+    td.flight-show-airport-flag {
+      width: 250px;
+      padding: 0.4rem;
+    }
+
+    td.flight-show-airport-code {
+      font-size: 200%;
+      font-weight: $font-weight-bold;
+    }
+
+    td.flight-show-airport-city {
+      font-weight: $font-weight-light;
     }
   }
 
@@ -274,15 +305,6 @@
     	text-align: left;
     }
 
-    td.flight-airplane-icon {
-    	font-size: 200%;
-    	vertical-align: middle;
-    }
-
-    td.flight-flag-icon {
-      vertical-align: middle;
-    }
-
     td.flight-route, th.flight-route {
     	text-align: center;
     	width: 6em;
@@ -299,11 +321,7 @@
     	text-align: center;
     }
 
-    td.flight-show-airport {
-    	width: 250px;
-    	line-height: 1.2;
-    	vertical-align: middle;
-    }
+    
     
   /* Routes */
     

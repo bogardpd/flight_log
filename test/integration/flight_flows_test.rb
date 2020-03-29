@@ -550,10 +550,10 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     end
     assert_select("#flight-departure-date", {text: NumberFormat.date(flight.departure_date)})
     assert_select("#flight-origin-airport") do
-      assert_select("a[href=?]", airport_path(flight.origin_airport.slug), {text: flight.origin_airport.iata_code})
+      assert_select("a[href=?]", airport_path(flight.origin_airport.slug), {text: flight.origin_airport.city})
     end
     assert_select("#flight-destination-airport") do
-      assert_select("a[href=?]", airport_path(flight.destination_airport.slug), {text: flight.destination_airport.iata_code})
+      assert_select("a[href=?]", airport_path(flight.destination_airport.slug), {text: flight.destination_airport.city})
     end
     assert_select("#flight-aircraft") do
       assert_select("a[href=?]", aircraft_family_path(flight.aircraft_family.slug), {text: flight.aircraft_family.name})

@@ -11,23 +11,37 @@
   <p class="comment"><%= @flight.comment %></p>
 <% end %>
 
-<%= @map.gcmap %>
-
-<table class="flightlog flight-large-route">
-  <tr class="no-top-border">
-    <td class="flight-show-airport right" id="flight-origin-airport">
-      <span class="flight-code"><%= link_to(@flight.origin_airport.iata_code, airport_path(@flight.origin_airport.slug), title: "View airport details for " + @flight.origin_airport.city) %></span><br>
-      <span class="flight-city"><%= @flight.origin_airport.city %></span>
+<table class="flight-large-route">
+  <tr>
+    <td class="flight-show-airport-flag">
+      <%= country_flag_icon(@flight.origin_airport.country) %>
     </td>
-    <td class="flight-flag-icon"><%= country_flag_icon(@flight.origin_airport.country) %></td>
-    <td class="flight-airplane-icon"><%= Route::ARROW_ONE_WAY_HTML %></td>
-    <td class="flight-flag-icon"><%= country_flag_icon(@flight.destination_airport.country) %></td>
-    <td class="flight-show-airport" id="flight-destination-airport">
-      <span class="flight-code"><%= link_to(@flight.destination_airport.iata_code, airport_path(@flight.destination_airport.slug), title: "View airport details for " + @flight.destination_airport.city) %></span><br>
-      <span class="flight-city"><%= @flight.destination_airport.city %></span>      
+    <td class="flight-show-airport-airplane-icon" rowspan="3">
+      <%= image_tag("airplane.svg", width: 48) %>
+    </td>
+    <td class="flight-show-airport-flag">
+      <%= country_flag_icon(@flight.destination_airport.country) %>
+    </td>
+  </tr>
+  <tr>
+    <td class="flight-show-airport-code">
+      <%= @flight.origin_airport.iata_code %>
+    </td>
+    <td class="flight-show-airport-code">
+      <%= @flight.destination_airport.iata_code %>
+    </td>
+  </tr>
+  <tr>
+    <td class="flight-show-airport-city" id="flight-origin-airport">
+      <%= link_to(@flight.origin_airport.city, airport_path(@flight.origin_airport.slug), title: "View airport details for " + @flight.origin_airport.city) %>
+    </td>
+    <td class="flight-show-airport-city" id="flight-destination-airport">
+      <%= link_to(@flight.destination_airport.city, airport_path(@flight.destination_airport.slug), title: "View airport details for " + @flight.destination_airport.city) %>
     </td>
   </tr>
 </table>
+
+<%= @map.gcmap %>
 
 <table class="flightlog">
   
