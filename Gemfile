@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby '2.7.0'
 
-gem 'rails', '~> 6.0', '>= 6.0.2.1'
+gem 'rails', '~> 6.0', '>= 6.0.2.2'
 
 # Use puma as the webserver
 gem 'puma', '4.3.3'
@@ -36,7 +36,6 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rails-controller-testing', '~> 1.0', '>= 1.0.4'
   gem 'minitest-reporters', '~> 1.4', '>= 1.4.2'
   gem 'capybara'
   gem 'selenium-webdriver'
