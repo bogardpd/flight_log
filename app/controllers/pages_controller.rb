@@ -73,7 +73,7 @@ class PagesController < ApplicationController
     query = params[:query].gsub("_","/")
         
     if Map.hash_image_query(query) == params[:check] # Ensure the query was issued by this application
-      aws_path = "flights/map-cache/#{params[:airport_options].gsub(":", "_")},#{params[:query].gsub(":", "_")}.gif"
+      aws_path = "flights/map-cache/#{params[:airport_options].gsub(/[*:]/, "_")},#{params[:query].gsub(/[*:]/, "_")}.gif"
       
       Aws.config.update({
         credentials: Aws::Credentials.new(Rails.application.credentials[:aws][:write][:access_key_id], Rails.application.credentials[:aws][:write][:secret_access_key]),
@@ -89,14 +89,16 @@ class PagesController < ApplicationController
         image_stream = obj.get[:body].string
       else
         # AWS cached map does not exist, so get it from gcmap and save to cache.
+        content_type = "image/gif"
         response.headers["Cache-Control"] = "public, max-age=#{1.year.to_i}"
-        response.headers["Content-Type"] = "image/gif"
+        response.headers["Content-Type"] = content_type
         response.headers["Content-Disposition"] = "inline"
         image_url = "http://www.gcmap.com/map?PM=#{params[:airport_options]}&MP=r&MS=wls2&P=#{query}"
         image_stream = URI.open(image_url, "rb").read
         begin
           # Save image to AWS cache
-          obj.put(body: image_stream)
+          metadata = {referrer: request.referrer}
+          obj.put(body: image_stream, content_type: content_type, metadata: metadata)
         end
       end
 
