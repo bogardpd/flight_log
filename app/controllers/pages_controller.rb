@@ -73,7 +73,8 @@ class PagesController < ApplicationController
     query = params[:query].gsub("_","/")
         
     if Map.hash_image_query(query) == params[:check] # Ensure the query was issued by this application
-      aws_path = "flights/map-cache/#{params[:airport_options].gsub(/[*:]/, "_")},#{params[:query].gsub(/[*:]/, "_")}.gif"
+      digest = Digest::SHA512.hexdigest([params[:airport_options], params[:query]].join()) # Use digest to keep long queries under AWS key length limit (1024 bytes)
+      aws_path = "flights/map-cache/#{digest}.gif"
       
       Aws.config.update({
         credentials: Aws::Credentials.new(Rails.application.credentials[:aws][:write][:access_key_id], Rails.application.credentials[:aws][:write][:secret_access_key]),
