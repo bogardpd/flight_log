@@ -68,15 +68,40 @@ class PagesController < ApplicationController
   # @see http://www.gcmap.com/ Great Circle Mapper
   def gcmap_image_proxy
     require "open-uri"
+    require "aws-sdk-s3"
     
     query = params[:query].gsub("_","/")
-    
+        
     if Map.hash_image_query(query) == params[:check] # Ensure the query was issued by this application
-      response.headers["Cache-Control"] = "public, max-age=#{1.year.to_i}"
-      response.headers["Content-Type"] = "image/gif"
-      response.headers["Content-Disposition"] = "inline"
-      image_url = "http://www.gcmap.com/map?PM=#{params[:airport_options]}&MP=r&MS=wls2&P=#{query}"
-      render body: URI.open(image_url, "rb").read
+      aws_path = "projects/flight-historian/map-cache/#{params[:airport_options].gsub(":", "_")},#{params[:query].gsub(":", "_")}.gif"
+      
+      Aws.config.update({
+        credentials: Aws::Credentials.new(Rails.application.credentials[:aws][:write][:access_key_id], Rails.application.credentials[:aws][:write][:secret_access_key]),
+        region: "us-east-2"
+      })
+
+      client = Aws::S3::Client.new
+      s3 = Aws::S3::Resource.new(client: client)
+      obj = s3.bucket("pbogardcom-images").object(aws_path)
+
+      if obj.exists?
+        # AWS cached map exists, so use cached map.
+        image_stream = obj.get[:body].string
+      else
+        # AWS cached map does not exist, so get it from gcmap and save to cache.
+        response.headers["Cache-Control"] = "public, max-age=#{1.year.to_i}"
+        response.headers["Content-Type"] = "image/gif"
+        response.headers["Content-Disposition"] = "inline"
+        image_url = "http://www.gcmap.com/map?PM=#{params[:airport_options]}&MP=r&MS=wls2&P=#{query}"
+        image_stream = URI.open(image_url, "rb").read
+        begin
+          # Save image to AWS cache
+          obj.put(body: image_stream)
+        end
+      end
+
+      render body: image_stream
+
     else
       raise ActionController::RoutingError.new("Not Found")
     end

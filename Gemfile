@@ -24,6 +24,9 @@ gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 gem 'rubyzip', '~> 2.2'
 # Use savon for SOAP
 gem 'savon', '~> 2.12'
+# Use AWS S3 for image caching
+gem 'aws-sdk', '~> 3.0', '>= 3.0.1'
+
 
 group :development do
   gem 'sql_queries_count'
