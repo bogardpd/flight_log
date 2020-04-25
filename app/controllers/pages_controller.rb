@@ -73,7 +73,7 @@ class PagesController < ApplicationController
     query = params[:query].gsub("_","/")
         
     if Map.hash_image_query(query) == params[:check] # Ensure the query was issued by this application
-      aws_path = "projects/flight-historian/map-cache/#{params[:airport_options].gsub(":", "_")},#{params[:query].gsub(":", "_")}.gif"
+      aws_path = "flights/map-cache/#{params[:airport_options].gsub(":", "_")},#{params[:query].gsub(":", "_")}.gif"
       
       Aws.config.update({
         credentials: Aws::Credentials.new(Rails.application.credentials[:aws][:write][:access_key_id], Rails.application.credentials[:aws][:write][:secret_access_key]),

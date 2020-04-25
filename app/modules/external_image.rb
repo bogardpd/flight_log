@@ -2,8 +2,16 @@
 module ExternalImage
   
   # The root URL for this application's external images.
-  ROOT_PATH = "https://s3.us-east-2.amazonaws.com/pbogardcom-images"
+  ROOT_PATH = "https://pbogardcom-images.s3.us-east-2.amazonaws.com/"
   
+  # Returns the URL for an external image.
+  #
+  # @param relative_path [String] the relative path on the external image server
+  # @return [String] the file's absolute path
+  def self.url(relative_path)
+    return [ROOT_PATH, relative_path].join()
+  end
+
   # Checks if an image exists.
   # 
   # Note that this method checks an absolute path, so {ROOT_PATH} is not

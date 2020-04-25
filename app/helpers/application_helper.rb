@@ -98,7 +98,7 @@ module ApplicationHelper
     title ||= slug
     class_array = ["airline-icon"]
     class_array |= css_class if css_class
-    return image_tag("#{ExternalImage::ROOT_PATH}/flights/airline-icons/#{slug}.png", title: title, alt: slug, class: class_array, onerror: "this.src='#{image_path("blank.png")}';this.onerror='';")
+    return image_tag(ExternalImage.url("flights/airline-icons/#{slug}.png"), title: title, alt: slug, class: class_array, onerror: "this.src='#{image_path("blank.png")}';this.onerror='';")
   end
   
   # Renders an image containing a country flag.
@@ -114,7 +114,7 @@ module ApplicationHelper
     class_array |= css_class if css_class
     return image_tag("blank.png", class: class_array) unless country
     title ||= country    
-    return image_tag("#{ExternalImage::ROOT_PATH}/flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png", title: title, class: class_array, onerror: "this.src='#{image_path("blank.png")}';this.onerror='';")
+    return image_tag(ExternalImage.url("flights/country-flags/#{country.downcase.gsub(/\s+/, "-").gsub(/[^a-z0-9_-]/, "").squeeze("-")}.png"), title: title, class: class_array, onerror: "this.src='#{image_path("blank.png")}';this.onerror='';")
   end
   
   # Provides monospace formatting for a string. Generally used for formatting IATA and ICAO codes.

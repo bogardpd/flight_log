@@ -63,7 +63,7 @@ class Airport < ApplicationRecord
   #
   # @return [String] an image path
   def terminal_silhouette_path
-    return "#{ExternalImage::ROOT_PATH}/projects/terminal-silhouettes/svg/#{self.slug}.svg"
+    return ExternalImage.url("projects/terminal-silhouettes/svg/#{self.slug}.svg")
   end
   
   # Accepts an airport IATA code, and returns the matching ICAO code.

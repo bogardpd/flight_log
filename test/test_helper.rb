@@ -48,7 +48,7 @@ class ActiveSupport::TestCase
   ##############################################################################
 
   def stub_aws_head_images
-    WebMock.stub_request(:head, /amazonaws.com\/pbogardcom-images/).
+    WebMock.stub_request(:head, /pbogardcom-images.s3.us-east-2.amazonaws.com/).
       to_return(status: 200, body: "", headers: {})
   end
 
@@ -115,10 +115,8 @@ class ActiveSupport::TestCase
   end
 
   def stub_gcmap_get_map
-    aws_match = /pbogardcom-images.s3.us-east-2.amazonaws.com\/projects\/flight-historian\/map-cache/
-    WebMock.stub_request(:head, aws_match).
-      to_return(status: 200, headers: {})
-    WebMock.stub_request(:get, aws_match).
+    stub_aws_head_images
+    WebMock.stub_request(:get, /pbogardcom-images.s3.us-east-2.amazonaws.com\/flights\/map-cache/).
       to_return(status: 200, body: file_fixture("map.gif").read, headers: {})
     WebMock.stub_request(:get, /www.gcmap.com/).
       to_return(status: 200, body: file_fixture("map.gif").read, headers: {})
