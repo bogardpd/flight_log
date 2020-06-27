@@ -102,9 +102,9 @@ class RoutesController < ApplicationController
     
     # Create maps:
     @maps = {
-      route_map:    SingleFlightMap.new(@flights.first),
-      sections_map: HighlightedRoutesMap.new(@city_pair_section_flights, @flights),
-      trips_map:    HighlightedRoutesMap.new(@city_pair_trip_flights, @flights),
+      route_map:    SingleFlightMap.new(:route_map, @flights.first),
+      sections_map: HighlightedRoutesMap.new(:sections_map, @city_pair_section_flights, @flights),
+      trips_map:    HighlightedRoutesMap.new(:trips_map, @city_pair_trip_flights, @flights),
     }
 
     render_map_extension(@maps, params[:map_id], params[:extension])

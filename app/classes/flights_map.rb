@@ -12,7 +12,8 @@ class FlightsMap < Map
   # @param region [Array<String>] the ICAO prefixes to show (e.g. ["K","PH"]).
   #   World map will be shown if region is left blank.
   # @see Map#gcmap_regions
-  def initialize(flights, highlighted_airports: nil, include_names: false, region: [""])
+  def initialize(id, flights, highlighted_airports: nil, include_names: false, region: [""])
+    @id = id
     @flights = flights
     @highlighted_airports = highlighted_airports ? highlighted_airports.pluck(:id) : Array.new
     @airports_inside_region = Airport.in_region_hash(region).keys | @highlighted_airports

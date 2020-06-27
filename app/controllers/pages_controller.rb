@@ -32,7 +32,7 @@ class PagesController < ApplicationController
     @total_distance = @flights.total_distance    
     
     if @flights.any?
-      @map = FlightsMap.new(@flights, region: @region)
+      @map = FlightsMap.new(:flights_map, @flights, region: @region)
       @route_superlatives = @flights.superlatives
     end
 

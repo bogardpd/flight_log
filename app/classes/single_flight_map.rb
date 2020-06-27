@@ -5,7 +5,8 @@ class SingleFlightMap < Map
   # Initialize a map of a single {Flight}.
   # 
   # @param flight [Flight] the {Flight} to map
-  def initialize(flight)
+  def initialize(id, flight)
+    @id = id
     @codes = [flight.origin_airport.iata_code, flight.destination_airport.iata_code]
     @flight = flight
   end

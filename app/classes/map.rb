@@ -32,7 +32,7 @@ class Map
   #   Circle Mapper} map.
   # @see http://www.gcmap.com/ Great Circle Mapper
   def gcmap
-    return content_tag(:div, class: ["center", map_type]) do
+    return content_tag(:div, id: @id, class: ["center", map_type]) do
       concat link_to(image_tag(Rails.application.routes.url_helpers.gcmap_image_path(gcmap_airport_options, gcmap_query.gsub("/","_"), Map.hash_image_query(gcmap_query)), alt: map_description, class: "map"), "http://www.gcmap.com/mapui?PM=#{gcmap_airport_options}&MP=r&MS=wls2&P=#{gcmap_query}", target: "_blank")
       # The @query.gsub("/","_") isn't strictly necessary as rails will escape
       # the slashes to %2F. However, doing so increases the total number of

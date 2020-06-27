@@ -8,7 +8,8 @@ class HighlightedRoutesMap < Map
   #   unhighlighted
   # @param highlighted_routes [Array<Flight>] a collection of {Flight Flights} whose
   #   routes will be highlighted
-  def initialize(flights, highlighted_routes)
+  def initialize(id, flights, highlighted_routes)
+    @id = id
     @flights = flights
 
     @highlighted_routes = collected_routes(highlighted_routes)
