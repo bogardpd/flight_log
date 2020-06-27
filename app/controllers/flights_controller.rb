@@ -77,26 +77,6 @@ class FlightsController < ApplicationController
     redirect_to flights_path
   end
 
-  # Shows a {https://www.topografix.com/gpx.asp GPX}-formatted XML document
-  # representing a map of all flights the user has permission to view.
-  #
-  # @return [nil]
-  # @see https://www.topografix.com/gpx.asp GPX: the GPS Exchange Format
-  def show_flight_gpx
-    flights = flyer.flights(current_user)
-    render xml: FlightsMap.new(:flights_map, flights).gpx
-  end
-
-  # Shows a {https://developers.google.com/kml/ KML}-formatted XML document
-  # representing a map of all flights the user has permission to view.
-  #
-  # @return [nil]
-  # @see https://www.topografix.com/gpx.asp Keyhole Markup Language
-  def show_flight_kml
-    flights = flyer.flights(current_user)
-    render xml: FlightsMap.new(:flights_map, flights).kml
-  end
-  
   # Shows data for all {Flight Flights} flown in a particular year or date
   # range.
   #

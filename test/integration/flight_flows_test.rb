@@ -468,46 +468,6 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
-  # Tests for GPX and KML maps                                                 #
-  ##############################################################################
-
-  test "can see GPX when logged in" do
-    log_in_as(users(:user_one))
-    
-    get(show_flight_gpx_path)
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    assert_operator(gpx_airport_count(response.body, airports(:airport_hidden_1)), :>, 0, "This view shall include hidden data when logged in")
-  end
-
-  test "can see GPX when not logged in" do
-    get(show_flight_gpx_path)
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    assert_equal(0, gpx_airport_count(response.body, airports(:airport_hidden_1)), "This view shall not include hidden data when not logged in")
-  end
-
-  test "can see KML when logged in" do
-    log_in_as(users(:user_one))
-
-    get(show_flight_kml_path)
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    assert_operator(kml_airport_count(response.body, airports(:airport_hidden_1)), :>, 0, "This view shall include hidden data when logged in")
-  end
-
-  test "can see KML when not logged in" do
-    get(show_flight_kml_path)
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    assert_equal(0, kml_airport_count(response.body, airports(:airport_hidden_1)), "This view shall not include hidden data when not logged in")
-  end
-
-  ##############################################################################
   # Tests to ensure visitors can't create, update, or destroy flights          #
   ##############################################################################
 
