@@ -142,6 +142,11 @@ class Map
     return output
   end
 
+  def graphml
+    return nil unless @flights
+    return GraphML.graph_flights(@flights)
+  end
+
   # Creates XML for a {https://developers.google.com/kml/ KML} map.
   #
   # @return [ActiveSupport::Safebuffer] XML for a

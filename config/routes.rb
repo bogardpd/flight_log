@@ -18,8 +18,8 @@ Portfolio::Application.routes.draw do
   get   "/flights/flights.gpx"                     => "flights#show_flight_gpx",  as: :show_flight_gpx
   get   "/flights/flights.kml"                     => "flights#show_flight_kml",  as: :show_flight_kml
   resources :flights, except: [:new]
-  get   "/flights/from/:start_date/to/:end_date" => "flights#show_date_range",  as: :show_date_range
-  get   "/flights/year/:year"                    => "flights#show_date_range",  as: :show_year
+  get   "/flights/from/:start_date/to/:end_date(.:extension)"   => "flights#show_date_range",  as: :show_date_range
+  get   "/flights/year/:year(.:extension)"         => "flights#show_date_range",  as: :show_year
   
   # Trips:
   resources :trips

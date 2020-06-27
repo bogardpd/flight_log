@@ -147,6 +147,18 @@ class FlightsController < ApplicationController
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
     @total_distance = @flights.total_distance
+
+    case params[:extension]
+    when "gpx"
+      gpx = @map.gpx
+      render xml: gpx if gpx
+    when "kml"
+      kml = @map.kml
+      render xml: kml if kml
+    when "graphml"
+      graphml = @map.graphml
+      render xml: graphml if graphml
+    end
       
     # Create comparitive lists of airlines and classes:
     @airports = Airport.visit_table_data(@flights) 

@@ -310,9 +310,39 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
   end
 
+  test "can see show date range extensions" do
+    date_range = {start_date: "2014-07-01", end_date: "2015-06-30"}
+    
+    get(show_date_range_path(**date_range, extension: "gpx"))    
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
+
+    get(show_date_range_path(**date_range, extension: "kml"))     
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
+
+    get(show_date_range_path(**date_range, extension: "graphml"))     
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
+  end
+
   test "can see show date range with year" do
     get(show_year_path(2015))
     assert_response(:success)
+  end
+
+  test "can see show date range with year extensions" do
+    get(show_year_path(2015, extension: "gpx"))    
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
+
+    get(show_year_path(2015, extension: "kml"))    
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
+
+    get(show_year_path(2015, extension: "graphml"))    
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
   end
 
   ##############################################################################
