@@ -99,6 +99,17 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     verify_presence_of_admin_actions(edit_route_path(route.airport1_id, route.airport2_id))
   end
 
+  test "can see show route alternate map formats" do
+    route = routes(:route_visible)
+    %w(gpx kml).each do |extension|
+      %w(route_map sections_map trips_map).each do |map_id|
+        get(show_route_path(route.airport1.slug, route.airport2.slug, map_id: map_id, extension: extension))
+        assert_response(:success)
+        assert_equal("application/xml", response.media_type)
+      end
+    end
+  end
+
   ##############################################################################
   # Tests to ensure visitors can't create or update routes                     #
   ##############################################################################
