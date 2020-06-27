@@ -106,7 +106,6 @@ class RoutesController < ApplicationController
       sections_map: HighlightedRoutesMap.new(:sections_map, @city_pair_section_flights, @flights),
       trips_map:    HighlightedRoutesMap.new(:trips_map, @city_pair_trip_flights, @flights),
     }
-
     render_map_extension(@maps, params[:map_id], params[:extension])
     
   rescue ActiveRecord::RecordNotFound

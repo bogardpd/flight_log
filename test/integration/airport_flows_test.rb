@@ -99,6 +99,16 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_no_flights_tables
   end
 
+  test "can see index airport alternate map formats" do
+    %w(gpx kml).each do |extension|
+      %w(airports_map frequency_map).each do |map_id|
+        get(airports_path(map_id: map_id, extension: extension))
+        assert_response(:success)
+        assert_equal("application/xml", response.media_type)
+      end
+    end
+  end
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Airport                              #
   ##############################################################################
@@ -129,6 +139,17 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     check_show_airport_common(airport)
     verify_absence_of_hidden_data
     verify_absence_of_admin_actions(edit_airport_path(airport))
+  end
+
+  test "can see show airport alternate map formats" do
+    airport = airports(:airport_visible_1)
+    %w(gpx kml).each do |extension|
+      %w(airport_map sections_map trips_map).each do |map_id|
+        get(airport_path(airport.slug, map_id: map_id, extension: extension))
+        assert_response(:success)
+        assert_equal("application/xml", response.media_type)
+      end
+    end
   end
 
   ##############################################################################

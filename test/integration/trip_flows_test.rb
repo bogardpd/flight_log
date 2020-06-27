@@ -143,6 +143,15 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_select("div#message-boarding-passes-available-for-import", {}, "This view shall show a link to import boarding passes")
   end
 
+  test "can see show trip alternate map formats" do
+    trip = trips(:trip_chicago_seattle)
+    %w(gpx kml).each do |extension|
+      get(trip_path(trip, map_id: "trip_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
+  end
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Trip Section                         #
   ##############################################################################
@@ -173,6 +182,16 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     log_in_as(users(:user_one))
     get(show_section_path(trip: trip, section: section))
     assert_response(:success)
+  end
+
+  test "can see show trip section alternate map formats" do
+    trip = trips(:trip_chicago_seattle)
+    section = 1
+    %w(gpx kml).each do |extension|
+      get(show_section_path(trip: trip, section: section, map_id: "trip_section_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
   end
 
   ##############################################################################

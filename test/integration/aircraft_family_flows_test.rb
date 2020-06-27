@@ -201,6 +201,15 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_admin_actions(edit_aircraft_family_path(aircraft_type))
   end
 
+  test "can see show aircraft alternate map formats" do
+    aircraft_type = aircraft_families(:aircraft_737_800)
+    %w(gpx kml).each do |extension|
+      get(aircraft_family_path(aircraft_type.slug, map_id: "aircraft_family_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
+  end
+
   ##############################################################################
   # Tests to ensure visitors can't create, update, or destroy aircraft         #
   ##############################################################################

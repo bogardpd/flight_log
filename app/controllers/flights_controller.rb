@@ -16,17 +16,10 @@ class FlightsController < ApplicationController
     @flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
         
     @year_range = @flights.year_range
-    @map = FlightsMap.new(:flights_map, @flights, region: @region)
-
-    # Render extensions if present:
-    case params[:extension]
-    when "gpx"
-      render_extension(:xml, @map.gpx)
-    when "kml"
-      render_extension(:xml, @map.kml)
-    when "graphml"
-      render_extension(:xml, @map.graphml)
-    end
+    @maps = {
+      flights_map: FlightsMap.new(:flights_map, @flights, region: @region)
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
     
     if @flights.any?    
       
@@ -73,7 +66,9 @@ class FlightsController < ApplicationController
       check_email_for_boarding_passes
     end
     
-    @map = SingleFlightMap.new(:flight_map, @flight)
+    @maps = {flight_map: SingleFlightMap.new(:flight_map, @flight)}
+    render_map_extension(@maps, params[:map_id], params[:extension])
+
     @route_distance = Route.distance_by_airport(@flight.origin_airport, @flight.destination_airport)
     @boarding_pass = BoardingPass.new(@flight.boarding_pass_data, flight: @flight)
     
@@ -154,17 +149,10 @@ class FlightsController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @region = current_region(default: [])
-    @map = FlightsMap.new(:date_range_map, @flights, region: @region)
-    
-    # Render extensions if present:
-    case params[:extension]
-    when "gpx"
-      render_extension(:xml, @map.gpx)
-    when "kml"
-      render_extension(:xml, @map.kml)
-    when "graphml"
-      render_extension(:xml, @map.graphml)
-    end
+    @maps = {
+      date_range_map: FlightsMap.new(:date_range_map, @flights, region: @region),
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
     
     @total_distance = @flights.total_distance
     
@@ -228,7 +216,10 @@ class FlightsController < ApplicationController
     @class = params[:travel_class]
     
     @region = current_region(default: [])
-    @map = FlightsMap.new(:travel_class_map, @flights, region: @region)
+    @maps = {
+      travel_class_map: FlightsMap.new(:travel_class_map, @flights, region: @region),
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
     @total_distance = @flights.total_distance
 
     # Create comparitive lists of airlines, operators, and aircraft:
@@ -285,7 +276,9 @@ class FlightsController < ApplicationController
     @tail_number = TailNumber.format(params[:tail_number])
     
     @region = current_region(default: [])
-    @map = FlightsMap.new(:tail_map, @flights, region: @region)
+    @maps = {tail_map: FlightsMap.new(:tail_map, @flights, region: @region)}
+    render_map_extension(@maps, params[:map_id], params[:extension])
+
     @total_distance = @flights.total_distance
     
     # Create comparitive list of airlines, operators, and classes:

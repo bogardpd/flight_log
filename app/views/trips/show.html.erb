@@ -16,7 +16,7 @@
   <p class="comment"><%= @trip.comment %></p>
 <% end %>
 
-<%= @map.gcmap %>
+<%= @maps[:trip_map].gcmap %>
 <%= distance_block(@trip_distance, adjective: "total") %>
 
 <table class="flightlog" id="trip-flight-table">

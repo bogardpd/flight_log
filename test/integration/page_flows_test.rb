@@ -50,6 +50,17 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
     assert_select("div#message-boarding-passes-available-for-import", {}, "This view shall show a link to import boarding passes")
   end
 
+  test "can see home alternate map formats" do
+    stub_flight_xml_get_wsdl
+    stub_flight_xml_post_timeout
+    
+    %w(gpx kml).each do |extension|
+      get(root_path(map_id: "flights_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
+  end
+
   ##############################################################################
   # Other tests                                                                #
   ##############################################################################

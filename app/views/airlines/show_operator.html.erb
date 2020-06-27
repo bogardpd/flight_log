@@ -30,7 +30,7 @@
 <% if @flights.any? %>
 
 	<div id="map">
-    <%= gcmap_with_region_select(@map, @region) %>
+    <%= gcmap_with_region_select(@maps[:operator_map], @region) %>
 		<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
   </div>
 

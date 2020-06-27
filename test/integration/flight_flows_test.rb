@@ -219,18 +219,12 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_hidden_data
   end
 
-  test "can see index flights extensions" do
-    get(flights_path(extension: "gpx"))    
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    get(flights_path(extension: "kml"))    
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    get(flights_path(extension: "graphml"))    
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
+  test "can see index flight alternate map formats" do
+    %w(gpx kml).each do |extension|
+      get(flights_path(map_id: "flights_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
   end
 
   ##############################################################################
@@ -324,20 +318,13 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
   end
 
-  test "can see show date range extensions" do
+  test "can see show date range alternate map formats" do
     date_range = {start_date: "2014-07-01", end_date: "2015-06-30"}
-    
-    get(show_date_range_path(**date_range, extension: "gpx"))    
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    get(show_date_range_path(**date_range, extension: "kml"))     
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    get(show_date_range_path(**date_range, extension: "graphml"))     
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
+    %w(gpx kml).each do |extension|
+      get(show_date_range_path(**date_range, map_id: "date_range_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
   end
 
   test "can see show date range with year" do
@@ -345,18 +332,13 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
   end
 
-  test "can see show date range with year extensions" do
-    get(show_year_path(2015, extension: "gpx"))    
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    get(show_year_path(2015, extension: "kml"))    
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
-
-    get(show_year_path(2015, extension: "graphml"))    
-    assert_response(:success)
-    assert_equal("application/xml", response.media_type)
+  test "can see show date range with year alternate map formats" do
+    year = 2015
+    %w(gpx kml).each do |extension|
+      get(show_year_path(year, map_id: "date_range_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
   end
 
   ##############################################################################
@@ -393,6 +375,15 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#flight-boarding-pass-data", {count: 0})
   end
 
+  test "can see show flight alternate map formats" do
+    flight = flights(:flight_ord_dfw)
+    %w(gpx kml).each do |extension|
+      get(flight_path(flight, map_id: "flight_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
+  end
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Tail Number                          #
   ##############################################################################
@@ -427,6 +418,15 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
   end
 
+  test "can see show tail number alternate map formats" do
+    tail = @visible_flight.tail_number
+    %w(gpx kml).each do |extension|
+      get(show_tail_path(tail, map_id: "tail_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
+  end
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Travel Class                         #
   ##############################################################################
@@ -456,6 +456,15 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     log_in_as(users(:user_one))
     get(show_class_path("economy"))
     assert_response(:success)
+  end
+
+  test "can see show travel class alternate map formats" do
+    travel_class = "economy"
+    %w(gpx kml).each do |extension|
+      get(show_class_path(travel_class, map_id: "travel_class_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
   end
 
   ##############################################################################

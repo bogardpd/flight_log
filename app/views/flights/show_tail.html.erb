@@ -20,7 +20,7 @@
 <%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Country of Registration": safe_join([country_flag_icon(TailNumber.country(@tail_number)), TailNumber.country(@tail_number)], " "), "Aircraft": (link_to(@flights.last.aircraft_family.name, aircraft_family_path(@flights.last.aircraft_family.slug), title: "View flights on #{@flights.last.aircraft_family.full_name} aircraft") if @flights.last.aircraft_family)}}) %>
 
 <div id="map">
-  <%= gcmap_with_region_select(@map, @region) %>
+  <%= gcmap_with_region_select(@maps[:tail_map], @region) %>
 	<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
 </div>
 

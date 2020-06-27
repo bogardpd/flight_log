@@ -22,9 +22,11 @@ class AirportsController < ApplicationController
       
       # Create maps:
       @region = current_region(default: [])
-      @airports_map  = AirportsMap.new(:airports_map, Airport.where(iata_code: used_airport_codes), region: @region)
-      @frequency_map = AirportFrequencyMap.new(:frequency_map, @flights, region: @region)
-      
+      @maps = {
+        airports_map: AirportsMap.new(:airports_map, Airport.where(iata_code: used_airport_codes), region: @region),
+        frequency_map: AirportFrequencyMap.new(:frequency_map, @flights, region: @region),
+      }
+      render_map_extension(@maps, params[:map_id], params[:extension])
     end
     
   end
@@ -91,9 +93,27 @@ class AirportsController < ApplicationController
     
     # Create maps:
     @region = current_region(default: [])
-    @airport_map  = FlightsMap.new(:airport_map, @flights, highlighted_airports: [@airport], region: @region)
-    @sections_map = FlightsMap.new(:sections_map, @sections_using_airport_flights, highlighted_airports: [@airport], region: @region)
-    @trips_map    = FlightsMap.new(:trips_map, @trips_using_airport_flights, highlighted_airports: [@airport], region: @region)
+    @maps = {
+      airport_map: FlightsMap.new(
+        :airport_map,
+        @flights,
+        highlighted_airports: [@airport],
+        region: @region
+      ),
+      sections_map: FlightsMap.new(
+        :sections_map,
+        @sections_using_airport_flights,
+        highlighted_airports: [@airport],
+        region: @region
+      ),
+      trips_map: FlightsMap.new(
+        :trips_map,
+        @trips_using_airport_flights,
+        highlighted_airports: [@airport],
+        region: @region
+      ),
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
 
     # Check for presence of terminal silhouette:
     @terminal_exists = ExternalImage.exists?(@airport.terminal_silhouette_path)

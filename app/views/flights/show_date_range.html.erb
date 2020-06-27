@@ -28,7 +28,7 @@
 <p>I <%= @took_taken %> <%= pluralize(NumberFormat.value(@flights.length), "commercial flight") %> <%= @date_range_text %>.</p>
 
 <div id="map" class="intro-box">
-  <%= gcmap_with_region_select(@map, @region, anchor: "flight-map") %>
+  <%= gcmap_with_region_select(@maps[:date_range_map], @region, anchor: "flight-map") %>
 	<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
 </div>
 

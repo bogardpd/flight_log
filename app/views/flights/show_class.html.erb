@@ -19,7 +19,7 @@
 <%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Class Description": TravelClass.description(@class)}}) %>
 
 <div id="map">
-  <%= gcmap_with_region_select(@map, @region) %>
+  <%= gcmap_with_region_select(@maps[:travel_class_map], @region) %>
 	<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
 </div>
 

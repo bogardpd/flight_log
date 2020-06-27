@@ -14,7 +14,7 @@
 
 <% if @flights.any? %>
 
-  <%= gcmap_with_region_select(@map, @region, anchor: "flight-map") %>
+  <%= gcmap_with_region_select(@maps[:flights_map], @region, anchor: "flight-map") %>
   <%= distance_block(@total_distance, adjective: "total") %>
 
   <%= render partial: "flight_table", locals: {flights: @flights, is_summary: false} %>

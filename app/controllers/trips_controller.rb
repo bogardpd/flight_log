@@ -41,7 +41,10 @@ class TripsController < ApplicationController
     stops = @sections_and_flights.map{|k, v| [v.first.origin_airport,v.last.destination_airport]}.flatten.uniq
     
     # Create map
-    @map = FlightsMap.new(:trip_map, @flights, highlighted_airports: stops, include_names: true)
+    @maps = {
+      trip_map: FlightsMap.new(:trip_map, @flights, highlighted_airports: stops, include_names: true),
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
 
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
@@ -84,7 +87,10 @@ class TripsController < ApplicationController
     layover_ratio = @trip.layover_ratio(@section)
     stops = [@flights.first.origin_airport,@flights.last.destination_airport]
     
-    @map = FlightsMap.new(:trip_section_map, @flights, highlighted_airports: stops, include_names: true)
+    @maps = {
+      trip_section_map: FlightsMap.new(:trip_section_map, @flights, highlighted_airports: stops, include_names: true),
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
 
     @summary_items = Hash.new
     @summary_items.store("Trip", view_context.link_to(@trip.name, trip_path(@trip)))

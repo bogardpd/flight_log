@@ -5,7 +5,7 @@
 <% end %>
 
 <div class="intro-box">
-	<%= gcmap_with_region_select(@map, @region) %>
+	<%= gcmap_with_region_select(@maps[:flights_map], @region) %>
   <p class="total"><%= distance_block(@total_distance, paragraph: false) %> &middot; <%= link_to(ActiveSupport::SafeBuffer.new + "See all " + content_tag(:span, pluralize(NumberFormat.value(@flights.size), "flight"), class: "summary-total", id: "summary-flight-total", "data-total": @flights.size), flights_path) %></p>
 </div>
 

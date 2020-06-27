@@ -142,6 +142,15 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_admin_actions(edit_airline_path(airline))
   end
 
+  test "can see show airline alternate map formats" do
+    airline = airlines(:airline_american)
+    %w(gpx kml).each do |extension|
+      get(airline_path(airline.slug, map_id: "airline_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
+  end
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Operator                             #
   ##############################################################################
@@ -172,6 +181,15 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     check_show_airline_common(operator, :operator)
     verify_absence_of_hidden_data
     verify_absence_of_admin_actions(edit_airline_path(operator))
+  end
+
+  test "can see show operator alternate map formats" do
+    operator = airlines(:airline_american)
+    %w(gpx kml).each do |extension|
+      get(show_operator_path(operator.slug, map_id: "operator_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
   end
 
   ##############################################################################
@@ -209,6 +227,16 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
     check_show_airline_common(operator, :fleet_number, fleet_number: fleet_number)
     verify_absence_of_hidden_data
+  end
+
+  test "can see show fleet number alternate map formats" do
+    operator     = @visible_flight.operator
+    fleet_number = @visible_flight.fleet_number
+    %w(gpx kml).each do |extension|
+      get(show_fleet_number_path(operator.slug, fleet_number, map_id: "fleet_number_map", extension: extension))
+      assert_response(:success)
+      assert_equal("application/xml", response.media_type)
+    end
   end
 
   ##############################################################################

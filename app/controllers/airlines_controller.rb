@@ -56,7 +56,10 @@ class AirlinesController < ApplicationController
     @region = current_region(default: [])
     
     # Create map:
-    @map = FlightsMap.new(:airline_map, @flights, region: @region)
+    @maps = {
+      airline_map: FlightsMap.new(:airline_map, @flights, region: @region),
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
     
     # Calculate total flight distance:
     @total_distance = @flights.total_distance
@@ -107,7 +110,10 @@ class AirlinesController < ApplicationController
     @region = current_region(default: [])
 
     @total_distance = @flights.total_distance
-    @map = FlightsMap.new(:operator_map, @flights, region: @region)
+    @maps = {
+      operator_map: FlightsMap.new(:operator_map, @flights, region: @region),
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
     
     # Create comparitive lists of airlines, aircraft and classes:
     @airlines = Airline.flight_table_data(@flights, type: :airline)
@@ -159,7 +165,10 @@ class AirlinesController < ApplicationController
     @region = current_region(default: [])
     
     @total_distance = @flights.total_distance
-    @map = FlightsMap.new(:fleet_number_map, @flights, region: @region)
+    @maps = {
+      fleet_number_map: FlightsMap.new(:fleet_number_map, @flights, region: @region),
+    }
+    render_map_extension(@maps, params[:map_id], params[:extension])
     
     # Create comparitive lists of airlines, aircraft and classes:
     @airlines = Airline.flight_table_data(@flights, type: :airline)
