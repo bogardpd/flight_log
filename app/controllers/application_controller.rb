@@ -38,6 +38,32 @@ class ApplicationController < ActionController::Base
       redirect_to root_url
     end
   end
+
+  # Renders content if data is present.
+  #
+  # @param content_type [Symbol] the type of content to render
+  # @param data [Object] the content to render
+  def render_extension(content_type, data)
+    render(content_type => data) if data
+  end
+
+  # Renders different map formats if an appropriate extension is present.
+  # 
+  # @param maps [Hash] a hash of maps on the view
+  # @param map_id [String] the map to generate a different format for
+  # @param extension [String] the type of format to render
+  def render_map_extension(maps, map_id, extension)
+    return unless maps && maps.any? && map_id && extension
+    map_sym = map_id.to_sym
+    return unless maps.keys.include?(map_sym)
+    
+    case extension
+    when "gpx"
+      render_extension(:xml, maps[map_sym].gpx)
+    when "kml"
+      render_extension(:xml, maps[map_sym].kml)
+    end
+  end
   
   # Gets attachments from boarding pass emails.
   #

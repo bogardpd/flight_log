@@ -16,10 +16,19 @@ class FlightsController < ApplicationController
     @flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
         
     @year_range = @flights.year_range
+    @map = FlightsMap.new(@flights, region: @region)
+
+    # Render extensions if present:
+    case params[:extension]
+    when "gpx"
+      render_extension(:xml, @map.gpx)
+    when "kml"
+      render_extension(:xml, @map.kml)
+    when "graphml"
+      render_extension(:xml, @map.graphml)
+    end
     
-    if @flights.any?
-    
-      @map = FlightsMap.new(@flights, region: @region)
+    if @flights.any?    
       
       @total_distance = @flights.total_distance
     
@@ -146,20 +155,19 @@ class FlightsController < ApplicationController
     
     @region = current_region(default: [])
     @map = FlightsMap.new(@flights, region: @region)
-    @total_distance = @flights.total_distance
-
+    
+    # Render extensions if present:
     case params[:extension]
     when "gpx"
-      gpx = @map.gpx
-      render xml: gpx if gpx
+      render_extension(:xml, @map.gpx)
     when "kml"
-      kml = @map.kml
-      render xml: kml if kml
+      render_extension(:xml, @map.kml)
     when "graphml"
-      graphml = @map.graphml
-      render xml: graphml if graphml
+      render_extension(:xml, @map.graphml)
     end
-      
+    
+    @total_distance = @flights.total_distance
+    
     # Create comparitive lists of airlines and classes:
     @airports = Airport.visit_table_data(@flights) 
     @airlines = Airline.flight_table_data(@flights, type: :airline) 

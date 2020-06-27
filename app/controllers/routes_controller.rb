@@ -101,9 +101,13 @@ class RoutesController < ApplicationController
     @city_pair_section_flights = flyer_flights.where(Trip.section_where_array(@trips_and_sections))
     
     # Create maps:
-    @route_map    = SingleFlightMap.new(@flights.first)
-    @sections_map = HighlightedRoutesMap.new(@city_pair_section_flights, @flights)
-    @trips_map    = HighlightedRoutesMap.new(@city_pair_trip_flights, @flights)
+    @maps = {
+      route_map:    SingleFlightMap.new(@flights.first),
+      sections_map: HighlightedRoutesMap.new(@city_pair_section_flights, @flights),
+      trips_map:    HighlightedRoutesMap.new(@city_pair_trip_flights, @flights),
+    }
+
+    render_map_extension(@maps, params[:map_id], params[:extension])
     
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = %Q(We couldnʼt find any flights with the route <span class="param-highlight">#{params[:airport1]} &ndash; #{params[:airport2]}</span>. Instead, weʼll give you a list of routes.)

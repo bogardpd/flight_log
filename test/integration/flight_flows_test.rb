@@ -219,6 +219,20 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_hidden_data
   end
 
+  test "can see index flights extensions" do
+    get(flights_path(extension: "gpx"))    
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
+
+    get(flights_path(extension: "kml"))    
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
+
+    get(flights_path(extension: "graphml"))    
+    assert_response(:success)
+    assert_equal("application/xml", response.media_type)
+  end
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Tail Numbers                        #
   ##############################################################################
