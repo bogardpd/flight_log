@@ -310,7 +310,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="ApplicationController.html" title="ApplicationController (class)">ApplicationController</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="ApplicationController.html#add_message-instance_method" title="ApplicationController#add_message (method)">#add_message</a></span>, <span class='object_link'><a href="ApplicationController.html#check_email_for_boarding_passes-instance_method" title="ApplicationController#check_email_for_boarding_passes (method)">#check_email_for_boarding_passes</a></span>, <span class='object_link'><a href="ApplicationController.html#current_region-instance_method" title="ApplicationController#current_region (method)">#current_region</a></span>, <span class='object_link'><a href="ApplicationController.html#flyer-instance_method" title="ApplicationController#flyer (method)">#flyer</a></span>, <span class='object_link'><a href="ApplicationController.html#logged_in_user-instance_method" title="ApplicationController#logged_in_user (method)">#logged_in_user</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="ApplicationController.html#add_message-instance_method" title="ApplicationController#add_message (method)">#add_message</a></span>, <span class='object_link'><a href="ApplicationController.html#check_email_for_boarding_passes-instance_method" title="ApplicationController#check_email_for_boarding_passes (method)">#check_email_for_boarding_passes</a></span>, <span class='object_link'><a href="ApplicationController.html#current_region-instance_method" title="ApplicationController#current_region (method)">#current_region</a></span>, <span class='object_link'><a href="ApplicationController.html#flyer-instance_method" title="ApplicationController#flyer (method)">#flyer</a></span>, <span class='object_link'><a href="ApplicationController.html#logged_in_user-instance_method" title="ApplicationController#logged_in_user (method)">#logged_in_user</a></span>, <span class='object_link'><a href="ApplicationController.html#render_extension-instance_method" title="ApplicationController#render_extension (method)">#render_extension</a></span>, <span class='object_link'><a href="ApplicationController.html#render_map_extension-instance_method" title="ApplicationController#render_map_extension (method)">#render_map_extension</a></span></p>
 
   
   
@@ -370,11 +370,6 @@
       <pre class="lines">
 
 
-105
-106
-107
-108
-109
 110
 111
 112
@@ -388,10 +383,15 @@
 120
 121
 122
-123</pre>
+123
+124
+125
+126
+127
+128</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@aircraft</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_aircraft_family_params'>aircraft_family_params</span><span class='rparen'>)</span>
@@ -458,11 +458,6 @@
       <pre class="lines">
 
 
-155
-156
-157
-158
-159
 160
 161
 162
@@ -477,10 +472,15 @@
 171
 172
 173
-174</pre>
+174
+175
+176
+177
+178
+179</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 160</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@aircraft</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -548,13 +548,13 @@
       <pre class="lines">
 
 
-130
-131
-132
-133</pre>
+135
+136
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 130</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -676,11 +676,6 @@
       <pre class="lines">
 
 
-83
-84
-85
-86
-87
 88
 89
 90
@@ -691,10 +686,15 @@
 95
 96
 97
-98</pre>
+98
+99
+100
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 88</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -824,7 +824,12 @@
 73
 74
 75
-76</pre>
+76
+77
+78
+79
+80
+81</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 41</span>
@@ -839,7 +844,12 @@
   <span class='ivar'>@flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>aircraft_family_id:</span> <span class='ivar'>@aircraft</span><span class='period'>.</span><span class='id identifier rubyid_family_and_type_ids'>family_and_type_ids</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_includes'>includes</span><span class='lparen'>(</span><span class='symbol'>:airline</span><span class='comma'>,</span> <span class='symbol'>:origin_airport</span><span class='comma'>,</span> <span class='symbol'>:destination_airport</span><span class='comma'>,</span> <span class='symbol'>:trip</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_logged_in?'>logged_in?</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>0</span><span class='rparen'>)</span>
   
-  <span class='ivar'>@map</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="FlightsMap.html#initialize-instance_method" title="FlightsMap#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='label'>region:</span> <span class='ivar'>@region</span><span class='rparen'>)</span>
+  <span class='ivar'>@maps</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+    <span class='label'>aircraft_family_map:</span> <span class='const'><span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="FlightsMap.html#initialize-instance_method" title="FlightsMap#initialize (method)">new</a></span></span><span class='lparen'>(</span>
+      <span class='symbol'>:aircraft_family_map</span><span class='comma'>,</span> <span class='ivar'>@flights</span><span class='comma'>,</span> <span class='label'>region:</span> <span class='ivar'>@region</span>
+    <span class='rparen'>)</span><span class='comma'>,</span>
+  <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_render_map_extension'>render_map_extension</span><span class='lparen'>(</span><span class='ivar'>@maps</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:map_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:extension</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='ivar'>@total_distance</span> <span class='op'>=</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_total_distance'>total_distance</span>
   
   <span class='ivar'>@children</span> <span class='op'>=</span> <span class='ivar'>@aircraft</span><span class='period'>.</span><span class='id identifier rubyid_children'>children</span>
@@ -911,18 +921,18 @@
       <pre class="lines">
 
 
-140
-141
-142
-143
-144
 145
 146
 147
-148</pre>
+148
+149
+150
+151
+152
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/aircraft_families_controller.rb', line 145</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@aircraft</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -943,7 +953,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Apr 25 12:09:46 2020 by
+  Generated on Sun Jun 28 23:36:27 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.24 (ruby-2.7.1).
 </div>

@@ -126,26 +126,6 @@ module ApplicationHelper
     return content_tag(:span, code, class: %w(code-mono))
   end
 
-  # Provides HTML for a distance in miles and kilometers.
-  #
-  # @param distance_mi [Integer] the distance in statute miles
-  # @param adjective [String] an adjective to prepend to the units
-  # @param flight_link [Boolean] whether to include a link to the #flights
-  #   anchor
-  # @param paragraph [Boolean] whether to wrap the output in a paragraph tag
-  # @return [ActiveSupport::SafeBuffer] HTML text
-  def distance_block(distance_mi, adjective: nil, flight_link: false, paragraph: true)
-    output = Array.new
-    output.push(content_tag(:span, safe_join([NumberFormat.value(distance_mi), [adjective,"mile".pluralize(distance_mi)].compact.join(" ")], " "), class: "distance-primary"))
-    output.push(content_tag(:span, "(#{NumberFormat.value(Distance::km(distance_mi))} km)", class: "distance-secondary"))
-    if flight_link
-      output.push(sanitize("&middot;"))
-      output.push(link_to("See a list of these flights", "#flights"))
-    end
-    output = safe_join(output, " ")
-    return paragraph ? content_tag(:p, output, class: "distance") : output
-  end
-
   # Provides a table row containing a total {Flight Flights} count for the
   # table, and the percent of all flights that this count represents.
   #
@@ -274,29 +254,6 @@ module ApplicationHelper
   
   
   # GREAT CIRCLE MAPPER HELPER FUNCTIONS
-  
-  # Creates HTML for a map with region select tabs.
-  # 
-  # @param map [Map] the map to show
-  # @param selected_region [Array] the currently active region as an array of
-  #   ICAO prefixes (e.g. ["K","PH"])
-  # @option [String] :anchor (nil) a page anchor position for the region select links to link to
-  # @return [ActiveSupport::SafeBuffer] HTML for a map with region select tabs
-  # @see Map#gcmap_regions
-  def gcmap_with_region_select(map, selected_region, anchor: nil)
-    return content_tag(:div, id: anchor) do
-      if map && map.gcmap_exists?
-        concat gcmap_region_select_links(map, selected_region, anchor: anchor)
-        concat map.gcmap
-      else
-        if selected_region.length > 0
-          concat render_message(:warning, "Paul has taken no flights in #{"region".pluralize(selected_region.size)} #{selected_region.join(", ")}.")
-        else
-          concat render_message(:warning, "When flights have been added, you’ll see a map here.")
-        end
-      end
-    end
-  end
     
   # Creates region select tabs.
   # 
