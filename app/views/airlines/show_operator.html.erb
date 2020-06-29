@@ -28,11 +28,7 @@
 <%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"IATA": @operator.iata_code, "ICAO": @operator.icao_code, "Logo": airline_icon(@operator.slug, title: @operator.name, css_class: ["icon-no-text"])}}) %>
 
 <% if @flights.any? %>
-
-	<div id="map">
-    <%= gcmap_with_region_select(@maps[:operator_map], @region) %>
-		<%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
-  </div>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:operator_map], region: @region, distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
 
 	<h2 id="airlines">Airlines with Flights Operated by <%= @operator.name %></h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>

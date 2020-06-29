@@ -30,11 +30,7 @@
 <%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: @summary_items}) %>
 
 <% if @flights.any? %>
-
-	<div id="map">
-    <%= gcmap_with_region_select(@maps[:aircraft_family_map], @region) %>
-    <%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
-  </div>
+  <%= render(partial: "layouts/map", locals: {map: @maps[:aircraft_family_map], region: @region, distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
 <% end %>
   
 <% if @children.any? %>

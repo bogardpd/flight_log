@@ -201,7 +201,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_response(:success)
     
     assert_select("h1", "Flights")
-    assert_select("div#flight-map", {}, "This view shall show a flight map")
+    assert_select("div#flights_map", {}, "This view shall show a flight map")
     assert_select("table#flight-year-links", {}, "This view shall show year links") do
       assert_select("a[href=?]", show_year_path(@visible_flight.departure_date.year))
     end

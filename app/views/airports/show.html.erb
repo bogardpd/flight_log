@@ -25,10 +25,7 @@
 
 <% unless @flights.length == 0 %>
 
-	<div id="map">  
-    <%= gcmap_with_region_select(@maps[:airport_map], @region, anchor: "airport-map") %>
-	  <%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
-  </div>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:airport_map], region: @region, distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
 
 	<h2 id="airports">Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 
@@ -82,10 +79,10 @@
 	<h2 id="trips-and-sections">Trips and Sections Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 
 	<h3>Trips with a <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Visit</h3>
-	<%= gcmap_with_region_select(@maps[:trips_map], @region, anchor: "trips-map") %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:trips_map], region: @region}) %>
 
 	<h3>Trip Sections with a <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr> Visit</h3>
-	<%= gcmap_with_region_select(@maps[:sections_map], @region, anchor: "sections-map") %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:sections_map], region: @region}) %>
 
 	<h3>Trip and Section Details</h3>
 	<%= render partial: "trips/trip_and_section_table", locals: {trips_and_sections: @trips_and_sections} %>

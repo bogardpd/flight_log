@@ -74,8 +74,8 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     
     assert_select("h1", "Airports")
 
-    assert_select("div#airports-map")
-    assert_select("div#frequency-map")
+    assert_select("div#airports_map")
+    assert_select("div#frequency_map")
 
     assert_select("table#airport-count-table") do
       check_flight_row(@visible_airport, visits[@visible_airport.id], "This view shall show airports with visible flights")
@@ -188,7 +188,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # Runs tests common to show airline
+  # Runs tests common to show airport
   def check_show_airport_common(airport)
     assert_select("h1", airport.city)
 
@@ -196,9 +196,9 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#summary-value-iata", airport.iata_code) if airport.iata_code
     assert_select("#summary-value-icao", airport.icao_code) if airport.icao_code
 
-    assert_select("#airport-map")
-    assert_select("#trips-map")
-    assert_select("#sections-map")
+    assert_select("#airport_map")
+    assert_select("#trips_map")
+    assert_select("#sections_map")
 
     assert_select(".distance-primary")
 

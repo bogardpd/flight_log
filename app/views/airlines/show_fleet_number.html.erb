@@ -19,10 +19,7 @@
 
 <%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Operator": link_to(airline_icon(@operator.slug, title: @operator.name) + @operator.name, show_operator_path(@operator.slug), title: "View flights operated by #{@operator.name}"), "Aircraft": (link_to(@flights.last.aircraft_family.name, aircraft_family_path(@flights.last.aircraft_family.slug), title: "View flights on #{@flights.last.aircraft_family.full_name} aircraft") if @flights.last.aircraft_family), "Tail": tail_number_with_country_flag(@flights.last.tail_number)}}) %>
 
-<div id="map">
-  <%= gcmap_with_region_select(@maps[:fleet_number_map], @region) %>
-  <%= distance_block(@total_distance, adjective: "total", flight_link: true) %>
-</div>
+<%= render(partial: "layouts/map", locals: {map: @maps[:fleet_number_map], region: @region, distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
 
 <h2 id="airlines">Airlines with Flights Operated as <abbr title="<%= @operator.name %>"><%= @operator.iata_code %></abbr> #<%= @fleet_number %></h2>
 <%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, is_summary: true} %>

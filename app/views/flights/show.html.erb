@@ -41,7 +41,7 @@
   </tr>
 </table>
 
-<%= @maps[:flight_map].gcmap %>
+<%= render(partial: "layouts/map", locals: {map: @maps[:flight_map]}) %>
 
 <table class="flightlog">
   
