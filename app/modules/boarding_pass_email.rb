@@ -43,8 +43,8 @@ module BoardingPassEmail
   def self.process_attachments(valid_emails)
     return nil if Rails.env.test?
     
-    imap = Net::IMAP.new("imap.gmail.com",993,true)
-    imap.login(Rails.application.credentials[:boarding_pass_import][:email_address],Rails.application.credentials[:boarding_pass_import][:password])
+    imap = Net::IMAP.new("outlook.office365.com",993,true)
+    imap.login(Rails.application.credentials[:boarding_pass_import][:outlook][:email_address],Rails.application.credentials[:boarding_pass_import][:outlook][:password])
     imap.select("INBOX")
     
     delete_old_emails(imap)
