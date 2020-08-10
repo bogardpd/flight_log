@@ -53,7 +53,7 @@ class TripsTest < ApplicationSystemTestCase
       end
 
       # Give the delete enough time to go through:
-      visit(trips_path)
+      find("#menu")
     end
 
   end

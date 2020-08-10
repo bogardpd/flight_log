@@ -71,6 +71,9 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
         click_on("Delete Aircraft")
       end
 
+      # Give the subtype delete enough time to go through:
+      find("#menu")
+
       # Destroy family:
       visit(aircraft_family_path(family[:slug]))
       accept_confirm do
@@ -78,7 +81,7 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
       end
       
       # Give the delete enough time to go through:
-      visit(aircraft_families_path)
+      find("#menu")
     end
 
   end

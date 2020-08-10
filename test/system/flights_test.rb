@@ -74,7 +74,7 @@ class FlightsTest < ApplicationSystemTestCase
       end
 
       # Give the delete enough time to go through:
-      visit(flights_path)
+      find("#menu")
     end
 
   end

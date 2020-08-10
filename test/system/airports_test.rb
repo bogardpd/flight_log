@@ -63,7 +63,7 @@ class AirportsTest < ApplicationSystemTestCase
       end
 
       # Give the delete enough time to go through:
-      visit(airports_path)
+      find("#menu")
     end
 
   end

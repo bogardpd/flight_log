@@ -32,7 +32,7 @@ class AirlinesTest < ApplicationSystemTestCase
       fill_in("IATA Code",    with: airline[:iata_code])
       fill_in("ICAO Code",    with: airline[:icao_code])
       fill_in("Numeric Code", with: airline[:numeric_code])
-      fill_in("Unique Slug",          with: airline[:slug])
+      fill_in("Unique Slug",  with: airline[:slug])
       click_on("Add Airline")
     end
 
@@ -55,7 +55,7 @@ class AirlinesTest < ApplicationSystemTestCase
       end
 
       # Give the delete enough time to go through:
-      visit(airlines_path)
+      find("#menu")
     end
 
   end
