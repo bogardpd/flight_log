@@ -1,4 +1,4 @@
-class RemoveTripOrderFromFlights < ActiveRecord::Migration
+class RemoveTripOrderFromFlights < ActiveRecord::Migration[5.0]
   def up
     remove_column :flights, :trip_order
   end

@@ -1,4 +1,4 @@
-class CreateAirlines < ActiveRecord::Migration
+class CreateAirlines < ActiveRecord::Migration[5.0]
   def change
     create_table :airlines do |t|
       t.string :iata_airline_code, null: false

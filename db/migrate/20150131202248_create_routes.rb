@@ -1,4 +1,4 @@
-class CreateRoutes < ActiveRecord::Migration
+class CreateRoutes < ActiveRecord::Migration[5.0]
   def change
     create_table :routes do |t|
       t.integer :airport1_id
