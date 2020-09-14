@@ -142,6 +142,6 @@
 - Index Tail Numbers and Show Tail Number views.
 
 [2.3]: https://github.com/bogardpd/flight_log/releases/tag/v2.3
-[2.2]: https://github.com/bogardpd/flight_log/releases/tag/v2.2
+[2.2]: https://github.com/bogardpd/flight_log/releases/tag/2.2
 [2.1]: https://github.com/bogardpd/flight_log/releases/tag/v2.1
 [2.0]: https://github.com/bogardpd/flight_log/releases/tag/v2.0
