@@ -20,7 +20,7 @@ layout: home
       <tr>
         <td>{{ release.release_date | date: "%d %b %Y" }}</td>
         <td>{{ release.version_number }}</td>
-        <td><a href="{{ release.url }}">{{ release.name }}</a></td>
+        <td><a href="{{ release.url | relative_url }}">{{ release.name }}</a></td>
       </tr>
     {% endfor %}
   </tbody>
