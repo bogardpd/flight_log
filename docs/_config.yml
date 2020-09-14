@@ -23,8 +23,8 @@ author: Paul Bogard
 email: paul.bogard@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Flight Historian is a Ruby on Rails application designed to record flights taken and show reports of various aspects of the flights.
-baseurl: "/flight_log" # the subpath of your site, e.g. /blog
-url: "https://bogardpd.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  bogardpd
 
 # Build settings
