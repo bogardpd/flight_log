@@ -15,9 +15,6 @@ gem 'sassc-rails', '~> 2.1', '>= 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '~> 4.2'
 
-gem 'rails-ujs', '~> 5.1.0.beta1'
-# Use jquery as the JavaScript library
-gem 'jquery-rails', '~> 4.3', '>= 4.3.5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
