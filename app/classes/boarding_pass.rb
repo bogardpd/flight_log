@@ -26,7 +26,7 @@ class BoardingPass
     @flight = flight
     
     begin
-      @airline_compartments = JSON.parse(File.read("app/assets/json/airline_compartments.json"))
+      @airline_compartments = JSON.parse(File.read("app/data/airline_compartments.json"))
     rescue
       @airline_compartments = nil
     end
