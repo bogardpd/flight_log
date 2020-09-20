@@ -6,7 +6,7 @@
 <title>
   Module: BoardingPassEmail
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
@@ -309,8 +309,8 @@
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_process_attachments'>process_attachments</span><span class='lparen'>(</span><span class='id identifier rubyid_valid_emails'>valid_emails</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_env'>env</span><span class='period'>.</span><span class='id identifier rubyid_test?'>test?</span>
   
-  <span class='id identifier rubyid_imap'>imap</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>IMAP</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>imap.gmail.com</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='int'>993</span><span class='comma'>,</span><span class='kw'>true</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_imap'>imap</span><span class='period'>.</span><span class='id identifier rubyid_login'>login</span><span class='lparen'>(</span><span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:boarding_pass_import</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:email_address</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:boarding_pass_import</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:password</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_imap'>imap</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>IMAP</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>outlook.office365.com</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='int'>993</span><span class='comma'>,</span><span class='kw'>true</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_imap'>imap</span><span class='period'>.</span><span class='id identifier rubyid_login'>login</span><span class='lparen'>(</span><span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:boarding_pass_import</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:outlook</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:email_address</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='const'>Rails</span><span class='period'>.</span><span class='id identifier rubyid_application'>application</span><span class='period'>.</span><span class='id identifier rubyid_credentials'>credentials</span><span class='lbracket'>[</span><span class='symbol'>:boarding_pass_import</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:outlook</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:password</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_imap'>imap</span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>INBOX</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   
   <span class='id identifier rubyid_delete_old_emails'>delete_old_emails</span><span class='lparen'>(</span><span class='id identifier rubyid_imap'>imap</span><span class='rparen'>)</span>
@@ -338,9 +338,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Jun 28 23:36:23 2020 by
+  Generated on Sun Sep 20 10:46:30 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.24 (ruby-2.7.1).
+  0.9.25 (ruby-2.7.1).
 </div>
 
     </div>

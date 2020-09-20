@@ -157,6 +157,10 @@ class Map
     return output
   end
 
+  # Creates XML for a {http://graphml.graphdrawing.org/ GraphML} graph.
+  #
+  # @return [ActiveSupport::Safebuffer] XML for a
+  #   {http://graphml.graphdrawing.org/ GraphML} graph.
   def graphml
     return nil unless @flights
     return GraphML.graph_flights(@flights)

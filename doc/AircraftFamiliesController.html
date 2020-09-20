@@ -6,7 +6,7 @@
 <title>
   Class: AircraftFamiliesController
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
@@ -625,9 +625,9 @@
   <span class='id identifier rubyid_flight_count'>flight_count</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span></span><span class='period'>.</span><span class='id identifier rubyid_flight_table_data'><span class='object_link'><a href="AircraftFamily.html#flight_table_data-class_method" title="AircraftFamily.flight_table_data (method)">flight_table_data</a></span></span><span class='lparen'>(</span><span class='ivar'>@flights</span><span class='comma'>,</span> <span class='op'>*</span><span class='ivar'>@sort</span><span class='comma'>,</span> <span class='label'>include_families_with_no_flights:</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='ivar'>@aircraft_families</span><span class='comma'>,</span> <span class='ivar'>@aircraft_families_with_no_flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flight_count'>flight_count</span><span class='period'>.</span><span class='id identifier rubyid_partition'>partition</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span> <span class='id identifier rubyid_a'>a</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span> <span class='op'>&gt;</span> <span class='int'>0</span><span class='rbrace'>}</span>
   
-  <span class='kw'>if</span> <span class='ivar'>@aircraft_families</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>    <span class='comment'># Find maxima for graph scaling:
-</span>
-    <span class='ivar'>@aircraft_maximum</span> <span class='op'>=</span> <span class='ivar'>@aircraft_families</span><span class='period'>.</span><span class='id identifier rubyid_max_by'>max_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span> <span class='id identifier rubyid_i'>i</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span>
+  <span class='kw'>if</span> <span class='ivar'>@aircraft_families</span><span class='period'>.</span><span class='id identifier rubyid_any?'>any?</span>
+    <span class='comment'># Find maxima for graph scaling:
+</span>    <span class='ivar'>@aircraft_maximum</span> <span class='op'>=</span> <span class='ivar'>@aircraft_families</span><span class='period'>.</span><span class='id identifier rubyid_max_by'>max_by</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span> <span class='id identifier rubyid_i'>i</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='lbracket'>[</span><span class='symbol'>:flight_count</span><span class='rbracket'>]</span>
   <span class='kw'>end</span>     
 <span class='kw'>end</span></pre>
     </td>
@@ -953,9 +953,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Jun 28 23:36:27 2020 by
+  Generated on Sun Sep 20 10:46:32 2020 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.24 (ruby-2.7.1).
+  0.9.25 (ruby-2.7.1).
 </div>
 
     </div>
