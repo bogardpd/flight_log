@@ -62,6 +62,8 @@ class ApplicationController < ActionController::Base
       render_extension(:xml, maps[map_sym].gpx)
     when "kml"
       render_extension(:xml, maps[map_sym].kml)
+    when "graphml"
+      render_extension(:xml, maps[map_sym].graphml)
     end
   end
   
