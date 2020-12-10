@@ -13,8 +13,7 @@
 - Latitudes and longitudes to the `Airport` model.
 - [FlightXML API](https://flightaware.com/commercial/flightxml/documentation2.rvt) lookup for latitudes and longitudes when adding new airports.
 - Automatic distance calculation for new Routes, using the Haversine formula.
-- [Terminal silhouettes](https://www.pbogard.com/projects/terminal-silhouettes) to Show Airport views.
-- [Layover ratios](https://onehundredairports.com/2019/02/07/my-worst-layovers/) to Show Trip Section views with more than one flight.
+- [Layover ratios](https://paulbogard.net/blog/20190207-my-worst-layovers/) to Show Trip Section views with more than one flight.
 - `Map.gpx` and `Map.kml` methods for generating GPX and KML maps.
 
 ### Changed
@@ -51,12 +50,12 @@
   - `PKPass` model for storing PKPass data.
   - Email and alternate email parameters to `User` model to whitelist valid senders of PKPass attachments.
   - Numeric code parameter to `Airline` model to allow lookups of numeric codes in BCBP data.
-  - [JSON API](https://www.pbogard.com/projects/boarding-pass-parser#json-api) for parsed boarding pass data.
+  - [JSON API](https://paulbogard.net/boarding-pass-parser/) for parsed boarding pass data.
   - Import Boarding Passes view.
   - Form to allow entry of airport data for BCBP IATA codes not found in the `Airports` table.
   - Form for editing an existing flight with an updated PKPass.
   - Admin view to list any flights with invalid BCBP data.
-- New [message banner system](https://onehundredairports.com/2017/04/05/creating-multiple-flash-messages-in-ruby-on-rails/), to make all messages look consistent.
+- New [message banner system](https://paulbogard.net/blog/20170405-creating-multiple-flash-messages-in-ruby-on-rails/), to make all messages look consistent.
 - Aircraft types to `AircraftFamily` model, and views to show aircraft types.
 
 ### Changed

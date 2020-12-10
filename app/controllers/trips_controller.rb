@@ -95,7 +95,7 @@ class TripsController < ApplicationController
     @summary_items = Hash.new
     @summary_items.store("Trip", view_context.link_to(@trip.name, trip_path(@trip)))
     if @flights.size > 1 && layover_ratio
-      @summary_items.store("Layover Ratio", view_context.link_to(layover_ratio.round(3), "https://onehundredairports.com/2019/02/07/my-worst-layovers/", target: :_blank))
+      @summary_items.store("Layover Ratio", view_context.link_to(layover_ratio.round(3), "https://paulbogard.net/blog/20190207-my-worst-layovers/", target: :_blank))
     end
     
   rescue ActiveRecord::RecordNotFound

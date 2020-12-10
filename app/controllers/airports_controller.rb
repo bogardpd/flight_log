@@ -38,7 +38,6 @@ class AirportsController < ApplicationController
   # * city (and name if needed for disambiguation)
   # * latitude and longitude
   # * IATA and ICAO codes
-  # * a {https://www.pbogard.com/projects/terminal-silhouettes terminal silhouette}
   # 
   # {Flight} data:
   # * a table of {Flight Flights} with a {FlightsMap}
@@ -52,7 +51,6 @@ class AirportsController < ApplicationController
   # * the longest and shortest {Flight}
   #
   # @return [nil]
-  # @see https://www.pbogard.com/projects/terminal-silhouettes Terminal Silhouettes
   def show
     @logo_used = true
 
