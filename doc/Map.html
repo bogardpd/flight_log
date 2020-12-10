@@ -6,15 +6,15 @@
 <title>
   Class: Map
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "Map";
   relpath = '';
 </script>
@@ -107,9 +107,13 @@
 <h2>Overview</h2><div class="docstring">
   <div class="discussion">
     
-<p>Defines a map of various combinations of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> and <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>, with the ability to generate <a href="http://www.gcmap.com" target="_parent" title="/ Great Circle Mapper">/ Great Circle Mapper</a>, <a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX">GPX</a>, and <a href="https://developers.google.com/kml" target="_parent" title="/ KML">/ KML</a> maps.</p>
+<p>Defines a map of various combinations of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> and <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>, with the ability to generate <a href="http://www.gcmap.com/" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a>, <a href="https://www.topografix.com/gpx.asp" target="_parent" title="GPX">GPX</a>, and
+<a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> maps.</p>
 
-<p>While Map can be used for class methods, instances of Map are not intended to be used directly (which is why it specifies no constructor method). Instead, the subclasses which provide specific map types should be used to create new maps.</p>
+<p>While Map can be used for class methods, instances of Map are not intended
+to be used directly (which is why it specifies no constructor method).
+Instead, the subclasses which provide specific map types should be used to
+create new maps.</p>
 
 
   </div>
@@ -133,19 +137,15 @@
   <p class="children"><span class='object_link'><a href="AirportFrequencyMap.html" title="AirportFrequencyMap (class)">AirportFrequencyMap</a></span>, <span class='object_link'><a href="AirportsMap.html" title="AirportsMap (class)">AirportsMap</a></span>, <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>, <span class='object_link'><a href="HighlightedRoutesMap.html" title="HighlightedRoutesMap (class)">HighlightedRoutesMap</a></span>, <span class='object_link'><a href="SingleFlightMap.html" title="SingleFlightMap (class)">SingleFlightMap</a></span></p>
 </div>
 
-  
-    <h2>
-      Constant Summary
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      
-        <dt id="ICAO_REGIONS-constant" class="">ICAO_REGIONS =
-          <div class="docstring">
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="ICAO_REGIONS-constant" class="">ICAO_REGIONS =
+        <div class="docstring">
   <div class="discussion">
     
-<p>Defines the preset regions and their ICAO code start characters for use in creating region tabs for region-sensitive maps.</p>
+<p>Defines the preset regions and their ICAO code start characters for use in
+creating region tabs for region-sensitive maps.</p>
 
 
   </div>
@@ -161,16 +161,15 @@
   </ul>
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='lbrace'>{</span>
+      </dt>
+      <dd><pre class="code"><span class='lbrace'>{</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>World</span><span class='label_end'>&quot;:</span>            <span class='qwords_beg'>%w(</span><span class='tstring_end'>)</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>North America</span><span class='label_end'>&quot;:</span>    <span class='qwords_beg'>%w(</span><span class='tstring_content'>C</span><span class='words_sep'> </span><span class='tstring_content'>K</span><span class='words_sep'> </span><span class='tstring_content'>M</span><span class='words_sep'> </span><span class='tstring_content'>T</span><span class='tstring_end'>)</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Europe</span><span class='label_end'>&quot;:</span>           <span class='qwords_beg'>%w(</span><span class='tstring_content'>B</span><span class='words_sep'> </span><span class='tstring_content'>E</span><span class='words_sep'> </span><span class='tstring_content'>L</span><span class='tstring_end'>)</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Pacific/Oceania</span><span class='label_end'>&quot;:</span>  <span class='qwords_beg'>%w(</span><span class='tstring_content'>A</span><span class='words_sep'> </span><span class='tstring_content'>N</span><span class='words_sep'> </span><span class='tstring_content'>PH</span><span class='words_sep'> </span><span class='tstring_content'>R</span><span class='words_sep'> </span><span class='tstring_content'>Y</span><span class='tstring_end'>)</span></span>
 <span class='rbrace'>}</span></pre></dd>
-      
-    </dl>
-  
+    
+  </dl>
 
 
 
@@ -204,7 +203,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates a hash of a map query based on a secret key in the application credentials.</p>
+<p>Creates a hash of a map query based on a secret key in the application
+credentials.</p>
 </div></span>
   
 </li>
@@ -237,7 +237,10 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>concat content_tag(:div, ActiveSupport::SafeBuffer.new + “Map generated by ” + link_to(“Great Circle Mapper”, “<a href="http://www.gcmap.com">www.gcmap.com</a>/”, target: “_blank”), class: %w(credit map-info))   end end.</p>
+<p>concat content_tag(:div, ActiveSupport::SafeBuffer.new + “Map generated by
+” + link_to(“Great Circle Mapper”, “<a
+href="http://www.gcmap.com">www.gcmap.com</a>/”, target: “_blank”), class:
+%w(credit map-info))   end end.</p>
 </div></span>
   
 </li>
@@ -261,7 +264,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Checks whether or not this map contains enough data to create a <a href="http://www.gcmap.com" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
+<p>Checks whether or not this map contains enough data to create a
+<a href="http://www.gcmap.com" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
 </div></span>
   
 </li>
@@ -333,7 +337,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates XML for a <a href="http://graphml.graphdrawing.org" target="_parent" title="/ GraphML">/ GraphML</a> graph.</p>
+<p>Creates XML for a <a href="http://graphml.graphdrawing.org/" target="_parent" title="GraphML">GraphML</a> graph.</p>
 </div></span>
   
 </li>
@@ -357,7 +361,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Creates XML for a <a href="https://developers.google.com/kml" target="_parent" title="/ KML">/ KML</a> map.</p>
+<p>Creates XML for a <a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> map.</p>
 </div></span>
   
 </li>
@@ -386,7 +390,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates a hash of a map query based on a secret key in the application credentials.</p>
+<p>Creates a hash of a map query based on a secret key in the application
+credentials.</p>
 
 
   </div>
@@ -478,7 +483,10 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>concat content_tag(:div, ActiveSupport::SafeBuffer.new + “Map generated by ” + link_to(“Great Circle Mapper”, “<a href="http://www.gcmap.com">www.gcmap.com</a>/”, target: “_blank”), class: %w(credit map-info))</p>
+<p>concat content_tag(:div, ActiveSupport::SafeBuffer.new + “Map generated by
+” + link_to(“Great Circle Mapper”, “<a
+href="http://www.gcmap.com">www.gcmap.com</a>/”, target: “_blank”), class:
+%w(credit map-info))</p>
 
 <pre class="code ruby"><code class="ruby">end
 </code></pre>
@@ -548,7 +556,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Checks whether or not this map contains enough data to create a <a href="http://www.gcmap.com" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
+<p>Checks whether or not this map contains enough data to create a
+<a href="http://www.gcmap.com" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map.</p>
 
 
   </div>
@@ -614,9 +623,15 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns all regions contained in the current map. Used for generating region selection tabs above a <a href="http://www.gcmap.com" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a> map image.</p>
+<p>Returns all regions contained in the current map. Used for generating
+region selection tabs above a <a href="http://www.gcmap.com" target="_parent" title="Great Circle Mapper">Great Circle Mapper</a>
+map image.</p>
 
-<p>Regions are defined by an array of ICAO code prefixes (e.g. [“K”,“PH”]). <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> are considered to be in a region if their ICAO code starts with any of the elements of the prefix array (e.g. KATL, PHNL), and <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> are considered to be in a region if <em>both</em> of their airports are in the region.</p>
+<p>Regions are defined by an array of ICAO code prefixes (e.g. [“K”,“PH”]).
+<span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> are considered to be in a region if their ICAO code
+starts with any of the elements of the prefix array (e.g. KATL, PHNL), and
+<span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> are considered to be in a region if <em>both</em> of their
+airports are in the region.</p>
 
 
   </div>
@@ -655,7 +670,10 @@
       
         &mdash;
         <div class='inline'>
-<p>name and ICAO prefixes for each region, and a boolean indicating whether this region&#39;s button should be selected (true if this region is the currently selected region) in the format {“Europe”: {selected: false, icao: [“B”,“E”,“L”]}}</p>
+<p>name and ICAO prefixes for each region, and a boolean indicating whether
+this region&#39;s button should be selected (true if this region is the
+currently selected region) in the format {“Europe”: {selected: false,
+icao: [“B”,“E”,“L”]}}</p>
 </div>
       
     </li>
@@ -884,7 +902,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates XML for a <a href="http://graphml.graphdrawing.org" target="_parent" title="/ GraphML">/ GraphML</a> graph.</p>
+<p>Creates XML for a <a href="http://graphml.graphdrawing.org/" target="_parent" title="GraphML">GraphML</a> graph.</p>
 
 
   </div>
@@ -903,7 +921,7 @@
       
         &mdash;
         <div class='inline'>
-<p>XML for a <a href="http://graphml.graphdrawing.org" target="_parent" title="/ GraphML">/ GraphML</a> graph.</p>
+<p>XML for a <a href="http://graphml.graphdrawing.org/" target="_parent" title="GraphML">GraphML</a> graph.</p>
 </div>
       
     </li>
@@ -945,7 +963,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Creates XML for a <a href="https://developers.google.com/kml" target="_parent" title="/ KML">/ KML</a> map.</p>
+<p>Creates XML for a <a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> map.</p>
 
 
   </div>
@@ -964,7 +982,7 @@
       
         &mdash;
         <div class='inline'>
-<p>XML for a <a href="https://developers.google.com/kml" target="_parent" title="/ KML">/ KML</a> map.</p>
+<p>XML for a <a href="https://developers.google.com/kml/" target="_parent" title="KML">KML</a> map.</p>
 </div>
       
     </li>
@@ -1096,9 +1114,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 20 10:46:30 2020 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.7.1).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>

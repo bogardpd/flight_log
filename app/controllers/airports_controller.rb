@@ -112,9 +112,6 @@ class AirportsController < ApplicationController
       ),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
-
-    # Check for presence of terminal silhouette:
-    @terminal_exists = ExternalImage.exists?(@airport.terminal_silhouette_path)
    
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = %Q(We couldnʼt find an airport matching <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of airports.)

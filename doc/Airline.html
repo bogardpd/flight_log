@@ -6,15 +6,15 @@
 <title>
   Class: Airline
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "Airline";
   relpath = '';
 </script>
@@ -110,14 +110,29 @@
 
 <p>Airlines can be used in multiple ways in this application:</p>
 <ul><li>
-<p><strong>Administrating</strong> <strong>airline</strong>: The entity responsible for administrating a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. This is generally the airline who provides the livery for the plane, the branding at the gate, the airline name on the airport flight status screens, flight planning, and so on.</p>
+<p><strong>Administrating</strong> <strong>airline</strong>: The entity
+responsible for administrating a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. This is generally the airline
+who provides the livery for the plane, the branding at the gate, the
+airline name on the airport flight status screens, flight planning, and so
+on.</p>
 </li><li>
-<p><strong>Operator</strong>: The entity which actually operates a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. Sometimes this will be the same as the administrating airline, and sometimes the administrating airline will contract this flight to another airline which operates the flight under the administrating airline&#39;s branding.</p>
+<p><strong>Operator</strong>: The entity which actually operates a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.
+Sometimes this will be the same as the administrating airline, and
+sometimes the administrating airline will contract this flight to another
+airline which operates the flight under the administrating airline&#39;s
+branding.</p>
 </li><li>
-<p><strong>Codeshare</strong>: An Airline which sold a ticket on second airline&#39;s <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. Often used when the airline the ticket is purchased from doesn&#39;t serve one or more of the airports on the itinerary. The second airline may potentially also be the operator of the flight, or they may further contract it to a third operator airline which flies under the second airline’s branding.</p>
+<p><strong>Codeshare</strong>: An Airline which sold a ticket on second
+airline&#39;s <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. Often used when the airline the ticket is purchased
+from doesn&#39;t serve one or more of the airports on the itinerary. The
+second airline may potentially also be the operator of the flight, or they
+may further contract it to a third operator airline which flies under the
+second airline’s branding.</p>
 </li></ul>
 
-<p>Thus, the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> model has Airline ID columns for each of the above types. The (administrating) airline ID is required, and the operator and codeshare airline IDs are optional.</p>
+<p>Thus, the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> model has Airline ID columns for each of the above
+types. The (administrating) airline ID is required, and the operator and
+codeshare airline IDs are optional.</p>
 
 
   </div>
@@ -126,16 +141,11 @@
   
 
 </div>
-  
-    <h2>
-      Constant Summary
-      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
-    </h2>
-
-    <dl class="constants">
-      
-        <dt id="CAPS_ATTRS-constant" class="">CAPS_ATTRS =
-          <div class="docstring">
+  <h2>Constant Summary</h2>
+  <dl class="constants">
+    
+      <dt id="CAPS_ATTRS-constant" class="">CAPS_ATTRS =
+        <div class="docstring">
   <div class="discussion">
     
 <p>Form fields which should be saved capitalized.</p>
@@ -147,11 +157,10 @@
   
 
 </div>
-        </dt>
-        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>iata_code</span><span class='words_sep'> </span><span class='tstring_content'>icao_code</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
-      
-    </dl>
-  
+      </dt>
+      <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>iata_code</span><span class='words_sep'> </span><span class='tstring_content'>icao_code</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
+    
+  </dl>
 
 
 
@@ -209,7 +218,9 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of Airlines, with a hash for each Airline containing the id, airline name, slug, IATA code, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown by that Airline, sorted by number of flights descending.</p>
+<p>Returns an array of Airlines, with a hash for each Airline containing the
+id, airline name, slug, IATA code, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown by
+that Airline, sorted by number of flights descending.</p>
 </div></span>
   
 </li>
@@ -233,7 +244,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Accepts a flyer, the current user, and a date range, and returns all airlines that had their first administrated flight in this date range.</p>
+<p>Accepts a flyer, the current user, and a date range, and returns all
+airlines that had their first administrated flight in this date range.</p>
 </div></span>
   
 </li>
@@ -290,7 +302,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns true if the Airline is the marketing, operating, or codeshare airline for any <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
+<p>Returns true if the Airline is the marketing, operating, or codeshare
+airline for any <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 </div></span>
   
 </li>
@@ -362,7 +375,9 @@
       
         &mdash;
         <div class='inline'>
-<p>whether or not to return the provided IATA code if an ICAO code is not found. If this is false, the method will return nil if an ICAO code is not found.</p>
+<p>whether or not to return the provided IATA code if an ICAO code is not
+found. If this is false, the method will return nil if an ICAO code is not
+found.</p>
 </div>
       
     </li>
@@ -433,9 +448,12 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of Airlines, with a hash for each Airline containing the id, airline name, slug, IATA code, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown by that Airline, sorted by number of flights descending.</p>
+<p>Returns an array of Airlines, with a hash for each Airline containing the
+id, airline name, slug, IATA code, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> flown by
+that Airline, sorted by number of flights descending.</p>
 
-<p>Used on various “index” and “show” views to generate a table of airlines and their flight counts.</p>
+<p>Used on various “index” and “show” views to generate a table of airlines
+and their flight counts.</p>
 
 
   </div>
@@ -504,12 +522,11 @@
         <span class='type'>(<tt>:airline</tt>, <tt>:operator</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>:airline</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
-<p>whether to calculate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> counts for Airlines administrating flights (:airline) or Airlines operating flights (:operator)</p>
+<p>whether to calculate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> counts for Airlines administrating flights
+(:airline) or Airlines operating flights (:operator)</p>
 </div>
       
     </li>
@@ -616,7 +633,9 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Accepts a flyer, the current user, and a date range, and returns all airlines that had their first administrated flight in this date range. Used on <span class='object_link'><a href="FlightsController.html#show_date_range-instance_method" title="FlightsController#show_date_range (method)">FlightsController#show_date_range</a></span> to highlight new airlines.</p>
+<p>Accepts a flyer, the current user, and a date range, and returns all
+airlines that had their first administrated flight in this date range. Used
+on <span class='object_link'><a href="FlightsController.html#show_date_range-instance_method" title="FlightsController#show_date_range (method)">FlightsController#show_date_range</a></span> to highlight new airlines.</p>
 
 
   </div>
@@ -681,12 +700,11 @@
         <span class='type'>(<tt>:airline</tt>, <tt>:operator</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>:airline</tt>)</em>
-      
       
         &mdash;
         <div class='inline'>
-<p>whether to calculate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> counts for Airlines administrating flights (:airline) or Airlines operating flights (:operator)</p>
+<p>whether to calculate <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> counts for Airlines administrating flights
+(:airline) or Airlines operating flights (:operator)</p>
 </div>
       
     </li>
@@ -759,7 +777,8 @@
     
 <p>Formats the name of this Airline.</p>
 
-<p>This method currently applies no additional formatting; it&#39;s used as a placeholder in case formatting is needed in the future.</p>
+<p>This method currently applies no additional formatting; it&#39;s used as a
+placeholder in case formatting is needed in the future.</p>
 
 
   </div>
@@ -818,7 +837,9 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns true if the Airline is the marketing, operating, or codeshare airline for any <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. Used to check whether or not the airline can be deleted without affecting any flights.</p>
+<p>Returns true if the Airline is the marketing, operating, or codeshare
+airline for any <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>. Used to check whether or not the airline can be
+deleted without affecting any flights.</p>
 
 
   </div>
@@ -870,9 +891,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 20 10:46:31 2020 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.7.1).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>

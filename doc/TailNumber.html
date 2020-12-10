@@ -6,15 +6,15 @@
 <title>
   Module: TailNumber
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "TailNumber";
   relpath = '';
 </script>
@@ -88,7 +88,16 @@
     
 <p>Provides utilities for interacting with tail numbers.</p>
 
-<p>Tail number uniqueness is considered case insensitive and insensitive to the presence or absence of dashes. However, tail numbers are nearly always capitalized, and most countries have either no dash in their tail numbers or a dash that&#39;s always in the same position in the tail number. Throughout this module, documentation will refer to formatted tail numbers and simplified tail numbers. A <strong>formatted</strong> tail number is a string with dashes in the appropriate place for the country (e.g. <code>VH-OQI</code>, <code>C-FGRY</code>, <code>N909EV</code>), and a <strong>simplified</strong> tail number is a string with all dashes removed (e.g. <code>VHOQI</code>, <code>CFGRY</code>, <code>N909EV</code>).</p>
+<p>Tail number uniqueness is considered case insensitive and insensitive to
+the presence or absence of dashes. However, tail numbers are nearly always
+capitalized, and most countries have either no dash in their tail numbers
+or a dash that&#39;s always in the same position in the tail number.
+Throughout this module, documentation will refer to formatted tail numbers
+and simplified tail numbers. A <strong>formatted</strong> tail number is a
+string with dashes in the appropriate place for the country (e.g.
+<code>VH-OQI</code>, <code>C-FGRY</code>, <code>N909EV</code>), and a
+<strong>simplified</strong> tail number is a string with all dashes removed
+(e.g. <code>VHOQI</code>, <code>CFGRY</code>, <code>N909EV</code>).</p>
 
 
   </div>
@@ -153,7 +162,10 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of tail numbers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> codes (ICAO preferred), <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> manufacturers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> slugs, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that tail number, sorted by number of flights descending.</p>
+<p>Returns an array of tail numbers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> codes (ICAO preferred),
+<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> manufacturers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> names,
+<span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> slugs, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that tail number, sorted
+by number of flights descending.</p>
 </div></span>
   
 </li>
@@ -315,9 +327,13 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of tail numbers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> codes (ICAO preferred), <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> manufacturers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> slugs, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that tail number, sorted by number of flights descending.</p>
+<p>Returns an array of tail numbers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> codes (ICAO preferred),
+<span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> manufacturers, <span class='object_link'><a href="AircraftFamily.html" title="AircraftFamily (class)">AircraftFamily</a></span> names, <span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> names,
+<span class='object_link'><a href="Airline.html" title="Airline (class)">Airline</a></span> slugs, and number of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> on that tail number, sorted
+by number of flights descending.</p>
 
-<p>Used on various “index” and “show” views to generate a table of tail numbers and their flight counts.</p>
+<p>Used on various “index” and “show” views to generate a table of tail
+numbers and their flight counts.</p>
 
 
   </div>
@@ -607,7 +623,9 @@
     
 <p>Capitalizes a tail number and strips non-alphanumeric characters.</p>
 
-<p>Tail number uniqueness is considered case insensitive and insensitive to the presence or absence of dashes, so this method puts the tail number into a standard simplified format for saving it into the database.</p>
+<p>Tail number uniqueness is considered case insensitive and insensitive to
+the presence or absence of dashes, so this method puts the tail number into
+a standard simplified format for saving it into the database.</p>
 
 
   </div>
@@ -687,9 +705,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 20 10:46:30 2020 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.7.1).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>

@@ -6,15 +6,15 @@
 <title>
   Class: AirportsController
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "AirportsController";
   relpath = '';
 </script>
@@ -267,7 +267,8 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Shows details for a particular <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> which use it.</p>
+<p>Shows details for a particular <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>
+which use it.</p>
 </div></span>
   
 </li>
@@ -370,6 +371,11 @@
       <pre class="lines">
 
 
+136
+137
+138
+139
+140
 141
 142
 143
@@ -384,15 +390,10 @@
 152
 153
 154
-155
-156
-157
-158
-159
-160</pre>
+155</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 141</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='ivar'>@airport</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_airport_params'>airport_params</span><span class='rparen'>)</span>
@@ -460,21 +461,21 @@
       <pre class="lines">
 
 
+187
+188
+189
+190
+191
 192
 193
 194
 195
 196
 197
-198
-199
-200
-201
-202
-203</pre>
+198</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 192</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 187</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_destroy'>destroy</span>
   <span class='ivar'>@airport</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -534,13 +535,13 @@
       <pre class="lines">
 
 
-167
-168
-169
-170</pre>
+162
+163
+164
+165</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 167</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 162</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_edit'>edit</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -688,13 +689,13 @@
       <pre class="lines">
 
 
-131
-132
-133
-134</pre>
+126
+127
+128
+129</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 131</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 126</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_new'>new</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:form_location</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -717,7 +718,8 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Shows details for a particular <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> which use it.</p>
+<p>Shows details for a particular <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>
+which use it.</p>
 
 <p><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> details:</p>
 <ul><li>
@@ -726,8 +728,6 @@
 <p>latitude and longitude</p>
 </li><li>
 <p>IATA and ICAO codes</p>
-</li><li>
-<p>a <a href="https://www.pbogard.com/projects/terminal-silhouettes" target="_parent" title="terminal silhouette">terminal silhouette</a></p>
 </li></ul>
 
 <p><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> data:</p>
@@ -736,9 +736,11 @@
 </li><li>
 <p>the total distance flown</p>
 </li><li>
-<p>a table of <span class='object_link'><a href="TripsController.html#show_section-instance_method" title="TripsController#show_section (method)">trip sections</a></span> with a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span> of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in those sections</p>
+<p>a table of <span class='object_link'><a href="TripsController.html#show_section-instance_method" title="TripsController#show_section (method)">trip sections</a></span> with a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span>
+of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in those sections</p>
 </li><li>
-<p>a table of <span class='object_link'><a href="Trip.html" title="Trip (class)">Trips</a></span> with a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span> of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in those trips</p>
+<p>a table of <span class='object_link'><a href="Trip.html" title="Trip (class)">Trips</a></span> with a <span class='object_link'><a href="FlightsMap.html" title="FlightsMap (class)">FlightsMap</a></span> of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in
+those trips</p>
 </li><li>
 <p>a table of <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span></p>
 </li><li>
@@ -770,19 +772,14 @@
   
 </ul>
 
-  <p class="tag_title">See Also:</p>
-  <ul class="see">
-    
-      <li><a href="https://www.pbogard.com/projects/terminal-silhouettes" target="_parent" title="Terminal Silhouettes">Terminal Silhouettes</a></li>
-    
-  </ul>
-
 </div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
+54
+55
 56
 57
 58
@@ -846,15 +843,10 @@
 116
 117
 118
-119
-120
-121
-122
-123
-124</pre>
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 54</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
   <span class='ivar'>@logo_used</span> <span class='op'>=</span> <span class='kw'>true</span>
@@ -917,9 +909,6 @@
     <span class='rparen'>)</span><span class='comma'>,</span>
   <span class='rbrace'>}</span>
   <span class='id identifier rubyid_render_map_extension'>render_map_extension</span><span class='lparen'>(</span><span class='ivar'>@maps</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:map_id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:extension</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-
-  <span class='comment'># Check for presence of terminal silhouette:
-</span>  <span class='ivar'>@terminal_exists</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="ExternalImage.html" title="ExternalImage (module)">ExternalImage</a></span></span><span class='period'>.</span><span class='id identifier rubyid_exists?'><span class='object_link'><a href="ExternalImage.html#exists%3F-class_method" title="ExternalImage.exists? (method)">exists?</a></span></span><span class='lparen'>(</span><span class='ivar'>@airport</span><span class='period'>.</span><span class='id identifier rubyid_terminal_silhouette_path'>terminal_silhouette_path</span><span class='rparen'>)</span>
  
 <span class='kw'>rescue</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span>
   <span class='id identifier rubyid_flash'>flash</span><span class='lbracket'>[</span><span class='symbol'>:warning</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>%Q(</span><span class='tstring_content'>We couldnʼt find an airport matching &lt;span class=&quot;param-highlight&quot;&gt;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/span&gt;. Instead, weʼll give you a list of airports.</span><span class='tstring_end'>)</span></span>
@@ -971,18 +960,18 @@
       <pre class="lines">
 
 
+172
+173
+174
+175
+176
 177
 178
 179
-180
-181
-182
-183
-184
-185</pre>
+180</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 177</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/airports_controller.rb', line 172</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
   <span class='ivar'>@airport</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span></span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1003,9 +992,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 20 10:46:32 2020 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.7.1).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>

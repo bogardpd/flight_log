@@ -94,15 +94,4 @@
 
 	<p>The number of flights using an airport may not be the same as the number of visits to that airport. Each time I used an airport as a layover, it counted as two flights but only one visit.</p>
 
-	<% if @terminal_exists %>
-		<h2 id="terminal">Terminal Silhouette</h2>
-		<div class="illustration-container">
-			<%= link_to(image_tag(@airport.terminal_silhouette_path, title: "#{@airport.iata_code} terminal silhouette", class: "terminal-silhouette"), @airport.terminal_silhouette_path, target: :_blank) %>
-		</div>
-		<div class="credit illustration-credit">
-			Terminal silhouette created by <%= link_to("Paul Bogard", "https://paulbogard.net/terminal-silhouettes/", target: :_blank) %>
-		</div>
-	<% end %>
-
-
 <% end %>

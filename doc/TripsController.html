@@ -6,15 +6,15 @@
 <title>
   Class: TripsController
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.12
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
-<script type="text/javascript">
+<script type="text/javascript" charset="utf-8">
   pathId = "TripsController";
   relpath = '';
 </script>
@@ -795,7 +795,14 @@
     
 <p>Shows flight data for a particular section of a <span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span>.</p>
 
-<p>Trip sections are used to distinguish between layovers and multiple visits to a given airport within a given <span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span>, in the situation where two flights are chronologically consecutive and the destination <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> of the first flight is the same as the origin of the second. If these two flights share the same <span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span> and trip section, then the time between the two flights is a layover and only counts as one visit to shared <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>. Otherwise, the traveler left the airport in between the flights, and it counts as two separate visits to the shared <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+<p>Trip sections are used to distinguish between layovers and multiple visits
+to a given airport within a given <span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span>, in the situation where two
+flights are chronologically consecutive and the destination <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> of
+the first flight is the same as the origin of the second. If these two
+flights share the same <span class='object_link'><a href="Trip.html" title="Trip (class)">Trip</a></span> and trip section, then the time between the
+two flights is a layover and only counts as one visit to shared <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.
+Otherwise, the traveler left the airport in between the flights, and it
+counts as two separate visits to the shared <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
 
 <p><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> data:</p>
 <ul><li>
@@ -805,7 +812,9 @@
 </li><li>
 <p>the total distance flown</p>
 </li><li>
-<p>the layover ratio (the total distance flown divided by the distance between the first origin and final destination <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>), if this section has more than one flight.</p>
+<p>the layover ratio (the total distance flown divided by the distance between
+the first origin and final destination <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>), if this section
+has more than one flight.</p>
 </li></ul>
 
 
@@ -892,7 +901,7 @@
   <span class='ivar'>@summary_items</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@summary_items</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Trip</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_view_context'>view_context</span><span class='period'>.</span><span class='id identifier rubyid_link_to'>link_to</span><span class='lparen'>(</span><span class='ivar'>@trip</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_trip_path'>trip_path</span><span class='lparen'>(</span><span class='ivar'>@trip</span><span class='rparen'>)</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='ivar'>@flights</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span> <span class='op'>&gt;</span> <span class='int'>1</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_layover_ratio'>layover_ratio</span>
-    <span class='ivar'>@summary_items</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Layover Ratio</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_view_context'>view_context</span><span class='period'>.</span><span class='id identifier rubyid_link_to'>link_to</span><span class='lparen'>(</span><span class='id identifier rubyid_layover_ratio'>layover_ratio</span><span class='period'>.</span><span class='id identifier rubyid_round'>round</span><span class='lparen'>(</span><span class='int'>3</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>https://onehundredairports.com/2019/02/07/my-worst-layovers/</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>target:</span> <span class='symbol'>:_blank</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='ivar'>@summary_items</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Layover Ratio</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_view_context'>view_context</span><span class='period'>.</span><span class='id identifier rubyid_link_to'>link_to</span><span class='lparen'>(</span><span class='id identifier rubyid_layover_ratio'>layover_ratio</span><span class='period'>.</span><span class='id identifier rubyid_round'>round</span><span class='lparen'>(</span><span class='int'>3</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>https://paulbogard.net/blog/20190207-my-worst-layovers/</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>target:</span> <span class='symbol'>:_blank</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
   
 <span class='kw'>rescue</span> <span class='const'>ActiveRecord</span><span class='op'>::</span><span class='const'>RecordNotFound</span>
@@ -977,9 +986,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Sep 20 10:46:31 2020 by
+  Generated by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.7.1).
+  0.9.12 (ruby-2.5.1).
 </div>
 
     </div>

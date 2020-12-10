@@ -59,13 +59,6 @@ class Airport < ApplicationRecord
     return self.id == id_1 ? id_2 : id_1
   end
 
-  # Returns the image path for this airport's terminal silhouette.
-  #
-  # @return [String] an image path
-  def terminal_silhouette_path
-    return ExternalImage.url("projects/terminal-silhouettes/svg/#{self.slug}.svg")
-  end
-  
   # Accepts an airport IATA code, and returns the matching ICAO code.
   #
   # @param iata [String] the airport IATA code to look up
