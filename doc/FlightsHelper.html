@@ -6,15 +6,15 @@
 <title>
   Module: FlightsHelper
   
-    &mdash; Documentation by YARD 0.9.12
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "FlightsHelper";
   relpath = '';
 </script>
@@ -151,8 +151,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Accepts an icon type, interpretation, and icon slug, and returns an
-image_tag for an icon.</p>
+<p>Accepts an icon type, interpretation, and icon slug, and returns an image_tag for an icon.</p>
 </div></span>
   
 </li>
@@ -176,8 +175,7 @@ image_tag for an icon.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Accepts an icon type and an interpretation, and returns the text of the
-interpretation, with an image_tag for an icon if appropriate.</p>
+<p>Accepts an icon type and an interpretation, and returns the text of the interpretation, with an image_tag for an icon if appropriate.</p>
 </div></span>
   
 </li>
@@ -349,8 +347,7 @@ interpretation, with an image_tag for an icon if appropriate.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Accepts an icon type, interpretation, and icon slug, and returns an
-image_tag for an icon.</p>
+<p>Accepts an icon type, interpretation, and icon slug, and returns an image_tag for an icon.</p>
 
 
   </div>
@@ -370,8 +367,7 @@ image_tag for an icon.</p>
       
         &mdash;
         <div class='inline'>
-<p>whether this icon should be for an airline logo, airport country flag, TSA
-PreCheck selectee status, or travel class stars</p>
+<p>whether this icon should be for an airline logo, airport country flag, TSA PreCheck selectee status, or travel class stars</p>
 </div>
       
     </li>
@@ -403,8 +399,7 @@ PreCheck selectee status, or travel class stars</p>
       
         &mdash;
         <div class='inline'>
-<p>A unique identifier for an instance of this type of icon. (For example, an
-airline slug used to find an airline icon&#39;s filename.)</p>
+<p>A unique identifier for an instance of this type of icon. (For example, an airline slug used to find an airline icon&#39;s filename.)</p>
 </div>
       
     </li>
@@ -506,10 +501,7 @@ airline slug used to find an airline icon&#39;s filename.)</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Accepts an icon type and an interpretation, and returns the text of the
-interpretation, with an image_tag for an icon if appropriate. Used to
-augment BCBP interpretations in a <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> table, such as on
-<span class='object_link'><a href="FlightsController.html#show-instance_method" title="FlightsController#show (method)">FlightsController#show</a></span> or <span class='object_link'><a href="FlightsController.html#show_boarding_pass-instance_method" title="FlightsController#show_boarding_pass (method)">FlightsController#show_boarding_pass</a></span>.</p>
+<p>Accepts an icon type and an interpretation, and returns the text of the interpretation, with an image_tag for an icon if appropriate. Used to augment BCBP interpretations in a <span class='object_link'><a href="BoardingPass.html" title="BoardingPass (class)">BoardingPass</a></span> table, such as on <span class='object_link'><a href="FlightsController.html#show-instance_method" title="FlightsController#show (method)">FlightsController#show</a></span> or <span class='object_link'><a href="FlightsController.html#show_boarding_pass-instance_method" title="FlightsController#show_boarding_pass (method)">FlightsController#show_boarding_pass</a></span>.</p>
 
 
   </div>
@@ -529,8 +521,7 @@ augment BCBP interpretations in a <span class='object_link'><a href="BoardingPas
       
         &mdash;
         <div class='inline'>
-<p>whether this icon should be for an airline logo, airport country flag, TSA
-PreCheck selectee status, or travel class stars</p>
+<p>whether this icon should be for an airline logo, airport country flag, TSA PreCheck selectee status, or travel class stars</p>
 </div>
       
     </li>
@@ -546,9 +537,7 @@ PreCheck selectee status, or travel class stars</p>
       
         &mdash;
         <div class='inline'>
-<p>The interpretation of what the raw value means. Can either be a string of
-the interpretation, or a hash with the interpretation string under the text
-key, and a slug for an icon under the icon_slug key.</p>
+<p>The interpretation of what the raw value means. Can either be a string of the interpretation, or a hash with the interpretation string under the text key, and a slug for an icon under the icon_slug key.</p>
 </div>
       
     </li>
@@ -638,8 +627,7 @@ key, and a slug for an icon under the icon_slug key.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Renders a star rating image based on a number between 0 and 5, inclusive.
-Used for visually depicting the quality of different <span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClasses</a></span>.</p>
+<p>Renders a star rating image based on a number between 0 and 5, inclusive. Used for visually depicting the quality of different <span class='object_link'><a href="TravelClass.html" title="TravelClass (module)">TravelClasses</a></span>.</p>
 
 
   </div>
@@ -672,11 +660,12 @@ Used for visually depicting the quality of different <span class='object_link'><
         <span class='type'>(<tt>:left</tt>, <tt>:right</tt>, <tt>:both</tt>, <tt>:nil</tt>)</span>
       
       
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
       
         &mdash;
         <div class='inline'>
-<p>Defines whether the image is inline to the left of text, to the right of
-text, in between text, or not inline. Used to determine margin styles.</p>
+<p>Defines whether the image is inline to the left of text, to the right of text, in between text, or not inline. Used to determine margin styles.</p>
 </div>
       
     </li>
@@ -740,9 +729,9 @@ text, in between text, or not inline. Used to determine margin styles.</p>
 </div>
 
       <div id="footer">
-  Generated by
+  Generated on Mon Feb 15 15:38:56 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.12 (ruby-2.5.1).
+  0.9.25 (ruby-2.7.1).
 </div>
 
     </div>

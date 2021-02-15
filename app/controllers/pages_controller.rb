@@ -88,12 +88,12 @@ class PagesController < ApplicationController
       s3 = Aws::S3::Resource.new(client: client)
       obj = s3.bucket("pbogardcom-images").object(aws_path)
 
+      content_type = "image/gif"
       if obj.exists?
         # AWS cached map exists, so use cached map.
         image_stream = obj.get[:body].string
       else
         # AWS cached map does not exist, so get it from gcmap and save to cache.
-        content_type = "image/gif"
         response.headers["Cache-Control"] = "public, max-age=#{1.year.to_i}"
         response.headers["Content-Type"] = content_type
         response.headers["Content-Disposition"] = "inline"
@@ -106,7 +106,7 @@ class PagesController < ApplicationController
         end
       end
 
-      render body: image_stream
+      render(body: image_stream, content_type: content_type)
 
     else
       raise ActionController::RoutingError.new("Not Found")

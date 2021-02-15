@@ -6,15 +6,15 @@
 <title>
   Class: RoutesController
   
-    &mdash; Documentation by YARD 0.9.12
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "RoutesController";
   relpath = '';
 </script>
@@ -108,27 +108,13 @@
     
 <p>Controls <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> pages and actions.</p>
 
-<p>Note that this specifically refers to flight routes, and not routes in the
-Ruby on Rails routing sense.</p>
+<p>Note that this specifically refers to flight routes, and not routes in the Ruby on Rails routing sense.</p>
 
-<p>The <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model is largely used to maintain a table of route distances
-between <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs; most interaction that the application has with a
-<span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> is actually internally managed as the pair of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span>
-associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
+<p>The <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model is largely used to maintain a table of route distances between <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs; most interaction that the application has with a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> is actually internally managed as the pair of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 
-<p>The #new and #create actions are not provided because <span class='object_link'><a href="Route.html" title="Route (class)">Routes</a></span> are
-not created manually; instead, they are automatically created when
-<span class='object_link'><a href="Route.html#distance_by_airport-class_method" title="Route.distance_by_airport (method)">Route.distance_by_airport</a></span> is called by any view needing the distance of a
-<span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> that hasn&#39;t been created yet, or when a verified user navigates
-to <span class='object_link'><a href="#edit-instance_method" title="RoutesController#edit (method)">#edit</a></span> from the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> view. (Since the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> action is defined by
-two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> parameters rather than a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> parameter, it can show a
-<span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> which does not yet exist in the database.)</p>
+<p>The #new and #create actions are not provided because <span class='object_link'><a href="Route.html" title="Route (class)">Routes</a></span> are not created manually; instead, they are automatically created when <span class='object_link'><a href="Route.html#distance_by_airport-class_method" title="Route.distance_by_airport (method)">Route.distance_by_airport</a></span> is called by any view needing the distance of a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> that hasn&#39;t been created yet, or when a verified user navigates to <span class='object_link'><a href="#edit-instance_method" title="RoutesController#edit (method)">#edit</a></span> from the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> view. (Since the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> action is defined by two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> parameters rather than a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> parameter, it can show a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> which does not yet exist in the database.)</p>
 
-<p>Likewise, a #destroy action is not provided because maintaining the route
-distance saves a <span class='object_link'><a href="FlightXML.html" title="FlightXML (module)">FlightXML</a></span> API distance lookup in the future if a flight
-is ever added with this route. <span class='object_link'><a href="#index-instance_method" title="RoutesController#index (method)">#index</a></span> generates its <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> list from
-<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs rather than just querying the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model, so
-unused routes won&#39;t be seen.</p>
+<p>Likewise, a #destroy action is not provided because maintaining the route distance saves a <span class='object_link'><a href="FlightXML.html" title="FlightXML (module)">FlightXML</a></span> API distance lookup in the future if a flight is ever added with this route. <span class='object_link'><a href="#index-instance_method" title="RoutesController#index (method)">#index</a></span> generates its <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> list from <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs rather than just querying the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model, so unused routes won&#39;t be seen.</p>
 
 
   </div>
@@ -217,8 +203,7 @@ unused routes won&#39;t be seen.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Shows details for a particular <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>
-which use it.</p>
+<p>Shows details for a particular <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> which use it.</p>
 </div></span>
   
 </li>
@@ -392,9 +377,7 @@ which use it.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Shows a table of all <span class='object_link'><a href="Route.html" title="Route (class)">Routes</a></span> flown. Note that this list of routes is
-generated by looking at the <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs associated with the list of
-<span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, rather than querying the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model.</p>
+<p>Shows a table of all <span class='object_link'><a href="Route.html" title="Route (class)">Routes</a></span> flown. Note that this list of routes is generated by looking at the <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs associated with the list of <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, rather than querying the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model.</p>
 
 
   </div>
@@ -472,14 +455,9 @@ generated by looking at the <span class='object_link'><a href="Airport.html" tit
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Shows details for a particular <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>
-which use it.</p>
+<p>Shows details for a particular <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> and data for all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> which use it.</p>
 
-<p>Note that this is not directly showing an instance of the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model,
-but instead takes two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> as parameters. This allows the
-application to show details for flights involving a certain <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pair,
-whether or not a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> has been created for it. However, if the
-appropriate <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> exists, its distance will be used in this view.</p>
+<p>Note that this is not directly showing an instance of the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model, but instead takes two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> as parameters. This allows the application to show details for flights involving a certain <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pair, whether or not a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> has been created for it. However, if the appropriate <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> exists, its distance will be used in this view.</p>
 
 <p><span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> details:</p>
 <ul><li>
@@ -494,11 +472,9 @@ appropriate <span class='object_link'><a href="Route.html" title="Route (class)"
 </li><li>
 <p>the total distance flown</p>
 </li><li>
-<p>a table of <span class='object_link'><a href="TripsController.html#show_section-instance_method" title="TripsController#show_section (method)">trip sections</a></span> using this route
-with a <span class='object_link'><a href="HighlightedRoutesMap.html" title="HighlightedRoutesMap (class)">HighlightedRoutesMap</a></span> of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in those sections</p>
+<p>a table of <span class='object_link'><a href="TripsController.html#show_section-instance_method" title="TripsController#show_section (method)">trip sections</a></span> using this route with a <span class='object_link'><a href="HighlightedRoutesMap.html" title="HighlightedRoutesMap (class)">HighlightedRoutesMap</a></span> of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in those sections</p>
 </li><li>
-<p>a table of <span class='object_link'><a href="Trip.html" title="Trip (class)">Trips</a></span> using this route with a <span class='object_link'><a href="HighlightedRoutesMap.html" title="HighlightedRoutesMap (class)">HighlightedRoutesMap</a></span> of
-all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in those trips</p>
+<p>a table of <span class='object_link'><a href="Trip.html" title="Trip (class)">Trips</a></span> using this route with a <span class='object_link'><a href="HighlightedRoutesMap.html" title="HighlightedRoutesMap (class)">HighlightedRoutesMap</a></span> of all <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in those trips</p>
 </li><li>
 <p>a table of <span class='object_link'><a href="Airline.html" title="Airline (class)">Airlines</a></span></p>
 </li><li>
@@ -704,9 +680,9 @@ all <span class='object_link'><a href="Flight.html" title="Flight (class)">Fligh
 </div>
 
       <div id="footer">
-  Generated by
+  Generated on Mon Feb 15 15:38:58 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.12 (ruby-2.5.1).
+  0.9.25 (ruby-2.7.1).
 </div>
 
     </div>

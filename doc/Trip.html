@@ -6,15 +6,15 @@
 <title>
   Class: Trip
   
-    &mdash; Documentation by YARD 0.9.12
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "Trip";
   relpath = '';
 </script>
@@ -108,18 +108,9 @@
     
 <p>Defines a model for trips.</p>
 
-<p>Within the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> model, a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> contains both a reference to a Trip
-ID and an integer trip section number. Trip sections are used to
-distinguish between layovers and multiple visits to a given airport within
-a given Trip, in the situation where two <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> are
-chronologically consecutive and the destination <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> of the first
-<span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is the same as the origin of the second. If these two flights
-share the same Trip ID and trip section, then the time between the two
-<span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> is a layover and only counts as one visit to shared
-<span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>. Otherwise, the traveler left the airport in between the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, and it counts as two separate visits to the shared <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
+<p>Within the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> model, a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> contains both a reference to a Trip ID and an integer trip section number. Trip sections are used to distinguish between layovers and multiple visits to a given airport within a given Trip, in the situation where two <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> are chronologically consecutive and the destination <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> of the first <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is the same as the origin of the second. If these two flights share the same Trip ID and trip section, then the time between the two <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> is a layover and only counts as one visit to shared <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>. Otherwise, the traveler left the airport in between the <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>, and it counts as two separate visits to the shared <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span>.</p>
 
-<p>Trips can be marked as hidden, which means they (and their <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>) will not be included in views and flight data for anybody other
-than the <span class='object_link'><a href="User.html" title="User (class)">User</a></span> who they belong to.</p>
+<p>Trips can be marked as hidden, which means they (and their <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>) will not be included in views and flight data for anybody other than the <span class='object_link'><a href="User.html" title="User (class)">User</a></span> who they belong to.</p>
 
 
   </div>
@@ -128,11 +119,16 @@ than the <span class='object_link'><a href="User.html" title="User (class)">User
   
 
 </div>
-  <h2>Constant Summary</h2>
-  <dl class="constants">
-    
-      <dt id="PURPOSES-constant" class="">PURPOSES =
-        <div class="docstring">
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="PURPOSES-constant" class="">PURPOSES =
+          <div class="docstring">
   <div class="discussion">
     
 <p>Valid trip purposes.</p>
@@ -144,17 +140,16 @@ than the <span class='object_link'><a href="User.html" title="User (class)">User
   
 
 </div>
-      </dt>
-      <dd><pre class="code"><span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>business</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Business</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
+        </dt>
+        <dd><pre class="code"><span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>business</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Business</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
 <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>mixed</span><span class='tstring_end'>&quot;</span></span>    <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Mixed</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span>
 <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>personal</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Personal</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span></pre></dd>
-    
-      <dt id="HIDDEN_MARKER-constant" class="">HIDDEN_MARKER =
-        <div class="docstring">
+      
+        <dt id="HIDDEN_MARKER-constant" class="">HIDDEN_MARKER =
+          <div class="docstring">
   <div class="discussion">
     
-<p>HTML to use to indicate a trip is hidden, or a flight is part of a hidden
-trip.</p>
+<p>HTML to use to indicate a trip is hidden, or a flight is part of a hidden trip.</p>
 
 
   </div>
@@ -163,11 +158,11 @@ trip.</p>
   
 
 </div>
-      </dt>
-      <dd><pre class="code"><span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span><span class='period'>.</span><span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hidden</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hidden-marker</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></pre></dd>
-    
-      <dt id="NULL_ATTRS-constant" class="">NULL_ATTRS =
-        <div class="docstring">
+        </dt>
+        <dd><pre class="code"><span class='const'>ActionController</span><span class='op'>::</span><span class='const'>Base</span><span class='period'>.</span><span class='id identifier rubyid_helpers'>helpers</span><span class='period'>.</span><span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:div</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Hidden</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hidden-marker</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span></pre></dd>
+      
+        <dt id="NULL_ATTRS-constant" class="">NULL_ATTRS =
+          <div class="docstring">
   <div class="discussion">
     
 <p>Form fields which should be saved as nil when the field is blank.</p>
@@ -179,10 +174,11 @@ trip.</p>
   
 
 </div>
-      </dt>
-      <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>comment</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
-    
-  </dl>
+        </dt>
+        <dd><pre class="code"><span class='qwords_beg'>%w(</span><span class='words_sep'> </span><span class='tstring_content'>comment</span><span class='words_sep'> </span><span class='tstring_end'>)</span></span></pre></dd>
+      
+    </dl>
+  
 
 
 
@@ -216,10 +212,7 @@ trip.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns an array of all trips associated with a collection of flights,
-including ID, name, hidden status, departure date, and an array of trip
-sections (with section numbers and departure dates) that also match the
-flights.</p>
+<p>Returns an array of all trips associated with a collection of flights, including ID, name, hidden status, departure date, and an array of trip sections (with section numbers and departure dates) that also match the flights.</p>
 </div></span>
   
 </li>
@@ -243,8 +236,7 @@ flights.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Generates the WHERE clause of a SQL query for all flights in all sections
-specified in a <span class='object_link'><a href="#matching_trips_and_sections-class_method" title="Trip.matching_trips_and_sections (method)">Trip.matching_trips_and_sections</a></span> array.</p>
+<p>Generates the WHERE clause of a SQL query for all flights in all sections specified in a <span class='object_link'><a href="#matching_trips_and_sections-class_method" title="Trip.matching_trips_and_sections (method)">Trip.matching_trips_and_sections</a></span> array.</p>
 </div></span>
   
 </li>
@@ -325,8 +317,7 @@ specified in a <span class='object_link'><a href="#matching_trips_and_sections-c
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Takes a flight departure time, and returns the trip section this <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>
-most likely belongs to.</p>
+<p>Takes a flight departure time, and returns the trip section this <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> most likely belongs to.</p>
 </div></span>
   
 </li>
@@ -350,9 +341,7 @@ most likely belongs to.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Within a trip section, calculates the ratio of the sum of the direct flight
-distances of each <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> to the distance of a direct flight between the
-first origin and last destination.</p>
+<p>Within a trip section, calculates the ratio of the sum of the direct flight distances of each <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> to the distance of a direct flight between the first origin and last destination.</p>
 </div></span>
   
 </li>
@@ -410,16 +399,11 @@ first origin and last destination.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns an array of all trips associated with a collection of flights,
-including ID, name, hidden status, departure date, and an array of trip
-sections (with section numbers and departure dates) that also match the
-flights.</p>
+<p>Returns an array of all trips associated with a collection of flights, including ID, name, hidden status, departure date, and an array of trip sections (with section numbers and departure dates) that also match the flights.</p>
 
-<p>Sections which do not match any flights will not be included, even if their
-parent trip does match one or more flights.</p>
+<p>Sections which do not match any flights will not be included, even if their parent trip does match one or more flights.</p>
 
-<p>Used by <span class='object_link'><a href="AirportsController.html#show-instance_method" title="AirportsController#show (method)">AirportsController#show</a></span> to generate tables of trips and trip
-sections matching an airport.</p>
+<p>Used by <span class='object_link'><a href="AirportsController.html#show-instance_method" title="AirportsController#show (method)">AirportsController#show</a></span> to generate tables of trips and trip sections matching an airport.</p>
 
 
   </div>
@@ -471,8 +455,7 @@ sections matching an airport.</p>
       
         &mdash;
         <div class='inline'>
-<p>trips and subsections which include one or more <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in the
-collection.</p>
+<p>trips and subsections which include one or more <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> in the collection.</p>
 </div>
       
     </li>
@@ -542,8 +525,7 @@ collection.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Generates the WHERE clause of a SQL query for all flights in all sections
-specified in a <span class='object_link'><a href="#matching_trips_and_sections-class_method" title="Trip.matching_trips_and_sections (method)">matching_trips_and_sections</a></span> array.</p>
+<p>Generates the WHERE clause of a SQL query for all flights in all sections specified in a <span class='object_link'><a href="#matching_trips_and_sections-class_method" title="Trip.matching_trips_and_sections (method)">matching_trips_and_sections</a></span> array.</p>
 
 
   </div>
@@ -629,8 +611,7 @@ specified in a <span class='object_link'><a href="#matching_trips_and_sections-c
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a collection of trip IDs, names, and departure dates. Used in
-<span class='object_link'><a href="TripsController.html#index-instance_method" title="TripsController#index (method)">TripsController#index</a></span> to show a list of trips.</p>
+<p>Returns a collection of trip IDs, names, and departure dates. Used in <span class='object_link'><a href="TripsController.html#index-instance_method" title="TripsController#index (method)">TripsController#index</a></span> to show a list of trips.</p>
 
 
   </div>
@@ -741,9 +722,7 @@ specified in a <span class='object_link'><a href="#matching_trips_and_sections-c
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a collection of Trips which have no <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>. Used in
-<span class='object_link'><a href="TripsController.html#index-instance_method" title="TripsController#index (method)">TripsController#index</a></span> to allow a verified <span class='object_link'><a href="User.html" title="User (class)">User</a></span> to select a Trip which
-they have not yet added any <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> to.</p>
+<p>Returns a collection of Trips which have no <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span>. Used in <span class='object_link'><a href="TripsController.html#index-instance_method" title="TripsController#index (method)">TripsController#index</a></span> to allow a verified <span class='object_link'><a href="User.html" title="User (class)">User</a></span> to select a Trip which they have not yet added any <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> to.</p>
 
 
   </div>
@@ -808,9 +787,7 @@ they have not yet added any <span class='object_link'><a href="Flight.html" titl
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Takes a flight departure time, and returns the trip section this <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>
-most likely belongs to. Used while prepopulating the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new Flight</a></span> form to guess whether a new <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is more likely to be part
-of the previous flight&#39;s trip section or a new trip section.</p>
+<p>Takes a flight departure time, and returns the trip section this <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> most likely belongs to. Used while prepopulating the <span class='object_link'><a href="FlightsController.html#new-instance_method" title="FlightsController#new (method)">new Flight</a></span> form to guess whether a new <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is more likely to be part of the previous flight&#39;s trip section or a new trip section.</p>
 
 
   </div>
@@ -909,17 +886,9 @@ of the previous flight&#39;s trip section or a new trip section.</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Within a trip section, calculates the ratio of the sum of the direct flight
-distances of each <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> to the distance of a direct flight between the
-first origin and last destination. If the trip section has no flights, or
-if the trip section covers no net distance (it begins and ends at the same
-airport), then this method returns nil.</p>
+<p>Within a trip section, calculates the ratio of the sum of the direct flight distances of each <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> to the distance of a direct flight between the first origin and last destination. If the trip section has no flights, or if the trip section covers no net distance (it begins and ends at the same airport), then this method returns nil.</p>
 
-<p>This calculation is used to determine how “bad” a layover is in terms of
-extra distance added. A layover ratio of 1 means any layovers did not add
-any distance to the trip section. Higher numbers represent how many times
-longer the trip was; for example, a layover ratio of 2 means the trip
-section distance was twice as long as the theoretical best distance.</p>
+<p>This calculation is used to determine how “bad” a layover is in terms of extra distance added. A layover ratio of 1 means any layovers did not add any distance to the trip section. Higher numbers represent how many times longer the trip was; for example, a layover ratio of 2 means the trip section distance was twice as long as the theoretical best distance.</p>
 
 
   </div>
@@ -1075,9 +1044,9 @@ section distance was twice as long as the theoretical best distance.</p>
 </div>
 
       <div id="footer">
-  Generated by
+  Generated on Mon Feb 15 15:38:56 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.12 (ruby-2.5.1).
+  0.9.25 (ruby-2.7.1).
 </div>
 
     </div>

@@ -1,5 +1,5 @@
 <% map_attr = map.gcmap %>
-
+<% provide(:og_image, map_attr[:img_path]) unless content_for(:og_image) %>
 <div class="map-gcmap <%= map_attr[:map_type] %>" id="<%= map_attr[:id] %>">
   <% if local_assigns[:region] %>
     <%= gcmap_region_select_links(map, region, anchor: map_attr[:id]) %>

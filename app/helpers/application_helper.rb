@@ -26,26 +26,30 @@ module ApplicationHelper
     @breadcrumbs.push([text, path])
   end
   
-  # Returns a title defined in a view's provide(:title) or content_for(:title),
-  # or a default title if a title is not provided.
+  # Returns a hash of page metadata.
   #
-  # @return [ActiveSupport::SafeBuffer] HTML for a <title> tag
-  def title_tag
-    base_title = "Paul Bogardʼs Flight Historian"
-    return content_tag(:title, safe_join([content_for(:title), base_title].compact, " – "))
-  end  
-  
-  # Returns a description <meta> tag with content provided by a view's
-  # provide(:meta_description) or content_for(:meta_description), or a default
-  # meta description if a meta description is not provied.
-  #
-  # @return [ActiveSupport::SafeBuffer] HTML for a <meta> tag
-  def meta_description_tag
+  # @return [Hash] Metadata for a page's header.  
+  def page_metadata
+    metadata = Hash.new
+
+    metadata[:site_name] = "Paul Bogardʼs Flight Historian"
+    metadata[:title] = content_for(:title) || metadata[:site_name]
+    metadata[:title_and_site] = [content_for(:title), metadata[:site_name]].compact.join(" – ")
+    
     default_description = "Paul Bogardʼs Flight Historian shows maps and tables for various breakdowns of Paulʼs flight history."
-    description = content_for?(:meta_description) ? content_for(:meta_description) : default_description
-    return content_tag(:meta, nil, name: "description", content: description)
+    metadata[:description] = content_for?(:meta_description) ? content_for(:meta_description) : default_description
+
+    metadata[:url] = request.original_url
+
+    if content_for(:og_image)
+      metadata[:image] = URI.join(root_url, content_for(:og_image))
+    else
+      metadata[:image] = URI.join(root_url, image_path("open-graph-image.png"))
+    end
+
+    return metadata
   end
-  
+
   # Formats the airport name portion of an city name. Anything contained
   # between a pair of parentheses is considered the airport name. Not all
   # cities will have airport names; airport names are only used for

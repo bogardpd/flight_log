@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
 <head>
+  <% meta = page_metadata %>
   <!-- Created by Paul Bogard. https://github.com/bogardpd/flight_log -->
-	<%= title_tag %>
+
+  <title><%= meta[:title_and_site] %></title>
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="icon" href="/favicon.ico" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -10,12 +12,23 @@
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,300,600" rel="stylesheet" type="text/css">
 	<%= stylesheet_link_tag "application", :media => "all" %>
   <meta name="viewport" content="width=820, user-scalable=yes" />
+  <meta charset="utf-8">
   
   <%= csrf_meta_tag %>
   <%= javascript_include_tag :application %>
 	<%= render partial: "layouts/shim" %>
-  <meta name="author" content="Paul Bogard" />
-  <%= meta_description_tag %>
+
+  <!-- Open Graph/Metadata -->
+  <meta name="author" content="Paul Bogard">
+  <meta name="description" content="<%= meta[:description] %>">
+  <meta property="og:site_name" content="<%= meta[:site_name] %>">
+  <meta property="og:title" content="<%= meta[:title] %>">
+  <meta property="og:description" content="<%= meta[:description] %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= meta[:url] %>">
+  <meta property="og:image" content="<%= meta[:image] %>">
+  <meta property="og:locale" content="en_US">
+
   <%= yield :head_includes %>
   
 </head>
