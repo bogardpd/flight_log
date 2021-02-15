@@ -1,5 +1,5 @@
 <% provide(:title, "#{@route_with_arrow}") %>
-<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights between #{@airports[0]} and #{@airports[1]}.") %>
+<% provide(:meta_description, "Maps and lists of Paul Bogardʼs flights between #{@airports[0].iata_code} and #{@airports[1].iata_code}.") %>
 <% add_admin_action link_to("Edit Route", edit_route_path(@airports.first, @airports.last)) %>
 <% add_breadcrumb "Routes", routes_path %>
 <% add_breadcrumb @route_with_arrow, show_route_path(airport1: @airports.first.slug, airport2: @airports.last.slug) %>
