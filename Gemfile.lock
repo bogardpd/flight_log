@@ -157,7 +157,7 @@ GEM
     nori (2.6.0)
     pg (1.2.3)
     public_suffix (4.0.6)
-    puma (4.3.5)
+    puma (4.3.6)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
@@ -263,7 +263,7 @@ DEPENDENCIES
   minitest-reporters (~> 1.4, >= 1.4.2)
   nokogiri (>= 1.11.0.rc4)
   pg (~> 1.2, >= 1.2.2)
-  puma (= 4.3.5)
+  puma (= 4.3.6)
   rails (~> 6.0, >= 6.0.2.2)
   rubyzip (~> 2.2)
   sassc-rails (~> 2.1, >= 2.1.2)
@@ -276,7 +276,7 @@ DEPENDENCIES
   webmock (~> 3.8)
 
 RUBY VERSION
-   ruby 2.7.1p83
+   ruby 2.7.2p137
 
 BUNDLED WITH
    2.1.4

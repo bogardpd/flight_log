@@ -1,11 +1,11 @@
 source 'http://rubygems.org'
 
-ruby '2.7.1'
+ruby '2.7.2'
 
 gem 'rails', '~> 6.0', '>= 6.0.2.2'
 
 # Use puma as the webserver
-gem 'puma', '4.3.5'
+gem 'puma', '4.3.6'
 # Use PostgreSQL as the database
 gem 'pg', '~> 1.2', '>= 1.2.2'
 # Use bcrypt to hash passwords
