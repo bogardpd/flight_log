@@ -5,7 +5,7 @@
 <% add_breadcrumb "Airports", airports_path %>
 <% add_breadcrumb @airport.iata_code, airport_path(@airport.slug) %>
 
-<h1><%= format_airport_name(@airport.city) %></h1>
+<h1><%= @airport.city %></h1>
 
 <div class="page-navigation">
   <ul>
@@ -52,7 +52,7 @@
 						<%= index + 1 %>
 					<% end %>
 	    	</td>
-		    <td class="airport-city"><%= country_flag_icon(row[:country]) %> <%= link_to(format_airport_name(row[:city]), airport_path(row[:slug])) %></td>
+		    <td class="airport-city"><%= country_flag_icon(row[:country]) %> <%= link_to(row[:city], airport_path(row[:slug])) %></td>
 				<td class="route-route"><%= link_to(format_route([row[:iata_code], @airport.iata_code]), show_route_path(airport1: row[:slug], airport2: @airport.slug), title: "View flights between #{row[:iata_code]} and #{@airport.iata_code}") %></td>
 				<td class="route-distance"><%= graph_bar(row[:distance_mi], @distance_maximum, true) %></td>
 		    <td class="route-flights"><%= graph_bar(row[:total_flights], @flights_maximum) %></td>

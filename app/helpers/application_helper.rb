@@ -49,19 +49,6 @@ module ApplicationHelper
 
     return metadata
   end
-
-  # Formats the airport name portion of an city name. Anything contained
-  # between a pair of parentheses is considered the airport name. Not all
-  # cities will have airport names; airport names are only used for
-  # disambiguation when a city has multiple airports.
-  # 
-  # @param city_airport_name [String] a city name which may or may not contain
-  #   an airport name.
-  # @return [ActiveSupport::SafeBuffer] A city name with any present airport
-  #   name formatted.
-  def format_airport_name(city_airport_name)
-    return sanitize(city_airport_name.gsub(/\(.*\)/, '&ensp;<small class="airport-name">\0</small>').tr("()",""))
-  end
   
   # Renders a message <div> containing an info box, success message, warning
   # message, or error message.

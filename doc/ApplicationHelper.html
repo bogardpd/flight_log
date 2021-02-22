@@ -6,7 +6,7 @@
 <title>
   Module: ApplicationHelper
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -291,30 +291,6 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Provides a table row containing a total <span class='object_link'><a href="Flight.html" title="Flight (class)">Flights</a></span> count for the table, and the percent of all flights that this count represents.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#format_airport_name-instance_method" title="#format_airport_name (instance method)">#<strong>format_airport_name</strong>(city_airport_name)  &#x21d2; ActiveSupport::SafeBuffer </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Formats the airport name portion of an city name.</p>
 </div></span>
   
 </li>
@@ -765,16 +741,16 @@
       <pre class="lines">
 
 
-100
-101
-102
-103
-104
-105
-106</pre>
+87
+88
+89
+90
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 87</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_airline_icon'>airline_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_slug'>slug</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>css_class:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_image_tag'>image_tag</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>blank.png</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>airline-icon</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_slug'>slug</span>
@@ -852,13 +828,13 @@
       <pre class="lines">
 
 
-128
-129
-130
-131</pre>
+115
+116
+117
+118</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 128</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 115</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_code_mono'>code_mono</span><span class='lparen'>(</span><span class='id identifier rubyid_code'>code</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
@@ -969,16 +945,16 @@
       <pre class="lines">
 
 
-116
-117
-118
-119
-120
-121
-122</pre>
+103
+104
+105
+106
+107
+108
+109</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 116</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_country_flag_icon'>country_flag_icon</span><span class='lparen'>(</span><span class='id identifier rubyid_country'>country</span><span class='comma'>,</span> <span class='label'>title:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>css_class:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_class_array'>class_array</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>country-flag-icon</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
@@ -1074,22 +1050,22 @@
       <pre class="lines">
 
 
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152</pre>
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 127</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flight_table_total_row'>flight_table_total_row</span><span class='lparen'>(</span><span class='id identifier rubyid_flights'>flights</span><span class='comma'>,</span> <span class='id identifier rubyid_extra_details'>extra_details</span><span class='op'>=</span><span class='const'>Array</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_flyer_flights'>flyer_flights</span> <span class='op'>=</span> <span class='id identifier rubyid_flyer'>flyer</span><span class='period'>.</span><span class='id identifier rubyid_flights'>flights</span><span class='lparen'>(</span><span class='id identifier rubyid_current_user'>current_user</span><span class='rparen'>)</span>
@@ -1103,85 +1079,6 @@
   <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:tr</span><span class='rparen'>)</span> <span class='kw'>do</span>
     <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:td</span><span class='comma'>,</span> <span class='id identifier rubyid_safe_join'>safe_join</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='period'>.</span><span class='id identifier rubyid_compact'>compact</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='label'>colspan:</span> <span class='int'>4</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>flight-total</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>flightlog-total</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>data-total</span><span class='label_end'>&quot;:</span> <span class='id identifier rubyid_flights'>flights</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="format_airport_name-instance_method">
-  
-    #<strong>format_airport_name</strong>(city_airport_name)  &#x21d2; <tt>ActiveSupport::SafeBuffer</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Formats the airport name portion of an city name. Anything contained between a pair of parentheses is considered the airport name. Not all cities will have airport names; airport names are only used for disambiguation when a city has multiple airports.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>city_airport_name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>a city name which may or may not contain an airport name.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>ActiveSupport::SafeBuffer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>A city name with any present airport name formatted.</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-62
-63
-64</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 62</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_format_airport_name'>format_airport_name</span><span class='lparen'>(</span><span class='id identifier rubyid_city_airport_name'>city_airport_name</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_sanitize'>sanitize</span><span class='lparen'>(</span><span class='id identifier rubyid_city_airport_name'>city_airport_name</span><span class='period'>.</span><span class='id identifier rubyid_gsub'>gsub</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\(.*\)</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&amp;ensp;&lt;small class=&quot;airport-name&quot;&gt;\0&lt;/small&gt;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>()</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1299,29 +1196,29 @@
       <pre class="lines">
 
 
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
 270
 271
 272
 273
 274
 275
-276
-277
-278
-279
-280
-281
-282
-283
-284
-285
-286
-287
-288
-289</pre>
+276</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 270</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 257</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_gcmap_region_select_links'>gcmap_region_select_links</span><span class='lparen'>(</span><span class='id identifier rubyid_map'>map</span><span class='comma'>,</span> <span class='id identifier rubyid_selected_region'>selected_region</span><span class='comma'>,</span> <span class='label'>anchor:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_region_hash'>region_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_map'>map</span><span class='period'>.</span><span class='id identifier rubyid_gcmap_regions'>gcmap_regions</span><span class='lparen'>(</span><span class='id identifier rubyid_selected_region'>selected_region</span><span class='rparen'>)</span>
@@ -1446,6 +1343,19 @@
       <pre class="lines">
 
 
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
 165
 166
 167
@@ -1456,23 +1366,10 @@
 172
 173
 174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188</pre>
+175</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 165</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 152</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_graph_bar'>graph_bar</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_maximum'>maximum</span><span class='comma'>,</span> <span class='id identifier rubyid_is_distance'>is_distance</span><span class='op'>=</span><span class='kw'>false</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>unless</span> <span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_maximum'>maximum</span> <span class='op'>&gt;</span> <span class='int'>0</span><span class='rparen'>)</span>
@@ -1694,12 +1591,12 @@
       <pre class="lines">
 
 
-74
-75
-76</pre>
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_render_message'>render_message</span><span class='lparen'>(</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_text'>text</span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_render'>render</span> <span class='label'>partial:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>layouts/message</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>locals:</span> <span class='lbrace'>{</span><span class='label'>message:</span> <span class='lbrace'>{</span><span class='label'>type:</span> <span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='label'>text:</span> <span class='id identifier rubyid_text'>text</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='id identifier rubyid_id'>id</span><span class='rbrace'>}</span><span class='rbrace'>}</span>
@@ -1760,16 +1657,16 @@
       <pre class="lines">
 
 
-83
-84
-85
-86
-87
-88
-89</pre>
+70
+71
+72
+73
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 83</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_render_messages'>render_messages</span>
   <span class='id identifier rubyid_order'>order</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:error</span><span class='comma'>,</span> <span class='symbol'>:warning</span><span class='comma'>,</span> <span class='symbol'>:success</span><span class='comma'>,</span> <span class='symbol'>:info</span><span class='rbracket'>]</span>
@@ -1906,6 +1803,19 @@
       <pre class="lines">
 
 
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
 208
 209
 210
@@ -1920,23 +1830,10 @@
 219
 220
 221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235</pre>
+222</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 208</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 195</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sort_link'>sort_link</span><span class='lparen'>(</span><span class='id identifier rubyid_link_text'>link_text</span><span class='comma'>,</span> <span class='id identifier rubyid_link_sort_category'>link_sort_category</span><span class='comma'>,</span> <span class='id identifier rubyid_default_direction'>default_direction</span><span class='comma'>,</span> <span class='id identifier rubyid_page_anchor'>page_anchor</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_param_category'>param_category</span><span class='comma'>,</span> <span class='id identifier rubyid_param_direction'>param_direction</span> <span class='op'>=</span> <span class='ivar'>@sort</span>
@@ -2062,20 +1959,20 @@
       <pre class="lines">
 
 
-247
-248
-249
-250
-251
-252
-253
-254
-255
-256
-257</pre>
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 247</span>
+      <pre class="code"><span class="info file"># File 'app/helpers/application_helper.rb', line 234</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_tail_number_with_country_flag'>tail_number_with_country_flag</span><span class='lparen'>(</span><span class='id identifier rubyid_tail_number'>tail_number</span><span class='comma'>,</span> <span class='id identifier rubyid_show_blank_flag'>show_blank_flag</span><span class='op'>=</span><span class='kw'>true</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_tail_number'>tail_number</span>
@@ -2098,9 +1995,9 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Feb 15 15:38:56 2021 by
+  Generated on Mon Feb 22 15:40:22 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.25 (ruby-2.7.1).
+  0.9.26 (ruby-2.7.2).
 </div>
 
     </div>
