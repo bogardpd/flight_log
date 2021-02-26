@@ -5,7 +5,7 @@ module NumberFormat
   DATE_FORMAT = "%-d %b %Y"
 
   # The delimiter to use as a thousands separator.
-  DELIMITER = ActionController::Base.helpers.sanitize("&nbsp;")
+  DELIMITER = ActionController::Base.helpers.sanitize("&#8239;") # Narrow no-break space
   
   # Formats a pair of decimal coordinates into a string pair of coordinates
   # with cardinal directions and 5 decimal places.
