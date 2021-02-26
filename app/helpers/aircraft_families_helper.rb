@@ -7,7 +7,7 @@ module AircraftFamiliesHelper
   # @param family [String] an aircraft family
   # @return [ActiveSupport::SafeBuffer] a formatted aircraft manufacturer and family
   def format_aircraft_family(manufacturer, family)
-    return content_tag(:span, manufacturer, class: "aircraft-manufacturer") + " " + family
+    return [manufacturer, family].join(" ")
   end
 
   # Adds breadcrumbs for the current aircraft type and all its ancestor aircraft

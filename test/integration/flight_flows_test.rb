@@ -297,7 +297,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
     assert_select(".flights-map")
     assert_select("#flight-table")
-    assert_select(".distance-primary")
+    assert_select(".distance-mi")
     assert_select("#airport-count-table")
     assert_select("#airline-count-table")
     assert_select("#operator-count-table")
@@ -403,7 +403,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
     assert_select(".flights-map")
     assert_select("#flight-table")
-    assert_select(".distance-primary")
+    assert_select(".distance-mi")
     assert_select("#travel-class-count-table")
     assert_select("#airline-count-table")
     assert_select("#operator-count-table")
@@ -445,7 +445,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
     assert_select(".flights-map")
     assert_select("#flight-table")
-    assert_select(".distance-primary")
+    assert_select(".distance-mi")
     assert_select("#airline-count-table")
     assert_select("#operator-count-table")
     assert_select("#aircraft-family-count-table")

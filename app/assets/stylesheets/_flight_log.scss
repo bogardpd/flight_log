@@ -42,10 +42,6 @@ body {
 	text-align: left;
 }
 
-.light {
-	font-weight: 300;
-}
-
 .right {
 	text-align: right;
 }
@@ -141,7 +137,7 @@ div.supplemental-code {
 	width: 3em;
 	text-align: center;
 	font-family: $font-stack-monospace;
-	font-weight: 300;
+	font-weight: 400;
 	margin-left: $margin-icon-to-text;
 	border: 1px solid $color-border-table;
 }
@@ -149,7 +145,6 @@ div.supplemental-code {
 div.supplemental-info {
 	float: right;
 	text-align: right;
-	font-weight: 300;
 	margin-left: $margin-icon-to-text;
 }
 
@@ -216,7 +211,6 @@ h1 {
 	small {
 		line-height: 1.1;
 		font-size: 70%;
-		font-weight: 300;
 		color: $color-text-secondary;
 	}
 }
@@ -263,11 +257,6 @@ p.pre-footer {
 	text-align: center;
 }
 
-small.airport-name {
-  text-transform: uppercase;
-  font-weight: 300;
-}
-
 span.aircraft-name {
 	font-style: italic;
 }
@@ -277,31 +266,12 @@ span.disabled {
 	text-decoration: line-through;
 }
 
-span.distance-primary {
+span.distance-mi, span.distance-km {
 	font-weight: 600;
-}
-
-span.distance-secondary {
-	color: $color-text-secondary;
-	font-weight: 300;
-}
-
-span.measurement-unit {
-	color: $color-text-secondary;
-	font-weight: 300;
 }
 
 span.param-highlight {
 	font-weight: bold;
-}
-
-span.aircraft-manufacturer {
-	font-weight: 300;
-}
-
-span.flight-route-distance {
-	color: $color-text-secondary;
-	font-weight: 300;
 }
 
 span.flight-section-route {
@@ -311,7 +281,7 @@ span.flight-section-route {
 
 span.route-arrow {
   color: $color-text-tertiary;
-  font-weight: 300;
+  font-weight: normal;
 }
 
 span.sort-direction {

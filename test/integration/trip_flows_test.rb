@@ -124,7 +124,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_admin_actions(new_flight_menu_path(trip), edit_trip_path(trip))
 
     assert_select(".flights-map")
-    assert_select(".distance-primary")
+    assert_select(".distance-mi")
     assert_select("table#trip-flight-table") do
       assert_select("td.flight-section", {count: trip.flights.pluck(:trip_section).uniq.size})
       assert_select("td.flight-flight", {count: trip.flights.size})
@@ -172,7 +172,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
     assert_select(".flights-map")
     assert_select("#flight-table")
-    assert_select(".distance-primary")
+    assert_select(".distance-mi")
     assert_select("#summary-value-layover-ratio")
   end
 

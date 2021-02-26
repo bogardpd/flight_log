@@ -64,14 +64,14 @@
 		vertical-align: middle;	
 		font-size: 18px;
 		font-family: $font-stack-sans-serif;
-		font-weight: 300;
+		font-weight: normal;
 	
 		a {
 			display: block;
 			color: inherit;
 			height: 28px;
 			margin: 0;
-			padding: 4px 10px;
+			padding: 4px 8px;
 			border: none;
 			text-decoration: none;
 		}
@@ -121,7 +121,7 @@
 	border-left: 1px solid $color-border-page;
 	border-right: 1px solid $color-border-page;
 	border-bottom: 1px solid $color-border-page;
-	font-weight: 300;
+	font-weight: normal;
   color: $color-text-secondary;
   
   span.breadcrumb-separator {

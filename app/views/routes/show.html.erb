@@ -20,7 +20,7 @@
   </ul>
 </div>
 
-<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Airports": link_to(country_flag_icon(@airports[0].country, css_class: ["icon-left"]) + @airports[0].iata_code, airport_path(@airports[0].slug), title: "View airport details for #{@airports[0].city}") + sanitize("&ensp;") + link_to(country_flag_icon(@airports[1].country, css_class: ["icon-between-text"]) + @airports[1].iata_code, airport_path(@airports[1].slug), title: "View airport details for #{@airports[1].city}"), "Distance between Airports": "#{NumberFormat.value(@pair_distance)} mi (#{NumberFormat.value(Distance::km(@pair_distance))} km)"}}) %>
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Airports": link_to(country_flag_icon(@airports[0].country, css_class: ["icon-left"]) + @airports[0].iata_code, airport_path(@airports[0].slug), title: "View airport details for #{@airports[0].city}") + sanitize("&ensp;") + link_to(country_flag_icon(@airports[1].country, css_class: ["icon-between-text"]) + @airports[1].iata_code, airport_path(@airports[1].slug), title: "View airport details for #{@airports[1].city}"), "Distance between Airports": "#{NumberFormat.value(@pair_distance)} mi · #{NumberFormat.value(Distance::km(@pair_distance))} km"}}) %>
 
 <%= render(partial: "layouts/map", locals: {map: @maps[:route_map], distance: (@pair_distance ? {miles: @pair_distance*@flights.length, adjective: "total"} : nil)}) %>
 

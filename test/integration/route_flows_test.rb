@@ -83,7 +83,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     assert_select(".single-flight-map")
     assert_select(".highlighted-routes-map", {count: 2})
     assert_select("#flight-table")
-    assert_select(".distance-primary")
+    assert_select(".distance-mi")
     assert_select("#trip-and-section-table")
     assert_select("#airline-count-table")
     assert_select("#operator-count-table")

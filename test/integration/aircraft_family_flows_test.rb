@@ -264,7 +264,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#summary-value-icao", aircraft.icao_code) if aircraft.icao_code
     assert_select("#aircraft-illustration")
     assert_select("div#aircraft_family_map")
-    assert_select(".distance-primary")
+    assert_select(".distance-mi")
 
     assert_select("table#aircraft-subtype-table") if aircraft.children.any?
 

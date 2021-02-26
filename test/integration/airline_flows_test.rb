@@ -325,7 +325,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     end
     
     assert_select("div.flights-map")
-    assert_select(".distance-primary")
+    assert_select(".distance-mi")
 
     assert_select("#aircraft-family-count-table")
     assert_select("#travel-class-count-table")

@@ -17,11 +17,12 @@
   </div>
   <% if local_assigns[:distance] %>
     <div class="map-metrics">
-      <span class="distance-primary">
+      <span class="distance-mi">
         <%= NumberFormat.value(distance[:miles]) %> <%= [distance[:adjective],"mile"].compact.join(" ").pluralize(distance[:miles]) %>
       </span>
-      <span class="distance-secondary">
-        (<%= NumberFormat.value(Distance::km(distance[:miles])) %> km)
+      &middot;
+      <span class="distance-km">
+        <%= NumberFormat.value(Distance::km(distance[:miles])) %> km
       </span>
       <% if local_assigns[:flight_link] %>
         <% flights_path = flight_link[:path] || "#flights" %>

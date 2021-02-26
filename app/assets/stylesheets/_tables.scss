@@ -93,7 +93,7 @@
     }
 
     td.flight-show-airport-city {
-      font-weight: $font-weight-light;
+      font-weight: normal;
     }
   }
 
@@ -118,7 +118,6 @@
       background-color: $color-background-table-head;
       color: $color-text-secondary;
       font-size: $font-size-small;
-      font-weight: $font-weight-light;
       text-align: center;
       padding-top: 0.1rem;
       padding-bottom: 0;
@@ -207,7 +206,7 @@
     }
     
     td.aircraft-type {
-      font-weight: 300;
+      font-weight: normal;
 
       ul.aircraft-type-tree {
         margin: 0;
@@ -269,8 +268,7 @@
       line-height: $line-height-small;
       span.class-description {
         font-size: $font-size-small;
-        font-weight: 300;
-        color: $color-text-secondary;
+        font-weight: normal;
       }
     }
 
@@ -349,7 +347,6 @@
 
     td.tail-aircraft {
     	color: $color-text-secondary;
-    	font-weight: 300;
     	text-align: center;
       abbr {
         border-bottom-color: $color-text-secondary;
@@ -393,7 +390,7 @@
 
   td.subdued {
   	color: $color-text-secondary;
-    font-weight: 300;
+    font-weight: normal;
   }
   
   td.superlatives-label {
