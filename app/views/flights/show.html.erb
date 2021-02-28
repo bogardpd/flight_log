@@ -61,7 +61,7 @@
       <% elsif logged_in? %>
         <div class="supplemental-info message-error"><%= link_to "Distance Undefined", edit_route_path(@flight.origin_airport,@flight.destination_airport) %></div>
       <% end %>
-      <%= link_to(Route.airport_string(@flight.origin_airport, @flight.destination_airport, sort: false), show_route_path(airport1: @flight.origin_airport.slug, airport2: @flight.destination_airport.slug), title: "View flights between #{@flight.origin_airport.iata_code} and #{@flight.destination_airport.iata_code}") %>
+      <%= link_to(Route.airport_string(@flight.origin_airport, @flight.destination_airport, sort: false), show_route_path(airport1: @flight.origin_airport.slug, airport2: @flight.destination_airport.slug), title: "View flights between #{@flight.origin_airport.city} and #{@flight.destination_airport.city}") %>
     </td>
   </tr>
   <% if @flight.travel_class %>

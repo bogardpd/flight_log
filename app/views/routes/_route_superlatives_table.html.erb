@@ -13,7 +13,7 @@
 					<% if index == 0 %>
 						<td class="label-column superlatives-label" rowspan="<%= superlatives[category].length %>"><%= label %></td>
 					<% end %>
-					<td class="route-route"><%= link_to(format_route(airports.map{|r| r.iata_code}), show_route_path(airport1: airports.first.slug, airport2: airports.last.slug), title: "View flights between #{airports.first.iata_code} and #{airports.last.iata_code}") %></td>
+					<td class="route-route"><%= link_to(format_route(airports.map{|r| r.iata_code}), show_route_path(airport1: airports.first.slug, airport2: airports.last.slug), title: "View flights between #{airports.first.city} and #{airports.last.city}") %></td>
 					<td class="superlatives-distance"><%= NumberFormat.value(distance) %> mi</td>
 					<td class="superlatives-distance"><%= NumberFormat.value(Distance::km(distance)) %> km</td>
 				</tr>
