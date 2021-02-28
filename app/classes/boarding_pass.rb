@@ -811,7 +811,7 @@ class BoardingPass
     output = ""
     output += "#{leading_digit.capitalize} / " if leading_digit
     output += "#{carrier_code_digits} "
-    output += "– #{carrier_code} " if carrier_code
+    output += "– #{carrier_code[:text]} " if carrier_code
     output += "/ #{pluralize(consecutive_tags+1, "bag")}: #"
     bag_tags = Array.new
     (0..consecutive_tags).each do |tag|
