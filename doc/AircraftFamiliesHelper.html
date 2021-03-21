@@ -254,7 +254,7 @@
       <pre class="code"><span class="info file"># File 'app/helpers/aircraft_families_helper.rb', line 9</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_format_aircraft_family'>format_aircraft_family</span><span class='lparen'>(</span><span class='id identifier rubyid_manufacturer'>manufacturer</span><span class='comma'>,</span> <span class='id identifier rubyid_family'>family</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_content_tag'>content_tag</span><span class='lparen'>(</span><span class='symbol'>:span</span><span class='comma'>,</span> <span class='id identifier rubyid_manufacturer'>manufacturer</span><span class='comma'>,</span> <span class='label'>class:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>aircraft-manufacturer</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_family'>family</span>
+  <span class='kw'>return</span> <span class='lbracket'>[</span><span class='id identifier rubyid_manufacturer'>manufacturer</span><span class='comma'>,</span> <span class='id identifier rubyid_family'>family</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -315,7 +315,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Feb 22 15:40:22 2021 by
+  Generated on Sun Mar 21 09:44:23 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-2.7.2).
 </div>
