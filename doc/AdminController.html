@@ -330,13 +330,15 @@
 
 20
 21
-22</pre>
+22
+23</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_annual_flight_summary'>annual_flight_summary</span>
   <span class='ivar'>@flight_summary</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_by_year'><span class='object_link'><a href="Flight.html#by_year-class_method" title="Flight.by_year (method)">by_year</a></span></span>
+  <span class='ivar'>@distance_summary</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_by_year'><span class='object_link'><a href="Flight.html#by_year-class_method" title="Flight.by_year (method)">by_year</a></span></span><span class='lparen'>(</span><span class='label'>distances:</span> <span class='kw'>true</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -384,12 +386,12 @@
       <pre class="lines">
 
 
-30
 31
-32</pre>
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/admin_controller.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_boarding_pass_validator'>boarding_pass_validator</span>
   <span class='ivar'>@pass_flights</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span></span><span class='period'>.</span><span class='id identifier rubyid_select'>select</span><span class='lparen'>(</span><span class='symbol'>:id</span><span class='comma'>,</span> <span class='symbol'>:boarding_pass_data</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>boarding_pass_data IS NOT NULL</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_order'>order</span><span class='lparen'>(</span><span class='symbol'>:departure_utc</span><span class='rparen'>)</span>
@@ -404,7 +406,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Mar 21 09:44:24 2021 by
+  Generated on Sun Dec  5 20:30:38 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-2.7.2).
 </div>

@@ -3,6 +3,8 @@
 <% add_breadcrumb "Annual Flight Summary", annual_flight_summary_path %>
 
 <h1>Annual Flight Summary</h1>
+
+<h2>Flights</h2>
 <table class="flightlog">
   <tr>
     <th class="annual-summary">Year</th>
@@ -20,6 +22,48 @@
     <td class="annual-summary"><%= data[:personal] %></td>
     <td class="annual-summary annual-summary-undefined"><%= data[:undefined] > 0 ? data[:undefined] : "-"  %></td>
     <td class="annual-summary"><%= data.inject(0) { |sum, n| sum + n[1] } %></td>
+  </tr>
+<% end %>
+</table>
+
+<h2>Distances</h2>
+<table class="flightlog">
+  <tr>
+    <th class="annual-summary">Year</th>
+    <th class="annual-summary">Business</th>
+    <th class="annual-summary">Mixed</th>
+    <th class="annual-summary">Personal</th>
+    <th class="annual-summary annual-summary-undefined">Undefined</th>
+    <th class="annual-summary">Total</th>
+  </tr>
+<% @distance_summary.each do |year, data| %>
+  <% row_miles = data.inject(0) { |sum, n| sum + n[1] } %>
+  <tr>
+    <td class="annual-summary"><%= year %></td>
+    <td class="annual-summary annual-summary-distance">
+      <%= data[:business] %> mi<br>
+      <%= Distance.km(data[:business]) %> km
+    </td>
+    <td class="annual-summary annual-summary-distance">
+      <%= data[:mixed] %> mi<br>
+      <%= Distance.km(data[:mixed]) %> km
+    </td>
+    <td class="annual-summary annual-summary-distance">
+      <%= data[:personal] %> mi<br>
+      <%= Distance.km(data[:personal]) %> km
+    </td>
+    <td class="annual-summary annual-summary-distance annual-summary-undefined">
+      <% if data[:undefined] > 0 %>
+        <%= data[:undefined] %> mi<br>
+      <%= Distance.km(data[:undefined]) %> km
+      <% else %>
+        -
+      <% end %>
+    </td>
+    <td class="annual-summary annual-summary-distance">
+      <%= row_miles %> mi<br>
+      <%= Distance.km(row_miles) %> km
+    </td>
   </tr>
 <% end %>
 </table>

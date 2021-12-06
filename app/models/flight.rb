@@ -66,12 +66,14 @@ class Flight < ApplicationRecord
   # between the earliest and latest flight will be included, with zeroes in the
   # values.
   #
+  # @param distances [Boolean] If set to true, values will be distances in
+  #   miles. Otherwise, values will be counts of flights.
   # @return [Hash<Number,Hash>] a hash with years as the keys, and
   #   hashes of counts of business, mixed, personal, and undefined flights as
   #   the values
   # @example
   #   Flight.by_year #=> {2009: {business: 35, mixed: 4, personal: 7, undefined: 0}}
-  def self.by_year
+  def self.by_year(distances: false)
     # Create hash ranging from earliest to latest years (default all values to zero):
     summary = Hash.new
     if self.year_range
@@ -79,12 +81,23 @@ class Flight < ApplicationRecord
         summary[year] = {business: 0, mixed: 0, personal: 0, undefined: 0}
       end
     end
+
+    if distances
+      route_distances = self.route_distances
+      flights = self.select("departure_date, origin_airport_id, destination_airport_id, trips.purpose AS purpose")
+    else
+      flights = self.select("departure_date, trips.purpose AS purpose")
+    end
+    flights = flights.joins("LEFT OUTER JOIN trips ON trips.id = flights.trip_id")
     
     # Loop through all flights (with year and flight.trip.purpose selected and increment hash):
-    flights = self.select("departure_date, trips.purpose AS purpose").joins("LEFT OUTER JOIN trips ON trips.id = flights.trip_id")
     flights.each do |flight|
       purpose = flight.purpose.present? ? flight.purpose.to_sym : :undefined
-      summary[flight.departure_date.year][purpose] += 1
+      if distances
+        summary[flight.departure_date.year][purpose] += route_distances[[flight.origin_airport_id,flight.destination_airport_id].sort]
+      else
+        summary[flight.departure_date.year][purpose] += 1
+      end
     end
     
     return summary
@@ -101,8 +114,6 @@ class Flight < ApplicationRecord
     routes = Route.where("airport1_id IN (:a_ids) OR airport2_id IN (:a_ids)", a_ids: airport_ids)   # Trying to select only the specific routes used creates stack depth issues, so this method compromises by selecting all routes which involve any of the Airports in any of the Flights.
     distances = routes.map{|r| [[r.airport1_id,r.airport2_id].sort, r.distance_mi]}.to_h
 
-    # Filter down to only the routes that are actually used:
-    #return self.all.map{|flight| [[flight.origin_airport_id, flight.destination_airport_id].sort, distances[[flight.origin_airport_id, flight.destination_airport_id].sort]]}.to_h
     return self.all.pluck(:origin_airport_id, :destination_airport_id).map{|pair| [pair.sort, distances[pair.sort]]}.to_h
   end
 

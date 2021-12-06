@@ -181,6 +181,11 @@
       text-align: center;
     }
 
+    td.annual-summary-distance, th.annual-summary-distance {
+      text-align: right;
+      font-family: $font-stack-monospace;
+    }
+
     td.annual-summary-undefined, th.annual-summary-undefined {
       color: #FF0000;
       background-color: #FFEEEE !important;
