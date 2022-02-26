@@ -26,6 +26,10 @@ gem 'aws-sdk-s3', '~> 1.81'
 
 gem 'nokogiri', '>= 1.11.0.rc4'
 
+# Install networking gems for Ruby 3.x on Rails 6.x:
+gem 'net-smtp'
+gem 'net-imap'
+
 group :development do
   gem 'sql_queries_count'
   gem 'derailed_benchmarks'
@@ -43,9 +47,7 @@ group :test do
   gem 'webdrivers', '~> 4.2'
   # Use webmock to stub out HTTP API requests
   gem 'webmock', '~> 3.8'
-  # Install networking gems for testing with Ruby 3.x on Rails 6.x:
-  gem 'net-smtp', require: false
-  gem 'net-imap', require: false
+  
 end
 
 group :production do
