@@ -29,6 +29,7 @@ gem 'nokogiri', '>= 1.11.0.rc4'
 # Install networking gems for Ruby 3.x on Rails 6.x:
 gem 'net-smtp'
 gem 'net-imap'
+gem 'net-pop'
 
 group :development do
   gem 'sql_queries_count'
