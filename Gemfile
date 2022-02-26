@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '2.7.2'
+ruby '3.1.1'
 
 gem 'rails', '~> 6.1'
 
@@ -24,7 +24,6 @@ gem 'savon', '~> 2.12'
 # Use AWS S3 for image caching
 gem 'aws-sdk-s3', '~> 1.81'
 
-# Force nokogiri update for https://github.com/advisories/GHSA-vr8q-g5c7-m54m
 gem 'nokogiri', '>= 1.11.0.rc4'
 
 group :development do
@@ -44,6 +43,9 @@ group :test do
   gem 'webdrivers', '~> 4.2'
   # Use webmock to stub out HTTP API requests
   gem 'webmock', '~> 3.8'
+  # Install networking gems for testing with Ruby 3.x on Rails 6.x:
+  gem 'net-smtp', require: false
+  gem 'net-imap', require: false
 end
 
 group :production do
