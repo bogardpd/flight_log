@@ -6,8 +6,8 @@
 # {FlightsController#new new flight} form. It's also used to look up {Airport}
 # data when creating a {AirportsController#new new airport}.
 #
-# Note: Since FlightXML has its own database of flights, airports, and routes,
-# when you see these terms in this documentation, it refers to FlightXML and
+# Note: Since AeroAPI has its own database of flights, airports, and routes,
+# when you see these terms in this documentation, it refers to AeroAPI and
 # not this applications models, unless it specifically links to {Flight},
 # {Airport}, or {Route}.
 #
@@ -89,9 +89,9 @@ module AeroAPI4
     end
   end
 
-  # Looks up flight data for a FlightXML fa_flight_id.
+  # Looks up flight data for an AeroAPI fa_flight_id.
   # 
-  # @param fa_flight_id [String] a FlightAware/FlightXML unique flight ID
+  # @param fa_flight_id [String] a FlightAware/AeroAPI unique flight ID
   # @return [Hash] flight data
   def self.form_values(fa_flight_id)
     return nil unless fa_flight_id
@@ -112,12 +112,41 @@ module AeroAPI4
     fields.store(:operator_icao, flight[:operator]) if flight[:operator]
     
     begin
-      # scheduled_out is gate departure time. Old flightXML used equivalent to scheduled_off (runway departure)
       fields.store(:departure_utc, Time.parse(flight[:scheduled_out]).utc) if flight[:scheduled_out]
     end
     fields.store(:tail_number, flight[:registration]) if flight[:registration]
     
     return fields
+  end
+
+  # Looks up an AeroAPI unique flight ID for flights matching a flight
+  # identifier string and UTC departure datetime.
+  #
+  # A flight identifier is a string containing an airline code and a flight
+  # number, with no space between them (e.g. AA1234 or UAL5678). The airline
+  # can be ICAO or IATA, but IATA codes that contain numbers (e.g. B6) may not
+  # be used (the ICAO code must then be used in these cases).
+  #
+  # @param ident [String] a flight identifier
+  # @param scheduled_out_utc [DateTime] a UTC departure time
+  # @return [String] an AeroAPI fa_flight_id
+  def self.get_flight_id(ident, scheduled_out_utc)
+    begin
+      res = api_request("/flights/#{ident}")
+      return nil unless res[:flights]
+    rescue
+      return nil
+    end
+
+    flight = res[:flights].find {|f|
+      begin
+        Time.parse(f[:scheduled_out]) == scheduled_out_utc
+      rescue
+        false
+      end
+    }
+    return flight.nil? ? nil : flight[:fa_flight_id]
+
   end
 
 end
