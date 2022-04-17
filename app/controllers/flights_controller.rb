@@ -424,7 +424,7 @@ class FlightsController < ApplicationController
     end
     session[:new_flight][:completed_bcbp] = true
   
-    # Get flight data from FlightXML:
+    # Get flight data from AeroAPI:
     if (session[:new_flight][:completed_flight_xml] != true)
       if session[:new_flight][:fa_flight_id]
         set_flight_xml_data(session[:new_flight][:fa_flight_id])
@@ -432,17 +432,19 @@ class FlightsController < ApplicationController
         session[:new_flight][:airline_icao] ||= Airline.convert_iata_to_icao(session[:new_flight][:airline_iata], false)
         if session[:new_flight][:airline_icao]
           session[:new_flight][:ident] = [session[:new_flight][:airline_icao],session[:new_flight][:flight_number]].join
-          if session[:new_flight][:departure_utc] && fa_flight_id = FlightXML.get_flight_id(session[:new_flight][:ident], session[:new_flight][:departure_utc])
+          if session[:new_flight][:departure_utc] && fa_flight_id = AeroAPI4.get_flight_id(session[:new_flight][:ident], session[:new_flight][:departure_utc])
             set_flight_xml_data(fa_flight_id)
           else
-            @fa_flights = FlightXML.flight_lookup(session[:new_flight][:ident])
+            @fa_flights = AeroAPI4.flight_lookup(session[:new_flight][:ident])
+            @fa_flights = @fa_flights.select{|f| f[:origin] && f[:destination] && AeroAPI4.departure_time(f) && AeroAPI4.arrival_time(f)} # Only show flights with an origin, destination, departure time, and arrival time.
             if @fa_flights && @fa_flights.any?
-              airports = (@fa_flights.map{|f| f[:origin]} | @fa_flights.map{|f| f[:destination]})
-              @timezones = FlightXML.airport_timezones(airports)
-              render "flightxml_select_flight"
+              airports = (@fa_flights.map{|f| f.dig(:origin, :code)} | @fa_flights.map{|f| f.dig(:destination, :code)})
+              @airport_info = airports.map{|icao| { icao => AeroAPI4.airport_lookup(icao) }}.reduce(:merge)
+              puts @airport_info
+              render "aeroapi4_select_flight"
               return
             else
-              session[:new_flight][:warnings].push(FlightXML::ERROR + " (Searched for #{session[:new_flight][:ident]})")
+              session[:new_flight][:warnings].push(AeroAPI4::ERROR + " (Searched for #{session[:new_flight][:ident]})")
             end
           end
         end

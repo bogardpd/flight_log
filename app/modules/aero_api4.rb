@@ -17,6 +17,9 @@ module AeroAPI4
 
   API_SERVER = "https://aeroapi.flightaware.com/aeroapi"
 
+  # The default error message to return if a FlightXML lookup failed.
+  ERROR = "We couldn’t find your flight data on FlightAware. You will have to manually enter some fields."
+
   # Passes paths to AeroAPI and gets a hash of results.
   #
   # @param path [String] an AeroAPI path, not including the server.
@@ -44,28 +47,26 @@ module AeroAPI4
     end
   end
 
-  # Looks up the timezone for an ICAO airport code.
+  # Looks up airport info for an ICAO airport code.
   #
   # @param airport_icao [String] an ICAO airport code
-  # @return [TZInfo::DataTimezone] a timezone
-  def self.airport_timezone(airport_icao)
+  # @return [Hash] a hash of airport details
+  def self.airport_lookup(airport_icao)
     begin
       res = api_request("/airports/#{airport_icao}")
       return nil unless res[:timezone]
-      return TZInfo::Timezone.get(res[:timezone].tr(":", ""))
+      output = {
+        timezone: res[:timezone],
+        display_code: (res[:alternate_ident] || airport_icao),
+        city: res[:city],
+        name: res[:name],
+      }
+      return output
     rescue
       return nil
     end
   end
-
-  # Looks up the timezones for multiple ICAO airport codes.
-  #
-  # @param airport_icao_array [Array<String>] ICAO airport codes
-  # @return [Hash{String => TZInfo::DataTimezone}] ICAO keys and timezone values
-  def self.airport_timezones(airport_icao_array)
-    airport_icao_array.map{|icao| { icao => airport_timezone(icao) }}.reduce(:merge)
-  end
-
+  
   # Looks up flight data for flights matching a flight identifier string.
   #
   # A flight identifier is a string containing an airline code and a flight
@@ -147,6 +148,48 @@ module AeroAPI4
     }
     return flight.nil? ? nil : flight[:fa_flight_id]
 
+  end
+
+  # Returns the best departure time from provided flight data.
+  #
+  # @param flight_hash [Hash] an item from a flight_lookup array
+  # @return [Time] a UTC timestamp
+  def self.departure_time(flight_hash)
+    times = [
+      flight_hash[:scheduled_out],
+      flight_hash[:scheduled_off],
+      flight_hash[:estimated_out],
+      flight_hash[:estimated_off],
+      flight_hash[:actual_out],
+      flight_hash[:actual_off],
+    ].compact
+    return nil unless times.any?
+    begin
+      return Time.parse(times.first).utc
+    rescue
+      return nil
+    end
+  end
+
+  # Returns the best arrival time from provided flight data.
+  #
+  # @param flight_hash [Hash] an item from a flight_lookup array
+  # @return [Time] a UTC timestamp
+  def self.arrival_time(flight_hash)
+    times = [
+      flight_hash[:scheduled_in],
+      flight_hash[:scheduled_on],
+      flight_hash[:estimated_in],
+      flight_hash[:estimated_on],
+      flight_hash[:actual_in],
+      flight_hash[:actual_on],
+    ].compact
+    return nil unless times.any?
+    begin
+      return Time.parse(times.first).utc
+    rescue
+      return nil
+    end
   end
 
 end

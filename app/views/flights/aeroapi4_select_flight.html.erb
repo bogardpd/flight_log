@@ -1,0 +1,77 @@
+<% provide(:title, "Select Flight") %>
+<% add_breadcrumb "Select Flight", new_flight_menu_path %>
+
+<h1>Which Flight is Yours?</h1>
+
+<p>Flights matching <code class="bold"><%= session[:new_flight][:ident] %></code>:</p>
+<table class="flightlog flight-select">
+  <tr>
+    <th></th>
+    <th>Dep Date</th>
+    <th class="arrival-departure">Departure</th>
+    <th></th>
+    <th class="arrival-departure">Arrival</th>
+  </tr>
+  <% @fa_flights.each do |flight| %>
+    <% ident = session[:new_flight][:ident] %>
+    <% origin_icao = flight.dig(:origin, :code) %>
+    <% destination_icao = flight.dig(:destination, :code) %>
+    <% departure_time = AeroAPI4.departure_time(flight) %>
+    <% arrival_time = AeroAPI4.arrival_time(flight) %>
+    <% departure_tz = @airport_info[origin_icao][:timezone] %>
+    <% arrival_tz = @airport_info[destination_icao][:timezone] %>
+ 
+    <% if session[:new_flight][:departure_date] && session[:new_flight][:departure_date] == departure_time.in_time_zone(departure_tz).to_date %>
+      <% if session[:new_flight][:origin_airport_iata] && Airport.convert_iata_to_icao(session[:new_flight][:origin_airport_iata]) != origin_icao %>
+        <tr id="select-flight-row-<%= flight[:fa_flight_id] %>">
+      <% else %>
+        <tr id="select-flight-row-<%= flight[:fa_flight_id] %>" class="suggestion">
+      <% end %>
+    <% else %>
+      <tr id="select-flight-row-<%= flight[:fa_flight_id] %>">
+    <% end %>
+      
+      <td>
+        <%= form_tag(new_flight_path, method: :post) do %>
+          <%= hidden_field_tag(:departure_date, departure_time.in_time_zone(departure_tz).to_date) %>
+          <%= hidden_field_tag(:departure_utc, departure_time.utc) %>
+          <%= hidden_field_tag(:origin_airport_icao, origin_icao) %>
+          <%= hidden_field_tag(:destination_airport_icao, destination_icao) %>
+          <%= hidden_field_tag(:fa_flight_id, flight[:fa_flight_id]) %>
+          <%= submit_tag("Select") %>
+        <% end %>
+      </td>
+      <td class="date">
+        <%= departure_time.in_time_zone(departure_tz).strftime("%A") %><br />
+        <%= departure_time.in_time_zone(departure_tz).strftime("%d %b %Y") %>
+      </td>
+    
+      <td class="arrival-departure">
+        <div>
+          <span class="airport-code"><%=  @airport_info[origin_icao][:display_code] %></span>&ensp;<span class="time"><%= departure_time.in_time_zone(departure_tz).strftime("%R") %></span> <span class="timezone"><%=departure_time.in_time_zone(departure_tz).zone %></span><br />
+          <span class="airport-name"><%= @airport_info[origin_icao][:city] %></span><br/>
+          <span class="airport-name"><%= @airport_info[origin_icao][:name] %></span>
+        </div>
+      </td>
+      
+      <td><%= Route::ARROW_ONE_WAY_HTML %></td>
+      
+      <td class="arrival-departure">
+        <div>
+          <span class="airport-code"><%=  @airport_info[destination_icao][:display_code] %></span>&ensp;<span class="time"><%= arrival_time.in_time_zone(arrival_tz).strftime("%R") %></span> <span class="timezone"><%= arrival_time.in_time_zone(arrival_tz).zone %></span><br /><% if @airport_info[destination_icao] %>
+          <span class="airport-name"><%= @airport_info[destination_icao][:city] %></span><br/>
+          <span class="airport-name"><%= @airport_info[destination_icao][:name] %></span><% end %>
+        </div>
+      </td>
+    </tr>
+ 
+  <% end %>
+  <tr>
+    <td colspan="5" class="center">
+      <%= form_tag(new_flight_path, method: :post) do %>
+        <%= hidden_field_tag(:completed_flight_xml, true) %>
+        <%= submit_tag("My flight isn’t any of the above") %>
+      <% end %>
+    </td>
+  </tr>
+</table>
