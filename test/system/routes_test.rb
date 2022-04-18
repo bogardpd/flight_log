@@ -15,7 +15,7 @@ class RoutesTest < ApplicationSystemTestCase
   test "creating a route by editing route with no distance" do
     
     # We don't look up distance in FlightXML, and the airports already have coordinates:
-    stub_aero_api_get_timeout
+    stub_aero_api4_get_timeout
     # stub_flight_xml_post_timeout
 
     system_log_in_as(users(:user_one))
@@ -29,7 +29,7 @@ class RoutesTest < ApplicationSystemTestCase
 
   # Update route:
   test "updating a route" do
-    stub_aero_api_get_timeout
+    stub_aero_api4_get_timeout
     
     route = routes(:route_visible)
     distance_update = 1234

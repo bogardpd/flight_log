@@ -132,7 +132,7 @@ class ActiveSupport::TestCase
       to_timeout
   end
 
-  def stub_aero_api_get_timeout
+  def stub_aero_api4_get_timeout
     stub_request(:get, /aeroapi.flightaware.com/).
       to_timeout
   end

@@ -23,7 +23,7 @@ class RouteTest < ActiveSupport::TestCase
   end
 
   def test_distance_by_airport_with_unknown_route_without_coordinates
-    stub_aero_api_get_timeout
+    stub_aero_api4_get_timeout
 
     airport1 = airports(:airport_sea)
     airport2 = airports(:airport_with_no_coordinates)

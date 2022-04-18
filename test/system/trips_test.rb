@@ -5,7 +5,7 @@ class TripsTest < ApplicationSystemTestCase
   # or destroy trips are located in INTEGRATION tests.
 
   def setup
-    stub_aero_api_get_timeout
+    stub_aero_api4_get_timeout
     stub_gcmap_get_map
 
     stub_aero_api4_get_airports_id("CYYZ", {

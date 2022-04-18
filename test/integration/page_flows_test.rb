@@ -13,7 +13,7 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "can see home when not logged in" do
-    stub_aero_api_get_timeout
+    stub_aero_api4_get_timeout
 
     get(root_path)
     assert_response(:success)
@@ -37,7 +37,7 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   test "can see active trips on home when logged in" do
     # At least one PKPass must be present for this test to succeed.
 
-    stub_aero_api_get_timeout
+    stub_aero_api4_get_timeout
 
     hidden_trip = trips(:trip_hidden)
     log_in_as(users(:user_one))
@@ -49,7 +49,7 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see home alternate map formats" do
-    stub_aero_api_get_timeout
+    stub_aero_api4_get_timeout
     
     %w(gpx kml).each do |extension|
       get(root_path(map_id: "flights_map", extension: extension))

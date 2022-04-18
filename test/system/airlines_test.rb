@@ -6,7 +6,7 @@ class AirlinesTest < ApplicationSystemTestCase
 
   def setup
     stub_gcmap_get_map
-    stub_aero_api_get_timeout
+    stub_aero_api4_get_timeout
   end
 
   test "creating, updating, and destroying an airline" do
