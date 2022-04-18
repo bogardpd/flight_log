@@ -34,8 +34,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "can see index routes when logged in" do
-    stub_flight_xml_get_wsdl
-    stub_flight_xml_post_timeout
+    stub_aero_api_get_timeout
 
     routes = Route.flight_table_data(logged_in_flights)
     
@@ -53,8 +52,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index routes when not logged in" do
-    stub_flight_xml_get_wsdl
-    stub_flight_xml_post_timeout
+    stub_aero_api_get_timeout
 
     get(routes_path)
     assert_response(:success)

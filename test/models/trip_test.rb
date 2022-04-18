@@ -34,8 +34,7 @@ class TripTest < ActiveSupport::TestCase
   end
 
   def test_layover_ratio_for_section_with_unknown_distance_flight
-    stub_flight_xml_get_wsdl
-    stub_flight_xml_post_timeout
+    stub_aero_api_get_timeout
     assert_nil @trip.layover_ratio(5) # ORD-DFW-YYZ, DFW-YYZ unknown
   end
 
