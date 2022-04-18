@@ -1,0 +1,65 @@
+{
+  "flights": [
+    {
+      "ident": "AAL2300",
+      "fa_flight_id": "AAL2300-1575870329-airline-0404",
+      "operator": "AAL",
+      "operator_iata": "AA",
+      "flight_number": "2300",
+      "registration": "N357PV",
+      "atc_ident": null,
+      "inbound_fa_flight_id": "AAL2300-1650199229-airline-0349",
+      "codeshares": [
+        "ASA6759",
+        "BAW5618"
+      ],
+      "blocked": false,
+      "diverted": false,
+      "cancelled": false,
+      "position_only": false,
+      "origin": {
+        "code": "KDFW",
+        "airport_info_url": "/airports/KDFW"
+      },
+      "destination": {
+        "code": "KORD",
+        "airport_info_url": "/airports/KORD"
+      },
+      "departure_delay": 0,
+      "arrival_delay": 0,
+      "filed_ete": 8340,
+      "scheduled_out": "2019-12-12T00:15:00Z",
+      "estimated_out": "2019-12-12T00:15:00Z",
+      "actual_out": null,
+      "scheduled_off": "2019-12-12T00:25:00Z",
+      "estimated_off": "2019-12-12T00:25:00Z",
+      "actual_off": null,
+      "scheduled_on": "2019-12-12T02:44:00Z",
+      "estimated_on": "2019-12-12T02:44:00Z",
+      "actual_on": null,
+      "scheduled_in": "2019-12-12T02:54:00Z",
+      "estimated_in": "2019-12-12T02:54:00Z",
+      "actual_in": null,
+      "progress_percent": 0,
+      "status": "Scheduled",
+      "aircraft_type": "B738",
+      "route_distance": 302,
+      "filed_airspeed": 327,
+      "filed_altitude": null,
+      "route": null,
+      "baggage_claim": null,
+      "seats_cabin_business": 16,
+      "seats_cabin_coach": 144,
+      "seats_cabin_first": 0,
+      "gate_origin": null,
+      "gate_destination": null,
+      "terminal_origin": 3,
+      "terminal_destination": null,
+      "type": "Airline"
+    }
+  ],
+  "links": {
+    "next": "/flights/AAL2300?cursor=3524d50b1324a1d"
+  },
+  "num_pages": 1
+}

@@ -57,6 +57,24 @@ class ActiveSupport::TestCase
       to_return(status: 200, body: file_fixture("flight_xml/wsdl.xml").read)
   end
 
+  # Stub AeroAPI4 /airports/{id}
+  def stub_aero_api4_get_airports_id(id, fields)
+    body = JSON.parse(file_fixture("aero_api4/airports_id.json").read)
+    uri = "https://aeroapi.flightaware.com/aeroapi/airports/#{id}"
+    fields.each {|tag, value| body[tag.to_s] = value}
+    WebMock.stub_request(:get, uri).
+      to_return(status: 200, body: body.to_json)
+  end
+
+  # Stub AeroAPI4 /flights/{ident}
+  def stub_aero_api4_get_flights_ident(ident, fields)
+    body = JSON.parse(file_fixture("aero_api4/flights_ident.json").read)
+    uri = "https://aeroapi.flightaware.com/aeroapi/flights/#{ident}"
+    fields.each {|tag, value| body["flights"][0][tag.to_s] = value}
+    WebMock.stub_request(:get, uri).
+      to_return(status: 200, body: body.to_json)
+  end
+
   # Stub FlightXML AirlineFlightInfo
   def stub_flight_xml_airline_flight_info(fa_flight_id, fields)
     body = Nokogiri.XML(file_fixture("flight_xml/airline_flight_info.xml").read)
@@ -111,6 +129,11 @@ class ActiveSupport::TestCase
 
   def stub_flight_xml_post_timeout
     stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
+      to_timeout
+  end
+
+  def stub_aero_api_get_timeout
+    stub_request(:get, /aeroapi.flightaware.com/).
       to_timeout
   end
 

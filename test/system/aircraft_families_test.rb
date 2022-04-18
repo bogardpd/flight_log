@@ -6,8 +6,7 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
 
   def setup
     stub_aws_head_images
-    stub_flight_xml_get_wsdl
-    stub_flight_xml_post_timeout
+    stub_aero_api_get_timeout
     stub_gcmap_get_map
   end
 

@@ -22,16 +22,16 @@ class Airport < ApplicationRecord
   
   # Returns the airport's latitude and longitude in decimal degrees. If the
   # latitude and longitude aren't defined, this method attempts to look them up
-  # using the FlightXML API and save them, and then returns the coordinate
-  # array. If this is not successful, returns nil.
+  # using AeroAPI and save them, and then returns the coordinate array. If this
+  # is not successful, returns nil.
   #
   # @return [Array<Float>, nil] the latitude and longitude in decimal degrees
   def coordinates
     if self.latitude.present? && self.longitude.present?
       return [self.latitude, self.longitude]
     elsif self.icao_code.present?
-      # Try to look up coordinates on FlightXML
-      coordinates = FlightXML.airport_coordinates(self.icao_code)
+      # Try to look up coordinates on AeroAPI
+      coordinates = AeroAPI4.airport_coordinates(self.icao_code)
       return nil unless coordinates.present?
       # Save coordinates to instance
       self.latitude = coordinates[0]

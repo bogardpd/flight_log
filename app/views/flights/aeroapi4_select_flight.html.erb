@@ -69,7 +69,7 @@
   <tr>
     <td colspan="5" class="center">
       <%= form_tag(new_flight_path, method: :post) do %>
-        <%= hidden_field_tag(:completed_flight_xml, true) %>
+        <%= hidden_field_tag(:completed_aero_api, true) %>
         <%= submit_tag("My flight isn’t any of the above") %>
       <% end %>
     </td>

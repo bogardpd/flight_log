@@ -6,19 +6,18 @@ class AirlinesTest < ApplicationSystemTestCase
 
   def setup
     stub_gcmap_get_map
-    stub_flight_xml_get_wsdl
-    stub_flight_xml_post_timeout
+    stub_aero_api_get_timeout
   end
 
   test "creating, updating, and destroying an airline" do
     
     airline = {
-      name:        "British Airways",
-      name_update: "BOAC",
-      iata_code:   "BA",
-      icao_code:   "BAW",
-      numeric_code:        "125",
-      slug:                "British-Airways"
+      name:         "British Airways",
+      name_update:  "BOAC",
+      iata_code:    "BA",
+      icao_code:    "BAW",
+      numeric_code: "125",
+      slug:         "British-Airways",
     }
 
     system_log_in_as(users(:user_one))

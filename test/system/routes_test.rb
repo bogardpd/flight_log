@@ -5,9 +5,7 @@ class RoutesTest < ApplicationSystemTestCase
   # located in INTEGRATION tests.
 
   def setup
-    stub_flight_xml_get_wsdl
     stub_gcmap_get_map
-
     @airports_with_no_route_distance = [airports(:airport_dfw), airports(:airport_sea)]
   end
 
@@ -17,7 +15,8 @@ class RoutesTest < ApplicationSystemTestCase
   test "creating a route by editing route with no distance" do
     
     # We don't look up distance in FlightXML, and the airports already have coordinates:
-    stub_flight_xml_post_timeout
+    stub_aero_api_get_timeout
+    # stub_flight_xml_post_timeout
 
     system_log_in_as(users(:user_one))
 
@@ -30,7 +29,7 @@ class RoutesTest < ApplicationSystemTestCase
 
   # Update route:
   test "updating a route" do
-    stub_flight_xml_post_timeout
+    stub_aero_api_get_timeout
     
     route = routes(:route_visible)
     distance_update = 1234

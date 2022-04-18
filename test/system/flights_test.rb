@@ -5,8 +5,7 @@ class FlightsTest < ApplicationSystemTestCase
   # flights are located in INTEGRATION tests.
 
   def setup
-    stub_flight_xml_get_wsdl
-    stub_flight_xml_post_airport_info(airports(:airport_with_no_coordinates).icao_code, {})
+    stub_aero_api4_get_airports_id(airports(:airport_with_no_coordinates).icao_code, {})
     stub_gcmap_get_map
     @trip = trips(:trip_hidden)
     @pass = pk_passes(:pk_pass_existing_data)
@@ -19,7 +18,7 @@ class FlightsTest < ApplicationSystemTestCase
     @fa_flight[:destination]        = "KORD"    # From bcbp.txt
     @fa_flight[:airline_name]       = airlines(:airline_american).name # Matches bcbp.txt
     @fa_flight[:aircraft_icao_code] = aircraft_families(:aircraft_a321).icao_code
-    @fa_flight[:departure_time]     = @pass.departure_utc.to_i
+    @fa_flight[:departure_time]     = @pass.departure_utc
     @fa_flight[:fa_flight_id]       = "#{@fa_flight[:ident]}-#{@fa_flight[:departure_time].to_i}-airline-0001"
   end
 
@@ -30,7 +29,7 @@ class FlightsTest < ApplicationSystemTestCase
       destination_airport: airports(:airport_dfw),
       trip_section:        1,
       departure_date:      Date.parse("2020-01-01"),
-      departure_utc:       Time.parse("2020-01-01 12:00"),
+      departure_utc:       Time.parse("2020-01-01T12:00Z"),
       airline:             airlines(:airline_american),
       airline_update:      airlines(:airline_united),
       travel_class:        "business"
@@ -81,9 +80,16 @@ class FlightsTest < ApplicationSystemTestCase
 
   test "creating a flight from a pkpass" do
 
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:aircraft_icao_code]})
-    stub_flight_xml_post_get_flight_id(@fa_flight[:ident], @fa_flight[:departure_time], @fa_flight[:fa_flight_id])
-    stub_flight_xml_airline_flight_info(@fa_flight[:fa_flight_id], {})
+    stub_aero_api4_get_flights_ident(@fa_flight[:fa_flight_id], {
+      "fa_flight_id"  => @fa_flight[:fa_flight_id],
+      "aircraft_type" => @fa_flight[:aircraft_icao_code],
+    })
+    stub_aero_api4_get_flights_ident(@fa_flight[:ident], {
+      "fa_flight_id"  => @fa_flight[:fa_flight_id],
+      "scheduled_out" => @fa_flight[:departure_time],
+    })
+    stub_aero_api4_get_airports_id(@fa_flight[:origin], {})
+    stub_aero_api4_get_airports_id(@fa_flight[:destination], {})
     
     system_log_in_as(users(:user_one))
 
@@ -112,11 +118,15 @@ class FlightsTest < ApplicationSystemTestCase
     flight[:origin]        = "KORD"    # From pass fixture
     flight[:destination]   = "KDFW"    # From pass fixture
 
-    stub_flight_xml_post_flight_info_ex(flight[:ident], {faFlightID: flight[:fa_flight_id]})
-    stub_flight_xml_post_airport_info(airports(:airport_ord).icao_code, {})
-    stub_flight_xml_post_airport_info(airports(:airport_dfw).icao_code, {})
-    stub_flight_xml_post_flight_info_ex(flight[:fa_flight_id], {})
-    stub_flight_xml_airline_flight_info(flight[:fa_flight_id], {})
+    stub_aero_api4_get_flights_ident(flight[:ident], {
+      "fa_flight_id" => flight[:fa_flight_id]
+    })
+    stub_aero_api4_get_flights_ident(flight[:fa_flight_id], {
+      "fa_flight_id" => flight[:fa_flight_id]
+    })
+        
+    stub_aero_api4_get_airports_id(flight[:origin], {})
+    stub_aero_api4_get_airports_id(flight[:destination], {})
     
     system_log_in_as(users(:user_one))
 
@@ -140,12 +150,20 @@ class FlightsTest < ApplicationSystemTestCase
 
   test "creating a flight from BCBP data" do
     
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {faFlightID: @fa_flight[:fa_flight_id], origin: @fa_flight[:origin], destination: @fa_flight[:destination]})
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:aircraft_icao_code]})
-    stub_flight_xml_post_get_flight_id(@fa_flight[:ident], @fa_flight[:departure_time], @fa_flight[:fa_flight_id])
-    stub_flight_xml_post_airport_info(@fa_flight[:origin], {})
-    stub_flight_xml_post_airport_info(@fa_flight[:destination], {})
-    stub_flight_xml_airline_flight_info(@fa_flight[:fa_flight_id], {})
+    stub_aero_api4_get_flights_ident(@fa_flight[:ident], {
+      "fa_flight_id"  => @fa_flight[:fa_flight_id],
+      "origin"        => {"code" => @fa_flight[:origin]},
+      "destination"   => {"code" => @fa_flight[:destination]},
+      "scheduled_out" => @fa_flight[:departure_time],
+    })
+    stub_aero_api4_get_flights_ident(@fa_flight[:fa_flight_id], {
+      "fa_flight_id"  => @fa_flight[:fa_flight_id],
+      "aircraft_type" => @fa_flight[:aircraft_icao_code],
+      "scheduled_out" => @fa_flight[:departure_time],
+    })
+
+    stub_aero_api4_get_airports_id(@fa_flight[:origin], {})
+    stub_aero_api4_get_airports_id(@fa_flight[:destination], {})
     
     system_log_in_as(users(:user_one))
 
@@ -170,11 +188,19 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating a flight from airline and flight number" do
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {faFlightID: @fa_flight[:fa_flight_id]})
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: @fa_flight[:aircraft_icao_code]})
-    stub_flight_xml_post_airport_info(@fa_flight[:origin], {})
-    stub_flight_xml_post_airport_info(@fa_flight[:destination], {})
-    stub_flight_xml_airline_flight_info(@fa_flight[:fa_flight_id], {})
+    stub_aero_api4_get_flights_ident(@fa_flight[:ident], {
+      "fa_flight_id" => @fa_flight[:fa_flight_id]
+    })
+    stub_aero_api4_get_flights_ident(@fa_flight[:fa_flight_id], {
+      "fa_flight_id" => @fa_flight[:fa_flight_id],
+      "aircraft_type" => @fa_flight[:aircraft_icao_code],
+    })
+
+    stub_aero_api4_get_airports_id(@fa_flight[:origin], {
+      "airport_code" => "KDFW",
+      "alternate_ident" => "DFW",
+    })
+    stub_aero_api4_get_airports_id(@fa_flight[:destination], {})
 
     system_log_in_as(users(:user_one))
 
@@ -201,15 +227,40 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating a flight with unknown FlightXML ICAO codes" do
-    unknown_aircraft = {icao: "A322", iata: "322", manufacturer: "Airbus", type: "A322", category: "Narrow-body", slug: "Airbus-A322"}
-    unknown_airline = {icao: "AAA", iata: "A2", name: "American Airline Association", slug: "American-Airline-Association"}
-    unknown_airport = {icao: "ZZZZ", iata: "ZZZ", city: "Zizzville", country: "Zazz", slug: "ZZZ"}
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:ident], {faFlightID: @fa_flight[:fa_flight_id]})
-    stub_flight_xml_post_flight_info_ex(@fa_flight[:fa_flight_id], {aircrafttype: unknown_aircraft[:icao], ident: unknown_airline[:icao] + "1111", origin: unknown_airport[:icao]})
-    stub_flight_xml_post_airport_info(unknown_airport[:icao], {})
-    stub_flight_xml_post_airport_info(@fa_flight[:origin], {})    
-    stub_flight_xml_post_airport_info(@fa_flight[:destination], {})    
-    stub_flight_xml_airline_flight_info(@fa_flight[:fa_flight_id], {})
+    unknown_aircraft = {
+      icao:         "A322",
+      iata:         "322",
+      manufacturer: "Airbus",
+      type:         "A322",
+      category:     "Narrow-body",
+      slug:         "Airbus-A322",
+    }
+    unknown_airline = {
+      icao: "AAA",
+      iata: "A2",
+      name: "American Airline Association",
+      slug: "American-Airline-Association",
+    }
+    unknown_airport = {
+      icao:    "ZZZZ",
+      iata:    "ZZZ",
+      city:    "Zizzville",
+      country: "Zazz",
+      slug:    "ZZZ",
+    }
+    flight_info = {
+      "fa_flight_id"  => @fa_flight[:fa_flight_id],
+      "aircraft_type" => unknown_aircraft[:icao],
+      "ident"         => unknown_airline[:icao] + "1111",
+      "operator"      => unknown_airline[:icao],
+      "origin"        => {"code" => unknown_airport[:icao]},
+    }
+    stub_aero_api4_get_flights_ident(@fa_flight[:ident], flight_info)
+    stub_aero_api4_get_flights_ident(@fa_flight[:fa_flight_id], flight_info)
+
+    stub_aero_api4_get_airports_id(unknown_airport[:icao], {})
+    stub_aero_api4_get_airports_id(@fa_flight[:origin], {})    
+    stub_aero_api4_get_airports_id(@fa_flight[:destination], {})    
 
     system_log_in_as(users(:user_one))
 

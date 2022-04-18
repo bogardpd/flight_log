@@ -328,7 +328,7 @@ class FlightsController < ApplicationController
   # Shows a set of forms to allow the user to choose how they will enter their
   # new flight. Allows the user to provide an Apple Wallet {PKPass}, to provide
   # IATA BCBP-formatted {BoardingPass} barcode data, to provide an {Airline}
-  # and flight number to look up with {FlightXML}, or to choose to manually
+  # and flight number to look up with {AeroAPI4}, or to choose to manually
   # enter all flight data. 
   #
   # This action can only be performed by a verified user.
@@ -337,7 +337,7 @@ class FlightsController < ApplicationController
   # @see https://developer.apple.com/documentation/passkit/wallet Wallet | Apple Developer Documentation
   # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
   #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
-  # @see https://flightaware.com/commercial/flightxml/documentation2.rvt FlightXML 2.0 Documentation
+  # @see https://flightaware.com/aeroapi/portal/documentation AeroAPI Documentation
   def new_flight_menu
     clear_new_flight_variables
     
@@ -373,7 +373,7 @@ class FlightsController < ApplicationController
   end
   
   # Shows a form to add a {Flight} to a specified {Trip}. This form is
-  # prepopulated with any known {PKPass}, {BoardingPass}, and {FlightXML} data extracted
+  # prepopulated with any known {PKPass}, {BoardingPass}, and {AeroAPI4} data extracted
   # from information provided in the {#new_flight_menu}.
   #
   # This action can only be performed by a verified user.
@@ -382,7 +382,7 @@ class FlightsController < ApplicationController
   # @see https://developer.apple.com/documentation/passkit/wallet Wallet | Apple Developer Documentation
   # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
   #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
-  # @see https://flightaware.com/commercial/flightxml/documentation2.rvt FlightXML 2.0 Documentation
+  # @see https://flightaware.com/aeroapi/portal/documentation AeroAPI Documentation
   def new
 
     # Check if this page was loaded directly from a form submission. If so,
@@ -396,7 +396,7 @@ class FlightsController < ApplicationController
     session[:new_flight][:warnings] = Array.new
     session_params = [:airline_icao, :boarding_pass_data, :codeshare_airline_icao, :codeshare_flight_number, :departure_utc, :destination_airport_icao, :fa_flight_id, :flight_number, :origin_airport_icao, :pk_pass_id, :trip_id]
     session_params.map{ |p| session[:new_flight][p] = params[p] if params[p] }
-    session[:new_flight][:completed_flight_xml] = true if params[:completed_flight_xml]
+    session[:new_flight][:completed_aero_api] = true if params[:completed_aero_api]
     session[:new_flight][:departure_date] = params[:departure_date].to_date if params[:departure_date]
     session[:new_flight][:departure_utc] = params[:departure_utc].to_time(:utc) if params[:departure_utc]
     
@@ -425,22 +425,21 @@ class FlightsController < ApplicationController
     session[:new_flight][:completed_bcbp] = true
   
     # Get flight data from AeroAPI:
-    if (session[:new_flight][:completed_flight_xml] != true)
+    if (session[:new_flight][:completed_aero_api] != true)
       if session[:new_flight][:fa_flight_id]
-        set_flight_xml_data(session[:new_flight][:fa_flight_id])
+        set_aero_api_data(session[:new_flight][:fa_flight_id])
       elsif session[:new_flight][:flight_number]
         session[:new_flight][:airline_icao] ||= Airline.convert_iata_to_icao(session[:new_flight][:airline_iata], false)
         if session[:new_flight][:airline_icao]
           session[:new_flight][:ident] = [session[:new_flight][:airline_icao],session[:new_flight][:flight_number]].join
           if session[:new_flight][:departure_utc] && fa_flight_id = AeroAPI4.get_flight_id(session[:new_flight][:ident], session[:new_flight][:departure_utc])
-            set_flight_xml_data(fa_flight_id)
+            set_aero_api_data(fa_flight_id)
           else
             @fa_flights = AeroAPI4.flight_lookup(session[:new_flight][:ident])
             @fa_flights = @fa_flights.select{|f| f[:origin] && f[:destination] && AeroAPI4.departure_time(f) && AeroAPI4.arrival_time(f)} # Only show flights with an origin, destination, departure time, and arrival time.
             if @fa_flights && @fa_flights.any?
               airports = (@fa_flights.map{|f| f.dig(:origin, :code)} | @fa_flights.map{|f| f.dig(:destination, :code)})
               @airport_info = airports.map{|icao| { icao => AeroAPI4.airport_lookup(icao) }}.reduce(:merge)
-              puts @airport_info
               render "aeroapi4_select_flight"
               return
             else
@@ -456,7 +455,7 @@ class FlightsController < ApplicationController
     id_fields = get_or_create_ids_from_codes
     return if id_fields.nil?
     session[:new_flight].merge!(id_fields) if id_fields
-    session[:new_flight][:completed_flight_xml] = true # Do this after codes so we can look up new codes if need be
+    session[:new_flight][:completed_aero_api] = true # Do this after codes so we can look up new codes if need be
   
     # Guess trip section:
     session[:new_flight][:trip_section] = trip.estimated_trip_section(session[:new_flight][:departure_utc])
@@ -643,7 +642,7 @@ class FlightsController < ApplicationController
   end
   
   # Shows a form to create a new {Airport} from an unrecognized IATA or ICAO
-  # airport code in {PKPass}, {BoardingPass}, or {FlightXML} data.
+  # airport code in {PKPass}, {BoardingPass}, or {AeroAPI4} data.
   #
   # @param iata [String] an IATA airport code
   # @param icao [String] an ICAO airport code
@@ -656,7 +655,7 @@ class FlightsController < ApplicationController
   end
   
   # Shows a form to create a new {AircraftFamily} from an unrecognized ICAO
-  # aircraft type code in {PKPass}, {BoardingPass}, or {FlightXML} data.
+  # aircraft type code in {PKPass}, {BoardingPass}, or {AeroAPI4} data.
   #
   # @param icao [String] an ICAO aircraft type code
   # @return [nil]
@@ -668,7 +667,7 @@ class FlightsController < ApplicationController
   end
   
   # Shows a form to create a new {Airline} from an unrecognized IATA or ICAO
-  # airline code in {PKPass}, {BoardingPass}, or {FlightXML} data.
+  # airline code in {PKPass}, {BoardingPass}, or {AeroAPI4} data.
   #
   # @param iata [String] an IATA airline code
   # @param icao [String] an ICAO airline code
@@ -680,18 +679,18 @@ class FlightsController < ApplicationController
     render "new_undefined_airline" and return true
   end
   
-  # Add non-blank {FlightXML} data to the {#new} {Flight} form prepopulated data hash.
+  # Add non-blank {AeroAPI4} data to the {#new} {Flight} form prepopulated data hash.
   # 
   # @return [Hash]
-  def set_flight_xml_data(fa_flight_id)
-    flightxml_data = FlightXML.form_values(fa_flight_id)
-    if flightxml_data
-      session[:new_flight].merge!(flightxml_data.reject{ |k,v| v.nil? })
+  def set_aero_api_data(fa_flight_id)
+    aeroapi_data = AeroAPI4.form_values(fa_flight_id)
+    if aeroapi_data
+      session[:new_flight].merge!(aeroapi_data.reject{ |k,v| v.nil? })
     else
       if session[:new_flight][:ident] && session[:new_flight][:departure_utc]
-        session[:new_flight][:warnings].push(FlightXML::ERROR + " (Searched for #{session[:new_flight][:ident]} / #{session[:new_flight][:departure_utc].strftime("%-d %b %Y %R")} UTC)")
+        session[:new_flight][:warnings].push(AeroAPI4::ERROR + " (Searched for #{session[:new_flight][:ident]} / #{session[:new_flight][:departure_utc].strftime("%-d %b %Y %R")} UTC)")
       else
-        session[:new_flight][:warnings].push(FlightXML::ERROR)
+        session[:new_flight][:warnings].push(AeroAPI4::ERROR)
       end
     end
   end

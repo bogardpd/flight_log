@@ -7,7 +7,6 @@ class AirportsTest < ApplicationSystemTestCase
   def setup
     stub_aws_head_images
     stub_gcmap_get_map
-    stub_flight_xml_get_wsdl
   end
 
   test "creating, updating, and destroying an airport" do
@@ -22,8 +21,11 @@ class AirportsTest < ApplicationSystemTestCase
       longitude:   24.96333
     }
 
-    stub_flight_xml_post_airport_info(airports(:airport_with_no_coordinates).icao_code, {})
-    stub_flight_xml_post_airport_info(airport[:icao_code], {latitude: airport[:latitude], longitude: airport[:longitude]})
+    stub_aero_api4_get_airports_id(airports(:airport_with_no_coordinates).icao_code, {})
+    stub_aero_api4_get_airports_id(airport[:icao_code], {
+      "latitude" => airport[:latitude],
+      "longitude" => airport[:longitude],
+      })
 
     system_log_in_as(users(:user_one))
 

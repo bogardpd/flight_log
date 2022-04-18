@@ -1,0 +1,14 @@
+{
+  "airport_code": "KORD",
+  "alternate_ident": "ORD",
+  "name": "Chicago O'Hare Intl",
+  "elevation": 680,
+  "city": "Chicago",
+  "state": "IL",
+  "longitude": -87.9081497,
+  "latitude": 41.9769403,
+  "timezone": "America/Chicago",
+  "country_code": "US",
+  "wiki_url": "http://en.wikipedia.org/wiki/O%27Hare_International_Airport",
+  "airport_flights_url": "/airports/KORD/flights"
+}

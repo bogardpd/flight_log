@@ -5,9 +5,13 @@ class TripsTest < ApplicationSystemTestCase
   # or destroy trips are located in INTEGRATION tests.
 
   def setup
-    stub_flight_xml_get_wsdl
-    stub_flight_xml_post_timeout
+    stub_aero_api_get_timeout
     stub_gcmap_get_map
+
+    stub_aero_api4_get_airports_id("CYYZ", {
+      "latitude"  => 43.677223,
+      "longitude" => -79.630556,
+    })
   end
 
   test "creating, updating, and destroying a trip" do
