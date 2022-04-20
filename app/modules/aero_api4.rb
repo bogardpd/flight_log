@@ -17,7 +17,7 @@ module AeroAPI4
 
   API_SERVER = "https://aeroapi.flightaware.com/aeroapi"
 
-  # The default error message to return if a FlightXML lookup failed.
+  # The default error message to return if an AeroAPI lookup failed.
   ERROR = "We couldn’t find your flight data on FlightAware. You will have to manually enter some fields."
 
   # Passes paths to AeroAPI and gets a hash of results.

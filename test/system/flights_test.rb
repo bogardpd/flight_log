@@ -10,7 +10,7 @@ class FlightsTest < ApplicationSystemTestCase
     @trip = trips(:trip_hidden)
     @pass = pk_passes(:pk_pass_existing_data)
 
-    # Parameters for FlightAware FlightXML lookup tests:
+    # Parameters for FlightAware AeroAPI lookup tests:
     @fa_flight = Hash.new
     @fa_flight[:ident]              = "AAL2300" # From bcbp.txt
     @fa_flight[:flight_number]      = "2300"    # From bcbp.txt
@@ -226,7 +226,7 @@ class FlightsTest < ApplicationSystemTestCase
 
   end
 
-  test "creating a flight with unknown FlightXML ICAO codes" do
+  test "creating a flight with unknown AeroAPI ICAO codes" do
     unknown_aircraft = {
       icao:         "A322",
       iata:         "322",

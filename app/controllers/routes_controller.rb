@@ -17,7 +17,7 @@
 # which does not yet exist in the database.)
 #
 # Likewise, a #destroy action is not provided because maintaining the route
-# distance saves a {FlightXML} API distance lookup in the future if a flight is
+# distance saves a {AeroAPI4} distance lookup in the future if a flight is
 # ever added with this route. {#index} generates its {Route} list from {Flight}
 # {Airport} pairs rather than just querying the {Route} model, so unused routes
 # won't be seen.

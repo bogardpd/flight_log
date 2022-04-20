@@ -52,11 +52,6 @@ class ActiveSupport::TestCase
       to_return(status: 200, body: "", headers: {})
   end
 
-  def stub_flight_xml_get_wsdl
-    WebMock.stub_request(:get, "https://flightxml.flightaware.com/soap/FlightXML2/wsdl").
-      to_return(status: 200, body: file_fixture("flight_xml/wsdl.xml").read)
-  end
-
   # Stub AeroAPI4 /airports/{id}
   def stub_aero_api4_get_airports_id(id, fields)
     body = JSON.parse(file_fixture("aero_api4/airports_id.json").read)
@@ -75,63 +70,7 @@ class ActiveSupport::TestCase
       to_return(status: 200, body: body.to_json)
   end
 
-  # Stub FlightXML AirlineFlightInfo
-  def stub_flight_xml_airline_flight_info(fa_flight_id, fields)
-    body = Nokogiri.XML(file_fixture("flight_xml/airline_flight_info.xml").read)
-    fields.each do |tag, value|
-      body.
-        at_xpath("//FlightXML2:AirlineFlightInfoResult//FlightXML2:#{tag}").
-        content = value
-    end
-
-    WebMock.stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
-      with(body: /<FlightXML2:AirlineFlightInfoRequest>.*<FlightXML2:faFlightID>#{fa_flight_id}<\/FlightXML2:faFlightID>/).
-      to_return(status: 200, body: body.to_s)
-  end
-
-  # Stub FlightXML AirportInfo
-  def stub_flight_xml_post_airport_info(icao_code, fields)
-    body = Nokogiri.XML(file_fixture("flight_xml/airport_info.xml").read)
-    fields.each do |tag, value|
-      body.
-        at_xpath("//FlightXML2:AirportInfoResult//FlightXML2:#{tag}").
-        content = value
-    end
-
-    WebMock.stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
-      with(body: /<FlightXML2:AirportInfoRequest>.*<FlightXML2:airportCode>#{icao_code}<\/FlightXML2:airportCode>/).
-      to_return(status: 200, body: body.to_s)
-  end
-
-  # Stub FlightXML FlightInfoEx
-  def stub_flight_xml_post_flight_info_ex(ident, fields)
-    body = Nokogiri.XML(file_fixture("flight_xml/flight_info_ex.xml").read)
-    fields.each do |tag, value|
-      body.
-        at_xpath("//FlightXML2:FlightInfoExResult//FlightXML2:#{tag}").
-        content = value
-    end
-
-    WebMock.stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
-      with(body: /<FlightXML2:FlightInfoExRequest>.*(<FlightXML2:ident>#{ident}<\/FlightXML2:ident>|<FlightXML2:faFlightID>#{ident}<\/FlightXML2:faFlightID>)/).
-      to_return(status: 200, body: body.to_s)
-  end
-
-  # Stub FlightXML GetFlightId
-  def stub_flight_xml_post_get_flight_id(ident, departure_time, result)
-    body = Nokogiri.XML(file_fixture("flight_xml/get_flight_id.xml").read)
-    body.at_xpath("//FlightXML2:GetFlightIDResult").content = result
-
-    WebMock.stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
-      with(body: /<FlightXML2:GetFlightIDRequest>.*<FlightXML2:ident>#{ident}<\/FlightXML2:ident><FlightXML2:departureTime>#{departure_time}<\/FlightXML2:departureTime>/).
-      to_return(status: 200, body: body.to_s)
-  end
-
-  def stub_flight_xml_post_timeout
-    stub_request(:post, "http://flightxml.flightaware.com/soap/FlightXML2/op").
-      to_timeout
-  end
-
+  # Stub timeouts for any AeroAPI4 call
   def stub_aero_api4_get_timeout
     stub_request(:get, /aeroapi.flightaware.com/).
       to_timeout

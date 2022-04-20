@@ -2,7 +2,7 @@
 # IATA Bar Coded Boarding Pass (BCBP)} data. Used to parse boarding pass
 # barcode text received by email or entered into a form.
 # @see BoardingPassEmail
-# @see FlightXML
+# @see AeroAPI4
 # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
 #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
 

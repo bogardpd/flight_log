@@ -5,6 +5,7 @@
 ### Added
 - Unique slug parameters to `Airline`, `Airport`, and `AircraftFamily` models.
 - KML and GPX download links to all maps.
+- Switched from FlightXML v2 to [AeroAPI](https://flightaware.com/commercial/aeroapi/) v4 for flight and airport info lookups.
 
 ## [2.3] – Automatic Distance Calculations and GPX/KML Maps
 2019-04-30

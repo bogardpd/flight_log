@@ -14,9 +14,8 @@ class RoutesTest < ApplicationSystemTestCase
   # user tries to edit a route that's not already in the database.
   test "creating a route by editing route with no distance" do
     
-    # We don't look up distance in FlightXML, and the airports already have coordinates:
+    # We don't look up distance in AeroAPI, and the airports already have coordinates:
     stub_aero_api4_get_timeout
-    # stub_flight_xml_post_timeout
 
     system_log_in_as(users(:user_one))
 
