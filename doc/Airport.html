@@ -6,7 +6,7 @@
 <title>
   Class: Airport
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.27
   
 </title>
 
@@ -391,7 +391,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the airport&#39;s latitude and longitude in decimal degrees.</p>
+<p>Returns the airport’s latitude and longitude in decimal degrees.</p>
 </div></span>
   
 </li>
@@ -1403,7 +1403,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the airport&#39;s latitude and longitude in decimal degrees. If the latitude and longitude aren&#39;t defined, this method attempts to look them up using the FlightXML API and save them, and then returns the coordinate array. If this is not successful, returns nil.</p>
+<p>Returns the airport’s latitude and longitude in decimal degrees. If the latitude and longitude aren’t defined, this method attempts to look them up using AeroAPI and save them, and then returns the coordinate array. If this is not successful, returns nil.</p>
 
 
   </div>
@@ -1459,8 +1459,8 @@
   <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span> <span class='op'>&amp;&amp;</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
     <span class='kw'>return</span> <span class='lbracket'>[</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_longitude'>longitude</span><span class='rbracket'>]</span>
   <span class='kw'>elsif</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_icao_code'>icao_code</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
-    <span class='comment'># Try to look up coordinates on FlightXML
-</span>    <span class='id identifier rubyid_coordinates'>coordinates</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="FlightXML.html" title="FlightXML (module)">FlightXML</a></span></span><span class='period'>.</span><span class='id identifier rubyid_airport_coordinates'><span class='object_link'><a href="FlightXML.html#airport_coordinates-class_method" title="FlightXML.airport_coordinates (method)">airport_coordinates</a></span></span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_icao_code'>icao_code</span><span class='rparen'>)</span>
+    <span class='comment'># Try to look up coordinates on AeroAPI
+</span>    <span class='id identifier rubyid_coordinates'>coordinates</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="AeroAPI4.html" title="AeroAPI4 (module)">AeroAPI4</a></span></span><span class='period'>.</span><span class='id identifier rubyid_airport_coordinates'><span class='object_link'><a href="AeroAPI4.html#airport_coordinates-class_method" title="AeroAPI4.airport_coordinates (method)">airport_coordinates</a></span></span><span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_icao_code'>icao_code</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>unless</span> <span class='id identifier rubyid_coordinates'>coordinates</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
     <span class='comment'># Save coordinates to instance
 </span>    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_latitude'>latitude</span> <span class='op'>=</span> <span class='id identifier rubyid_coordinates'>coordinates</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span>
@@ -1488,7 +1488,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Given two IDs, returns the one that is not associated with this <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>. If both are associated with this airport (a flight where the origin and destination are the same) then this airport&#39;s ID will be returned. If neither are associated with this airport, nil will be returned.</p>
+<p>Given two IDs, returns the one that is not associated with this <span class='object_link'><a href="" title="Airport (class)">Airport</a></span>. If both are associated with this airport (a flight where the origin and destination are the same) then this airport’s ID will be returned. If neither are associated with this airport, nil will be returned.</p>
 
 <p>Used by <span class='object_link'><a href="#direct_flight_count-class_method" title="Airport.direct_flight_count (method)">direct_flight_count</a></span> to determine which airport on a direct <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> is the remote airport.</p>
 
@@ -1580,9 +1580,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Dec  5 20:30:37 2021 by
+  Generated on Wed Apr 20 19:26:43 2022 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.26 (ruby-2.7.2).
+  0.9.27 (ruby-3.1.1).
 </div>
 
     </div>

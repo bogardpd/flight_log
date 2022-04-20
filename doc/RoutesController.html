@@ -6,7 +6,7 @@
 <title>
   Class: RoutesController
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.27
   
 </title>
 
@@ -112,9 +112,9 @@
 
 <p>The <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model is largely used to maintain a table of route distances between <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs; most interaction that the application has with a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> is actually internally managed as the pair of <span class='object_link'><a href="Airport.html" title="Airport (class)">Airports</a></span> associated with a <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span>.</p>
 
-<p>The #new and #create actions are not provided because <span class='object_link'><a href="Route.html" title="Route (class)">Routes</a></span> are not created manually; instead, they are automatically created when <span class='object_link'><a href="Route.html#distance_by_airport-class_method" title="Route.distance_by_airport (method)">Route.distance_by_airport</a></span> is called by any view needing the distance of a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> that hasn&#39;t been created yet, or when a verified user navigates to <span class='object_link'><a href="#edit-instance_method" title="RoutesController#edit (method)">#edit</a></span> from the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> view. (Since the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> action is defined by two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> parameters rather than a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> parameter, it can show a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> which does not yet exist in the database.)</p>
+<p>The #new and #create actions are not provided because <span class='object_link'><a href="Route.html" title="Route (class)">Routes</a></span> are not created manually; instead, they are automatically created when <span class='object_link'><a href="Route.html#distance_by_airport-class_method" title="Route.distance_by_airport (method)">Route.distance_by_airport</a></span> is called by any view needing the distance of a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> that hasn’t been created yet, or when a verified user navigates to <span class='object_link'><a href="#edit-instance_method" title="RoutesController#edit (method)">#edit</a></span> from the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> view. (Since the <span class='object_link'><a href="#show-instance_method" title="RoutesController#show (method)">#show</a></span> action is defined by two <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> parameters rather than a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> parameter, it can show a <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> which does not yet exist in the database.)</p>
 
-<p>Likewise, a #destroy action is not provided because maintaining the route distance saves a <span class='object_link'><a href="FlightXML.html" title="FlightXML (module)">FlightXML</a></span> API distance lookup in the future if a flight is ever added with this route. <span class='object_link'><a href="#index-instance_method" title="RoutesController#index (method)">#index</a></span> generates its <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> list from <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs rather than just querying the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model, so unused routes won&#39;t be seen.</p>
+<p>Likewise, a #destroy action is not provided because maintaining the route distance saves a <span class='object_link'><a href="AeroAPI4.html" title="AeroAPI4 (module)">AeroAPI4</a></span> distance lookup in the future if a flight is ever added with this route. <span class='object_link'><a href="#index-instance_method" title="RoutesController#index (method)">#index</a></span> generates its <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> list from <span class='object_link'><a href="Flight.html" title="Flight (class)">Flight</a></span> <span class='object_link'><a href="Airport.html" title="Airport (class)">Airport</a></span> pairs rather than just querying the <span class='object_link'><a href="Route.html" title="Route (class)">Route</a></span> model, so unused routes won’t be seen.</p>
 
 
   </div>
@@ -680,9 +680,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Dec  5 20:30:38 2021 by
+  Generated on Wed Apr 20 19:26:44 2022 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.26 (ruby-2.7.2).
+  0.9.27 (ruby-3.1.1).
 </div>
 
     </div>

@@ -1,4 +1,4 @@
-# Provides utilities for interacting with with FlightAware's AeroAPI (version
+# Provides utilities for interacting with with FlightAware AeroAPI (version
 # 4).
 #
 # This is used to look up {Flight} data that couldn't be found from a
@@ -11,10 +11,12 @@
 # not this applications models, unless it specifically links to {Flight},
 # {Airport}, or {Route}.
 #
+# @see https://flightaware.com/commercial/aeroapi/
 # @see https://flightaware.com/aeroapi/portal/documentation
 
 module AeroAPI4
 
+  # Location of AeroAPI's API server.
   API_SERVER = "https://aeroapi.flightaware.com/aeroapi"
 
   # The default error message to return if an AeroAPI lookup failed.
