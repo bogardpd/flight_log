@@ -19,8 +19,6 @@ gem 'uglifier', '~> 4.2'
 gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
 gem 'rubyzip', '~> 2.2'
-# Use savon for SOAP
-gem 'savon', '~> 2.12'
 # Use AWS S3 for image caching
 gem 'aws-sdk-s3', '~> 1.81'
 
