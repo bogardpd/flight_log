@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '3.1.1'
+ruby '3.1.2'
 
 gem 'rails', '~> 6.1'
 
@@ -18,7 +18,7 @@ gem 'uglifier', '~> 4.2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
-gem 'rubyzip', '~> 2.2'
+gem 'rubyzip', '~> 2.3.0'
 # Use AWS S3 for image caching
 gem 'aws-sdk-s3', '~> 1.81'
 
