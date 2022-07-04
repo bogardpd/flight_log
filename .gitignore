@@ -6,6 +6,7 @@ tmp/**/*
 vendor/bundle
 certbot.log
 .yardoc/
+.vscode/
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
