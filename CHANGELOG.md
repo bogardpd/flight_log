@@ -49,7 +49,7 @@
 2017-04-29
 
 ### New
-- Created Import Boarding Pass from email functionality (using Apple PKPass boarding passes).
+- Created Import Boarding Pass from Email functionality (using Apple PKPass boarding passes).
   - Created `BoardingPass` class for parsing and interpreting Bar Coded Boarding Pass (BCBP) formatted data.
   - Created `BoardingPassEmail` module for connecting to an IMAP email acccount, finding PKPass attachments, and processing them.
   - Created `PKPass` model for storing PKPass data.
@@ -129,6 +129,7 @@
 
 ### Changed
 - Rewrote the home page to show flight maps, and top 5 lists and counts of routes, airports, aircraft, airlines, and tails.
+- Changed the [airport frequency map](https://www.flighthistorian.com/airports#airport-frequency-map) to represent the number of visits with circle area instead of circle radius.
 - Updated logos and icons for high-DPI displays.
 - Switched Tails and Classes on the main navigation bar.
 - Minor bug fixes.
