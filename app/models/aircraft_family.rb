@@ -17,7 +17,7 @@
 # of aircraft, but if not, the IATA code for the most common variant of that
 # family should be used.
 class AircraftFamily < ApplicationRecord
-  belongs_to :parent, class_name: "AircraftFamily", foreign_key: "parent_id"
+  belongs_to :parent, class_name: "AircraftFamily", foreign_key: "parent_id", :optional => true
   has_many :children, class_name: "AircraftFamily", foreign_key: "parent_id"
   has_many :flights
   

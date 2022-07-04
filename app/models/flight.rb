@@ -4,9 +4,9 @@ class Flight < ApplicationRecord
   belongs_to :origin_airport, :class_name => "Airport"
   belongs_to :destination_airport, :class_name => "Airport"
   belongs_to :airline
-  belongs_to :aircraft_family
-  belongs_to :operator, :class_name => "Airline"
-  belongs_to :codeshare_airline, :class_name => "Airline"
+  belongs_to :aircraft_family, :optional => true
+  belongs_to :operator, :class_name => "Airline", :optional => true
+  belongs_to :codeshare_airline, :class_name => "Airline", :optional => true
   
   # Form fields which should be saved as nil when the field is blank.
   NULL_ATTRS = %w( flight_number aircraft_name tail_number travel_class comment fleet_number boarding_pass_data )
