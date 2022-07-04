@@ -10,7 +10,7 @@
 # @see BoardingPass
 # @see FlightsController#new_flight_menu
 # @see FlightsController#show_boarding_pass
-class PkPassesController < ApplicationController
+class PKPassesController < ApplicationController
   before_action :logged_in_user
   
   # Deletes an existing {PKPass}.
