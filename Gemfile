@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 ruby '3.1.2'
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0.3'
 
 # Use puma as the webserver
 gem 'puma', '5.6.4'
