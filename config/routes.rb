@@ -59,7 +59,7 @@ Portfolio::Application.routes.draw do
   get   "/routes/:route" => redirect("routes", status: 301) # Redirect legacy routes to Index Routes
   
   # Boarding pass import pages:
-  resources :pk_passes, only: [:destroy]
+  resources :p_k_passes, only: [:destroy]
   
   # Boarding pass parser pages:
   get   "/boarding-pass" => "flights#input_boarding_pass"

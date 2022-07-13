@@ -494,7 +494,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
           assert_select("input#trip_id[value=?]", trip.id.to_s)
           assert_select("input[type=submit][value=?]", "Create this flight")
         end
-        assert_select("a[data-method=delete][href=?]", pk_pass_path(pk_pass), {text: "Delete"})
+        assert_select("a[data-method=delete][href=?]", p_k_pass_path(pk_pass), {text: "Delete"})
       end
     end
 
