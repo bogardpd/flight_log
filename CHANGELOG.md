@@ -18,7 +18,7 @@
 - Added latitudes and longitudes to the `Airport` model.
 - Added [FlightXML API](https://flightaware.com/commercial/flightxml/documentation2.rvt) lookup for latitudes and longitudes when adding new airports.
 - Added automatic distance calculation for new Routes, using the Haversine formula.
-- Added [layover ratios](https://paulbogard.net/blog/20190207-my-worst-layovers/) to Show Trip Section views with more than one flight.
+- Added [layover ratios](https://paulbogard.net/posts/my-worst-layovers/) to Show Trip Section views with more than one flight.
 - Created `Map.gpx` and `Map.kml` methods for generating GPX and KML maps.
 
 ### Changed
