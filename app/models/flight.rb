@@ -18,7 +18,7 @@ class Flight < ApplicationRecord
   SIMPLIFY_ATTRS = %w( tail_number )
 
   # Warning text for if departure date and departure UTC might be too far apart
-  WARNING_DEPARTURE_DATE_DEPARTURE_UTC_TOO_FAR = ActionController::Base.helpers.sanitize("Your departure date and UTC time are more than a day apart &ndash; are you sure theyʼre correct?")
+  WARNING_DEPARTURE_DATE_DEPARTURE_UTC_TOO_FAR = ActionController::Base.helpers.sanitize("Your departure date and UTC time are more than a day apart &ndash; are you sure they&rsquo;re correct?")
   
   before_save :nil_if_blank
   before_save :strip_blanks

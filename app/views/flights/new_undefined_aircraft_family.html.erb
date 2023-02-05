@@ -6,13 +6,13 @@
 
 <p>The aircraft family used in your flight is not in our database. Please add the new aircraft family:</p>
 
-<%= form_for(@aircraft_family) do |f| %>
+<%= form_for(@aircraft) do |f| %>
 
   <%= render partial: "error_messages" %>
   
   <p>
     <%= f.label :parent_id, "Parent Aircraft Family" %><br/>
-    <%= f.select(:parent_id, options_for_select(AircraftFamily.family_select_options, @aircraft_family.parent_id)) %><br/>
+    <%= f.select(:parent_id, options_for_select(AircraftFamily.family_select_options, @aircraft.parent_id)) %><br/>
     <%= link_to "New aircraft family", new_aircraft_family_path, target: "_blank" %> (opens in new tab)
   </p>
 
@@ -42,7 +42,7 @@
   
   <p>
     <%= f.label :category %><br />
-  	<%= f.select(:category, options_for_select(AircraftFamily::CATEGORIES.invert, @aircraft_family.category), include_blank: true) %>
+  	<%= f.select(:category, options_for_select(AircraftFamily::CATEGORIES.invert, @aircraft.category), include_blank: true) %>
   	</p>
   </p>
 

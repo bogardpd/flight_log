@@ -401,7 +401,7 @@ class FlightsController < ApplicationController
     session[:new_flight][:departure_utc] = params[:departure_utc].to_time(:utc) if params[:departure_utc]
     
     # Locate trip and create flight:
-    trip = Trip.find(session[:new_flight][:trip_id])
+    trip = Trip.find(session[:new_flight].with_indifferent_access[:trip_id])
     @flight = trip.flights.new
     
     # Get flight data from PKPass:
@@ -574,6 +574,7 @@ class FlightsController < ApplicationController
   def get_or_create_ids_from_codes
     
     ids = Hash.new
+    session[:new_flight].symbolize_keys!
           
     # AIRPORTS
     
@@ -598,7 +599,7 @@ class FlightsController < ApplicationController
     end
     
     # AIRCRAFT FAMILIES
-    
+
     if session[:new_flight][:aircraft_family_id].blank? && session[:new_flight][:aircraft_family_icao]
       if session[:new_flight][:aircraft_family_icao] && aircraft_family = AircraftFamily.find_by(icao_code: session[:new_flight][:aircraft_family_icao])
         ids.store(:aircraft_family_id, aircraft_family.id)
@@ -608,7 +609,6 @@ class FlightsController < ApplicationController
     end
     
     # AIRLINES
-    
     if session[:new_flight][:airline_id].blank? && (session[:new_flight][:airline_icao] || session[:new_flight][:airline_iata])
       if session[:new_flight][:airline_icao] && airline = Airline.find_by(icao_code: session[:new_flight][:airline_icao])
         ids.store(:airline_id, airline.id)
@@ -660,7 +660,7 @@ class FlightsController < ApplicationController
   # @param icao [String] an ICAO aircraft type code
   # @return [nil]
   def input_new_undefined_aircraft_family(icao)
-    @aircraft_family = AircraftFamily.new
+    @aircraft = AircraftFamily.new
     @lookup_fields = {icao_code: icao}
     session[:form_location] = Rails.application.routes.recognize_path(request.original_url)
     render "new_undefined_aircraft_family" and return true
@@ -686,6 +686,7 @@ class FlightsController < ApplicationController
     aeroapi_data = AeroAPI4.form_values(fa_flight_id)
     if aeroapi_data
       session[:new_flight].merge!(aeroapi_data.reject{ |k,v| v.nil? })
+      session[:new_flight].symbolize_keys!
     else
       if session[:new_flight][:ident] && session[:new_flight][:departure_utc]
         session[:new_flight][:warnings].push(AeroAPI4::ERROR + " (Searched for #{session[:new_flight][:ident]} / #{session[:new_flight][:departure_utc].strftime("%-d %b %Y %R")} UTC)")
