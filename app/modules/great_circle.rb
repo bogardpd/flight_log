@@ -7,7 +7,7 @@ module GreatCircle
   # @param coord_orig [Coordinate] origin
   # @param coord_dest [Coordinate] destination
   # @param deg_interval [Float] the spacing between path points in degrees
-  # @param split [Boolean] whether to split the path at the antemeridian (180 degrees longitude)
+  # @param split [Boolean] whether to split the path at the antimeridian (180 degrees longitude)
   # @return [Array<Array>] an array of arrays of {Coordinates}
   def self.gc_route_coords(coord_orig, coord_dest, deg_interval=1.0, split=true)
     phi1, lambda1 = deg_to_rad(coord_orig.lat), deg_to_rad(coord_orig.lon)

@@ -2,7 +2,7 @@ require "test_helper"
 
 class GreatCircleTest < ActiveSupport::TestCase
 
-  def test_gc_route_coords_without_antemeridian
+  def test_gc_route_coords_without_antimeridian
     lon_range = (-5..5)
     p1 = Coordinate.new(0,lon_range.begin)
     p2 = Coordinate.new(0,lon_range.end)
@@ -10,7 +10,7 @@ class GreatCircleTest < ActiveSupport::TestCase
     assert_equal path[0].size, lon_range.count
   end
 
-  def test_gc_route_coords_with_antemeridian
+  def test_gc_route_coords_with_antimeridian
     lon_range_e = (170..180)
     lon_range_w = (-180..-175)
     p1 = Coordinate.new(0,lon_range_e.begin)
