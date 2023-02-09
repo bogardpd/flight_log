@@ -40,12 +40,12 @@ group :development, :test do
 end
 
 group :test do
-  gem 'minitest-reporters', '~> 1.4', '>= 1.4.2'
+  gem 'minitest-reporters'
   gem 'capybara'
   gem 'selenium-webdriver'
-  gem 'webdrivers', '~> 4.2'
+  gem 'webdrivers'
   # Use webmock to stub out HTTP API requests
-  gem 'webmock', '~> 3.8'
+  gem 'webmock'
   
 end
 
