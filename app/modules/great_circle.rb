@@ -62,7 +62,7 @@ module GreatCircle
       coords.append(Coordinate.new(lat, lon))
     end
 
-    if split
+    if coords.size > 0 && split
       # Check if route crosses antimeridian, and split it into two if it does.
       # Use the first and last items of the coordinates array to avoid rounding
       # issues.
