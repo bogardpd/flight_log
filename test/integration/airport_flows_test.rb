@@ -8,6 +8,13 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     @visible_airport = airports(:airport_visible_1)
     @hidden_airport = airports(:airport_hidden_1)
     @no_flights_airport = airports(:airport_no_flights)
+
+    @extension_types = {
+      'geojson' => "application/geo+json",
+      'gpx'     => "application/gpx+xml",
+      'graphml' => "application/xml",
+      'kml'     => "application/vnd.google-earth.kml+xml",
+    }
   end
   
   ##############################################################################
@@ -100,11 +107,11 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index airport alternate map formats" do
-    %w(gpx kml).each do |extension|
+    %w(gpx kml geojson).each do |extension|
       %w(airports_map frequency_map).each do |map_id|
         get(airports_path(map_id: map_id, extension: extension))
         assert_response(:success)
-        assert_equal("application/xml", response.media_type)
+        assert_equal(@extension_types[extension], response.media_type)
       end
     end
   end
@@ -143,11 +150,11 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show airport alternate map formats" do
     airport = airports(:airport_visible_1)
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       %w(airport_map sections_map trips_map).each do |map_id|
         get(airport_path(airport.slug, map_id: map_id, extension: extension))
         assert_response(:success)
-        assert_equal("application/xml", response.media_type)
+        assert_equal(type, response.media_type)
       end
     end
   end

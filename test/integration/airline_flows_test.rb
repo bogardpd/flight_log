@@ -10,6 +10,13 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     @no_flights_airline = airlines(:airline_no_flights)
     @visible_flight = flights(:flight_visible)
     @hidden_flight = flights(:flight_hidden)
+
+    @extension_types = {
+      'geojson' => "application/geo+json",
+      'gpx'     => "application/gpx+xml",
+      'graphml' => "application/xml",
+      'kml'     => "application/vnd.google-earth.kml+xml",
+    }
   end
   
   ##############################################################################
@@ -143,11 +150,12 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see show airline alternate map formats" do
+    stub_aero_api4_get_timeout
     airline = airlines(:airline_american)
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(airline_path(airline.slug, map_id: "airline_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 
@@ -185,10 +193,10 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show operator alternate map formats" do
     operator = airlines(:airline_american)
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(show_operator_path(operator.slug, map_id: "operator_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 
@@ -232,10 +240,10 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   test "can see show fleet number alternate map formats" do
     operator     = @visible_flight.operator
     fleet_number = @visible_flight.fleet_number
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(show_fleet_number_path(operator.slug, fleet_number, map_id: "fleet_number_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 

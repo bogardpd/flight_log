@@ -41,10 +41,11 @@ class ApplicationController < ActionController::Base
 
   # Renders content if data is present.
   #
-  # @param content_type [Symbol] the type of content to render
   # @param data [Object] the content to render
-  def render_extension(content_type, data)
-    render(content_type => data) if data
+  # @param rails_type [Symbol] the rails type of content to render (e.g. `:json` or `:xml`)
+  # @param content_type [String] the IANA media type of the content, if more specific than the rails_type
+  def render_extension(data, rails_type, content_type=nil)
+    render(rails_type => data, content_type: content_type) if data
   end
 
   # Renders different map formats if an appropriate extension is present.
@@ -59,11 +60,13 @@ class ApplicationController < ActionController::Base
     
     case extension
     when "gpx"
-      render_extension(:xml, maps[map_sym].gpx)
+      render_extension(maps[map_sym].gpx, :xml, 'application/gpx+xml')
     when "kml"
-      render_extension(:xml, maps[map_sym].kml)
+      render_extension(maps[map_sym].kml, :xml, 'application/vnd.google-earth.kml+xml')
+    when "geojson"
+      render_extension(maps[map_sym].geojson, :json, 'application/geo+json')
     when "graphml"
-      render_extension(:xml, maps[map_sym].graphml)
+      render_extension(maps[map_sym].graphml, :xml)
     end
   end
   

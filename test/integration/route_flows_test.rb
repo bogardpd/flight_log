@@ -5,6 +5,13 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @visible_route = [airports(:airport_visible_1), airports(:airport_visible_2)]
     @hidden_route = [airports(:airport_hidden_1), airports(:airport_hidden_2)]
+
+    @extension_types = {
+      'geojson' => "application/geo+json",
+      'gpx'     => "application/gpx+xml",
+      'graphml' => "application/xml",
+      'kml'     => "application/vnd.google-earth.kml+xml",
+    }
   end
   
   ##############################################################################
@@ -99,11 +106,11 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show route alternate map formats" do
     route = routes(:route_visible)
-    %w(gpx kml).each do |extension|
+    %w(gpx kml geojson).each do |extension|
       %w(route_map sections_map trips_map).each do |map_id|
         get(show_route_path(route.airport1.slug, route.airport2.slug, map_id: map_id, extension: extension))
         assert_response(:success)
-        assert_equal("application/xml", response.media_type)
+        assert_equal(@extension_types[extension], response.media_type)
       end
     end
   end

@@ -11,6 +11,13 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
     @visible_class = "economy"
     @hidden_class = "business"
+
+    @extension_types = {
+      'geojson' => "application/geo+json",
+      'gpx'     => "application/gpx+xml",
+      'graphml' => "application/xml",
+      'kml'     => "application/vnd.google-earth.kml+xml",
+    }
   end
   
   ##############################################################################
@@ -220,10 +227,11 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index flight alternate map formats" do
-    %w(gpx kml).each do |extension|
+    stub_aero_api4_get_timeout
+    @extension_types.each do |extension, type|
       get(flights_path(map_id: "flights_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 
@@ -320,10 +328,10 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show date range alternate map formats" do
     date_range = {start_date: "2014-07-01", end_date: "2015-06-30"}
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(show_date_range_path(**date_range, map_id: "date_range_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 
@@ -334,10 +342,10 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show date range with year alternate map formats" do
     year = 2015
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(show_year_path(year, map_id: "date_range_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 
@@ -377,10 +385,10 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show flight alternate map formats" do
     flight = flights(:flight_ord_dfw)
-    %w(gpx kml).each do |extension|
+    %w(gpx kml geojson).each do |extension|
       get(flight_path(flight, map_id: "flight_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(@extension_types[extension], response.media_type)
     end
   end
 
@@ -420,10 +428,10 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show tail number alternate map formats" do
     tail = @visible_flight.tail_number
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(show_tail_path(tail, map_id: "tail_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 
@@ -460,10 +468,10 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show travel class alternate map formats" do
     travel_class = "economy"
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(show_class_path(travel_class, map_id: "travel_class_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 

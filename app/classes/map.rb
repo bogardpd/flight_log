@@ -145,6 +145,14 @@ class Map
     return output
   end
 
+  # Creates JSON for a {https://geojson.org/ GeoJSON} map.
+  #
+  # @return [String] JSON for a {https://geojson.org/ GeoJSON} map.
+  def geojson
+    return nil unless @flights
+    return GeoJSON.flights_to_geojson(@flights)
+  end
+
   # Creates XML for a {http://graphml.graphdrawing.org/ GraphML} graph.
   #
   # @return [ActiveSupport::Safebuffer] XML for a

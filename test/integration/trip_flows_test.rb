@@ -6,6 +6,13 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     @visible_trip = trips(:trip_visible)
     @hidden_trip = trips(:trip_hidden)
     @no_flights_trip = trips(:trip_no_flights)
+
+    @extension_types = {
+      'geojson' => "application/geo+json",
+      'gpx'     => "application/gpx+xml",
+      'graphml' => "application/xml",
+      'kml'     => "application/vnd.google-earth.kml+xml",
+    }
   end
   
   ##############################################################################
@@ -145,10 +152,10 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show trip alternate map formats" do
     trip = trips(:trip_chicago_seattle)
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(trip_path(trip, map_id: "trip_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 
@@ -187,10 +194,10 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   test "can see show trip section alternate map formats" do
     trip = trips(:trip_chicago_seattle)
     section = 1
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(show_section_path(trip: trip, section: section, map_id: "trip_section_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 

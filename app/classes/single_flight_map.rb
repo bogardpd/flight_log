@@ -10,6 +10,13 @@ class SingleFlightMap < Map
     @codes = [flight.origin_airport.iata_code, flight.destination_airport.iata_code]
     @flight = flight
   end
+
+  # Creates JSON for a {https://geojson.org/ GeoJSON} map.
+  #
+  # @return [String] JSON for a {https://geojson.org/ GeoJSON} map.
+  def geojson
+    return GeoJSON.flights_to_geojson(Flight.where(id: @id))
+  end
   
   private
 

@@ -5,6 +5,13 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   def setup
     @airport_options = "b:disc5:black"
     @query           = "DAY-DFW/ORD"
+
+    @extension_types = {
+      'geojson' => "application/geo+json",
+      'gpx'     => "application/gpx+xml",
+      'graphml' => "application/xml",
+      'kml'     => "application/vnd.google-earth.kml+xml",
+    }
   end
   
   ##############################################################################
@@ -51,10 +58,10 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
   test "can see home alternate map formats" do
     stub_aero_api4_get_timeout
     
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(root_path(map_id: "flights_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 

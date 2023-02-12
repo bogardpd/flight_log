@@ -10,8 +10,16 @@ class AirportsMap < Map
   # @see Map#gcmap_regions
   def initialize(id, airports, region: [""])
     @id = id
+    @airports = airports
     @airport_normal_ids = airports.in_region_ids(region)
     @airport_out_of_region_ids = airports.pluck(:id) - @airport_normal_ids
+  end
+
+  # Creates JSON for a {https://geojson.org/ GeoJSON} map.
+  #
+  # @return [String] JSON for a {https://geojson.org/ GeoJSON} map.
+  def geojson
+    return GeoJSON.airports_to_geojson(@airports)
   end
   
   private

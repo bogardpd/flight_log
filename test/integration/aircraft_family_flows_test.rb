@@ -8,6 +8,13 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
     @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
     @no_flights_aircraft_family = aircraft_families(:aircraft_family_no_flights)
+
+    @extension_types = {
+      'geojson' => "application/geo+json",
+      'gpx'     => "application/gpx+xml",
+      'graphml' => "application/xml",
+      'kml'     => "application/vnd.google-earth.kml+xml",
+    }
   end
 
   ##############################################################################
@@ -203,10 +210,10 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show aircraft alternate map formats" do
     aircraft_type = aircraft_families(:aircraft_737_800)
-    %w(gpx kml).each do |extension|
+    @extension_types.each do |extension, type|
       get(aircraft_family_path(aircraft_type.slug, map_id: "aircraft_family_map", extension: extension))
       assert_response(:success)
-      assert_equal("application/xml", response.media_type)
+      assert_equal(type, response.media_type)
     end
   end
 

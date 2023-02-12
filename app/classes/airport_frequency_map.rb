@@ -14,9 +14,17 @@ class AirportFrequencyMap < Map
   # @see Map#gcmap_regions
   def initialize(id, flights, region: [""])
     @id = id
+    @flights = flights
     @airport_frequencies = Airport.visit_frequencies(flights)
     @airports_in_region = Airport.in_region_hash(region).select{|k,v| @airport_frequencies.keys.include?(k)}
     @airports_all = Airport.in_region_hash([]).select{|k,v| @airport_frequencies.keys.include?(k)}
+  end
+
+  # Creates JSON for a {https://geojson.org/ GeoJSON} map.
+  #
+  # @return [String] JSON for a {https://geojson.org/ GeoJSON} map.
+  def geojson
+    return GeoJSON.flights_to_geojson(@flights, airports_only: true)
   end
   
   private
