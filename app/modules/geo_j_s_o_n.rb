@@ -20,20 +20,12 @@ module GeoJSON
       .to_h{|a| [a[0], {
         iata_code: a[1],
         latitude: a[2],
-        longitude: a[3]}]}
-    airport_features = airport_data.map{|id, airport| {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [
-          airport[:longitude].round(COORD_DIGITS),
-          airport[:latitude].round(COORD_DIGITS)]
-      },
-      properties: {
-        'AirportIATA': airport[:iata_code],
-        'AirportVisitCount': nil,
-      }
-    }}
+        longitude: a[3],
+        freq: nil,
+      }]}
+    airport_features = airport_data.map{|id, airport|
+      airport_feature(airport, false)
+    }
     output = {
       type: "FeatureCollection",
       features: airport_features
@@ -65,20 +57,12 @@ module GeoJSON
       .to_h{|a| [a[0], {
         iata_code: a[1],
         latitude: a[2],
-        longitude: a[3]}]}
-    airport_features = airport_data.map{|id, airport| {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [
-          airport[:longitude].round(COORD_DIGITS),
-          airport[:latitude].round(COORD_DIGITS)]
-      },
-      properties: {
-        'AirportIATA': airport[:iata_code],
-        'AirportVisitCount': include_frequencies ? airport_visits[id] : nil
-      }
-    }}
+        longitude: a[3],
+        freq: airport_visits[a[0]],
+      }]}
+    airport_features = airport_data.map{|id, airport|
+      airport_feature(airport, include_frequencies)
+    }
     
     if include_routes
       route_data = Hash.new()
@@ -100,27 +84,9 @@ module GeoJSON
           }
         end
       end
-      route_features = route_data.map{|id, f| {
-        type: "Feature",
-        geometry: {
-          type: "MultiLineString",
-          coordinates: GreatCircle
-            .gc_route_coords(f[:orig_coord], f[:dest_coord], DEG_INTERVAL)
-            .map{|line_string| line_string
-              .map{|point| [
-                point.lon.round(COORD_DIGITS),
-                point.lat.round(COORD_DIGITS),
-              ]}
-            }
-        },
-        properties: {
-          'RouteOrigIATA': f[:orig_iata],
-          'RouteDestIATA': f[:dest_iata],
-          'RouteFlightCountTotal': include_frequencies ? f[:freq] : nil,
-          'RouteFlightCountForward': include_frequencies ? f[:freq_forward] : nil,
-          'RouteFlightCountReverse': include_frequencies ? f[:freq_reverse] : nil,
-        }
-      }}
+      route_features = route_data.map{|id, route|
+        route_feature(route, include_frequencies)
+      }
     else
       route_features = []
     end 
@@ -137,6 +103,74 @@ module GeoJSON
   end
 
   private
+
+  # Creates a Ruby hash in the style of a GeoJSON Point feature.
+  #
+  # @param airport [Hash] a hash containing iata_code, latitude, and longitude
+  #   keys. May also contain an optional freq key with an airport visit count
+  #   value.
+  # @param include_frequencies [Boolean] if false, will not include frequencies
+  #   in the returned feature.
+  # 
+  # @return [Hash<Hash>] Ruby hash in the style of a GeoJSON Point feature.
+  def self.airport_feature(airport, include_frequencies)
+    feature = {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [
+          airport[:longitude].round(COORD_DIGITS),
+          airport[:latitude].round(COORD_DIGITS)]
+      },
+      properties: {
+        'AirportIATA': airport[:iata_code],
+      }
+    }
+    if include_frequencies
+      feature[:properties][:AirportVisitCount] = airport[:freq]
+    end
+    return feature
+  end
+
+  # Creates a Ruby hash in the style of a GeoJSON MultiLineString feature.
+  #
+  # @param route [Hash] a hash containing orig_iata, orig_coord, dest_iata, and
+  #   dest_coord keys. May also contain optional freq (total flight count for
+  #   this route), freq_forward (flight count from orig to dest) and
+  #   freq_reverse (flight count from dest to orig) keys.
+  # @param include_frequencies [Boolean] if false, will not include frequencies
+  #   in the returned feature.
+  # 
+  # @return [Hash<Hash>] Ruby hash in the style of a GeoJSON MultiLineString
+  #   feature.
+  def self.route_feature(route, include_frequencies=true)
+    feature = {
+      type: "Feature",
+      geometry: {
+        type: "MultiLineString",
+        coordinates: GreatCircle
+          .gc_route_coords(route[:orig_coord], route[:dest_coord], DEG_INTERVAL)
+          .map{|line_string| line_string
+            .map{|point| [
+              point.lon.round(COORD_DIGITS),
+              point.lat.round(COORD_DIGITS),
+            ]}
+          }
+      },
+      properties: {
+        RouteOrigIATA: route[:orig_iata],
+        RouteDestIATA: route[:dest_iata],
+      }
+    }
+    if include_frequencies
+      feature[:properties].merge!({
+        RouteFlightCountTotal: route[:freq],
+        RouteFlightCountForward: route[:freq_forward],
+        RouteFlightCountReverse: route[:freq_reverse],
+      })
+    end
+    return feature
+  end
 
   # Writes JSON to a temporary file.
   # 
