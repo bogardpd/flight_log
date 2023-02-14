@@ -13,6 +13,8 @@
       <%= link_to("GPX", params.permit!.merge(map_id: map_attr[:id], extension: :gpx), download: "#{map_attr[:id]}.gpx") %>
       &middot; 
       <%= link_to("KML", params.permit!.merge(map_id: map_attr[:id], extension: :kml), download: "#{map_attr[:id]}.kml") %>
+      &middot; 
+      <%= link_to("GeoJSON", params.permit!.merge(map_id: map_attr[:id], extension: :geojson), download: "#{map_attr[:id]}.geojson") %>
     </div>
   </div>
   <% if local_assigns[:distance] %>
