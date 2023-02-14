@@ -30,7 +30,7 @@ module GeoJSON
           airport[:latitude].round(COORD_DIGITS)]
       },
       properties: {
-        iata: airport[:iata_code],
+        'AirportIATA': airport[:iata_code],
       }
     }}
     output = {
@@ -71,8 +71,8 @@ module GeoJSON
           airport[:latitude].round(COORD_DIGITS)]
       },
       properties: {
-        iata: airport[:iata_code],
-        visits: airport_visits[id],
+        'AirportIATA': airport[:iata_code],
+        'AirportVisitCount': airport_visits[id],
       }
     }}
     
@@ -112,11 +112,11 @@ module GeoJSON
             }
         },
         properties: {
-          orig_iata: f[:orig_iata],
-          dest_iata: f[:dest_iata],
-          flights: f[:freq],
-          flights_forward: f[:freq_forward],
-          flights_reverse: f[:freq_reverse],
+          'RouteOrigIATA': f[:orig_iata],
+          'RouteDestIATA': f[:dest_iata],
+          'RouteFlightCountTotal': f[:freq],
+          'RouteFlightCountForward': f[:freq_forward],
+          'RouteFlightCountReverse': f[:freq_reverse],
         }
       }}
     end 
