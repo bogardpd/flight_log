@@ -31,6 +31,7 @@ module GeoJSON
       },
       properties: {
         'AirportIATA': airport[:iata_code],
+        'AirportVisitCount': nil,
       }
     }}
     output = {
@@ -48,11 +49,14 @@ module GeoJSON
   # TEMP_FILE. It will be overwritten each time the method is run.
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights}
-  # @param airports_only [Boolean] if set, will only return airport points (no flight linestrings)
+  # @param include_frequencies [Boolean] if false, will not include frequencies
+  #   for airports and routes
+  # @param include_routes [Boolean] if false, will only return airport points
+  #   (no flight linestrings)
   # @return [String] GeoJSON data.
   # 
   # @see https://geojson.org/
-  def self.flights_to_geojson(flights, airports_only: false)
+  def self.flights_to_geojson(flights, include_frequencies: true, include_routes: true)
     flights = flights.includes(:origin_airport, :destination_airport)
     
     airport_visits = Airport.visit_table_data(flights).to_h{|a| [a[:id], a[:visit_count]]}
@@ -72,13 +76,11 @@ module GeoJSON
       },
       properties: {
         'AirportIATA': airport[:iata_code],
-        'AirportVisitCount': airport_visits[id],
+        'AirportVisitCount': include_frequencies ? airport_visits[id] : nil
       }
     }}
     
-    if airports_only
-      route_features = []
-    else
+    if include_routes
       route_data = Hash.new()
       flights.each do |flight|
         route_id = [flight.origin_airport_id, flight.destination_airport_id].sort
@@ -114,11 +116,13 @@ module GeoJSON
         properties: {
           'RouteOrigIATA': f[:orig_iata],
           'RouteDestIATA': f[:dest_iata],
-          'RouteFlightCountTotal': f[:freq],
-          'RouteFlightCountForward': f[:freq_forward],
-          'RouteFlightCountReverse': f[:freq_reverse],
+          'RouteFlightCountTotal': include_frequencies ? f[:freq] : nil,
+          'RouteFlightCountForward': include_frequencies ? f[:freq_forward] : nil,
+          'RouteFlightCountReverse': include_frequencies ? f[:freq_reverse] : nil,
         }
       }}
+    else
+      route_features = []
     end 
     
     output = {

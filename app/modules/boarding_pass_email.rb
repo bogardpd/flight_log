@@ -80,7 +80,8 @@ module BoardingPassEmail
   
   # Accepts an IMAP connection and UID, finds any PKPass attachments, and
   # stores them in a database table. Deletes the email if it has no PKPass
-  # attachments, or if the database store was successful. Returns an array of JSON strings or nil.
+  # attachments, or if the database store was successful. Returns an array of
+  # JSON strings or nil.
   # 
   # @param imap [Net::IMAP] an IMAP connection
   # @param uid [Integer] a message UID

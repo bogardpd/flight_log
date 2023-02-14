@@ -4,6 +4,7 @@ class SingleFlightMap < Map
   
   # Initialize a map of a single {Flight}.
   # 
+  # @param id [Symbol] an ID for the map
   # @param flight [Flight] the {Flight} to map
   def initialize(id, flight)
     @id = id
@@ -15,7 +16,8 @@ class SingleFlightMap < Map
   #
   # @return [String] JSON for a {https://geojson.org/ GeoJSON} map.
   def geojson
-    return GeoJSON.flights_to_geojson(Flight.where(id: @id))
+    flights = Flight.where(id: @flight.id)
+    return GeoJSON.flights_to_geojson(flights, include_frequencies: false)
   end
   
   private

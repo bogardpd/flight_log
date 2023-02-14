@@ -24,7 +24,7 @@ class AirportFrequencyMap < Map
   #
   # @return [String] JSON for a {https://geojson.org/ GeoJSON} map.
   def geojson
-    return GeoJSON.flights_to_geojson(@flights, airports_only: true)
+    return GeoJSON.flights_to_geojson(@flights, include_routes: false)
   end
   
   private
