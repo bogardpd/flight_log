@@ -3,7 +3,7 @@ module GeoJSON
   
   TEMP_FILE = "tmp/flights.geojson"
   COORD_DIGITS = 3 # Number of digits to round coordinates to
-  DEG_INTERVAL = 1.0 # Degrees per step for great circle route points
+  DEG_INTERVAL = 2.0 # Degrees per step for great circle route points
 
   # Generate GeoJSON output from a collection of {Airport airports}.
   #
