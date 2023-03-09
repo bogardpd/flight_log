@@ -42,7 +42,7 @@
   <p>
     <%= f.label :departure_utc, "UTC Departure (for sorting flights)" %> &mdash; Current time: <span id="utc-time-now"><%= Time.now.utc %></span><br />
     <% if fields[:departure_utc] %>
-      <%= f.datetime_select(:departure_utc, {start_year: 2000, selected: fields[:departure_utc].to_date}, class: "autopopulated") %>
+      <%= f.datetime_select(:departure_utc, {start_year: 2000, selected: fields[:departure_utc].to_time}, class: "autopopulated") %>
     <% else %>
       <%= f.datetime_select(:departure_utc, {start_year: 2000, minute_step: 5}) %>
     <% end %>UTC
