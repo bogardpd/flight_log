@@ -34,8 +34,8 @@
       </td>
       <td class="code-mono"><%= pass[:pnr] %></td>
       <td><%= pass[:airline] %> <%= pass[:flight] %></td>
+      <td class="flight-date"><%= NumberFormat.flight_time_utc(pass[:date]) %></td>
       <td><%= code_mono(pass[:from]) %> <%= Route::ARROW_ONE_WAY_HTML %> <%= code_mono(pass[:to]) %></td>
-      <td class="flight-date"><%= NumberFormat.date(pass[:date]) %></td>
       <td><%= link_to("Delete", p_k_pass_path(pass[:id]), :method => :delete, :data => {:confirm => "Are you sure you want to delete the pass for #{pass[:from]}-#{pass[:to]}?"}, :class => "warning") %></td>    
     </tr>
   <% end %>

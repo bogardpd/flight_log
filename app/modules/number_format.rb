@@ -3,6 +3,7 @@ module NumberFormat
 
   # The string format for displaying dates (in strftime format).
   DATE_FORMAT = "%-d %b %Y"
+  FLIGHT_TIME_FORMAT = "%-d %b %Y %H:%M (UTC)"
 
   # The delimiter to use as a thousands separator.
   DELIMITER = ActionController::Base.helpers.sanitize("&#8239;") # Narrow no-break space
@@ -26,6 +27,16 @@ module NumberFormat
     return "" if date.nil?
     return date.strftime(DATE_FORMAT)
   end
+
+  # Formats a time into a UTC timestamp with no seconds.
+  # 
+  # @param time [Time] a time.
+  # @return [String] a formatted time string.
+  def self.flight_time_utc(time)
+    return "" if time.nil?
+    return time.utc.strftime(FLIGHT_TIME_FORMAT)
+  end
+
 
   # Formats a number by adding thousands separators.
   # 
