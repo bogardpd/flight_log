@@ -21,7 +21,7 @@ class Map
   # @see #gcmap_regions
   ICAO_REGIONS = {
     "World":            %w(),
-    "North America":    %w(C K M T),
+    "North America":    %w(C K M PA T),
     "Europe":           %w(B E L),
     "Pacific/Oceania":  %w(A N PH R Y)
   }
