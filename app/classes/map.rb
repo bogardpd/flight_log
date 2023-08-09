@@ -23,7 +23,7 @@ class Map
     "World":            %w(),
     "North America":    %w(C K M PA T),
     "Europe":           %w(B E L),
-    "Pacific/Oceania":  %w(A N PH R Y)
+    "Pacific/Oceania":  %w(A N P R Y)
   }
   
   # Creates a hash of attributes for a
