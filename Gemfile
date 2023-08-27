@@ -5,7 +5,7 @@ ruby '3.2.0'
 gem 'rails', '~> 7.0.3'
 
 # Use puma as the webserver
-gem 'puma', '5.6.4'
+gem 'puma', '5.6.7'
 # Use PostgreSQL as the database
 gem 'pg', '~> 1.2', '>= 1.2.2'
 # Use bcrypt to hash passwords
