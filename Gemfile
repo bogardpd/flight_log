@@ -24,6 +24,9 @@ gem 'aws-sdk-s3', '~> 1.81'
 
 gem 'nokogiri', '>= 1.11.0.rc4'
 
+# Allow CORS for JSON API requests.
+gem 'rack-cors'
+
 # Install networking gems for Ruby 3.x on Rails 6.x:
 gem 'net-smtp'
 gem 'net-imap'

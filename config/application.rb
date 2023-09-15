@@ -24,5 +24,15 @@ module Portfolio
     # Change form field error display.
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| ActionController::Base.helpers.content_tag(:span, html_tag, class: "field_with_errors") }
 
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      end
+    end
+
   end
 end
