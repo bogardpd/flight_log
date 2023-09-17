@@ -68,7 +68,13 @@ module GeoJSON
       route_data = Hash.new()
       flights.each do |flight|
         route_id = [flight.origin_airport_id, flight.destination_airport_id].sort
-        for_rev = flight.origin_airport_id < flight.destination_airport_id ? [1,0] : [0,1]
+        if flight.origin_airport_id < flight.destination_airport_id
+          for_rev = [1,0]
+          orig_dest = [flight.origin_airport,flight.destination_airport]
+        else
+          for_rev = [0,1]
+          orig_dest = [flight.destination_airport,flight.origin_airport]
+        end
         freqs = {freq: 1, freq_forward: for_rev[0], freq_reverse: for_rev[1]}
         if route_data.key?(route_id)
           # Route exists in hash. Add frequencies.
@@ -76,10 +82,10 @@ module GeoJSON
         elsif flight.origin_airport.coordinates && flight.destination_airport.coordinates
           # Add route to hash.        
           route_data[route_id] = {
-            orig_iata: flight.origin_airport.iata_code,
-            orig_coord: Coordinate.new(*flight.origin_airport.coordinates),
-            dest_iata: flight.destination_airport.iata_code,
-            dest_coord: Coordinate.new(*flight.destination_airport.coordinates),
+            orig_iata: orig_dest[0].iata_code,
+            orig_coord: Coordinate.new(*orig_dest[0].coordinates),
+            dest_iata: orig_dest[1].iata_code,
+            dest_coord: Coordinate.new(*orig_dest[1].coordinates),
             **freqs
           }
         end
