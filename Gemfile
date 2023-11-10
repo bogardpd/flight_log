@@ -10,10 +10,10 @@ gem 'puma', '5.6.7'
 gem 'pg', '~> 1.2', '>= 1.2.2'
 # Use bcrypt to hash passwords
 gem 'bcrypt', '~> 3.1', '>= 3.1.13'
-# Use SCSS for stylesheets
-gem 'sassc-rails', '~> 2.1', '>= 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '~> 4.2'
+# Use sprockets-rails to allow precompilation of assets
+gem 'sprockets-rails', '~> 3.4', '>= 3.4.2'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.9', '>= 2.9.1'
