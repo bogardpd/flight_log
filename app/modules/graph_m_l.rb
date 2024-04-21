@@ -207,7 +207,7 @@ module GraphML
   # @return [Hash] a hash of font options
   def self.font(visits)
     font_size = (diameter(visits) / BASE_STYLES[:node_font_divisor]).to_i.to_s
-    return {alignment: "center", fontFamily: "Source Sans Pro Semibold", fontSize: font_size, fontStyle: "plain", verticalTextPosition: "bottom", horizontalTextPosition: "center"}
+    return {alignment: "center", fontFamily: "Source Sans 3 Semibold", fontSize: font_size, fontStyle: "plain", verticalTextPosition: "bottom", horizontalTextPosition: "center"}
   end
 
 end
