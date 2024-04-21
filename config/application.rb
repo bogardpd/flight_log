@@ -19,7 +19,7 @@ module Portfolio
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
-    config.active_record.legacy_connection_handling = false
+    # config.active_record.legacy_connection_handling = false
 
     # Change form field error display.
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| ActionController::Base.helpers.content_tag(:span, html_tag, class: "field_with_errors") }
