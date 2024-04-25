@@ -45,9 +45,7 @@ end
 group :test do
   gem 'minitest-reporters'
   gem 'capybara'
-  gem 'selenium-webdriver'
-  # Selenium now includes drivers, 'webdrivers' no longer needed.
-  # gem 'webdrivers'
+  gem 'selenium-webdriver', '~> 4.19.0'
   # Use webmock to stub out HTTP API requests
   gem 'webmock'
   
