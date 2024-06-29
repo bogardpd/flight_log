@@ -1,6 +1,8 @@
 <% map_attr = map.gcmap %>
+<% map_id = map_attr[:id] %>
 <% provide(:og_image, map_attr[:img_path]) unless content_for(:og_image) %>
 <div class="map-gcmap <%= map_attr[:map_type] %>" id="<%= map_attr[:id] %>">
+  <div class="map-mapbox" id="mapbox_<%= map_id %>"></div>
   <% if local_assigns[:region] %>
     <%= gcmap_region_select_links(map, region, anchor: map_attr[:id]) %>
   <% end %>
@@ -38,3 +40,13 @@
     </div>
   <% end %>
 </div>
+
+<script>
+  mapboxgl.accessToken = "<%= Rails.application.credentials[:mapbox][:api_key] %>";
+  const map_<%= map_id %> = new mapboxgl.Map({
+    container: 'mapbox_<%= map_id %>',
+    style: 'mapbox://styles/bogardpd/cly0gib62008301p82kk64np1', // Light Terrain - Flight Historian
+    center: [0, 20],
+    zoom: 0.5,
+  });
+</script>

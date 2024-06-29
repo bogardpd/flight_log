@@ -727,6 +727,13 @@ div.map-gcmap div.map-info div {
   margin-right: 1em;
 }
 
+div.map-mapbox {
+  width: 720px;
+  height: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* MESSAGE BANNERS */
 
 div.message {
