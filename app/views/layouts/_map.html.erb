@@ -41,6 +41,7 @@
   <% end %>
 </div>
 
+<% unless Rails.env.test? # Integration tests inconsistently fail if trying to have javascript load map data %>
 <script>
   mapboxgl.accessToken = "<%= Rails.application.credentials[:mapbox][:api_key] %>";
   const map_<%= map_id %> = new mapboxgl.Map({
@@ -49,4 +50,13 @@
     center: [0, 20],
     zoom: 0.5,
   });
+
+  map_<%= map_id %>.on('load', () => {
+     map_<%= map_id %>.addSource('flights', {
+      'type': 'geojson',
+      'data': '<%= url_for(params.permit!.merge(map_id: map_attr[:id], extension: :geojson)) %>',
+      'generateId': true,
+    })
+  });
 </script>
+<% end %>
