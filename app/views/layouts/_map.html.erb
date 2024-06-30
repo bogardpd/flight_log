@@ -59,6 +59,23 @@
       'generateId': true,
     })
 
+    // Add routes.
+    map_<%= map_id %>.addLayer({
+      'id': 'routes',
+      'type': 'line',
+      'source': 'flights',
+      'filter': ['==', '$type', 'LineString'],
+      'paint': {
+        'line-width': [
+          "interpolate", ["linear"], ["zoom"],
+          4, 1.5,  // zoom <=  4: width 1.5
+          20, 5.0, // zoom >= 20: width 5.0
+        ],
+        'line-color': '#0077bb',
+        'line-opacity': 0.8,
+      }
+    });
+
     // Add airports.
     map_<%= map_id %>.addLayer({
       'id': 'airports',
@@ -73,8 +90,8 @@
         ],
         'circle-color': '#000000',
       }
+    });    
 
-    });
   });
 </script>
 <% end %>
