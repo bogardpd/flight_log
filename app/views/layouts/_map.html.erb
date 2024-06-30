@@ -66,7 +66,11 @@
       'source': 'flights',
       'filter': ['==', '$type', 'Point'],
       'paint': {
-        'circle-radius': 3,
+        'circle-radius': [
+          "interpolate", ["linear"], ["zoom"],
+          4, 3,   // zoom <=  4: radius  3
+          20, 12, // zoom >= 20: radius 12
+        ],
         'circle-color': '#000000',
       }
 
