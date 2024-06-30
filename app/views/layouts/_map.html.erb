@@ -52,11 +52,25 @@
   });
 
   map_<%= map_id %>.on('load', () => {
+     // Load data.
      map_<%= map_id %>.addSource('flights', {
       'type': 'geojson',
       'data': '<%= url_for(params.permit!.merge(map_id: map_attr[:id], extension: :geojson)) %>',
       'generateId': true,
     })
+
+    // Add airports.
+    map_<%= map_id %>.addLayer({
+      'id': 'airports',
+      'type': 'circle',
+      'source': 'flights',
+      'filter': ['==', '$type', 'Point'],
+      'paint': {
+        'circle-radius': 3,
+        'circle-color': '#000000',
+      }
+
+    });
   });
 </script>
 <% end %>
