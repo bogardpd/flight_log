@@ -27,6 +27,21 @@ class Map
   }
   
   # Creates a hash of attributes for a
+  # {https://docs.mapbox.com/mapbox-gl-js/guides Mapbox GL JS} map.
+  # 
+  # @return [Hash] Attributes for a {https://docs.mapbox.com/mapbox-gl-js/guides
+  # Mapbox GL JS} map.
+  # @see https://docs.mapbox.com/mapbox-gl-js/guides Mapbox GL JS
+  def mapboxgl
+    mapboxgl_attributes = {
+      description: map_description,
+      id: @id,
+      map_type: map_type,
+    }
+    return mapboxgl_attributes
+  end
+
+  # Creates a hash of attributes for a
   # {http://www.gcmap.com/ Great Circle Mapper} map.
   # 
   # @return [Hash] Attributes for a {http://www.gcmap.com/ Great
