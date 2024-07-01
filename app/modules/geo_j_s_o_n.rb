@@ -22,6 +22,7 @@ module GeoJSON
         latitude: a[2],
         longitude: a[3],
         freq: nil,
+        highlighted: false,
       }]}
     airport_features = airport_data.map{|id, airport|
       airport_feature(airport, false)
@@ -45,12 +46,13 @@ module GeoJSON
   #   for airports and routes
   # @param include_routes [Boolean] if false, will only return airport points
   #   (no flight linestrings)
+  # @param include_routes [Array<Integer>] An array of airport IDs to highlight.
   # @return [String] GeoJSON data.
   # 
   # @see https://geojson.org/
-  def self.flights_to_geojson(flights, include_frequencies: true, include_routes: true)
+  def self.flights_to_geojson(flights, include_frequencies: true, include_routes: true, highlighted_airports: Array.new)
+    highlighted_airports = Array.new if highlighted_airports.nil? # Ensure nil wasn't passed to highlighted_airports
     flights = flights.includes(:origin_airport, :destination_airport)
-    
     airport_visits = Airport.visit_table_data(flights).to_h{|a| [a[:id], a[:visit_count]]}
     airports = Airport.where(id: airport_visits.keys).where.not({latitude: nil, longitude: nil})
     airport_data = airports.pluck(:id, :iata_code, :latitude, :longitude)
@@ -59,7 +61,9 @@ module GeoJSON
         latitude: a[2],
         longitude: a[3],
         freq: airport_visits[a[0]],
+        highlighted: highlighted_airports.include?(a[0]),
       }]}
+    include_highlights = highlighted_airports.length > 0
     airport_features = airport_data.map{|id, airport|
       airport_feature(airport, include_frequencies)
     }
@@ -135,6 +139,7 @@ module GeoJSON
     if include_frequencies
       feature[:properties][:AirportVisitCount] = airport[:freq]
     end
+    feature[:properties][:Highlighted] = airport[:highlighted]
     return feature
   end
 

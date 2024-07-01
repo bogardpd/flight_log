@@ -165,7 +165,7 @@ class Map
   # @return [String] JSON for a {https://geojson.org/ GeoJSON} map.
   def geojson
     return nil unless @flights
-    return GeoJSON.flights_to_geojson(@flights)
+    return GeoJSON.flights_to_geojson(@flights, highlighted_airports: @highlighted_airports)
   end
 
   # Creates XML for a {http://graphml.graphdrawing.org/ GraphML} graph.
