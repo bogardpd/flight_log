@@ -44,7 +44,7 @@
 
 <% unless Rails.env.test? # Integration tests inconsistently fail if trying to have javascript load map data %>
 <script>
-  mapboxgl.accessToken = '<%= Rails.application.credentials[:mapbox][:api_key] %>';
+  mapboxgl.accessToken = '<%= Rails.env.development? ? Rails.application.credentials[:mapbox][:api_key][:unrestricted] : Rails.application.credentials[:mapbox][:api_key][:flight_historian] %>';
   const map_type_<%= map_id %> = '<%= mapboxgl_attr[:map_type] %>';
   const map_<%= map_id %> = new mapboxgl.Map({
     container: 'mapbox_<%= map_id %>',
