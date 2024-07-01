@@ -94,16 +94,18 @@
       }
     });
 
+    var label_minzoom = (map_type_<%= map_id %> == 'single-flight-map') ? 0 : 3;
+
     // Add labels.
     map_<%= map_id %>.addLayer({
       'id': 'airport-labels',
       'type': 'symbol',
       'source': 'flights',
       'filter': ['==', '$type', 'Point'],
-      'minzoom': 3,
+      'minzoom': label_minzoom,
       'layout': {
         'text-field': ['get', 'AirportIATA'],
-        'text-variable-anchor': ['left','right','bottom','top'],
+        'text-variable-anchor': ['bottom','top','left','right'],
         'text-radial-offset': [
           "interpolate", ["linear"], ["zoom"],
           4, 0.3,   // zoom <=  4: radius  3
