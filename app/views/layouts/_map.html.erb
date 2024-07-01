@@ -72,16 +72,39 @@
           'property': 'Highlighted',
           'type': 'categorical',
           'stops': [
-            [{'zoom':  4, 'value': true }, 4.0],
-            [{'zoom':  4, 'value': false}, 1.5],
+            [{'zoom':  4, 'value': true },  4.0],
+            [{'zoom':  4, 'value': false},  1.5],
             [{'zoom': 20, 'value': true }, 12.0],
-            [{'zoom': 20, 'value': false}, 5.0],
+            [{'zoom': 20, 'value': false},  5.0],
           ],
         },
         'line-color': '#0077bb',
         'line-opacity': ['case', ['get', 'Highlighted'], 1.0, 0.8],
       }
     });
+
+    if (map_type_<%= map_id %> == 'airport-frequency-map') {
+      var circle_radius_<%= map_id %> = [
+        'interpolate', ['linear'], ['zoom'],
+        0, ['*', 2.0, ['sqrt', ['get', 'AirportVisitCount']]],
+        10, ['*', 8.0, ['sqrt', ['get', 'AirportVisitCount']]]
+      ];
+      var circle_opacity_<%= map_id %> = 0.5;
+      var text_variable_anchor_<%= map_id %> = ['center'];
+    } else {
+      var circle_radius_<%= map_id %> = {
+        'property': 'Highlighted',
+        'type': 'categorical',
+        'stops': [
+          [{'zoom':  4, 'value': true }, 4],
+          [{'zoom':  4, 'value': false}, 3],
+          [{'zoom': 20, 'value': true }, 24],
+          [{'zoom': 20, 'value': false}, 12],
+        ],
+      };
+      var circle_opacity_<%= map_id %> = 1.0;
+      var text_variable_anchor_<%= map_id %> = ['bottom','top','left','right'];
+    }
 
     // Add airports.
     map_<%= map_id %>.addLayer({
@@ -90,21 +113,15 @@
       'source': 'flights',
       'filter': ['==', '$type', 'Point'],
       'paint': {
-        'circle-radius': {
-          'property': 'Highlighted',
-          'type': 'categorical',
-          'stops': [
-            [{'zoom':  4, 'value': true }, 4],
-            [{'zoom':  4, 'value': false}, 3],
-            [{'zoom': 20, 'value': true }, 24],
-            [{'zoom': 20, 'value': false}, 12],
-          ],
-        },
+        'circle-radius': circle_radius_<%= map_id %>,
         'circle-color': '#000000',
+        'circle-stroke-color': '#0077bb',
+        'circle-stroke-width': 1,
+        'circle-opacity': circle_opacity_<%= map_id %>,
       }
     });
 
-    var label_minzoom = (map_type_<%= map_id %> == 'single-flight-map') ? 0 : 3;
+    var label_minzoom_<%= map_id %> = (map_type_<%= map_id %> == 'single-flight-map') ? 0 : 3;
 
     // Add labels.
     map_<%= map_id %>.addLayer({
@@ -112,10 +129,10 @@
       'type': 'symbol',
       'source': 'flights',
       'filter': ['==', '$type', 'Point'],
-      'minzoom': label_minzoom,
+      'minzoom': label_minzoom_<%= map_id %>,
       'layout': {
         'text-field': ['get', 'AirportIATA'],
-        'text-variable-anchor': ['bottom','top','left','right'],
+        'text-variable-anchor': text_variable_anchor_<%= map_id %>,
         'text-radial-offset': {
           'property': 'Highlighted',
           'type': 'categorical',
