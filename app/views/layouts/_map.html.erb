@@ -111,11 +111,16 @@
       'layout': {
         'text-field': ['get', 'AirportIATA'],
         'text-variable-anchor': ['bottom','top','left','right'],
-        'text-radial-offset': [
-          "interpolate", ["linear"], ["zoom"],
-          4, 0.3,   // zoom <=  4: radius  3
-          20, 1.2, // zoom >= 20: radius 12
-        ],
+        'text-radial-offset': {
+          'property': 'Highlighted',
+          'type': 'categorical',
+          'stops': [
+            [{'zoom':  4, 'value': true }, 0.3],
+            [{'zoom':  4, 'value': false}, 0.3],
+            [{'zoom': 20, 'value': true }, 1.8],
+            [{'zoom': 20, 'value': false}, 1.2],
+          ],
+        },
         'text-font': [
           'case',
           ['get', 'Highlighted'],
@@ -123,6 +128,7 @@
           ['literal', ['Source Sans Pro Regular', 'DIN Pro Regular', 'Arial Unicode MS Regular']],
         ],
         'text-size': ['case', ['get', 'Highlighted'], 15, 13],
+        'symbol-sort-key': ['case', ['get', 'Highlighted'], 0, 1], // Lower value is higher priority
       },
       'paint': {
         'text-color': '#000000',
