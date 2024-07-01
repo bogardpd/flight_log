@@ -46,12 +46,16 @@ module GeoJSON
   #   for airports and routes
   # @param include_routes [Boolean] if false, will only return airport points
   #   (no flight linestrings)
-  # @param include_routes [Array<Integer>] An array of airport IDs to highlight.
+  # @param highlighted_airports [Array<Integer>] An array of airport IDs to
+  #   highlight.
+  # @param highlighted_routes [Array<Array<Integer>>] An array of arrays of two
+  #   sorted airport IDs to highlight.
   # @return [String] GeoJSON data.
   # 
   # @see https://geojson.org/
-  def self.flights_to_geojson(flights, include_frequencies: true, include_routes: true, highlighted_airports: Array.new)
+  def self.flights_to_geojson(flights, include_frequencies: true, include_routes: true, highlighted_airports: Array.new, highlighted_routes: Array.new)
     highlighted_airports = Array.new if highlighted_airports.nil? # Ensure nil wasn't passed to highlighted_airports
+    highlighted_routes = Array.new if highlighted_routes.nil? # Ensure nil wasn't passed to highlighted_routes
     flights = flights.includes(:origin_airport, :destination_airport)
     airport_visits = Airport.visit_table_data(flights).to_h{|a| [a[:id], a[:visit_count]]}
     airports = Airport.where(id: airport_visits.keys).where.not({latitude: nil, longitude: nil})
@@ -63,11 +67,9 @@ module GeoJSON
         freq: airport_visits[a[0]],
         highlighted: highlighted_airports.include?(a[0]),
       }]}
-    include_highlights = highlighted_airports.length > 0
     airport_features = airport_data.map{|id, airport|
       airport_feature(airport, include_frequencies)
     }
-    
     if include_routes
       route_data = Hash.new()
       flights.each do |flight|
@@ -90,6 +92,7 @@ module GeoJSON
             orig_coord: Coordinate.new(*orig_dest[0].coordinates),
             dest_iata: orig_dest[1].iata_code,
             dest_coord: Coordinate.new(*orig_dest[1].coordinates),
+            highlighted: highlighted_routes.include?(route_id),
             **freqs
           }
         end
@@ -171,6 +174,7 @@ module GeoJSON
       properties: {
         RouteOrigIATA: route[:orig_iata],
         RouteDestIATA: route[:dest_iata],
+        Highlighted: route[:highlighted],
       }
     }
     if include_frequencies
