@@ -12,6 +12,7 @@
 
 ### Removed
 - Removed static [Great Circle Mapper](http://www.gcmap.com/) maps.
+- Removed region links (no longer needed with zoomable maps).
 
 
 ## [2.4] - GPX/KML Map Downloads and AeroAPI
