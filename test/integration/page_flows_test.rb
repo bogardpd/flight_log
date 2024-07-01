@@ -29,7 +29,7 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
     assert_select("div:match('id',?)", /message-active-trip-\d+/, {count: 0}, "This view shall not list an active trip")
     assert_select("div#message-boarding-passes-available-for-import", {count: 0}, "This view shall not show a link to import boarding passes")
     
-    assert_select("img.map", {}, "This view shall contain a map")
+    assert_select("div.map-mapbox", {}, "This view shall contain a map")
     assert_select("a:match('href', ?)", "/flights", {}, "This view shall contain a link to Index Flights")
     assert_select("span.summary-total[data-total=?]", visitor_flights.size.to_s, {}, "This view shall contain a count of flights")
     

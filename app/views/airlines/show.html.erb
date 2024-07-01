@@ -10,7 +10,7 @@
 <% if @flights.any? %>
 	<div class="page-navigation">
 	  <ul>
-			<li><%= link_to("Map", "#map", title: "Map of flights flown on #{@airline.name}") %></li>
+			<li><%= link_to("Map", "#airline_map", title: "Map of flights flown on #{@airline.name}") %></li>
 			<li><%= link_to("Aircraft", "#aircraft", title: "Aircraft flown on #{@airline.name}") %></li>
 			<li><%= link_to("Operators", "#operators", title: "Operators for #{@airline.name} flights") %></li>
 			<li><%= link_to("Classes", "#classes", title: "Classes flown on #{@airline.name}") %></li>
