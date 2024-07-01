@@ -1,6 +1,6 @@
 # Flight Historian Changelog
 
-## [2.5] - Mapbox Maps
+## [2.5] - Interactive Mapbox Maps
 2024-07-01
 
 ### New
