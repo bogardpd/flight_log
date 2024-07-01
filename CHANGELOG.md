@@ -1,5 +1,19 @@
 # Flight Historian Changelog
 
+## [2.5] - Mapbox Maps
+2024-07-01
+
+### New
+- Added interactive [Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/guides/) maps.
+- Added [GeoJSON](https://geojson.org/) downloads to maps.
+
+### Changed
+- Upgraded to Ruby 3.2 and Rails 7.1.
+
+### Removed
+- Removed static [Great Circle Mapper](http://www.gcmap.com/) maps.
+
+
 ## [2.4] - GPX/KML Map Downloads and AeroAPI
 2022-07-04
 
@@ -146,6 +160,7 @@
 - Created Index Classes and Show Class views.
 - Created Index Tail Numbers and Show Tail Number views.
 
+[2.5]: https://github.com/bogardpd/flight_log/releases/tag/v2.5
 [2.4]: https://github.com/bogardpd/flight_log/releases/tag/v2.4
 [2.3]: https://github.com/bogardpd/flight_log/releases/tag/v2.3
 [2.2]: https://github.com/bogardpd/flight_log/releases/tag/2.2
