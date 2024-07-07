@@ -130,6 +130,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   end
   
   test "can see show airline when logged in" do
+    stub_aero_api4_get_timeout
     airline = airlines(:airline_american)
     log_in_as(users(:user_one))
     get(airline_path(airline.slug))
@@ -140,6 +141,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see show airline when not logged in" do
+    stub_aero_api4_get_timeout
     airline = airlines(:airline_american)
     get(airline_path(airline.slug))
     assert_response(:success)

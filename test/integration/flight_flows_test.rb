@@ -203,6 +203,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "can see index flights when logged in" do
+    stub_aero_api4_get_timeout
     log_in_as(users(:user_one))
     get(flights_path)
     assert_response(:success)
@@ -221,6 +222,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see index flights when not logged in" do
+    stub_aero_api4_get_timeout
     get(flights_path)
     assert_response(:success)
     verify_absence_of_hidden_data
