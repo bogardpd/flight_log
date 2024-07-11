@@ -34,20 +34,21 @@
 </div>
 
 <script>
-  mapboxgl.accessToken = '<%= Rails.env.development? ? Rails.application.credentials[:mapbox][:api_key][:unrestricted] : Rails.application.credentials[:mapbox][:api_key][:flight_historian] %>';
+  const map_data_<%= map_id %> = <%= map.geojson.html_safe %>;
+  const map_position_<%= map_id %> = map_center_zoom(map_data_<%= map_id %>)
   const map_type_<%= map_id %> = '<%= mapboxgl_attr[:map_type] %>';
   const map_<%= map_id %> = new mapboxgl.Map({
     container: 'mapbox_<%= map_id %>',
     style: 'mapbox://styles/bogardpd/cly0gib62008301p82kk64np1', // Light Terrain - Flight Historian
-    center: [0, 20],
-    zoom: 0.5,
+    center: map_position_<%= map_id %>['center'],
+    zoom: map_position_<%= map_id %>['zoom'],
   });
 
   map_<%= map_id %>.on('load', () => {
      // Load data.
      map_<%= map_id %>.addSource('flights', {
       'type': 'geojson',
-      'data': <%= map.geojson.html_safe %>,
+      'data': map_data_<%= map_id %>,
       'generateId': true,
     })
 
