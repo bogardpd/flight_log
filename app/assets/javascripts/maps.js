@@ -1,12 +1,12 @@
 // Functions for working with mapboxgl maps.
 
 function mapCenterZoom(geojson_data) {
-
+  const defaultValues = {center: [0, 20], zoom: 0.5};
   // Get MultiLineString features.
   let features = geojson_data['features'];
   let routes = features.filter(r => r['geometry']['type'] == 'MultiLineString');
   if (routes.length == 0) {
-      return {center: [0, 20], zoom: 0.5};
+      return defaultValues;
   }
 
   // Generate Map of longitudes and their changes in count.
@@ -59,9 +59,12 @@ function mapCenterZoom(geojson_data) {
   lonStartValues = lonStartValues.sort(function(a, b) {return b[1] - a[1]});
 
   // Get center of of the widest of the lowest routeCount regions.
-  let lonCenter = lonStartValues[0][0] + (lonStartValues[0][1] / 2) + 180;
-  while (lonCenter >= 180) {
-    lonCenter = lonCenter - 360;
+  let lonCenter = defaultValues['center'][0];
+  if (lonStartValues.length > 0) {
+    lonCenter = lonStartValues[0][0] + (lonStartValues[0][1] / 2) + 180;
+    while (lonCenter >= 180) {
+      lonCenter = lonCenter - 360;
+    }
   }
 
   return {center: [lonCenter, 20], zoom: 0.5};
