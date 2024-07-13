@@ -35,7 +35,7 @@
 
 <script>
   const map_data_<%= map_id %> = <%= map.geojson.html_safe %>;
-  const map_position_<%= map_id %> = map_center_zoom(map_data_<%= map_id %>)
+  const map_position_<%= map_id %> = mapCenterZoom(map_data_<%= map_id %>)
   const map_type_<%= map_id %> = '<%= mapboxgl_attr[:map_type] %>';
   const map_<%= map_id %> = new mapboxgl.Map({
     container: 'mapbox_<%= map_id %>',

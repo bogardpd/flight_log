@@ -23,10 +23,6 @@
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet" />
   <script>
     mapboxgl.accessToken = '<%= Rails.env.development? ? Rails.application.credentials[:mapbox][:api_key][:unrestricted] : Rails.application.credentials[:mapbox][:api_key][:flight_historian] %>';
-    // Calculates a center and zoom level for mapboxgl maps.
-    function map_center_zoom(geojson_data) {
-      return {center: [-105, 20], zoom: 0.5};
-    }
   </script>
 
   <!-- Open Graph/Metadata -->
