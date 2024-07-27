@@ -13,7 +13,9 @@
 
 <h2>Option 1: E-mail a digital boarding pass</h2>
 
-<p>To create a flight from an Apple Wallet pass, e-mail the pass to <%= link_to("flights@flighthistorian.com", "mailto:flights@flighthistorian.com") %>.</p>
+<%= render_message(:info, "Receiving boarding passes by email is not currently enabled.") %>
+
+<% if false %><p>To create a flight from an Apple Wallet pass, e-mail the pass to <%= link_to("flights@flighthistorian.com", "mailto:flights@flighthistorian.com") %>.</p><% end %>
 
 <% if @passes.any? %>
 
@@ -42,7 +44,7 @@
   </tbody>
 </table>
 <% else %>
-  <%= render_message(:info, "We haven’t yet received any emailed boarding passes.") %>
+  <% if false %><%= render_message(:info, "We haven’t yet received any emailed boarding passes.") %><% end %>
 <% end %>
 
 <h2>Option 2: Paste a barcode</h2>
