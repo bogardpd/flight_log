@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/ruby/net-pop.git
+  revision: e8d0afe2773b9eb6a23c39e9e437f6fc0fc7c733
+  specs:
+    net-pop (0.1.2)
+      net-protocol
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -175,7 +182,6 @@ GEM
     net-imap (0.4.14)
       date
       net-protocol
-    net-pop (0.1.2)
     net-protocol (0.2.2)
       timeout
     net-smtp (0.5.0)
@@ -290,7 +296,7 @@ DEPENDENCIES
   jbuilder (~> 2.9, >= 2.9.1)
   minitest-reporters
   net-imap
-  net-pop
+  net-pop!
   net-smtp
   nokogiri (>= 1.11.0.rc4)
   pg (~> 1.2, >= 1.2.2)
