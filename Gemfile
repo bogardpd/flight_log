@@ -22,7 +22,7 @@ gem 'rubyzip', '~> 2.3.0'
 # Use AWS S3 for image caching
 gem 'aws-sdk-s3', '~> 1.81'
 
-gem 'nokogiri', '>= 1.11.0.rc4'
+gem 'nokogiri', '>= 1.12.4'
 
 # Allow CORS for JSON API requests.
 gem 'rack-cors'
@@ -34,8 +34,6 @@ gem 'net-pop', github: "ruby/net-pop" # https://github.com/ruby/net-pop/issues/2
 
 group :development do
   gem 'sql_queries_count'
-  gem 'derailed_benchmarks'
-  gem 'stackprof'
 end
 
 group :development, :test do
@@ -45,7 +43,6 @@ end
 group :test do
   gem 'minitest-reporters'
   gem 'capybara'
-  # gem 'selenium-webdriver', '~> 4.19.0'
   gem 'selenium-webdriver', '~> 4.23.0'
   # Use webmock to stub out HTTP API requests
   gem 'webmock'
