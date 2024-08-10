@@ -11,4 +11,5 @@ certbot.log
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/config/master.key
+# Ignore temporary database dumps.
+latest.dump
