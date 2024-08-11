@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '3.3.3'
+ruby '3.3.4'
 
 gem 'rails', '~> 7.1.3.4'
 
@@ -30,7 +30,7 @@ gem 'rack-cors'
 # Install networking gems for Ruby 3.x on Rails 7.x:
 gem 'net-smtp'
 gem 'net-imap'
-gem 'net-pop', github: "ruby/net-pop" # https://github.com/ruby/net-pop/issues/26 (should be fixed in Ruby 3.3.4)
+gem 'net-pop' #, github: "ruby/net-pop" # https://github.com/ruby/net-pop/issues/26 (should be fixed in Ruby 3.3.4)
 
 group :development do
   gem 'sql_queries_count'
