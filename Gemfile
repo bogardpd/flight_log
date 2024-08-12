@@ -18,7 +18,7 @@ gem 'sprockets-rails', '~> 3.4', '>= 3.4.2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
-gem 'rubyzip', '~> 2.3.0'
+gem 'rubyzip', '~> 2.3', '>= 2.3.2'
 # Use AWS S3 for image caching
 gem 'aws-sdk-s3', '~> 1.81'
 
@@ -30,7 +30,7 @@ gem 'rack-cors'
 # Install networking gems for Ruby 3.x on Rails 7.x:
 gem 'net-smtp'
 gem 'net-imap'
-gem 'net-pop' #, github: "ruby/net-pop" # https://github.com/ruby/net-pop/issues/26 (should be fixed in Ruby 3.3.4)
+gem 'net-pop'
 
 group :development do
   gem 'sql_queries_count'

@@ -274,7 +274,7 @@ DEPENDENCIES
   puma (~> 6.4, >= 6.4.2)
   rack-cors
   rails (~> 7.1.3.4)
-  rubyzip (~> 2.3.0)
+  rubyzip (~> 2.3, >= 2.3.2)
   selenium-webdriver (~> 4.23.0)
   sprockets-rails (~> 3.4, >= 3.4.2)
   sql_queries_count
