@@ -18,6 +18,10 @@ module BoardingPassS3
   AWS_REGION = "us-east-2"
   AWS_S3_BUCKET = "flighthistorian-com-private"
   AWS_S3_PREFIX = "boarding-passes/"
+  TYPE_PKPASS = "application/vnd.apple.pkpass"
+  FILENAME_PASS = "pass.json"
+
+  require "zip"
 
   # Fetches emails stored in the Flight Historian boarding pass AWS S3 bucket,
   # processes any PKPass attachments and stores them as {PKPass} objects, and
@@ -30,10 +34,12 @@ module BoardingPassS3
     })
     client = Aws::S3::Client.new
 
-    # Get array of keys for potential boarding pass objects.
     s3_keys = s3_keys(client)
+    for s3_key in s3_keys do
+      process_email_message(client, s3_key)
+    end
 
-    puts s3_keys
+    return nil
 
   end
 
@@ -53,6 +59,50 @@ module BoardingPassS3
     end
     s3_keys = s3_keys.select{|sk| sk != AWS_S3_PREFIX} # Exclude the folder itself
     return s3_keys
+  end
+
+  # Opens an email in S3, checks for PKPass attachments, saves them as PKPass
+  # objects, and deletes the email.
+  def self.process_email_message(client, s3_key)
+    object = client.get_object(bucket: AWS_S3_BUCKET, key: s3_key)
+    delete_object = true
+    begin
+      message = Mail.read_from_string(object.body.read())
+      message_datetime = message.date.present? ? message.date.utc : nil
+      for attachment in message.attachments do
+        if attachment.content_type.start_with?(TYPE_PKPASS)
+          pass_data = extract_pass(attachment)
+          unless pass_data.nil?
+            new_pass = PKPass.new(pass_json: pass_data, received: message_datetime)
+            success = new_pass.save
+            delete_object = false unless success
+          end
+        end
+      end
+    rescue
+    end
+    if delete_object
+      client.delete_object(bucket: AWS_S3_BUCKET, key: s3_key)
+    end
+  end
+
+  # Extracts JSON data from a PKPass attachment.
+  #
+  # @param attachment [Mail::Attachment] a PKPass email attachment
+  # @return <String> JSON data contained within the PKPass attachment
+  def self.extract_pass(attachment)
+    output = nil
+    Dir.mktmpdir{|dir|
+      File.open("#{dir}/pass.zip", "wb") do |file|
+        file.write(attachment.body.decoded)
+        Zip::File.open(file.path) do |zip_file|
+          if zip_file.glob(FILENAME_PASS).any?
+            output = zip_file.glob(FILENAME_PASS).first.get_input_stream.read.force_encoding("UTF-8")
+          end
+        end
+      end
+    }
+    return output
   end
 
 end
