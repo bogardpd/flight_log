@@ -13,9 +13,7 @@
 
 <h2>Option 1: E-mail a digital boarding pass</h2>
 
-<%= render_message(:info, "Receiving boarding passes by email is not currently enabled.") %>
-
-<% if false %><p>To create a flight from an Apple Wallet pass, e-mail the pass to <%= link_to("flights@flighthistorian.com", "mailto:flights@flighthistorian.com") %>.</p><% end %>
+<p>To create a flight from an Apple Wallet pass, e-mail the pass to <%= link_to(Rails.application.credentials[:boarding_pass_email], "mailto:#{Rails.application.credentials[:boarding_pass_email]}") %>.</p>
 
 <% if @passes.any? %>
 

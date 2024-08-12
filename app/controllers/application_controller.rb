@@ -74,15 +74,11 @@ class ApplicationController < ActionController::Base
   #
   # @return [nil]
   def check_email_for_boarding_passes
-    # Due to IMAP login changes, disable email checks until an alternate
-    # solution is available.
-    return nil
-    
-    # begin
-    #   BoardingPassEmail::process_attachments(current_user.all_emails)
-    # rescue => details
-    #   flash.now[:warning] = "Could not get new passes from email (#{details})"
-    # end
+    begin
+      BoardingPassS3::fetch_passes()
+    rescue => details
+      flash.now[:warning] = "Could not get new passes from email (#{details})"
+    end
   end
 
   # Adds a message to the alert messages box at the top of the page.

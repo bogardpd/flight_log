@@ -66,21 +66,20 @@ module BoardingPassS3
   def self.process_email_message(client, s3_key)
     object = client.get_object(bucket: AWS_S3_BUCKET, key: s3_key)
     delete_object = true
-    begin
-      message = Mail.read_from_string(object.body.read())
-      message_datetime = message.date.present? ? message.date.utc : nil
-      for attachment in message.attachments do
-        if attachment.content_type.start_with?(TYPE_PKPASS)
-          pass_data = extract_pass(attachment)
-          unless pass_data.nil?
-            new_pass = PKPass.new(pass_json: pass_data, received: message_datetime)
-            success = new_pass.save
-            delete_object = false unless success
-          end
+    
+    message = Mail.read_from_string(object.body.read())
+    message_datetime = message.date.present? ? message.date.utc : nil
+    for attachment in message.attachments do
+      if attachment.content_type.start_with?(TYPE_PKPASS)
+        pass_data = extract_pass(attachment)
+        unless pass_data.nil?
+          new_pass = PKPass.new(pass_json: pass_data, received: message_datetime)
+          success = new_pass.save
+          delete_object = false unless success
         end
       end
-    rescue
     end
+    
     if delete_object
       client.delete_object(bucket: AWS_S3_BUCKET, key: s3_key)
     end
