@@ -65,9 +65,15 @@ module BoardingPassS3
   # objects, and deletes the email.
   def self.process_email_message(client, s3_key)
     object = client.get_object(bucket: AWS_S3_BUCKET, key: s3_key)
-    delete_object = true
     
-    message = Mail.read_from_string(object.body.read())
+    begin
+      message = Mail.read_from_string(object.body.read())
+    rescue ArgumentError
+      client.delete_object(bucket: AWS_S3_BUCKET, key: s3_key)
+      return
+    end
+    
+    delete_object = true
     message_datetime = message.date.present? ? message.date.utc : nil
     for attachment in message.attachments do
       if attachment.content_type.start_with?(TYPE_PKPASS)
