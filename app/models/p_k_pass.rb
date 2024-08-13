@@ -1,5 +1,5 @@
 # Defines a boarding pass using Apple's PassKit Package (PKPass) format. This
-# is used to store Apple Wallet (iOS) boarding passes {BoardingPassEmail
+# is used to store Apple Wallet (iOS) boarding passes {BoardingPassS3
 # received} at a specified email address.
 #
 # PKPass boarding passes are a compressed folder containing a JSON file, which
@@ -11,7 +11,7 @@
 # with the {Flight} model. Instead, once a new {Flight} is created, its PKPass
 # is destroyed.
 # 
-# @see BoardingPassEmail
+# @see BoardingPassS3
 # @see https://developer.apple.com/documentation/passkit/wallet Wallet | Apple Developer Documentation
 class PKPass < ApplicationRecord
   after_initialize :set_values
