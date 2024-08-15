@@ -19,10 +19,8 @@ gem 'sprockets-rails', '~> 3.4', '>= 3.4.2'
 gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
 gem 'rubyzip', '~> 2.3', '>= 2.3.2'
-# Use AWS S3 for image caching
+# Use AWS S3 for boarding pass storage
 gem 'aws-sdk-s3', '~> 1.157'
-
-gem 'nokogiri', '>= 1.12.4'
 
 # Allow CORS for JSON API requests.
 gem 'rack-cors'
