@@ -266,9 +266,6 @@ DEPENDENCIES
   capybara
   jbuilder (~> 2.9, >= 2.9.1)
   minitest-reporters
-  net-imap
-  net-pop
-  net-smtp
   nokogiri (>= 1.12.4)
   pg (~> 1.2, >= 1.2.2)
   puma (~> 6.4, >= 6.4.2)

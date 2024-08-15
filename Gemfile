@@ -27,11 +27,6 @@ gem 'nokogiri', '>= 1.12.4'
 # Allow CORS for JSON API requests.
 gem 'rack-cors'
 
-# Install networking gems for Ruby 3.x on Rails 7.x:
-gem 'net-smtp'
-gem 'net-imap'
-gem 'net-pop'
-
 group :development do
   gem 'sql_queries_count'
 end
