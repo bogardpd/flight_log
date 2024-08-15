@@ -7,7 +7,7 @@ gem 'rails', '~> 7.1.3.4'
 # Use puma as the webserver
 gem 'puma', '~> 6.4', '>= 6.4.2'
 # Use PostgreSQL as the database
-gem 'pg', '~> 1.2', '>= 1.2.2'
+gem 'pg', '~> 1.5', '>= 1.5.7'
 # Use bcrypt to hash passwords
 gem 'bcrypt', '~> 3.1', '>= 3.1.13'
 # Use Uglifier as compressor for JavaScript assets
