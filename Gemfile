@@ -31,10 +31,6 @@ group :development do
   gem 'sql_queries_count'
 end
 
-group :development, :test do
-  gem 'byebug', '~> 11.1', '>= 11.1.1', platform: :mri
-end
-
 group :test do
   gem 'minitest-reporters'
   gem 'capybara'
