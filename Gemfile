@@ -20,7 +20,7 @@ gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
 gem 'rubyzip', '~> 2.3', '>= 2.3.2'
 # Use AWS S3 for image caching
-gem 'aws-sdk-s3', '~> 1.81'
+gem 'aws-sdk-s3', '~> 1.157'
 
 gem 'nokogiri', '>= 1.12.4'
 
