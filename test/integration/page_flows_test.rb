@@ -82,18 +82,4 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
     ENV["LETS_ENCRYPT_KEY"] = cached_lets_encrypt_key
   end
 
-  test "proxy image accepts correct key" do
-    stub_gcmap_get_map
-
-    get(gcmap_image_url(@airport_options, @query.gsub('/','_'), Map.hash_image_query(@query)))
-    assert_response(:success)
-  end
-  
-  test "proxy image rejects incorrect key" do
-    bad_check = "FOO"
-    assert_raises(ActionController::RoutingError) do
-      get(gcmap_image_url(@airport_options, @query.gsub('/','_'), bad_check))
-    end
-  end
-
 end

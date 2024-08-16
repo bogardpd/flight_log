@@ -6,7 +6,6 @@ class AirportsTest < ApplicationSystemTestCase
 
   def setup
     stub_aws_head_images
-    stub_gcmap_get_map
   end
 
   test "creating, updating, and destroying an airport" do

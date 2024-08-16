@@ -6,7 +6,6 @@ class FlightsTest < ApplicationSystemTestCase
 
   def setup
     stub_aero_api4_get_airports_id(airports(:airport_with_no_coordinates).icao_code, {})
-    stub_gcmap_get_map
     @trip = trips(:trip_hidden)
     @pass = pk_passes(:pk_pass_existing_data)
 

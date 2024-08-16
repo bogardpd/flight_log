@@ -76,14 +76,6 @@ class ActiveSupport::TestCase
       to_timeout
   end
 
-  def stub_gcmap_get_map
-    stub_aws_head_images
-    WebMock.stub_request(:get, /pbogardcom-images.s3.us-east-2.amazonaws.com\/flights\/map-cache/).
-      to_return(status: 200, body: file_fixture("map.gif").read, headers: {})
-    WebMock.stub_request(:get, /www.gcmap.com/).
-      to_return(status: 200, body: file_fixture("map.gif").read, headers: {})
-  end
-
   ##############################################################################
   # Verifications                                                              #
   ##############################################################################

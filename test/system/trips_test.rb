@@ -6,7 +6,6 @@ class TripsTest < ApplicationSystemTestCase
 
   def setup
     stub_aero_api4_get_timeout
-    stub_gcmap_get_map
 
     stub_aero_api4_get_airports_id("CYYZ", {
       "latitude"  => 43.677223,

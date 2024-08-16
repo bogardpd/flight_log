@@ -5,7 +5,6 @@ class AirlinesTest < ApplicationSystemTestCase
   # or destroy airlines are located in INTEGRATION tests.
 
   def setup
-    stub_gcmap_get_map
     stub_aero_api4_get_timeout
   end
 

@@ -7,7 +7,6 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
   def setup
     stub_aws_head_images
     stub_aero_api4_get_timeout
-    stub_gcmap_get_map
   end
 
   test "creating, updating, and destroying an aircraft family and type" do

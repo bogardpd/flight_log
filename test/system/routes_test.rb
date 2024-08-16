@@ -5,7 +5,6 @@ class RoutesTest < ApplicationSystemTestCase
   # located in INTEGRATION tests.
 
   def setup
-    stub_gcmap_get_map
     @airports_with_no_route_distance = [airports(:airport_dfw), airports(:airport_sea)]
   end
 
