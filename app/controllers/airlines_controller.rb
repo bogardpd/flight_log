@@ -53,11 +53,10 @@ class AirlinesController < ApplicationController
     @flights = flyer.flights(current_user).where(airline_id: @airline.id).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     @logo_used = true
-    @region = current_region(default: [])
     
     # Create map:
     @maps = {
-      airline_map: FlightsMap.new(:airline_map, @flights, region: @region),
+      airline_map: FlightsMap.new(:airline_map, @flights),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
     
@@ -107,11 +106,10 @@ class AirlinesController < ApplicationController
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
  
     @logo_used = true
-    @region = current_region(default: [])
 
     @total_distance = @flights.total_distance
     @maps = {
-      operator_map: FlightsMap.new(:operator_map, @flights, region: @region),
+      operator_map: FlightsMap.new(:operator_map, @flights),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
     
@@ -162,11 +160,10 @@ class AirlinesController < ApplicationController
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
     @logo_used = true
-    @region = current_region(default: [])
     
     @total_distance = @flights.total_distance
     @maps = {
-      fleet_number_map: FlightsMap.new(:fleet_number_map, @flights, region: @region),
+      fleet_number_map: FlightsMap.new(:fleet_number_map, @flights),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
     

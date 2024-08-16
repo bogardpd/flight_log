@@ -21,10 +21,9 @@ class AirportsController < ApplicationController
       end
       
       # Create maps:
-      @region = current_region(default: [])
       @maps = {
-        airports_map: AirportsMap.new(:airports_map, Airport.where(iata_code: used_airport_codes), region: @region),
-        frequency_map: AirportFrequencyMap.new(:frequency_map, @flights, region: @region),
+        airports_map: AirportsMap.new(:airports_map, Airport.where(iata_code: used_airport_codes)),
+        frequency_map: AirportFrequencyMap.new(:frequency_map, @flights),
       }
       render_map_extension(@maps, params[:map_id], params[:extension])
     end
@@ -90,25 +89,21 @@ class AirportsController < ApplicationController
     @classes = TravelClass.flight_table_data(@flights)
     
     # Create maps:
-    @region = current_region(default: [])
     @maps = {
       airport_map: FlightsMap.new(
         :airport_map,
         @flights,
         highlighted_airports: [@airport],
-        region: @region
       ),
       sections_map: FlightsMap.new(
         :sections_map,
         @sections_using_airport_flights,
         highlighted_airports: [@airport],
-        region: @region
       ),
       trips_map: FlightsMap.new(
         :trips_map,
         @trips_using_airport_flights,
         highlighted_airports: [@airport],
-        region: @region
       ),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])

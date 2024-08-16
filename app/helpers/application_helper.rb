@@ -218,7 +218,7 @@ module ApplicationHelper
     else
       sort_polarity = sort_direction[1]
     end
-    link_to(safe_join([link_text, category_sort_direction_indicator].compact, " "), url_for(region: params[:region], sort: sort_polarity.to_s + link_sort_category.to_s, anchor: page_anchor), class: "sort")
+    link_to(safe_join([link_text, category_sort_direction_indicator].compact, " "), url_for(sort: sort_polarity.to_s + link_sort_category.to_s, anchor: page_anchor), class: "sort")
   end
 
   # Takes a tail number and prepends an image_tag for the appropriate country
@@ -241,38 +241,6 @@ module ApplicationHelper
     else
       return tail_link
     end
-  end
-  
-  
-  # GREAT CIRCLE MAPPER HELPER FUNCTIONS
-    
-  # Creates region select tabs.
-  # 
-  # @param map [Map] the map to show
-  # @param selected_region [Array] the currently active region as an array of
-  #   ICAO prefixes (e.g. ["K","PH"])
-  # @option [String] :anchor (nil) a page anchor position for the region select links to link to
-  # @return [ActiveSupport::SafeBuffer] HTML region select tabs
-  # @see Map#gcmap_regions
-  def gcmap_region_select_links(map, selected_region, anchor: nil)
-    region_hash = map.gcmap_regions(selected_region)
-    tabs = Array.new
-    
-    region_hash.each do |region, values|
-      if values[:selected]
-        tabs.push(content_tag(:li, region, class: "selected"))
-      else
-        tabs.push(content_tag(:li, link_to(region, url_for(params.permit(:id, :sort, :region, :start_date, :end_date, :year, :fleet_number, :operator, :tail_number, :travel_class).merge(region: values[:icao].join("-"), anchor: anchor)))))
-      end
-    end
-    
-    if tabs.length > 1
-      return content_tag(:div, content_tag(:ul, safe_join(tabs), class: "region-select"), class: "region-select")
-    else
-      return ""
-    end
-    
-    
   end
   
 end

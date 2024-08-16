@@ -16,16 +16,6 @@ class Map
   include ActionView::Helpers
   include ActionView::Context
 
-  # Defines the preset regions and their ICAO code start characters for use in
-  # creating region tabs for region-sensitive maps.
-  # @see #gcmap_regions
-  ICAO_REGIONS = {
-    "World":            %w(),
-    "North America":    %w(C K M PA T),
-    "Europe":           %w(B E L),
-    "Pacific/Oceania":  %w(A N P R Y)
-  }
-  
   # Creates a hash of attributes for a
   # {https://docs.mapbox.com/mapbox-gl-js/guides Mapbox GL JS} map.
   # 
@@ -41,35 +31,6 @@ class Map
     return mapboxgl_attributes
   end
 
-  # Creates a hash of attributes for a
-  # {http://www.gcmap.com/ Great Circle Mapper} map.
-  # 
-  # @return [Hash] Attributes for a {http://www.gcmap.com/ Great
-  #   Circle Mapper} map.
-  # @see http://www.gcmap.com/ Great Circle Mapper
-  def gcmap
-    # The gcmap_query.gsub("/","_") isn't strictly necessary as rails will
-    # escape the slashes to %2F. However, doing so increases the total number of
-    # characters in the link, which could be a problem with large queries in
-    # certain browsers running into path length limits. See
-    # {PagesController#gcmap_image_proxy}.
-    gcmap_attributes = {
-      description: map_description,
-      id: @id,
-      img_path: Rails.application.routes.url_helpers.gcmap_image_path(gcmap_airport_options, gcmap_query.gsub("/","_"), Map.hash_image_query(gcmap_query)),
-      link_path: "http://www.gcmap.com/mapui?PM=#{gcmap_airport_options}&MP=r&MS=wls2&P=#{gcmap_query}",
-      map_type: map_type,
-    }
-    return gcmap_attributes
-  end
-
-  # Returns the URL for a {http://www.gcmap.com/ Great Circle Mapper} map.
-  #
-  # @return [String] a URL
-  def gcmap_url
-    return "http://www.gcmap.com/mapui?PM=#{gcmap_airport_options}&MP=r&MS=wls2&P=#{gcmap_query}"
-  end
-
   # Checks whether or not this map contains enough data to create a
   # {http://www.gcmap.com Great Circle Mapper} map.
   #
@@ -80,41 +41,12 @@ class Map
     gcmap_query.present?
   end
 
-  # Returns all regions contained in the current map. Used for generating
-  # region selection tabs above a {http://www.gcmap.com Great Circle Mapper}
-  # map image.
+  # Returns the URL for a {http://www.gcmap.com/ Great Circle Mapper} map.
   #
-  # Regions are defined by an array of ICAO code prefixes (e.g. ["K","PH"]).
-  # {Airport Airports} are considered to be in a region if their ICAO code starts with
-  # any of the elements of the prefix array (e.g. KATL, PHNL), and {Flight Flights}
-  # are considered to be in a region if _both_ of their airports are in the
-  # region.
-  #
-  # @param selected_region [Array] an array of ICAO prefixes (e.g. ["K","PH"]).
-  # @return [Hash{String => Boolean, Array}] name and ICAO prefixes for each
-  #   region, and a boolean indicating whether this region's button should be
-  #   selected (true if this region is the currently selected region) in the
-  #   format !{"Europe": {selected: false, icao: ["B","E","L"]}}
-  # @see ICAO_REGIONS
-  # @see http://www.gcmap.com/ Great Circle Mapper
-  def gcmap_regions(selected_region)
-    @airport_details ||= airport_details
-    used_airports = @airport_details.keys
-    region_hash = Hash.new
-
-    ICAO_REGIONS.each do |name, icao|
-      if selected_region.uniq.sort == icao.uniq.sort
-        region_hash[name] = {selected: true}
-      else
-        in_region = Airport.in_region_ids(icao).sort
-        if ((in_region & used_airports).any? && (used_airports - in_region).any?) || icao == []
-          # This region has airports, but is not identical to world OR this region is world.
-          region_hash[name] = {selected: false, icao: icao}
-        end
-      end
-    end
-
-    return region_hash
+  # @return [String] a URL
+  # @see http://www.gcmap.com Great Circle Mapper
+  def gcmap_url
+    return "http://www.gcmap.com/mapui?PM=#{gcmap_airport_options}&MP=r&MS=wls2&P=#{gcmap_query}"
   end
 
   # Creates XML for a {https://www.topografix.com/gpx.asp GPX} map.
@@ -145,7 +77,7 @@ class Map
         end
 
         # Create routes:
-        routes = (routes_normal | routes_out_of_region | routes_highlighted | routes_unhighlighted)
+        routes = (routes_normal | routes_highlighted | routes_unhighlighted)
         if routes.any?
           routes = routes.map{|r| r.sort_by{|x| @airport_details[x][:iata]}}.uniq.sort_by{|y| [@airport_details[y[0]][:iata], @airport_details[y[1]][:iata]]}
           routes.each do |route|
@@ -229,7 +161,7 @@ class Map
           end
 
           # Create routes:
-          kml_routes(routes_normal | routes_out_of_region, "Routes", xml)
+          kml_routes(routes_normal, "Routes", xml)
           kml_routes(routes_highlighted, "Highlighted Routes", xml)
           kml_routes(routes_unhighlighted, "Unhighlighted Routes", xml)
 
@@ -237,16 +169,6 @@ class Map
       end
     end
     return output
-  end
-  
-  # Creates a hash of a map query based on a secret key in the application
-  # credentials.
-  # 
-  # @param query [String] the query to hash
-  # @return [String] a hash of the query
-  # @see PagesController#gcmap_image_proxy
-  def self.hash_image_query(query)
-    Digest::MD5.hexdigest(query + Rails.application.credentials[:image_key])
   end
   
   private
@@ -263,11 +185,9 @@ class Map
     airport_ids = Array.new
     airport_ids |= airports_normal
     airport_ids |= airports_highlighted
-    airport_ids |= airports_out_of_region
     airport_ids |= routes_normal.flatten
     airport_ids |= routes_highlighted.flatten
     airport_ids |= routes_unhighlighted.flatten
-    airport_ids |= routes_out_of_region.flatten
     airport_ids = airport_ids.uniq.sort
 
     airports = Airport.where(id: airport_ids)
@@ -289,14 +209,6 @@ class Map
   #
   # @return [Array<Number>] airport IDs
   def airports_highlighted
-    return Array.new
-  end
-
-  # Returns an array of airport IDs for airports that are not in the current
-  # region.
-  #
-  # @return [Array<Number>] airport IDs
-  def airports_out_of_region
     return Array.new
   end
   
@@ -333,15 +245,6 @@ class Map
   # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
   #   airport_2_id]].
   def routes_unhighlighted
-    return Array.new
-  end
-
-  # Creates an array of numerically-sorted pairs of airport IDs for routes that
-  # are not in the current region.
-  # 
-  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
-  #   airport_2_id]].
-  def routes_out_of_region
     return Array.new
   end
 
@@ -399,27 +302,16 @@ class Map
     @airport_details ||= airport_details
     query_sections = Array.new
     
-    if routes_out_of_region.any? || routes_unhighlighted.any?
-      
+    if routes_unhighlighted.any?
       query_sections.push("c:%23FF7777")
-      
-      # Add routes outside region:
-      if routes_out_of_region.any?
-        query_sections.push(gcmap_route_string(routes_out_of_region, noext: true))
-      end
-    
-      # Add unhighlighted routes:
-      if routes_unhighlighted.any?
-        query_sections.push(gcmap_route_string(routes_unhighlighted))
-      end
-      
+      query_sections.push(gcmap_route_string(routes_unhighlighted))
     end
     
     if routes_normal.any? || routes_highlighted.any?
       
       query_sections.push("c:red")
       
-      # Add routes inside region:
+      # Add normal routes:
       if routes_normal.any?
         query_sections.push(gcmap_route_string(routes_normal))
       end
@@ -481,15 +373,15 @@ class Map
     frequency_scaled = 0
     
     query = Array.new      
-    region_frequencies = Array.new
+    iata_frequencies = Array.new
     
     airports_normal.each do |airport|
-      region_frequencies.push(iata_code: @airport_details[airport][:iata], frequency: frequencies[airport])
+      iata_frequencies.push(iata_code: @airport_details[airport][:iata], frequency: frequencies[airport])
     end
-    region_frequencies.sort_by! { |airport| [-airport[:frequency], airport[:iata_code]] }
+    iata_frequencies.sort_by! { |airport| [-airport[:frequency], airport[:iata_code]] }
     
-    region_frequencies.each do |airport|
-      if airport == region_frequencies.first
+    iata_frequencies.each do |airport|
+      if airport == iata_frequencies.first
         # This is the first circle, so define its color:
         query.push("m:p:ring#{max_gcmap_ring}:black")
         query.push(airport[:iata_code])

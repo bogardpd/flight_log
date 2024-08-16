@@ -73,9 +73,6 @@ Portfolio::Application.routes.draw do
   get   "/admin/boarding-pass-validator" => "admin#boarding_pass_validator", as: :boarding_pass_validator
   get   "/admin/annual-summary"          => "admin#annual_flight_summary",   as: :annual_flight_summary
   
-  # Image proxy:
-  get "/images/gcmap/:airport_options/:query/:check/map.gif" => "pages#gcmap_image_proxy", as: :gcmap_image
-  
   # Certbot:
   get "/.well-known/acme-challenge/:id" => "pages#letsencrypt"
   

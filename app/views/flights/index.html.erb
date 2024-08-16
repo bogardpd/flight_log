@@ -14,7 +14,7 @@
 
 <% if @flights.any? %>
 
-  <%= render(partial: "layouts/map", locals: {map: @maps[:flights_map], region: @region, distance: {miles: @total_distance, adjective: "total"}}) %>
+  <%= render(partial: "layouts/map", locals: {map: @maps[:flights_map], distance: {miles: @total_distance, adjective: "total"}}) %>
 
   <%= render(partial: "flight_table", locals: {flights: @flights, is_summary: false}) %>
 

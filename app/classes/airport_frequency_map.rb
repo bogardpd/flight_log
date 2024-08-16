@@ -9,15 +9,11 @@ class AirportFrequencyMap < Map
   # to each airport.
   # 
   # @param flights [Array<Flight>] a collection of {Flight Flights}
-  # @param region [Array<String>] the ICAO prefixes to show (e.g. ["K","PH"]).
-  #   World map will be shown if region is left blank.
-  # @see Map#gcmap_regions
-  def initialize(id, flights, region: [""])
+  def initialize(id, flights)
     @id = id
     @flights = flights
     @airport_frequencies = Airport.visit_frequencies(flights)
-    @airports_in_region = Airport.in_region_hash(region).select{|k,v| @airport_frequencies.keys.include?(k)}
-    @airports_all = Airport.in_region_hash([]).select{|k,v| @airport_frequencies.keys.include?(k)}
+    @airports_all = Airport.pluck(:id).select{|v| @airport_frequencies.keys.include?(v)}
   end
 
   # Creates JSON for a {https://geojson.org/ GeoJSON} map.
@@ -33,15 +29,7 @@ class AirportFrequencyMap < Map
   #
   # @return [Array<Number>] airport IDs
   def airports_normal
-    return @airports_in_region.keys
-  end
-
-  # Returns an array of airport IDs for airports that are not in the current
-  # region.
-  #
-  # @return [Array<Number>] airport IDs
-  def airports_out_of_region
-    return @airports_all.keys - @airports_in_region.keys
+    return @airports_all
   end
 
   # Create a hash for looking up the number of times an airport has been

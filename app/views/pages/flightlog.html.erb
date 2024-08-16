@@ -4,7 +4,7 @@
   <%= render partial: "flights/error_no_flights" %>
 <% end %>
 
-<%= render(partial: "layouts/map", locals: {map: @maps[:flights_map], region: @region, distance: {miles: @total_distance}, flight_link: {total: @flights.size, path: flights_path}}) %>
+<%= render(partial: "layouts/map", locals: {map: @maps[:flights_map], distance: {miles: @total_distance}, flight_link: {total: @flights.size, path: flights_path}}) %>
 
 <% if @flights.any? %>
 <div class="center">

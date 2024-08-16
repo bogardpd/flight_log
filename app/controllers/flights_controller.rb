@@ -11,13 +11,12 @@ class FlightsController < ApplicationController
   # @return [nil]
   def index
     @logo_used = true
-    @region = current_region(default: [])
     
     @flights = flyer.flights(current_user).includes(:airline, :origin_airport, :destination_airport, :trip)
         
     @year_range = @flights.year_range
     @maps = {
-      flights_map: FlightsMap.new(:flights_map, @flights, region: @region)
+      flights_map: FlightsMap.new(:flights_map, @flights)
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
     
@@ -128,9 +127,8 @@ class FlightsController < ApplicationController
     
     raise ActiveRecord::RecordNotFound if @flights.length == 0
     
-    @region = current_region(default: [])
     @maps = {
-      date_range_map: FlightsMap.new(:date_range_map, @flights, region: @region),
+      date_range_map: FlightsMap.new(:date_range_map, @flights),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
     
@@ -195,9 +193,8 @@ class FlightsController < ApplicationController
     
     @class = params[:travel_class]
     
-    @region = current_region(default: [])
     @maps = {
-      travel_class_map: FlightsMap.new(:travel_class_map, @flights, region: @region),
+      travel_class_map: FlightsMap.new(:travel_class_map, @flights),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
     @total_distance = @flights.total_distance
@@ -255,8 +252,7 @@ class FlightsController < ApplicationController
     
     @tail_number = TailNumber.format(params[:tail_number])
     
-    @region = current_region(default: [])
-    @maps = {tail_map: FlightsMap.new(:tail_map, @flights, region: @region)}
+    @maps = {tail_map: FlightsMap.new(:tail_map, @flights)}
     render_map_extension(@maps, params[:map_id], params[:extension])
 
     @total_distance = @flights.total_distance

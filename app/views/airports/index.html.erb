@@ -21,7 +21,7 @@
 
 <% if @flights.any? %>
 
-	<%= render(partial: "layouts/map", locals: {map: @maps[:airports_map], region: @region}) %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:airports_map]}) %>
 
 	<div id="airports-list">
 
@@ -47,7 +47,7 @@
 
 	<p>This map shows how often Iʼve visited each airport. The area of the circle centered on each airport represents the number of times Iʼve visited that airport.</p>
 
-	<%= render(partial: "layouts/map", locals: {map: @maps[:frequency_map], region: @region}) %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:frequency_map]}) %>
 
 <% else %>
 

@@ -4,22 +4,6 @@ class ApplicationController < ActionController::Base
   
   include SessionsHelper
   
-  # Returns an array of region ICAO code prefixes (e.g. ["K","PH"]) based on
-  # the region parameter in the URL if present, and the default if absent.
-  #
-  # @param default [Array<String>] a set of region ICAO code prefixes to use
-  #   if params does not contain a region.
-  # @return [Array<String>] the parameter region if present, otherwise the
-  #   provided default region
-  def current_region(default: [])
-    return default unless params[:region]
-    icao_starts = params[:region].split(/[\-,]/)
-    icao_starts.compact!
-    icao_starts.uniq!
-    icao_starts.map!{|s| s.upcase.tr("^A-Z","")}
-    return icao_starts
-  end
-  
   # Returns the {User} whose flights are being viewed. Until multiple user
   # functionality is added to Flight Historian, this will simply return the
   # first user.

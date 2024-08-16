@@ -25,7 +25,7 @@
 
 <% if @flights.any? %>
 
-	<%= render(partial: "layouts/map", locals: {map: @maps[:airline_map], region: @region, distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:airline_map], distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
 	
 	<h2 id="aircraft">Aircraft Flown on <%= @airline.name %></h2>
 	<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>

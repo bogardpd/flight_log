@@ -219,46 +219,6 @@ class Airport < ApplicationRecord
     
   end
   
-  # Take a collection of strings representing the starts of ICAO codes, and
-  # return all IATA codes whose airport ICAO codes start with any of the
-  # provided strings.
-  # 
-  # @param icao_starts [Array<String>] an array of strings of the start of
-  #   ICAO codes (i.e. EG, K)
-  # @return [Array<String>] ICAO codes in the region
-  def self.in_region_iata_codes(icao_starts)
-    return in_region_hash(icao_starts).airports
-  end
-
-  # Take a collection of strings representing the starts of ICAO codes, and
-  # return all airport IDs whose airport ICAO codes start with any of the
-  # provided strings.
-  # 
-  # @param icao_starts [Array<String>] an array of strings of the start of
-  #   ICAO codes (i.e. EG, K)
-  # @return [Array<String>] ICAO codes in the region
-  def self.in_region_ids(icao_starts)
-    return in_region_hash(icao_starts).keys
-  end
-  
-  # Take a collection of strings representing the starts of ICAO codes, and
-  # return an a hash of all Airports whose airport ICAO codes start with any of
-  # the provided strings.
-  # 
-  # @param icao_starts [Array<String>] an array of strings of the start of
-  #   ICAO codes (i.e. EG, K)
-  # @return [Hash<Integer,String>] a hash of airports with matching ICAO codes,
-  #   with airport IDs as keys and IATA codes as airports
-  def self.in_region_hash(icao_starts)
-    conditions = icao_starts.map{"icao_code LIKE ?"}.join(" OR ")
-    patterns = icao_starts.map{|start| "#{start}%"}
-    matching_airports = Airport.where(conditions, *patterns)
-    
-    iata_hash = Hash.new
-    matching_airports.each{|airport| iata_hash[airport[:id]] = airport[:iata_code]}
-    return iata_hash
-  end
-  
   # Take a collection of {Flight Flights}, and return a hash of airport IDs and
   # number of visits. Used when only a quick lookup of visits is needed; if an
   # array of data about each airport is needed, {visit_table_data} should be used

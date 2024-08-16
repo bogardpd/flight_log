@@ -43,15 +43,12 @@ class AircraftFamiliesController < ApplicationController
     raise ActiveRecord::RecordNotFound if (@aircraft.nil?)
     
     @logo_used = true
-    @region = current_region(default: [])
     
     @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft.family_and_type_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
     
     @maps = {
-      aircraft_family_map: FlightsMap.new(
-        :aircraft_family_map, @flights, region: @region
-      ),
+      aircraft_family_map: FlightsMap.new(:aircraft_family_map, @flights),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
     @total_distance = @flights.total_distance
