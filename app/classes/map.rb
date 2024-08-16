@@ -63,6 +63,13 @@ class Map
     return gcmap_attributes
   end
 
+  # Returns the URL for a {http://www.gcmap.com/ Great Circle Mapper} map.
+  #
+  # @return [String] a URL
+  def gcmap_url
+    return "http://www.gcmap.com/mapui?PM=#{gcmap_airport_options}&MP=r&MS=wls2&P=#{gcmap_query}"
+  end
+
   # Checks whether or not this map contains enough data to create a
   # {http://www.gcmap.com Great Circle Mapper} map.
   #

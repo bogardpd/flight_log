@@ -9,6 +9,10 @@
       <%= link_to("KML", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :kml), download: "#{mapboxgl_attr[:id]}.kml") %>
       &middot; 
       <%= link_to("GeoJSON", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :geojson), download: "#{mapboxgl_attr[:id]}.geojson") %>
+      <% if map.gcmap_exists? %>
+      &middot;
+      <%= link_to("GCMap", map.gcmap_url) %>
+      <% end %>
     </div>
   </div>
   <% if local_assigns[:distance] %>
