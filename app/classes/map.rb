@@ -404,11 +404,8 @@ class Map
   #
   # @param routes [Array<Array>] an array of routes in the form of
   #   [[airport_1_id, airport_2_id]]
-  # @option [Boolean] :noext (false) whether or not to apply the Great
-  #   Circle Mapper "noext" option to these routes, which means they're not
-  #   considered when defining the latitude and longitude ranges of the map
   # @return [String] comma-separated sets of hyphen-separated IATA code pairs
-  def gcmap_route_string(routes, noext: false)
+  def gcmap_route_string(routes)
     # Generate an array of airport IDs, sorted by most used to least used:
     frequency_order = routes.flatten.each_with_object(Hash.new(0)){|key, hash| hash[key] += 1}.sort_by{|k,v| -v}.map{|x| x[0]}
     
@@ -420,7 +417,6 @@ class Map
       matching, routes = routes.partition{|x| x[0] == airport_id || x[1] == airport_id}
       if matching.any?
         # Create querystring:
-        route_groups.push("o:noext") if noext
         route_groups.push(@airport_details[airport_id][:iata] + "-" + matching.map{|x| @airport_details[x[0] == airport_id ? x[1] : x[0]][:iata]}.sort.join("/")) # The map with ternary statement is used to ensure we keep routes where both airports are the same; otherwise we could just use flatten and reject.
       end
     end
