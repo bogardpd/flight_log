@@ -22,6 +22,16 @@ class AirportFrequencyMap < Map
   def geojson
     return GeoJSON.flights_to_geojson(@flights, include_routes: false)
   end
+
+  # Creates XML for a {http://graphml.graphdrawing.org/ GraphML} graph.
+  #
+  # @return [ActiveSupport::Safebuffer] XML for a
+  #   {http://graphml.graphdrawing.org/ GraphML} graph.
+  def graphml
+    return nil unless @airports_all
+    return nil unless @flights
+    return GraphML.graph_airports(@airports_all, @flights)
+  end
   
   private
 

@@ -62,6 +62,36 @@ module GraphML
     return output
   end
 
+  # Generate a GraphML file for use in the yEd graph editor from a collection of
+  # {Airport airports}. Since no flights are present, this graph will have no
+  # edges.
+  #
+  # This method also saves the output to the file location specified in
+  # TEMP_FILE. It will be overwritten each time the method is run.
+  # 
+  # @param airports [Array<Airport>] a collection of {Airport Airports}
+  # @param flights [Array<Flights>] an optional collection of {Flight Flights}
+  #   to provide airport visit frequency data. Even if flights are provided,
+  #   edges will not be included.
+  # @return [Object] XML for a {http://graphml.graphdrawing.org GraphML} graph.
+  # 
+  # @see https://www.yworks.com/products/yed
+  def self.graph_airports(airports, flights=nil)
+    # flights = flights.includes(:origin_airport, :destination_airport, :airline)
+    
+    if flights.nil?
+      airport_nodes = airports.map{|a| {id: a.id, text: a.iata_code, visits: nil}}
+    else
+      airport_nodes = Airport.visit_table_data(flights).map{|a| {id: a[:id], text: a[:iata_code], visits: a[:visit_count]}}
+    end
+
+    output = build_yed_xml(airport_nodes, [])
+
+    write_temp_file(output)
+
+    return output
+  end
+
   # Generate a GraphML file for use in the yEd graph editor from a string of
   # airports.
   #
@@ -198,6 +228,7 @@ module GraphML
   # @param visits [Integer] the number of visits to an airport
   # @return [Float] the diameter in pixels
   def self.diameter(visits)
+    return BASE_STYLES[:node_diameter] if visits.nil?
     return BASE_STYLES[:node_diameter] * Math.sqrt(visits)
   end
 

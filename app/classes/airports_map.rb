@@ -17,6 +17,15 @@ class AirportsMap < Map
   def geojson
     return GeoJSON.airports_to_geojson(@airports)
   end
+
+  # Creates XML for a {http://graphml.graphdrawing.org/ GraphML} graph.
+  #
+  # @return [ActiveSupport::Safebuffer] XML for a
+  #   {http://graphml.graphdrawing.org/ GraphML} graph.
+  def graphml
+    return nil unless @airports
+    return GraphML.graph_airports(@airports)
+  end
   
   private
 
