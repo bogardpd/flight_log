@@ -12,14 +12,6 @@ class TripsController < ApplicationController
   end
 
   # Shows details for a particular {Trip} and its {Flight Flights}.
-  # 
-  # {Trip} details:
-  # * comments
-  # 
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights}, separated by {#show_section trip section}
-  # * the total distance flown
   #
   # @return [nil]
   def show
@@ -61,14 +53,6 @@ class TripsController < ApplicationController
   # two flights is a layover and only counts as one visit to shared {Airport}.
   # Otherwise, the traveler left the airport in between the flights, and it
   # counts as two separate visits to the shared {Airport}.
-  # 
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights}
-  # * the total distance flown
-  # * the layover ratio (the total distance flown divided by the distance
-  #   between the first origin and final destination {Airport Airports}), if
-  #   this section has more than one flight.
   #
   # @return [nil]
   def show_section

@@ -53,21 +53,6 @@ class RoutesController < ApplicationController
   # application to show details for flights involving a certain {Airport} pair,
   # whether or not a {Route} has been created for it. However, if the
   # appropriate {Route} exists, its distance will be used in this view.
-  # 
-  # {Route} details:
-  # * a {SingleFlightMap}
-  # * the distance
-  # 
-  # {Flight} data:
-  # * a table of {Flight Flights}
-  # * the total distance flown
-  # * a table of {TripsController#show_section trip sections} using this route with a {HighlightedRoutesMap} of all {Flight Flights} in those sections
-  # * a table of {Trip Trips} using this route with a {HighlightedRoutesMap} of all {Flight Flights} in those trips
-  # * a table of {Airline Airlines}
-  # * a table of {AirlinesController#show_operator operators}
-  # * a table of {AircraftFamily AircraftFamilies}
-  # * a table of {FlightsController#show_class classes}
-  # * the longest and shortest {Flight}
   #
   # @return [nil]
   def show

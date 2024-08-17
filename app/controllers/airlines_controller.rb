@@ -30,20 +30,6 @@ class AirlinesController < ApplicationController
   
   # Shows details for a particular {Airline} and data for all {Flight Flights}
   # flown under its brand.
-  # 
-  # {Airline} details:
-  # * name
-  # * logo
-  # * IATA and ICAO codes
-  # 
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights}
-  # * the total distance flown
-  # * a table of {#show_operator operators}
-  # * a table of {AircraftFamily AircraftFamilies}
-  # * a table of {FlightsController#show_class classes}
-  # * the longest and shortest {Flight}
   #
   # @return [nil]
   def show
@@ -82,21 +68,6 @@ class AirlinesController < ApplicationController
   # operates a flight, which may or may not be the same as the {Airline} which
   # brands the flight) and data for all {Flight Flights} operated by it.
   # 
-  # Operator ({Airline}) details:
-  # * name
-  # * logo
-  # * IATA and ICAO codes
-  # 
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights}
-  # * the total distance flown
-  # * a table of {Airline Airlines} administrating these {Flight Flights}
-  # * a table of {AircraftFamily AircraftFamilies}
-  # * a table of {FlightsController#show_class classes}
-  # * a table of {#show_fleet_number fleet numbers}
-  # * the longest and shortest {Flight}
-  #
   # @return [nil]
   def show_operator
     @operator = Airline.find_by(slug: params[:operator])
@@ -140,15 +111,6 @@ class AirlinesController < ApplicationController
   
   # Shows data for all {Flight Flights} associated with a particular
   # {#show_operator operator} and fleet number combination.
-  #
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights} (including the {AircraftFamily} and {FlightsController#show_tail tail number} of each {Flight})
-  # * the total distance flown
-  # * a table of {Airline Airlines} administrating these {Flight Flights}
-  # * a table of {AircraftFamily AircraftFamilies}
-  # * a table of {FlightsController#show_class classes}
-  # * the longest and shortest {Flight}
   #
   # @return [nil]
   def show_fleet_number

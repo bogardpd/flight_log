@@ -33,22 +33,6 @@ class AirportsController < ApplicationController
   # Shows details for a particular {Airport} and data for all {Flight Flights}
   # which use it.
   # 
-  # {Airport} details:
-  # * city (and name if needed for disambiguation)
-  # * latitude and longitude
-  # * IATA and ICAO codes
-  # 
-  # {Flight} data:
-  # * a table of {Flight Flights} with a {FlightsMap}
-  # * the total distance flown
-  # * a table of {TripsController#show_section trip sections} with a {FlightsMap} of all {Flight Flights} in those sections
-  # * a table of {Trip Trips} with a {FlightsMap} of all {Flight Flights} in those trips
-  # * a table of {Airline Airlines}
-  # * a table of {AirlinesController#show_operator operators}
-  # * a table of {AircraftFamily AircraftFamilies}
-  # * a table of {FlightsController#show_class classes}
-  # * the longest and shortest {Flight}
-  #
   # @return [nil]
   def show
     @logo_used = true

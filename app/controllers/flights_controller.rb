@@ -39,22 +39,7 @@ class FlightsController < ApplicationController
   end
   
   # Shows details for a particular {Flight}.
-  #
-  # {Flight} details:
-  # * a {SingleFlightMap}
-  # * the flight distance
-  # * the administrating {Airline}, codeshare {Airline}, and {AirlinesController#show_operator operator}
-  # * the flight number
-  # * the {Trip} name and {TripsController#show_section section}
-  # * the departure date
-  # * the origin and destination {Airport Airports}
-  # * the {AircraftFamily} and type
-  # * the {TailNumber tail number}
-  # * the {AirlinesController#show_fleet_number fleet number} and aircraft name
-  # * the {TravelClass travel class}
-  # * any comments
-  # * a table of {BoardingPass} data and interpretations, if the user is a verified user
-  #
+  # 
   # @return [nil]
   def show
     @logo_used = true
@@ -78,17 +63,7 @@ class FlightsController < ApplicationController
 
   # Shows data for all {Flight Flights} flown in a particular year or date
   # range.
-  #
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights}
-  # * the total distance flown
-  # * a table of {Airport Airports}, highlighting airports first flown during this date range
-  # * a table of {Airline Airlines}, highlighting airlines first flown during this date range
-  # * a table of {AircraftFamily AircraftFamilies}, highlighting families first flown during this date range
-  # * a table of {TravelClass travel classes}, highlighting classes first flown during this date range
-  # * the longest and shortest {Flight}
-  #
+  # 
   # @return [nil]
   def show_date_range
     @logo_used = true
@@ -170,20 +145,7 @@ class FlightsController < ApplicationController
   
   # Shows details for a particular {TravelClass travel class} and data for all
   # {Flight Flights} flown in that class.
-  #
-  # {TravelClass Travel class} details:
-  # * name
-  # * description
-  #
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights}
-  # * the total distance flown
-  # * a table of {Airline Airlines}
-  # * a table of {AirlinesController#show_operator operators}
-  # * a table of {AircraftFamily AircraftFamilies}
-  # * the longest and shortest {Flight}
-  #
+  # 
   # @return [nil]
   def show_class
     @logo_used = true
@@ -229,20 +191,6 @@ class FlightsController < ApplicationController
   # Shows details for a particular {TailNumber tail number} and data for all
   # {Flight Flights} flown on that tail number.
   # 
-  # {TailNumber Tail number} details:
-  # * the {AircraftFamily aircraft type}
-  # * the country registering this tail
-  # * a link to {https://flightaware.com/ FlightAware's} live flight tracking for this tail
-  # 
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights}
-  # * the total distance flown
-  # * a table of {TravelClass travel classes}
-  # * a table of {Airline Airlines}
-  # * a table of {AirlinesController#show_operator operators}
-  # * the longest and shortest {Flight}
-  #
   # @return [nil]
   # @see https://flightaware.com/ FlightAware
   def show_tail
@@ -330,9 +278,7 @@ class FlightsController < ApplicationController
   # This action can only be performed by a verified user.
   #
   # @return [nil]
-  # @see https://developer.apple.com/documentation/passkit/wallet Wallet | Apple Developer Documentation
-  # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
-  #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
+  # @see https://developer.apple.com/documentation/passkit_apple_pay_and_wallet/wallet Wallet | Apple Developer Documentation
   # @see https://flightaware.com/aeroapi/portal/documentation AeroAPI Documentation
   def new_flight_menu
     clear_new_flight_variables
@@ -375,9 +321,7 @@ class FlightsController < ApplicationController
   # This action can only be performed by a verified user.
   #
   # @return [nil]
-  # @see https://developer.apple.com/documentation/passkit/wallet Wallet | Apple Developer Documentation
-  # @see https://www.iata.org/whatwedo/stb/Documents/BCBP-Implementation-Guide-5th-Edition-June-2016.pdf
-  #   IATA Bar Coded Boarding Pass (BCBP) Implementation Guide
+  # @see https://developer.apple.com/documentation/passkit_apple_pay_and_wallet/wallet Wallet | Apple Developer Documentation
   # @see https://flightaware.com/aeroapi/portal/documentation AeroAPI Documentation
   def new
 
@@ -525,8 +469,6 @@ class FlightsController < ApplicationController
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
         flash[:warning] = ActionController::Base.helpers.sanitize("Your departure date and UTC time are more than a day apart &ndash; are you sure they’re correct?")
       end
-      # @pass = PKPass.find_by(id: params[:flight][:pass_id])
-      # @pass.destroy if @pass
       
       redirect_to @flight
     else

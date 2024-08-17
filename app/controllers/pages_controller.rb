@@ -3,11 +3,6 @@ class PagesController < ApplicationController
 
   # Shows the front page for Flight Historian, including summaries of all {Flight Flights}.
   #
-  # Includes:
-  # * a {FlightsMap}
-  # * the top 5 {Airport Airports}, {Airline Airlines}, {Route Routes}, {AircraftFamily AircraftFamilies}, and {TailNumber TailNumbers}
-  # * the longest and shortest {Flight}
-  #
   # @return [nil]
   def flightlog
     @logo_used = true

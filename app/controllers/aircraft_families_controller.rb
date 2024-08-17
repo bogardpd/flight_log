@@ -21,23 +21,8 @@ class AircraftFamiliesController < ApplicationController
   # Shows details for a particular {AircraftFamily} (either a parent aircraft
   # family or a child aircraft type) and data for all {Flight Flights} flown on
   # it.
-  # 
-  # {AircraftFamily} details:
-  # * a side profile {http://www.norebbo.com/ illustration} of the aircraft
-  # * IATA code and ICAO code
-  # * a table of child aircraft types
-  #
-  # {Flight} data:
-  # * a {FlightsMap}
-  # * a table of {Flight Flights}
-  # * the total distance flown
-  # * a table of {Airline Airlines}
-  # * a table of {AirlinesController#show_operator operators}
-  # * a table of {FlightsController#show_class classes}
-  # * the longest and shortest {Flight}
   #
   # @return [nil]
-  # @see http://www.norebbo.com/ Norebbo Stock Illustration and Design
   def show
     @aircraft = AircraftFamily.find_by(slug: params[:id])
     raise ActiveRecord::RecordNotFound if (@aircraft.nil?)
