@@ -13,7 +13,7 @@ class HighlightedRoutesMap < Map
     @flights = flights
 
     @highlighted_routes = collected_routes(highlighted_routes)
-    @unhighlighted_routes = collected_routes(flights) - @highlighted_routes
+    @normal_routes = collected_routes(flights) - @highlighted_routes
   end
 
   private
@@ -55,8 +55,8 @@ class HighlightedRoutesMap < Map
   # 
   # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
   #   airport_2_id]].
-  def routes_unhighlighted
-    return @unhighlighted_routes
+  def routes_normal
+    return @normal_routes
   end
   
 end

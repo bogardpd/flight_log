@@ -77,7 +77,7 @@ class Map
         end
 
         # Create routes:
-        routes = (routes_normal | routes_highlighted | routes_unhighlighted)
+        routes = (routes_normal | routes_highlighted)
         if routes.any?
           routes = routes.map{|r| r.sort_by{|x| @airport_details[x][:iata]}}.uniq.sort_by{|y| [@airport_details[y[0]][:iata], @airport_details[y[1]][:iata]]}
           routes.each do |route|
@@ -163,7 +163,6 @@ class Map
           # Create routes:
           kml_routes(routes_normal, "Routes", xml)
           kml_routes(routes_highlighted, "Highlighted Routes", xml)
-          kml_routes(routes_unhighlighted, "Unhighlighted Routes", xml)
 
         end
       end
@@ -187,7 +186,6 @@ class Map
     airport_ids |= airports_highlighted
     airport_ids |= routes_normal.flatten
     airport_ids |= routes_highlighted.flatten
-    airport_ids |= routes_unhighlighted.flatten
     airport_ids = airport_ids.uniq.sort
 
     airports = Airport.where(id: airport_ids)
@@ -236,15 +234,6 @@ class Map
   # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
   #   airport_2_id]].
   def routes_highlighted
-    return Array.new
-  end
-
-  # Creates an array of numerically-sorted pairs of airport IDs for routes that
-  # should be de-emphasized.
-  # 
-  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
-  #   airport_2_id]].
-  def routes_unhighlighted
     return Array.new
   end
 
@@ -302,11 +291,6 @@ class Map
     @airport_details ||= airport_details
     query_sections = Array.new
     
-    if routes_unhighlighted.any?
-      query_sections.push("c:%23FF7777")
-      query_sections.push(gcmap_route_string(routes_unhighlighted))
-    end
-    
     if routes_normal.any? || routes_highlighted.any?
       
       query_sections.push("c:red")
@@ -318,7 +302,8 @@ class Map
     
       # Add highlighted routes:
       if routes_highlighted.any?
-        query_sections.push("w:2")
+        query_sections.push("c:blue")
+        query_sections.push("w:3")
         query_sections.push(gcmap_route_string(routes_highlighted))
       end
     
