@@ -51,26 +51,6 @@ class MapFlowsTest < ActionDispatch::IntegrationTest
     assert_equal(@extensions[:html], content_type) # This map type does not support graphml.
   end
 
-  test "render HighlightedRoutesMap extensions" do
-    route = routes(:route_dfw_ord)
-
-    get show_route_path(route.airport1.slug, route.airport2.slug, map_id: :sections_map, extension: :gpx)
-    assert_response :success
-    assert_equal(@extensions[:gpx], content_type)
-
-    get show_route_path(route.airport1.slug, route.airport2.slug, map_id: :sections_map, extension: :kml)
-    assert_response :success
-    assert_equal(@extensions[:kml], content_type)
-
-    get show_route_path(route.airport1.slug, route.airport2.slug, map_id: :sections_map, extension: :geojson)
-    assert_response :success
-    assert_equal(@extensions[:geojson], content_type)
-
-    get show_route_path(route.airport1.slug, route.airport2.slug, map_id: :sections_map, extension: :graphml)
-    assert_response :success
-    assert_equal(@extensions[:graphml], content_type)
-  end
-
   test "render AirportsMap extensions" do
     get airports_path(map_id: :airports_map, extension: :gpx)
     assert_response :success

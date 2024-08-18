@@ -86,7 +86,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     verify_absence_of_admin_actions(edit_route_path(route.airport1_id, route.airport2_id))
 
     assert_select(".single-flight-map")
-    assert_select(".highlighted-routes-map", {count: 2})
+    assert_select(".flights-map", {count: 2})
     assert_select("#flight-table")
     assert_select(".distance-mi")
     assert_select("#trip-and-section-table")
