@@ -5,7 +5,9 @@ class SingleFlightMap < Map
   # Initialize a map of a single {Flight}.
   # 
   # @param id [Symbol] an ID for the map
-  # @param flight [Flight] the {Flight} to map
+  # @param flights flights [Array<Flight>] a collection of {Flight Flights} to
+  #   map. Should either be a single flight, or a collection of flights that are
+  #   all between the same two city pairs (in either direction).
   def initialize(id, flights)
     @id = id
     @flights = flights
