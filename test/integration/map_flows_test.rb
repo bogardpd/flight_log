@@ -48,7 +48,7 @@ class MapFlowsTest < ActionDispatch::IntegrationTest
 
     get show_route_path(route.airport1.slug, route.airport2.slug, map_id: :route_map, extension: :graphml)
     assert_response :success
-    assert_equal(@extensions[:html], content_type) # This map type does not support graphml.
+    assert_equal(@extensions[:graphml], content_type)
   end
 
   test "render AirportsMap extensions" do

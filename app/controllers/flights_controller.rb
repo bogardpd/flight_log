@@ -43,14 +43,15 @@ class FlightsController < ApplicationController
   # @return [nil]
   def show
     @logo_used = true
-    @flight = flyer.flights(current_user).find(params[:id])
+    @flight = flyer.flights(current_user).find(params[:id]) # Needed to check that record exists
+    @flights = flyer.flights(current_user).where(id: params[:id]) # Needed for map
     
     if @flight.trip.hidden? && logged_in?
       add_message(:warning, "This flight is part of a #{view_context.link_to("hidden trip", trip_path(@flight.trip))}!")
       check_email_for_boarding_passes
     end
     
-    @maps = {flight_map: SingleFlightMap.new(:flight_map, @flight)}
+    @maps = {flight_map: SingleFlightMap.new(:flight_map, @flights)}
     render_map_extension(@maps, params[:map_id], params[:extension])
 
     @route_distance = Route.distance_by_airport(@flight.origin_airport, @flight.destination_airport)

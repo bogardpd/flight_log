@@ -6,20 +6,14 @@ class SingleFlightMap < Map
   # 
   # @param id [Symbol] an ID for the map
   # @param flight [Flight] the {Flight} to map
-  def initialize(id, flight)
+  def initialize(id, flights)
     @id = id
+    @flights = flights
+    @normal_routes = collected_routes(flights)
+    flight = flights.first
     @codes = [flight.origin_airport.iata_code, flight.destination_airport.iata_code]
-    @flight = flight
   end
 
-  # Creates JSON for a {https://geojson.org/ GeoJSON} map.
-  #
-  # @return [String] JSON for a {https://geojson.org/ GeoJSON} map.
-  def geojson
-    flights = Flight.where(id: @flight.id)
-    return GeoJSON.flights_to_geojson(flights, include_frequencies: false)
-  end
-  
   private
 
   # Returns Great Circle Mapper airport options.
@@ -43,14 +37,13 @@ class SingleFlightMap < Map
     return "single-flight-map"
   end
 
-
   # Creates an array of numerically-sorted pairs of airport IDs for routes with
   # no special formatting.
   # 
   # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
   #   airport_2_id]].
   def routes_normal
-    return [[@flight.origin_airport_id, @flight.destination_airport_id].sort]
+    return @normal_routes
   end
   
 end

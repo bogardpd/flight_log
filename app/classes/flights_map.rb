@@ -14,7 +14,6 @@ class FlightsMap < Map
   def initialize(id, flights, highlighted_airports: nil, highlighted_routes: nil, include_names: false)
     @id = id
     @flights = flights
-    # @route_pairs = @flights.pluck(:origin_airport_id, :destination_airport_id).map{|pair| pair.sort}.uniq
     @highlighted_routes = highlighted_routes ? collected_routes(highlighted_routes) : Array.new
     @normal_routes = collected_routes(flights) - @highlighted_routes
     @highlighted_airports = highlighted_airports ? highlighted_airports.pluck(:id) : Array.new
@@ -24,15 +23,6 @@ class FlightsMap < Map
   
   private
 
-  # Compile a Flight collection into a compressed set of routes.
-  # 
-  # @param flights [Array<Flight>] a collection of Flights
-  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
-  #   airport_2_id]].
-  def collected_routes(flights)
-    return flights.map{|flight| [flight.origin_airport_id, flight.destination_airport_id].sort}.uniq
-  end
-  
   # Returns an array of airport IDs for airports with no special formatting.
   #
   # @return [Array<Number>] airport IDs

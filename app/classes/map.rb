@@ -172,6 +172,15 @@ class Map
   
   private
 
+  # Compile a Flight collection into a compressed set of routes.
+  # 
+  # @param flights [Array<Flight>] a collection of Flights
+  # @return [Array<Array>] an array of routes in the form of [[airport_1_id,
+  #   airport_2_id]].
+  def collected_routes(flights)
+    return flights.map{|flight| [flight.origin_airport_id, flight.destination_airport_id].sort}.uniq
+  end
+
   # Creates a hash for looking up airport details by airport ID.
   #
   # @return [Hash{Number => Number, Number, String, String, String, String}] a

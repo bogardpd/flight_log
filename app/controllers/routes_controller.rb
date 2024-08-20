@@ -87,7 +87,7 @@ class RoutesController < ApplicationController
     
     # Create maps:
     @maps = {
-      route_map:    SingleFlightMap.new(:route_map, @flights.first),
+      route_map:    SingleFlightMap.new(:route_map, @flights),
       sections_map: FlightsMap.new(:sections_map, @city_pair_section_flights, highlighted_routes: @flights),
       trips_map:    FlightsMap.new(:trips_map, @city_pair_trip_flights, highlighted_routes: @flights),
     }
