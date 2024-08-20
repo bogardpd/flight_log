@@ -3,7 +3,7 @@ require "test_helper"
 class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   def setup
-    stub_aws_head_images
+    stub_aws_s3_head
     
     @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
     @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
@@ -189,6 +189,8 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see show aircraft with type when logged in" do
+    stub_aws_s3_get_timeout
+
     aircraft_type = aircraft_families(:aircraft_737_800)
     log_in_as(users(:user_one))
     get(aircraft_family_path(aircraft_type.slug))

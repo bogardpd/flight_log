@@ -22,6 +22,7 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating, updating, and destroying a flight" do
+    stub_aws_s3_get_timeout
 
     flight = {
       origin_airport:      airports(:airport_ord),
@@ -78,6 +79,7 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating a flight from a pkpass" do
+    stub_aws_s3_get_timeout
 
     stub_aero_api4_get_flights_ident(@fa_flight[:fa_flight_id], {
       "fa_flight_id"  => @fa_flight[:fa_flight_id],
@@ -109,6 +111,7 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating a flight from a pkpass with nil date" do
+    stub_aws_s3_get_timeout
     pass = pk_passes(:pk_pass_nil_date)
     flight = Hash.new
     flight[:flight_number] = "1621"    # From pass fixture
@@ -148,7 +151,8 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating a flight from BCBP data" do
-    
+    stub_aws_s3_get_timeout
+
     stub_aero_api4_get_flights_ident(@fa_flight[:ident], {
       "fa_flight_id"  => @fa_flight[:fa_flight_id],
       "origin"        => {"code" => @fa_flight[:origin]},
@@ -187,6 +191,8 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating a flight from airline and flight number" do
+    stub_aws_s3_get_timeout
+
     stub_aero_api4_get_flights_ident(@fa_flight[:ident], {
       "fa_flight_id" => @fa_flight[:fa_flight_id]
     })
@@ -226,6 +232,7 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating a flight with unknown AeroAPI ICAO codes" do
+    stub_aws_s3_get_timeout
     unknown_aircraft = {
       icao:         "A322",
       iata:         "322",
@@ -308,6 +315,7 @@ class FlightsTest < ApplicationSystemTestCase
   end
 
   test "creating a flight with departure date and UTC datetime being more than 48 hours apart" do
+    stub_aws_s3_get_timeout
     current_date = Time.parse("2020-01-01 00:00:00")
     future_date = current_date + 3.days
 
@@ -334,7 +342,7 @@ class FlightsTest < ApplicationSystemTestCase
       
       click_on("Add Flight")
     end
-
+    
     assert_css("div.message-warning", text: Flight::WARNING_DEPARTURE_DATE_DEPARTURE_UTC_TOO_FAR)
 
   end

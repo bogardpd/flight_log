@@ -25,6 +25,8 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
   
   test "can see new flight menu when logged in with trip id param" do
+    stub_aws_s3_get_timeout
+
     trip = trips(:trip_hidden)
     log_in_as(users(:user_one))
     get(new_flight_menu_path(trip_id: trip.id))
@@ -42,6 +44,8 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see new flight menu when logged in without trip id param" do
+    stub_aws_s3_get_timeout
+
     log_in_as(users(:user_one))
     get(new_flight_menu_path)
     assert(:success)
@@ -357,6 +361,8 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "redirect show hidden flights when appropriate" do
+    stub_aws_s3_get_timeout
+    
     verify_show_unused_or_hidden_redirects(
       show_hidden_path: flight_path(@hidden_flight),
       redirect_path:    flights_path

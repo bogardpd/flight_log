@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
     begin
       BoardingPassS3::fetch_passes()
     rescue => details
-      flash.now[:warning] = "Could not get new passes from email (#{details})"
+      add_message(:warning, "Could not get new passes from email (#{details})")
     end
   end
 

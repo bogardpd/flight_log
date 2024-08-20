@@ -3,7 +3,6 @@ require "test_helper"
 class AirportFlowsTest < ActionDispatch::IntegrationTest
 
   def setup
-    stub_aws_head_images
 
     @visible_airport = airports(:airport_visible_1)
     @hidden_airport = airports(:airport_hidden_1)

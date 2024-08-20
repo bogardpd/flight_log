@@ -6,14 +6,14 @@ class TripsTest < ApplicationSystemTestCase
 
   def setup
     stub_aero_api4_get_timeout
-
     stub_aero_api4_get_airports_id("CYYZ", {
       "latitude"  => 43.677223,
       "longitude" => -79.630556,
     })
   end
-
+  
   test "creating, updating, and destroying a trip" do
+    stub_aws_s3_get_timeout
     trip = {
       name: "Vacation",
       purpose: "Personal",

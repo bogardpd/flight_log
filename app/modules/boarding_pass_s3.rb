@@ -27,7 +27,7 @@ module BoardingPassS3
   # processes any PKPass attachments and stores them as {PKPass} objects, and
   # deletes the processed emails.
   def self.fetch_passes()
-    return nil if Rails.env.test?
+    
     Aws.config.update({
       credentials: Aws::Credentials.new(Rails.application.credentials[:aws][:write][:access_key_id], Rails.application.credentials[:aws][:write][:secret_access_key]),
       region: AWS_REGION

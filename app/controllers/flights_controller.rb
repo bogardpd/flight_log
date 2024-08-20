@@ -468,7 +468,7 @@ class FlightsController < ApplicationController
         flash[:success] += " You’ve had prior flights on this tail!"
       end
       if (@flight.departure_date.to_time - @flight.departure_utc.to_time).to_i.abs > 60*60*24*2
-        flash[:warning] = ActionController::Base.helpers.sanitize("Your departure date and UTC time are more than a day apart &ndash; are you sure they’re correct?")
+        flash[:warning] = Flight::WARNING_DEPARTURE_DATE_DEPARTURE_UTC_TOO_FAR
       end
       
       redirect_to @flight

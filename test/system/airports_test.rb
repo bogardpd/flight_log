@@ -5,7 +5,7 @@ class AirportsTest < ApplicationSystemTestCase
   # or destroy airports are located in INTEGRATION tests.
 
   def setup
-    stub_aws_head_images
+    
   end
 
   test "creating, updating, and destroying an airport" do

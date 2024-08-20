@@ -116,6 +116,8 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "redirect show unused or hidden trips when appropriate" do
+    stub_aws_s3_get_timeout
+
     verify_show_unused_or_hidden_redirects(
       show_unused_path: trip_path(@no_flights_trip),
       show_hidden_path: trip_path(@hidden_trip),
@@ -141,6 +143,8 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see show trip when logged in" do
+    stub_aws_s3_get_timeout
+
     log_in_as(users(:user_one))
     trip = trips(:trip_hidden)
     get(trip_path(trip))
@@ -164,6 +168,8 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
 
   test "redirect show hidden trip sections when appropriate" do
+    stub_aws_s3_get_timeout
+    
     verify_show_unused_or_hidden_redirects(
       show_hidden_path: trip_path(@hidden_trip, 1),
       redirect_path:    trips_path

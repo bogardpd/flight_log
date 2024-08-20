@@ -5,8 +5,8 @@ class AircraftFamiliesTest < ApplicationSystemTestCase
   # or destroy aircraft are located in INTEGRATION tests.
 
   def setup
-    stub_aws_head_images
     stub_aero_api4_get_timeout
+    stub_aws_s3_head
   end
 
   test "creating, updating, and destroying an aircraft family and type" do

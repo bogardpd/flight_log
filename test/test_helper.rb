@@ -47,9 +47,14 @@ class ActiveSupport::TestCase
   # Stubs                                                                      #
   ##############################################################################
 
-  def stub_aws_head_images
-    WebMock.stub_request(:head, /pbogardcom-images.s3.us-east-2.amazonaws.com/).
+  def stub_aws_s3_head
+    WebMock.stub_request(:head, /s3.[a-z0-9\-]+.amazonaws.com/).
       to_return(status: 200, body: "", headers: {})
+  end
+
+  def stub_aws_s3_get_timeout
+    stub_request(:get, /s3.[a-z0-9\-]+.amazonaws.com/).
+      to_timeout
   end
 
   # Stub AeroAPI4 /airports/{id}
