@@ -24,10 +24,7 @@ module GraphML
     "US Airways"        => "#cccccc",
   }
 
-  # Location to save temporary GraphML files.
-  TEMP_FILE = "tmp/flights.graphml"
-
-    # XML schema for yEd documents.
+  # XML schema for yEd documents.
   YED_SCHEMA = {
     "xmlns":              "http://graphml.graphdrawing.org/xmlns",
     "xmlns:java":         "http://www.yworks.com/xml/yfiles-common/1.0/java",
@@ -42,9 +39,6 @@ module GraphML
   # Generate a GraphML file for use in the yEd graph editor from a collection of
   # {Flight flights}.
   #
-  # This method also saves the output to the file location specified in
-  # TEMP_FILE. It will be overwritten each time the method is run.
-  # 
   # @param flights [Array<Flight>] a collection of {Flight Flights}
   # @return [Object] XML for a {http://graphml.graphdrawing.org GraphML} graph.
   # 
@@ -56,8 +50,6 @@ module GraphML
     flight_edges = flights.map{|f| {source: f.origin_airport_id, target: f.destination_airport_id, airline: f.airline.name}}
 
     output = build_yed_xml(airport_nodes, flight_edges)
-
-    write_temp_file(output)
 
     return output
   end
@@ -87,8 +79,6 @@ module GraphML
 
     output = build_yed_xml(airport_nodes, [])
 
-    write_temp_file(output)
-
     return output
   end
 
@@ -115,8 +105,6 @@ module GraphML
       .map{|f| {source: f[0], target: f[1]}}
 
     output = build_yed_xml(airports, flights)
-
-    write_temp_file(output)
 
     return output
   end
@@ -184,17 +172,6 @@ module GraphML
     end
 
     return output.to_xml
-  end
-
-  # Writes XML to a temporary file.
-  # 
-  # @param xml [Object] XML to write to file
-  # @return [nil]
-  def self.write_temp_file(xml)
-    f = File.open(TEMP_FILE, "w")
-    f << xml
-    f.close
-    return nil
   end
 
   # Calculates the X,Y position of a node in an evenly-spaced circle of elements
