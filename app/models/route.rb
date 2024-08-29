@@ -12,9 +12,9 @@ class Route < ApplicationRecord
   belongs_to :airport2, class_name: "Airport"
   
   # The plain text arrow used between airport pairs on one way routes.
-  ARROW_ONE_WAY_PLAINTEXT = "⇒"
+  ARROW_ONE_WAY_PLAINTEXT = "→"
   # The plain text arrow used between airport pairs on two way routes.
-  ARROW_TWO_WAY_PLAINTEXT = "⇔"
+  ARROW_TWO_WAY_PLAINTEXT = "↔"
   # The HTML arrow used between airport pairs on one way routes.
   ARROW_ONE_WAY_HTML = ActionController::Base.helpers.content_tag(:span, ARROW_ONE_WAY_PLAINTEXT, class: %w(route-arrow))
   # The HTML arrow used between airport pairs on two way routes.
