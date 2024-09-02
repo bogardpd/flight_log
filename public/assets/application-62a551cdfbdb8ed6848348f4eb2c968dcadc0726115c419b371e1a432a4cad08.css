@@ -240,6 +240,7 @@ div.intro-box table {
 
 div.page-navigation {
 	clear: both;
+  width: 720px;
   padding: 0.1em 0.5em;
 	margin-top: 0;
 	margin-bottom: 10px;

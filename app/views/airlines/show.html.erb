@@ -7,6 +7,8 @@
 
 <h1><%= @airline.name %></h1>
 
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"IATA": @airline.iata_code, "ICAO": @airline.icao_code, "Logo": airline_icon(@airline.slug, title: @airline.name, css_class: ["icon-no-text"])}}) %>
+
 <% if @flights.any? %>
 	<div class="page-navigation">
 	  <ul>
@@ -20,8 +22,6 @@
 	  </ul>
 	</div>
 <% end %>
-
-<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"IATA": @airline.iata_code, "ICAO": @airline.icao_code, "Logo": airline_icon(@airline.slug, title: @airline.name, css_class: ["icon-no-text"])}}) %>
 
 <% if @flights.any? %>
 

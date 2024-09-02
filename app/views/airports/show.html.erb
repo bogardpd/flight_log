@@ -7,6 +7,8 @@
 
 <h1><%= @airport.city %></h1>
 
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Visits": @airport_frequency}, summary_items: {"IATA": @airport.iata_code, "ICAO": @airport.icao_code, "Country": safe_join([country_flag_icon(@airport.country),@airport.country], " "), "Coordinates": NumberFormat.coordinates(@airport.coordinates)}}) %>
+
 <div class="page-navigation">
   <ul>
 		<li><%= link_to("Map", "#airport_map", title: "Map of flights using #{@airport.iata_code}") %></li>
@@ -20,8 +22,6 @@
 		<% if @terminal_exists %><li><%= link_to("Terminal", "#terminal", title: "Terminal silhouette of #{@airport.iata_code}") %></li><% end %>
   </ul>
 </div>
-
-<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Visits": @airport_frequency}, summary_items: {"IATA": @airport.iata_code, "ICAO": @airport.icao_code, "Country": safe_join([country_flag_icon(@airport.country),@airport.country], " "), "Coordinates": NumberFormat.coordinates(@airport.coordinates)}}) %>
 
 <% unless @flights.length == 0 %>
 

@@ -9,6 +9,8 @@
 
 <h1>Flights Operated by <%= @operator.name %></h1>
 
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"IATA": @operator.iata_code, "ICAO": @operator.icao_code, "Logo": airline_icon(@operator.slug, title: @operator.name, css_class: ["icon-no-text"])}}) %>
+
 <% if @flights.any? %>
 
 	<div class="page-navigation">
@@ -24,8 +26,6 @@
 	</div>
 
 <% end %>
-
-<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"IATA": @operator.iata_code, "ICAO": @operator.icao_code, "Logo": airline_icon(@operator.slug, title: @operator.name, css_class: ["icon-no-text"])}}) %>
 
 <% if @flights.any? %>
 	<%= render(partial: "layouts/map", locals: {map: @maps[:operator_map], distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>

@@ -5,6 +5,8 @@
 
 <h1><%= TravelClass.title(@class) %></h1>
 
+<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Class Description": TravelClass.description(@class)}}) %>
+
 <div class="page-navigation">
   <ul>
 		<li><%= link_to("Map", "#travel_class_map", title: "Map of flights flown in #{TravelClass.title(@class).downcase}") %></li>
@@ -15,8 +17,6 @@
 		<li><%= link_to("Flight List", "#flights", title: "Flights flown in #{TravelClass.title(@class).downcase}") %></li>
   </ul>
 </div>
-
-<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"Class Description": TravelClass.description(@class)}}) %>
 
 <%= render(partial: "layouts/map", locals: {map: @maps[:travel_class_map], distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
 

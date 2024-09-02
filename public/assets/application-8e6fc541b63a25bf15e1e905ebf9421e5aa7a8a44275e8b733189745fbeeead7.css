@@ -239,12 +239,13 @@ div.intro-box table {
 }
 
 div.page-navigation {
-	clear: both;
+	/* clear: both; */
+  width: 720px;
   padding: 0.1em 0.5em;
 	margin-top: 0;
 	margin-bottom: 10px;
-	margin-left: 5px;
-	margin-right: 5px;
+	margin-left: auto;
+	margin-right: auto;
 	text-align: left;
 	border: 1px solid var(--color-background-page);
 }
@@ -779,46 +780,6 @@ div.message-error a {
   text-shadow: none;
   font-weight: 400;
   color: var(--color-text-link-dark);
-}
-
-/* REGIONS */
-
-div.region-select {
-	text-align: center;
-	margin-bottom: -1px;
-}  
-div.region-select a {
-  display: block;
-  height: 100%;
-  margin: 0;
-  padding: 1px 10px;
-  border-radius: 5px;
-  color: var(--color-text-primary);
-  font-weight: normal;
-  text-decoration: none;
-}
-div.region-select a:hover {
-  background: var(--color-background-table-dark);
-}
-div.region-select li {
-  list-style-type: none;
-  display: inline-block;
-  height: 100%;
-  margin: 3px 1px;
-  padding: 0;
-  vertical-align: middle;
-  border: 1px solid var(--color-border-table);
-  border-radius: 5px;
-  background: linear-gradient(var(--color-background-table), var(--color-background-table), var(--color-background-table-dark));
-}
-div.region-select li.selected {
-  padding: 1px 10px;
-  font-weight: 600;
-  background: linear-gradient(var(--color-background-table-darker), var(--color-background-table-dark), var(--color-background-table-dark));
-}
-div.region-select ul {
-  padding: 0;
-  margin: 0;
 }
 
 /* TABLES */
