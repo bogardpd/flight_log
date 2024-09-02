@@ -22,8 +22,8 @@ module FlightsHelper
 
         if types.any?
           concat aircraft_type_tree(types, false)
-        elsif current.iata_code.present?
-          concat content_tag(:div, current.iata_code, class: "supplemental-code")
+        elsif current.icao_code.present?
+          concat content_tag(:div, current.icao_code, class: "supplemental-code")
         end
 
       end
