@@ -2,7 +2,9 @@
   --font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
   --font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 
+  --font-size-large: 110%;
   --font-size-small: 85%;
+  --font-size-extra-small: 55%;
 
   --font-weight-bold: 600;
 
@@ -27,9 +29,11 @@
 
   --color-text-primary-light:          hsl(210,  20%,  66%);
   --color-text-primary:                hsl(210,  20%,  16%);
+  --color-text-primary-inverted:       hsl(210,  20%, 100%);
   --color-text-secondary:              hsl(210,  20%,  40%);
   --color-text-tertiary:               hsl(210,  20%,  70%);
   --color-text-link:                   hsl(210, 100%,  45%);
+  --color-text-link-inverted:          hsl(210, 100%, 80%);
   --color-text-link-dark:              hsl(210, 100%,  25%);
   --color-text-link-visited:           hsl(210,  45%,  60%);
   --color-text-link-hover:             hsl( 30,  86%,  48%);
@@ -239,14 +243,12 @@ div.intro-box table {
 }
 
 div.page-navigation {
-	clear: both;
   width: 720px;
-  padding: 0.1em 0.5em;
 	margin-top: 0;
 	margin-bottom: 10px;
-	margin-left: 5px;
-	margin-right: 5px;
-	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 	border: 1px solid var(--color-background-page);
 }
 div.page-navigation ul {
@@ -640,7 +642,7 @@ div.illustration-container img {
 
 div.credit {
 	color: var(--color-text-secondary);
-	font-size: 55%;
+	font-size: var(--font-size-extra-small);
 	font-weight: 600;
 	text-transform: uppercase;
 	text-align: center;
@@ -713,12 +715,23 @@ img.logo {
 /* MAPS */
 
 div.map {
+  width: 720px;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
+  background-color: var(--color-background-menu-primary);
+  color: var(--color-text-primary-inverted);
 }
-div.map img.map {
-  border: 1px solid var(--color-base);
-  margin: 0;
+
+div.map a {
+  color: var(--color-text-link-inverted);
 }
+
+div.map a:hover {
+  color: var(--color-text-link-hover);
+}
+
 div.map div.map-info {
   margin: 0 0 0.75em 0;
 }  
@@ -728,12 +741,19 @@ div.map div.map-info div {
   margin-right: 1em;
 }
 
+div.map div.map-metrics {
+  font-size: var(--font-size-large);
+}
+
 div.map-mapbox {
   width: 720px;
   height: 450px;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid var(--color-base);
+}
+
+div.map-mapbox a, div.map-mapbox a:hover {
+  color: var(--color-text-primary);
 }
 
 /* MESSAGE BANNERS */
