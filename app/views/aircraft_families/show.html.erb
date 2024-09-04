@@ -11,8 +11,6 @@
 
 <%= render(partial: "aircraft_illustration", locals: {aircraft_family: @aircraft}) %>
 
-<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: @summary_items}) %>
-
 <% if @flights.any? %>
 	<div class="page-navigation">
 	  <ul>
@@ -30,7 +28,7 @@
 <% end %>
 
 <% if @flights.any? %>
-  <%= render(partial: "layouts/map", locals: {map: @maps[:aircraft_family_map], distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
+  <%= render(partial: "layouts/map", locals: {map: @maps[:aircraft_family_map], metrics: {flights: @flights.size, miles: @total_distance}}) %>
 <% end %>
   
 <% if @children.any? %>

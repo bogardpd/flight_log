@@ -2,7 +2,7 @@
   --font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
   --font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 
-  --font-size-large: 110%;
+  --font-size-large: 125%;
   --font-size-small: 85%;
   --font-size-extra-small: 55%;
 
@@ -33,9 +33,10 @@
   --color-text-secondary:              hsl(210,  20%,  40%);
   --color-text-tertiary:               hsl(210,  20%,  70%);
   --color-text-link:                   hsl(210, 100%,  45%);
-  --color-text-link-inverted:          hsl(210, 100%, 80%);
+  --color-text-link-inverted:          hsl(210, 100%,  80%);
   --color-text-link-dark:              hsl(210, 100%,  25%);
   --color-text-link-visited:           hsl(210,  45%,  60%);
+  --color-text-link-visited-inverted:  hsl(210,  45%,  90%);
   --color-text-link-hover:             hsl( 30,  86%,  48%);
   --color-text-link-hover-dark:        hsl( 30,  86%,  43%);
   --color-text-disabled:               hsl(210,  20%,  70%);
@@ -66,6 +67,7 @@
   --margin-icon-to-text: 0.5em;
   --margin-indent: 1em;
   --margin-paragraph: 10px;
+  --margin-paragraph-small: 5px;
   
   --letter-spacing-status: 4px;
   
@@ -728,13 +730,14 @@ div.map a {
   color: var(--color-text-link-inverted);
 }
 
+div.map a:visited {
+  color: var(--color-text-link-visited-inverted);
+}
+
 div.map a:hover {
   color: var(--color-text-link-hover);
 }
 
-div.map div.map-info {
-  margin: 0 0 0.75em 0;
-}  
 div.map div.map-info div {
   display: inline;
   margin-left: 1em;
@@ -742,7 +745,23 @@ div.map div.map-info div {
 }
 
 div.map div.map-metrics {
+  margin-top: var(--margin-paragraph-small);
+}
+
+div.map div.map-metrics div.map-metric {
+  display: inline-block;
+  margin: 0 0.5em;
+  vertical-align: text-bottom;
+  line-height: var(--line-height-small);
+}
+
+div.map div.map-metrics div.map-metric span.map-metric-number {
   font-size: var(--font-size-large);
+  font-weight: bold;
+}
+
+div.map div.map-metrics div.map-metric-label {
+  color: var(--color-text-primary-light);
 }
 
 div.map-mapbox {

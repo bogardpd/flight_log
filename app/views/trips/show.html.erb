@@ -16,7 +16,7 @@
   <p class="comment"><%= @trip.comment %></p>
 <% end %>
 
-<%= render(partial: "layouts/map", locals: {map: @maps[:trip_map], distance: {miles: @trip_distance, adjective: "total"}}) %>
+<%= render(partial: "layouts/map", locals: {map: @maps[:trip_map], metrics: {flights: @flights.size, miles: @trip_distance}}) %>
 
 <table class="flightlog" id="trip-flight-table">
   <tr>

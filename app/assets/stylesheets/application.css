@@ -2,7 +2,7 @@
   --font-stack-sans-serif: 'Source Sans Pro', 'Calibri', 'Helvetica Neue', 'Helvetica', sans-serif;
   --font-stack-monospace: 'Source Code Pro', 'Consolas', 'Courier', monospace;
 
-  --font-size-large: 110%;
+  --font-size-large: 125%;
   --font-size-small: 85%;
   --font-size-extra-small: 55%;
 
@@ -333,10 +333,6 @@ span.aircraft-name {
 span.disabled {
 	color: var(--color-text-disabled);
 	text-decoration: line-through;
-}
-
-span.distance-mi, span.distance-km {
-	font-weight: normal;
 }
 
 span.param-highlight {
@@ -746,7 +742,22 @@ div.map div.map-info div {
 
 div.map div.map-metrics {
   margin-top: var(--margin-paragraph-small);
+}
+
+div.map div.map-metrics div.map-metric {
+  display: inline-block;
+  margin: 0 0.5em;
+  vertical-align: text-bottom;
+  line-height: var(--line-height-small);
+}
+
+div.map div.map-metrics div.map-metric span.map-metric-number {
   font-size: var(--font-size-large);
+  font-weight: bold;
+}
+
+div.map div.map-metrics div.map-metric-label {
+  color: var(--color-text-primary-light);
 }
 
 div.map-mapbox {

@@ -8,6 +8,6 @@
 
 <%= render(partial: "layouts/summary", locals: {summary_items: @summary_items}) %>
 
-<%= render(partial: "layouts/map", locals: {map: @maps[:trip_section_map], distance: {miles: @section_distance, adjective: "section"}}) %>
+<%= render(partial: "layouts/map", locals: {map: @maps[:trip_section_map], metrics: {flights: @flights.size, miles: @section_distance}}) %>
 
 <%= render partial: "flights/flight_table", locals: {flights: @flights, is_summary: true} %>

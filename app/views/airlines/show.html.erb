@@ -7,7 +7,7 @@
 
 <h1><%= @airline.name %></h1>
 
-<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Flights": @flights.size}, summary_items: {"IATA": @airline.iata_code, "ICAO": @airline.icao_code, "Logo": airline_icon(@airline.slug, title: @airline.name, css_class: ["icon-no-text"])}}) %>
+<%= render(partial: "layouts/summary", locals: {summary_items: {"IATA": @airline.iata_code, "ICAO": @airline.icao_code, "Logo": airline_icon(@airline.slug, title: @airline.name, css_class: ["icon-no-text"])}}) %>
 
 <% if @flights.any? %>
 	<div class="page-navigation">
@@ -25,7 +25,7 @@
 
 <% if @flights.any? %>
 
-	<%= render(partial: "layouts/map", locals: {map: @maps[:airline_map], distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:airline_map], metrics: {flights: @flights.size, miles: @total_distance}}) %>
 	
 	<h2 id="aircraft">Aircraft Flown on <%= @airline.name %></h2>
 	<%= render partial: "aircraft_families/aircraft_family_count_table", locals: {aircraft_families: @aircraft_families, is_summary: true} %>

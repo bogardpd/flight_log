@@ -7,7 +7,7 @@
 
 <h1><%= @airport.city %></h1>
 
-<%= render(partial: "layouts/summary", locals: {counts: {"Paul’s Visits": @airport_frequency}, summary_items: {"IATA": @airport.iata_code, "ICAO": @airport.icao_code, "Country": safe_join([country_flag_icon(@airport.country),@airport.country], " "), "Coordinates": NumberFormat.coordinates(@airport.coordinates)}}) %>
+<%= render(partial: "layouts/summary", locals: {summary_items: {"IATA": @airport.iata_code, "ICAO": @airport.icao_code, "Country": safe_join([country_flag_icon(@airport.country),@airport.country], " "), "Coordinates": NumberFormat.coordinates(@airport.coordinates)}}) %>
 
 <div class="page-navigation">
   <ul>
@@ -25,7 +25,7 @@
 
 <% unless @flights.length == 0 %>
 
-	<%= render(partial: "layouts/map", locals: {map: @maps[:airport_map], distance: {miles: @total_distance, adjective: "total"}, flight_link: {}}) %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:airport_map], metrics: {visits: @airport_frequency, flights: @flights.size, miles: @total_distance}}) %>
 
 	<h2 id="airports">Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 

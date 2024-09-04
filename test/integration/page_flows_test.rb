@@ -31,7 +31,7 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
     
     assert_select("div.map-mapbox", {}, "This view shall contain a map")
     assert_select("a:match('href', ?)", "/flights", {}, "This view shall contain a link to Index Flights")
-    assert_select("span.summary-total[data-total=?]", visitor_flights.size.to_s, {}, "This view shall contain a count of flights")
+    assert_select("span.flights-count[data-flights=?]", visitor_flights.size.to_s, {}, "This view shall contain a count of flights")
     
     assert_select("table#top-airports-table")
     assert_select("table#top-airlines-table")
