@@ -335,10 +335,6 @@ span.disabled {
 	text-decoration: line-through;
 }
 
-span.distance-mi, span.distance-km {
-	font-weight: normal;
-}
-
 span.param-highlight {
 	font-weight: bold;
 }
@@ -745,12 +741,13 @@ div.map div.map-info div {
 }
 
 div.map div.map-metrics {
-  margin-top: var(--margin-paragraph-small);
+  margin-bottom: var(--margin-paragraph-small);
 }
 
 div.map div.map-metrics div.map-metric {
   display: inline-block;
   margin: 0 0.5em;
+  vertical-align: text-bottom;
   line-height: var(--line-height-small);
 }
 

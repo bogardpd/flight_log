@@ -741,7 +741,7 @@ div.map div.map-info div {
 }
 
 div.map div.map-metrics {
-  margin-top: var(--margin-paragraph-small);
+  margin-bottom: var(--margin-paragraph-small);
 }
 
 div.map div.map-metrics div.map-metric {

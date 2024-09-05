@@ -1,23 +1,6 @@
 <% mapboxgl_attr = map.mapboxgl %>
 <% map_id = mapboxgl_attr[:id] %>
 <div class="map <%= mapboxgl_attr[:map_type] %>" id="<%= mapboxgl_attr[:id] %>">
-  <div class="map-mapbox" id="mapbox_<%= map_id %>"></div>
-  <div class="map-info credit">
-    <div>
-      <%= link_to("GPX", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :gpx), download: "#{mapboxgl_attr[:id]}.gpx") %>
-      &middot; 
-      <%= link_to("KML", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :kml), download: "#{mapboxgl_attr[:id]}.kml") %>
-      &middot; 
-      <%= link_to("GeoJSON", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :geojson), download: "#{mapboxgl_attr[:id]}.geojson") %>
-      &middot; 
-      <%= link_to("GraphML", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :graphml), download: "#{mapboxgl_attr[:id]}.graphml") %>
-      <% if map.gcmap_exists? %>
-      &middot;
-      <%= link_to("GCMap", map.gcmap_url) %>
-      <% end %>
-    </div>
-  </div>
-  
   <% if local_assigns[:metrics] %>
     <div class="map-metrics">
       <div class="map-metric map-metric-label">Paul’s<br>stats:</div>
@@ -67,6 +50,24 @@
       <% end %>
     </div>
   <% end %>
+
+  <div class="map-mapbox" id="mapbox_<%= map_id %>"></div>
+  
+  <div class="map-info credit">
+    <div>
+      <%= link_to("GPX", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :gpx), download: "#{mapboxgl_attr[:id]}.gpx") %>
+      &middot; 
+      <%= link_to("KML", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :kml), download: "#{mapboxgl_attr[:id]}.kml") %>
+      &middot; 
+      <%= link_to("GeoJSON", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :geojson), download: "#{mapboxgl_attr[:id]}.geojson") %>
+      &middot; 
+      <%= link_to("GraphML", params.permit!.merge(map_id: mapboxgl_attr[:id], extension: :graphml), download: "#{mapboxgl_attr[:id]}.graphml") %>
+      <% if map.gcmap_exists? %>
+      &middot;
+      <%= link_to("GCMap", map.gcmap_url) %>
+      <% end %>
+    </div>
+  </div>
 </div>
 
 <script>
