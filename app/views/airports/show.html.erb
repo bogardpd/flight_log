@@ -25,7 +25,7 @@
 
 <% unless @flights.length == 0 %>
 
-	<%= render(partial: "layouts/map", locals: {map: @maps[:airport_map], metrics: {visits: @airport_frequency, flights: @flights.size, miles: @total_distance}}) %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:airport_map], metrics: {flights: @flights.size, miles: @total_distance, custom: {"visit": @airport_frequency}}}) %>
 
 	<h2 id="airports">Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 
