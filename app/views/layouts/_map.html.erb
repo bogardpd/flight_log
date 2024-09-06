@@ -3,37 +3,7 @@
 <div class="map <%= mapboxgl_attr[:map_type] %>" id="<%= mapboxgl_attr[:id] %>">
 
   <% if local_assigns[:metrics] %>
-  <div class="map-metrics">
-    <div class="map-metric map-metric-label">Paul’s<br>stats:</div>
-
-    <% if metrics[:custom] %><% metrics[:custom].each do |key, value| %>
-    <div class="map-metric">
-      <span class="map-metric-number"><%= NumberFormat.value(value) %></span><br>
-      <%= key.to_s.pluralize(value) %>
-    </div>
-    <% end %><% end %>
-
-    <% if metrics[:flights] %>
-    <div class="map-metric">
-      <% if metrics[:flights_path] %><a href="<%= url_for(metrics[:flights_path]) %>"><% end %>
-      <span class="map-metric-number flights-count" data-flights="<%= metrics[:flights] %>"><%= NumberFormat.value(metrics[:flights]) %></span><br>
-      <%= "flight".pluralize(metrics[:flights]) %>
-      <% if metrics[:flights_path] %></a><% end %>
-    </div>
-    <% end %>
-
-    <% if metrics[:miles] %>
-    <div class="map-metric">
-      <span class="map-metric-number distance-mi"><%= NumberFormat.value(metrics[:miles]) %></span><br>
-      <%= [metrics[:adjective],"mile"].compact.join(" ").pluralize(metrics[:miles]) %>
-    </div>
-    <div class="map-metric">
-      <span class="map-metric-number distance-km"><%= NumberFormat.value(Distance::km(metrics[:miles])) %></span><br>
-      <%= [metrics[:adjective],"kilometer"].compact.join(" ").pluralize(Distance::km(metrics[:miles])) %>
-    </div>
-    <% end %>
-
-  </div>
+  <%= render(partial: "layouts/personal_metrics", locals: {map: map, metrics: metrics}) %>
   <% end %>
 
   <div class="map-mapbox" id="mapbox_<%= map_id %>"></div>

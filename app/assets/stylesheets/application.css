@@ -245,7 +245,7 @@ div.intro-box table {
 }
 
 div.page-navigation {
-  width: 720px;
+  width: 740px;
 	margin-top: 0;
 	margin-bottom: 10px;
 	margin-left: auto;
@@ -710,7 +710,7 @@ img.logo {
 	margin-top: 6px;
 }
 
-/* MAPS */
+/* MAPS AND METRICS */
 
 div.map {
   width: 720px;
@@ -740,26 +740,6 @@ div.map div.map-info div {
   margin-right: 1em;
 }
 
-div.map div.map-metrics {
-  margin-bottom: var(--margin-paragraph-small);
-}
-
-div.map div.map-metrics div.map-metric {
-  display: inline-block;
-  margin: 0 0.5em;
-  vertical-align: text-bottom;
-  line-height: var(--line-height-small);
-}
-
-div.map div.map-metrics div.map-metric span.map-metric-number {
-  font-size: var(--font-size-large);
-  font-weight: bold;
-}
-
-div.map div.map-metrics div.map-metric-label {
-  color: var(--color-text-primary-light);
-}
-
 div.map-mapbox {
   width: 720px;
   height: 450px;
@@ -769,6 +749,30 @@ div.map-mapbox {
 
 div.map-mapbox a, div.map-mapbox a:hover {
   color: var(--color-text-primary);
+}
+
+div.personal-metrics {
+  margin-bottom: var(--margin-paragraph-small);
+}
+
+div.personal-metrics-nomap {
+  margin-bottom: 0;
+}
+
+div.personal-metrics div.personal-metric {
+  display: inline-block;
+  margin: 0 0.5em;
+  vertical-align: text-bottom;
+  line-height: var(--line-height-small);
+}
+
+div.personal-metrics div.personal-metric span.personal-metric-number {
+  font-size: var(--font-size-large);
+  font-weight: bold;
+}
+
+div.personal-metrics div.personal-metric-label {
+  color: var(--color-text-primary-light);
 }
 
 /* MESSAGE BANNERS */

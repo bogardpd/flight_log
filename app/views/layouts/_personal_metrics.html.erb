@@ -1,0 +1,39 @@
+<% if local_assigns[:map].nil? %>
+<div class="map">
+<div class="personal-metrics personal-metrics-nomap">
+<% else %>
+<div class="personal-metrics">
+<% end %>
+  <div class="personal-metric personal-metric-label">Paul’s<br>stats:</div>
+
+  <% if metrics[:custom] %><% metrics[:custom].each do |key, value| %>
+  <div class="personal-metric">
+    <span class="personal-metric-number"><%= NumberFormat.value(value) %></span><br>
+    <%# Pluralize words in the key that end in "(s)". %>
+    <% words = key.to_s.split(" ") %>
+    <%= words.map{|w| w[-3,3] == "(s)" ? w[0..-4].pluralize(value) : w}.join(" ") %>
+  </div>
+  <% end %><% end %>
+
+  <% if metrics[:flights] %>
+  <div class="personal-metric">
+    <% if metrics[:flights_path] %><a href="<%= url_for(metrics[:flights_path]) %>"><% end %>
+    <span class="personal-metric-number flights-count" data-flights="<%= metrics[:flights] %>"><%= NumberFormat.value(metrics[:flights]) %></span><br>
+    <%= "flight".pluralize(metrics[:flights]) %>
+    <% if metrics[:flights_path] %></a><% end %>
+  </div>
+  <% end %>
+
+  <% if metrics[:miles] %>
+  <div class="personal-metric">
+    <span class="personal-metric-number distance-mi"><%= NumberFormat.value(metrics[:miles]) %></span><br>
+    <%= [metrics[:adjective],"mile"].compact.join(" ").pluralize(metrics[:miles]) %>
+  </div>
+  <div class="personal-metric">
+    <span class="personal-metric-number distance-km"><%= NumberFormat.value(Distance::km(metrics[:miles])) %></span><br>
+    <%= [metrics[:adjective],"kilometer"].compact.join(" ").pluralize(Distance::km(metrics[:miles])) %>
+  </div>
+  <% end %>
+
+</div>
+<% if local_assigns[:map].nil? %></div><% end %>

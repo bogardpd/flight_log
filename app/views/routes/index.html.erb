@@ -4,9 +4,9 @@
 
 <h1>Routes</h1>
 
-<p>I have had commercial flights on <%= pluralize(NumberFormat.value(@route_table.size), "route") %>.</p>
-
 <% if @route_table.any? %>
+
+<%= render(partial: "layouts/personal_metrics", locals: {metrics: {custom: {"route(s)": @route_table.size}}}) %>
 
 <p>Each route listed includes flights going both directions.</p>
 

@@ -10,8 +10,6 @@
 
 <% end %>
 
-<p>I have been on <%= pluralize(NumberFormat.value(@flights.length), "commercial flight") %>.</p>
-
 <% if @flights.any? %>
 
   <%= render(partial: "layouts/map", locals: {map: @maps[:flights_map], metrics: {flights: @flights.size, miles: @total_distance}}) %>

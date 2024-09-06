@@ -18,9 +18,8 @@
   <h2>Trips with Flights</h2>
 <% end %>
 
-<p>I have taken <%= pluralize(NumberFormat.value(@trips.length), "trip") %> by air.</p>
-
 <% if @trips.any? %>
+  <%= render(partial: "layouts/personal_metrics", locals: {metrics: {custom: {"trip(s) with flights": @trips.size}}}) %>
   <%= render partial: "trips/trip_table", locals: {trips: @trips} %>
 <% end %>
 

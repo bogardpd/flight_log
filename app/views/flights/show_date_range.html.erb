@@ -25,8 +25,6 @@
 
 <% if @flights.any? %>
 
-<p>I <%= @took_taken %> <%= pluralize(NumberFormat.value(@flights.length), "commercial flight") %> <%= @date_range_text %>.</p>
-
 <%= render(partial: "layouts/map", locals: {map: @maps[:date_range_map], metrics: {flights: @flights.size, miles: @total_distance}}) %>
 
 <h2 id="airports">Airports Visited <%= @date_range_text %></h2>

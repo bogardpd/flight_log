@@ -5,13 +5,13 @@
 
 <h1>Aircraft Families</h1>
 
-<p>This listing shows how often Iʼve flown on each particular family of airplane. Each family of airplane may have several types, but all of those types have been included in each familyʼs total.</p>
-
 <% if @flights.empty? %>
   <%= render partial: "flights/error_no_flights" %>
 <% else %>
 
-  <p>I have flown on <%= pluralize(NumberFormat.value(@aircraft_families.size), "aircraft family") %>.</p>
+	<%= render(partial: "layouts/personal_metrics", locals: {metrics: {custom: {"aircraft family(s)": @aircraft_families.size}}}) %>
+
+  <p>Each family of airplane may have several types, but all of those types have been included in each familyʼs total.</p>
 
   <% if @aircraft_families.empty? %>
     <%= render_message(:warning, "There are no flights in the flight log that include an aircraft type!") %>

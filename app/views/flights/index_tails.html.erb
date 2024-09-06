@@ -4,8 +4,9 @@
 
 <h1>Tail Numbers</h1>
 
+<%= render(partial: "layouts/personal_metrics", locals: {metrics: {custom: {"unique tail number(s)": @tail_numbers_table.size}}}) %>
 <p>Each plane has a <%= link_to("registration", "http://en.wikipedia.org/wiki/Aircraft_registration") %> number, and I use it to keep track of which particular planes Iʼve flown on the most often.</p>
-<p>I have flown on <%= pluralize(NumberFormat.value(@tail_numbers_table.size), "unique tail number") %>.</p>
+
 
 <% if @tail_numbers_table.empty? %>
 	<% if @flights.empty? %>

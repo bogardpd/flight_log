@@ -15,16 +15,15 @@
   		<li><%= link_to("Operators", "#operators", :title => "Operators") %></li>
     </ul>
   </div>
+  
+  <%= render(partial: "layouts/personal_metrics", locals: {metrics: {custom: {"mainline airline(s)": @airlines.size, "operator(s)": @operators.size}}}) %>
 
-  <div id="airlines">
-    <p>I have flown on <%= pluralize(NumberFormat.value(@airlines.size), "airline") %>.</p>
-
-    <% if @airlines.empty? %>
-    	<%= render_message(:warning, "There are no flights in the flight log that include an airline!") %>
-    <% else %>
-      <%= render partial: "airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: false} %>
-    <% end %>
-  </div>
+  <h2 id="airlines">Mainline Airlines</h2>
+  <% if @airlines.empty? %>
+    <%= render_message(:warning, "There are no flights in the flight log that include an airline!") %>
+  <% else %>
+    <%= render partial: "airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: false} %>
+  <% end %>
 
   <h2 id="operators">Operators</h2>
 

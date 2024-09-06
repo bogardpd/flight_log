@@ -17,11 +17,9 @@
 
 <% end %>
 
-<p>I have visited <%= pluralize(NumberFormat.value((@airports.size || 0)), "airport") %>.</p>
-
 <% if @flights.any? %>
 
-	<%= render(partial: "layouts/map", locals: {map: @maps[:airports_map]}) %>
+	<%= render(partial: "layouts/map", locals: {map: @maps[:airports_map], metrics: {custom: {"airport(s)": @airports.size}}}) %>
 
 	<div id="airports-list">
 
