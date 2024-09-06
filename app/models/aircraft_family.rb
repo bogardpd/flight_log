@@ -109,12 +109,11 @@ class AircraftFamily < ApplicationRecord
   #
   # @see http://www.norebbo.com/ Norebbo Stock Illustration and Design
   def illustration_location
-    image_location = ExternalImage.url("flights/aircraft-illustrations/#{self.slug}.jpg")
-    if ExternalImage.exists?(image_location)
-      return image_location
-    else
-      return nil
+    for ext in ['png', 'jpg'] do
+      image_location = ExternalImage.url("flights/aircraft-illustrations/#{self.slug}.#{ext}")
+      return image_location if ExternalImage.exists?(image_location)
     end
+    return nil
   end
 
   # Returns an array of the current aircraft type and its parent types, all the
