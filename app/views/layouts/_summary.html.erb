@@ -1,20 +1,14 @@
 <% counts ||= Hash.new %>
 <% summary_items ||= Hash.new %>
 
-<% if counts.any? || summary_items.any? %>
+<% if summary_items.any? %>
   <table class="summary">
     <tr>
-      <% counts.keys.each do |title| %>
-        <th class="summary-count"><%= title %></th>
-      <% end %>
       <% summary_items.keys.each do |title| %>
         <th><%= title %></th>
       <% end %>
     </tr>
     <tr>
-      <% counts.each do |title, value| %>
-        <td id="summary-value-<%= title.to_s.parameterize %>" class="summary-count"><%= value %></td>
-      <% end %>
       <% summary_items.each do |title, value| %>
         <td id="summary-value-<%= title.to_s.parameterize %>"><%= value %></td>
       <% end %>
