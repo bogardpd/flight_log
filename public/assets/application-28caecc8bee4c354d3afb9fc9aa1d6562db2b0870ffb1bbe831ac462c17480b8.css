@@ -712,7 +712,7 @@ img.logo {
 
 /* MAPS AND METRICS */
 
-div.map {
+div.inset {
   width: 720px;
   padding: 10px;
   margin-left: auto;
@@ -722,22 +722,26 @@ div.map {
   color: var(--color-text-primary-inverted);
 }
 
-div.map a {
+div.inset a {
   color: var(--color-text-link-inverted);
 }
 
-div.map a:visited {
+div.inset a:visited {
   color: var(--color-text-link-visited-inverted);
 }
 
-div.map a:hover {
+div.inset a:hover {
   color: var(--color-text-link-hover);
 }
 
-div.map div.map-info div {
+div.map-download-links {
   display: inline;
   margin-left: 1em;
   margin-right: 1em;
+  font-size: var(--font-size-extra-small);
+	font-weight: 600;
+	text-transform: uppercase;
+	text-align: center;
 }
 
 div.map-mapbox {
@@ -753,6 +757,10 @@ div.map-mapbox a, div.map-mapbox a:hover {
 
 div.personal-metrics {
   margin-bottom: var(--margin-paragraph-small);
+}
+
+div.personal-metrics-nomap {
+  margin-bottom: 0;
 }
 
 div.personal-metrics div.personal-metric {

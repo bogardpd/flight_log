@@ -24,8 +24,11 @@
   --color-background-banner-primary:   #5D94D7;
   --color-background-banner-secondary: #4892EB;
 
-  --color-background-menu-primary:     #1F497D;
-  --color-background-menu-secondary:   #0F478C;
+  --color-background-menu-primary:     hsl(210,  60%,  30%);
+  --color-background-menu-secondary:   hsl(210,  81%,  30%);
+  
+  --color-background-inset:            var(--color-background-menu-primary);
+  --color-border-inset:                hsl(210,  60%,  25%);
 
   --color-text-primary-light:          hsl(210,  20%,  66%);
   --color-text-primary:                hsl(210,  20%,  16%);
@@ -712,32 +715,36 @@ img.logo {
 
 /* MAPS AND METRICS */
 
-div.map {
+div.inset {
   width: 720px;
   padding: 10px;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
-  background-color: var(--color-background-menu-primary);
+  border: 1px solid var(--color-border-inset);
+  background-color: var(--color-background-inset);
   color: var(--color-text-primary-inverted);
+  text-align: center;
 }
 
-div.map a {
+div.inset a {
   color: var(--color-text-link-inverted);
 }
 
-div.map a:visited {
+div.inset a:visited {
   color: var(--color-text-link-visited-inverted);
 }
 
-div.map a:hover {
+div.inset a:hover {
   color: var(--color-text-link-hover);
 }
 
-div.map div.map-info div {
-  display: inline;
+div.map-download-links {
   margin-left: 1em;
   margin-right: 1em;
+  font-size: var(--font-size-extra-small);
+	font-weight: 600;
+	text-transform: uppercase;
+	text-align: center;
 }
 
 div.map-mapbox {
@@ -936,7 +943,7 @@ table.summary td {
   padding-bottom: 0.1rem;
   background-color: var(--color-background-table);
 }
-table.summary .summary-count {
+table.summary {
   background-color: var(--color-border-table);
   text-shadow: 0 0 3px var(--color-background-container);
 }

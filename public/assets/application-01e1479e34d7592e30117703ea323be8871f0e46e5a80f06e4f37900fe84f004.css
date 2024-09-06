@@ -712,7 +712,7 @@ img.logo {
 
 /* MAPS AND METRICS */
 
-div.map {
+div.inset {
   width: 720px;
   padding: 10px;
   margin-left: auto;
@@ -722,22 +722,25 @@ div.map {
   color: var(--color-text-primary-inverted);
 }
 
-div.map a {
+div.inset a {
   color: var(--color-text-link-inverted);
 }
 
-div.map a:visited {
+div.inset a:visited {
   color: var(--color-text-link-visited-inverted);
 }
 
-div.map a:hover {
+div.inset a:hover {
   color: var(--color-text-link-hover);
 }
 
-div.map div.map-info div {
-  display: inline;
+div.map-download-links {
   margin-left: 1em;
   margin-right: 1em;
+  font-size: var(--font-size-extra-small);
+	font-weight: 600;
+	text-transform: uppercase;
+	text-align: center;
 }
 
 div.map-mapbox {
