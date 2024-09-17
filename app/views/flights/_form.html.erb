@@ -33,18 +33,18 @@
   <p>
     <%= f.label :departure_date, "Departure Date (origin airport local time)" %><br />
     <% if fields[:departure_date] %>
-      <%= f.date_select(:departure_date, {start_year: 2000, selected: fields[:departure_date].to_date}, class: "autopopulated") %>
+      <%= f.date_select(:departure_date, {start_year: 1980, selected: fields[:departure_date].to_date}, class: "autopopulated") %>
     <% else %>
-      <%= f.date_select(:departure_date, {start_year: 2000}) %>
+      <%= f.date_select(:departure_date, {start_year: 1980}) %>
     <% end %>
   </p>
 
   <p>
     <%= f.label :departure_utc, "UTC Departure (for sorting flights)" %> &mdash; Current time: <span id="utc-time-now"><%= Time.now.utc %></span><br />
     <% if fields[:departure_utc] %>
-      <%= f.datetime_select(:departure_utc, {start_year: 2000, selected: fields[:departure_utc].to_time}, class: "autopopulated") %>
+      <%= f.datetime_select(:departure_utc, {start_year: 1980, selected: fields[:departure_utc].to_time}, class: "autopopulated") %>
     <% else %>
-      <%= f.datetime_select(:departure_utc, {start_year: 2000, minute_step: 5}) %>
+      <%= f.datetime_select(:departure_utc, {start_year: 1980}) %>
     <% end %>UTC
   </p>
 
