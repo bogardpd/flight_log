@@ -97,7 +97,8 @@ class AirlinesController < ApplicationController
     @flights.each do |flight|
       if flight.fleet_number
         @fleet[flight.fleet_number] = Hash.new
-        @fleet[flight.fleet_number].store(:aircraft, flight.aircraft_family.name)
+        @fleet[flight.fleet_number].store(:aircraft, flight.aircraft_family.full_name)
+        @fleet[flight.fleet_number].store(:aircraft_icao, flight.aircraft_family.icao_code)
         @fleet[flight.fleet_number].store(:name, flight.aircraft_name)
         @fleet[flight.fleet_number].store(:tail, flight.tail_number)
       end

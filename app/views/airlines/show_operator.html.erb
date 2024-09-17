@@ -56,7 +56,7 @@
   	<% @fleet.each do |fleet_number, aircraft| %>
   		<tr>
   			<td><%= link_to(airline_icon(@operator.slug, title: "View flights on #{@operator.name} aircraft ##{fleet_number}") + "#" + fleet_number, show_fleet_number_path(@operator.slug, fleet_number), title: "View flights on #{@operator.name} aircraft ##{fleet_number}") %><% if aircraft[:name] %> &ndash; <span class="aircraft-name"><%= aircraft[:name] %><% end %></span></td>
-  			<td class="tail-aircraft"><%= aircraft[:aircraft] %></td>
+  			<td class="tail-aircraft code-mono"><abbr title="<%= aircraft[:aircraft] %>"><%= aircraft[:aircraft_icao] %></abbr></td>
 				<td class="tail-number"><%= tail_number_with_country_flag(aircraft[:tail]) %></td>
   		</tr>
   	<% end %>
