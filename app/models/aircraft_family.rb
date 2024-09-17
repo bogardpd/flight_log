@@ -71,8 +71,8 @@ class AircraftFamily < ApplicationRecord
   # @see AircraftFamiliesController#show
   def family_and_type_count(flights)
     type_count = flights.reorder(nil).joins(:aircraft_family)
-      .group(:aircraft_family_id, "aircraft_families.slug", "aircraft_families.name", "aircraft_families.icao_code", :parent_id).count
-      .map{|k,v| {id: k[0], slug: k[1], name: k[2], icao_code: k[3], is_family: k[4].nil?, flight_count: v}}
+      .group(:aircraft_family_id, "aircraft_families.slug", "aircraft_families.name", "aircraft_families.manufacturer", "aircraft_families.icao_code", :parent_id).count
+      .map{|k,v| {id: k[0], slug: k[1], name: k[2], manufacturer: k[3], icao_code: k[4], is_family: k[5].nil?, flight_count: v}}
       .sort_by{|a| [-a[:flight_count], a[:name]] }
     return type_count
   end
@@ -195,11 +195,11 @@ class AircraftFamily < ApplicationRecord
   # 
   # @return [Array<Array>] options for an aircraft family/type select box
   def self.grouped_type_select_options
-    types = self.types.map{|f| {family_id: f.parent_id, name: f.name, id: f.id}}.sort_by{|f| f[:name]}
+    types = self.types.map{|f| {family_id: f.parent_id, name: f.name, manufacturer: f.manufacturer, id: f.id}}.sort_by{|f| f[:name]}
     families = self.families.sort_by{|f| [f[:manufacturer].downcase, f[:name].downcase]}
     return families.map{|f| {f.id => {name: f.name, manufacturer: f.manufacturer}}}
       .reduce{|a,b| a.merge(b)}
-      .map{|k,v| ["#{v[:manufacturer]} #{v[:name]}"].push(([{name: "#{v[:name]} (unknown type)", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:name], t[:id]]})}
+      .map{|k,v| ["#{v[:manufacturer]} #{v[:name]}"].push(([{name: "#{v[:manufacturer]} #{v[:name]} (unknown type)", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| ["#{t[:manufacturer]} #{t[:name]}", t[:id]]})}
   end
   
   # Accepts a flyer, the viewing user, and date range, and returns all aircraft

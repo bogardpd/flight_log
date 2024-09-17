@@ -17,8 +17,7 @@ module FlightsHelper
       li_classes = (types.any? || top_level) ? nil : "current-type"
       content_tag(:li, class: li_classes) do
 
-        link_text = top_level ? current.full_name : current.name
-        concat link_to(link_text, aircraft_family_path(current.slug), title: "View flights on #{current.full_name} aircraft")
+        concat link_to(current.full_name, aircraft_family_path(current.slug), title: "View flights on #{current.full_name} aircraft")
 
         if types.any?
           concat aircraft_type_tree(types, false)

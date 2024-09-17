@@ -32,7 +32,7 @@
 <% end %>
   
 <% if @children.any? %>
-  <h2 id="types"><%= @aircraft.name %> Types</h2>
+  <h2 id="types"><%= @aircraft.full_name %> Types</h2>
   <% if @flights.any? %>
     <%= render partial: "aircraft_child_types", locals: {parent_type: @aircraft, child_types: @flights_including_child_types} %>
   <% else %>
@@ -59,21 +59,21 @@
 
 <% if @flights.any? %>
   
-	<h2 id="airlines">Airlines with <%= @aircraft.name %> Flights</h2>
+	<h2 id="airlines">Airlines with <%= @aircraft.full_name %> Flights</h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @airlines, type: :airline, is_summary: true} %>
 
-	<h2 id="operators">Operators with <%= @aircraft.name %> Flights</h2>
+	<h2 id="operators">Operators with <%= @aircraft.full_name %> Flights</h2>
 	<%= render partial: "airlines/airline_count_table", locals: {airlines: @operators, type: :operator, is_summary: true, identical: (@airlines == @operators)} %>
 
-	<h2 id="classes">Classes Flown on <%= @aircraft.name %> Aircraft</h2>
+	<h2 id="classes">Classes Flown on <%= @aircraft.full_name %> Aircraft</h2>
 
 	<%= render partial: "flights/class_count_table", locals: {classes: @classes, is_summary: true} %>
 
-	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @aircraft.name %> Aircraft</h2>
+	<h2 id="superlatives">Longest and Shortest Routes Flown on <%= @aircraft.full_name %> Aircraft</h2>
 
 	<%= render partial: "routes/route_superlatives_table", locals: {superlatives: @route_superlatives} %>
 
-	<h2 id="flights"><%= @aircraft.name %> Flight List</h2>
+	<h2 id="flights"><%= @aircraft.full_name %> Flight List</h2>
 
 	<%= render partial: "flights/flight_table", locals: {flights: @flights, is_summary: true} %>
 
