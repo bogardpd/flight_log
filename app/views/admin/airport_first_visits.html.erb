@@ -1,0 +1,31 @@
+<% provide(:title, "Airport First Visits") %>
+<% add_breadcrumb "Admin", admin_path %>
+<% add_breadcrumb "Airport First Visits", airport_first_visits_path %>
+
+<table class="flightlog">
+  <tr>
+    <th class="counter">Index</th>
+    <th class="airport-code">Airport</th>
+    <th class="flight-date">Departure</th>
+    <th class="flight-route">Route</th>
+    <th class="flight-flight">Flight</th>
+  </tr>
+<% prev_flight = nil %>
+<% @airport_first_visits.each.with_index(1) do |(airport_id, flight), index| %>
+  <% row_class = (flight == prev_flight) ? "no-top-border" : "" %>
+  <tr class="<%= row_class %>">
+    <td class="counter"><%= index %></td>
+    <td class="airport-code code-mono"><%= link_to(@airports[airport_id][:iata_code], airport_path(@airports[airport_id][:slug])) %></td>
+    <td class="flight-date"><%= NumberFormat.date(flight.departure_date) %></td>
+    <td class="flight-route">
+      <% classes_orig = flight.origin_airport.id == airport_id ? ["bold"] : [] %>
+      <% classes_dest = flight.destination_airport.id == airport_id ? ["bold"] : [] %>
+      <%= code_mono(flight.origin_airport.iata_code, classes: classes_orig) %>
+      <%= Route::ARROW_ONE_WAY_HTML %>
+      <%= code_mono(flight.destination_airport.iata_code, classes: classes_dest) %>
+    </td>
+    <td class="flight-flight"><%= link_to(airline_icon(flight.airline.slug, title: "View flight details for #{flight.airline.name} #{flight.flight_number.to_s}") + "#{flight.airline.iata_code} #{flight.flight_number.to_s}", flight_path(flight), title: "View flight details for #{flight.airline.name} #{flight.flight_number.to_s}") %></td>
+  </tr>
+  <% prev_flight = flight %>
+<% end %>
+</table>

@@ -112,9 +112,9 @@ module ApplicationHelper
   #
   # @param code [ActiveSupport::SafeBuffer, String] the text to format
   # @return [ActiveSupport::SafeBuffer] HTML text formatted with a monospace font
-  def code_mono(code)
+  def code_mono(code, classes=[])
     return nil unless code.present?
-    return content_tag(:span, code, class: %w(code-mono))
+    return content_tag(:span, code, class: ["code-mono", *classes])
   end
 
   # Provides a table row containing a total {Flight Flights} count for the
