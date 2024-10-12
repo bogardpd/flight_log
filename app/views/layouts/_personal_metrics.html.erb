@@ -17,8 +17,8 @@
 
   <% if metrics[:flights] %>
   <div class="personal-metric">
-    <% if metrics[:flights_path] %><a href="<%= url_for(metrics[:flights_path]) %>"><% end %>
     <span class="personal-metric-number flights-count" data-flights="<%= metrics[:flights] %>"><%= NumberFormat.value(metrics[:flights]) %></span><br>
+    <% if metrics[:flights_path] %><a href="<%= url_for(metrics[:flights_path]) %>"><% end %>
     <%= "flight".pluralize(metrics[:flights]) %>
     <% if metrics[:flights_path] %></a><% end %>
   </div>
