@@ -634,6 +634,7 @@ function populateMapboxGLMap(mapID, mapData, mapType) {
   // Accepts GeoJSON mapData and a mapType, and populates a mapID div.
   
   const mapPosition = mapCenterZoom(mapData);
+  console.log(mapPosition);
   const mapContainer = 'mapbox_' + mapID;
   
   const map = new mapboxgl.Map({
@@ -754,7 +755,7 @@ function populateMapboxGLMap(mapID, mapData, mapType) {
 }
 
 function mapCenterZoom(geoJSONData) {
-  const defaultValues = {center: [0, 20], zoom: 0.5};
+  const defaultValues = {center: [0, 20], zoom: 0.5, bounds: {w: -180.0, e: 180.0, n: 90.0, s: -90.0}};
   // Get MultiLineString features.
   let features = geoJSONData['features'];
   let routes = features.filter(r => r['geometry']['type'] == 'MultiLineString');
@@ -765,10 +766,15 @@ function mapCenterZoom(geoJSONData) {
   // Generate Map of longitudes and their changes in count.
   let hasAirportAt180 = false;
   let changes = new Map();
+  let minLats = [];
+  let maxLats = [];
   routes.forEach((route) => {
     let multiline = route['geometry']['coordinates'];
     multiline.forEach((line) => {
       if (line.length > 0) {
+        let lats = line.map(val => val[1]);
+        minLats.push(Math.min.apply(Math, lats));
+        maxLats.push(Math.max.apply(Math, lats));
         lonRange = [line[0][0], line[line.length - 1][0]].sort(function(a,b) {return a - b});
         changes.set(lonRange[0], changes.has(lonRange[0]) ? changes.get(lonRange[0]) + 1 : 1);
         changes.set(lonRange[1], changes.has(lonRange[1]) ? changes.get(lonRange[1]) - 1 : -1);
@@ -811,16 +817,33 @@ function mapCenterZoom(geoJSONData) {
   lonStartValues = lonStartValues.filter(l => l[2] == Math.min(...lonRouteCount.values()))
   lonStartValues = lonStartValues.sort(function(a, b) {return b[1] - a[1]});
 
-  // Get center of of the widest of the lowest routeCount regions.
+  // Calculate central longitude and bounds.
   let lonCenter = defaultValues['center'][0];
+  let boundW = defaultValues['bounds']['w'];
+  let boundE = defaultValues['bounds']['e'];
+  let boundN = defaultValues['bounds']['n'];
+  let boundS = defaultValues['bounds']['s'];
   if (lonStartValues.length > 0) {
+    // Get center of of the widest of the lowest routeCount regions.
     lonCenter = lonStartValues[0][0] + (lonStartValues[0][1] / 2) + 180;
     while (lonCenter >= 180) {
       lonCenter = lonCenter - 360;
     }
+
+    // Calculate bounds.
+    if (lonStartValues[0][2] == 0) {
+      boundE = lonStartValues[0][0];
+      boundW = boundE + lonStartValues[0][1] - 360;
+    } else {
+      // Map goes around the world, so set east and west to center of lowest count region.
+      boundE = lonCenter + 180;
+      boundW = lonCenter - 180;
+    }
+    boundN = (maxLats.length > 0) ? Math.max.apply(Math, maxLats) : defaultValues['bounds']['n'];
+    boundS = (minLats.length > 0) ? Math.min.apply(Math, minLats) : defaultValues['bounds']['s'];
   }
 
-  return {center: [lonCenter, 20], zoom: 0.5};
+  return {center: [lonCenter, 20], zoom: 0.5, bounds: {w: boundW, e: boundE, n: boundN, s: boundS}};
 };
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
