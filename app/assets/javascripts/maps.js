@@ -9,13 +9,22 @@ function populateMapboxGLMap(mapID, mapData, mapType) {
   const map = new mapboxgl.Map({
     container: mapContainer,
     style: 'mapbox://styles/bogardpd/cly0gib62008301p82kk64np1', // Light Terrain - Flight Historian
-    center: mapPosition['center'],
-    zoom: mapPosition['zoom'],
+    bounds: [
+      [mapPosition['bounds']['w'], mapPosition['bounds']['s']],
+      [mapPosition['bounds']['e'], mapPosition['bounds']['n']],
+    ],
+    fitBoundsOptions: {
+      padding: {top: 40, bottom: 40, left: 40, right: 40},
+      minZoom: 0.49, // Min zoom for initial bounds
+      maxZoom: 6.00, // Max zoom for initial bounds
+    },
+    minZoom: 0.49, // Min zoom user can zoom to
+    maxZoom: 8.00, // Max zoom user can zoom to
   });
 
   map.on('load', () => {
-     // Load data.
-     map.addSource('flights', {
+    // Load data.
+    map.addSource('flights', {
       'type': 'geojson',
       'data': mapData,
       'generateId': true,
@@ -124,7 +133,7 @@ function populateMapboxGLMap(mapID, mapData, mapType) {
 }
 
 function mapCenterZoomBounds(geoJSONData) {
-  const defaultValues = {center: [0, 20], zoom: 0.5, bounds: {w: -180.0, e: 180.0, n: 90.0, s: -90.0}};
+  const defaultValues = {center: [0, 20], zoom: 0.5, bounds: {w: -180.0, e: 180.0, n: 80.0, s: -70.0}};
   // Get MultiLineString features.
   let features = geoJSONData['features'];
   let routes = features.filter(r => r['geometry']['type'] == 'MultiLineString');
