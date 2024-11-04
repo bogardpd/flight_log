@@ -764,12 +764,16 @@ function populateMapboxGLMap(mapID, mapData, mapType) {
 
 function mapCenterZoomBounds(geoJSONData) {
   const defaultValues = {center: [0, 20], zoom: 0.5, bounds: {w: -180.0, e: 180.0, n: 80.0, s: -70.0}};
-  // Get MultiLineString features.
+  let bounds = defaultValues['bounds'];
+  // Get features.
   let features = geoJSONData['features'];
   let routes = features.filter(r => r['geometry']['type'] == 'MultiLineString');
-  if (routes.length == 0) {
-      return defaultValues;
+  let airports = features.filter(r => r['geometry']['type'] == 'Point');
+  
+  if (routes.length == 0 && airports.length == 0) {
+    return defaultValues;
   }
+  bounds = airportCollectionBounds(airports, bounds);
 
   // Generate Map of longitudes and their changes in count.
   let hasAirportAt180 = false;
@@ -849,9 +853,35 @@ function mapCenterZoomBounds(geoJSONData) {
     }
     boundN = (maxLats.length > 0) ? Math.max.apply(Math, maxLats) : defaultValues['bounds']['n'];
     boundS = (minLats.length > 0) ? Math.min.apply(Math, minLats) : defaultValues['bounds']['s'];
+    bounds = {w: boundW, e: boundE, n: boundN, s: boundS};
   }
+  
+  return {center: [lonCenter, 20], zoom: 0.5, bounds: bounds};
+}
 
-  return {center: [lonCenter, 20], zoom: 0.5, bounds: {w: boundW, e: boundE, n: boundN, s: boundS}};
+function airportCollectionBounds(airports, defaultBounds) {
+  if (airports.length == 0) {
+    return defaultBounds;
+  } else if (airports.length == 1) {
+    let coords = airports[0]['geometry']['coordinates']
+    return {w: coords[0], e: coords[0], n: coords[1], s: coords[1]};
+  }
+  let lons = airports.map(airport => airport['geometry']['coordinates'][0]);
+  let lats = airports.map(airport => airport['geometry']['coordinates'][1]);
+  
+  let lonsSorted = lons.sort(function(a,b) {return a - b});
+  let lonsExtended = [...lonsSorted, (lonsSorted[0] + 360.0)];
+  let lonWidths = lonsSorted.map((lon, i) => lonsExtended[i + 1] - lon);
+  let biggestGapStartIndex = lonWidths.indexOf(Math.max.apply(Math, lonWidths));
+  let boundE = lonsSorted[biggestGapStartIndex];
+  let boundW = lonsSorted[(biggestGapStartIndex + 1) % lonsSorted.length];
+  if (boundE < boundW) {
+    boundE = boundE + 360.0;
+  }
+  let boundN = Math.max.apply(Math, lats);
+  let boundS = Math.min.apply(Math, lats);
+
+  return {w: boundW, e: boundE, n: boundN, s: boundS};
 };
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
