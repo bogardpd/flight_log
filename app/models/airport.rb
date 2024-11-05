@@ -48,7 +48,7 @@ class Airport < ApplicationRecord
   # destination are the same) then this airport's ID will be returned. If
   # neither are associated with this airport, nil will be returned.
   #
-  # Used by {direct_flight_count} to determine which airport on a direct
+  # Used by {nonstop_flight_count} to determine which airport on a nonstop
   # {Flight} is the remote airport.
   #
   # @param id_1 [Integer] an {Airport} ID
@@ -86,49 +86,49 @@ class Airport < ApplicationRecord
     return first_flights.select{|k,v| date_range.include?(v)}.map{|k,v| k}.sort
   end
   
-  # Given a collection of flights and a direct flight {Airport}, returns data
-  # about the direct flights to or from the specified airport within the flight
+  # Given a collection of flights and a nonstop flight {Airport}, returns data
+  # about the nonstop flights to or from the specified airport within the flight
   # collection. Returns an array with a hash for each remote airport, with each
   # hash containing the airport name, IATA code, country, distance in miles to
-  # the direct flight airport, and count of direct flights to or from the
-  # direct flight airport.
+  # the nonstop flight airport, and count of nonstop flights to or from the
+  # nonstop flight airport.
   #
-  # Used on {AirportsController#show} to generate the Direct Flight Airports
+  # Used on {AirportsController#show} to generate the Nonstop Flight Airports
   # table.
   #
   # @param flights [Array<Flight>] a collection of {Flight Flights} to
-  #   calculate direct flights within
-  # @param direct_flight_airport [Airport] the airport to calculate direct
+  #   calculate nonstop flights within
+  # @param nonstop_flight_airport [Airport] the airport to calculate nonstop
   #   flights from and to
   # @param sort_category [:city, :code, :distance, :flights] the category to
   #   sort the array by
   # @param sort_direction [:asc, :desc] the direction to sort the array
   #
-  # @return [Array<Hash>] details for each {Airport} with direct flights to
-  #   the +direct_flight_airport+
+  # @return [Array<Hash>] details for each {Airport} with nonstop flights to
+  #   the +nonstop_flight_airport+
   #
   # @example
-  #   Airport.direct_flight_count(Flight.all, Airport.find(1)) #=> [
+  #   Airport.nonstop_flight_count(Flight.all, Airport.find(1)) #=> [
   #     {:iata_code=>"ORD", :city=>"Chicago (O’Hare)", :country=>"United States", :distance_mi=>801, :total_flights=>6},
   #     {:iata_code=>"SLC", :city=>"Salt Lake City", :country=>"United States", :distance_mi=>987, :total_flights=>6},
   #     {:iata_code=>"SEA", :city=>"Seattle/Tacoma", :country=>"United States", :distance_mi=>1658, :total_flights=>4}
   #   ]
-  def self.direct_flight_count(flights, direct_flight_airport, sort_category=nil, sort_direction=nil)
+  def self.nonstop_flight_count(flights, nonstop_flight_airport, sort_category=nil, sort_direction=nil)
     
-    # Filter flights to only flights involving the direct_flight_airport:
-    flights = flights.to_a.select{|f| f[:origin_airport_id] == direct_flight_airport.id || f[:destination_airport_id] == direct_flight_airport.id}
+    # Filter flights to only flights involving the nonstop_flight_airport:
+    flights = flights.to_a.select{|f| f[:origin_airport_id] == nonstop_flight_airport.id || f[:destination_airport_id] == nonstop_flight_airport.id}
     
-    # Calculate direct flight counts by airport id:
+    # Calculate nonstop flight counts by airport id:
     count_by_id = Hash.new(0)
     flights.each do |flight|
-      count_by_id[direct_flight_airport.remote_airport(flight[:origin_airport_id], flight[:destination_airport_id])] += 1
+      count_by_id[nonstop_flight_airport.remote_airport(flight[:origin_airport_id], flight[:destination_airport_id])] += 1
     end
 
     # Calculate flight distances by remote airport id:
     distance_by_id = Hash.new
-    routes = Route.where(airport1_id: count_by_id.keys, airport2_id: direct_flight_airport.id).or(Route.where(airport1_id: direct_flight_airport.id, airport2_id: count_by_id.keys)).pluck(:airport1_id,:airport2_id,:distance_mi)
+    routes = Route.where(airport1_id: count_by_id.keys, airport2_id: nonstop_flight_airport.id).or(Route.where(airport1_id: nonstop_flight_airport.id, airport2_id: count_by_id.keys)).pluck(:airport1_id,:airport2_id,:distance_mi)
     routes.each do |route|
-      distance_by_id[direct_flight_airport.remote_airport(route[0], route[1])] = route[2]
+      distance_by_id[nonstop_flight_airport.remote_airport(route[0], route[1])] = route[2]
     end
 
     # Fill in airport details:

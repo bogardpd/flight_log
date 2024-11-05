@@ -54,8 +54,8 @@ class Trip < ApplicationRecord
     end
   end
 
-  # Within a trip section, calculates the ratio of the sum of the direct flight
-  # distances of each {Flight} to the distance of a direct flight between the
+  # Within a trip section, calculates the ratio of the sum of the nonstop flight
+  # distances of each {Flight} to the distance of a nonstop flight between the
   # first origin and last destination. If the trip section has no flights, or
   # if the trip section covers no net distance (it begins and ends at the same
   # airport), then this method returns nil.

@@ -55,15 +55,15 @@ class AirportsController < ApplicationController
     
     # Sort city pair table:
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
-    @direct_flight_airports = Airport.direct_flight_count(@flights, @airport, *@sort)
+    @nonstop_flight_airports = Airport.nonstop_flight_count(@flights, @airport, *@sort)
 
     # Find maxima for graph scaling:
-    if @flights.empty? || @direct_flight_airports.empty?
+    if @flights.empty? || @nonstop_flight_airports.empty?
       @flights_maximum = 0
       @distance_maximum = 0
     else
-      @flights_maximum = @direct_flight_airports.max_by{|i| i[:total_flights].to_i}[:total_flights]
-      @distance_maximum = @direct_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
+      @flights_maximum = @nonstop_flight_airports.max_by{|i| i[:total_flights].to_i}[:total_flights]
+      @distance_maximum = @nonstop_flight_airports.max_by{|i| i[:distance_mi].to_i}[:distance_mi]
     end
     
     # Create comparitive lists of airlines, aircraft, and classes:

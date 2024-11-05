@@ -27,11 +27,11 @@
 
 	<%= render(partial: "layouts/map", locals: {map: @maps[:airport_map], metrics: {flights: @flights.size, miles: @total_distance, custom: {"visit(s)": @airport_frequency}}}) %>
 
-	<h2 id="airports">Direct Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
+	<h2 id="airports">Nonstop Flight Airports for <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>
 
-	<p>These are the airports with which Iʼve had a direct flight from or to <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.</p>
+	<p>These are the airports with which Iʼve had a nonstop flight from or to <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr>.</p>
 
-	<table class="flightlog" id="direct-flight-airports-table">
+	<table class="flightlog" id="nonstop-flight-airports-table">
 	  <tr>
 	    <th class="counter">#</th>
 			<th class="airport-city"><%= sort_link("City", :city, :asc, "airports") %></th>
@@ -41,7 +41,7 @@
 	  </tr>
 	
 		<% previous_count = nil %>
-		<% @direct_flight_airports.each_with_index do |row, index| %>
+		<% @nonstop_flight_airports.each_with_index do |row, index| %>
 		  <tr>
 	    	<td class="counter">
 					<% if @sort[0] == :flights %>
@@ -59,7 +59,7 @@
 		  </tr>
 			<% previous_count = @sort[0] == :flights ? row[:total_flights] : row[:distance_mi] %>
 		<% end %>
-	  <tr><td colspan="5" class="flightlog-total"><%= pluralize(NumberFormat.value(@direct_flight_airports.size), "direct flight airport") %></td></tr>
+	  <tr><td colspan="5" class="flightlog-total"><%= pluralize(NumberFormat.value(@nonstop_flight_airports.size), "nonstop flight airport") %></td></tr>
 	</table>
 
 	<h2 id="airlines">Airlines Using <abbr title="<%= @airport.city %>"><%= @airport.iata_code %></abbr></h2>

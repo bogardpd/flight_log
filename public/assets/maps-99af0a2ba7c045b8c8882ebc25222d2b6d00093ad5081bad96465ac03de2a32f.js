@@ -2,17 +2,12 @@
 
 function populateMapboxGLMap(mapID, mapData, mapType) {
   // Accepts GeoJSON mapData and a mapType, and populates a mapID div.
-  
-  const mapPosition = mapCenterZoomBounds(mapData);
   const mapContainer = 'mapbox_' + mapID;
   
   const map = new mapboxgl.Map({
     container: mapContainer,
     style: 'mapbox://styles/bogardpd/cly0gib62008301p82kk64np1', // Light Terrain - Flight Historian
-    bounds: [
-      [mapPosition['bounds']['w'], mapPosition['bounds']['s']],
-      [mapPosition['bounds']['e'], mapPosition['bounds']['n']],
-    ],
+    bounds: mapBounds(mapData),
     fitBoundsOptions: {
       padding: {top: 40, bottom: 40, left: 40, right: 40},
       minZoom: 0.49, // Min zoom for initial bounds
@@ -132,18 +127,18 @@ function populateMapboxGLMap(mapID, mapData, mapType) {
   });
 }
 
-function mapCenterZoomBounds(geoJSONData) {
-  const defaultValues = {center: [0, 20], zoom: 0.5, bounds: {w: -180.0, e: 180.0, n: 80.0, s: -70.0}};
-  let bounds = defaultValues['bounds'];
+function mapBounds(geoJSONData) {
+  const defaultBounds = [[-180.0, -70.0], [180.0, 80.0]]; // WS, EN
+
   // Get features.
   let features = geoJSONData['features'];
   let routes = features.filter(r => r['geometry']['type'] == 'MultiLineString');
   let airports = features.filter(r => r['geometry']['type'] == 'Point');
   
-  if (routes.length == 0 && airports.length == 0) {
-    return defaultValues;
+  let bounds = airportCollectionBounds(airports, defaultBounds);
+  if (routes.length == 0) {
+    return bounds; // airportCollectionBounds already checks for airport length
   }
-  bounds = airportCollectionBounds(airports, bounds);
 
   // Generate Map of longitudes and their changes in count.
   let hasAirportAt180 = false;
@@ -200,19 +195,16 @@ function mapCenterZoomBounds(geoJSONData) {
   lonStartValues = lonStartValues.sort(function(a, b) {return b[1] - a[1]});
 
   // Calculate central longitude and bounds.
-  let lonCenter = defaultValues['center'][0];
-  let boundW = defaultValues['bounds']['w'];
-  let boundE = defaultValues['bounds']['e'];
-  let boundN = defaultValues['bounds']['n'];
-  let boundS = defaultValues['bounds']['s'];
   if (lonStartValues.length > 0) {
     // Get center of of the widest of the lowest routeCount regions.
-    lonCenter = lonStartValues[0][0] + (lonStartValues[0][1] / 2) + 180;
+    let lonCenter = lonStartValues[0][0] + (lonStartValues[0][1] / 2) + 180;
     while (lonCenter >= 180) {
       lonCenter = lonCenter - 360;
     }
 
     // Calculate bounds.
+    let boundW = defaultBounds[0][0];
+    let boundE = defaultBounds[1][0];
     if (lonStartValues[0][2] == 0) {
       boundE = lonStartValues[0][0];
       boundW = boundE + lonStartValues[0][1] - 360;
@@ -221,12 +213,12 @@ function mapCenterZoomBounds(geoJSONData) {
       boundE = lonCenter + 180;
       boundW = lonCenter - 180;
     }
-    boundN = (maxLats.length > 0) ? Math.max.apply(Math, maxLats) : defaultValues['bounds']['n'];
-    boundS = (minLats.length > 0) ? Math.min.apply(Math, minLats) : defaultValues['bounds']['s'];
-    bounds = {w: boundW, e: boundE, n: boundN, s: boundS};
+    let boundS = (minLats.length > 0) ? Math.min.apply(Math, minLats) : defaultBounds[0][1];
+    let boundN = (maxLats.length > 0) ? Math.max.apply(Math, maxLats) : defaultBounds[1][1];
+    bounds = [[boundW, boundS], [boundE, boundN]];
   }
   
-  return {center: [lonCenter, 20], zoom: 0.5, bounds: bounds};
+  return bounds;
 }
 
 function airportCollectionBounds(airports, defaultBounds) {
@@ -234,7 +226,7 @@ function airportCollectionBounds(airports, defaultBounds) {
     return defaultBounds;
   } else if (airports.length == 1) {
     let coords = airports[0]['geometry']['coordinates']
-    return {w: coords[0], e: coords[0], n: coords[1], s: coords[1]};
+    return [coords, coords]
   }
   let lons = airports.map(airport => airport['geometry']['coordinates'][0]);
   let lats = airports.map(airport => airport['geometry']['coordinates'][1]);
@@ -251,5 +243,5 @@ function airportCollectionBounds(airports, defaultBounds) {
   let boundN = Math.max.apply(Math, lats);
   let boundS = Math.min.apply(Math, lats);
 
-  return {w: boundW, e: boundE, n: boundN, s: boundS};
+  return [[boundW, boundS], [boundE, boundN]];
 };

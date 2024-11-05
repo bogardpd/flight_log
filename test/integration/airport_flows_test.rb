@@ -216,7 +216,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#aircraft-family-count-table")
     assert_select("#travel-class-count-table")
     
-    assert_select("#direct-flight-airports-table")
+    assert_select("#nonstop-flight-airports-table")
   end
 
 end
