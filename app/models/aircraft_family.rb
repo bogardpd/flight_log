@@ -195,11 +195,11 @@ class AircraftFamily < ApplicationRecord
   # 
   # @return [Array<Array>] options for an aircraft family/type select box
   def self.grouped_type_select_options
-    types = self.types.map{|f| {family_id: f.parent_id, name: f.name, manufacturer: f.manufacturer, id: f.id}}.sort_by{|f| f[:name]}
+    types = self.types.map{|f| {family_id: f.parent_id, name: f.name, manufacturer: f.manufacturer, icao: f.icao_code, id: f.id}}.sort_by{|f| f[:name]}
     families = self.families.sort_by{|f| [f[:manufacturer].downcase, f[:name].downcase]}
     return families.map{|f| {f.id => {name: f.name, manufacturer: f.manufacturer}}}
       .reduce{|a,b| a.merge(b)}
-      .map{|k,v| ["#{v[:manufacturer]} #{v[:name]}"].push(([{name: "#{v[:manufacturer]} #{v[:name]} (unknown type)", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| ["#{t[:manufacturer]} #{t[:name]}", t[:id]]})}
+      .map{|k,v| ["#{v[:manufacturer]} #{v[:name]}"].push(([{name: "#{v[:manufacturer]} #{v[:name]} (unknown type)", id: k}]+types.select{|t| t[:family_id] == k}).map{|t| [t[:icao] ? "#{t[:manufacturer]} #{t[:name]} [#{t[:icao]}]" : "#{t[:manufacturer]} #{t[:name]}", t[:id]]})}
   end
   
   # Accepts a flyer, the viewing user, and date range, and returns all aircraft
