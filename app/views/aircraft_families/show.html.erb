@@ -48,7 +48,7 @@
       <tbody>
       <% @child_types_with_no_flights.each do |type| %>
         <tr>
-          <td class="aircraft-family"><%= link_to(type.name, aircraft_family_path(type.slug)) %></td>
+          <td class="aircraft-family"><%= link_to("#{type.manufacturer} #{type.name}", aircraft_family_path(type.slug)) %></td>
           <td class="aircraft-code code-mono"><%= link_to(type.icao_code, aircraft_family_path(type.slug)) %></td>
         </tr>
       <% end %>
