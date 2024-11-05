@@ -26,11 +26,12 @@
 
       <% airline_maximum = known_airlines.max_by{|i| i[:flight_count]}[:flight_count]%>
       <% known_airlines.each_with_index do |airline, index| %>
+        <% title = (type == :operator) ? "View flights operated by #{airline[:name]}" : "View flights on #{airline[:name]}" %>
         <% path = (type == :operator) ? show_operator_path(airline[:slug]) : airline_path(airline[:slug]) %>
         <%= content_tag(:tr, id: "#{type.to_s}-count-row-#{airline[:id]}", class: (new_airlines.include?(airline[:id]) ? "new" : nil)) do %>
           <td class="counter"><%= ((is_summary || @sort[0] == :flights) && airline[:flight_count] == previous_count) ? Table::SAME_RANK : index + 1 %></td>
       		<td class="airline-airline">
-            <%= link_to(airline_icon(airline[:slug], title: "View flights on #{airline[:name]}") + airline[:name], path, title: "View flights on #{airline[:name]}") %><% if new_airlines.include?(airline[:id]) %>*<% end %>
+            <%= link_to(airline_icon(airline[:slug], title: title) + airline[:name], path, title: title) %><% if new_airlines.include?(airline[:id]) %>*<% end %>
           </td>
       		<td class="airline-code code-mono">
             <%= link_to(airline[:iata_code].split("-").first, path, title: "View flights on #{airline[:name]}") %>
