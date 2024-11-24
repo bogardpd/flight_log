@@ -18,6 +18,7 @@ module GraphML
   AIRLINE_COLORS = {
     "AirTran"           => "#2db7b7",
     "American Airlines" => "#ff99cc",
+    "Breeze Airways"    => "#2db7b7",
     "Delta"             => "#cc0000",
     "Southwest"         => "#ff9900",
     "United"            => "#3366ff",
