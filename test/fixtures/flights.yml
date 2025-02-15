@@ -239,4 +239,46 @@ flight_hidden:
   aircraft_family: aircraft_family_hidden
   tail_number: "N111HD"
   travel_class: "business" # To test hidden travel classes, make sure business is only used by hidden flights
+
+flight_fa_flight_id_null:
+  # Used to test Flights with a null fa_flight_id
+  trip: trip_generic
+  trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
+  departure_date: 2015-01-01
+  departure_utc: 2015-01-01 13:00:00
+  airline: airline_american
+  operator: airline_american
+  flight_number: "601"
+  aircraft_family: aircraft_737_800
+  fa_flight_id: null
+
+flight_fa_flight_id_single:
+  # Used to test Flights with a single fa_flight_id
+  trip: trip_generic
+  trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
+  departure_date: 2015-01-01
+  departure_utc: 2015-01-01 13:00:00
+  airline: airline_american
+  operator: airline_american
+  flight_number: "602"
+  aircraft_family: aircraft_737_800
+  fa_flight_id: "AAL602-1234567890-airline-0000"
+
+flight_fa_flight_id_multiple:
+  # Used to test Flights with multiple fa_flight_ids
+  trip: trip_generic
+  trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
+  departure_date: 2015-01-01
+  departure_utc: 2015-01-01 13:00:00
+  airline: airline_american
+  operator: airline_american
+  flight_number: "603"
+  aircraft_family: aircraft_737_800
+  fa_flight_id: "AAL603-1234567890-airline-0000,AAL603-1234567890-airline-0001"
   

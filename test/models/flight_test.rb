@@ -19,5 +19,20 @@ class FlightTest < ActiveSupport::TestCase
     flights = Flight.where(id: flights(:flight_layover_ratio_unknown_distance_f2).id)
     assert_nil(flights.total_distance(false))
   end
+
+  def test_fa_flight_ids_array_with_null_id
+    flight = flights(:flight_fa_flight_id_null)
+    assert_equal([], flight.fa_flight_ids_array)
+  end
+
+  def test_fa_flight_ids_array_with_single_id
+    flight = flights(:flight_fa_flight_id_single)
+    assert_equal(["AAL602-1234567890-airline-0000"], flight.fa_flight_ids_array)
+  end
+
+  def test_fa_flight_ids_array_with_multiple_ids
+    flight = flights(:flight_fa_flight_id_multiple)
+    assert_equal(["AAL603-1234567890-airline-0000", "AAL603-1234567890-airline-0001"], flight.fa_flight_ids_array)
+  end
   
 end

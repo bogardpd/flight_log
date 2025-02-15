@@ -123,7 +123,7 @@
   </p>
   
   <p>
-    <%= f.label :fa_flight_id, "fa_flight_id (AeroAPI)" %><br />
+    <%= f.label :fa_flight_id, "fa_flight_id (comma-separated if multiple)" %><br />
     <% if fields[:fa_flight_id] %>
       <%= f.text_field :fa_flight_id, size: 60, value: fields[:fa_flight_id], class: "autopopulated" %>
     <% else %>

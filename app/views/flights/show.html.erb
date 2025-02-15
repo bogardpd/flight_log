@@ -122,10 +122,12 @@
     <td class="tail-number" id="flight-tail-number"><%= tail_number_with_country_flag(@flight.tail_number, false) %></td>
   </tr>
   <% end %>
-  <% if logged_in? && @flight.fa_flight_id %>
+  <% if logged_in? && @flight.fa_flight_ids_array.any? %>
     <tr>
       <td class="label-column">FA Flight ID</td>
-      <td id="flight-fa-flight-id"><%= @flight.fa_flight_id %></td>
+      <td id="flight-fa-flight-id"><% @flight.fa_flight_ids_array.each_with_index do |fa_flight_id, index| %>
+        <%= fa_flight_id %><% if index < (@flight.fa_flight_ids_array.length - 1) %><br><% end %>
+      <% end %></td>
     </tr>
   <% end %>
 </table>

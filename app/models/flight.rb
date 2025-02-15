@@ -103,6 +103,24 @@ class Flight < ApplicationRecord
     return summary
   end
 
+  # Returns an array of FlightAware flight IDs for a Flight. If the Flight has
+  # no FlightAware ID, returns an empty array.
+  #
+  # @return [Array<String>] an array of FlightAware flight IDs
+  def fa_flight_ids_array
+    return [] if self.fa_flight_id.blank?
+    return self.fa_flight_id.split(",")
+  end
+
+  # Returns a hash of routes for a collection of flights with sorted pairs of
+  # {Airport} IDs as keys and distances in miles as values.
+  #
+  # @scope instance
+  # @return [Hash] A hash in the format [Integer airport_id, Integer airport_id] => Integer distance in miles
+  def route_distances
+    return self.class.route_distances
+  end
+
   # Returns a hash of routes for a collection of flights with sorted pairs of
   # {Airport} IDs as keys and distances in miles as values.
   #
