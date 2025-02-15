@@ -122,6 +122,12 @@
     <td class="tail-number" id="flight-tail-number"><%= tail_number_with_country_flag(@flight.tail_number, false) %></td>
   </tr>
   <% end %>
+  <% if logged_in? && @flight.fa_flight_id %>
+    <tr>
+      <td class="label-column">FA Flight ID</td>
+      <td id="flight-fa-flight-id"><%= @flight.fa_flight_id %></td>
+    </tr>
+  <% end %>
 </table>
 
 <% if logged_in? && @boarding_pass.data.present? %>

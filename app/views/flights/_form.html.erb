@@ -121,6 +121,15 @@
     <%= f.label :comment %><br />
     <%= f.text_field :comment, size: 60 %>
   </p>
+  
+  <p>
+    <%= f.label :fa_flight_id, "fa_flight_id (AeroAPI)" %><br />
+    <% if fields[:fa_flight_id] %>
+      <%= f.text_field :fa_flight_id, size: 60, value: fields[:fa_flight_id], class: "autopopulated" %>
+    <% else %>
+      <%= f.text_field :fa_flight_id, size: 60 %>
+    <% end %>
+  </p>
 
   <p>
   	<%= f.label :boarding_pass_data %><br />
@@ -130,6 +139,7 @@
       <%= f.text_area :boarding_pass_data, size: "60x5", class: "code-mono" %>
     <% end %>
   </p>
+
   
   <%= f.hidden_field(:pk_pass_id, value: fields[:pk_pass_id]) if fields[:pk_pass_id] %>
   <%= f.hidden_field(:trip_id, value: flight.trip.id) %>
