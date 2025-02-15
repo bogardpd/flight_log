@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_04_123926) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_15_174234) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_04_123926) do
     t.integer "codeshare_airline_id"
     t.text "boarding_pass_data"
     t.integer "aircraft_family_id"
+    t.string "fa_flight_id"
   end
 
   create_table "pk_passes", id: :serial, force: :cascade do |t|
@@ -112,5 +113,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_04_123926) do
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
-
 end
