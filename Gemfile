@@ -10,8 +10,6 @@ gem 'puma', '~> 6.4', '>= 6.4.3'
 gem 'pg', '~> 1.5', '>= 1.5.7'
 # Use bcrypt to hash passwords
 gem 'bcrypt', '~> 3.1', '>= 3.1.13'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '~> 4.2'
 # Use sprockets-rails to allow precompilation of assets
 gem 'sprockets-rails', '~> 3.4', '>= 3.4.2'
 

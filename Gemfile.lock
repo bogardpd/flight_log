@@ -115,7 +115,6 @@ GEM
     date (3.4.1)
     drb (2.2.1)
     erubi (1.13.1)
-    execjs (2.10.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashdiff (1.1.2)
@@ -242,8 +241,6 @@ GEM
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    uglifier (4.2.1)
-      execjs (>= 0.3.0, < 3)
     uri (1.0.3)
     useragent (0.16.11)
     webmock (3.25.1)
@@ -276,7 +273,6 @@ DEPENDENCIES
   selenium-webdriver (~> 4.23.0)
   sprockets-rails (~> 3.4, >= 3.4.2)
   sql_queries_count
-  uglifier (~> 4.2)
   webmock
 
 RUBY VERSION
