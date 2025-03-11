@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :trips, dependent: :destroy
   
   before_save :create_remember_token
-  before_save :create_api_key
+  before_create :create_api_key
   
   validates :name, presence: true, uniqueness: true, length: { maximum: 50 }
   validates :password, presence: true, length: { minimum: 6 }
