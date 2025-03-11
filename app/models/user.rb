@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :trips, dependent: :destroy
   
   before_save :create_remember_token
+  before_save :create_api_key
   
   validates :name, presence: true, uniqueness: true, length: { maximum: 50 }
   validates :password, presence: true, length: { minimum: 6 }
@@ -55,6 +56,13 @@ class User < ApplicationRecord
   # @return [String] a token
   def create_remember_token
     self.remember_token = SecureRandom.hex
+  end
+
+  # Creates an API key for the user.
+  # 
+  # @return [String] an API key
+  def create_api_key
+    self.api_key = SecureRandom.hex
   end
     
 end
