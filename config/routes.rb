@@ -74,6 +74,10 @@ Portfolio::Application.routes.draw do
   get   "/admin/annual-summary"          => "admin#annual_flight_summary",   as: :annual_flight_summary
   get   "/admin/boarding-pass-validator" => "admin#boarding_pass_validator", as: :boarding_pass_validator
   
+  # API:
+  get "api" => "api#index"
+  get "api/recent_flights"
+
   # Certbot:
   get "/.well-known/acme-challenge/:id" => "pages#letsencrypt"
   
