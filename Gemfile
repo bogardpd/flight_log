@@ -10,11 +10,9 @@ gem 'puma', '~> 6.4', '>= 6.4.3'
 gem 'pg', '~> 1.5', '>= 1.5.7'
 # Use bcrypt to hash passwords
 gem 'bcrypt', '~> 3.1', '>= 3.1.13'
-# Use sprockets-rails to allow precompilation of assets
+# Use sprockets-rails for precompilation of assets
 gem 'sprockets-rails', '~> 3.4', '>= 3.4.2'
 
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 # Use rubyzip for working with zip files
 gem 'rubyzip', '~> 2.3', '>= 2.3.2'
 # Use AWS S3 for boarding pass storage
