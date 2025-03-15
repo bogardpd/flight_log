@@ -4,3 +4,4 @@ user_one:
   name: "Sample User"
   password_digest: "<%= User.digest('password') %>"
   remember_token: "1234abcd"
+  api_key: "1234abcd"
