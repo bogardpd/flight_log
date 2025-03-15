@@ -282,3 +282,26 @@ flight_fa_flight_id_multiple:
   aircraft_family: aircraft_737_800
   fa_flight_id: "AAL603-1234567890-airline-0000,AAL603-1234567890-airline-0001"
   
+flight_recent_1:
+  trip: trip_recent
+  trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
+  departure_date: <%= 2.days.ago.to_date %>
+  departure_utc: <%= 2.days.ago.utc %>
+  airline: airline_american
+  operator: airline_american
+  flight_number: "7001"
+  fa_flight_id: "AAL7001-1234567890-airline-0000"
+
+flight_recent_2:
+  trip: trip_recent
+  trip_section: 2
+  origin_airport: airport_dfw
+  destination_airport: airport_ord
+  departure_date: <%= 1.day.ago.to_date %>
+  departure_utc: <%= 1.day.ago.utc %>
+  airline: airline_american
+  operator: airline_american
+  flight_number: "7002"
+  fa_flight_id: "AAL7002-1234567890-airline-0000"

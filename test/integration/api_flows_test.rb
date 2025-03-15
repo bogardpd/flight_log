@@ -21,10 +21,22 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   end
   
   test "should get recent_flights" do 
+    expected_result = [
+      {
+        departure_utc: flights(:flight_recent_1).departure_utc.iso8601,
+        fh_id: flights(:flight_recent_1).id,
+        fa_flight_id: flights(:flight_recent_1).fa_flight_id,
+      },
+      {
+        departure_utc: flights(:flight_recent_2).departure_utc.iso8601,
+        fh_id: flights(:flight_recent_2).id,
+        fa_flight_id: flights(:flight_recent_2).fa_flight_id,
+      },
+    ]
     get api_recent_flights_url, headers: {'api-key' => users(:user_one).api_key}
     assert_response :success
     assert_equal "application/json", @response.media_type
-    assert_equal JSON.generate({success: true}), @response.body
+    assert_equal JSON.generate(expected_result), @response.body
   end
 
 end

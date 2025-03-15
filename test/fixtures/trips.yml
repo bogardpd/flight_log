@@ -50,6 +50,12 @@ trip_layover_ratios:
   comment: "sec1 ORD-DFW, sec2 DFW-SEA-ORD, sec3 ORD-ORD-YVR, sec4 YVR-YVR, sec5 no flights"
   user: user_one
 
+trip_recent:
+  # Used by TripTest to test trips with recent flights
+  name: "Recent Trip"
+  hidden: No
+  user: user_one
+
 trip_generic:
   # Used for all test flights that don't require a specific trip
   name: "Generic trip"
