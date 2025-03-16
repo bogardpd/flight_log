@@ -9,15 +9,23 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     get api_url
     assert_response :success
   end
-  
-  test "should return 403 for recent_flights without api key" do
-    get api_recent_flights_url
-    assert_response :forbidden
+
+  # annual_flight_summary
+
+  test "should return 403 for annual_flight_summary with empty or bad api key" do
+    check_empty_or_bad_api_key(api_annual_flight_summary_url)
   end
 
-  test "should return 403 for recent_flights with invalid api key" do
-    get api_recent_flights_url, headers: {'api-key' => "badkey"}
-    assert_response :forbidden
+  test "should get annual_flight_summary" do
+    get api_annual_flight_summary_url, headers: {'api-key' => users(:user_one).api_key}
+    assert_response :success
+    assert_equal "application/json", @response.media_type
+  end
+
+  # recent_flights
+  
+  test "should return 403 for recent_flights with empty or bad api key" do
+    check_empty_or_bad_api_key(api_recent_flights_url)
   end
   
   test "should get recent_flights" do 
@@ -37,6 +45,18 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal "application/json", @response.media_type
     assert_equal JSON.generate(expected_result), @response.body
+  end
+
+  private
+  
+  def check_empty_or_bad_api_key(path)
+    get path
+    assert_response :forbidden
+    assert_equal JSON.generate(ApiController::AUTHENTICATION_ERROR), @response.body
+
+    get path, headers: {'api-key' => "badkey"}
+    assert_response :forbidden
+    assert_equal JSON.generate(ApiController::AUTHENTICATION_ERROR), @response.body
   end
 
 end

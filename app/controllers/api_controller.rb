@@ -1,5 +1,5 @@
 class ApiController < ApplicationController
-  before_action :api_key_user, only: [:recent_flights]
+  before_action :api_key_user, except: [:index]
 
   AUTHENTICATION_ERROR = {error: "Invalid API key. Provide a valid 'api-key' in the header."}
 
@@ -9,7 +9,14 @@ class ApiController < ApplicationController
   def index
   end
 
-  # Returns the last 10 days of flights for the user.
+  # Provides a summary of the user's flight counts and distances for the year.
+  #
+  # @return [JSON] the user's annual flight summary
+  def annual_flight_summary
+    render(json: JSON.generate([]), content_type: 'application/json')
+  end
+
+  # Provides the last 10 days of flights for the user.
   #
   # @return [JSON] the most recent flights for the user
   def recent_flights

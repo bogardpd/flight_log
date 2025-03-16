@@ -76,6 +76,7 @@ Portfolio::Application.routes.draw do
   
   # API:
   get "api" => "api#index"
+  get "api/annual_flight_summary"
   get "api/recent_flights"
 
   # Certbot:
