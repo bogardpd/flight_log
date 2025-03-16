@@ -2,8 +2,18 @@
 
 <p>API queries must be authenticated with a valid API key. The API key should be included with the key <code>api-key</code> in the header.</p>
 
-<h2>recent_flights</h2>
+<h2><code>GET /api/annual_flight_summary</code></h2>
 
-<p><code>GET /api/recent_flights</code></p>
+<p>Returns a JSON object containing a record for each year of the user’s flights. Each year record contains a <code>count</code> object and a <code>distance_mi</code> object; each of these objects contain values for <code>business</code>, <code>mixed</code>, <code>personal</code>, and <code>undefined</code>. <code>count</code> values are an integer number of flights, and <code>distance_mi</code> values are an integer number of (statute) miles.</p>
+
+<h3>Example</h3>
+
+<p><code>{'2018': {'count': {'business': 0, 'mixed': 0, 'personal': 0, 'undefined': 0}, 'distance_mi': {'business': 0, 'mixed': 0, 'personal': 0, 'undefined': 0}}, ...}</code></p>
+
+<h2><code>GET /api/recent_flights</code></h2>
 
 <p>Returns a JSON array of all of the user’s flights within the last 10 days, with each record including the <code>departure_utc</code>, <code>id</code>, and <code>fa_flight_id</code>.</p>
+
+<h3>Example</h3>
+
+<p><code>[{'departure_utc': '2018-01-01T00:00:00Z', 'id': 1, 'fa_flight_id': 'AAL7001-1234567890-airline-0000'}, ...]</code></p>
