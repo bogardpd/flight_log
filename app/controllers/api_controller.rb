@@ -3,6 +3,9 @@ class ApiController < ApplicationController
 
   AUTHENTICATION_ERROR = {error: "Invalid API key. Provide a valid 'api-key' in the header."}
 
+  # Renders the index page, showing basic API documentation.
+  #
+  # @return [nil]
   def index
   end
 
