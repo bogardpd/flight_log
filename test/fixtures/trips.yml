@@ -56,6 +56,14 @@ trip_recent:
   hidden: No
   user: user_one
 
+trip_2005:
+  # Used by UserTest to test User.annual_flight_summary with flights from 2005.
+  # Do not assign flights from 2005 to any other trip.
+  name: "Trip from 2005"
+  hidden: No
+  user: user_one
+  purpose: personal
+
 trip_generic:
   # Used for all test flights that don't require a specific trip
   name: "Generic trip"

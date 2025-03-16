@@ -20,6 +20,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     get api_annual_flight_summary_url, headers: {'api-key' => users(:user_one).api_key}
     assert_response :success
     assert_equal "application/json", @response.media_type
+    assert_equal JSON.generate(users(:user_one).annual_flight_summary(users(:user_one))), @response.body
   end
 
   # recent_flights

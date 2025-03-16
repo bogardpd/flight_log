@@ -61,48 +61,6 @@ class Flight < ApplicationRecord
     return self.airline.name + " " + self.flight_number.to_s
   end
 
-  # For a given flight collection, returns business, mixed, personal, and
-  # undefined Flight counts grouped by year. Years with no flights that are
-  # between the earliest and latest flight will be included, with zeroes in the
-  # values.
-  #
-  # @param distances [Boolean] If set to true, values will be distances in
-  #   miles. Otherwise, values will be counts of flights.
-  # @return [Hash<Number,Hash>] a hash with years as the keys, and
-  #   hashes of counts of business, mixed, personal, and undefined flights as
-  #   the values
-  # @example
-  #   Flight.by_year #=> {2009: {business: 35, mixed: 4, personal: 7, undefined: 0}}
-  def self.by_year(distances: false)
-    # Create hash ranging from earliest to latest years (default all values to zero):
-    summary = Hash.new
-    if self.year_range
-      self.year_range.each do |year|
-        summary[year] = {business: 0, mixed: 0, personal: 0, undefined: 0}
-      end
-    end
-
-    if distances
-      route_distances = self.route_distances
-      flights = self.select("departure_date, origin_airport_id, destination_airport_id, trips.purpose AS purpose")
-    else
-      flights = self.select("departure_date, trips.purpose AS purpose")
-    end
-    flights = flights.joins("LEFT OUTER JOIN trips ON trips.id = flights.trip_id")
-    
-    # Loop through all flights (with year and flight.trip.purpose selected and increment hash):
-    flights.each do |flight|
-      purpose = flight.purpose.present? ? flight.purpose.to_sym : :undefined
-      if distances
-        summary[flight.departure_date.year][purpose] += route_distances[[flight.origin_airport_id,flight.destination_airport_id].sort]
-      else
-        summary[flight.departure_date.year][purpose] += 1
-      end
-    end
-    
-    return summary
-  end
-
   # Returns an array of FlightAware flight IDs for a Flight. If the Flight has
   # no FlightAware ID, returns an empty array.
   #

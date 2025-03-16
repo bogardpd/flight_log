@@ -14,14 +14,15 @@
     <th class="annual-summary annual-summary-undefined">Undefined</th>
     <th class="annual-summary">Total</th>
   </tr>
-<% @flight_summary.each do |year, data| %>
+<% @annual_flight_summary.each do |year, data| %>
+  <% row_count = data[:count].inject(0) { |sum, n| sum + n[1] } %>
   <tr>
     <td class="annual-summary"><%= year %></td>
-    <td class="annual-summary"><%= data[:business] %></td>
-    <td class="annual-summary"><%= data[:mixed] %></td>
-    <td class="annual-summary"><%= data[:personal] %></td>
-    <td class="annual-summary annual-summary-undefined"><%= data[:undefined] > 0 ? data[:undefined] : "-"  %></td>
-    <td class="annual-summary"><%= data.inject(0) { |sum, n| sum + n[1] } %></td>
+    <td class="annual-summary"><%= data[:count][:business] %></td>
+    <td class="annual-summary"><%= data[:count][:mixed] %></td>
+    <td class="annual-summary"><%= data[:count][:personal] %></td>
+    <td class="annual-summary annual-summary-undefined"><%= data[:count][:undefined] > 0 ? data[:count][:undefined] : "-"  %></td>
+    <td class="annual-summary"><%= row_count %></td>
   </tr>
 <% end %>
 </table>
@@ -36,26 +37,26 @@
     <th class="annual-summary annual-summary-undefined">Undefined</th>
     <th class="annual-summary">Total</th>
   </tr>
-<% @distance_summary.each do |year, data| %>
-  <% row_miles = data.inject(0) { |sum, n| sum + n[1] } %>
+<% @annual_flight_summary.each do |year, data| %>
+  <% row_miles = data[:distance_mi].inject(0) { |sum, n| sum + n[1] } %>
   <tr>
     <td class="annual-summary"><%= year %></td>
     <td class="annual-summary annual-summary-distance">
-      <%= data[:business] %> mi<br>
-      <%= Distance.km(data[:business]) %> km
+      <%= data[:distance_mi][:business] %> mi<br>
+      <%= Distance.km(data[:distance_mi][:business]) %> km
     </td>
     <td class="annual-summary annual-summary-distance">
-      <%= data[:mixed] %> mi<br>
-      <%= Distance.km(data[:mixed]) %> km
+      <%= data[:distance_mi][:mixed] %> mi<br>
+      <%= Distance.km(data[:distance_mi][:mixed]) %> km
     </td>
     <td class="annual-summary annual-summary-distance">
-      <%= data[:personal] %> mi<br>
-      <%= Distance.km(data[:personal]) %> km
+      <%= data[:distance_mi][:personal] %> mi<br>
+      <%= Distance.km(data[:distance_mi][:personal]) %> km
     </td>
     <td class="annual-summary annual-summary-distance annual-summary-undefined">
-      <% if data[:undefined] > 0 %>
-        <%= data[:undefined] %> mi<br>
-      <%= Distance.km(data[:undefined]) %> km
+      <% if data[:distance_mi][:undefined] > 0 %>
+        <%= data[:distance_mi][:undefined] %> mi<br>
+      <%= Distance.km(data[:distance_mi][:undefined]) %> km
       <% else %>
         -
       <% end %>

@@ -305,3 +305,17 @@ flight_recent_2:
   operator: airline_american
   flight_number: "7002"
   fa_flight_id: "AAL7002-1234567890-airline-0000"
+
+flight_year_2005:
+  # Used to test annual_flight_summary with data from 2010. No other flights
+  # should be in this year.
+  trip: trip_2005
+  trip_section: 1
+  origin_airport: airport_ord
+  destination_airport: airport_dfw
+  departure_date: 2005-01-01
+  departure_utc: 2005-01-01 12:00:00
+  airline: airline_american
+  operator: airline_american
+  flight_number: "8001"
+  fa_flight_id: "AAL8001-1234567890-airline-0000"

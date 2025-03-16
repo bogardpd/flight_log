@@ -24,6 +24,44 @@ class User < ApplicationRecord
   def all_emails
     return [self.email, self.alternate_email]
   end
+
+  # Returns a hash of the user's flight count and distances by trip purpose for
+  # each year.
+  #
+  # @param viewing_user [User] the {User} (or visitor if nil) viewing the flights
+  # @return [Hash] the user's annual flight summary
+  # @example
+  #   User.annual_flight_summary => {
+  #     2018 => {
+  #       count: {business: 0, mixed: 0, personal: 0, undefined: 0},
+  #       distance_mi: {business: 0, mixed: 0, personal: 0, undefined: 0},
+  #     }
+  #   }
+  def annual_flight_summary(viewing_user=nil)
+    flights = self.flights(viewing_user)
+    route_distances = flights.route_distances
+    trip_ids = flights.map{|f| f.trip_id}.uniq
+    purposes = Trip.where(id: trip_ids).pluck(:id, :purpose).to_h
+    summary = Hash.new
+    if flights.year_range
+      flights.year_range.each do |year|
+        summary[year] = {
+          count: {business: 0, mixed: 0, personal: 0, undefined: 0},
+          distance_mi: {business: 0, mixed: 0, personal: 0, undefined: 0},
+        }
+      end
+    end
+
+    # Loop through all flights and add to the summary.
+    flights.each do |flight|
+      year = flight.departure_date.year
+      purpose = purposes.dig(flight.trip_id).nil? ? :undefined : purposes[flight.trip_id].to_sym
+      distance = route_distances[[flight.origin_airport_id,flight.destination_airport_id].sort] || 0
+      summary[year][:count][purpose] += 1
+      summary[year][:distance_mi][purpose] += distance
+    end
+    return summary
+  end
   
   # Returns all of this User's flights that the viewing user/visitor has
   # permission to see.

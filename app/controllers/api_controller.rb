@@ -13,7 +13,8 @@ class ApiController < ApplicationController
   #
   # @return [JSON] the user's annual flight summary
   def annual_flight_summary
-    render(json: JSON.generate([]), content_type: 'application/json')
+    data = @api_key_user.annual_flight_summary(@api_key_user)
+    render(json: JSON.generate(data), content_type: 'application/json')
   end
 
   # Provides the last 10 days of flights for the user.

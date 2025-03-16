@@ -18,8 +18,7 @@ class AdminController < ApplicationController
   #
   # @return [nil]
   def annual_flight_summary
-    @flight_summary = Flight.by_year
-    @distance_summary = Flight.by_year(distances: true)
+    @annual_flight_summary = current_user.annual_flight_summary(current_user)
   end
   
   # Shows the boarding pass data of all {Flight Flights} with invalid boarding pass
