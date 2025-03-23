@@ -36,6 +36,16 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     assert_redirected_to(root_path)
   end
 
+  test "can update route when logged in" do
+    log_in_as(users(:user_one))
+    route = routes(:route_dfw_ord)
+    distance_update = 1234
+    assert_difference("Route.count", 0) do
+      patch(route_path(route), params: {route: {distance_mi: distance_update}})
+      assert_equal(distance_update, Route.find(route.id).distance_mi)
+    end
+  end
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Index Routes                              #
   ##############################################################################
