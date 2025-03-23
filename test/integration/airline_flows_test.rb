@@ -11,6 +11,17 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     @visible_flight = flights(:flight_visible)
     @hidden_flight = flights(:flight_hidden)
 
+    @airline_params_new = {
+      name:         "British Airways",
+      iata_code:    "BA",
+      icao_code:    "BAW",
+      numeric_code: "125",
+      slug:         "British-Airways",
+    }
+    @airline_params_update = {
+      name:         "American Airlines (Updated)",
+    }
+
     @extension_types = {
       'geojson' => "application/geo+json",
       'gpx'     => "application/gpx+xml",
@@ -43,6 +54,26 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_redirected_to(root_path)
   end
 
+  test "can create airline when logged in" do
+    log_in_as(users(:user_one))
+    assert_difference("Airline.count", 1) do
+      post(airlines_path, params: {airline: @airline_params_new})
+    end
+    airline = Airline.last
+    assert_redirected_to(airline_path(airline.slug))
+    assert_equal(@airline_params_new[:name], airline.name)
+    assert_equal(@airline_params_new[:iata_code], airline.iata_code)
+    assert_equal(@airline_params_new[:icao_code], airline.icao_code)
+    assert_equal(@airline_params_new[:numeric_code], airline.numeric_code)
+  end
+
+  test "cannot create airline when not logged in" do
+    assert_no_difference("Airline.count") do
+      post(airlines_path, params: {airline: @airline_params_new})
+    end
+    assert_redirected_to(root_path)
+  end
+
   test "can see edit airline when logged in" do
     airline = airlines(:airline_american)
     log_in_as(users(:user_one))
@@ -72,6 +103,24 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     airline = airlines(:airline_american)
     get(edit_airline_path(airline))
     assert_redirected_to(root_path)
+  end
+
+  test "can update airline when logged in" do
+    airline = airlines(:airline_american)
+    log_in_as(users(:user_one))
+    patch(airline_path(airline), params: {airline: @airline_params_update})
+    assert_redirected_to(airline_path(airline.slug))
+    airline.reload
+    assert_equal(@airline_params_update[:name], airline.name)
+  end
+
+  test "cannot update airline when not logged in" do
+    airline = airlines(:airline_american)
+    original_name = airline.name
+    patch(airline_path(airline), params: {airline: @airline_params_update})
+    assert_redirected_to(root_path)
+    airline.reload
+    assert_equal(original_name, airline.name)
   end
 
   ##############################################################################
@@ -250,21 +299,27 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
-  # Tests to ensure visitors can't create, update, or destroy airlines         #
+  # Tests for deleting airlines                                                #
   ##############################################################################
 
-  test "visitor cannot create, update, or destroy airlines" do
-    verify_create_update_destroy_redirects(
-      airlines_path,
-      airline_path(@visible_airline.slug)
-    )
+  test "can destroy airline when logged in" do
+    log_in_as(users(:user_one))
+    airline = airlines(:airline_no_flights)
+    assert_difference("Airline.count", -1) do
+      delete(airline_path(airline))
+    end
+    assert_redirected_to(airlines_path)
   end
 
-  ##############################################################################
-  # Tests to ensure users can't destroy airlines with flights                  #
-  ##############################################################################
+  test "cannot destroy airline when not logged in" do
+    airline = airlines(:airline_no_flights)
+    assert_no_difference("Airline.count") do
+      delete(airline_path(airline))
+    end
+    assert_redirected_to(root_path)
+  end
 
-  test "cannot remove airline with flights" do
+  test "cannot destroy airline with flights" do
     log_in_as(users(:user_one))
     airline = flights(:flight_visible).airline
     
@@ -275,7 +330,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_redirected_to(airline_path(airline.slug))
   end
 
-  test "cannot remove operator with flights" do
+  test "cannot destroy operator with flights" do
     log_in_as(users(:user_one))
     operator = flights(:flight_visible).operator
     
