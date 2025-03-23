@@ -9,6 +9,27 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
     @no_flights_aircraft_family = aircraft_families(:aircraft_family_no_flights)
 
+    @family_params_new = {
+      manufacturer: "Embraer",
+      name:         "ERJ-145 Family",
+      category:     "regional_jet",
+      slug:         "Embraer-ERJ-145-Family",
+    }
+    @family_params_update = {
+      name:         "737F Family",
+    }
+    @type_params_new = {
+      manufacturer: "Embraer",
+      name:         "ERJ-145",
+      iata_code:    "ER4",
+      icao_code:    "E145",
+      category:     "regional_jet",
+      slug:         "Embraer-ERJ-145"
+    }
+    @type_params_update = {
+      name:         "737-800F",
+    }
+
     @extension_types = {
       'geojson' => "application/geo+json",
       'gpx'     => "application/gpx+xml",
@@ -64,6 +85,42 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_redirected_to(root_path)
   end
 
+  test "can create aircraft family and type when logged in" do
+    log_in_as(users(:user_one))
+    assert_difference("AircraftFamily.count", 1) do
+      post(aircraft_families_path, params: {aircraft_family: @family_params_new})
+    end
+    family = AircraftFamily.find_by(slug: @family_params_new[:slug])
+    assert_redirected_to(aircraft_family_path(family.slug))
+    assert_equal(@family_params_new[:manufacturer], family.manufacturer)
+    assert_equal(@family_params_new[:name], family.name)
+    assert_equal(@family_params_new[:category], family.category)
+    assert_equal(@family_params_new[:slug], family.slug)
+
+    type_params = @type_params_new.merge(parent_id: family.id)
+    assert_difference("AircraftFamily.count", 1) do
+      post(aircraft_families_path, params: {aircraft_family: type_params})
+    end
+    type = AircraftFamily.find_by(slug: @type_params_new[:slug])
+    assert_redirected_to(aircraft_family_path(type.slug))
+    assert_equal(@type_params_new[:name], type.name)
+    assert_equal(@type_params_new[:iata_code], type.iata_code)
+    assert_equal(@type_params_new[:icao_code], type.icao_code)
+    assert_equal(@type_params_new[:slug], type.slug)
+  end
+
+  test "cannot create aircraft family or type when not logged in" do
+    assert_no_difference("AircraftFamily.count") do
+      post(aircraft_families_path, params: {aircraft_family: @family_params_new})
+    end
+    assert_redirected_to(root_path)
+
+    assert_no_difference("AircraftFamily.count") do
+      post(aircraft_families_path, params: {aircraft_family: @type_params_new})
+    end
+    assert_redirected_to(root_path)
+  end
+
   test "can see edit aircraft family when logged in" do
     aircraft_family = aircraft_families(:aircraft_737)
     log_in_as(users(:user_one))
@@ -110,6 +167,44 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     aircraft_type = aircraft_families(:aircraft_737_800)
     get(edit_aircraft_family_path(aircraft_type))
     assert_redirected_to(root_path)
+  end
+
+  test "can update aircraft family when logged in" do
+    log_in_as(users(:user_one))
+
+    aircraft_family = aircraft_families(:aircraft_737)
+    patch(aircraft_family_path(aircraft_family), params: {aircraft_family: @family_params_update})
+    assert_redirected_to(aircraft_family_path(aircraft_family.slug))
+    aircraft_family.reload
+    assert_equal(@family_params_update[:name], AircraftFamily.find(aircraft_family.id).name)
+  end
+
+  test "can update aircraft type when logged in" do
+    log_in_as(users(:user_one))
+
+    aircraft_type = aircraft_families(:aircraft_737_800)
+    patch(aircraft_family_path(aircraft_type), params: {aircraft_family: @type_params_update})
+    assert_redirected_to(aircraft_family_path(aircraft_type.slug))
+    aircraft_type.reload
+    assert_equal(@type_params_update[:name], AircraftFamily.find(aircraft_type.id).name)
+  end
+
+  test "cannot update aircraft family when not logged in" do
+    aircraft_family = aircraft_families(:aircraft_737)
+    original_name = aircraft_family.name
+    patch(aircraft_family_path(aircraft_family), params: {aircraft_family: @family_params_update})
+    assert_redirected_to(root_path)
+    aircraft_family.reload
+    assert_equal(original_name, aircraft_family.name)
+  end
+
+  test "cannot update aircraft type when not logged in" do
+    aircraft_type = aircraft_families(:aircraft_737_800)
+    original_name = aircraft_type.name
+    patch(aircraft_family_path(aircraft_type), params: {aircraft_family: @type_params_update})
+    assert_redirected_to(root_path)
+    aircraft_type.reload
+    assert_equal(original_name, aircraft_type.name)
   end
 
   ##############################################################################
@@ -220,20 +315,44 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
-  # Tests to ensure visitors can't create, update, or destroy aircraft         #
+  # Tests for deleting aircraft families and types                             #
   ##############################################################################
 
-  test "visitor cannot create, update, or destroy aircraft" do
-    verify_create_update_destroy_redirects(
-      aircraft_families_path,
-      aircraft_family_path(@visible_aircraft_family.slug)
-    )
+  test "can remove aircraft family and type when logged in" do
+    log_in_as(users(:user_one))
+
+    # Delete child type first.
+    type = aircraft_families(:aircraft_type_no_flights)
+    assert_difference("AircraftFamily.count", -1) do
+      delete(aircraft_family_path(type))
+    end
+    assert_redirected_to(aircraft_family_path(type.parent.slug))
+
+    # Delete family.
+    family = aircraft_families(:aircraft_family_no_flights)
+    assert_difference("AircraftFamily.count", -1) do
+      delete(aircraft_family_path(family))
+    end
+    assert_redirected_to(aircraft_families_path)
+
   end
 
-  ##############################################################################
-  # Tests to ensure users can't destroy aircraft with flights or subtypes      #
-  ##############################################################################
+  test "cannot remove aircraft family when not logged in" do
+    aircraft = aircraft_families(:aircraft_family_no_flights_no_children)
+    assert_no_difference("AircraftFamily.count") do
+      delete(aircraft_family_path(aircraft))
+    end
+    assert_redirected_to(root_path)
+  end
 
+  test "cannot remove aircraft type when not logged in" do
+    aircraft = aircraft_families(:aircraft_type_no_flights)
+    assert_no_difference("AircraftFamily.count") do
+      delete(aircraft_family_path(aircraft))
+    end
+    assert_redirected_to(root_path)
+  end
+  
   test "cannot remove aircraft family with flights" do
     log_in_as(users(:user_one))
     aircraft = flights(:flight_visible).aircraft_family

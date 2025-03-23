@@ -45,6 +45,7 @@ aircraft_with_only_subtype_parent:
   slug: "Parent-Parent"
   name: "Parent"
   manufacturer: "Parent"
+  category: "narrow_body"
 
 aircraft_with_only_subtype_child:
   # Used to test aircraft where only the subtypes have flights.
@@ -52,6 +53,7 @@ aircraft_with_only_subtype_child:
   name: "Child"
   manufacturer: "Parent"
   parent: aircraft_with_only_subtype_parent
+  category: "narrow_body"
   
 aircraft_family_visible:
   # Used to test non-hidden aircraft families
@@ -60,7 +62,7 @@ aircraft_family_visible:
   manufacturer: "Visible Manufacturer"
   iata_code: "VAF"
   icao_code: "VVAF"
-  category: "narrow-body"
+  category: "narrow_body"
 
 aircraft_type_visible:
   # Used to test non-hidden aircraft types
@@ -69,7 +71,7 @@ aircraft_type_visible:
   manufacturer: "Visible Manufacturer"
   iata_code: "VAT"
   icao_code: "VVAT"
-  category: "narrow-body"
+  category: "narrow_body"
   parent: aircraft_family_visible
 
 aircraft_family_hidden:
@@ -79,7 +81,7 @@ aircraft_family_hidden:
   manufacturer: "Hidden Manufacturer"
   iata_code: "HAF"
   icao_code: "HHAF"
-  category: "narrow-body"
+  category: "narrow_body"
 
 aircraft_type_hidden:
   # Used to test non-hidden aircraft types
@@ -88,8 +90,19 @@ aircraft_type_hidden:
   manufacturer: "Hidden Manufacturer"
   iata_code: "HAT"
   icao_code: "HHAT"
-  category: "narrow-body"
+  category: "narrow_body"
   parent: aircraft_family_hidden
+
+aircraft_family_no_flights_no_children:
+  # Must not be used by any flights. Must not have child type for testing
+  # destroying aircraft families with child types
+  # (test/integration/aircraft_family_flows_test.rb).
+  slug: "Unused-Family-No-Children"
+  name: "Unused Aircraft Family No Children"
+  manufacturer: "Unused Manufacturer"
+  iata_code: "UAFNC"
+  icao_code: "UUAFNC"
+  category: "narrow_body"
 
 aircraft_family_no_flights:
   # Must not be used by any flights. Must have child type for testing destroying
@@ -100,7 +113,7 @@ aircraft_family_no_flights:
   manufacturer: "Unused Manufacturer"
   iata_code: "UAF"
   icao_code: "UUAF"
-  category: "narrow-body"
+  category: "narrow_body"
 
 aircraft_type_no_flights:
   # Must not be used by any flights.
@@ -109,5 +122,5 @@ aircraft_type_no_flights:
   manufacturer: "Unused Manufacturer"
   iata_code: "UAT"
   icao_code: "UUAT"
-  category: "narrow-body"
+  category: "narrow_body"
   parent: aircraft_family_no_flights
