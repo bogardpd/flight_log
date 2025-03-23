@@ -12,6 +12,30 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     @visible_class = "economy"
     @hidden_class = "business"
 
+    @flight_params_new = {
+      trip_id: trips(:trip_hidden).id,
+      trip_section: 1,
+      origin_airport_id: airports(:airport_ord).id,
+      destination_airport_id: airports(:airport_dfw).id,
+      departure_date: Date.new(2021, 1, 1),
+      departure_utc: Time.new(2021, 1, 1, 0, 0, 0, "+00:00"),
+      airline_id: airlines(:airline_american).id,
+      flight_number: "1234",
+      aircraft_family_id: aircraft_families(:aircraft_737_800).id,
+      tail_number: "N111AA",
+    }
+    @flight_params_update = {
+      flight_number: "5678",
+    }
+    
+    # Setup for AeroAPI4 stubs:
+    @fa_flight_defaults = {
+      # Values from /test/fixtures/files/aero_api4/flights_ident.json:
+      fa_flight_id: "AAL1734-1575870329-airline-0404",
+      origin: "KDFW",
+      destination: "KORD",
+    }
+
     @extension_types = {
       'geojson' => "application/geo+json",
       'gpx'     => "application/gpx+xml",
@@ -125,6 +149,252 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_redirected_to(root_path)
   end
 
+  test "can select AeroAPI flight from an airline and flight number" do
+    log_in_as(users(:user_one))
+
+    # Setup:
+    fa_flight = @fa_flight_defaults.merge({
+      ident: "AAL1734",
+    })
+    stub_aero_api4_get_flights_ident(fa_flight[:ident], {
+      fa_flight_id: fa_flight[:fa_flight_id],
+    })
+    stub_aero_api4_get_airports_id(fa_flight[:origin], {})
+    stub_aero_api4_get_airports_id(fa_flight[:destination], {})
+
+    # Run test:
+    post(new_flight_path, params: {
+      clear_session: true,
+      trip_id: trips(:trip_hidden).id,
+      airline_icao: "AAL",
+      flight_number: "1734",
+    })
+    assert_response(:success)
+    assert_select("h1", "Which Flight is Yours?")
+  end
+
+  test "can select AeroAPI flight from BCBP data" do
+    log_in_as(users(:user_one))
+
+    # Setup:
+    fa_flight = @fa_flight_defaults.merge({
+      ident: "AAL1734",
+    })
+    stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], {
+      fa_flight_id: fa_flight[:fa_flight_id],
+      airline_iata: fa_flight[:airline_iata],
+    })
+    stub_aero_api4_get_flights_ident(fa_flight[:ident], {
+      fa_flight_id: fa_flight[:fa_flight_id],
+    })
+    stub_aero_api4_get_airports_id(fa_flight[:origin], {})
+    stub_aero_api4_get_airports_id(fa_flight[:destination], {})
+
+    # Run test:
+    post(new_flight_path, params: {
+      clear_session: true,
+      trip_id: trips(:trip_hidden).id,
+      boarding_pass_data: file_fixture("bcbp.txt").read,
+    })
+    assert_response(:success)
+    assert_select("h1", "Which Flight is Yours?")
+    assert_select("input#fa_flight_id[value=?]", fa_flight[:fa_flight_id])
+  end
+
+  test "can prepopulate add flight from a fa_flight_id" do
+    log_in_as(users(:user_one))
+
+    fa_flight = @fa_flight_defaults
+    stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], {
+      fa_flight_id: fa_flight[:fa_flight_id],
+    })
+
+    post(new_flight_path, params: {
+      clear_session: true,
+      trip_id: trips(:trip_hidden).id,
+      fa_flight_id: fa_flight[:fa_flight_id],
+    })
+    assert_response(:success)
+    assert_select("h1", "New Flight")
+    assert_select("select#flight_origin_airport_id") do
+      assert_select("option[selected=selected][value=?]", airports(:airport_dfw).id.to_s)
+    end
+    assert_select("select#flight_destination_airport_id") do
+      assert_select("option[selected=selected][value=?]", airports(:airport_ord).id.to_s)
+    end
+  end
+
+  test "can prepopulate add flight from a pkpass" do
+    log_in_as(users(:user_one))
+
+    # Setup:
+    pass = pk_passes(:pk_pass_existing_data)
+    fa_flight = @fa_flight_defaults.merge({
+      ident: "AAL1734",
+      departure_time: pass.departure_utc,
+    })
+    stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], {
+      fa_flight_id: fa_flight[:fa_flight_id],
+    })
+    stub_aero_api4_get_flights_ident(fa_flight[:ident], {
+      fa_flight_id: fa_flight[:fa_flight_id],
+      scheduled_out: fa_flight[:departure_time],
+    })
+    stub_aero_api4_get_airports_id(fa_flight[:origin], {})
+    stub_aero_api4_get_airports_id(fa_flight[:destination], {})
+
+    # Run test:
+    post(new_flight_path, params: {
+      clear_session: true,
+      trip_id: trips(:trip_hidden).id,
+      pk_pass_id: pass.id,
+    })
+    assert_response(:success)
+    assert_select("h1", "New Flight")
+    assert_select("select#flight_airline_id") do
+      assert_select("option[selected=selected][value=?]", airlines(:airline_american).id.to_s)
+    end
+  end
+
+  test "renders aeroapi_select_flight for pkpass with nil date" do
+    log_in_as(users(:user_one))
+
+    # Setup:
+    pass = pk_passes(:pk_pass_nil_date)
+    fa_flight = @fa_flight_defaults.merge({
+      ident: "AAL1621",
+      departure_time: nil,
+    })
+    stub_aero_api4_get_flights_ident(fa_flight[:ident], {
+      fa_flight_id: fa_flight[:fa_flight_id],
+      scheduled_out: fa_flight[:departure_time],
+    })
+    stub_aero_api4_get_airports_id(fa_flight[:origin], {})
+    stub_aero_api4_get_airports_id(fa_flight[:destination], {})
+
+    # Run test:
+    post(new_flight_path, params: {
+      clear_session: true,
+      pk_pass_id: pass.id,
+      trip_id: trips(:trip_hidden).id,
+    })
+    assert_response(:success)
+    assert_select("h1", "Which Flight is Yours?")
+  end
+
+  test "shows new aircraft input when aircraft not found" do
+    unknown_aircraft = {
+      icao:         "A322",
+    }
+    flight_info = {
+      "fa_flight_id"  => @fa_flight_defaults[:fa_flight_id],
+      "aircraft_type" => unknown_aircraft[:icao],
+    }
+    fa_flight = @fa_flight_defaults    
+    stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], flight_info)
+    stub_aero_api4_get_airports_id(fa_flight[:origin], {})    
+    stub_aero_api4_get_airports_id(fa_flight[:destination], {}) 
+    
+    log_in_as(users(:user_one))
+    post(new_flight_path, params: {
+      clear_session: true,
+      trip_id: trips(:trip_hidden).id,
+      fa_flight_id: fa_flight[:fa_flight_id],
+    })
+    assert_response(:success)
+    assert_select("h1", "New Flight: Create New Aircraft Family")
+  end
+
+  test "shows new airline input when airline not found" do
+    unknown_airline = {
+      icao: "AAA",
+    }
+    flight_info = {
+      "fa_flight_id"  => @fa_flight_defaults[:fa_flight_id],
+      "ident"         => unknown_airline[:icao] + "1111",
+      "operator"      => unknown_airline[:icao],
+    }
+    fa_flight = @fa_flight_defaults    
+    stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], flight_info)
+    stub_aero_api4_get_airports_id(fa_flight[:origin], {})    
+    stub_aero_api4_get_airports_id(fa_flight[:destination], {}) 
+    
+    log_in_as(users(:user_one))
+    post(new_flight_path, params: {
+      clear_session: true,
+      trip_id: trips(:trip_hidden).id,
+      fa_flight_id: fa_flight[:fa_flight_id],
+    })
+    assert_response(:success)
+    assert_select("h1", "New Flight: Create New Airline")
+  end
+
+  test "shows new airport input when airport not found" do
+    unknown_airport = {
+      icao:    "ZZZZ",
+    }
+    flight_info = {
+      "fa_flight_id"  => @fa_flight_defaults[:fa_flight_id],
+      "origin"        => {"code" => unknown_airport[:icao]},
+    }
+    fa_flight = @fa_flight_defaults    
+    stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], flight_info)
+    stub_aero_api4_get_airports_id(fa_flight[:origin], {})    
+    stub_aero_api4_get_airports_id(fa_flight[:destination], {}) 
+    
+    log_in_as(users(:user_one))
+    post(new_flight_path, params: {
+      clear_session: true,
+      trip_id: trips(:trip_hidden).id,
+      fa_flight_id: fa_flight[:fa_flight_id],
+    })
+    assert_response(:success)
+    assert_select("h1", "New Flight: Create New Airport")
+  end
+
+  test "can create flight when logged in" do
+    log_in_as(users(:user_one))
+    assert_difference("Flight.count", 1) do
+      post(flights_path, params: {flight: @flight_params_new})
+    end
+    assert_redirected_to(flight_path(Flight.last))
+    assert_equal(@flight_params_new[:trip_id], Flight.last.trip_id)
+    assert_equal(@flight_params_new[:trip_section], Flight.last.trip_section)
+    assert_equal(@flight_params_new[:origin_airport_id], Flight.last.origin_airport_id)
+    assert_equal(@flight_params_new[:destination_airport_id], Flight.last.destination_airport_id)
+    assert_equal(@flight_params_new[:departure_date], Flight.last.departure_date)
+    assert_equal(@flight_params_new[:departure_utc], Flight.last.departure_utc)
+    assert_equal(@flight_params_new[:airline_id], Flight.last.airline_id)
+    assert_equal(@flight_params_new[:flight_number], Flight.last.flight_number)
+    assert_equal(@flight_params_new[:aircraft_family_id], Flight.last.aircraft_family_id)
+    assert_equal(@flight_params_new[:tail_number], Flight.last.tail_number)
+  end
+
+  test "cannot create flight when not logged in" do
+    assert_no_difference("Flight.count") do
+      post(flights_path, params: {flight: @flight_params_new})
+    end
+    assert_redirected_to(root_path)
+  end
+
+  test "creating flight with departure date and UTC datetime more than 48 hours apart gives warning" do
+    current_date = Time.parse("2020-01-01 00:00:00")
+    future_date = current_date + 3.days
+    flight_params = @flight_params_new
+    flight_params[:departure_date] = current_date.to_date
+    flight_params[:departure_utc] = future_date
+    stub_aws_s3_get_timeout
+
+    log_in_as(users(:user_one))
+    assert_difference("Flight.count", 1) do
+      post(flights_path, params: {flight: flight_params})
+    end
+    assert_redirected_to(flight_path(Flight.last))
+    follow_redirect!
+    assert_response(:success)
+    assert_select("div.message-warning", text: Flight::WARNING_DEPARTURE_DATE_DEPARTURE_UTC_TOO_FAR)
+  end
+
   test "can see edit flight when logged in" do
     flight = flights(:flight_ord_dfw)
     log_in_as(users(:user_one))
@@ -196,6 +466,27 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     flight = flights(:flight_ord_dfw)
     get(edit_flight_path(flight))
     assert_redirected_to(root_path)
+  end
+
+  test "can update flight when logged in" do
+    flight = flights(:flight_ord_dfw)
+    log_in_as(users(:user_one))
+    assert_no_difference("Flight.count") do
+      patch(flight_path(flight), params: {flight: @flight_params_update})
+    end
+    assert_redirected_to(flight_path(flight))
+    flight.reload
+    assert_equal(@flight_params_update[:flight_number], flight.flight_number)
+  end
+
+  test "cannot update flight when not logged in" do
+    flight = flights(:flight_ord_dfw)
+    assert_no_difference("Flight.count") do
+      patch(flight_path(flight), params: {flight: @flight_params_update})
+    end
+    assert_redirected_to(root_path)
+    flight.reload
+    assert_not_equal(@flight_params_update[:flight_number], flight.flight_number)
   end
 
   ##############################################################################
@@ -484,14 +775,24 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
-  # Tests to ensure visitors can't create, update, or destroy flights          #
+  # Tests for deleting flights                                                 #
   ##############################################################################
 
-  test "visitor cannot create, update, or destroy flights" do
-    verify_create_update_destroy_redirects(
-      flights_path,
-      flight_path(@visible_flight)
-    )
+  test "can destroy flight when logged in" do
+    log_in_as(users(:user_one))
+    flight = @visible_flight
+    trip = flight.trip
+    assert_difference("Flight.count", -1) do
+      delete(flight_path(flight))
+    end
+    assert_redirected_to(trip_path(trip))
+  end
+
+  test "cannot destroy flight when not logged in" do
+    assert_no_difference("Flight.count") do
+      delete(flight_path(@visible_flight))
+    end
+    assert_redirected_to(root_path)
   end
 
   private

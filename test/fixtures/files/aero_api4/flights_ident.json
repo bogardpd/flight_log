@@ -1,14 +1,14 @@
 {
   "flights": [
     {
-      "ident": "AAL2300",
-      "fa_flight_id": "AAL2300-1575870329-airline-0404",
+      "ident": "AAL1734",
+      "fa_flight_id": "AAL1734-1575870329-airline-0404",
       "operator": "AAL",
       "operator_iata": "AA",
-      "flight_number": "2300",
+      "flight_number": "1734",
       "registration": "N357PV",
       "atc_ident": null,
-      "inbound_fa_flight_id": "AAL2300-1650199229-airline-0349",
+      "inbound_fa_flight_id": "AAL1734-1650199229-airline-0349",
       "codeshares": [
         "ASA6759",
         "BAW5618"
@@ -59,7 +59,7 @@
     }
   ],
   "links": {
-    "next": "/flights/AAL2300?cursor=3524d50b1324a1d"
+    "next": "/flights/AAL1734?cursor=3524d50b1324a1d"
   },
   "num_pages": 1
 }

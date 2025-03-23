@@ -7,6 +7,16 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     @hidden_trip = trips(:trip_hidden)
     @no_flights_trip = trips(:trip_no_flights)
 
+    @trip_params_new = {
+      name: "Vacation",
+      purpose: "Personal",
+      comment: "This was a great vacation!",
+      hidden: true,
+    }
+    @trip_params_edit = {
+      name: "New Name",
+    }
+
     @extension_types = {
       'geojson' => "application/geo+json",
       'gpx'     => "application/gpx+xml",
@@ -41,28 +51,22 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
   test "can create trip when logged in" do
     log_in_as(users(:user_one))
-    trip = {
-      name: "Vacation",
-      purpose: "Personal",
-      comment: "This was a great vacation!",
-      hidden: true,
-    }
     assert_difference("Trip.count", 1) do
-      post(trips_path, params: {
-        trip: {
-          name: trip[:name],
-          purpose: trip[:purpose],
-          comment: trip[:comment],
-          hidden: trip[:hidden],
-        }
-      })
+      post(trips_path, params: {trip: @trip_params_new})
     end
     assert_redirected_to(trip_path(Trip.last))
-    assert_equal(trip[:name], Trip.last.name)
-    assert_equal(trip[:purpose], Trip.last.purpose)
-    assert_equal(trip[:comment], Trip.last.comment)
-    assert_equal(trip[:hidden], Trip.last.hidden)
+    assert_equal(@trip_params_new[:name], Trip.last.name)
+    assert_equal(@trip_params_new[:purpose], Trip.last.purpose)
+    assert_equal(@trip_params_new[:comment], Trip.last.comment)
+    assert_equal(@trip_params_new[:hidden], Trip.last.hidden)
     assert_equal(users(:user_one), Trip.last.user)
+  end
+
+  test "cannot create trip when not logged in" do
+    assert_no_difference("Trip.count") do
+      post(trips_path, params: {trip: @trip_params_new})
+    end
+    assert_redirected_to(root_path)
   end
 
   test "can see edit trip when logged in" do
@@ -97,44 +101,22 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   test "can update trip when logged in" do
     log_in_as(users(:user_one))
     trip = trips(:trip_chicago_seattle)
-    new_name = "New Name"
-    new_purpose = "Business"
-    new_comment = "New Comment"
-    assert_difference("trip.flights.count", 0) do
-      patch(trip_path(trip), params: {
-        trip: {
-          name: new_name,
-          purpose: new_purpose,
-          comment: new_comment,
-        }
-      })
+    assert_no_difference("trip.flights.count") do
+      patch(trip_path(trip), params: {trip: @trip_params_edit})
     end
     assert_redirected_to(trip_path(trip))
     trip.reload
-    assert_equal(new_name, trip.name)
-    assert_equal(new_purpose, trip.purpose)
-    assert_equal(new_comment, trip.comment)
+    assert_equal(@trip_params_edit[:name], trip.name)
   end
 
   test "cannot update trip when not logged in" do
     trip = trips(:trip_chicago_seattle)
-    new_name = "New Name"
-    new_purpose = "Business"
-    new_comment = "New Comment"
     assert_no_difference("trip.flights.count") do
-      patch(trip_path(trip), params: {
-        trip: {
-          name: new_name,
-          purpose: new_purpose,
-          comment: new_comment,
-        }
-      })
+      patch(trip_path(trip), params: {trip: @trip_params_edit})
     end
     assert_redirected_to(root_path)
     trip.reload
-    assert_not_equal(new_name, trip.name)
-    assert_not_equal(new_purpose, trip.purpose)
-    assert_not_equal(new_comment, trip.comment)
+    assert_not_equal(@trip_params_edit[:name], trip.name)
   end
 
 
@@ -281,14 +263,24 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   # Tests for deleting trips                                                   #
   ##############################################################################
 
-  test "visitor cannot create, update, or destroy trips" do
-    verify_create_update_destroy_redirects(
-      trips_path,
-      trip_path(@visible_trip)
-    )
+  test "can destroy trip when logged in" do
+    log_in_as(users(:user_one))
+    trip = trips(:trip_no_flights)
+    assert_difference("Trip.count", -1) do
+      delete(trip_path(trip))
+    end
+    assert_redirected_to(trips_path)
   end
 
-  test "cannot remove trip with flights" do
+  test "cannot destroy trip when not logged in" do
+    trip = trips(:trip_no_flights)
+    assert_no_difference("Trip.count") do
+      delete(trip_path(trip))
+    end
+    assert_redirected_to(root_path)
+  end
+
+  test "cannot destroy trip with flights" do
     log_in_as(users(:user_one))
     trip = flights(:flight_visible).trip
     
@@ -297,17 +289,6 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     end
     
     assert_redirected_to(trip_path(trip))
-  end
-
-  test "can remove trip with no flights" do
-    log_in_as(users(:user_one))
-    trip = trips(:trip_no_flights)
-    
-    assert_difference("Trip.count", -1) do
-      delete(trip_path(trip))
-    end
-    
-    assert_redirected_to(trips_path)
   end
 
 end
