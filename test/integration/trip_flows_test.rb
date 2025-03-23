@@ -13,7 +13,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
       comment: "This was a great vacation!",
       hidden: true,
     }
-    @trip_params_edit = {
+    @trip_params_update = {
       name: "New Name",
     }
 
@@ -102,21 +102,22 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     log_in_as(users(:user_one))
     trip = trips(:trip_chicago_seattle)
     assert_no_difference("trip.flights.count") do
-      patch(trip_path(trip), params: {trip: @trip_params_edit})
+      patch(trip_path(trip), params: {trip: @trip_params_update})
     end
     assert_redirected_to(trip_path(trip))
     trip.reload
-    assert_equal(@trip_params_edit[:name], trip.name)
+    assert_equal(@trip_params_update[:name], trip.name)
   end
 
   test "cannot update trip when not logged in" do
     trip = trips(:trip_chicago_seattle)
+    original_name = trip.name
     assert_no_difference("trip.flights.count") do
-      patch(trip_path(trip), params: {trip: @trip_params_edit})
+      patch(trip_path(trip), params: {trip: @trip_params_update})
     end
     assert_redirected_to(root_path)
     trip.reload
-    assert_not_equal(@trip_params_edit[:name], trip.name)
+    assert_equal(original_name, trip.name)
   end
 
 

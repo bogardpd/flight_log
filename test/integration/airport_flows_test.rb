@@ -8,6 +8,19 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     @hidden_airport = airports(:airport_hidden_1)
     @no_flights_airport = airports(:airport_no_flights)
 
+    @airport_params_new = {
+      iata_code:   "HEL",
+      icao_code:   "EFHK",
+      city:        "Helsinki",
+      country:     "Finland",
+      slug:        "HEL",
+      latitude:    60.31722,
+      longitude:   24.96333
+    }
+    @airport_params_update = {
+      city: "Fort Worth Dallas"
+    }
+
     @extension_types = {
       'geojson' => "application/geo+json",
       'gpx'     => "application/gpx+xml",
@@ -41,6 +54,28 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_redirected_to(root_path)
   end
 
+  test "can create airport when logged in" do
+    log_in_as(users(:user_one))
+    assert_difference("Airport.count", 1) do
+      post(airports_path, params: { airport: @airport_params_new })
+    end
+    new_airport = Airport.find_by(slug: @airport_params_new[:slug])
+    assert_redirected_to(airport_path(new_airport.slug))
+    assert_equal(@airport_params_new[:iata_code], new_airport.iata_code)
+    assert_equal(@airport_params_new[:icao_code], new_airport.icao_code)
+    assert_equal(@airport_params_new[:city], new_airport.city)
+    assert_equal(@airport_params_new[:country], new_airport.country)
+    assert_equal(@airport_params_new[:latitude], new_airport.latitude)
+    assert_equal(@airport_params_new[:longitude], new_airport.longitude)
+  end
+
+  test "cannot create airport when not logged in" do
+    assert_no_difference("Airport.count") do
+      post(airports_path, params: { airport: @airport_params_new })
+    end
+    assert_redirected_to(root_path)
+  end
+
   test "can see edit airport when logged in" do
     airport = airports(:airport_dfw)
     log_in_as(users(:user_one))
@@ -62,6 +97,24 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     airport = airports(:airport_dfw)
     get(edit_airport_path(airport))
     assert_redirected_to(root_path)
+  end
+
+  test "can update airport when logged in" do
+    airport = airports(:airport_dfw)
+    log_in_as(users(:user_one))
+    patch(airport_path(airport), params: { airport: @airport_params_update })
+    assert_redirected_to(airport_path(airport.slug))
+    airport.reload
+    assert_equal(@airport_params_update[:city], Airport.find(airport.id).city)
+  end
+
+  test "cannot update airport when not logged in" do
+    airport = airports(:airport_dfw)
+    original_city = airport.city
+    patch(airport_path(airport), params: { airport: @airport_params_update })
+    assert_redirected_to(root_path)
+    airport.reload
+    assert_equal(original_city, Airport.find(airport.id).city)
   end
 
   ##############################################################################
@@ -159,19 +212,25 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   end
 
   ##############################################################################
-  # Tests to ensure visitors can't create, update, or destroy airports         #
+  # Tests for deleting airports                                                #
   ##############################################################################
 
-  test "visitor cannot create, update, or destroy airports" do
-    verify_create_update_destroy_redirects(
-      airports_path,
-      airport_path(@visible_airport.slug)
-    )
+  test "can destroy airport when logged in" do
+    log_in_as(users(:user_one))
+    airport = airports(:airport_no_flights)
+    assert_difference("Airport.count", -1) do
+      delete(airport_path(airport))
+    end
+    assert_redirected_to(airports_path)
   end
 
-  ##############################################################################
-  # Tests to ensure users can't destroy airports with flights                  #
-  ##############################################################################
+  test "cannot destroy airport when not logged in" do
+    airport = airports(:airport_no_flights)
+    assert_no_difference("Airport.count") do
+      delete(airport_path(airport))
+    end
+    assert_redirected_to(root_path)
+  end
 
   test "cannot remove airport with flights" do
     log_in_as(users(:user_one))

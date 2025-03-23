@@ -481,12 +481,13 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "cannot update flight when not logged in" do
     flight = flights(:flight_ord_dfw)
+    original_flight_number = flight.flight_number
     assert_no_difference("Flight.count") do
       patch(flight_path(flight), params: {flight: @flight_params_update})
     end
     assert_redirected_to(root_path)
     flight.reload
-    assert_not_equal(@flight_params_update[:flight_number], flight.flight_number)
+    assert_equal(original_flight_number, flight.flight_number)
   end
 
   ##############################################################################
