@@ -282,63 +282,39 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("h1", "Which Flight is Yours?")
   end
 
-  test "shows new aircraft input when aircraft not found" do
+  test "renders new airport, aircraft, and airline input forms when ICAO codes not found" do
     unknown_aircraft = {
-      icao:         "A322",
+      icao_code:    "A322",
+      iata_code:    "322",
+      manufacturer: "Airbus",
+      name:         "A322",
+      category:     "narrow_body",
+      slug:         "Airbus-A322",
+      parent_id:    aircraft_families(:aircraft_a320_family).id,
     }
-    flight_info = {
-      "fa_flight_id"  => @fa_flight_defaults[:fa_flight_id],
-      "aircraft_type" => unknown_aircraft[:icao],
-    }
-    fa_flight = @fa_flight_defaults    
-    stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], flight_info)
-    stub_aero_api4_get_airports_id(fa_flight[:origin], {})    
-    stub_aero_api4_get_airports_id(fa_flight[:destination], {}) 
-    
-    log_in_as(users(:user_one))
-    post(new_flight_path, params: {
-      clear_session: true,
-      trip_id: trips(:trip_hidden).id,
-      fa_flight_id: fa_flight[:fa_flight_id],
-    })
-    assert_response(:success)
-    assert_select("h1", "New Flight: Create New Aircraft Family")
-  end
-
-  test "shows new airline input when airline not found" do
     unknown_airline = {
-      icao: "AAA",
+      icao_code: "AAA",
+      iata_code: "A2",
+      name:      "American Airline Association",
+      slug:      "American-Airline-Association",
     }
-    flight_info = {
-      "fa_flight_id"  => @fa_flight_defaults[:fa_flight_id],
-      "ident"         => unknown_airline[:icao] + "1111",
-      "operator"      => unknown_airline[:icao],
-    }
-    fa_flight = @fa_flight_defaults    
-    stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], flight_info)
-    stub_aero_api4_get_airports_id(fa_flight[:origin], {})    
-    stub_aero_api4_get_airports_id(fa_flight[:destination], {}) 
-    
-    log_in_as(users(:user_one))
-    post(new_flight_path, params: {
-      clear_session: true,
-      trip_id: trips(:trip_hidden).id,
-      fa_flight_id: fa_flight[:fa_flight_id],
-    })
-    assert_response(:success)
-    assert_select("h1", "New Flight: Create New Airline")
-  end
-
-  test "shows new airport input when airport not found" do
     unknown_airport = {
-      icao:    "ZZZZ",
+      icao_code: "ZZZZ",
+      iata_code: "ZZZ",
+      city:      "Zizzville",
+      country:   "Zazz",
+      slug:      "ZZZ",
     }
     flight_info = {
       "fa_flight_id"  => @fa_flight_defaults[:fa_flight_id],
-      "origin"        => {"code" => unknown_airport[:icao]},
+      "aircraft_type" => unknown_aircraft[:icao_code],
+      "ident"         => unknown_airline[:icao_code] + "1111",
+      "operator"      => unknown_airline[:icao_code],
+      "origin"        => {"code" => unknown_airport[:icao_code]},
     }
     fa_flight = @fa_flight_defaults    
     stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], flight_info)
+    stub_aero_api4_get_airports_id(unknown_airport[:icao_code], {})
     stub_aero_api4_get_airports_id(fa_flight[:origin], {})    
     stub_aero_api4_get_airports_id(fa_flight[:destination], {}) 
     
@@ -348,8 +324,31 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       trip_id: trips(:trip_hidden).id,
       fa_flight_id: fa_flight[:fa_flight_id],
     })
+
+    # Airport ICAO doesn't exist, so the new airport form should be visible:
     assert_response(:success)
     assert_select("h1", "New Flight: Create New Airport")
+    post(airports_path, params: {airport: unknown_airport})
+    assert_redirected_to(new_flight_path)
+    follow_redirect!
+
+    # Aircraft Family ICAO doesn't exist, so the new aircraft form should be visible:
+    assert_response(:success)
+    assert_select("h1", "New Flight: Create New Aircraft Family")
+    post(aircraft_families_path, params: {aircraft_family: unknown_aircraft})
+    assert_redirected_to(new_flight_path)
+    follow_redirect!
+
+    # Airline ICAO doesn't exist, so the new airline form should be visible:
+    assert_response(:success)
+    assert_select("h1", "New Flight: Create New Airline")
+    post(airlines_path, params: {airline: unknown_airline})
+    assert_redirected_to(new_flight_path)
+    follow_redirect!
+
+    # The new flight form should now be visible:
+    assert_response(:success)
+    assert_select("h1", "New Flight")
   end
 
   test "can create flight when logged in" do
