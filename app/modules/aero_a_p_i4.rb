@@ -107,7 +107,7 @@ module AeroAPI4
     rescue
       return nil
     end
-    
+    fields.store(:fa_flight_id, fa_flight_id)
     fields.store(:origin_airport_icao, flight.dig(:origin, :code)) if flight.dig(:origin, :code)
     fields.store(:destination_airport_icao, flight.dig(:destination, :code)) if flight.dig(:destination, :code)
     fields.store(:aircraft_family_icao, flight[:aircraft_type]) if flight[:aircraft_type]
