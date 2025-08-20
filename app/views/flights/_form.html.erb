@@ -16,17 +16,17 @@
 
   <p>
     <%= f.label :origin_airport_id, "Origin" %> <%= Route::ARROW_ONE_WAY_PLAINTEXT %> <%= f.label :destination_airport_id, "Destination" %><br />
-    
+
     <% if fields[:origin_airport_id] %>
-      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:origin_airport_id]}, class: "autopopulated") %>
+      <%= f.collection_select(:origin_airport_id, Airport.order(:slug), :id, :slug, {include_blank: true, selected: fields[:origin_airport_id]}, class: "autopopulated") %>
     <% else %>
-      <%= f.collection_select(:origin_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}) %>    
-    <% end %>  
-    <%= Route::ARROW_ONE_WAY_PLAINTEXT %> 
+      <%= f.collection_select(:origin_airport_id, Airport.order(:slug), :id, :slug, {include_blank: true}) %>
+    <% end %>
+    <%= Route::ARROW_ONE_WAY_PLAINTEXT %>
     <% if fields[:destination_airport_id] %>
-      <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true, selected: fields[:destination_airport_id]}, class: "autopopulated") %>
+      <%= f.collection_select(:destination_airport_id, Airport.order(:slug), :id, :slug, {include_blank: true, selected: fields[:destination_airport_id]}, class: "autopopulated") %>
     <% else %>
-      <%= f.collection_select(:destination_airport_id, Airport.order(:iata_code), :id, :iata_code, {include_blank: true}) %>
+      <%= f.collection_select(:destination_airport_id, Airport.order(:slug), :id, :slug, {include_blank: true}) %>
     <% end %>
   </p>
 
@@ -55,7 +55,7 @@
     <% else %>
       <%= f.collection_select(:airline_id, Airline.exclude_only_operators.alphabetical, :id, :format_name, {include_blank: true}) %>
     <% end %>
-    
+
     <% if fields[:flight_number] %>
       <%= f.text_field(:flight_number, size: 6, value: fields[:flight_number], class: "autopopulated") %>
     <% else %>
@@ -121,7 +121,7 @@
     <%= f.label :comment %><br />
     <%= f.text_field :comment, size: 60 %>
   </p>
-  
+
   <p>
     <%= f.label :fa_flight_id, "fa_flight_id (comma-separated if multiple)" %><br />
     <% if fields[:fa_flight_id] %>
@@ -140,7 +140,7 @@
     <% end %>
   </p>
 
-  
+
   <%= f.hidden_field(:pk_pass_id, value: fields[:pk_pass_id]) if fields[:pk_pass_id] %>
   <%= f.hidden_field(:trip_id, value: flight.trip.id) %>
 
