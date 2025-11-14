@@ -12,11 +12,11 @@
 
 <h2><code>GET /api/all_flights</code></h2>
 
-<p>Returns a JSON array of all of the user’s flights, with each record including the <code>departure_utc</code>, <code>departure_date_local</code>, <code>id</code>, <code>fa_flight_id</code>, <code>origin_airport_iata</code>, and <code>destination_airport_iata</code>.</p>
+<p>Returns a JSON array of all of the user’s flights, with each record including the <code>departure_utc</code>, <code>departure_date_local</code>, <code>id</code>, <code>fa_flight_id</code>, <code>flight_number</code>, <code>airline_name</code>, <code>airline_iata</code>, <code>origin_airport_iata</code>, and <code>destination_airport_iata</code>.</p>
 
 <h3>Example</h3>
 
-<p><code>[{"departure_utc": "2018-01-01T00:00:00Z", "departure_date_local": 2018-01-01", "id": 1, "fa_flight_id": "AAL7001-1234567890-airline-0000", "origin_airport_iata": "DAY", "destination_airport_iata": "DFW"}, ...]</code></p>
+<p><code>[{"departure_utc": "2018-01-01T00:00:00Z", "departure_date_local": 2018-01-01", "id": 1, "fa_flight_id": "AAL7001-1234567890-airline-0000", "flight_number": "7001", "airline_name": "American Airlines", "airline_iata": "AA", "origin_airport_iata": "DAY", "destination_airport_iata": "DFW"}, ...]</code></p>
 
 <h2><code>GET /api/recent_flights</code></h2>
 

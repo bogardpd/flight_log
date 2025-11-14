@@ -21,14 +21,17 @@ class ApiController < ApplicationController
   #
   # @return [JSON] the user's flight data.
   def all_flights
-    flights = flyer.flights(@api_key_user).includes(:airline, :origin_airport, :destination_airport, :trip).order(departure_utc: :desc)
+    flights = flyer.flights(@api_key_user).includes(:airline, :origin_airport, :destination_airport).order(departure_utc: :desc)
     data = flights.map{|f| {
       departure_utc: f.departure_utc.iso8601,
       departure_date_local: f.departure_date.iso8601,
       fh_id: f.id,
       fa_flight_id: f.fa_flight_id,
+      flight_number: f.flight_number,
+      airline_name: f.airline.name,
+      airline_iata: f.airline.iata_code,
       origin_airport_iata: f.origin_airport.iata_code,
-      destination_airport_iata_airport_iata: f.destination_airport.iata_code,
+      destination_airport_iata: f.destination_airport.iata_code,
     }}
     render(json: JSON.generate(data), content_type: 'application/json')
   end
