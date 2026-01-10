@@ -26,12 +26,13 @@ group :development do
 end
 
 group :test do
+  gem 'minitest', '~> 5.21' # Rails 8.0 doesn't support minitest 6
   gem 'minitest-reporters'
   gem 'capybara'
   gem 'selenium-webdriver', '~> 4.23.0'
   # Use webmock to stub out HTTP API requests
   gem 'webmock'
-  
+
 end
 
 group :production do
