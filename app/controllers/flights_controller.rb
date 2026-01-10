@@ -101,8 +101,8 @@ class FlightsController < ApplicationController
     @year_range = flyer_flights.year_range
     @years_with_flights = flyer_flights.years_with_flights
 
-    unless params[:extension] == "geojson"
-      # If there are no flights, we can return an empty geojson, but should otherwise show record not found.
+    unless ["geojson", "graphml"].include?(params[:extension])
+      # If there are no flights, we can return an empty geojson or graphml, but should otherwise show record not found.
       raise ActiveRecord::RecordNotFound if @flights.length == 0
     end
 
