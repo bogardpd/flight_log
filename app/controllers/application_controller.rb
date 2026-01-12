@@ -1,9 +1,9 @@
 # Provides controller methods for the entire application.
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  
+
   include SessionsHelper
-  
+
   # Returns the {User} whose flights are being viewed. Until multiple user
   # functionality is added to Flight Historian, this will simply return the
   # first user.
@@ -13,13 +13,13 @@ class ApplicationController < ActionController::Base
     return User.first
   end
   helper_method :flyer
-  
+
   # Redirects to the root page unless the user is logged in.
   #
   # @return [nil]
   def logged_in_user
     unless logged_in?
-      redirect_to root_url
+      redirect_to login_url
     end
   end
 
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Renders different map formats if an appropriate extension is present.
-  # 
+  #
   # @param maps [Hash] a hash of maps on the view
   # @param map_id [String] the map to generate a different format for
   # @param extension [String] the type of format to render
@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
     return unless maps && maps.any? && map_id && extension
     map_sym = map_id.to_sym
     return unless maps.keys.include?(map_sym)
-    
+
     case extension
     when "gpx"
       render_extension(maps[map_sym].gpx, :xml, 'application/gpx+xml')
@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
       render_extension(maps[map_sym].graphml, :xml)
     end
   end
-  
+
   # Gets attachments from boarding pass emails.
   #
   # @return [nil]
@@ -76,5 +76,5 @@ class ApplicationController < ActionController::Base
     @messages ||= []
     @messages.push({type: type, text: text, id: id})
   end
-  
+
 end

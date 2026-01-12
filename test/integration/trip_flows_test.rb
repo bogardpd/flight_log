@@ -24,7 +24,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
       'kml'     => "application/vnd.google-earth.kml+xml",
     }
   end
-  
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Add/Edit Trip                             #
   ##############################################################################
@@ -46,7 +46,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
   test "cannot see add trip when not logged in" do
     get(new_trip_path)
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can create trip when logged in" do
@@ -66,7 +66,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Trip.count") do
       post(trips_path, params: {trip: @trip_params_new})
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can see edit trip when logged in" do
@@ -95,7 +95,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   test "cannot see edit trip when not logged in" do
     trip = trips(:trip_chicago_seattle)
     get(edit_trip_path(trip))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can update trip when logged in" do
@@ -115,7 +115,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("trip.flights.count") do
       patch(trip_path(trip), params: {trip: @trip_params_update})
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
     trip.reload
     assert_equal(original_name, trip.name)
   end
@@ -130,7 +130,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see index trips when logged in" do
     trips = Trip.with_departure_dates(users(:user_one), users(:user_one))
-    
+
     log_in_as(users(:user_one))
     get(trips_path)
     assert_response(:success)
@@ -153,7 +153,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_select("table#trips-with-no-flights-table") do
       assert_select("tr#trip-with-no-flights-row-#{@no_flights_trip.id}", {}, "This view shall show trips with no flights when logged in")
     end
-    
+
   end
 
   test "can see index trips when not logged in" do
@@ -222,13 +222,13 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
   test "redirect show hidden trip sections when appropriate" do
     stub_aws_s3_get_timeout
-    
+
     verify_show_unused_or_hidden_redirects(
       show_hidden_path: trip_path(@hidden_trip, 1),
       redirect_path:    trips_path
     )
   end
-  
+
   test "can see show trip section when not logged in" do
     trip = trips(:trip_layover_ratios)
     section = 2
@@ -278,17 +278,17 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Trip.count") do
       delete(trip_path(trip))
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "cannot destroy trip with flights" do
     log_in_as(users(:user_one))
     trip = flights(:flight_visible).trip
-    
+
     assert_no_difference("Trip.count") do
       delete(trip_path(trip))
     end
-    
+
     assert_redirected_to(trip_path(trip))
   end
 

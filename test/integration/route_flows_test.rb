@@ -13,7 +13,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
       'kml'     => "application/vnd.google-earth.kml+xml",
     }
   end
-  
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Edit Route                                #
   ##############################################################################
@@ -33,7 +33,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   test "cannot see edit route when not logged in" do
     route = routes(:route_dfw_ord)
     get(edit_route_path(route.airport1, route.airport2))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can update route when logged in" do
@@ -54,7 +54,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     stub_aero_api4_get_timeout
 
     routes = Route.flight_table_data(logged_in_flights)
-    
+
     log_in_as(users(:user_one))
     get(routes_path)
     assert_response(:success)
@@ -135,7 +135,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     # Route does not have a new or create action
 
     put(route_path(routes(:route_visible)))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
 
     # Route does not have a destroy action
   end
@@ -152,5 +152,5 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
       assert_select("text.graph-value[data-value=?]", route_data[:flight_count].to_s, {}, "Graph bar shall have the correct flight count")
     end
   end
-  
+
 end

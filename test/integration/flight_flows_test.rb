@@ -1,7 +1,7 @@
 require "test_helper"
 
 class FlightFlowsTest < ActionDispatch::IntegrationTest
-  
+
   def setup
     @visible_flight = flights(:flight_visible)
     @hidden_flight = flights(:flight_hidden)
@@ -27,7 +27,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     @flight_params_update = {
       flight_number: "5678",
     }
-    
+
     # Setup for AeroAPI4 stubs:
     @fa_flight_defaults = {
       # Values from /test/fixtures/files/aero_api4/flights_ident.json:
@@ -43,11 +43,11 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       'kml'     => "application/vnd.google-earth.kml+xml",
     }
   end
-  
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Add Flight Menu                           #
   ##############################################################################
-  
+
   test "can see new flight menu when logged in with trip id param" do
     stub_aws_s3_get_timeout
 
@@ -87,12 +87,12 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   test "cannot see new flight menu when not logged in with trip id param" do
     trip = trips(:trip_hidden)
     get(new_flight_menu_path(trip_id: trip.id))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "cannot see new flight menu when not logged in without trip id param" do
     get(new_flight_menu_path)
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   ##############################################################################
@@ -146,7 +146,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "cannot see add flight when not logged in" do
     get(new_flight_path)
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can select AeroAPI flight from an airline and flight number" do
@@ -312,12 +312,12 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       "operator"      => unknown_airline[:icao_code],
       "origin"        => {"code" => unknown_airport[:icao_code]},
     }
-    fa_flight = @fa_flight_defaults    
+    fa_flight = @fa_flight_defaults
     stub_aero_api4_get_flights_ident(fa_flight[:fa_flight_id], flight_info)
     stub_aero_api4_get_airports_id(unknown_airport[:icao_code], {})
-    stub_aero_api4_get_airports_id(fa_flight[:origin], {})    
-    stub_aero_api4_get_airports_id(fa_flight[:destination], {}) 
-    
+    stub_aero_api4_get_airports_id(fa_flight[:origin], {})
+    stub_aero_api4_get_airports_id(fa_flight[:destination], {})
+
     log_in_as(users(:user_one))
     post(new_flight_path, params: {
       clear_session: true,
@@ -373,7 +373,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Flight.count") do
       post(flights_path, params: {flight: @flight_params_new})
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "creating flight with departure date and UTC datetime more than 48 hours apart gives warning" do
@@ -464,7 +464,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   test "cannot see edit flight when not logged in" do
     flight = flights(:flight_ord_dfw)
     get(edit_flight_path(flight))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can update flight when logged in" do
@@ -484,7 +484,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Flight.count") do
       patch(flight_path(flight), params: {flight: @flight_params_update})
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
     flight.reload
     assert_equal(original_flight_number, flight.flight_number)
   end
@@ -502,7 +502,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     log_in_as(users(:user_one))
     get(flights_path)
     assert_response(:success)
-    
+
     assert_select("h1", "Flights")
     assert_select("div#flights_map", {}, "This view shall show a flight map")
     assert_select("table#flight-year-links", {}, "This view shall show year links") do
@@ -538,7 +538,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see index tail numbers when logged in" do
     tails = TailNumber.flight_table_data(logged_in_flights)
-    
+
     log_in_as(users(:user_one))
     get(tails_path)
     assert_response(:success)
@@ -555,7 +555,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   test "can see index tail numbers when not logged in" do
     get(tails_path)
     assert_response(:success)
-    verify_absence_of_hidden_data    
+    verify_absence_of_hidden_data
   end
 
   ##############################################################################
@@ -565,13 +565,13 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see index travel classes when logged in" do
     classes = TravelClass.flight_table_data(logged_in_flights)
-    
+
     log_in_as(users(:user_one))
     get(classes_path)
     assert_response(:success)
 
     assert_select("h1", "Travel Classes")
-    
+
     assert_select("table#travel-class-count-table") do
       check_travel_class_row(classes, @visible_class, "This view shall show classes with visible flights")
       check_travel_class_row(classes, @hidden_class, "This view shall show classes with only hidden flights when logged in")
@@ -653,7 +653,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
 
   test "redirect show hidden flights when appropriate" do
     stub_aws_s3_get_timeout
-    
+
     verify_show_unused_or_hidden_redirects(
       show_hidden_path: flight_path(@hidden_flight),
       redirect_path:    flights_path
@@ -694,14 +694,14 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Tail Number                          #
   ##############################################################################
-  
+
   test "redirect show hidden tail number when appropriate" do
     verify_show_unused_or_hidden_redirects(
       show_hidden_path: show_tail_path(@hidden_flight.tail_number),
       redirect_path:    tails_path
     )
   end
-  
+
   test "can see show tail number when not logged in" do
     tail = @visible_flight.tail_number
     get(show_tail_path(tail))
@@ -744,7 +744,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
       redirect_path:    classes_path
     )
   end
-  
+
   test "can see show travel class when not logged in" do
     get(show_class_path("economy"))
     assert_response(:success)
@@ -792,7 +792,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Flight.count") do
       delete(flight_path(@visible_flight))
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   private
@@ -800,7 +800,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Provides common assertions used in multiple new flight menu tests.
   def check_new_flight_menu_common(trip)
     assert_select("h1", "Create a New Flight")
-    
+
     # E-mail a digital boarding pass:
     pk_pass = pk_passes(:icelandair_2019_08_31)
     assert_select("table#digital-boarding-passes") do
@@ -866,7 +866,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Runs tests common to show airline
   def check_show_flight_common(flight)
     assert_select("h1", flight.name)
-    
+
     assert_select("#flight-airline") do
       assert_select("a[href=?]", airline_path(flight.airline.slug), {text: flight.airline.name})
     end

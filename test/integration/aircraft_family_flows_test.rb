@@ -4,7 +4,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   def setup
     stub_aws_s3_head
-    
+
     @visible_aircraft_family = aircraft_families(:aircraft_family_visible)
     @hidden_aircraft_family = aircraft_families(:aircraft_family_hidden)
     @no_flights_aircraft_family = aircraft_families(:aircraft_family_no_flights)
@@ -76,13 +76,13 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   test "cannot see add aircraft family when not logged in" do
     get(new_aircraft_family_path)
-    assert_redirected_to(root_path)    
+    assert_redirected_to(login_path)
   end
 
   test "cannot see add aircraft family type when not logged in" do
     parent = aircraft_families(:aircraft_737)
     get(new_aircraft_family_path(family_id: parent.id))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can create aircraft family and type when logged in" do
@@ -113,12 +113,12 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("AircraftFamily.count") do
       post(aircraft_families_path, params: {aircraft_family: @family_params_new})
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
 
     assert_no_difference("AircraftFamily.count") do
       post(aircraft_families_path, params: {aircraft_family: @type_params_new})
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can see edit aircraft family when logged in" do
@@ -160,13 +160,13 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   test "cannot see edit aircraft family when not logged in" do
     aircraft_family = aircraft_families(:aircraft_737)
     get(edit_aircraft_family_path(aircraft_family))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "cannot see edit aircraft family type when not logged in" do
     aircraft_type = aircraft_families(:aircraft_737_800)
     get(edit_aircraft_family_path(aircraft_type))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can update aircraft family when logged in" do
@@ -193,7 +193,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     aircraft_family = aircraft_families(:aircraft_737)
     original_name = aircraft_family.name
     patch(aircraft_family_path(aircraft_family), params: {aircraft_family: @family_params_update})
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
     aircraft_family.reload
     assert_equal(original_name, aircraft_family.name)
   end
@@ -202,7 +202,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     aircraft_type = aircraft_families(:aircraft_737_800)
     original_name = aircraft_type.name
     patch(aircraft_family_path(aircraft_type), params: {aircraft_family: @type_params_update})
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
     aircraft_type.reload
     assert_equal(original_name, aircraft_type.name)
   end
@@ -230,8 +230,8 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
     assert_select("table#aircraft-families-with-no-flights-table", {}, "This view shall show an aircraft families with no flights table when logged in") do
       assert_select("tr#aircraft-family-with-no-flights-row-#{@no_flights_aircraft_family.id}")
-    end  
-    
+    end
+
   end
 
   test "can see index aircraft families when not logged in" do
@@ -299,7 +299,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     aircraft_type = aircraft_families(:aircraft_737_800)
     get(aircraft_family_path(aircraft_type.slug))
     assert_response(:success)
-    
+
     check_show_aircraft_common(aircraft_type)
     verify_absence_of_hidden_data
     verify_absence_of_admin_actions(edit_aircraft_family_path(aircraft_type))
@@ -342,7 +342,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("AircraftFamily.count") do
       delete(aircraft_family_path(aircraft))
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "cannot remove aircraft type when not logged in" do
@@ -350,26 +350,26 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("AircraftFamily.count") do
       delete(aircraft_family_path(aircraft))
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
-  
+
   test "cannot remove aircraft family with flights" do
     log_in_as(users(:user_one))
     aircraft = flights(:flight_visible).aircraft_family
-    
+
     assert_no_difference("AircraftFamily.count") do
       delete(aircraft_family_path(aircraft))
     end
-    
+
     assert_redirected_to(aircraft_family_path(aircraft.slug))
   end
 
   test "cannot remove aircraft family with child types" do
     log_in_as(users(:user_one))
     aircraft = aircraft_families(:aircraft_family_no_flights)
-    
+
     assert_no_difference("AircraftFamily.count") do
-      delete(aircraft_family_path(aircraft))  
+      delete(aircraft_family_path(aircraft))
     end
 
     assert_redirected_to(aircraft_family_path(aircraft.slug))

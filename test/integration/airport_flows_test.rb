@@ -28,7 +28,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
       'kml'     => "application/vnd.google-earth.kml+xml",
     }
   end
-  
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Add/Edit Airport                          #
   ##############################################################################
@@ -51,7 +51,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
 
   test "cannot see add airport when not logged in" do
     get(new_airport_path)
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can create airport when logged in" do
@@ -73,7 +73,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Airport.count") do
       post(airports_path, params: { airport: @airport_params_new })
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can see edit airport when logged in" do
@@ -81,7 +81,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     log_in_as(users(:user_one))
     get(edit_airport_path(airport))
     assert_response(:success)
-    
+
     assert_select("h1", "Edit #{airport.iata_code}")
     assert_select("form#edit_airport_#{airport.id}")
     assert_select("input#airport_iata_code[value=?]", airport.iata_code)
@@ -96,7 +96,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   test "cannot see edit airport when not logged in" do
     airport = airports(:airport_dfw)
     get(edit_airport_path(airport))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can update airport when logged in" do
@@ -112,7 +112,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     airport = airports(:airport_dfw)
     original_city = airport.city
     patch(airport_path(airport), params: { airport: @airport_params_update })
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
     airport.reload
     assert_equal(original_city, Airport.find(airport.id).city)
   end
@@ -124,13 +124,13 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see index airports when logged in" do
     visits = Airport.visit_frequencies(logged_in_flights)
-    
+
     log_in_as(users(:user_one))
     get(airports_path)
     assert_response(:success)
 
     verify_presence_of_admin_actions(new_airport_path)
-    
+
     assert_select("h1", "Airports")
 
     assert_select("div#airports_map")
@@ -229,17 +229,17 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Airport.count") do
       delete(airport_path(airport))
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "cannot remove airport with flights" do
     log_in_as(users(:user_one))
     airport = flights(:flight_visible).origin_airport
-    
+
     assert_no_difference("Airport.count") do
       delete(airport_path(airport))
     end
-    
+
     assert_redirected_to(airport_path(airport.slug))
   end
 
@@ -274,7 +274,7 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#operator-count-table")
     assert_select("#aircraft-family-count-table")
     assert_select("#travel-class-count-table")
-    
+
     assert_select("#nonstop-flight-airports-table")
   end
 

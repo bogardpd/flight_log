@@ -29,7 +29,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
       'kml'     => "application/vnd.google-earth.kml+xml",
     }
   end
-  
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Add/Edit Airline                          #
   ##############################################################################
@@ -51,7 +51,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
   test "cannot see add airline when not logged in" do
     get(new_airline_path)
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can create airline when logged in" do
@@ -71,7 +71,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Airline.count") do
       post(airlines_path, params: {airline: @airline_params_new})
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can see edit airline when logged in" do
@@ -102,7 +102,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   test "cannot see edit airline when not logged in" do
     airline = airlines(:airline_american)
     get(edit_airline_path(airline))
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "can update airline when logged in" do
@@ -118,7 +118,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     airline = airlines(:airline_american)
     original_name = airline.name
     patch(airline_path(airline), params: {airline: @airline_params_update})
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
     airline.reload
     assert_equal(original_name, airline.name)
   end
@@ -155,7 +155,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
         assert_select("a[href=?]", airline_path(id: @no_flights_airline.slug))
       end
     end
-    
+
   end
 
   test "can see index airlines when not logged in" do
@@ -177,7 +177,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
       redirect_path:    airlines_path
     )
   end
-  
+
   test "can see show airline when logged in" do
     stub_aero_api4_get_timeout
     airline = airlines(:airline_american)
@@ -221,7 +221,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
       redirect_path:    airlines_path
     )
   end
-  
+
   test "can see show operator when logged in" do
     operator = airlines(:airline_american)
     log_in_as(users(:user_one))
@@ -261,7 +261,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
       redirect_path:    airlines_path
     )
   end
-  
+
   test "redirect show fleet number for unused fleet number" do
     log_in_as(users(:user_one))
     get(show_fleet_number_path(airlines(:airline_expressjet).slug, "unused"))
@@ -316,39 +316,39 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     assert_no_difference("Airline.count") do
       delete(airline_path(airline))
     end
-    assert_redirected_to(root_path)
+    assert_redirected_to(login_path)
   end
 
   test "cannot destroy airline with flights" do
     log_in_as(users(:user_one))
     airline = flights(:flight_visible).airline
-    
+
     assert_no_difference("Airline.count") do
       delete(airline_path(airline))
     end
-    
+
     assert_redirected_to(airline_path(airline.slug))
   end
 
   test "cannot destroy operator with flights" do
     log_in_as(users(:user_one))
     operator = flights(:flight_visible).operator
-    
+
     assert_no_difference("Airline.count") do
       delete(airline_path(operator))
     end
-    
+
     assert_redirected_to(airline_path(operator.slug))
   end
 
   test "cannot remove codeshare airline with flights" do
     log_in_as(users(:user_one))
     codeshare_airline = flights(:flight_visible).codeshare_airline
-    
+
     assert_no_difference("Airline.count") do
       delete(airline_path(codeshare_airline))
     end
-    
+
     assert_redirected_to(airline_path(codeshare_airline.slug))
   end
 
@@ -388,7 +388,7 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
       assert_select("a[href=?]", show_operator_path(operator: airline.slug))
       assert_select("#airline-count-table")
     end
-    
+
     assert_select("div.flights-map")
     assert_select(".distance-mi")
 
