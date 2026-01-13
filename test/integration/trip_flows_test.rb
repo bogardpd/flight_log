@@ -156,43 +156,19 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
   end
 
-  test "can see index trips when not logged in" do
+  test "cannot see index trips when not logged in" do
     get(trips_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(new_trip_path)
-    verify_absence_of_no_flights_tables
+    assert_redirected_to(login_path)
   end
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Trip                                 #
   ##############################################################################
 
-  test "redirect show unused or hidden trips when appropriate" do
-    stub_aws_s3_get_timeout
-
-    verify_show_unused_or_hidden_redirects(
-      show_unused_path: trip_path(@no_flights_trip),
-      show_hidden_path: trip_path(@hidden_trip),
-      redirect_path:    trips_path
-    )
-  end
-
-  test "can see show trip when not logged in" do
+  test "cannot see show trip when not logged in" do
     trip = trips(:trip_chicago_seattle)
     get(trip_path(trip))
-    assert_response(:success)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(new_flight_menu_path(trip), edit_trip_path(trip))
-
-    assert_select(".flights-map")
-    assert_select(".distance-mi")
-    assert_select("table#trip-flight-table") do
-      assert_select("td.flight-section", {count: trip.flights.pluck(:trip_section).uniq.size})
-      assert_select("td.flight-flight", {count: trip.flights.size})
-    end
-
-    assert_select("div#message-boarding-passes-available-for-import", {count: 0}, "This view shall not show a link to import boarding passes")
+    assert_redirected_to(login_path)
   end
 
   test "can see show trip when logged in" do
@@ -209,6 +185,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show trip alternate map formats" do
     trip = trips(:trip_chicago_seattle)
+    log_in_as(users(:user_one))
     @extension_types.each do |extension, type|
       get(trip_path(trip, map_id: "trip_map", extension: extension))
       assert_response(:success)
@@ -220,26 +197,11 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Trip Section                         #
   ##############################################################################
 
-  test "redirect show hidden trip sections when appropriate" do
-    stub_aws_s3_get_timeout
-
-    verify_show_unused_or_hidden_redirects(
-      show_hidden_path: trip_path(@hidden_trip, 1),
-      redirect_path:    trips_path
-    )
-  end
-
-  test "can see show trip section when not logged in" do
+  test "cannot see show trip section when not logged in" do
     trip = trips(:trip_layover_ratios)
     section = 2
     get(show_section_path(trip: trip, section: section))
-    assert_response(:success)
-    verify_absence_of_hidden_data
-
-    assert_select(".flights-map")
-    assert_select("#flight-table")
-    assert_select(".distance-mi")
-    assert_select("#summary-value-layover-ratio")
+    assert_redirected_to(login_path)
   end
 
   test "can see show trip section when logged in" do
@@ -253,6 +215,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   test "can see show trip section alternate map formats" do
     trip = trips(:trip_chicago_seattle)
     section = 1
+    log_in_as(users(:user_one))
     @extension_types.each do |extension, type|
       get(show_section_path(trip: trip, section: section, map_id: "trip_section_map", extension: extension))
       assert_response(:success)

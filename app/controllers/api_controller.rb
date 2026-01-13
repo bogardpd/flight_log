@@ -1,5 +1,6 @@
 class ApiController < ApplicationController
   before_action :api_key_user, except: [:index]
+  before_action :logged_in_user, only: [:index]
 
   AUTHENTICATION_ERROR = {error: "Invalid API key. Provide a valid 'api-key' in the header."}
 

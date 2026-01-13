@@ -516,15 +516,15 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "can see index flights when not logged in" do
+  test "cannot see index flights when not logged in" do
     stub_aero_api4_get_timeout
     get(flights_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
+    assert_redirected_to(login_path)
   end
 
   test "can see index flight alternate map formats" do
     stub_aero_api4_get_timeout
+    log_in_as(users(:user_one))
     @extension_types.each do |extension, type|
       get(flights_path(map_id: "flights_map", extension: extension))
       assert_response(:success)
@@ -552,10 +552,9 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "can see index tail numbers when not logged in" do
+  test "cannot see index tail numbers when not logged in" do
     get(tails_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
+    assert_redirected_to(login_path)
   end
 
   ##############################################################################
@@ -578,36 +577,18 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "can see index travel classes when not logged in" do
+  test "cannot see index travel classes when not logged in" do
     get(classes_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
+    assert_redirected_to(login_path)
   end
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Date Range                           #
   ##############################################################################
 
-  test "redirect show hidden date range when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_hidden_path: show_date_range_path(start_date: @hidden_flight.departure_date, end_date: @hidden_flight.departure_date),
-      redirect_path:    flights_path
-    )
-  end
-
-  test "can see show date range when not logged in" do
+  test "cannot see show date range when not logged in" do
     get(show_date_range_path(start_date: "2014-07-01", end_date: "2015-06-30"))
-    assert_response(:success)
-    verify_absence_of_hidden_data
-
-    assert_select(".flights-map")
-    assert_select("#flight-table")
-    assert_select(".distance-mi")
-    assert_select("#airport-count-table")
-    assert_select("#airline-count-table")
-    assert_select("#operator-count-table")
-    assert_select("#aircraft-family-count-table")
-    assert_select("#superlatives-table")
+    assert_redirected_to(login_path)
   end
 
   test "can see show date range when logged in" do
@@ -619,11 +600,13 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   test "can see show date range with leading zero" do
     # Leading 0s in date strings can be confused for an octal number, which is a
     # problem if subsequent digits are greater than 7.
+    log_in_as(users(:user_one))
     get(show_date_range_path(start_date: "2014-09-01", end_date: "2015-06-30"))
     assert_response(:success)
   end
 
   test "can see show date range alternate map formats" do
+    log_in_as(users(:user_one))
     date_range = {start_date: "2014-07-01", end_date: "2015-06-30"}
     @extension_types.each do |extension, type|
       get(show_date_range_path(**date_range, map_id: "date_range_map", extension: extension))
@@ -633,11 +616,13 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see show date range with year" do
+    log_in_as(users(:user_one))
     get(show_year_path(2015))
     assert_response(:success)
   end
 
   test "can see show date range with year alternate map formats" do
+    log_in_as(users(:user_one))
     year = 2015
     @extension_types.each do |extension, type|
       get(show_year_path(year, map_id: "date_range_map", extension: extension))
@@ -651,15 +636,6 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Tests for bcbp partial                                                     #
   ##############################################################################
 
-  test "redirect show hidden flights when appropriate" do
-    stub_aws_s3_get_timeout
-
-    verify_show_unused_or_hidden_redirects(
-      show_hidden_path: flight_path(@hidden_flight),
-      redirect_path:    flights_path
-    )
-  end
-
   test "can see show flight when logged in" do
     flight = flights(:flight_ord_dfw)
     log_in_as(users(:user_one))
@@ -671,18 +647,14 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
     assert_select("#flight-boarding-pass-data")
   end
 
-  test "can see show flight when not logged in" do
+  test "cannot see show flight when not logged in" do
     flight = flights(:flight_ord_dfw)
     get(flight_path(flight))
-    assert_response(:success)
-
-    check_show_flight_common(flight)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(edit_flight_path(flight))
-    assert_select("#flight-boarding-pass-data", {count: 0})
+    assert_redirected_to(login_path)
   end
 
   test "can see show flight alternate map formats" do
+    log_in_as(users(:user_one))
     flight = flights(:flight_ord_dfw)
     %w(gpx kml geojson).each do |extension|
       get(flight_path(flight, map_id: "flight_map", extension: extension))
@@ -695,28 +667,10 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Tail Number                          #
   ##############################################################################
 
-  test "redirect show hidden tail number when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_hidden_path: show_tail_path(@hidden_flight.tail_number),
-      redirect_path:    tails_path
-    )
-  end
-
-  test "can see show tail number when not logged in" do
+  test "cannot see show tail number when not logged in" do
     tail = @visible_flight.tail_number
     get(show_tail_path(tail))
-    assert_response(:success)
-    verify_absence_of_hidden_data
-
-    assert_select(".flights-map")
-    assert_select("#flight-table")
-    assert_select(".distance-mi")
-    assert_select("#travel-class-count-table")
-    assert_select("#airline-count-table")
-    assert_select("#operator-count-table")
-    assert_select("#superlatives-table")
-
-    assert_select("a[href=?]", "http://flightaware.com/live/flight/#{tail}")
+    assert_redirected_to(login_path)
   end
 
   test "can see show tail number when logged in" do
@@ -726,6 +680,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see show tail number alternate map formats" do
+    log_in_as(users(:user_one))
     tail = @visible_flight.tail_number
     @extension_types.each do |extension, type|
       get(show_tail_path(tail, map_id: "tail_map", extension: extension))
@@ -738,25 +693,9 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Travel Class                         #
   ##############################################################################
 
-  test "redirect show hidden travel class when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_hidden_path: show_class_path(@hidden_flight.travel_class),
-      redirect_path:    classes_path
-    )
-  end
-
-  test "can see show travel class when not logged in" do
+  test "cannot see show travel class when not logged in" do
     get(show_class_path("economy"))
-    assert_response(:success)
-    verify_absence_of_hidden_data
-
-    assert_select(".flights-map")
-    assert_select("#flight-table")
-    assert_select(".distance-mi")
-    assert_select("#airline-count-table")
-    assert_select("#operator-count-table")
-    assert_select("#aircraft-family-count-table")
-    assert_select("#superlatives-table")
+    assert_redirected_to(login_path)
   end
 
   test "can see show travel class when logged in" do
@@ -766,6 +705,7 @@ class FlightFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "can see show travel class alternate map formats" do
+    log_in_as(users(:user_one))
     travel_class = "economy"
     @extension_types.each do |extension, type|
       get(show_class_path(travel_class, map_id: "travel_class_map", extension: extension))

@@ -68,12 +68,11 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "can see index routes when not logged in" do
+  test "cannot see index routes when not logged in" do
     stub_aero_api4_get_timeout
 
     get(routes_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
+    assert_redirected_to(login_path)
   end
 
   ##############################################################################
@@ -81,29 +80,10 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
   # Tests for trip_and_section_table partial                                   #
   ##############################################################################
 
-  test "redirect show unused or hidden routes when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_hidden_path: show_route_path(*@hidden_route.pluck(:slug)),
-      redirect_path:    routes_path
-    )
-  end
-
-  test "can see show route when not logged in" do
+  test "cannot see show route when not logged in" do
     route = routes(:route_visible)
     get(show_route_path(route.airport1.slug, route.airport2.slug))
-    assert_response(:success)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(edit_route_path(route.airport1_id, route.airport2_id))
-
-    assert_select(".single-flight-map")
-    assert_select(".flights-map", {count: 2})
-    assert_select("#flight-table")
-    assert_select(".distance-mi")
-    assert_select("#trip-and-section-table")
-    assert_select("#airline-count-table")
-    assert_select("#operator-count-table")
-    assert_select("#aircraft-family-count-table")
-    assert_select("#travel-class-count-table")
+    assert_redirected_to(login_path)
   end
 
   test "can see show route when logged in" do
@@ -116,6 +96,7 @@ class RouteFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see show route alternate map formats" do
     route = routes(:route_visible)
+    log_in_as(users(:user_one))
     %w(gpx kml geojson).each do |extension|
       %w(route_map sections_map trips_map).each do |map_id|
         get(show_route_path(route.airport1.slug, route.airport2.slug, map_id: map_id, extension: extension))

@@ -1,7 +1,7 @@
 # Controls {Trip} pages and actions, including {#show_section trip sections}.
 class TripsController < ApplicationController
-  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  
+  before_action :logged_in_user
+
   # Shows a table of all {Trip Trips} flown.
   #
   # @return [nil]
@@ -19,19 +19,19 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:id])
     raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
     @flights = Flight.where(trip_id: @trip)
-        
+
     add_message(:warning, "This trip is hidden!") if @trip.hidden
 
     if logged_in? && @trip.hidden
       check_email_for_boarding_passes
       add_message(:info, "You have boarding passes you can #{view_context.link_to("import", new_flight_menu_path(trip_id: @trip))}!", "message-boarding-passes-available-for-import") if PKPass.all.any?
     end
-    
+
     @trip_distance = @flights.total_distance
     @sections_and_flights = @trip.sections_and_flights
 
     stops = @sections_and_flights.map{|k, v| [v.first.origin_airport,v.last.destination_airport]}.flatten.uniq
-    
+
     # Create map
     @maps = {
       trip_map: FlightsMap.new(:trip_map, @flights, highlighted_airports: stops, include_names: true),
@@ -42,7 +42,7 @@ class TripsController < ApplicationController
     flash[:warning] = "We couldnʼt find a trip with an ID of #{params[:id]}. Instead, weʼll give you a list of trips."
     redirect_to trips_path
   end
-  
+
   # Shows flight data for a particular section of a {Trip}.
   #
   # Trip sections are used to distinguish between layovers and multiple visits
@@ -59,18 +59,18 @@ class TripsController < ApplicationController
     @logo_used = true
     @trip = Trip.find(params[:trip])
     @section = params[:section]
-    
+
     raise ActiveRecord::RecordNotFound if (flyer != current_user && @trip.hidden)
-    
+
     add_message(:warning, "This trip is hidden!") if @trip.hidden
-    
+
     @flights = Flight.where(trip_id: @trip, trip_section: @section).includes(:airline, :origin_airport, :destination_airport, :trip).order(:departure_utc)
     raise ActiveRecord::RecordNotFound unless @flights.any?
 
     @section_distance = @flights.total_distance
     layover_ratio = @trip.layover_ratio(@section)
     stops = [@flights.first.origin_airport,@flights.last.destination_airport]
-    
+
     @maps = {
       trip_section_map: FlightsMap.new(:trip_section_map, @flights, highlighted_airports: stops, include_names: true),
     }
@@ -81,12 +81,12 @@ class TripsController < ApplicationController
     if @flights.size > 1 && layover_ratio
       @summary_items.store("Layover Ratio", view_context.link_to(layover_ratio.round(3), "https://paulbogard.net/posts/my-worst-layovers/", target: :_blank))
     end
-    
+
   rescue ActiveRecord::RecordNotFound
     flash[:warning] = "We couldnʼt find a matching trip section. Instead, weʼll give you a list of trips."
     redirect_to trips_path
   end
-  
+
   # Shows a form to add a {Trip}.
   #
   # This action can only be performed by a verified user.
@@ -95,7 +95,7 @@ class TripsController < ApplicationController
   def new
     @trip = Trip.new(hidden: true)
   end
-  
+
   # Creates a new {Trip}.
   #
   # This action can only be performed by a verified user.
@@ -110,7 +110,7 @@ class TripsController < ApplicationController
       render "new"
     end
   end
-  
+
   # Shows a form to edit an existing {Trip}.
   #
   # This action can only be performed by a verified user.
@@ -119,7 +119,7 @@ class TripsController < ApplicationController
   def edit
     @trip = Trip.find(params[:id])
   end
-  
+
   # Updates an existing {Trip}.
   #
   # This action can only be performed by a verified user.
@@ -134,7 +134,7 @@ class TripsController < ApplicationController
       render "edit"
     end
   end
-  
+
   # Deletes an existing {Trip}.
   #
   # This action can only be performed by a verified user.
@@ -151,14 +151,14 @@ class TripsController < ApplicationController
       redirect_to trips_path
     end
   end
-  
+
   private
-  
+
   # Defines permitted {Airline} parameters.
   #
   # @return [ActionController::Parameters]
   def trip_params
     params.require(:trip).permit(:comment, :hidden, :name, :purpose)
   end
-    
+
 end

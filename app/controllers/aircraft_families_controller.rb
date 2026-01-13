@@ -1,8 +1,8 @@
 # Controls {AircraftFamily} pages and actions.
 
 class AircraftFamiliesController < ApplicationController
-  before_action :logged_in_user, :only => [:new, :create, :edit, :update, :destroy]
-  
+  before_action :logged_in_user
+
   # Shows a table of all {AircraftFamily AircraftFamilies} flown.
   #
   # @return [nil]
@@ -11,13 +11,13 @@ class AircraftFamiliesController < ApplicationController
     @sort = Table.sort_parse(params[:sort], :flights, :desc)
     flight_count = AircraftFamily.flight_table_data(@flights, *@sort, include_families_with_no_flights: true)
     @aircraft_families, @aircraft_families_with_no_flights = flight_count.partition{|a| a[:flight_count] > 0}
-    
+
     if @aircraft_families.any?
       # Find maxima for graph scaling:
       @aircraft_maximum = @aircraft_families.max_by{|i| i[:flight_count]}[:flight_count]
-    end     
+    end
   end
-  
+
   # Shows details for a particular {AircraftFamily} (either a parent aircraft
   # family or a child aircraft type) and data for all {Flight Flights} flown on
   # it.
@@ -26,22 +26,22 @@ class AircraftFamiliesController < ApplicationController
   def show
     @aircraft = AircraftFamily.find_by(slug: params[:id])
     raise ActiveRecord::RecordNotFound if (@aircraft.nil?)
-    
+
     @logo_used = true
-    
+
     @flights = flyer.flights(current_user).where(aircraft_family_id: @aircraft.family_and_type_ids).includes(:airline, :origin_airport, :destination_airport, :trip)
     raise ActiveRecord::RecordNotFound if (!logged_in? && @flights.length == 0)
-    
+
     @maps = {
       aircraft_family_map: FlightsMap.new(:aircraft_family_map, @flights),
     }
     render_map_extension(@maps, params[:map_id], params[:extension])
     @total_distance = @flights.total_distance
-    
+
     @children = @aircraft.children
     @flights_including_child_types = @aircraft.family_and_type_count(@flights)
     @child_types_with_no_flights = AircraftFamily.with_no_flights.where(parent_id: @aircraft)
-    
+
     # Create summary info
     @summary_items = Hash.new
     @summary_items.store("Manufacturer", @aircraft.manufacturer)
@@ -53,15 +53,15 @@ class AircraftFamiliesController < ApplicationController
     @airlines = Airline.flight_table_data(@flights, type: :airline)
     @operators = Airline.flight_table_data(@flights, type: :operator)
     @classes = TravelClass.flight_table_data(@flights)
-    
+
     # Create superlatives:
     @route_superlatives = @flights.superlatives
-    
+
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = %Q(We couldnʼt find an aircraft family matching <span class="param-highlight">#{params[:id]}</span>. Instead, weʼll give you a list of aircraft families.)
       redirect_to aircraft_families_path
   end
-  
+
   # Shows a form to add an {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
@@ -69,7 +69,7 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   def new
     session[:form_location] = nil
-    
+
     if params[:family_id]
       @parent_family = AircraftFamily.find(params[:family_id])
       @aircraft = AircraftFamily.new(parent_id: @parent_family.id)
@@ -78,12 +78,12 @@ class AircraftFamiliesController < ApplicationController
       @title = "New Aircraft Family"
       @aircraft = AircraftFamily.new
     end
-    
+
     rescue ActiveRecord::RecordNotFound
       flash[:warning] = "We couldnʼt find an aircraft family matching #{params[:family_id]}. Instead, weʼll give you a list of aircraft families."
       redirect_to aircraft_families_path
   end
-  
+
   # Creates a new {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
@@ -108,7 +108,7 @@ class AircraftFamiliesController < ApplicationController
       end
     end
   end
-  
+
   # Shows a form to edit an existing {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
@@ -116,9 +116,9 @@ class AircraftFamiliesController < ApplicationController
   # @return [nil]
   def edit
     session[:form_location] = nil
-    @aircraft = AircraftFamily.find(params[:id])    
+    @aircraft = AircraftFamily.find(params[:id])
   end
-  
+
   # Updates an existing {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
@@ -133,7 +133,7 @@ class AircraftFamiliesController < ApplicationController
       render "edit"
     end
   end
-  
+
   # Deletes an existing {AircraftFamily}.
   #
   # This action can only be performed by a verified user.
@@ -159,14 +159,14 @@ class AircraftFamiliesController < ApplicationController
       end
     end
   end
-  
+
   private
-  
+
   # Defines permitted {AircraftFamily} parameters.
   #
   # @return [ActionController::Parameters]
   def aircraft_family_params
     params.require(:aircraft_family).permit(:name, :slug, :icao_code, :iata_code, :manufacturer, :category, :parent_id)
   end
-  
+
 end

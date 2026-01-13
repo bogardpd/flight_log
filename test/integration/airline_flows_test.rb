@@ -158,25 +158,14 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
 
   end
 
-  test "can see index airlines when not logged in" do
+  test "cannot see index airlines when not logged in" do
     get(airlines_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(new_airline_path)
-    verify_absence_of_no_flights_tables
+    assert_redirected_to(login_path)
   end
 
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Airline                              #
   ##############################################################################
-
-  test "redirect show unused or hidden airlines when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_unused_path: airline_path(airlines(:airline_no_flights).slug),
-      show_hidden_path: airline_path(airlines(:airline_hidden).slug),
-      redirect_path:    airlines_path
-    )
-  end
 
   test "can see show airline when logged in" do
     stub_aero_api4_get_timeout
@@ -189,18 +178,15 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     verify_presence_of_admin_actions(edit_airline_path(airline))
   end
 
-  test "can see show airline when not logged in" do
+  test "cannot see show airline when not logged in" do
     stub_aero_api4_get_timeout
     airline = airlines(:airline_american)
     get(airline_path(airline.slug))
-    assert_response(:success)
-
-    check_show_airline_common(airline, :airline)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(edit_airline_path(airline))
+    assert_redirected_to(login_path)
   end
 
   test "can see show airline alternate map formats" do
+    log_in_as(users(:user_one))
     stub_aero_api4_get_timeout
     airline = airlines(:airline_american)
     @extension_types.each do |extension, type|
@@ -214,14 +200,6 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Operator                             #
   ##############################################################################
 
-  test "redirect show unused or hidden operators when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_unused_path: show_operator_path(airlines(:airline_no_flights).slug),
-      show_hidden_path: show_operator_path(airlines(:operator_hidden).slug),
-      redirect_path:    airlines_path
-    )
-  end
-
   test "can see show operator when logged in" do
     operator = airlines(:airline_american)
     log_in_as(users(:user_one))
@@ -232,17 +210,14 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     verify_presence_of_admin_actions(edit_airline_path(operator))
   end
 
-  test "can see show operator when not logged in" do
+  test "cannot see show operator when not logged in" do
     operator = airlines(:airline_american)
     get(show_operator_path(operator.slug))
-    assert_response(:success)
-
-    check_show_airline_common(operator, :operator)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(edit_airline_path(operator))
+    assert_redirected_to(login_path)
   end
 
   test "can see show operator alternate map formats" do
+    log_in_as(users(:user_one))
     operator = airlines(:airline_american)
     @extension_types.each do |extension, type|
       get(show_operator_path(operator.slug, map_id: "operator_map", extension: extension))
@@ -254,13 +229,6 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
   ##############################################################################
   # Tests for Spec > Pages (Views) > Show Fleet Number                         #
   ##############################################################################
-
-  test "redirect show hidden fleet numbers when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_hidden_path: show_fleet_number_path(@hidden_flight.operator.slug, @hidden_flight.fleet_number),
-      redirect_path:    airlines_path
-    )
-  end
 
   test "redirect show fleet number for unused fleet number" do
     log_in_as(users(:user_one))
@@ -278,17 +246,15 @@ class AirlineFlowsTest < ActionDispatch::IntegrationTest
     check_show_airline_common(operator, :fleet_number, fleet_number: fleet_number)
   end
 
-  test "can see show fleet number when not logged in" do
+  test "cannot see show fleet number when not logged in" do
     operator     = @visible_flight.operator
     fleet_number = @visible_flight.fleet_number
     get(show_fleet_number_path(operator.slug, fleet_number))
-    assert_response(:success)
-
-    check_show_airline_common(operator, :fleet_number, fleet_number: fleet_number)
-    verify_absence_of_hidden_data
+    assert_redirected_to(login_path)
   end
 
   test "can see show fleet number alternate map formats" do
+    log_in_as(users(:user_one))
     operator     = @visible_flight.operator
     fleet_number = @visible_flight.fleet_number
     @extension_types.each do |extension, type|

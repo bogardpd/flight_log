@@ -13,32 +13,16 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
       'kml'     => "application/vnd.google-earth.kml+xml",
     }
   end
-  
+
   ##############################################################################
   # Tests for Spec > Pages (Views) > Home                                      #
   # Tests for routes/route_superlatives_table partial                          #
   ##############################################################################
 
-  test "can see home when not logged in" do
+  test "cannot see home when not logged in" do
     stub_aero_api4_get_timeout
-
     get(root_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
-
-    assert_select("div:match('id',?)", /message-active-trip-\d+/, {count: 0}, "This view shall not list an active trip")
-    assert_select("div#message-boarding-passes-available-for-import", {count: 0}, "This view shall not show a link to import boarding passes")
-    
-    assert_select("div.map-mapbox", {}, "This view shall contain a map")
-    assert_select("a:match('href', ?)", "/flights", {}, "This view shall contain a link to Index Flights")
-    assert_select("span.flights-count[data-flights=?]", visitor_flights.size.to_s, {}, "This view shall contain a count of flights")
-    
-    assert_select("table#top-airports-table")
-    assert_select("table#top-airlines-table")
-    assert_select("table#top-routes-table")
-    assert_select("table#top-aircraft-table")
-    assert_select("table#top-tail-numbers-table")
-    assert_select("table#superlatives-table")
+    assert_redirected_to(login_path)
   end
 
   test "can see active trips on home when logged in" do
@@ -57,7 +41,8 @@ class PageFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see home alternate map formats" do
     stub_aero_api4_get_timeout
-    
+
+    log_in_as(users(:user_one))
     @extension_types.each do |extension, type|
       get(root_path(map_id: "flights_map", extension: extension))
       assert_response(:success)

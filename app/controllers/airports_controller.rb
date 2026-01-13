@@ -1,7 +1,7 @@
 # Controls {Airport} pages and actions.
 
 class AirportsController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :logged_in_user
 
   # Shows a table of all {Airport Airports} visited.
   #

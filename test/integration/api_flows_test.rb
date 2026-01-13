@@ -1,13 +1,19 @@
 require "test_helper"
 
-class TripFlowsTest < ActionDispatch::IntegrationTest
+class ApiFlowsTest < ActionDispatch::IntegrationTest
 
   def setup
   end
 
-  test "should get index" do
+  test "should get index if logged in" do
+    log_in_as(users(:user_one))
     get api_url
     assert_response :success
+  end
+
+  test "should not get index if logged in" do
+    get api_url
+    assert_redirected_to(login_path)
   end
 
   # annual_flight_summary
@@ -24,12 +30,12 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   end
 
   # recent_flights
-  
+
   test "should return 403 for recent_flights with empty or bad api key" do
     check_empty_or_bad_api_key(api_recent_flights_url)
   end
-  
-  test "should get recent_flights" do 
+
+  test "should get recent_flights" do
     expected_result = [
       {
         departure_utc: flights(:flight_recent_1).departure_utc.iso8601,
@@ -49,7 +55,7 @@ class TripFlowsTest < ActionDispatch::IntegrationTest
   end
 
   private
-  
+
   def check_empty_or_bad_api_key(path)
     get path
     assert_response :forbidden

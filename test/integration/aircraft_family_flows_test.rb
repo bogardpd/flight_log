@@ -236,10 +236,7 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
 
   test "can see index aircraft families when not logged in" do
     get(aircraft_families_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(new_aircraft_family_path)
-    verify_absence_of_no_flights_tables
+    assert_redirected_to(login_path)
   end
 
   ##############################################################################
@@ -247,14 +244,6 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
   # Tests for aircraft_child_types partial                                     #
   # Tests for aircraft_illustration partial                                    #
   ##############################################################################
-
-  test "redirect show unused or hidden airports when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_unused_path: aircraft_family_path(aircraft_families(:aircraft_type_no_flights).slug),
-      show_hidden_path: aircraft_family_path(aircraft_families(:aircraft_type_hidden).slug),
-      redirect_path:    aircraft_families_path
-    )
-  end
 
   test "show aircraft delete link is not present when family with no flights has child types" do
     log_in_as(users(:user_one))
@@ -273,14 +262,10 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     verify_presence_of_admin_actions(edit_aircraft_family_path(aircraft_family))
   end
 
-  test "can see show aircraft with family when not logged in" do
+  test "cannot see show aircraft with family when not logged in" do
     aircraft_family = aircraft_families(:aircraft_737)
     get(aircraft_family_path(aircraft_family.slug))
-    assert_response(:success)
-
-    check_show_aircraft_common(aircraft_family)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(edit_aircraft_family_path(aircraft_family))
+    assert_redirected_to(login_path)
   end
 
   test "can see show aircraft with type when logged in" do
@@ -295,17 +280,14 @@ class AircraftFamilyFlowsTest < ActionDispatch::IntegrationTest
     verify_presence_of_admin_actions(edit_aircraft_family_path(aircraft_type))
   end
 
-  test "can see show aircraft with type when not logged in" do
+  test "cannot see show aircraft with type when not logged in" do
     aircraft_type = aircraft_families(:aircraft_737_800)
     get(aircraft_family_path(aircraft_type.slug))
-    assert_response(:success)
-
-    check_show_aircraft_common(aircraft_type)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(edit_aircraft_family_path(aircraft_type))
+    assert_redirected_to(login_path)
   end
 
   test "can see show aircraft alternate map formats" do
+    log_in_as(users(:user_one))
     aircraft_type = aircraft_families(:aircraft_737_800)
     @extension_types.each do |extension, type|
       get(aircraft_family_path(aircraft_type.slug, map_id: "aircraft_family_map", extension: extension))

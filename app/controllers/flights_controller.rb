@@ -4,7 +4,7 @@
 class FlightsController < ApplicationController
 
   protect_from_forgery except: :show_boarding_pass_json
-  before_action :logged_in_user, :only => [:new, :new_flight_menu, :change_trip, :create, :edit, :update, :destroy]
+  before_action :logged_in_user
 
   # Shows a table of all {Flight Flights} flown.
   #

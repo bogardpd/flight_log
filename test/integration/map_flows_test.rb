@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MapFlowsTest < ActionDispatch::IntegrationTest
-  
+
   def setup
     stub_aero_api4_get_timeout
     @extensions = {
@@ -14,6 +14,8 @@ class MapFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "render FlightsMap extensions" do
+    log_in_as(users(:user_one))
+
     get flights_path(map_id: :flights_map, extension: :gpx)
     assert_response :success
     assert_equal(@extensions[:gpx], content_type)
@@ -34,6 +36,8 @@ class MapFlowsTest < ActionDispatch::IntegrationTest
   test "render SingleFlightMap extensions" do
     route = routes(:route_dfw_ord)
 
+    log_in_as(users(:user_one))
+
     get show_route_path(route.airport1.slug, route.airport2.slug, map_id: :route_map, extension: :gpx)
     assert_response :success
     assert_equal(@extensions[:gpx], content_type)
@@ -52,6 +56,8 @@ class MapFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "render AirportsMap extensions" do
+    log_in_as(users(:user_one))
+
     get airports_path(map_id: :airports_map, extension: :gpx)
     assert_response :success
     assert_equal(@extensions[:gpx], content_type)
@@ -70,6 +76,8 @@ class MapFlowsTest < ActionDispatch::IntegrationTest
   end
 
   test "render AirportFrequencyMap extensions" do
+    log_in_as(users(:user_one))
+
     get airports_path(map_id: :frequency_map, extension: :gpx)
     assert_response :success
     assert_equal(@extensions[:gpx], content_type)

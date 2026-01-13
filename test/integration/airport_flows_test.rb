@@ -150,15 +150,13 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
 
   end
 
-  test "can see index airports when not logged in" do
+  test "cannot see index airports when not logged in" do
     get(airports_path)
-    assert_response(:success)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(new_airport_path)
-    verify_absence_of_no_flights_tables
+    assert_redirected_to(login_path)
   end
 
   test "can see index airport alternate map formats" do
+    log_in_as(users(:user_one))
     %w(gpx kml geojson).each do |extension|
       %w(airports_map frequency_map).each do |map_id|
         get(airports_path(map_id: map_id, extension: extension))
@@ -172,14 +170,6 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
   # Tests for Spec > Pages (Views) > Show Airport                              #
   ##############################################################################
 
-  test "redirect show unused or hidden airports when appropriate" do
-    verify_show_unused_or_hidden_redirects(
-      show_unused_path: airport_path(airports(:airport_no_flights).slug),
-      show_hidden_path: airport_path(airports(:airport_hidden_1).slug),
-      redirect_path:    airports_path
-    )
-  end
-
   test "can see show airport when logged in" do
     airport = airports(:airport_visible_1)
     log_in_as(users(:user_one))
@@ -190,17 +180,14 @@ class AirportFlowsTest < ActionDispatch::IntegrationTest
     verify_presence_of_admin_actions(edit_airport_path(airport))
   end
 
-  test "can see show airport when not logged in" do
+  test "cannot see show airport when not logged in" do
     airport = airports(:airport_visible_1)
     get(airport_path(airport.slug))
-    assert_response(:success)
-
-    check_show_airport_common(airport)
-    verify_absence_of_hidden_data
-    verify_absence_of_admin_actions(edit_airport_path(airport))
+    assert_redirected_to(login_path)
   end
 
   test "can see show airport alternate map formats" do
+    log_in_as(users(:user_one))
     airport = airports(:airport_visible_1)
     @extension_types.each do |extension, type|
       %w(airport_map sections_map trips_map).each do |map_id|
