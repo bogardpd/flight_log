@@ -4,7 +4,7 @@
 class FlightsController < ApplicationController
 
   protect_from_forgery except: :show_boarding_pass_json
-  before_action :logged_in_user
+  before_action :logged_in_user, except: [:input_boarding_pass, :build_boarding_pass, :show_boarding_pass, :show_boarding_pass_json]
 
   # Shows a table of all {Flight Flights} flown.
   #
