@@ -4,15 +4,20 @@
 
 <h1>Boarding Pass Parser</h1>
 
+<p>The boarding pass parser has been moved to <%= link_to("https://paulbogard.net/boarding-pass-parser/", "https://paulbogard.net/boarding-pass-parser/") %>. Please update your links.</p>
+
+<% if false %>
+
 <p>Scan your boarding pass with a barcode scanner (PDF417 scanner for paper boarding passes, Aztek Code scanner for electronic boarding passes), then paste it below:</p>
 
 <%= form_tag(build_boarding_pass_path, method: :get, id: "bcbp-form") do %>
-  
+
 	<p>
     <%= label :data, "Boarding pass data" %><br />
 	  <%= text_area_tag :data, params[:data], size: "60x5", class: "code-mono" %>
   </p>
-  
+
   <p><%= submit_tag "Submit", name: nil %></p>
-  
+
+<% end %>
 <% end %>
